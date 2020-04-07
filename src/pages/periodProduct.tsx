@@ -161,7 +161,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     if (singleOperatorCookie) {
         const { selectedServices } = JSON.parse(singleOperatorCookie);
         props = {
-            zoneName: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
+            zoneName: selectedServices?.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
         };
     }
 

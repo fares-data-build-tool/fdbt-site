@@ -111,6 +111,7 @@ export const getServerSideProps = async (
     const { nocCode } = operatorObject;
     const servicesList = await getServicesByNocCode(nocCode);
 
+    console.log('servicelist', servicesList);
     const { selectAll } = ctx.query;
 
     const buttonText = selectAll === 'true' ? buttonUnselectedText : buttonSelectedText;

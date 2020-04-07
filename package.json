@@ -33,6 +33,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@types/mysql2": "github:types/mysql2",
         "array.prototype.flatmap": "^1.2.3",
         "aws-event-mocks": "0.0.0",
         "aws-sdk": "^2.636.0",
@@ -46,6 +47,7 @@
         "govuk-frontend": "^3.6.0",
         "mock-express-request": "^0.2.2",
         "multer": "^1.4.2",
+        "mysql2": "^2.1.0",
         "next": "^9.3.0",
         "next-compose-plugins": "^2.2.0",
         "next-fonts": "^1.0.3",

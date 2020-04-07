@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
 import flatMap from 'array.prototype.flatmap';
+import { createConnection } from 'mysql2/promise';
 import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME, NAPTAN_TABLE_GSI } from '../constants';
 
 export interface ServiceType {
@@ -27,8 +28,8 @@ export interface RawJourneyPatternSection {
         StopPointRef: string;
         CommonName: string;
     }[];
-    StartPoint: string;
-    EndPoint: string;
+    StartPoint: string; //fromAtcoCode
+    EndPoint: string; //ToAtcoCode
 }
 
 export interface RawJourneyPattern {
@@ -109,34 +110,59 @@ const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
 
 const dynamoDbClient = getDynamoDBClient();
 
+const getAuroraDBClient = () => {
+    let client = null;
+
+    if (process.env.NODE_ENV === 'development') {
+        client = createConnection({
+            host: 'mysql',
+            user: 'fdbt_site',
+            password: 'password',
+            database: 'fdbt',
+        });
+    } else {
+        client = createConnection({
+            host: 'mysql',
+            user: 'fdbt_site',
+            password: 'password',
+            database: 'fdbt',
+        });
+    }
+
+    console.log('client', client);
+    return client;
+};
+
+const auroraConnection = getAuroraDBClient();
+
+
 export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
+const executeQuery = async (query: string) => {
+    const connection = await auroraConnection;
+    const [rows] = await connection.execute(query, []);
+    //connection.end();
+    return rows;
+};
+
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Services' : SERVICES_TABLE_NAME;
-
-    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
-        TableName: tableName,
-        KeyConditionExpression: '#pk = :value',
-        ExpressionAttributeNames: {
-            '#pk': 'Partition',
-        },
-        ExpressionAttributeValues: {
-            ':value': nocCode,
-        },
-    };
-
     try {
-        const { Items } = await dynamoDbClient.query(queryInput).promise();
+        const tableName = process.env.NODE_ENV === 'development' ? 'tndsService' :  SERVICES_TABLE_NAME;
+
+        const queryInput = `Select * from ${tableName} where nocCode = "IWCB"`;
+
+        const queryResult = await executeQuery(queryInput);
+
+        const resultRow = JSON.parse(JSON.stringify(queryResult));
+
         return (
-            Items?.map(
-                (item): ServiceType => ({
-                    lineName: item.LineName,
-                    startDate: convertDateFormat(item.StartDate),
-                    description: item.Description,
-                }),
-            ) || []
+            resultRow?.map((item: ServiceType) => ({
+                lineName: item.lineName,
+                startDate: convertDateFormat(item.startDate),
+                description: item.description,
+            })) || []
         );
     } catch (err) {
         throw new Error(`Could not retrieve services from DynamoDB: ${err.name}, ${err.message}`);
@@ -144,7 +170,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : NAPTAN_TABLE_NAME;
+    const tableName = process.env.NODE_ENV === 'development' ? 'naptanStop' : NAPTAN_TABLE_NAME;
     const count = atcoCodes.length;
     const batchSize = 100;
     const batchArray = [];
@@ -154,22 +180,9 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
     }
 
     const batchPromises = batchArray.map(batch => {
-        const batchQueryInput: AWS.DynamoDB.DocumentClient.BatchGetItemInput = {
-            RequestItems: {
-                [tableName]: {
-                    ExpressionAttributeNames: {
-                        '#in': 'Indicator',
-                    },
-                    Keys: batch.map(code => ({
-                        Partition: code,
-                    })),
-                    ProjectionExpression:
-                        'LocalityName, ParentLocalityName, #in, Street, CommonName, NaptanCode, ATCOCode, NptgLocalityCode',
-                },
-            },
-        };
+        const batchQuery = `Select * from ${tableName} where atcoCode = ${batch}`;
 
-        return dynamoDbClient.batchGet(batchQueryInput).promise();
+        return executeQuery(batchQuery);
     });
 
     try {
@@ -223,33 +236,28 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 };
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-TNDS' : TNDS_TABLE_NAME;
+    const tableName = process.env.NODE_ENV === 'development' ? 'tndsOperatorService' : TNDS_TABLE_NAME;
 
-    const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
-        TableName: tableName,
-        KeyConditionExpression: '#pkAttNm = :pkAttVal and begins_with (#skAttNm, :skAttVal)',
-        ExpressionAttributeNames: {
-            '#pkAttNm': 'Partition',
-            '#skAttNm': 'Sort',
-        },
-        ExpressionAttributeValues: {
-            ':pkAttVal': nocCode,
-            ':skAttVal': lineName,
-        },
-    };
+    const serviceQuery = `Select * from ${tableName} where nocCode = "IWCB" AND lineName = "200
+    INNER JOIN "`;
     let Items;
 
     try {
-        ({ Items } = await getDynamoDBClient()
-            .query(queryInput)
-            .promise());
+        console.log('service query', serviceQuery);
+        const queryResult = await executeQuery(serviceQuery);
+
+        Items = JSON.parse(JSON.stringify(queryResult));
+
     } catch (err) {
         throw new Error(`Could not get journey patterns from Dynamo DB: ${err.name}, ${err.message}`);
     }
 
     const service = Items?.[0];
 
-    if (!service || !service.JourneyPatterns || service.JourneyPatterns.length === 0) {
+    console.log('heyyy', service);
+
+    // if (!service || !service.JourneyPatterns || service.JourneyPatterns.length === 0) {
+    if(!service) {
         throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
     }
 

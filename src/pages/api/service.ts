@@ -14,6 +14,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const { service } = req.body;
 
+        console.log('penchord', service);
         if (!service) {
             redirectTo(res, '/service');
             return;
