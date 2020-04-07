@@ -1,7 +1,6 @@
 # Description
 * Explain the purpose of this pr
 
-
 # Testing instructions
 * Add testing instructions if required
 
@@ -13,6 +12,7 @@
 
 # Checklist:
 
+- [ ] Able to run pr locally
 - [ ] Lighthouse performed
 - [ ] Followed acceptance criteria
 - [ ] My code follows the style guidelines of this project
