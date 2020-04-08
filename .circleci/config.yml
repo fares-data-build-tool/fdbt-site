@@ -202,7 +202,7 @@ workflows:
                       branches:
                           only: master
 
-            - aws-ecs/deploy-service-update:
+            - aws-ecs/deploy-preprod-service-update:
                   requires:
                       - hold-preprod-deployment
                   family: '${SITE_ECS_FAMILY}'
