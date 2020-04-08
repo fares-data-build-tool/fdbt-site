@@ -202,10 +202,11 @@ workflows:
                       branches:
                           only: master
 
-            - aws-ecs/deploy-preprod-service-update:
+            - aws-ecs/deploy-service-update:
                   requires:
                       - hold-preprod-deployment
                   family: '${SITE_ECS_FAMILY}'
+                  name: deploy-site-to-preprod
                   cluster-name: '${SITE_ECS_CLUSTER}'
                   container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
                   context: tfn-fdbt-preprod
