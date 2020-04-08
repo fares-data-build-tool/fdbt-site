@@ -192,7 +192,6 @@ workflows:
                       branches:
                           only:  
                               - develop
-                              - master
 
             - hold-preprod-deployment:
                   type: approval
