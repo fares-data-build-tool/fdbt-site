@@ -186,7 +186,7 @@ workflows:
 
             - run-ui-tests:
                 requires:
-                    - aws-ecs/deploy-service-update
+                    - deploy-site-to-test
                 context: tfn-fdbt-automation-tests
                 filters:
                       branches:
