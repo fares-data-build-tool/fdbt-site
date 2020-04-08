@@ -11,9 +11,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookies = new Cookies(req, res);
-
-        const { faretype } = req.body;
-
         const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
         const operatorObject = JSON.parse(operatorCookie);
         const { uuid } = operatorObject;
@@ -22,22 +19,27 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('No UUID found');
         }
 
-        if (!faretype) {
-            redirectTo(res, '/faretype');
-            return;
+        if (req.body.fareType) {
+            switch (req.body.fareType) {
+                case 'period':
+                    redirectTo(res, '/periodType');
+                    return;
+                case 'single':
+                    redirectTo(res, '/service');
+                    return;
+                case 'return':
+                    // redirect to return page
+                    return;
+                default:
+                    throw new Error('Fare Type we expect was not received.');
+            }
+        } else {
+            const cookieValue = JSON.stringify({ errorMessage: 'Choose a fare type from the options' }, uuid);
+            setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
+            redirectTo(res, '/fareType');
         }
-
-        const cookieValue = JSON.stringify({ faretype, uuid });
-        setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
-
-        if (faretype === 'period') {
-            redirectTo(res, '/periodType');
-            return;
-        }
-
-        redirectTo(res, '/service');
     } catch (error) {
-        const message = 'There was a problem selecting the faretype:';
+        const message = 'There was a problem selecting the fare type:';
         redirectToError(res, message, error);
     }
 };

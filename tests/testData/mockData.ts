@@ -31,7 +31,7 @@ export const getMockRequestAndResponse = (
 
     const {
         operator = 'test',
-        faretype = 'single',
+        fareType = 'single',
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -43,7 +43,7 @@ export const getMockRequestAndResponse = (
 
     const {
         operatorUuid = defaultUuid,
-        faretypeUuid = defaultUuid,
+        fareTypeUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
@@ -57,8 +57,8 @@ export const getMockRequestAndResponse = (
         ? `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
         : '';
 
-    cookieString += faretype
-        ? `${FARETYPE_COOKIE}=%7B%22faretype%22%3A%22${faretype}%22%2C%22uuid%22%3A%22${faretypeUuid}%22%7D;`
+    cookieString += fareType
+        ? `${FARETYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
         : '';
 
     cookieString += serviceLineName

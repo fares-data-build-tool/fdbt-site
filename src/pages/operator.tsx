@@ -5,6 +5,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
+import { ErrorInfo } from '../types';
 
 const title = 'Operator - Fares data build tool';
 const description = 'Operator selection page of the Fares data build tool';
@@ -12,10 +13,6 @@ const description = 'Operator selection page of the Fares data build tool';
 type Operator = {
     operatorName: string;
     nocCode: string;
-};
-
-export type ErrorInfo = {
-    errorMessage: string;
 };
 
 type OperatorProps = {
@@ -94,9 +91,9 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[OPERATOR_COOKIE]) {
-        const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE] || ''));
-
+        const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
         const parsedOperatorCookie = JSON.parse(operatorCookie);
+
         if (parsedOperatorCookie.errorMessage) {
             const { errorMessage } = parsedOperatorCookie;
             return { props: { errors: [{ errorMessage }] } };

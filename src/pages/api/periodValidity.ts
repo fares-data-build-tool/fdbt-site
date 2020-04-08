@@ -12,7 +12,7 @@ import {
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/dynamodb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
-import { isPeriodCookiesUUIDMatch } from './service/validator';
+import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
 
 interface DecisionData {
     operatorName: string;
@@ -27,6 +27,10 @@ interface DecisionData {
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         if (!isPeriodCookiesUUIDMatch(req, res)) {
             throw new Error('Cookie UUIDs do not match');
         }

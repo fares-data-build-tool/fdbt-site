@@ -3,7 +3,6 @@ import Cookies from 'cookies';
 import {
     OPERATOR_COOKIE,
     SERVICE_COOKIE,
-    FARETYPE_COOKIE,
     JOURNEY_COOKIE,
     PERIOD_PRODUCT,
     CSV_ZONE_UPLOAD_COOKIE,
@@ -24,18 +23,16 @@ export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): b
     const cookies = new Cookies(req, res);
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
     const serviceCookie = unescape(decodeURI(cookies.get(SERVICE_COOKIE) || ''));
-    const fareTypeCookie = unescape(decodeURI(cookies.get(FARETYPE_COOKIE) || ''));
     const journeyCookie = unescape(decodeURI(cookies.get(JOURNEY_COOKIE) || ''));
 
     try {
         const operatorObject = JSON.parse(operatorCookie);
         const serviceObject = JSON.parse(serviceCookie);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
         const journeyObject = JSON.parse(journeyCookie);
 
         const { uuid } = operatorObject;
 
-        if (serviceObject.uuid === uuid && fareTypeObject.uuid === uuid && journeyObject.uuid === uuid) {
+        if (serviceObject.uuid === uuid && journeyObject.uuid === uuid) {
             return true;
         }
     } catch (err) {

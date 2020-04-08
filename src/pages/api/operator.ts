@@ -10,7 +10,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const uuid = uuidv4();
             const cookieValue = JSON.stringify({ operator: operatorName, uuid, nocCode });
             setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieValue, req, res);
-            redirectTo(res, '/faretype');
+            redirectTo(res, '/fareType');
         } else {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose an operator from the options' });
             setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieValue, req, res);

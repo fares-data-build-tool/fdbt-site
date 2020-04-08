@@ -1,8 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils';
+import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         if (!req.body.howManyStages) {
             redirectTo(res, '/howManyStages');
             return;

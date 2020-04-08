@@ -1,5 +1,5 @@
 import React from 'react';
-import { ErrorInfo } from '../pages/operator';
+import { ErrorInfo } from '../types';
 
 export type ErrorSummaryInfo = {
     errors: ErrorInfo[];
