@@ -73,25 +73,25 @@ describe('Matching API', () => {
         });
     });
 
-    // it('redirects to error page if no stops are allocated to fare stages', async () => {
-    //     const { req, res } = getMockRequestAndResponse(
-    //         {},
-    //         {
-    //             option0: '',
-    //             option1: '',
-    //             service: JSON.stringify(service),
-    //             userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
-    //         },
-    //         {},
-    //         writeHeadMock,
-    //     );
+    it('redirects to matching page if no stops are allocated to fare stages', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            {},
+            {
+                option0: '',
+                option1: '',
+                service: JSON.stringify(service),
+                userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
+            },
+            {},
+            writeHeadMock,
+        );
 
-    //     await matching(req, res);
+        await matching(req, res);
 
-    //     expect(writeHeadMock).toBeCalledWith(302, {
-    //         Location: '/error',
-    //     });
-    // });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/matching',
+        });
+    });
 
     it('redirects to thankyou page if all valid', async () => {
         const { req, res } = getMockRequestAndResponse(
