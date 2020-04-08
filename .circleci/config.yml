@@ -175,6 +175,7 @@ workflows:
             - aws-ecs/deploy-service-update:
                   requires:
                       - aws-ecr/build-and-push-image
+                  name: deploy-site-to-test
                   family: '${SITE_ECS_FAMILY}'
                   cluster-name: '${SITE_ECS_CLUSTER}'
                   container-image-name-updates: 'container=${SITE_ECS_FAMILY},tag=${CIRCLE_SHA1}'
