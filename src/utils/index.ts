@@ -64,8 +64,8 @@ export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
     if (!operatorCookie) {
         return null;
     }
-    const operatorObject = JSON.parse(operatorCookie);
-    return operatorObject.uuid;
+    const operatorInfo = JSON.parse(operatorCookie);
+    return operatorInfo.uuid;
 };
 
 export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | null => {
@@ -74,8 +74,8 @@ export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | nul
     if (!operatorCookie) {
         return null;
     }
-    const operatorObject = JSON.parse(operatorCookie);
-    return operatorObject.journeyPattern;
+    const operatorInfo = JSON.parse(operatorCookie);
+    return operatorInfo.journeyPattern;
 };
 
 export const formatStopName = (stop: Stop): string =>

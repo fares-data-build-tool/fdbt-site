@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
+import { Uuid } from '../../../types/index';
 import { OPERATOR_COOKIE } from '../../../constants';
 
 export const getDomain = (req: NextApiRequest): string => {
@@ -41,7 +42,7 @@ export const deleteCookieOnResponseObject = (
     cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
 };
 
-export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
+export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): Uuid => {
     const cookies = new Cookies(req, res);
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
     return JSON.parse(operatorCookie).uuid;

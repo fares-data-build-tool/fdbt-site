@@ -149,7 +149,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         throw new Error('Failed to retrieve zone cookie info for period product page.');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
 
     if (zoneCookie) {
         const { fareZoneName } = JSON.parse(zoneCookie);
@@ -168,7 +168,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     return {
         props: {
             product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
-            operator: operatorObject.operator,
+            operator: operatorInfo.operator,
             ...props,
         },
     };

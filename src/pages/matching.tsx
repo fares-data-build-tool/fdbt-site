@@ -114,16 +114,16 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         throw new Error('Necessary cookies not found to show matching page');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
-    const serviceObject = JSON.parse(serviceCookie);
-    const journeyObject = JSON.parse(journeyCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
+    const serviceInfo = JSON.parse(serviceCookie);
+    const journeyInfo = JSON.parse(journeyCookie);
 
-    const lineName = serviceObject.service.split('#')[0];
-    const { nocCode } = operatorObject;
-    const [selectedStartPoint, selectedEndPoint] = journeyObject.journeyPattern.split('#');
+    const lineName = serviceInfo.service.split('#')[0];
+    const { nocCode } = operatorInfo;
+    const [selectedStartPoint, selectedEndPoint] = journeyInfo.journeyPattern.split('#');
 
-    const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
-    const userFareStages = await getUserFareStages(operatorObject.uuid);
+    const service = await getServiceByNocCodeAndLineName(operatorInfo.nocCode, lineName);
+    const userFareStages = await getUserFareStages(operatorInfo.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
     const masterStopList = getMasterStopList(relevantJourneys);
 
