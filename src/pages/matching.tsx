@@ -143,21 +143,6 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
-    if (!matchingCookie) {
-        return {
-            props: {
-                stops: orderedStops,
-                userFareStages,
-                service: {
-                    lineName,
-                    nocCode,
-                    operatorShortName: service.operatorShortName,
-                },
-                error: false,
-            },
-        };
-    }
-
     return {
         props: {
             stops: orderedStops,
