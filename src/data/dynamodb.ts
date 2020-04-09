@@ -22,14 +22,25 @@ export interface JourneyPattern {
     stopList: string[];
 }
 
+export interface QueryData {
+    operatorShortName: string;
+    serviceDescription: string;
+    lineName: string;
+    fromAtcoCode: string;
+    toAtcoCode: string;
+    fromCommonName: string;
+    toCommonName: string;
+    journeyPatternSectionId: string;
+    order: string;
+}
 export interface RawJourneyPatternSection {
     Id: string;
     OrderedStopPoints: {
         StopPointRef: string;
         CommonName: string;
     }[];
-    StartPoint: string; //fromAtcoCode
-    EndPoint: string; //ToAtcoCode
+    StartPoint: string;
+    EndPoint: string;
 }
 
 export interface RawJourneyPattern {
@@ -129,27 +140,23 @@ const getAuroraDBClient = () => {
         });
     }
 
-    console.log('client', client);
     return client;
 };
-
-const auroraConnection = getAuroraDBClient();
-
 
 export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
 const executeQuery = async (query: string) => {
-    const connection = await auroraConnection;
+    const connection = await getAuroraDBClient();
     const [rows] = await connection.execute(query, []);
-    //connection.end();
+    connection.end();
     return rows;
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     try {
-        const tableName = process.env.NODE_ENV === 'development' ? 'tndsService' :  SERVICES_TABLE_NAME;
+        const tableName = process.env.NODE_ENV === 'development' ? 'tndsService' : SERVICES_TABLE_NAME;
 
         const queryInput = `Select * from ${tableName} where nocCode = "IWCB"`;
 
@@ -237,33 +244,68 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const tableName = process.env.NODE_ENV === 'development' ? 'tndsOperatorService' : TNDS_TABLE_NAME;
+    const nocCodeDummy='IWCB'; //remove
+    const lineNameDummy = '200';
 
-    const serviceQuery = `Select * from ${tableName} where nocCode = "IWCB" AND lineName = "200
-    INNER JOIN "`;
-    let Items;
+    const serviceQuery = `select os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternSectionId, pl.order, nsStart.commonName as fromCommonName, nsStop.commonName as toCommonName 
+                          from tndsOperatorService as os   
+                          inner join tndsJourneyPatternSection as ps on ps.operatorServiceId = os.id
+                          inner join tndsJourneyPatternLink as pl on pl.journeyPatternSectionId = ps.id
+                          LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
+                          LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
+                          where os.nocCode = "${nocCodeDummy}" and os.lineName = "${lineNameDummy}"
+                          order by pl.order and pl.journeyPatternSectionId ASC`;
+
+    let queryItems: QueryData[];
 
     try {
-        console.log('service query', serviceQuery);
         const queryResult = await executeQuery(serviceQuery);
-
-        Items = JSON.parse(JSON.stringify(queryResult));
-
+        queryItems = JSON.parse(JSON.stringify(queryResult));
     } catch (err) {
         throw new Error(`Could not get journey patterns from Dynamo DB: ${err.name}, ${err.message}`);
     }
 
-    const service = Items?.[0];
+    const service = queryItems?.[0];
+    const rawPatternService: RawJourneyPattern[] = [];
 
-    console.log('heyyy', service);
+    // allows to get the unique journey's fpr the operator
+    const uniqueJourneyPatterns = queryItems.map(item => item.journeyPatternSectionId).filter(
+        (value, index, self) => self.indexOf(value) === index,
+    );
 
-    // if (!service || !service.JourneyPatterns || service.JourneyPatterns.length === 0) {
-    if(!service) {
+    uniqueJourneyPatterns.forEach(journey => {
+        const filteredJourney = queryItems.filter(item => {
+            return item.journeyPatternSectionId === journey;
+        });
+
+        // have to get the first record to pull the key information
+        const filteredService = filteredJourney[0];
+
+        const journeyPatternSection: RawJourneyPatternSection = {
+            Id: filteredService.fromAtcoCode,
+            EndPoint: filteredService.toAtcoCode,
+            StartPoint: filteredService.fromAtcoCode,
+            OrderedStopPoints: filteredJourney.map((data: QueryData) => {
+                return {
+                    StopPointRef: data.toAtcoCode,
+                    CommonName: data.toCommonName,
+                };
+            }),
+        };
+
+        const patternArray: RawJourneyPatternSection[] = [];
+        patternArray.push(journeyPatternSection);
+
+        rawPatternService.push({ JourneyPatternSections: patternArray });
+    });
+
+    if (!service || rawPatternService.length === 0) {
         throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
     }
 
     return {
-        serviceDescription: service.ServiceDescription,
-        operatorShortName: service.OperatorShortName,
-        journeyPatterns: service.JourneyPatterns,
+        serviceDescription: service.serviceDescription,
+        operatorShortName: service.operatorShortName,
+        journeyPatterns: rawPatternService,
     };
 };

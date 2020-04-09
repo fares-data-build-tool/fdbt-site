@@ -499,6 +499,7 @@ export const userFareStages: UserFareStages = {
                     fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
                 },
             ],
+
         },
         {
             stageName: 'Cambridge Street (York)',

@@ -33,7 +33,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@types/mysql2": "github:types/mysql2",
         "array.prototype.flatmap": "^1.2.3",
         "aws-event-mocks": "0.0.0",
         "aws-sdk": "^2.636.0",
@@ -59,6 +58,7 @@
         "xml2js": "^0.4.23"
     },
     "devDependencies": {
+        "@types/mysql2": "github:types/mysql2",
         "@types/array.prototype.flatmap": "^1.2.1",
         "@types/aws-lambda": "^8.10.46",
         "@types/aws-lambda-mock-context": "^3.2.0",
