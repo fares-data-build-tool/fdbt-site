@@ -3,12 +3,13 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { PERIOD_TYPE } from '../constants';
+import { Uuid } from '../types';
 
 const title = 'Period Type - Fares data build tool';
 const description = 'Period Type selection page of the Fares data build tool';
 
 export interface PeriodTypeInterface {
-    uuid: string;
+    uuid: Uuid;
     error: boolean;
     periodTypeName?: string;
 }

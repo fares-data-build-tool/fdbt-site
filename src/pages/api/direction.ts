@@ -16,7 +16,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        const { uuid } = getUuidFromCookie(req, res);
+        const uuid = getUuidFromCookie(req, res);
 
         if (!uuid) {
             throw new Error('No UUID found');
