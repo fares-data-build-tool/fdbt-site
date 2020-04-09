@@ -15,7 +15,7 @@ jobs:
                   root: ~/project
                   paths:
                       - '*'
-    run-ui-tests:
+    run-ui-tests-chrome:
         docker:
             - image: circleci/openjdk:13-jdk-buster
         steps:
@@ -24,7 +24,26 @@ jobs:
                     git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
                     cd fdbt-ui-automation
                     mvn test -P remote-chrome
+    
+    run-ui-tests-firefox:
+        docker:
+            - image: circleci/openjdk:13-jdk-buster
+        steps:
+            - run:  
+                command: |
+                    git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+                    cd fdbt-ui-automation
+                    mvn test -P remote-firefox
 
+    run-ui-tests-ie:
+        docker:
+            - image: circleci/openjdk:13-jdk-buster
+        steps:
+            - run:  
+                command: |
+                    git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+                    cd fdbt-ui-automation
+                    mvn test -P remote-ie
 
     build-site:
         docker:
@@ -184,7 +203,7 @@ workflows:
                       branches:
                           only: develop
 
-            - run-ui-tests:
+            - run-ui-tests-chrome:
                 requires:
                     - deploy-site-to-test
                 context: tfn-fdbt-automation-test
@@ -192,7 +211,24 @@ workflows:
                       branches:
                           only:  
                               - develop
+            
+            - run-ui-tests-firefox:
+                requires:
+                    - run-ui-tests-chrome
+                context: tfn-fdbt-automation-test
+                filters:
+                      branches:
+                          only:  
+                              - develop
 
+            - run-ui-tests-ie:
+                requires:
+                    - run-ui-tests-firefox
+                context: tfn-fdbt-automation-test
+                filters:
+                      branches:
+                          only:  
+                              - develop
             - hold-preprod-deployment:
                   type: approval
                   requires:
