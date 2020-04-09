@@ -86,12 +86,8 @@ const getMatchingJson = (
         }),
 });
 
-const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean => {
-    if (userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName])) {
-        return true;
-    }
-    return false;
-};
+const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
+    userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {

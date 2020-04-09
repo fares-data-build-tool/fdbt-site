@@ -158,10 +158,6 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         };
     }
 
-    const matchingObject = JSON.parse(matchingCookie);
-
-    const { error } = matchingObject;
-
     return {
         props: {
             stops: orderedStops,
@@ -171,7 +167,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 nocCode,
                 operatorShortName: service.operatorShortName,
             },
-            error: !matchingCookie ? {} : error,
+            error: !matchingCookie ? false : JSON.parse(matchingCookie).error,
         },
     };
 };
