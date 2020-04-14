@@ -143,24 +143,20 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
-    const count = atcoCodes.length;
-    const batchSize = 100;
-    const batchArray = [];
-
-    for (let i = 0; i < count; i += batchSize) {
-        batchArray.push(atcoCodes.slice(i, i + batchSize));
-    }
-
-    const batchPromises = batchArray.map(batch => {
-        const batchQuery = `Select * from naptanStop where atcoCode in (?)`;
-        return executeQuery(batchQuery, [batch]);
-    });
+    let orQuery = '';
 
     try {
-        const results = await Promise.all(batchPromises);
+        atcoCodes.forEach((code, index) => {
+            orQuery += `atcoCode = ${code} ${index < atcoCodes.length - 1 ? 'OR ' : ''}`;
+        });
+
+        const batchQuery = `Select * from naptanStop where ${orQuery}`;
+
+        const results = await executeQuery(batchQuery, []);
+
         const parsedResults = JSON.parse(JSON.stringify(results));
 
-        return parsedResults[0].map((item: NaptanInfo) => ({
+        return parsedResults.map((item: NaptanInfo) => ({
             stopName: item.commonName,
             naptanCode: item.naptanCode,
             atcoCode: item.atcoCode,
@@ -195,14 +191,14 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const serviceQuery =
-        'SELECT `os.operatorShortName`, `os.serviceDescription`, `os.lineName`, `pl.fromAtcoCode`, `pl.toAtcoCode`, `pl.journeyPatternSectionId`, `pl.order`, `nsStart.commonName` AS `fromCommonName`, `nsStop.commonName` as `toCommonName` ' +
-        'FROM `tndsOperatorService` AS `os`' +
-        'INNER JOIN tndsJourneyPatternSection AS ps ON ps.operatorServiceId = os.id' +
-        'INNER JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternSectionId = ps.id' +
-        'LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode' +
-        'LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode' +
-        'WHERE os.nocCode = ? AND os.lineName = ?' +
-        'ORDER BY pl.order, pl.journeyPatternSectionId ASC';
+        'SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternSectionId, pl.order, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName ' +
+        ' FROM tndsOperatorService AS os' +
+        ' INNER JOIN tndsJourneyPatternSection AS ps ON ps.operatorServiceId = os.id' +
+        ' INNER JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternSectionId = ps.id' +
+        ' LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode' +
+        ' LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode' +
+        ' WHERE os.nocCode = ? AND os.lineName = ?' +
+        ' ORDER BY pl.order, pl.journeyPatternSectionId ASC';
 
     let queryItems: QueryData[];
 

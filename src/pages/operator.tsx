@@ -22,7 +22,7 @@ const hardCodedOperators: Operator[] = [
     { operatorName: 'Pilkington Bus', nocCode: 'NWBT' },
     { operatorName: 'TLC Travel', nocCode: 'TLCT' },
     { operatorName: 'Transport for Greater Manchester', nocCode: 'VISB' },
-    { operatorName: "Warrington's Own Buses", nocCode: 'WBTR' },
+    { operatorName: "Warrington's Own Buses", nocCode: 'IWCB' },
 ];
 
 const Operator = (): ReactElement => (

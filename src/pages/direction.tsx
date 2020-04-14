@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
@@ -12,7 +13,6 @@ import {
     RawJourneyPattern,
     RawService,
 } from '../data/dynamodb';
-import flatMap from 'array.prototype.flatmap';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';
