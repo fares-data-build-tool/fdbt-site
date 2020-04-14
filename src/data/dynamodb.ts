@@ -1,8 +1,5 @@
-import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
-import flatMap from 'array.prototype.flatmap';
 import { createConnection } from 'mysql2/promise';
-import { NAPTAN_TABLE_NAME, SERVICES_TABLE_NAME, TNDS_TABLE_NAME, NAPTAN_TABLE_GSI } from '../constants';
 
 export interface ServiceType {
     lineName: string;
@@ -34,38 +31,30 @@ export interface QueryData {
     order: string;
 }
 export interface RawJourneyPatternSection {
-    Id: string;
     OrderedStopPoints: {
         StopPointRef: string;
         CommonName: string;
     }[];
-    StartPoint: string;
-    EndPoint: string;
 }
 
 export interface RawJourneyPattern {
     JourneyPatternSections: RawJourneyPatternSection[];
 }
 
-interface DynamoNaptanInfo {
-    CommonName: string;
-    NaptanCode: string;
-    ATCOCode: string;
-    NptgLocalityCode: string;
-    LocalityName: string;
-    ParentLocalityName: string;
-    Indicator: string;
-    Street: string;
-}
-
-interface DynamoNaptanIndex {
+interface NaptanInfo {
+    commonName: string;
     naptanCode: string;
     atcoCode: string;
+    nptgLocalityCode: string;
+    localityName: string;
+    parentLocalityName: string;
+    indicator: string;
+    street: string;
 }
 
-interface RawDynamoNaptanIndex {
-    NaptanCode: string;
-    Partition: string;
+interface NaptanAtcoCodes {
+    naptanCode: string;
+    atcoCode: string;
 }
 
 export interface Stop {
@@ -97,30 +86,7 @@ export interface RawService {
     journeyPatterns: RawJourneyPattern[];
 }
 
-const getDynamoDBClient = (): AWS.DynamoDB.DocumentClient => {
-    const dynamoDbRegion = process.env.AWS_REGION || 'eu-west-2';
-
-    const options = {
-        convertEmptyValues: true,
-        region: dynamoDbRegion,
-    };
-
-    let client = null;
-
-    if (process.env.NODE_ENV === 'development') {
-        client = new AWS.DynamoDB.DocumentClient({
-            ...options,
-            endpoint: 'http://localhost:9100',
-        });
-    } else {
-        client = new AWS.DynamoDB.DocumentClient(options);
-    }
-
-    return client;
-};
-
-const dynamoDbClient = getDynamoDBClient();
-
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getAuroraDBClient = () => {
     let client = null;
 
@@ -132,6 +98,7 @@ const getAuroraDBClient = () => {
             database: 'fdbt',
         });
     } else {
+        // TODO find replacement here
         client = createConnection({
             host: 'mysql',
             user: 'fdbt_site',
@@ -147,20 +114,19 @@ export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
-const executeQuery = async (query: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const executeQuery = async (query: string, values: any[]) => {
     const connection = await getAuroraDBClient();
-    const [rows] = await connection.execute(query, []);
+    const [rows] = await connection.execute(query, values);
     connection.end();
     return rows;
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
     try {
-        const tableName = process.env.NODE_ENV === 'development' ? 'tndsService' : SERVICES_TABLE_NAME;
+        const queryInput = 'SELECT * FROM `tndsService` WHERE `nocCode` = ?';
 
-        const queryInput = `Select * from ${tableName} where nocCode = "IWCB"`;
-
-        const queryResult = await executeQuery(queryInput);
+        const queryResult = await executeQuery(queryInput, [nocCode]);
 
         const resultRow = JSON.parse(JSON.stringify(queryResult));
 
@@ -177,7 +143,6 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'naptanStop' : NAPTAN_TABLE_NAME;
     const count = atcoCodes.length;
     const batchSize = 100;
     const batchArray = [];
@@ -187,26 +152,23 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
     }
 
     const batchPromises = batchArray.map(batch => {
-        const batchQuery = `Select * from ${tableName} where atcoCode = ${batch}`;
-
-        return executeQuery(batchQuery);
+        const batchQuery = `Select * from naptanStop where atcoCode in (?)`;
+        return executeQuery(batchQuery, [batch]);
     });
 
     try {
         const results = await Promise.all(batchPromises);
-        const filteredResults = results.filter(item => item.Responses?.[tableName]);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const naptanItems: DynamoNaptanInfo[] = flatMap(filteredResults, (item: any) => item.Responses[tableName]);
+        const parsedResults = JSON.parse(JSON.stringify(results));
 
-        return naptanItems.map(item => ({
-            stopName: item.CommonName,
-            naptanCode: item.NaptanCode,
-            atcoCode: item.ATCOCode,
-            localityCode: item.NptgLocalityCode,
-            localityName: item.LocalityName,
-            parentLocalityName: item.ParentLocalityName !== null ? item.ParentLocalityName : '',
-            indicator: item.Indicator,
-            street: item.Street,
+        return parsedResults[0].map((item: NaptanInfo) => ({
+            stopName: item.commonName,
+            naptanCode: item.naptanCode,
+            atcoCode: item.atcoCode,
+            localityCode: item.nptgLocalityCode,
+            localityName: item.localityName,
+            parentLocalityName: item.parentLocalityName !== null ? item.parentLocalityName : '',
+            indicator: item.indicator,
+            street: item.street,
         }));
     } catch (error) {
         console.error(`Error performing batch get for naptan info for stop list: ${atcoCodes}, error: ${error}`);
@@ -214,26 +176,15 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
     }
 };
 
-export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<DynamoNaptanIndex[]> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'dev-Stops' : NAPTAN_TABLE_NAME;
-    const indexName = process.env.NODE_ENV === 'development' ? 'NaptanIndex' : NAPTAN_TABLE_GSI;
+export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
+    const listOfNaptanCodes = naptanCodes.toString();
+    const atcoCodesByNaptanCodeQuery = `Select * from naptanStop where naptanCode in ?`;
 
-    const queryPromises = naptanCodes.map(async naptanCode => {
-        const queryInput: AWS.DynamoDB.DocumentClient.QueryInput = {
-            TableName: tableName,
-            IndexName: indexName,
-            KeyConditionExpression: 'NaptanCode = :v_code',
-            ExpressionAttributeValues: {
-                ':v_code': naptanCode,
-            },
-        };
-        return dynamoDbClient.query(queryInput).promise();
-    });
     try {
-        const results = await Promise.all(queryPromises);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const atcoItems: RawDynamoNaptanIndex[] = flatMap(results, (item: any) => item.Items);
-        return atcoItems.map(item => ({ atcoCode: item.Partition, naptanCode: item.NaptanCode }));
+        const results = await executeQuery(atcoCodesByNaptanCodeQuery, [listOfNaptanCodes]);
+
+        const queryResults = JSON.parse(JSON.stringify(results));
+        return queryResults.map((item: any) => ({ atcoCode: item.atcoCode, naptanCode: item.NaptanCode }));
     } catch (error) {
         console.error(
             `Error performing queries for ATCO Codes using Naptan Codes: ${naptanCodes}. Error: ${error.stack}`,
@@ -243,23 +194,20 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 };
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
-    const tableName = process.env.NODE_ENV === 'development' ? 'tndsOperatorService' : TNDS_TABLE_NAME;
-    const nocCodeDummy='IWCB'; //remove
-    const lineNameDummy = '200';
-
-    const serviceQuery = `select os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternSectionId, pl.order, nsStart.commonName as fromCommonName, nsStop.commonName as toCommonName 
-                          from tndsOperatorService as os   
-                          inner join tndsJourneyPatternSection as ps on ps.operatorServiceId = os.id
-                          inner join tndsJourneyPatternLink as pl on pl.journeyPatternSectionId = ps.id
-                          LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
-                          LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
-                          where os.nocCode = "${nocCodeDummy}" and os.lineName = "${lineNameDummy}"
-                          order by pl.order and pl.journeyPatternSectionId ASC`;
+    const serviceQuery =
+        'SELECT `os.operatorShortName`, `os.serviceDescription`, `os.lineName`, `pl.fromAtcoCode`, `pl.toAtcoCode`, `pl.journeyPatternSectionId`, `pl.order`, `nsStart.commonName` AS `fromCommonName`, `nsStop.commonName` as `toCommonName` ' +
+        'FROM `tndsOperatorService` AS `os`' +
+        'INNER JOIN tndsJourneyPatternSection AS ps ON ps.operatorServiceId = os.id' +
+        'INNER JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternSectionId = ps.id' +
+        'LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode' +
+        'LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode' +
+        'WHERE os.nocCode = ? AND os.lineName = ?' +
+        'ORDER BY pl.order, pl.journeyPatternSectionId ASC';
 
     let queryItems: QueryData[];
 
     try {
-        const queryResult = await executeQuery(serviceQuery);
+        const queryResult = await executeQuery(serviceQuery, [nocCode, lineName]);
         queryItems = JSON.parse(JSON.stringify(queryResult));
     } catch (err) {
         throw new Error(`Could not get journey patterns from Dynamo DB: ${err.name}, ${err.message}`);
@@ -268,23 +216,17 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
     const service = queryItems?.[0];
     const rawPatternService: RawJourneyPattern[] = [];
 
-    // allows to get the unique journey's fpr the operator
-    const uniqueJourneyPatterns = queryItems.map(item => item.journeyPatternSectionId).filter(
-        (value, index, self) => self.indexOf(value) === index,
-    );
+    // allows to get the unique journey's for the operator e.g. [1,2,3]
+    const uniqueJourneyPatterns = queryItems
+        .map(item => item.journeyPatternSectionId)
+        .filter((value, index, self) => self.indexOf(value) === index);
 
     uniqueJourneyPatterns.forEach(journey => {
         const filteredJourney = queryItems.filter(item => {
             return item.journeyPatternSectionId === journey;
         });
 
-        // have to get the first record to pull the key information
-        const filteredService = filteredJourney[0];
-
         const journeyPatternSection: RawJourneyPatternSection = {
-            Id: filteredService.fromAtcoCode,
-            EndPoint: filteredService.toAtcoCode,
-            StartPoint: filteredService.fromAtcoCode,
             OrderedStopPoints: filteredJourney.map((data: QueryData) => {
                 return {
                     StopPointRef: data.toAtcoCode,
@@ -293,10 +235,10 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
             }),
         };
 
-        const patternArray: RawJourneyPatternSection[] = [];
-        patternArray.push(journeyPatternSection);
+        const rawPatternSection: RawJourneyPatternSection[] = [];
+        rawPatternSection.push(journeyPatternSection);
 
-        rawPatternService.push({ JourneyPatternSections: patternArray });
+        rawPatternService.push({ JourneyPatternSections: rawPatternSection });
     });
 
     if (!service || rawPatternService.length === 0) {

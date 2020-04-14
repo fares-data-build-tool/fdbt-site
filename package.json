@@ -58,7 +58,6 @@
         "xml2js": "^0.4.23"
     },
     "devDependencies": {
-        "@types/mysql2": "github:types/mysql2",
         "@types/array.prototype.flatmap": "^1.2.1",
         "@types/aws-lambda": "^8.10.46",
         "@types/aws-lambda-mock-context": "^3.2.0",
@@ -73,6 +72,7 @@
         "@types/mock-req-res": "^1.1.0",
         "@types/moxios": "^0.4.9",
         "@types/multer": "^1.4.2",
+        "@types/mysql2": "git+https://git@github.com/types/mysql2.git",
         "@types/next": "^9.0.0",
         "@types/node": "^13.9.0",
         "@types/nookies": "^2.0.3",
