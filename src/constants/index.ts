@@ -36,6 +36,8 @@ export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 
 export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
 
+export const MATCHING_COOKIE = 'fdbt-matching';
+
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
     'fdbt-fareType',
@@ -53,6 +55,8 @@ export const ALL_COOKIES: string[] = [
     'fdbt-period-expiry',
     'fdbt-period-single-services',
     'fdbt-input-method',
+    'fdbt-matching',
+    'fdbt-number-stages',
 ];
 
 export const ALLOWED_CSV_FILE_TYPES = [

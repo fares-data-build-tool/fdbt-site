@@ -36,7 +36,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                         id="periodtype-geo-zone"
                                         name="periodType"
                                         type="radio"
-                                        value="geozone"
+                                        value="periodGeoZone"
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="periodtype-geo-zone">
                                         A ticket within a geographical zone
@@ -48,7 +48,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                         id="periodtype-single-set-service"
                                         name="periodType"
                                         type="radio"
-                                        value="singleOperator"
+                                        value="periodMultipleServices"
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label"
@@ -63,7 +63,7 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
                                         id="periodtype-network"
                                         name="periodType"
                                         type="radio"
-                                        value="network"
+                                        value="periodMultipleOperators"
                                         disabled
                                         aria-disabled="true"
                                     />
