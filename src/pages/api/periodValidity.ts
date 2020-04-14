@@ -10,7 +10,7 @@ import {
     PERIOD_SINGLE_OPERATOR_SERVICES,
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
-import { batchGetStopsByAtcoCode, Stop } from '../../data/dynamodb';
+import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch } from './service/validator';
 

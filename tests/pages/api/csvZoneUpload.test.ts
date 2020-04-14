@@ -3,7 +3,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
-import * as dynamo from '../../../src/data/dynamodb';
+import * as dynamo from '../../../src/data/auroradb';
 
 const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
 

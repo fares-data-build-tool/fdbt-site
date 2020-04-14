@@ -12,7 +12,7 @@ import {
     JourneyPattern,
     RawJourneyPattern,
     RawService,
-} from '../data/dynamodb';
+} from '../data/auroradb';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';

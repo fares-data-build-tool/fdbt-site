@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { shallow } from 'enzyme';
-import * as dynamodb from '../../src/data/dynamodb';
+import * as dynamodb from '../../src/data/auroradb';
 import * as s3 from '../../src/data/s3';
 import {
     mockRawService,
@@ -13,7 +13,7 @@ import {
 } from '../testData/mockData';
 import Matching, { getServerSideProps } from '../../src/pages/matching';
 
-jest.mock('../../src/data/dynamodb.ts');
+jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
 
 describe('Matching Page', () => {

@@ -205,7 +205,7 @@ exports[`pages operator should render correctly 1`] = `
                 id="operator-name9"
                 name="operator"
                 type="radio"
-                value="{\\"operatorName\\":\\"Warrington's Own Buses\\",\\"nocCode\\":\\"WBTR\\"}"
+                value="{\\"operatorName\\":\\"Warrington's Own Buses\\",\\"nocCode\\":\\"IWCB\\"}"
               />
               <label
                 className="govuk-label govuk-radios__label"

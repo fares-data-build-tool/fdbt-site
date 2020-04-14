@@ -9,7 +9,7 @@ import {
     Stop,
     RawService,
     RawJourneyPatternSection,
-} from '../data/dynamodb';
+} from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages, FareStage } from '../data/s3';
 import { formatStopName } from '../utils';

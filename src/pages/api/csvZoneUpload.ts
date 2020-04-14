@@ -4,7 +4,7 @@ import csvParse from 'csv-parse/lib/sync';
 import fs from 'fs';
 import { getDomain, getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
-import { getAtcoCodesByNaptanCodes } from '../../data/dynamodb';
+import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { CSV_ZONE_UPLOAD_COOKIE, ALLOWED_CSV_FILE_TYPES } from '../../constants';
 
 const MAX_FILE_SIZE = 5242880;

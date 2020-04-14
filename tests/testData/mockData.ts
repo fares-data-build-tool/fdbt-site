@@ -3,7 +3,7 @@ import React from 'react';
 import { NextPageContext } from 'next';
 import mockReqRes, { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { RawService, Service } from '../../src/data/dynamodb';
+import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
     OPERATOR_COOKIE,
@@ -499,7 +499,6 @@ export const userFareStages: UserFareStages = {
                     fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
                 },
             ],
-
         },
         {
             stageName: 'Cambridge Street (York)',
