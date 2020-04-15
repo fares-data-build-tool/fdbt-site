@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { Uuid } from '../../types/index';
 import { FARE_STAGES_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
@@ -89,7 +88,7 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
     return mappedFareTriangle;
 };
 
-export const putDataInS3 = async (uuid: Uuid, text: string): Promise<void> => {
+export const putDataInS3 = async (uuid: string, text: string): Promise<void> => {
     await putStringInS3(USER_DATA_BUCKET_NAME, `${uuid}.json`, text, 'application/json; charset=utf-8');
 };
 

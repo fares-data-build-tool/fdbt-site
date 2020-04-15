@@ -4,7 +4,6 @@ import { BasicService } from '../matching';
 import { Stop } from '../../data/dynamodb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { Uuid } from '../../types';
 import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
 
 interface MatchingData {
@@ -29,7 +28,7 @@ interface MatchingFareZones {
     };
 }
 
-export const putDataInS3 = async (data: MatchingData, uuid: Uuid): Promise<void> => {
+export const putDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
         `${uuid}_${data.lineName}_${data.nocCode}.json`,
