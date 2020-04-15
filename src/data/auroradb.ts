@@ -1,5 +1,6 @@
+import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
-import { createConnection } from 'mysql2/promise';
+import { createPool } from 'mysql2/promise';
 
 export interface ServiceType {
     lineName: string;
@@ -91,19 +92,25 @@ const getAuroraDBClient = () => {
     let client = null;
 
     if (process.env.NODE_ENV === 'development') {
-        client = createConnection({
+        client = createPool({
             host: 'mysql',
             user: 'fdbt_site',
             password: 'password',
             database: 'fdbt',
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0,
         });
     } else {
-        // TODO find replacement here
-        client = createConnection({
-            host: 'mysql',
-            user: 'fdbt_site',
-            password: 'password',
+        const ssm = new AWS.SSM();
+        client = createPool({
+            host: process.env.RDS_HOST,
+            user: ssm.getParameter({ Name: 'fdbt-rds-site-username', WithDecryption: true }).toString(),
+            password: ssm.getParameter({ Name: 'fdbt-rds-site-password', WithDecryption: true }).toString(),
             database: 'fdbt',
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0,
         });
     }
 
@@ -114,11 +121,11 @@ export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
+const connection = getAuroraDBClient();
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const executeQuery = async (query: string, values: any[]) => {
-    const connection = await getAuroraDBClient();
     const [rows] = await connection.execute(query, values);
-    connection.end();
     return rows;
 };
 
@@ -138,21 +145,16 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
             })) || []
         );
     } catch (err) {
-        throw new Error(`Could not retrieve services from DynamoDB: ${err.name}, ${err.message}`);
+        throw new Error(`Could not retrieve services from AuroraDB: ${err.name}, ${err.message}`);
     }
 };
 
 export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
-    let orQuery = '';
-
     try {
-        atcoCodes.forEach((code, index) => {
-            orQuery += `atcoCode = ${code} ${index < atcoCodes.length - 1 ? 'OR ' : ''}`;
-        });
+        const substitution = atcoCodes.map(() => '?').join(',');
+        const batchQuery = `SELECT * FROM naptanStop WHERE atcoCode IN (${substitution})`;
 
-        const batchQuery = `Select * from naptanStop where ${orQuery}`;
-
-        const results = await executeQuery(batchQuery, []);
+        const results = await executeQuery(batchQuery, atcoCodes);
 
         const parsedResults = JSON.parse(JSON.stringify(results));
 
@@ -174,7 +176,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 
 export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
     const listOfNaptanCodes = naptanCodes.toString();
-    const atcoCodesByNaptanCodeQuery = `Select * from naptanStop where naptanCode in ?`;
+    const atcoCodesByNaptanCodeQuery = `SELECT * FROM naptanStop WHERE naptanCode IN ?`;
 
     try {
         const results = await executeQuery(atcoCodesByNaptanCodeQuery, [listOfNaptanCodes]);
@@ -191,14 +193,14 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
     const serviceQuery =
-        'SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternSectionId, pl.order, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName ' +
+        'SELECT os.operatorShortName, os.serviceDescription, os.lineName, pl.fromAtcoCode, pl.toAtcoCode, pl.journeyPatternId, pl.orderInSequence, nsStart.commonName AS fromCommonName, nsStop.commonName as toCommonName ' +
         ' FROM tndsOperatorService AS os' +
-        ' INNER JOIN tndsJourneyPatternSection AS ps ON ps.operatorServiceId = os.id' +
-        ' INNER JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternSectionId = ps.id' +
+        ' INNER JOIN tndsJourneyPattern AS ps ON ps.operatorServiceId = os.id' +
+        ' INNER JOIN tndsJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id' +
         ' LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode' +
         ' LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode' +
         ' WHERE os.nocCode = ? AND os.lineName = ?' +
-        ' ORDER BY pl.order, pl.journeyPatternSectionId ASC';
+        ' ORDER BY pl.orderInSequence, pl.journeyPatternId ASC';
 
     let queryItems: QueryData[];
 
@@ -206,7 +208,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         const queryResult = await executeQuery(serviceQuery, [nocCode, lineName]);
         queryItems = JSON.parse(JSON.stringify(queryResult));
     } catch (err) {
-        throw new Error(`Could not get journey patterns from Dynamo DB: ${err.name}, ${err.message}`);
+        throw new Error(`Could not get journey patterns from Aurora DB: ${err.name}, ${err.message}`);
     }
 
     const service = queryItems?.[0];
