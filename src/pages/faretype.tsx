@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 import { FARETYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide } from '../utils';
+import { deleteCookieOnServerSide, buildTitle } from '../utils/index';
 
 const title = 'FareType - Fares data build tool';
 const description = 'Fare Type selection page of the Fares data build tool';
@@ -16,10 +16,10 @@ type FareTypeProps = {
 
 const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
     return (
-        <Layout title={title} description={description}>
+        <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/fareType" method="post">
-                    <ErrorSummary errorHref="#radio-buttons" errors={errors} />
+                    <ErrorSummary errorHref="#fareType-page-heading" errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="fareType-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -32,7 +32,7 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                     </span>
                                 )}
                             </legend>
-                            <div className="govuk-radios" id="radio-buttons">
+                            <div className="govuk-radios">
                                 <div className="govuk-radios__item">
                                     <input
                                         className={`govuk-radios__input ${

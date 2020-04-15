@@ -15,7 +15,7 @@ exports[`pages inputMethod should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#radio-buttons"
+        errorHref="#input-method-heading"
         errors={Array []}
       />
       <div

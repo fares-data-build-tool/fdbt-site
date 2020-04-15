@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { ErrorInfo } from '../types';
 import { NUMBER_OF_STAGES_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { deleteCookieOnServerSide, buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 
 const title = 'How Many Fare Stages - Fares data build tool';
@@ -16,10 +16,10 @@ type HowManyStagesProps = {
 
 const HowManyStages = ({ errors = [] }: HowManyStagesProps): ReactElement => {
     return (
-        <Layout title={title} description={description}>
+        <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/howManyStages" method="post">
-                    <ErrorSummary errorHref="#radio-buttons" errors={errors} />
+                    <ErrorSummary errorHref="#selection-hint" errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">

@@ -15,7 +15,7 @@ exports[`pages operator should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#radio-buttons"
+        errorHref="#page-heading"
         errors={Array []}
       />
       <div
@@ -37,7 +37,6 @@ exports[`pages operator should render correctly 1`] = `
           </legend>
           <div
             className="govuk-radios"
-            id="radio-buttons"
           >
             <div
               className="govuk-radios__item"

@@ -6,6 +6,7 @@ import { parseCookies } from 'nookies';
 import { ALL_COOKIES, OPERATOR_COOKIE } from '../constants/index';
 
 import { Stop } from '../data/dynamodb';
+import { ErrorInfo } from '../types';
 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
@@ -82,3 +83,11 @@ export const formatStopName = (stop: Stop): string =>
     `${stop.localityName ? `${stop.localityName}, ` : ''}${stop.indicator ?? ''} ${stop.stopName ?? ''}${
         stop.street ? ` (on ${stop.street})` : ''
     }`;
+
+export const buildTitle = (errors: ErrorInfo[], title: string): string => {
+    if (errors.length > 0) {
+        return `Error: ${title}`;
+    }
+
+    return title;
+};

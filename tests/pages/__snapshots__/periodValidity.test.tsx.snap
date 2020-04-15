@@ -14,6 +14,10 @@ exports[`pages periodValidity should render correctly 1`] = `
       action="/api/periodValidity"
       method="post"
     >
+      <ErrorSummary
+        errorHref="#periodValidity-page-heading"
+        errors={Array []}
+      />
       <fieldset
         aria-describedby="periodValidity-page-heading"
         className="govuk-fieldset"
@@ -35,18 +39,8 @@ exports[`pages periodValidity should render correctly 1`] = `
           We need to know the time that this product would be valid until
         </span>
         <div
-          className="govuk-form-group"
+          className="govuk-form-group "
         >
-          <span
-            className="govuk-error-message"
-            id="radio-error"
-          >
-            <span
-              className="govuk-visually-hidden"
-            >
-              Please select an option
-            </span>
-          </span>
           <div
             className="govuk-radios"
           >
@@ -54,7 +48,7 @@ exports[`pages periodValidity should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="period-end-calendar"
                 name="periodValid"
                 type="radio"
@@ -77,7 +71,7 @@ exports[`pages periodValidity should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="period-twenty-four-hours"
                 name="periodValid"
                 type="radio"

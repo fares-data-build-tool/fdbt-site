@@ -6,6 +6,7 @@ import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
+import { buildTitle } from '../utils/index';
 
 const title = 'Operator - Fares data build tool';
 const description = 'Operator selection page of the Fares data build tool';
@@ -34,10 +35,10 @@ const hardCodedOperators: Operator[] = [
 
 const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
     return (
-        <Layout title={title} description={description}>
+        <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/operator" method="post">
-                    <ErrorSummary errorHref="#radio-buttons" errors={errors} />
+                    <ErrorSummary errorHref="#page-heading" errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -50,7 +51,7 @@ const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
                                     </span>
                                 )}
                             </legend>
-                            <div className="govuk-radios" id="radio-buttons">
+                            <div className="govuk-radios">
                                 {hardCodedOperators.map(
                                     (operator, index): ReactElement => (
                                         <div className="govuk-radios__item" key={operator.operatorName}>

@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { ErrorInfo } from '../types';
 import { INPUT_METHOD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { deleteCookieOnServerSide, buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 
 const title = 'Input Method - Fares data build tool';
@@ -16,10 +16,10 @@ type InputMethodProps = {
 
 const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
     return (
-        <Layout title={title} description={description}>
+        <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/inputMethod" method="post">
-                    <ErrorSummary errorHref="#radio-buttons" errors={errors} />
+                    <ErrorSummary errorHref="#input-method-heading" errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">

@@ -15,7 +15,7 @@ exports[`pages howManyStages should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#radio-buttons"
+        errorHref="#selection-hint"
         errors={Array []}
       />
       <div
