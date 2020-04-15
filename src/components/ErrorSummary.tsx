@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../types';
 
 export type ErrorSummaryInfo = {
@@ -6,8 +6,7 @@ export type ErrorSummaryInfo = {
     errorHref?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ErrorSummary: any = ({ errors, errorHref }: ErrorSummaryInfo) => {
+const ErrorSummary = ({ errors, errorHref }: ErrorSummaryInfo): null | ReactElement => {
     if (!errors || errors.length === 0) {
         return null;
     }
