@@ -3,58 +3,15 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, PERIOD_PRODUCT, CSV_ZONE_UPLOAD_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES } from '../constants';
-import { PeriodProductType } from '../interfaces';
 
-const title = 'Period Product - Fares data build tool';
-const description = 'Period Product page of the Fares data build tool';
+const title = 'Multiple Product - Fares data build tool';
+const description = 'Multiple Product page of the Fares data build tool';
 
-type PeriodProduct = {
-    product: PeriodProductType;
-    operator: string;
-    zoneName?: string;
-};
-
-const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactElement => {
-    const productName = product && product.productName;
-    const productPrice = product && product.productPrice;
-    const productNameError = product && product.productNameError;
-    const productPriceError = product && product.productPriceError;
-
-    let priceErrorMessage = '';
-    let nameErrorMessage = '';
-    if (product.productPriceError !== '') {
-        switch (productPriceError) {
-            case 'empty':
-                priceErrorMessage = 'Product Price cannot be empty.';
-                break;
-            case 'notCurrency':
-                priceErrorMessage = 'Product Price must be a valid currency.';
-                break;
-            case 'zero':
-                priceErrorMessage = 'Product Price cannot be zero.';
-                break;
-            default:
-                priceErrorMessage = 'Invalid input.';
-        }
-
-        if (product.productNameError !== '') {
-            switch (productNameError) {
-                case 'empty':
-                    nameErrorMessage = 'Product Name cannot be empty.';
-                    break;
-                case 'short':
-                    nameErrorMessage = 'Product Name cannot be 1 character.';
-                    break;
-                default:
-                    nameErrorMessage = 'Invalid input.';
-            }
-        }
-    }
-
+const MultipleProduct = (): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/periodProduct" method="post">
+                <form action="/api/multipleProduct" method="post">
                     <div className="govuk-form-group">
                         <fieldset className="govuk-fieldset" aria-describedby="period-product-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -174,4 +131,4 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     };
 };
 
-export default PeriodProduct;
+export default MultipleProduct;
