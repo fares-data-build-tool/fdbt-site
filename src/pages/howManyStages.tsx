@@ -57,7 +57,9 @@ const HowManyStages = ({ errors = [] }: HowManyStagesProps): ReactElement => {
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="moreThan20FareStages"
                                         name="howManyStages"
                                         type="radio"

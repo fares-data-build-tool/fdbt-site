@@ -49,7 +49,9 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="fareType-period"
                                         name="fareType"
                                         type="radio"
@@ -61,7 +63,9 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="fareType-return"
                                         name="fareType"
                                         type="radio"

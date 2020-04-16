@@ -48,6 +48,7 @@ export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): st
 };
 
 export const redirectTo = (res: NextApiResponse | ServerResponse, location: string): void => {
+    console.log(location);
     res.writeHead(302, {
         Location: location,
     });

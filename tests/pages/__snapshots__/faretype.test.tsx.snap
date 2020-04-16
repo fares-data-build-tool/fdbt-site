@@ -59,7 +59,7 @@ exports[`pages fareType should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="fareType-period"
                 name="fareType"
                 type="radio"
@@ -77,7 +77,7 @@ exports[`pages fareType should render correctly 1`] = `
             >
               <input
                 aria-disabled="true"
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 disabled={true}
                 id="fareType-return"
                 name="fareType"

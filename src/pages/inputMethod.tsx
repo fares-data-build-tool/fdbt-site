@@ -49,7 +49,9 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="manual-entry"
                                         name="inputMethod"
                                         type="radio"
@@ -61,7 +63,9 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                                 </div>
                                 <div className="govuk-radios__item">
                                     <input
-                                        className="govuk-radios__input"
+                                        className={`govuk-radios__input ${
+                                            errors.length > 0 ? 'govuk-input--error' : ''
+                                        } `}
                                         id="interactive-map"
                                         name="inputMethod"
                                         type="radio"

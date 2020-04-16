@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';

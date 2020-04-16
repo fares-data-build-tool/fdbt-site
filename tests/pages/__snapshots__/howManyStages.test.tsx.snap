@@ -71,7 +71,7 @@ exports[`pages howManyStages should render correctly 1`] = `
               className="govuk-radios__item"
             >
               <input
-                className="govuk-radios__input"
+                className="govuk-radios__input  "
                 id="moreThan20FareStages"
                 name="howManyStages"
                 type="radio"

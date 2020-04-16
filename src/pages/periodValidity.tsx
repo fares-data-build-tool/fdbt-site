@@ -26,14 +26,14 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
                                 When does the product expire?
                             </h1>
                         </legend>
+                        <span className="govuk-hint" id="heading-period-validity-hint">
+                            We need to know the time that this product would be valid until
+                        </span>
                         {errors.length > 0 && (
                             <span id="operator-error" className="govuk-error-message error-message-padding">
                                 <span>{errors[0].errorMessage}</span>
                             </span>
                         )}
-                        <span className="govuk-hint" id="heading-period-validity-hint">
-                            We need to know the time that this product would be valid until
-                        </span>
                         <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                             <div className="govuk-radios">
                                 <div className="govuk-radios__item">
