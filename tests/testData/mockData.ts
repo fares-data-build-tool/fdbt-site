@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { NextPageContext } from 'next';
-import mockReqRes, { mockRequest } from 'mock-req-res';
+import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/dynamodb';
 import { UserFareStages } from '../../src/data/s3';
@@ -24,7 +24,7 @@ export const getMockRequestAndResponse = (
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     requestHeaders: any = {},
-): { req: mockReqRes.RequestOutput; res: any } => {
+): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
     res.end = mockEndFn;
