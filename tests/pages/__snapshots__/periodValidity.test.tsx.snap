@@ -18,29 +18,29 @@ exports[`pages periodValidity should render correctly 1`] = `
         errorHref="#periodValidity-page-heading"
         errors={Array []}
       />
-      <fieldset
-        aria-describedby="periodValidity-page-heading"
-        className="govuk-fieldset"
+      <div
+        className="govuk-form-group "
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+        <fieldset
+          aria-describedby="periodValidity-page-heading"
+          className="govuk-fieldset"
         >
-          <h1
-            className="govuk-fieldset__heading"
-            id="periodValidity-page-heading"
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
           >
-            When does the product expire?
-          </h1>
-        </legend>
-        <span
-          className="govuk-hint"
-          id="heading-period-validity-hint"
-        >
-          We need to know the time that this product would be valid until
-        </span>
-        <div
-          className="govuk-form-group "
-        >
+            <h1
+              className="govuk-fieldset__heading"
+              id="periodValidity-page-heading"
+            >
+              When does the product expire?
+            </h1>
+          </legend>
+          <span
+            className="govuk-hint"
+            id="heading-period-validity-hint"
+          >
+            We need to know the time that this product would be valid until
+          </span>
           <div
             className="govuk-radios"
           >
@@ -91,8 +91,8 @@ exports[`pages periodValidity should render correctly 1`] = `
               </span>
             </div>
           </div>
-        </div>
-      </fieldset>
+        </fieldset>
+      </div>
       <input
         className="govuk-button govuk-button--start"
         id="continue-button"

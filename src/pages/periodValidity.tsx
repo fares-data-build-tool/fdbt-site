@@ -20,21 +20,21 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/periodValidity" method="post">
                     <ErrorSummary errorHref="#periodValidity-page-heading" errors={errors} />
-                    <fieldset className="govuk-fieldset" aria-describedby="periodValidity-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading" id="periodValidity-page-heading">
-                                When does the product expire?
-                            </h1>
-                        </legend>
-                        <span className="govuk-hint" id="heading-period-validity-hint">
-                            We need to know the time that this product would be valid until
-                        </span>
-                        {errors.length > 0 && (
-                            <span id="operator-error" className="govuk-error-message error-message-padding">
-                                <span>{errors[0].errorMessage}</span>
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                        <fieldset className="govuk-fieldset" aria-describedby="periodValidity-page-heading">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                                <h1 className="govuk-fieldset__heading" id="periodValidity-page-heading">
+                                    When does the product expire?
+                                </h1>
+                            </legend>
+                            <span className="govuk-hint" id="heading-period-validity-hint">
+                                We need to know the time that this product would be valid until
                             </span>
-                        )}
-                        <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                            {errors.length > 0 && (
+                                <span id="operator-error" className="govuk-error-message error-message-padding">
+                                    <span>{errors[0].errorMessage}</span>
+                                </span>
+                            )}
                             <div className="govuk-radios">
                                 <div className="govuk-radios__item">
                                     <input
@@ -79,8 +79,8 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
                                     </span>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
+                        </fieldset>
+                    </div>
                     <input
                         type="submit"
                         value="Continue"
