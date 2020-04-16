@@ -19,7 +19,7 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/periodValidity" method="post">
-                    <ErrorSummary errorHref="#periodValidity-page-heading" errors={errors} />
+                    <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="periodValidity-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -101,8 +101,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const parsedPeriodValidityCookie = JSON.parse(periodValidityCookie);
 
         if (parsedPeriodValidityCookie.errorMessage) {
-            const { errorMessage } = parsedPeriodValidityCookie;
-            return { props: { errors: [{ errorMessage }] } };
+            const errors: ErrorInfo[] = [
+                { errorMessage: parsedPeriodValidityCookie.errorMessage, errorHref: '#periodValidity-page-heading' },
+            ];
+            return { props: { errors } };
         }
     }
 

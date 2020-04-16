@@ -1,10 +1,11 @@
-/* eslint-disable no-nested-ternary */
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { NUMBER_OF_PRODUCTS_COOKIE, CSV_ZONE_UPLOAD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { deleteCookieOnServerSide, buildTitle } from '../utils';
+import ErrorSummary from '../components/ErrorSummary';
+import { ErrorInfo } from '../types';
 
 const title = 'How Many Products - Fares data build tool';
 const description = 'How many products page of the Fares data build tool';
@@ -15,51 +16,41 @@ export type InputCheck = {
 };
 
 type HowManyProductProps = {
-    previousPage: string;
+    pageHeadingMessage: string;
     inputCheck: InputCheck;
+    errors: ErrorInfo[];
 };
 
-const HowManyProducts = ({ previousPage, inputCheck }: HowManyProductProps): ReactElement => (
-    <Layout title={title} description={description}>
+const HowManyProducts = ({ pageHeadingMessage, inputCheck, errors }: HowManyProductProps): ReactElement => (
+    <Layout title={buildTitle(errors, title)} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/howManyProducts" method="post">
-                <div className="govuk-form-group">
+                <ErrorSummary errors={errors} />
+                <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error input-error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
-                                How many products do you have for{' '}
-                                {previousPage === 'csvZoneUpload'
-                                    ? 'this zone'
-                                    : previousPage === 'singleOperator'
-                                    ? 'your selected services'
-                                    : 'this zone or selected services'}
-                                ?
+                                {pageHeadingMessage}
                             </h1>
                         </legend>
-                        <div
-                            className={`govuk-form-group${
-                                inputCheck?.error ? ' govuk-form-group--error input-error' : ''
+                        <label className="govuk-label" htmlFor="numberOfProducts">
+                            Number of fare products (up to a maximum of 10)
+                        </label>
+                        {inputCheck?.error ? (
+                            <span id="numberOfProducts-error" className="govuk-error-message">
+                                <span className="govuk-visually-hidden">Error:</span> {inputCheck.error}
+                            </span>
+                        ) : null}
+                        <input
+                            className={`govuk-input govuk-input--width-2 ${
+                                inputCheck?.error ? 'govuk-input--error' : ''
                             }`}
-                        >
-                            <label className="govuk-label" htmlFor="numberOfProducts">
-                                Number of fare products (up to a maximum of 10)
-                            </label>
-                            {inputCheck?.error ? (
-                                <span id="numberOfProducts-error" className="govuk-error-message">
-                                    <span className="govuk-visually-hidden">Error:</span> {inputCheck.error}
-                                </span>
-                            ) : null}
-                            <input
-                                className={`govuk-input govuk-input--width-2 ${
-                                    inputCheck?.error ? 'govuk-input--error' : ''
-                                }`}
-                                id="numberOfProducts"
-                                name="numberOfProductsInput"
-                                type="text"
-                                defaultValue={!inputCheck?.error ? inputCheck?.numberOfProductsInput : ''}
-                                aria-describedby={inputCheck?.error ? `numberOfProducts-error` : ''}
-                            />
-                        </div>
+                            id="numberOfProducts"
+                            name="numberOfProductsInput"
+                            type="text"
+                            defaultValue={!inputCheck?.error ? inputCheck?.numberOfProductsInput : ''}
+                            aria-describedby={inputCheck?.error ? `numberOfProducts-error` : ''}
+                        />
                     </fieldset>
                 </div>
                 <input
@@ -73,15 +64,15 @@ const HowManyProducts = ({ previousPage, inputCheck }: HowManyProductProps): Rea
     </Layout>
 );
 
-export const getPreviousPage = (cookies: { [key: string]: string }): string => {
-    let previousPage = 'unknown';
+export const getDynamicPageHeadingMessage = (cookies: { [key: string]: string }): string => {
+    let pageHeadingMessage = 'How many products do you have for this zone or select services?';
     if (cookies[CSV_ZONE_UPLOAD_COOKIE]) {
-        previousPage = 'csvZoneUpload';
+        pageHeadingMessage = 'How many products do you have for this zone?';
     }
     if (!cookies[CSV_ZONE_UPLOAD_COOKIE]) {
-        previousPage = 'singleOperator';
+        pageHeadingMessage = 'How many products do you have for your select services?';
     }
-    return previousPage;
+    return pageHeadingMessage;
 };
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
@@ -89,13 +80,15 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     console.log(cookies);
     deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
 
-    const previousPage = getPreviousPage(cookies);
+    const pageHeadingMessage = getDynamicPageHeadingMessage(cookies);
     let inputCheck: InputCheck = {};
+    let errors: ErrorInfo[] = [];
     if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
         const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
         inputCheck = JSON.parse(numberOfProductsCookie);
+        errors = [{ errorMessage: inputCheck.error ? inputCheck.error : '', errorHref: '#page-heading' }];
     }
-    return { props: { previousPage, inputCheck } };
+    return { props: { pageHeadingMessage, inputCheck, errors } };
 };
 
 export default HowManyProducts;

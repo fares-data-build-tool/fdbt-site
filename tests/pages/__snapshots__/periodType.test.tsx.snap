@@ -15,7 +15,6 @@ exports[`pages periodtype should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#periodtype-page-heading"
         errors={Array []}
       />
       <div

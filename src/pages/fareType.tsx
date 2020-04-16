@@ -14,12 +14,12 @@ type FareTypeProps = {
     errors: ErrorInfo[];
 };
 
-const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
+const FareType = ({ errors }: FareTypeProps): ReactElement => {
     return (
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/fareType" method="post">
-                    <ErrorSummary errorHref="#fareType-page-heading" errors={errors} />
+                    <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="fareType-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -100,9 +100,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
 
         if (parsedFareTypeCookie.errorMessage) {
-            const { errorMessage } = parsedFareTypeCookie;
+            const errors: ErrorInfo[] = [
+                { errorMessage: parsedFareTypeCookie.errorMessage, errorHref: '#fareType-page-heading' },
+            ];
             deleteCookieOnServerSide(ctx, FARETYPE_COOKIE);
-            return { props: { errors: [{ errorMessage }] } };
+            return { props: { errors } };
         }
     }
 

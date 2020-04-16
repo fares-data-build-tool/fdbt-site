@@ -19,7 +19,7 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/inputMethod" method="post">
-                    <ErrorSummary errorHref="#input-method-heading" errors={errors} />
+                    <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -100,9 +100,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const parsedInputMethodCookie = JSON.parse(inputMethodCookie);
 
         if (parsedInputMethodCookie.errorMessage) {
-            const { errorMessage } = parsedInputMethodCookie;
+            const errors: ErrorInfo[] = [
+                { errorMessage: parsedInputMethodCookie.errorMessage, errorHref: '#input-method-heading' },
+            ];
             deleteCookieOnServerSide(ctx, INPUT_METHOD_COOKIE);
-            return { props: { errors: [{ errorMessage }] } };
+            return { props: { errors } };
         }
     }
 

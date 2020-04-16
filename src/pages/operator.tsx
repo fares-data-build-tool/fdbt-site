@@ -37,7 +37,7 @@ const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/operator" method="post">
-                    <ErrorSummary errorHref="#page-heading" errors={errors} />
+                    <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -95,8 +95,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const parsedOperatorCookie = JSON.parse(operatorCookie);
 
         if (parsedOperatorCookie.errorMessage) {
-            const { errorMessage } = parsedOperatorCookie;
-            return { props: { errors: [{ errorMessage }] } };
+            const errors: ErrorInfo[] = [
+                { errorMessage: parsedOperatorCookie.errorMessage, errorHref: '#page-heading' },
+            ];
+            return { props: { errors } };
         }
     }
 

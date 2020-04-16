@@ -15,7 +15,6 @@ exports[`pages operator should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#page-heading"
         errors={Array []}
       />
       <div

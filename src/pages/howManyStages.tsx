@@ -19,7 +19,7 @@ const HowManyStages = ({ errors = [] }: HowManyStagesProps): ReactElement => {
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/howManyStages" method="post">
-                    <ErrorSummary errorHref="#selection-hint" errors={errors} />
+                    <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -99,9 +99,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const parsedNumberOfFareStagesCookie = JSON.parse(numberOfFareStagesCookie);
 
         if (parsedNumberOfFareStagesCookie.errorMessage) {
-            const { errorMessage } = parsedNumberOfFareStagesCookie;
+            const errors: ErrorInfo[] = [
+                { errorMessage: parsedNumberOfFareStagesCookie.errorMessage, errorHref: '#selection-hint' },
+            ];
             deleteCookieOnServerSide(ctx, NUMBER_OF_STAGES_COOKIE);
-            return { props: { errors: [{ errorMessage }] } };
+            return { props: { errors } };
         }
     }
 

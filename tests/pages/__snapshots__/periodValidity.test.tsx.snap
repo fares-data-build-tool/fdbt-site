@@ -15,7 +15,6 @@ exports[`pages periodValidity should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#periodValidity-page-heading"
         errors={Array []}
       />
       <div

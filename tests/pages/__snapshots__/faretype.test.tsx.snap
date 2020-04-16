@@ -15,7 +15,6 @@ exports[`pages fareType should render correctly 1`] = `
       method="post"
     >
       <ErrorSummary
-        errorHref="#fareType-page-heading"
         errors={Array []}
       />
       <div
