@@ -93,7 +93,7 @@ const getAuroraDBClient = () => {
 
     if (process.env.NODE_ENV === 'development') {
         client = createPool({
-            host: 'mysql',
+            host: 'localhost',
             user: 'fdbt_site',
             password: 'password',
             database: 'fdbt',
