@@ -56,9 +56,7 @@ const HowManyProducts = ({ previousPage, inputCheck }: HowManyProductProps): Rea
                                 id="numberOfProducts"
                                 name="numberOfProductsInput"
                                 type="text"
-                                defaultValue={
-                                    inputCheck?.numberOfProductsInput ? inputCheck?.numberOfProductsInput : ''
-                                }
+                                defaultValue={!inputCheck?.error ? inputCheck?.numberOfProductsInput : ''}
                                 aria-describedby={inputCheck?.error ? `numberOfProducts-error` : ''}
                             />
                         </div>
@@ -88,6 +86,7 @@ export const getPreviousPage = (cookies: { [key: string]: string }): string => {
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
+    console.log(cookies);
     deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
 
     const previousPage = getPreviousPage(cookies);
