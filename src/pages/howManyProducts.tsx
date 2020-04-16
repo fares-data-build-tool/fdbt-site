@@ -10,8 +10,8 @@ const title = 'How Many Products - Fares data build tool';
 const description = 'How many products page of the Fares data build tool';
 
 export type InputCheck = {
-    error: string;
-    numberOfProductsInput: string;
+    error?: string;
+    numberOfProductsInput?: string;
 };
 
 type HowManyProductProps = {
@@ -73,7 +73,7 @@ const HowManyProducts = ({ previousPage, inputCheck }: HowManyProductProps): Rea
     </Layout>
 );
 
-const getPreviousPage = (cookies: { [key: string]: string }): string => {
+export const getPreviousPage = (cookies: { [key: string]: string }): string => {
     let previousPage = 'unknown';
     if (cookies[CSV_ZONE_UPLOAD_COOKIE]) {
         previousPage = 'csvZoneUpload';
@@ -86,10 +86,11 @@ const getPreviousPage = (cookies: { [key: string]: string }): string => {
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
+    console.log(cookies);
     deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
 
     const previousPage = getPreviousPage(cookies);
-    let inputCheck = {};
+    let inputCheck: InputCheck = {};
     if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
         const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
         inputCheck = JSON.parse(numberOfProductsCookie);

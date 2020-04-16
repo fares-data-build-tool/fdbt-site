@@ -31,7 +31,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 numberOfProductsInput: userInputValidity.numberOfProductsInput,
             });
             setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
-            redirectTo(res, '/productDetails');
+            redirectTo(res, '/multipleProducts');
         } else {
             const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
             setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
