@@ -1,6 +1,6 @@
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
-export const FARETYPE_COOKIE = 'fdbt-faretype';
+export const FARETYPE_COOKIE = 'fdbt-fareType';
 
 export const SERVICE_COOKIE = 'fdbt-service';
 
@@ -34,11 +34,15 @@ export const PERIOD_EXPIRY = 'fdbt-period-expiry';
 
 export const PERIOD_SINGLE_OPERATOR_SERVICES = 'fdbt-period-single-services';
 
+export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
+
+export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
+
 export const MATCHING_COOKIE = 'fdbt-matching';
 
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
-    'fdbt-faretype',
+    'fdbt-fareType',
     'fdbt-service',
     'fdbt-journey',
     'fdbt-fare-stages',
@@ -53,7 +57,9 @@ export const ALL_COOKIES: string[] = [
     'fdbt-number-of-products',
     'fdbt-period-expiry',
     'fdbt-period-single-services',
+    'fdbt-input-method',
     'fdbt-matching',
+    'fdbt-number-stages',
 ];
 
 export const ALLOWED_CSV_FILE_TYPES = [
