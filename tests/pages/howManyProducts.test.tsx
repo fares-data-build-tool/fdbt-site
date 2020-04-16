@@ -4,9 +4,11 @@ import { shallow } from 'enzyme';
 import HowManyProducts, { InputCheck, getDynamicPageHeadingMessage } from '../../src/pages/howManyProducts';
 import { ErrorInfo } from '../../src/types';
 
+type ErrorCase = [string, { error: string; numberOfProductsInput: string }];
+
 describe('pages', () => {
     describe('howManyProducts', () => {
-        const pageHeadingMessages: any[] = [
+        const pageHeadingMessages: string[][] = [
             ['csvZoneUpload', 'How many products do you have for this zone?'],
             ['singleOperator', 'How many products do you have for your select services?'],
         ];
@@ -27,7 +29,7 @@ describe('pages', () => {
             },
         );
 
-        const errorCases: any[] = [
+        const errorCases: ErrorCase[] = [
             [
                 'How many products do you have for this zone?',
                 { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '0' },
