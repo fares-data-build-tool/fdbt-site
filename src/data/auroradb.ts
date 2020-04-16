@@ -28,7 +28,7 @@ export interface QueryData {
     toAtcoCode: string;
     fromCommonName: string;
     toCommonName: string;
-    journeyPatternSectionId: string;
+    journeyPatternId: string;
     order: string;
 }
 export interface RawJourneyPatternStops {
@@ -216,21 +216,25 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 
     // allows to get the unique journey's for the operator e.g. [1,2,3]
     const uniqueJourneyPatterns = queryItems
-        .map(item => item.journeyPatternSectionId)
+        .map(item => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
     uniqueJourneyPatterns.forEach(journey => {
         const filteredJourney = queryItems.filter(item => {
-            return item.journeyPatternSectionId === journey;
+            return item.journeyPatternId === journey;
         });
 
         const journeyPatternSection: RawJourneyPatternStops = {
-            OrderedStopPoints: filteredJourney.map((data: QueryData) => {
-                return {
+            OrderedStopPoints: [
+                {
+                    StopPointRef: filteredJourney[0].fromAtcoCode,
+                    CommonName: filteredJourney[0].fromCommonName,
+                },
+                ...filteredJourney.map((data: QueryData) => ({
                     StopPointRef: data.toAtcoCode,
                     CommonName: data.toCommonName,
-                };
-            }),
+                })),
+            ],
         };
 
         const rawPatternSection: RawJourneyPatternStops[] = [];
