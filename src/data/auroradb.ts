@@ -31,7 +31,7 @@ export interface QueryData {
     journeyPatternSectionId: string;
     order: string;
 }
-export interface RawJourneyPatternSection {
+export interface RawJourneyPatternStops {
     OrderedStopPoints: {
         StopPointRef: string;
         CommonName: string;
@@ -39,7 +39,7 @@ export interface RawJourneyPatternSection {
 }
 
 export interface RawJourneyPattern {
-    JourneyPatternSections: RawJourneyPatternSection[];
+    JourneyPattern: RawJourneyPatternStops[];
 }
 
 interface NaptanInfo {
@@ -224,7 +224,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
             return item.journeyPatternSectionId === journey;
         });
 
-        const journeyPatternSection: RawJourneyPatternSection = {
+        const journeyPatternSection: RawJourneyPatternStops = {
             OrderedStopPoints: filteredJourney.map((data: QueryData) => {
                 return {
                     StopPointRef: data.toAtcoCode,
@@ -233,11 +233,14 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
             }),
         };
 
-        const rawPatternSection: RawJourneyPatternSection[] = [];
+        const rawPatternSection: RawJourneyPatternStops[] = [];
         rawPatternSection.push(journeyPatternSection);
 
-        rawPatternService.push({ JourneyPatternSections: rawPatternSection });
+        console.log('pattersion', rawPatternSection);
+        rawPatternService.push({ JourneyPattern: rawPatternSection });
     });
+
+    console.log('raw patter', rawPatternService);
 
     if (!service || rawPatternService.length === 0) {
         throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
