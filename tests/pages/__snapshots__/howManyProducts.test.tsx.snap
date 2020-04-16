@@ -46,6 +46,7 @@ exports[`pages howManyProducts should render correctly when a user first visits 
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-2 "
+              defaultValue=""
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
@@ -110,6 +111,7 @@ exports[`pages howManyProducts should render correctly when a user first visits 
             <input
               aria-describedby=""
               className="govuk-input govuk-input--width-2 "
+              defaultValue=""
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
@@ -186,7 +188,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             <input
               aria-describedby="numberOfProducts-error"
               className="govuk-input govuk-input--width-2 govuk-input--error"
-              defaultValue=""
+              defaultValue="0"
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
@@ -263,7 +265,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             <input
               aria-describedby="numberOfProducts-error"
               className="govuk-input govuk-input--width-2 govuk-input--error"
-              defaultValue=""
+              defaultValue="11"
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
@@ -340,7 +342,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             <input
               aria-describedby="numberOfProducts-error"
               className="govuk-input govuk-input--width-2 govuk-input--error"
-              defaultValue=""
+              defaultValue="99"
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
@@ -417,7 +419,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             <input
               aria-describedby="numberOfProducts-error"
               className="govuk-input govuk-input--width-2 govuk-input--error"
-              defaultValue=""
+              defaultValue="4.65"
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
@@ -494,7 +496,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             <input
               aria-describedby="numberOfProducts-error"
               className="govuk-input govuk-input--width-2 govuk-input--error"
-              defaultValue=""
+              defaultValue="some strange thing a user would type"
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
@@ -648,7 +650,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             <input
               aria-describedby="numberOfProducts-error"
               className="govuk-input govuk-input--width-2 govuk-input--error"
-              defaultValue=""
+              defaultValue="       "
               id="numberOfProducts"
               name="numberOfProductsInput"
               type="text"
