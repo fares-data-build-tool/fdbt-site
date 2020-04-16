@@ -236,11 +236,8 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         const rawPatternSection: RawJourneyPatternStops[] = [];
         rawPatternSection.push(journeyPatternSection);
 
-        console.log('pattersion', rawPatternSection);
         rawPatternService.push({ JourneyPattern: rawPatternSection });
     });
-
-    console.log('raw patter', rawPatternService);
 
     if (!service || rawPatternService.length === 0) {
         throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
