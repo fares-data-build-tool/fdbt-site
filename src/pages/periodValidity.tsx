@@ -80,8 +80,7 @@ const PeriodValidity = ({ error }: PeriodValidityInterface): ReactElement => (
     </Layout>
 );
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const periodExpiryCookie = cookies[PERIOD_EXPIRY];
 

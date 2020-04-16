@@ -5,8 +5,7 @@ import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, getU
 export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
     const { validityInput } = req.body;
 
-    // eslint-disable-next-line no-restricted-globals
-    if (isNaN(validityInput)) {
+    if (Number.isNaN(validityInput)) {
         return true;
     }
 

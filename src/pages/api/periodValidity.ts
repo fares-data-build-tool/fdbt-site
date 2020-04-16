@@ -25,7 +25,6 @@ interface DecisionData {
     nocCode: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isPeriodCookiesUUIDMatch(req, res)) {

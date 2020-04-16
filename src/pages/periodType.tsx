@@ -85,7 +85,6 @@ const PeriodType = ({ error }: PeriodTypeInterface): ReactElement => {
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const periodTypeCookie = cookies[PERIOD_TYPE];
