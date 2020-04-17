@@ -18,6 +18,8 @@ export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
 export const PRICEENTRY_COOKIE = 'fdbt-price-entry';
 
+export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
+
 export const VALIDITY_COOKIE = 'fdbt-days-valid';
 
 export const PERIOD_PRODUCT = 'fdbt-period-product';
@@ -47,6 +49,7 @@ export const ALL_COOKIES: string[] = [
     'fdbt-stage-names-validation',
     'fdbt-stage-names',
     'fdbt-price-entry',
+    'fdbt-multiple-product',
     'fdbt-days-valid',
     'fdbt-period-product',
     'fdbt-period-type',
