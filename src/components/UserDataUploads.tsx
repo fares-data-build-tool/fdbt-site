@@ -39,11 +39,9 @@ const UserDataUploadComponent: FC<UserDataUploadsProps> = ({
             <ErrorSummary errors={errors} />
             <form action={csvUploadApiRoute} method="post" encType="multipart/form-data">
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="nationality-hint nationality-error">
+                    <fieldset className="govuk-fieldset" aria-describedby="csv-upload-hint csv-upload-error">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading" aria-describedby="changed-name-hint">
-                                Please select your file to upload
-                            </h1>
+                            <h1 className="govuk-fieldset__heading">Please select your file to upload</h1>
                         </legend>
                         <span className="govuk-hint" id="csv-upload-hint">
                             {csvUploadHintText}
