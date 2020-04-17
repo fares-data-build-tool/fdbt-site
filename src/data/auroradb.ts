@@ -119,11 +119,14 @@ export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
-const connection = getAuroraDBClient();
+let connectionPool: Pool;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const executeQuery = async (query: string, values: any[]) => {
-    const [rows] = await connection.execute(query, values);
+    if (!connectionPool) {
+        connectionPool = getAuroraDBClient();
+    }
+    const [rows] = await connectionPool.execute(query, values);
     return JSON.parse(JSON.stringify(rows));
 };
 
