@@ -1,6 +1,6 @@
-import AWS from 'aws-sdk';
 import dateFormat from 'dateformat';
-import { createPool } from 'mysql2/promise';
+import { createPool, Pool } from 'mysql2/promise';
+import awsParamStore from 'aws-param-store';
 
 export interface ServiceType {
     lineName: string;
@@ -87,9 +87,8 @@ export interface RawService {
     journeyPatterns: RawJourneyPattern[];
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const getAuroraDBClient = () => {
-    let client = null;
+export const getAuroraDBClient = (): Pool => {
+    let client: Pool;
 
     if (process.env.NODE_ENV === 'development') {
         client = createPool({
@@ -102,11 +101,13 @@ const getAuroraDBClient = () => {
             queueLimit: 0,
         });
     } else {
-        const ssm = new AWS.SSM();
+        const userParameter = awsParamStore.getParameterSync('fdbt-rds-site-username');
+        const passwordParameter = awsParamStore.getParameterSync('fdbt-rds-site-password');
+
         client = createPool({
             host: process.env.RDS_HOST,
-            user: ssm.getParameter({ Name: 'fdbt-rds-site-username', WithDecryption: true }).toString(),
-            password: ssm.getParameter({ Name: 'fdbt-rds-site-password', WithDecryption: true }).toString(),
+            user: userParameter.Value,
+            password: passwordParameter.Value,
             database: 'fdbt',
             waitForConnections: true,
             connectionLimit: 10,
@@ -126,7 +127,7 @@ const connection = getAuroraDBClient();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const executeQuery = async (query: string, values: any[]) => {
     const [rows] = await connection.execute(query, values);
-    return rows;
+    return JSON.parse(JSON.stringify(rows));
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
@@ -135,10 +136,8 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 
         const queryResult = await executeQuery(queryInput, [nocCode]);
 
-        const resultRow = JSON.parse(JSON.stringify(queryResult));
-
         return (
-            resultRow?.map((item: ServiceType) => ({
+            queryResult?.map((item: ServiceType) => ({
                 lineName: item.lineName,
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
@@ -154,11 +153,9 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
         const substitution = atcoCodes.map(() => '?').join(',');
         const batchQuery = `SELECT * FROM naptanStop WHERE atcoCode IN (${substitution})`;
 
-        const results = await executeQuery(batchQuery, atcoCodes);
+        const queryResults = await executeQuery(batchQuery, atcoCodes);
 
-        const parsedResults = JSON.parse(JSON.stringify(results));
-
-        return parsedResults.map((item: NaptanInfo) => ({
+        return queryResults.map((item: NaptanInfo) => ({
             stopName: item.commonName,
             naptanCode: item.naptanCode,
             atcoCode: item.atcoCode,
@@ -179,9 +176,8 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     const atcoCodesByNaptanCodeQuery = `SELECT * FROM naptanStop WHERE naptanCode IN ?`;
 
     try {
-        const results = await executeQuery(atcoCodesByNaptanCodeQuery, [listOfNaptanCodes]);
+        const queryResults = await executeQuery(atcoCodesByNaptanCodeQuery, [listOfNaptanCodes]);
 
-        const queryResults = JSON.parse(JSON.stringify(results));
         return queryResults.map((item: any) => ({ atcoCode: item.atcoCode, naptanCode: item.NaptanCode }));
     } catch (error) {
         console.error(
@@ -202,25 +198,24 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         ' WHERE os.nocCode = ? AND os.lineName = ?' +
         ' ORDER BY pl.orderInSequence, pl.journeyPatternId ASC';
 
-    let queryItems: QueryData[];
+    let queryResult: QueryData[];
 
     try {
-        const queryResult = await executeQuery(serviceQuery, [nocCode, lineName]);
-        queryItems = JSON.parse(JSON.stringify(queryResult));
+        queryResult = await executeQuery(serviceQuery, [nocCode, lineName]);
     } catch (err) {
         throw new Error(`Could not get journey patterns from Aurora DB: ${err.name}, ${err.message}`);
     }
 
-    const service = queryItems?.[0];
+    const service = queryResult?.[0];
     const rawPatternService: RawJourneyPattern[] = [];
 
     // allows to get the unique journey's for the operator e.g. [1,2,3]
-    const uniqueJourneyPatterns = queryItems
+    const uniqueJourneyPatterns = queryResult
         .map(item => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
     uniqueJourneyPatterns.forEach(journey => {
-        const filteredJourney = queryItems.filter(item => {
+        const filteredJourney = queryResult.filter(item => {
             return item.journeyPatternId === journey;
         });
 
