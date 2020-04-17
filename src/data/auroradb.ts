@@ -101,13 +101,10 @@ export const getAuroraDBClient = (): Pool => {
             queueLimit: 0,
         });
     } else {
-        const userParameter = awsParamStore.getParameterSync('fdbt-rds-site-username', { region: 'eu-west-2' });
-        const passwordParameter = awsParamStore.getParameterSync('fdbt-rds-site-password', { region: 'eu-west-2' });
-
         client = createPool({
             host: process.env.RDS_HOST,
-            user: userParameter.Value,
-            password: passwordParameter.Value,
+            user: awsParamStore.getParameterSync('fdbt-rds-site-username', { region: 'eu-west-2' }).Value,
+            password: awsParamStore.getParameterSync('fdbt-rds-site-password', { region: 'eu-west-2' }).Value,
             database: 'fdbt',
             waitForConnections: true,
             connectionLimit: 10,
