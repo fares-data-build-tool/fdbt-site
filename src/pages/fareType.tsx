@@ -14,7 +14,7 @@ type FareTypeProps = {
     errors: ErrorInfo[];
 };
 
-const FareType = ({ errors }: FareTypeProps): ReactElement => {
+const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
     return (
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
