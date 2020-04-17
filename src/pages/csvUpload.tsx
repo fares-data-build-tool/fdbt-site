@@ -5,7 +5,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_UPLOAD_COOKIE } from '../constants';
-import { buildTitle } from '../utils';
+import { buildTitle, deleteCookieOnServerSide } from '../utils';
 
 const title = 'CSV Upload Method - Fares data build tool';
 const description = 'CSV Upload page of the Fares data build tool';
@@ -64,6 +64,8 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             detailSummary: 'Help with Fares Triangle CSV upload',
         },
     };
+
+    deleteCookieOnServerSide(ctx, CSV_UPLOAD_COOKIE);
 
     return uploadProps;
 };

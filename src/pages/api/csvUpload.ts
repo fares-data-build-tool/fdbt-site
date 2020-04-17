@@ -134,7 +134,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
-            setUploadCookieAndRedirect(req, res);
             redirectTo(res, '/matching');
         }
     } catch (error) {

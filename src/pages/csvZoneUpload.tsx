@@ -5,6 +5,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
+import { deleteCookieOnServerSide } from '../utils';
 
 const title = 'CSV Zone Upload Method - Fares data build tool';
 const description = 'CSV Zone Upload page of the Fares data build tool';
@@ -61,6 +62,10 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             detailSummary: 'Help with Fares Zone CSV upload',
         },
     };
+
+    if (csvZoneUpload?.error) {
+        deleteCookieOnServerSide(ctx, CSV_ZONE_UPLOAD_COOKIE);
+    }
 
     return uploadProps;
 };
