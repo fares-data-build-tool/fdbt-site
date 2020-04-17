@@ -4,9 +4,9 @@ import {
     OPERATOR_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
-    PERIOD_PRODUCT,
+    PERIOD_PRODUCT_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_SINGLE_OPERATOR_SERVICES,
+    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
 } from '../../../constants';
 
 export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
@@ -50,9 +50,9 @@ export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiRespon
     const cookies = new Cookies(req, res);
 
     const csvUploadZoneUploadCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
-    const periodProductCookie = unescape(decodeURI(cookies.get(PERIOD_PRODUCT) || ''));
+    const periodProductCookie = unescape(decodeURI(cookies.get(PERIOD_PRODUCT_COOKIE) || ''));
     const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-    const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
+    const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE) || ''));
 
     try {
         const operatorInfo = JSON.parse(operatorCookie);

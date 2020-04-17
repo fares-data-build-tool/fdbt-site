@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { PERIOD_TYPE } from '../constants';
+import { PERIOD_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import { buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
@@ -101,8 +101,8 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[PERIOD_TYPE]) {
-        const periodTypeCookie = unescape(decodeURI(cookies[PERIOD_TYPE]));
+    if (cookies[PERIOD_TYPE_COOKIE]) {
+        const periodTypeCookie = unescape(decodeURI(cookies[PERIOD_TYPE_COOKIE]));
         const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
 
         if (parsedPeriodTypeCookie.errorMessage) {

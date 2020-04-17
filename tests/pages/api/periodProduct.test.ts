@@ -1,5 +1,5 @@
 import periodProduct, { isCurrency, trimPeriodNameInput } from '../../../src/pages/api/periodProduct';
-import { PERIOD_PRODUCT } from '../../../src/constants';
+import { PERIOD_PRODUCT_COOKIE } from '../../../src/constants';
 
 import * as validator from '../../../src/pages/api/service/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
@@ -34,7 +34,7 @@ describe('periodProduct', () => {
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT,
+            PERIOD_PRODUCT_COOKIE,
             JSON.stringify(mockPeriodProductCookies),
             req,
             res,
@@ -63,7 +63,7 @@ describe('periodProduct', () => {
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT,
+            PERIOD_PRODUCT_COOKIE,
             JSON.stringify(mockPeriodProductCookies),
             req,
             res,
@@ -92,7 +92,7 @@ describe('periodProduct', () => {
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT,
+            PERIOD_PRODUCT_COOKIE,
             JSON.stringify(mockPeriodProductCookies),
             req,
             res,

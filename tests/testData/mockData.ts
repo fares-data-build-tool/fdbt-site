@@ -12,12 +12,12 @@ import {
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_PRODUCT,
-    VALIDITY_COOKIE,
-    PERIOD_TYPE,
+    PERIOD_PRODUCT_COOKIE,
+    DAYS_VALID_COOKIE,
+    PERIOD_TYPE_COOKIE,
 } from '../../src/constants';
 
-export const getMockRequestAndResponse = (
+export const getMockRequestAndResponse =   (
     cookieValues: any = {},
     body: any = null,
     uuid: any = {},
@@ -73,7 +73,7 @@ export const getMockRequestAndResponse = (
             : '';
 
     cookieString += productName
-        ? `${PERIOD_PRODUCT}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
+        ? `${PERIOD_PRODUCT_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
         : '';
 
     cookieString += fareZoneName
@@ -81,13 +81,13 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += daysValid
-        ? `${VALIDITY_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
+        ? `${DAYS_VALID_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += periodTypeName
-        ? `${PERIOD_TYPE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
         : '';
 
     const req = mockRequest({

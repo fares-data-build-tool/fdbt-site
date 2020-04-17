@@ -13,7 +13,7 @@ const description = 'How many fares stages page of the Fares data build tool';
 
 const errorId = 'how-many-stages-error';
 
-type HowManyStagesProps = {
+interface HowManyStagesProps {
     errors: ErrorInfo[];
 };
 

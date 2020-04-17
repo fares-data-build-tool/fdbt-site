@@ -1,13 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PERIOD_PRODUCT, CSV_ZONE_UPLOAD_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES } from '../constants';
+import { OPERATOR_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../constants';
+import ProductRow from '../components/ProductRow';
+import { ErrorInfo } from '../types';
 
 const title = 'Multiple Product - Fares data build tool';
 const description = 'Multiple Product page of the Fares data build tool';
 
-const MultipleProduct = (): ReactElement => {
+export interface MultipleProductProps {
+    numberOfProductsToDisplay: number;
+    nameOfOperator: string;
+    errors: ErrorInfo[];
+}
+
+const MultipleProduct = (
+    { numberOfProductsToDisplay, nameOfOperator, errors = []}: MultipleProductProps
+): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -20,115 +31,36 @@ const MultipleProduct = (): ReactElement => {
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {operator} - {zoneName}
+                                {nameOfOperator}
                             </span>
                         </fieldset>
-                        <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductName">
-                                Product Name
-                            </label>
-                            <span className="govuk-hint" id="product-name-hint">
-                                Please enter the name of your product
-                            </span>
-                            <span id="product-price-error" className="govuk-error-message">
-                                <span className={productNameError ? '' : 'govuk-visually-hidden'}>
-                                    {nameErrorMessage}
-                                </span>
-                            </span>
-                            <input
-                                className={`govuk-input govuk-input--width-30 govuk-product-name-input__inner__input ${
-                                    productNameError ? 'govuk-input--error' : ''
-                                } `}
-                                id="periodProductName"
-                                name="periodProductNameInput"
-                                type="text"
-                                maxLength={50}
-                                defaultValue={productName}
-                            />
-                        </div>
-                        <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductPrice">
-                                Product Price
-                            </label>
-                            <span className="govuk-hint" id="product-price-hint">
-                                For example, £2.99
-                            </span>
-                            <span id="product-price-error" className="govuk-error-message">
-                                <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
-                                    {priceErrorMessage}
-                                </span>
-                            </span>
-                            <div className="govuk-currency-input">
-                                <div className="govuk-currency-input__inner">
-                                    <span className="govuk-currency-input__inner__unit">£</span>
-                                    <input
-                                        className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input ${
-                                            productPriceError ? 'govuk-input--error' : ''
-                                        }`}
-                                        aria-label="Enter amount in pounds"
-                                        name="periodProductPriceInput"
-                                        data-non-numeric
-                                        type="text"
-                                        id="periodProductPrice"
-                                        defaultValue={productPrice}
-                                    />
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <input
-                        type="submit"
-                        value="Continue"
-                        id="continue-button"
-                        className="govuk-button govuk-button--start"
-                    />
+                    <ProductRow numberOfProductsToDisplay={numberOfProductsToDisplay} errors={errors} />
                 </form>
             </main>
         </Layout>
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const periodProductCookie = cookies[PERIOD_PRODUCT];
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
-    const singleOperatorCookie = cookies[PERIOD_SINGLE_OPERATOR_SERVICES];
+    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
 
-    let props = {};
+    const numberOfProductsToDisplay: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
+    const nameOfOperator: string = JSON.parse(operatorCookie).operator;
 
-    if (!operatorCookie) {
-        throw new Error('Failed to retrieve operator cookie info for period product page.');
-    }
-
-    if (!zoneCookie && !singleOperatorCookie) {
-        throw new Error('Failed to retrieve zone cookie info for period product page.');
-    }
-
-    const operatorObject = JSON.parse(operatorCookie);
-
-    if (zoneCookie) {
-        const { fareZoneName } = JSON.parse(zoneCookie);
-        props = {
-            zoneName: fareZoneName,
-        };
-    }
-
-    if (singleOperatorCookie) {
-        const { selectedServices } = JSON.parse(singleOperatorCookie);
-        props = {
-            zoneName: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
-        };
-    }
-
+    const errors = [{errorMessage:'Wrong'},{errorMessage: 'Also Wrong'}]
+    // const errors: ErrorInfo[] = [];
+    
     return {
         props: {
-            product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
-            operator: operatorObject.operator,
-            ...props,
+            numberOfProductsToDisplay,
+            nameOfOperator,
+            errors,
         },
     };
 };
+
 
 export default MultipleProduct;

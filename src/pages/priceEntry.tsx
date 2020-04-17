@@ -19,7 +19,7 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
                     <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading">
-                                Please enter prices for all fare stages in pence
+                                Enter prices for all fare stages in pence
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="selection-hint">
