@@ -31,7 +31,9 @@ describe('Matching Page', () => {
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
-        wrapper = shallow(<Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} />);
+        wrapper = shallow(
+            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+        );
     });
 
     afterEach(() => {

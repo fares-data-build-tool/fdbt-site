@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { BasicService } from '../matching';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
-import { isCookiesUUIDMatch } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME } from '../../constants';
+import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
+import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
 
 interface MatchingData {
     type: string;
@@ -86,8 +86,15 @@ const getMatchingJson = (
         }),
 });
 
+const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
+    userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
+
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!isSessionValid(req, res)) {
+            throw new Error('Session is invalid.');
+        }
+
         if (!isCookiesUUIDMatch(req, res)) {
             throw new Error('Cookie UUIDs do not match');
         }
@@ -99,14 +106,24 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
 
+        const matchingFareZones = getMatchingFareZonesFromForm(req);
+
+        if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
+            const error = { error: true };
+            setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error }), req, res);
+            redirectTo(res, '/matching');
+            return;
+        }
+
         // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
         delete req.body.service;
         delete req.body.userfarestages;
 
-        const matchingFareZones = getMatchingFareZonesFromForm(req);
+        const uuid = getUuidFromCookie(req, res);
+
         const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones);
 
-        const uuid = getUuidFromCookie(req, res);
+        setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
 
         await putDataInS3(matchingJson, uuid);
 

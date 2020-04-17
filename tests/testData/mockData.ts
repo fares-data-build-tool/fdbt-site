@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { NextPageContext } from 'next';
-import mockReqRes, { mockRequest } from 'mock-req-res';
+import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
@@ -14,6 +14,7 @@ import {
     CSV_ZONE_UPLOAD_COOKIE,
     PERIOD_PRODUCT,
     VALIDITY_COOKIE,
+    PERIOD_TYPE,
 } from '../../src/constants';
 
 export const getMockRequestAndResponse = (
@@ -23,7 +24,7 @@ export const getMockRequestAndResponse = (
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     requestHeaders: any = {},
-): { req: mockReqRes.RequestOutput; res: any } => {
+): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
     res.end = mockEndFn;
@@ -31,7 +32,7 @@ export const getMockRequestAndResponse = (
 
     const {
         operator = 'test',
-        faretype = 'single',
+        fareType = 'single',
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -39,11 +40,12 @@ export const getMockRequestAndResponse = (
         productPrice = '1234',
         fareZoneName = 'fare zone 1',
         daysValid = '2',
+        periodTypeName = 'period',
     } = cookieValues;
 
     const {
         operatorUuid = defaultUuid,
-        faretypeUuid = defaultUuid,
+        fareTypeUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
@@ -57,8 +59,8 @@ export const getMockRequestAndResponse = (
         ? `${OPERATOR_COOKIE}=%7B%22operator%22%3A%22${operator}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
         : '';
 
-    cookieString += faretype
-        ? `${FARETYPE_COOKIE}=%7B%22faretype%22%3A%22${faretype}%22%2C%22uuid%22%3A%22${faretypeUuid}%22%7D;`
+    cookieString += fareType
+        ? `${FARETYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
         : '';
 
     cookieString += serviceLineName
@@ -83,6 +85,10 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
+
+    cookieString += periodTypeName
+        ? `${PERIOD_TYPE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        : '';
 
     const req = mockRequest({
         connection: {
@@ -714,7 +720,7 @@ export const mockService: Service = {
     ],
 };
 
-export const mockMatchingUserFareStages = {
+export const mockMatchingUserFareStagesWithUnassignedStages = {
     fareStages: [
         {
             stageName: 'Acomb Green Lane',
@@ -802,6 +808,73 @@ export const mockMatchingUserFareStages = {
                 {
                     price: '1.00',
                     fareZones: ['Piccadilly (York)'],
+                },
+            ],
+        },
+        {
+            stageName: 'Piccadilly (York)',
+            prices: {},
+        },
+    ],
+};
+
+export const mockMatchingUserFareStagesWithAllStagesAssigned = {
+    fareStages: [
+        {
+            stageName: 'Acomb Green Lane',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            stageName: 'Mattison Way',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: [
+                        'Cambridge Street (York)',
+                        'Blossom Street',
+                        'Rail Station (York)',
+                        'Piccadilly (York)',
+                    ],
+                },
+            ],
+        },
+        {
+            stageName: 'Holl Bank/Beech Ave',
+            prices: [
+                {
+                    price: '1.10',
+                    fareZones: ['Cambridge Street (York)', 'Blossom Street'],
+                },
+                {
+                    price: '1.70',
+                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+                },
+            ],
+        },
+        {
+            stageName: 'Blossom Street',
+            prices: [
+                {
+                    price: '1.00',
+                    fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
                 },
             ],
         },
