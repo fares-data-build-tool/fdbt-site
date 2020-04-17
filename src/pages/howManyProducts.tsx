@@ -65,12 +65,12 @@ const HowManyProducts = ({ pageHeadingMessage, inputCheck, errors }: HowManyProd
 );
 
 export const getDynamicPageHeadingMessage = (cookies: { [key: string]: string }): string => {
-    let pageHeadingMessage = 'How many products do you have for this zone or select services?';
+    let pageHeadingMessage = 'How many products do you have for this zone or selected services?';
     if (cookies[CSV_ZONE_UPLOAD_COOKIE]) {
         pageHeadingMessage = 'How many products do you have for this zone?';
     }
     if (!cookies[CSV_ZONE_UPLOAD_COOKIE]) {
-        pageHeadingMessage = 'How many products do you have for your select services?';
+        pageHeadingMessage = 'How many products do you have for your selected services?';
     }
     return pageHeadingMessage;
 };

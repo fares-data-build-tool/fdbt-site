@@ -10,7 +10,7 @@ describe('pages', () => {
     describe('howManyProducts', () => {
         const pageHeadingMessages: string[][] = [
             ['csvZoneUpload', 'How many products do you have for this zone?'],
-            ['singleOperator', 'How many products do you have for your select services?'],
+            ['singleOperator', 'How many products do you have for your selected services?'],
         ];
 
         test.each(pageHeadingMessages)(
@@ -35,11 +35,11 @@ describe('pages', () => {
                 { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '0' },
             ],
             [
-                'How many products do you have for your select services?',
+                'How many products do you have for your selected services?',
                 { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '11' },
             ],
             [
-                'How many products do you have for this zone or select services?',
+                'How many products do you have for this zone or selected services?',
                 { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '99' },
             ],
             [
@@ -47,15 +47,15 @@ describe('pages', () => {
                 { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '4.65' },
             ],
             [
-                'How many products do you have for your select services?',
+                'How many products do you have for your selected services?',
                 { error: 'Enter a number', numberOfProductsInput: 'some strange thing a user would type' },
             ],
             [
-                'How many products do you have for this zone or select services?',
+                'How many products do you have for this zone or selected services?',
                 { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '' },
             ],
             [
-                'How many products do you have for your select services?',
+                'How many products do you have for your selected services?',
                 { error: 'Enter a whole number between 1 and 10', numberOfProductsInput: '       ' },
             ],
         ];
@@ -77,7 +77,7 @@ describe('pages', () => {
     });
     describe('getDynamicPageHeadingMessage', () => {
         const cookies: {}[] = [
-            [{}, 'How many products do you have for your select services?'],
+            [{}, 'How many products do you have for your selected services?'],
             [
                 {
                     'fdbt-csv-zone-upload':

@@ -91,7 +91,7 @@ exports[`pages howManyProducts should render correctly when a user first visits 
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for your select services?
+              How many products do you have for your selected services?
             </h1>
           </legend>
           <label
@@ -238,7 +238,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for your select services?
+              How many products do you have for your selected services?
             </h1>
           </legend>
           <label
@@ -318,7 +318,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or select services?
+              How many products do you have for this zone or selected services?
             </h1>
           </legend>
           <label
@@ -478,7 +478,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for your select services?
+              How many products do you have for your selected services?
             </h1>
           </legend>
           <label
@@ -558,7 +558,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or select services?
+              How many products do you have for this zone or selected services?
             </h1>
           </legend>
           <label
@@ -638,7 +638,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for your select services?
+              How many products do you have for your selected services?
             </h1>
           </legend>
           <label
