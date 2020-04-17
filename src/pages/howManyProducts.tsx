@@ -77,7 +77,6 @@ export const getDynamicPageHeadingMessage = (cookies: { [key: string]: string })
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    console.log(cookies);
     deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
 
     const pageHeadingMessage = getDynamicPageHeadingMessage(cookies);
