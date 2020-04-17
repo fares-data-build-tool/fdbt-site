@@ -90,7 +90,7 @@ export interface RawService {
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         client = createPool({
             host: 'localhost',
             user: 'fdbt_site',

@@ -1,43 +1,17 @@
-
-jest.mock('../../src/data/auroradb', () => {
-    return jest.fn().mockImplementation(() => {
-        return {
-            getAuroraDBClient: () => {console.log("get the client"); return null},
-        };
-    });
-});
-
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import * as auroradb from '../../src/data/auroradb';
 
 import Direction, { getServerSideProps } from '../../src/pages/direction';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
 
-
-//jest.mock('../../src/data/auroradb.ts');
-
-// jest.mock('aws-param-store');
-
-// const ssmGetParameterSync = jest.fn().mockReturnValue({
-//     promise: jest.fn().mockResolvedValue({
-//         Parameter: {
-//             Name: 'NAME',
-//             Type: 'SecureString',
-//             Value: 'VALUE',
-//             Version: 1,
-//             LastModifiedDate: 1546551668.495,
-//             ARN: 'arn:aws:ssm:ap-southeast-2:123:NAME'
-//         }
-//     })
-// });
+jest.mock('../../src/data/auroradb.ts');
 
 describe('pages', () => {
     describe('direction', () => {
         beforeEach(() => {
-            (auroradb.getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
-            (auroradb.batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
+            (getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
+            (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
         it('should render correctly', () => {
