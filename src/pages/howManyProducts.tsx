@@ -85,7 +85,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
         const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
         inputCheck = JSON.parse(numberOfProductsCookie);
-        errors = [{ errorMessage: inputCheck.error ? inputCheck.error : '', errorHref: '#page-heading' }];
+        errors = [{ errorMessage: inputCheck.error ? inputCheck.error : '', id: 'page-heading' }];
     }
     return { props: { pageHeadingMessage, inputCheck, errors } };
 };

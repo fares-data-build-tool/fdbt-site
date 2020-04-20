@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../types';
 
-export type ErrorSummary = {
+export interface ErrorSummary {
     errors: ErrorInfo[];
-};
+}
 
 const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
     if (!errors || errors.length === 0) {
@@ -24,8 +24,8 @@ const ErrorSummary = ({ errors }: ErrorSummary): null | ReactElement => {
             <div className="govuk-error-summary__body">
                 <ul className="govuk-list govuk-error-summary__list">
                     {errors.map(error => (
-                        <li key={error.errorHref}>
-                            <a href={error.errorHref}>{error.errorMessage}</a>
+                        <li key={error.id}>
+                            <a href={`#${error.id}`}>{error.errorMessage}</a>
                         </li>
                     ))}
                 </ul>

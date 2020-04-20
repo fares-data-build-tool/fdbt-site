@@ -63,7 +63,7 @@ describe('pages', () => {
         test.each(errorCases)(
             'should render correctly when a user is redirected to the page from itself when incorrect data is entered',
             (pageHeadingMessage, mockInputCheck) => {
-                const mockErrors = [{ errorMessage: mockInputCheck.error, errorHref: '#page-heading' }];
+                const mockErrors = [{ errorMessage: mockInputCheck.error, id: 'page-heading' }];
                 const tree = shallow(
                     <HowManyProducts
                         pageHeadingMessage={pageHeadingMessage}

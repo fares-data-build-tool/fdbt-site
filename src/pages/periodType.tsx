@@ -6,9 +6,12 @@ import { PERIOD_TYPE } from '../constants';
 import { ErrorInfo } from '../types';
 import { buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Period Type - Fares data build tool';
 const description = 'Period Type selection page of the Fares data build tool';
+
+const errorId = 'period-type-error';
 
 type PeriodTypeProps = {
     errors: ErrorInfo[];
@@ -27,60 +30,60 @@ const PeriodType = ({ errors = [] }: PeriodTypeProps): ReactElement => {
                                     What type of Period Ticket?
                                 </h1>
                             </legend>
-                            {errors.length > 0 && (
-                                <span id="operator-error" className="govuk-error-message error-message-padding">
-                                    <span>{errors[0].errorMessage}</span>
-                                </span>
-                            )}
-                            <div className="govuk-radios">
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="periodtype-geo-zone"
-                                        name="periodType"
-                                        type="radio"
-                                        value="periodGeoZone"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="periodtype-geo-zone">
-                                        A ticket within a geographical zone
-                                    </label>
+                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--errors">
+                                <div className="govuk-radios">
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="periodtype-geo-zone"
+                                            name="periodType"
+                                            type="radio"
+                                            value="periodGeoZone"
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor="periodtype-geo-zone"
+                                        >
+                                            A ticket within a geographical zone
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="periodtype-single-set-service"
+                                            name="periodType"
+                                            type="radio"
+                                            value="periodMultipleServices"
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor="periodtype-single-set-service"
+                                        >
+                                            A ticket for some or all of your network of services
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className={`govuk-radios__input ${
+                                                errors.length > 0 ? 'govuk-input--error' : ''
+                                            } `}
+                                            id="periodtype-network"
+                                            name="periodType"
+                                            type="radio"
+                                            value="periodMultipleOperators"
+                                            disabled
+                                            aria-disabled="true"
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
+                                            A ticket for services across multiple operators
+                                        </label>
+                                    </div>
                                 </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="periodtype-single-set-service"
-                                        name="periodType"
-                                        type="radio"
-                                        value="periodMultipleServices"
-                                    />
-                                    <label
-                                        className="govuk-label govuk-radios__label"
-                                        htmlFor="periodtype-single-set-service"
-                                    >
-                                        A ticket for some or all of your network of services
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="periodtype-network"
-                                        name="periodType"
-                                        type="radio"
-                                        value="periodMultipleOperators"
-                                        disabled
-                                        aria-disabled="true"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="periodtype-network">
-                                        A ticket for services across multiple operators
-                                    </label>
-                                </div>
-                            </div>
+                            </FormElementWrapper>
                         </fieldset>
                     </div>
                     <input
@@ -103,10 +106,8 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
 
         if (parsedPeriodTypeCookie.errorMessage) {
-            const errors: ErrorInfo[] = [
-                { errorMessage: parsedPeriodTypeCookie.errorMessage, errorHref: '#periodtype-page-heading' },
-            ];
-            return { props: { errors } };
+            const { errorMessage } = parsedPeriodTypeCookie;
+            return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }
 

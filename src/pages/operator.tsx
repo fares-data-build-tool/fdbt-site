@@ -6,9 +6,12 @@ import { OPERATOR_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
 import { buildTitle } from '../utils/index';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Operator - Fares data build tool';
 const description = 'Operator selection page of the Fares data build tool';
+
+const errorId = 'operator-error';
 
 type Operator = {
     operatorName: string;
@@ -44,35 +47,30 @@ const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
                                     Which operator are you representing?
                                 </h1>
-                                {errors.length > 0 && (
-                                    <span id="operator-error" className="govuk-error-message error-message-padding">
-                                        <span>{errors[0].errorMessage}</span>
-                                    </span>
-                                )}
                             </legend>
-                            <div className="govuk-radios">
-                                {hardCodedOperators.map(
-                                    (operator, index): ReactElement => (
-                                        <div className="govuk-radios__item" key={operator.operatorName}>
-                                            <input
-                                                className={`govuk-radios__input ${
-                                                    errors.length > 0 ? 'govuk-input--error' : ''
-                                                } `}
-                                                id={`operator-name${index}`}
-                                                name="operator"
-                                                type="radio"
-                                                value={JSON.stringify(operator)}
-                                            />
-                                            <label
-                                                className="govuk-label govuk-radios__label"
-                                                htmlFor={`operator-name${index}`}
-                                            >
-                                                {`${operator.operatorName}`}
-                                            </label>
-                                        </div>
-                                    ),
-                                )}
-                            </div>
+                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                                <div className="govuk-radios">
+                                    {hardCodedOperators.map(
+                                        (operator, index): ReactElement => (
+                                            <div className="govuk-radios__item" key={operator.operatorName}>
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id={`operator-name${index}`}
+                                                    name="operator"
+                                                    type="radio"
+                                                    value={JSON.stringify(operator)}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor={`operator-name${index}`}
+                                                >
+                                                    {`${operator.operatorName}`}
+                                                </label>
+                                            </div>
+                                        ),
+                                    )}
+                                </div>
+                            </FormElementWrapper>
                         </fieldset>
                     </div>
                     <input
@@ -95,10 +93,8 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const parsedOperatorCookie = JSON.parse(operatorCookie);
 
         if (parsedOperatorCookie.errorMessage) {
-            const errors: ErrorInfo[] = [
-                { errorMessage: parsedOperatorCookie.errorMessage, errorHref: '#page-heading' },
-            ];
-            return { props: { errors } };
+            const { errorMessage } = parsedOperatorCookie;
+            return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }
 
