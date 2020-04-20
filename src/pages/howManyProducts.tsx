@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { NUMBER_OF_PRODUCTS_COOKIE, CSV_ZONE_UPLOAD_COOKIE } from '../constants';
+import { NUMBER_OF_PRODUCTS_COOKIE } from '../constants';
 import { deleteCookieOnServerSide, buildTitle } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo } from '../types';
@@ -16,12 +16,11 @@ export interface InputCheck {
 }
 
 interface HowManyProductProps {
-    pageHeadingMessage: string;
     inputCheck: InputCheck;
     errors: ErrorInfo[];
 }
 
-const HowManyProducts = ({ pageHeadingMessage, inputCheck, errors }: HowManyProductProps): ReactElement => (
+const HowManyProducts = ({ inputCheck, errors }: HowManyProductProps): ReactElement => (
     <Layout title={buildTitle(errors, title)} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/howManyProducts" method="post">
@@ -30,7 +29,7 @@ const HowManyProducts = ({ pageHeadingMessage, inputCheck, errors }: HowManyProd
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
-                                {pageHeadingMessage}
+                                How many products do you have for this zone or selected services?
                             </h1>
                         </legend>
                         <label className="govuk-label" htmlFor="numberOfProducts">
@@ -68,9 +67,6 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
 
-    const pageHeadingMessage = `How many products do you have for ${
-        cookies[CSV_ZONE_UPLOAD_COOKIE] ? 'this zone' : 'your selected services'
-    }?`;
     let inputCheck: InputCheck = {};
     let errors: ErrorInfo[] = [];
     if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
@@ -78,7 +74,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         inputCheck = JSON.parse(numberOfProductsCookie);
         errors = [{ errorMessage: inputCheck.error ? inputCheck.error : '', id: 'page-heading' }];
     }
-    return { props: { pageHeadingMessage, inputCheck, errors } };
+    return { props: { inputCheck, errors } };
 };
 
 export default HowManyProducts;

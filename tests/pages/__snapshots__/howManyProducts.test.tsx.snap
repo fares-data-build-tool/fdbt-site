@@ -1,125 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages howManyProducts should render correctly when a user first visits the page from the "csvZoneUpload" page 1`] = `
-<Layout
-  description="How many products page of the Fares data build tool"
-  title="How Many Products - Fares data build tool"
->
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
-  >
-    <form
-      action="/api/howManyProducts"
-      method="post"
-    >
-      <ErrorSummary
-        errors={Array []}
-      />
-      <div
-        className="govuk-form-group"
-      >
-        <fieldset
-          aria-describedby="page-heading"
-          className="govuk-fieldset"
-        >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
-          >
-            <h1
-              className="govuk-fieldset__heading"
-              id="page-heading"
-            >
-              How many products do you have for this zone?
-            </h1>
-          </legend>
-          <label
-            className="govuk-label"
-            htmlFor="numberOfProducts"
-          >
-            Number of fare products (up to a maximum of 10)
-          </label>
-          <input
-            aria-describedby=""
-            className="govuk-input govuk-input--width-2 "
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
-`;
-
-exports[`pages howManyProducts should render correctly when a user first visits the page from the "singleOperator" page 1`] = `
-<Layout
-  description="How many products page of the Fares data build tool"
-  title="How Many Products - Fares data build tool"
->
-  <main
-    className="govuk-main-wrapper app-main-class"
-    id="main-content"
-    role="main"
-  >
-    <form
-      action="/api/howManyProducts"
-      method="post"
-    >
-      <ErrorSummary
-        errors={Array []}
-      />
-      <div
-        className="govuk-form-group"
-      >
-        <fieldset
-          aria-describedby="page-heading"
-          className="govuk-fieldset"
-        >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
-          >
-            <h1
-              className="govuk-fieldset__heading"
-              id="page-heading"
-            >
-              How many products do you have for your selected services?
-            </h1>
-          </legend>
-          <label
-            className="govuk-label"
-            htmlFor="numberOfProducts"
-          >
-            Number of fare products (up to a maximum of 10)
-          </label>
-          <input
-            aria-describedby=""
-            className="govuk-input govuk-input--width-2 "
-            id="numberOfProducts"
-            name="numberOfProductsInput"
-            type="text"
-          />
-        </fieldset>
-      </div>
-      <input
-        className="govuk-button govuk-button--start"
-        id="continue-button"
-        type="submit"
-        value="Continue"
-      />
-    </form>
-  </main>
-</Layout>
-`;
-
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 1`] = `
 <Layout
   description="How many products page of the Fares data build tool"
@@ -158,7 +38,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone?
+              How many products do you have for this zone or selected services?
             </h1>
           </legend>
           <label
@@ -238,7 +118,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for your selected services?
+              How many products do you have for this zone or selected services?
             </h1>
           </legend>
           <label
@@ -398,7 +278,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone?
+              How many products do you have for this zone or selected services?
             </h1>
           </legend>
           <label
@@ -478,7 +358,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for your selected services?
+              How many products do you have for this zone or selected services?
             </h1>
           </legend>
           <label
@@ -638,7 +518,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for your selected services?
+              How many products do you have for this zone or selected services?
             </h1>
           </legend>
           <label
