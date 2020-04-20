@@ -138,8 +138,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         errors={
           Array [
             Object {
-              "errorHref": "#page-heading",
               "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
             },
           ]
         }
@@ -218,8 +218,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         errors={
           Array [
             Object {
-              "errorHref": "#page-heading",
               "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
             },
           ]
         }
@@ -298,8 +298,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         errors={
           Array [
             Object {
-              "errorHref": "#page-heading",
               "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
             },
           ]
         }
@@ -378,8 +378,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         errors={
           Array [
             Object {
-              "errorHref": "#page-heading",
               "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
             },
           ]
         }
@@ -458,8 +458,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         errors={
           Array [
             Object {
-              "errorHref": "#page-heading",
               "errorMessage": "Enter a number",
+              "id": "page-heading",
             },
           ]
         }
@@ -538,8 +538,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         errors={
           Array [
             Object {
-              "errorHref": "#page-heading",
               "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
             },
           ]
         }
@@ -618,8 +618,8 @@ exports[`pages howManyProducts should render correctly when a user is redirected
         errors={
           Array [
             Object {
-              "errorHref": "#page-heading",
               "errorMessage": "Enter a whole number between 1 and 10",
+              "id": "page-heading",
             },
           ]
         }

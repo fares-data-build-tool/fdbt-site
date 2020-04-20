@@ -10,16 +10,16 @@ import { ErrorInfo } from '../types';
 const title = 'How Many Products - Fares data build tool';
 const description = 'How many products page of the Fares data build tool';
 
-export type InputCheck = {
+export interface InputCheck {
     error?: string;
     numberOfProductsInput?: string;
-};
+}
 
-type HowManyProductProps = {
+interface HowManyProductProps {
     pageHeadingMessage: string;
     inputCheck: InputCheck;
     errors: ErrorInfo[];
-};
+}
 
 const HowManyProducts = ({ pageHeadingMessage, inputCheck, errors }: HowManyProductProps): ReactElement => (
     <Layout title={buildTitle(errors, title)} description={description}>
@@ -64,22 +64,13 @@ const HowManyProducts = ({ pageHeadingMessage, inputCheck, errors }: HowManyProd
     </Layout>
 );
 
-export const getDynamicPageHeadingMessage = (cookies: { [key: string]: string }): string => {
-    let pageHeadingMessage = 'How many products do you have for this zone or selected services?';
-    if (cookies[CSV_ZONE_UPLOAD_COOKIE]) {
-        pageHeadingMessage = 'How many products do you have for this zone?';
-    }
-    if (!cookies[CSV_ZONE_UPLOAD_COOKIE]) {
-        pageHeadingMessage = 'How many products do you have for your selected services?';
-    }
-    return pageHeadingMessage;
-};
-
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
 
-    const pageHeadingMessage = getDynamicPageHeadingMessage(cookies);
+    const pageHeadingMessage = `How many products do you have for ${
+        cookies[CSV_ZONE_UPLOAD_COOKIE] ? 'this zone' : 'your selected services'
+    }?`;
     let inputCheck: InputCheck = {};
     let errors: ErrorInfo[] = [];
     if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {

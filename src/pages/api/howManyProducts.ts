@@ -10,7 +10,7 @@ export const isNumberOfProductsInvalid = (req: NextApiRequest): InputCheck => {
     let error;
     if (numberOfProductsInput === '' || Number.isNaN(inputAsNumber)) {
         error = 'Enter a number';
-    } else if (!Number.isInteger(inputAsNumber) || Number(inputAsNumber) > 10 || Number(inputAsNumber) < 1) {
+    } else if (!Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1) {
         error = 'Enter a whole number between 1 and 10';
     } else {
         error = '';
@@ -26,17 +26,16 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const userInputValidity = isNumberOfProductsInvalid(req);
-        if (userInputValidity.error === '') {
-            const numberOfProductsCookieValue = JSON.stringify({
-                numberOfProductsInput: userInputValidity.numberOfProductsInput,
-            });
-            setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
-            redirectTo(res, '/multipleProducts');
-        } else {
+        if (userInputValidity.error !== '') {
             const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
             setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
             redirectTo(res, '/howManyProducts');
         }
+        const numberOfProductsCookieValue = JSON.stringify({
+            numberOfProductsInput: userInputValidity.numberOfProductsInput,
+        });
+        setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
+        redirectTo(res, '/multipleProducts');
     } catch (error) {
         const message = 'There was a problem inputting the number of products:';
         redirectToError(res, message, error);

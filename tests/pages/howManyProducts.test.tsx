@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import HowManyProducts, { InputCheck, getDynamicPageHeadingMessage } from '../../src/pages/howManyProducts';
+import HowManyProducts, { InputCheck } from '../../src/pages/howManyProducts';
 import { ErrorInfo } from '../../src/types';
 
 type ErrorCase = [string, { error: string; numberOfProductsInput: string }];
@@ -72,25 +72,6 @@ describe('pages', () => {
                     />,
                 );
                 expect(tree).toMatchSnapshot();
-            },
-        );
-    });
-    describe('getDynamicPageHeadingMessage', () => {
-        const cookies: {}[] = [
-            [{}, 'How many products do you have for your selected services?'],
-            [
-                {
-                    'fdbt-csv-zone-upload':
-                        '{"fareZoneName":"Test Town Centre","uuid":"3181aed6-4f15-40c0-9802-c734e41c2b79"}',
-                },
-                'How many products do you have for this zone?',
-            ],
-        ];
-        test.each(cookies)(
-            'should return the correct previousPage based on whether a CSV_ZONE_UPLOAD_COOKIE is present',
-            (mockCookie, expectedPageHeadingMessage) => {
-                const actualPageHeadingMessage = getDynamicPageHeadingMessage(mockCookie);
-                expect(actualPageHeadingMessage).toEqual(expectedPageHeadingMessage);
             },
         );
     });
