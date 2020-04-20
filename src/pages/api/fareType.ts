@@ -18,8 +18,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 case 'single':
                     redirectTo(res, '/service');
                     return;
-                case 'return':
-                    // redirect to return page
+                case 'returnSingle':
+                    redirectTo(res, '/service');
                     return;
                 default:
                     throw new Error('Fare Type we expect was not received.');
