@@ -11,6 +11,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         if (req.body.fareType) {
+            const cookieValue = JSON.stringify({
+                errorMessage: '',
+                uuid: getUuidFromCookie(req, res),
+                fareType: req.body.fareType,
+            });
+
+            setCookieOnResponseObject(getDomain(req), FARETYPE_COOKIE, cookieValue, req, res);
+
             switch (req.body.fareType) {
                 case 'period':
                     redirectTo(res, '/periodType');
