@@ -124,7 +124,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const errors: ErrorInfo[] = [];
     multipleProducts.forEach(product => {
         if (product.errorMessage) {
-            const error: ErrorInfo = { errorMessage: product.errorMessage, errorHref: '#rowID' };
+            const error: ErrorInfo = { errorMessage: product.errorMessage, id: 'rowID' };
             errors.push(error);
         }
     });
