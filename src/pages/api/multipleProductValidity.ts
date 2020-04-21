@@ -1,22 +1,30 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NUMBER_OF_PRODUCTS_COOKIE, MULTIPLE_PRODUCT_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { redirectToError } from './apiUtils';
-import { ProductValidity } from '../multipleProductValidity';
+import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo } from './apiUtils';
+import { Product } from '../multipleProductValidity';
 
-export const isInputValid = (req: NextApiRequest): ProductValidity[] => {
-    const numberOfProducts = Number(JSON.parse(req.body.cookies[NUMBER_OF_PRODUCTS_COOKIE]).numberOfProductsInput);
+export const isInputValid = (req: NextApiRequest, products: Product[]): Product[] => {
+    console.log(req.cookies[NUMBER_OF_PRODUCTS_COOKIE])
+    const numberOfProducts = Number(JSON.parse(req.cookies[NUMBER_OF_PRODUCTS_COOKIE]).numberOfProductsInput);
+    console.log({numberOfProducts})
+    console.log(req.cookies[NUMBER_OF_PRODUCTS_COOKIE])
     const limiter = new Array(numberOfProducts);
-    const response: ProductValidity[] = [];
+    const response: Product[] = [];
     for (let i = 0; i < limiter.length; i += 1) {
-        let selection = req.body[`validity-row${i}`];
+        let validity = req.body[`validity-row${i}`];
         let error = '';
-        if (!selection) {
-            selection = '';
+        if (!validity) {
+            validity = '';
             error = 'Select one of the two validity options';
         }
-        const check = { validity: selection, error };
-        response.push(check);
+        const product = {
+            productName: products[i].productName,
+            productPrice: products[i].productPrice,
+            productDuration: products[i].productDuration,
+            productValidity: { validity, error },
+        };
+        response.push(product);
     }
     return response;
 };
@@ -26,28 +34,27 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-
-        if (!req.body.cookies[NUMBER_OF_PRODUCTS_COOKIE] || !req.body.cookies[MULTIPLE_PRODUCT_COOKIE]) {
+        if (!req.cookies[NUMBER_OF_PRODUCTS_COOKIE] || !req.cookies[MULTIPLE_PRODUCT_COOKIE]) {
             throw new Error(
-                'ERROR! Necessary cookies not found. NUMBER_OF_PRODUCTS_COOKIE and/or MULTIPLE_PRODUCT_COOKIE are missing',
+                'Necessary cookies not found. NUMBER_OF_PRODUCTS_COOKIE and/or MULTIPLE_PRODUCT_COOKIE are missing',
             );
         }
 
-        const userInputValidity = isInputValid(req);
-        // if (!req.body.stageNameInput || req.body.stageNameInput.length === 0) {
-        //     throw new Error('No stage name input received from Stage Names page.');
-        // }
-        // const userInputValidity = isStageNameValid(req);
-        // if (!userInputValidity.some(el => el.Error !== '')) {
-        //     const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
-        //     setCookieOnResponseObject(getDomain(req), STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
-        //     redirectTo(res, '/priceEntry');
-        // } else {
-        //     const validationCookieValue = JSON.stringify(userInputValidity);
-        //     setCookieOnResponseObject(getDomain(req), STAGE_NAME_VALIDATION_COOKIE, validationCookieValue, req, res);
-        //     redirectTo(res, '/stageNames');
+        const products = JSON.parse(req.cookies[MULTIPLE_PRODUCT_COOKIE]);
+
+        const userInputValidity = isInputValid(req, products);
+        const multipleProductCookieValue = JSON.stringify(userInputValidity);
+        setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, multipleProductCookieValue, req, res);
+
+        if (userInputValidity.some(el => el.productValidity?.error !== '')) {
+            redirectTo(res, '/multipleProductValidity');
+        }
+
+        // CREATE DECISION DATA AND PUT DATA IN S3
+
+        redirectTo(res, '/thankyou');
     } catch (error) {
-        const message = 'There was a problem entering stage names:';
+        const message = 'There was a problem collecting the user defined products:';
         redirectToError(res, message, error);
     }
 };
