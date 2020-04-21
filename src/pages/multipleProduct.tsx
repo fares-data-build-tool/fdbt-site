@@ -61,7 +61,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
         console.log(parsedMultipleProductCookie.errors)
 
-        if (parsedMultipleProductCookie.errorMessage) {
+        if (parsedMultipleProductCookie.errors.length > 0) {
             return {
                 props: {
                     numberOfProductsToDisplay,

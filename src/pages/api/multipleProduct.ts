@@ -69,11 +69,9 @@ export const checkProductDurationsAreValid = (products: MultipleProduct[]): Mult
 
         if (trimmedDuration === '') {
             productDurationError = "Product duration cannot be empty.";
-        }
-        if (Number.isNaN(Number(trimmedDuration))) {
+        } else if (Number.isNaN(Number(trimmedDuration))) {
             productDurationError = "Product duration must be a whole, positive number.";
-        }
-        if (!(Number(trimmedDuration) > 0)) {
+        } else if (!(Number(trimmedDuration) > 0)) {
             productDurationError = "Product duration cannot be zero or negative."
         }
 

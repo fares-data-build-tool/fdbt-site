@@ -16,6 +16,7 @@ import {
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
 } from '../../src/constants';
+import { MultipleProduct } from '../../src/pages/api/multipleProduct';
 
 export const getMockRequestAndResponse =   (
     cookieValues: any = {},
@@ -1025,3 +1026,87 @@ export const expectedPeriodValidity = {
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
 };
+
+export const multipleProducts: MultipleProduct[] = [
+    {
+        productName: "p",
+        productNameId: "productOneId",
+        productNameError: "Name too short",
+        productPrice: "3.50",
+        productPriceId: "productOnePriceId",
+        productDuration: "66.5",
+        productDurationId: "productOneDurationId",
+        productDurationError: "Product duration must be a whole number",
+    },
+    {
+        productName: "Super ticket",
+        productNameId: "productOneId",
+        productPrice: "3.50gg",
+        productPriceId: "productOnePriceId",
+        productPriceError: "Product price must be a valid price",
+        productDuration: "7",
+        productDurationId: "productOneDurationId",
+    }
+];
+
+export const multipleProductsWithoutErrors: MultipleProduct[] = [
+    {
+        productName: "Best ticket",
+        productNameId: "productOneId",
+        productPrice: "3.50",
+        productPriceId: "productOnePriceId",
+        productDuration: "66",
+        productDurationId: "productOneDurationId",
+    },
+    {
+        productName: "Super ticket",
+        productNameId: "productOneId",
+        productPrice: "3.50",
+        productPriceId: "productOnePriceId",
+        productDuration: "7",
+        productDurationId: "productOneDurationId",
+    }
+];
+
+export const durationProducts: MultipleProduct[] = [
+    {
+        productName: "valid duration",
+        productNameId: ".",
+        productPrice: ".",
+        productPriceId: ".",
+        productDuration: "66",
+        productDurationId: ".",
+    },
+    {
+        productName: "zero duration",
+        productNameId: ".",
+        productPrice: ".",
+        productPriceId: ".",
+        productDuration: "0",
+        productDurationId: ".",
+    },
+    {
+        productName: "negative duration",
+        productNameId: ".",
+        productPrice: ".",
+        productPriceId: ".",
+        productDuration: "-1",
+        productDurationId: ".",
+    },
+    {
+        productName: "empty duration",
+        productNameId: ".",
+        productPrice: ".",
+        productPriceId: ".",
+        productDuration: "",
+        productDurationId: ".",
+    },
+    {
+        productName: "non-numeric duration",
+        productNameId: ".",
+        productPrice: ".",
+        productPriceId: ".",
+        productDuration: "ddd",
+        productDurationId: ".",
+    }
+]
