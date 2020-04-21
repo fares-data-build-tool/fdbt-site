@@ -30,6 +30,8 @@ export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
 
 export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
 
+export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
+
 export const PERIOD_EXPIRY = 'fdbt-period-expiry';
 
 export const PERIOD_SINGLE_OPERATOR_SERVICES = 'fdbt-period-single-services';
@@ -57,6 +59,7 @@ export const ALL_COOKIES: string[] = [
     'fdbt-period-type',
     'fdbt-csv-upload',
     'fdbt-csv-zone-upload',
+    'fdbt-number-of-products',
     'fdbt-period-expiry',
     'fdbt-period-single-services',
     'fdbt-input-method',
