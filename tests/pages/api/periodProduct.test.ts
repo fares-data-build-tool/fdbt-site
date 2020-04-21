@@ -1,4 +1,4 @@
-import periodProduct, { isCurrency, trimPeriodNameInput } from '../../../src/pages/api/periodProduct';
+import periodProduct, { isCurrency, trimInputOfWhiteSpace } from '../../../src/pages/api/periodProduct';
 import { PERIOD_PRODUCT_COOKIE } from '../../../src/constants';
 
 import * as validator from '../../../src/pages/api/service/validator';
@@ -117,6 +117,6 @@ describe('Current and product name checks', () => {
         const input = '   This is     my   product      ';
         const expected = 'This is my product';
 
-        expect(trimPeriodNameInput(input)).toBe(expected);
+        expect(trimInputOfWhiteSpace(input)).toBe(expected);
     });
 });

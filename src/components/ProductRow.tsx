@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../types';
+import FormElementWrapper from './FormElementWrapper';
 
 export interface ProductRowProps {
     numberOfProductsToDisplay: number;
@@ -10,146 +11,103 @@ export const continueButton = (): ReactElement => {
     return <input type="submit" value="Continue" id="continue-button" className="govuk-button govuk-button--start" />;
 };
 
-export const renderTable = (index: number): ReactElement => {
-    if (index === 0) {
-        return (
-            <div>
-                <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-one-half">
-                        <div className="govuk-form-group">
-                            <label className="govuk-label" htmlFor={`periodProductName${index}`}>
-                                Product Name
-                            </label>
+export const renderTable = (index: number, errors: ErrorInfo[]): ReactElement => (
+    <div>
+        <div className="govuk-grid-row">
+            <div className="govuk-grid-column-one-half">
+                <FormElementWrapper errors={errors} errorId={`multipleProductName${index}`} errorClass="">
+                    <div className="govuk-form-group">
+                        <label className="govuk-label" htmlFor={`multipleProductName${index}`}>
+                            Product Name
+                        </label>
+                        {index === 0 ? (
                             <span className="govuk-hint" id={`product-name-hint${index}`}>
                                 Enter the name of your product
                             </span>
-                            <input
-                                className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                                id={`periodProductName${index}`}
-                                name={`periodProductNameInput${index}`}
-                                type="text"
-                                maxLength={50}
-                                defaultValue=""
-                            />
-                        </div>
-                    </div>
-                    <div className="govuk-grid-column-one-quarter">
-                        <div className="govuk-form-group">
-                            <label className="govuk-label" htmlFor={`periodProductPrice${index}`}>
-                                Product Price
-                            </label>
-                            <span className="govuk-hint" id={`product-price-hint${index}`}>
-                                For example, £2.99
-                            </span>
-                            <div className="govuk-currency-input">
-                                <div className="govuk-currency-input__inner">
-                                    <span className="govuk-currency-input__inner__unit">£</span>
-                                    <input
-                                        className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
-                                        aria-label="Enter amount in pounds"
-                                        name={`periodProductPriceInput${index}`}
-                                        data-non-numeric
-                                        type="text"
-                                        id={`periodProductPrice${index}`}
-                                        defaultValue=""
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="govuk-grid-column-one-quarter">
-                        <div className="govuk-form-group">
-                            <label className="govuk-label" htmlFor={`periodProductDuration${index}`}>
-                                Duration
-                            </label>
-                            <span className="govuk-hint" id={`product-duration-hint${index}`}>
-                                Enter a number of days
-                            </span>
-                            <input
-                                className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
-                                id={`periodProductDuration${index}`}
-                                name={`periodProductDurationInput${index}`}
-                                type="text"
-                                maxLength={366}
-                                defaultValue=""
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-    return (
-        <div>
-            <div className="govuk-grid-row">
-                <div className="govuk-grid-column-one-half">
-                    <div className="govuk-form-group">
-                        <label className="govuk-label" htmlFor={`periodProductName${index}`}>
-                            Product Name
-                        </label>
+                        ) : (
+                            ''
+                        )}
                         <input
                             className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                            id={`periodProductName${index}`}
-                            name={`periodProductNameInput${index}`}
+                            id={`multipleProductName${index}`}
+                            name={`multipleProductNameInput${index}`}
                             type="text"
                             maxLength={50}
                             defaultValue=""
                         />
                     </div>
-                </div>
-                <div className="govuk-grid-column-one-quarter">
+                </FormElementWrapper>
+            </div>
+            <div className="govuk-grid-column-one-quarter">
+                <FormElementWrapper errors={errors} errorId={`multipleProductPrice${index}`} errorClass="">
                     <div className="govuk-form-group">
-                        <label className="govuk-label" htmlFor={`periodProductPrice${index}`}>
+                        <label className="govuk-label" htmlFor={`multipleProductPrice${index}`}>
                             Product Price
                         </label>
+                        {index === 0 ? (
+                            <span className="govuk-hint" id={`product-price-hint${index}`}>
+                                For example, £2.99
+                            </span>
+                        ) : (
+                            ''
+                        )}
                         <div className="govuk-currency-input">
                             <div className="govuk-currency-input__inner">
                                 <span className="govuk-currency-input__inner__unit">£</span>
                                 <input
                                     className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
                                     aria-label="Enter amount in pounds"
-                                    name={`periodProductPriceInput${index}`}
+                                    name={`multipleProductPriceInput${index}`}
                                     data-non-numeric
                                     type="text"
-                                    id={`periodProductPrice${index}`}
+                                    id={`multipleProductPrice${index}`}
                                     defaultValue=""
                                 />
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="govuk-grid-column-one-quarter">
+                </FormElementWrapper>
+            </div>
+            <div className="govuk-grid-column-one-quarter">
+                <FormElementWrapper errors={errors} errorId={`multipleProductDuration${index}`} errorClass="">
                     <div className="govuk-form-group">
-                        <label className="govuk-label" htmlFor={`periodProductDuration${index}`}>
+                        <label className="govuk-label" htmlFor={`multipleProductDuration${index}`}>
                             Duration
                         </label>
+                        {index === 0 ? (
+                            <span className="govuk-hint" id={`product-duration-hint${index}`}>
+                                Enter a number of days
+                            </span>
+                        ) : (
+                            ''
+                        )}
                         <input
                             className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
-                            id={`periodProductDuration${index}`}
-                            name={`periodProductDurationInput${index}`}
+                            id={`multipleProductDuration${index}`}
+                            name={`multipleProductDurationInput${index}`}
                             type="text"
                             maxLength={366}
                             defaultValue=""
                         />
                     </div>
-                </div>
+                </FormElementWrapper>
             </div>
         </div>
-    );
-};
+    </div>
+);
 
-export const renderRows = (numberOfRows: number): ReactElement[] => {
+export const renderRows = (numberOfRows: number, errors: ErrorInfo[]): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfRows; i += 1) {
-        elements.push(renderTable(i));
+        elements.push(renderTable(i, errors));
     }
     return elements;
 };
 
-const ProductRow = ({ numberOfProductsToDisplay }: ProductRowProps): ReactElement => {
+const ProductRow = ({ numberOfProductsToDisplay, errors }: ProductRowProps): ReactElement => {
     return (
         <div>
-            {renderRows(numberOfProductsToDisplay)}
+            {renderRows(numberOfProductsToDisplay, errors)}
             {continueButton()}
         </div>
     );
