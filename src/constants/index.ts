@@ -34,6 +34,8 @@ export const PERIOD_EXPIRY = 'fdbt-period-expiry';
 
 export const PERIOD_SINGLE_OPERATOR_SERVICES = 'fdbt-period-single-services';
 
+export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
+
 export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 
 export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
