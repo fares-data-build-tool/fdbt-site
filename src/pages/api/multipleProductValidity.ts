@@ -5,10 +5,7 @@ import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo } fro
 import { Product } from '../multipleProductValidity';
 
 export const isInputValid = (req: NextApiRequest, products: Product[]): Product[] => {
-    console.log(req.cookies[NUMBER_OF_PRODUCTS_COOKIE])
     const numberOfProducts = Number(JSON.parse(req.cookies[NUMBER_OF_PRODUCTS_COOKIE]).numberOfProductsInput);
-    console.log({numberOfProducts})
-    console.log(req.cookies[NUMBER_OF_PRODUCTS_COOKIE])
     const limiter = new Array(numberOfProducts);
     const response: Product[] = [];
     for (let i = 0; i < limiter.length; i += 1) {

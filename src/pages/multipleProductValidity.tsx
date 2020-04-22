@@ -103,6 +103,7 @@ const MultiProductValidity = ({
                                                     name={`validity-row${index}`}
                                                     type="radio"
                                                     value="24hr"
+                                                    checked={product.productValidity?.validity === '24hr'}
                                                 />
                                                 <label
                                                     className="govuk-label govuk-radios__label"
@@ -120,6 +121,7 @@ const MultiProductValidity = ({
                                                     name={`validity-row${index}`}
                                                     type="radio"
                                                     value="endOfCalendarDay"
+                                                    checked={product.productValidity?.validity === 'endOfCalendarDay'}
                                                 />
                                                 <label
                                                     className="govuk-label govuk-radios__label"
