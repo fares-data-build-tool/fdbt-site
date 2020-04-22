@@ -31,54 +31,6 @@ interface MultipleProductValidityProps {
     errors: ErrorInfo[];
 }
 
-export const renderProductRow = (index: number, product: Product): ReactElement => {
-    const error = product.productValidity ? product.productValidity.error : '';
-    return (
-        <tr className="govuk-table__row" id={`productRow${index}`}>
-            <th className="govuk-table__cell">{product.productName}</th>
-            <td className="govuk-table__cell">£{product.productPrice}</td>
-            <td className="govuk-table__cell">{`${product.productDuration} day${
-                Number(product.productDuration) > 1 ? 's' : ''
-            }`}</td>
-            <td className="govuk-table__cell govuk-radios">
-                <div className="govuk-radios__item">
-                    <input
-                        className={`govuk-radios__input${error !== '' ? ' govuk-input--error' : ''} `}
-                        id={`twenty-four-hours-row${index}`}
-                        name={`validity-row${index}`}
-                        type="radio"
-                        value="24hr"
-                    />
-                    <label
-                        className="govuk-label govuk-radios__label"
-                        htmlFor={`twenty-four-hours-row${index}`}
-                    ></label>
-                </div>
-            </td>
-            <td className="govuk-table__cell">
-                <div className="govuk-radios__item">
-                    <input
-                        className={`govuk-radios__input${error !== '' ? ' govuk-input--error' : ''} `}
-                        id={`calendar-day-row${index}`}
-                        name={`validity-row${index}`}
-                        type="radio"
-                        value="endOfCalendarDay"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor={`calendar-day-row${index}`}></label>
-                </div>
-            </td>
-        </tr>
-    );
-};
-
-export const renderProductRows = (multipleProducts: Product[]): ReactElement[] => {
-    const elements: ReactElement[] = [];
-    for (let i = 0; i < multipleProducts.length; i += 1) {
-        elements.push(renderProductRow(i, multipleProducts[i]));
-    }
-    return elements;
-};
-
 const MultiProductValidity = ({
     operator,
     numberOfProducts,
@@ -86,44 +38,102 @@ const MultiProductValidity = ({
     errors,
 }: MultipleProductValidityProps): ReactElement => (
     <Layout title={buildTitle(errors, title)} description={description}>
-        <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
+        <main
+            className="govuk-main-wrapper app-main-class multiple-product-validity-page"
+            id="main-content"
+            role="main"
+        >
             <form action="/api/multipleProductValidity" method="post">
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="multi-product-validity-selection">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 className="govuk-fieldset__heading" id="multiProductValidity-page-heading">
-                                Enter your product details
-                            </h1>
-                        </legend>
-                        <span className="govuk-hint" id="service-operator-hint">
-                            {operator} - {numberOfProducts} products
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                        <h1 className="govuk-fieldset__heading" id="multiProductValidity-page-heading">
+                            Enter your product details
+                        </h1>
+                    </legend>
+                    <span id="radio-buttons-error" className="govuk-error-message">
+                        <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
+                            Ensure one option is selected for each set of radio buttons.
                         </span>
+                    </span>
+                    <span className="govuk-hint" id="operator-products-hint">
+                        {operator} - {numberOfProducts} products
+                    </span>
+                    <div className="grid-headers-wrapper">
+                        <div className="govuk-heading-s grid-column-header-one-fifth">Product Name</div>
+                        <div className="govuk-heading-s grid-column-header-one-fifth">Product Price</div>
+                        <div className="govuk-heading-s grid-column-header-one-fifth">Product Duration</div>
+                        <div className="govuk-heading-s grid-column-header-one-fifth" id="24hr-header">
+                            24hr
+                        </div>
+                        <div className="govuk-heading-s grid-column-header-one-fifth" id="calendar-header">
+                            Calendar
+                        </div>
+                    </div>
+                    {multipleProducts.map((product, index) => (
                         <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                            <table className="govuk-table">
-                                <thead className="govuk-table__head">
-                                    <tr className="govuk-table__row">
-                                        <th scope="col" className="govuk-table__header">
-                                            Product Name
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            Product Price
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            Duration
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            24hrs
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            Calendar
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="govuk-table__body">{renderProductRows(multipleProducts)}</tbody>
-                            </table>
+                            <fieldset className="govuk-fieldset">
+                                <div className="grid-content-wrapper">
+                                    <label
+                                        className="govuk-label grid-column-content-one-fifth"
+                                        htmlFor={`product${index}`}
+                                    >
+                                        {product.productName}
+                                    </label>
+                                    <label
+                                        className="govuk-label grid-column-content-one-fifth"
+                                        htmlFor={`product${index}`}
+                                    >
+                                        £{product.productPrice}
+                                    </label>
+                                    <label
+                                        className="govuk-label grid-column-content-one-fifth"
+                                        htmlFor={`product${index}`}
+                                    >
+                                        {`${product.productDuration} day${
+                                            Number(product.productDuration) > 1 ? 's' : ''
+                                        }`}
+                                    </label>
+                                    <div className="govuk-radios govuk-radios--inline validity-select-wrapper">
+                                        <div className="govuk-radios__item">
+                                            <div className="validity-radio-button">
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id={`twenty-four-hours-row${index}`}
+                                                    name={`validity-row${index}`}
+                                                    type="radio"
+                                                    value="24hr"
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor={`twenty-four-hours-row${index}`}
+                                                >
+                                                    .
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <div className="validity-radio-button">
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id={`calendar-day-row${index}`}
+                                                    name={`validity-row${index}`}
+                                                    type="radio"
+                                                    value="endOfCalendarDay"
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor={`calendar-day-row${index}`}
+                                                >
+                                                    .
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
                         </FormElementWrapper>
-                    </fieldset>
+                    ))}
                 </div>
                 <input
                     type="submit"
