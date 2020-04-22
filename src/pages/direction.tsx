@@ -13,7 +13,7 @@ import {
     RawJourneyPattern,
     RawService,
 } from '../data/auroradb';
-import { redirectClientTo } from './api/apiUtils';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';
@@ -146,7 +146,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
             const uuid = getUuidFromCookies(ctx);
             const cookieValue = JSON.stringify({ journeyPattern: service.journeyPatterns, uuid });
             setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
-            redirectClientTo(ctx.res, '/inputMethod');
+            redirectTo(ctx.res, '/inputMethod');
         }
     }
 
