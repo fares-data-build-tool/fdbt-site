@@ -54,7 +54,14 @@ export const redirectTo = (res: NextApiResponse | ServerResponse, location: stri
     res.end();
 };
 
-export const redirectToError = (res: NextApiResponse | ServerResponse, message: string, error: Error): void => {
+export const redirectClientTo = (res: ServerResponse, location: string): void => {
+    res.writeHead(302, {
+        Location: location,
+    });
+    res.end();
+};
+
+export const redirectToError = (res: ServerResponse, message: string, error: Error): void => {
     console.error(message, error.stack);
     redirectTo(res, '/error');
 };

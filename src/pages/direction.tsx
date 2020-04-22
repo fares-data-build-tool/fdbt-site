@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { deleteCookieOnServerSide, getUuidFromCookies, setCookieOnServerSide } from '../utils';
 import {
     getServiceByNocCodeAndLineName,
     Service,
@@ -13,6 +13,7 @@ import {
     RawJourneyPattern,
     RawService,
 } from '../data/auroradb';
+import { redirectClientTo } from './api/apiUtils';
 
 const title = 'Select a Direction - Fares data build tool';
 const description = 'Direction selection page of the Fares data build tool';
@@ -135,6 +136,15 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
                 item => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
             ) === index,
     );
+
+    if (service.journeyPatterns.length === 1) {
+        if (ctx.res) {
+            const uuid = getUuidFromCookies(ctx);
+            const cookieValue = JSON.stringify({ journeyPattern: service.journeyPatterns, uuid });
+            setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
+            redirectClientTo(ctx.res, '/inputMethod');
+        }
+    }
 
     return { props: { operator: operatorInfo.operator, lineName, service } };
 };
