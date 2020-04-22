@@ -101,28 +101,6 @@ describe('pages', () => {
             });
         });
 
-        it('redirects to the inputMethod page when there is a circular journey, but only on the return ticket user journey', async () => {
-            (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockSingleService));
-
-            const writeHeadMock = jest.fn();
-
-            const operator = 'HCTY';
-            const lineName = 'X6A';
-
-            const ctx = getMockContext(
-                { operator, serviceLineName: lineName, fareType: 'returnSingle' },
-                {},
-                '',
-                writeHeadMock,
-            );
-
-            await getServerSideProps(ctx);
-
-            expect(writeHeadMock).toBeCalledWith(302, {
-                Location: '/inputMethod',
-            });
-        });
-
         it('throws an error if no journey patterns can be found', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
             const ctx = getMockContext();
