@@ -140,7 +140,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
             ) === index,
     );
 
-    // journey only valid for return single
+    // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
     if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
