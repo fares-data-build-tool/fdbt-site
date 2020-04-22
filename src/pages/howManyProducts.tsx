@@ -26,7 +26,7 @@ const HowManyProducts = ({ inputCheck, errors }: HowManyProductProps): ReactElem
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/howManyProducts" method="post">
                 <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error input-error' : ''}`}>
+                <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="page-heading">
