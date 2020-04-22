@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import flatMap from 'array.prototype.flatmap';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide, getUuidFromCookies, setCookieOnServerSide } from '../utils';
 import {
     getServiceByNocCodeAndLineName,
@@ -108,13 +108,16 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
+    const fareTypeCookie = cookies[FARETYPE_COOKIE];
 
-    if (!operatorCookie || !serviceCookie) {
+    if (!operatorCookie || !serviceCookie || !fareTypeCookie) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
+    const fareTypeInfo = JSON.parse(fareTypeCookie);
+
     const lineName = serviceInfo.service.split('#')[0];
 
     const rawService: RawService = await getServiceByNocCodeAndLineName(operatorInfo.nocCode, lineName);
@@ -137,7 +140,8 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
             ) === index,
     );
 
-    if (service.journeyPatterns.length === 1) {
+    // journey only valid for return single
+    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
             const cookieValue = JSON.stringify({ journeyPattern: service.journeyPatterns, uuid });
