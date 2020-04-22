@@ -30,6 +30,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
             setCookieOnResponseObject(getDomain(req), NUMBER_OF_PRODUCTS_COOKIE, numberOfProductsCookieValue, req, res);
             redirectTo(res, '/howManyProducts');
+            return;
         }
         const numberOfProductsCookieValue = JSON.stringify({
             numberOfProductsInput: userInputValidity.numberOfProductsInput,
