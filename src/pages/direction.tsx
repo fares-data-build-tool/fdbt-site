@@ -140,11 +140,12 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
             ) === index,
     );
 
-    // journey only valid for return single
+    // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
     if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
-            const cookieValue = JSON.stringify({ journeyPattern: service.journeyPatterns, uuid });
+            const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
+            const cookieValue = JSON.stringify({ journeyPattern: journeyPatternCookie, uuid });
             setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
             redirectTo(ctx.res, '/inputMethod');
         }
