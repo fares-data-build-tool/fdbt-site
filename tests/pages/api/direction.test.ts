@@ -37,7 +37,7 @@ describe('direction', () => {
         });
     });
 
-    it('should return 302 redirect to /selectJourney when session is valid, request body is present and fareType is returnSingle', () => {
+    it('should return 302 redirect to /selectJourneyDirection when session is valid, request body is present and fareType is returnSingle', () => {
         (isSessionValid as {}) = jest.fn().mockReturnValue(true);
         (getUuidFromCookie as {}) = jest.fn().mockReturnValue({ uuid: 'testUuid' });
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "returnSingle"}' };
@@ -50,7 +50,7 @@ describe('direction', () => {
         (setCookieOnResponseObject as {}) = jest.fn();
         direction(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectJourney',
+            Location: '/selectJourneyDirection',
         });
     });
 

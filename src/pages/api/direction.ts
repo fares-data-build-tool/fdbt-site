@@ -26,7 +26,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
 
         if (fareTypeCookie === 'returnSingle') {
-            redirectTo(res, '/selectJourney');
+            redirectTo(res, '/selectJourneyDirection');
         }
 
         redirectTo(res, '/inputMethod');
