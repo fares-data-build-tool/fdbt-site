@@ -135,26 +135,22 @@ export const mockSingleService: RawService = {
     operatorShortName: 'HCTY',
     journeyPatterns: [
         {
-            JourneyPattern: [
+            orderedStopPoints: [
                 {
-                    OrderedStopPoints: [
-                        {
-                            StopPointRef: '13003921A',
-                            CommonName: 'Estate (Hail and Ride) N/B',
-                        },
-                        {
-                            StopPointRef: '13003612D',
-                            CommonName: 'New Strangford Road SE/B',
-                        },
-                        {
-                            StopPointRef: '13003611B',
-                            CommonName: 'New Tempest Road (York House) NE/B',
-                        },
-                        {
-                            StopPointRef: '13003655B',
-                            CommonName: 'Interchange Stand B',
-                        },
-                    ],
+                    stopPointRef: '13003921A',
+                    commonName: 'Estate (Hail and Ride) N/B',
+                },
+                {
+                    stopPointRef: '13003612D',
+                    commonName: 'New Strangford Road SE/B',
+                },
+                {
+                    stopPointRef: '13003611B',
+                    commonName: 'New Tempest Road (York House) NE/B',
+                },
+                {
+                    stopPointRef: '13003655B',
+                    commonName: 'Interchange Stand B',
                 },
             ],
         },
