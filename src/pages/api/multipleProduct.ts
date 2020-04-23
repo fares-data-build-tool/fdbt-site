@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { ErrorSummaryInfo } from '../../components/ErrorSummary';
+import { ErrorSummary } from '../../components/ErrorSummary';
 import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo } from './apiUtils';
@@ -18,8 +18,8 @@ export interface MultiProduct {
     productDurationError?: string;
 }
 
-export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorSummaryInfo => {
-    const errorsForCookie: ErrorSummaryInfo = {
+export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorSummary => {
+    const errorsForCookie: ErrorSummary = {
         errors: [],
     };
 
@@ -177,7 +177,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const fullValidationResult: MultiProduct[] = checkProductDurationsAreValid(priceValidationResult);
 
         if (containsErrors(fullValidationResult)) {
-            const errors: ErrorSummaryInfo = getErrorsForCookie(fullValidationResult);
+            const errors: ErrorSummary = getErrorsForCookie(fullValidationResult);
             const cookieContent = JSON.stringify({ ...errors, userInput: multipleProducts });
 
             setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, cookieContent, req, res);

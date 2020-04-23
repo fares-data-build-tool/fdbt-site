@@ -4,7 +4,7 @@ import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
 import * as fileUpload from '../../../src/pages/api/apiUtils/fileUpload';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
-import * as dynamo from '../../../src/data/dynamodb';
+import * as dynamo from '../../../src/data/auroradb';
 
 const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
 
@@ -97,7 +97,7 @@ describe('csvZoneUpload', () => {
         await csvZoneUpload.default(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/periodProduct',
+            Location: '/howManyProducts',
         });
     });
 

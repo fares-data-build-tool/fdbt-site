@@ -115,7 +115,7 @@ describe('multipleProduct', () => {
                 multipleProductPriceInput1: '2.05',
                 multipleProductDurationInput1: '54',
             },
-            { Location: '/multiProductValidity' },
+            { Location: '/multipleProductValidity' },
         ],
 
         // this redirects to error, despite being valid, because the amount of

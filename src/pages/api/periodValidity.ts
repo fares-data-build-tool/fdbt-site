@@ -11,7 +11,7 @@ import {
     PERIOD_TYPE_COOKIE,
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
-import { batchGetStopsByAtcoCode, Stop } from '../../data/dynamodb';
+import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
 
@@ -65,6 +65,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const { fareZoneName } = JSON.parse(fareZoneCookie);
                 const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
                 const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+
+                if (zoneStops.length === 0) {
+                    throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
+                }
 
                 props = {
                     zoneName: fareZoneName,
