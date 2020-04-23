@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
@@ -7,20 +6,23 @@ import { OPERATOR_COOKIE, NUMBER_OF_PRODUCTS_COOKIE, MULTIPLE_PRODUCT_COOKIE } f
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
+import { MultiProduct } from './api/multipleProduct';
 
 const title = 'Multiple Product - Fares data build tool';
 const description = 'Multiple Product page of the Fares data build tool';
 
 export interface MultipleProductProps {
-    numberOfProductsToDisplay: number;
+    numberOfProductsToDisplay: string;
     nameOfOperator: string;
-    errors: ErrorInfo[];
+    errors?: ErrorInfo[];
+    userInput: MultiProduct[];
 }
 
 const MultipleProduct = ({
     numberOfProductsToDisplay,
     nameOfOperator,
     errors = [],
+    userInput = [],
 }: MultipleProductProps): ReactElement => {
     return (
         <Layout title={title} description={description}>
@@ -40,33 +42,47 @@ const MultipleProduct = ({
                         </fieldset>
                         <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
                     </div>
-                    <ProductRow numberOfProductsToDisplay={numberOfProductsToDisplay} errors={errors} />
+                    <div className="govuk-grid-row">
+                        <ProductRow
+                            numberOfProductsToDisplay={numberOfProductsToDisplay}
+                            errors={errors}
+                            userInput={userInput}
+                        />
+                    </div>
                 </form>
             </main>
         </Layout>
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
-    const operatorCookie = unescape(decodeURI(cookies[OPERATOR_COOKIE]));
-    const numberOfProductsCookie = unescape(decodeURI(cookies[NUMBER_OF_PRODUCTS_COOKIE]));
 
-    const numberOfProductsToDisplay: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
+    const baseOperatorCookie = cookies[OPERATOR_COOKIE];
+    const baseNumberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
+
+    if (!baseOperatorCookie || !baseNumberOfProductsCookie) {
+        throw new Error('Necessary cookies not found to show multiple products page');
+    }
+
+    const operatorCookie = unescape(decodeURI(baseOperatorCookie));
+    const numberOfProductsCookie = unescape(decodeURI(baseNumberOfProductsCookie));
+
+    const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const nameOfOperator: string = JSON.parse(operatorCookie).operator;
 
     if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
         const multipleProductCookie = unescape(decodeURI(cookies[MULTIPLE_PRODUCT_COOKIE]));
         const parsedMultipleProductCookie = JSON.parse(multipleProductCookie);
+        const { errors } = parsedMultipleProductCookie;
 
-        console.log(parsedMultipleProductCookie.errors)
-
-        if (parsedMultipleProductCookie.errors.length > 0) {
+        if (errors && errors.length > 0) {
             return {
                 props: {
                     numberOfProductsToDisplay,
                     nameOfOperator,
                     errors: parsedMultipleProductCookie.errors,
+                    userInput: parsedMultipleProductCookie.userInput,
                 },
             };
         }
@@ -76,6 +92,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         props: {
             numberOfProductsToDisplay,
             nameOfOperator,
+            userInput: [],
         },
     };
 };
