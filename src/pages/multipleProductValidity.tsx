@@ -48,57 +48,58 @@ const MultiProductValidity = ({
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                         <h1 className="govuk-fieldset__heading" id="multiProductValidity-page-heading">
-                            Enter your product details
+                            When does the product expire?
                         </h1>
                     </legend>
-                    <span id="radio-buttons-error" className="govuk-error-message">
+                    <span className="govuk-hint" id="multiProductValidity-page-hint">
+                        We need to know the time that this product would be valid until
+                    </span>
+                    <span id="multiple-product-validity-radios-error" className="govuk-error-message">
                         <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
-                            Ensure one option is selected for each set of radio buttons.
+                            Ensure one option is selected for each set of radio buttons
                         </span>
                     </span>
                     <span className="govuk-hint" id="operator-products-hint">
                         {operator} - {numberOfProducts} products
                     </span>
-                    <div className="grid-headers-wrapper">
-                        <div className="govuk-heading-s grid-column-header-one-fifth">Product Name</div>
-                        <div className="govuk-heading-s grid-column-header-one-fifth">Product Price</div>
-                        <div className="govuk-heading-s grid-column-header-one-fifth">Product Duration</div>
-                        <div className="govuk-heading-s grid-column-header-one-fifth" id="24hr-header">
-                            24hr
-                        </div>
-                        <div className="govuk-heading-s grid-column-header-one-fifth" id="calendar-header">
-                            Calendar
-                        </div>
-                    </div>
-                    {multipleProducts.map((product, index) => (
-                        <fieldset className="govuk-fieldset">
-                            <div className="grid-content-wrapper">
-                                <label
-                                    className="govuk-label grid-column-content-one-fifth"
-                                    htmlFor={`product${index}`}
-                                >
-                                    {product.productName}
-                                </label>
-                                <label
-                                    className="govuk-label grid-column-content-one-fifth"
-                                    htmlFor={`product${index}`}
-                                >
-                                    £{product.productPrice}
-                                </label>
-                                <label
-                                    className="govuk-label grid-column-content-one-fifth"
-                                    htmlFor={`product${index}`}
-                                >
-                                    {`${product.productDuration} day${Number(product.productDuration) > 1 ? 's' : ''}`}
-                                </label>
-                                <div className="govuk-radios govuk-radios--inline validity-select-wrapper">
-                                    <div className="govuk-radios__item">
-                                        <FormElementWrapper
-                                            errors={errors}
-                                            errorId={errorId}
-                                            errorClass="govuk-radios--error"
+                    <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                        <>
+                            <div className="grid-headers-wrapper">
+                                <div className="govuk-heading-s grid-column-header-one-fifth">Product Name</div>
+                                <div className="govuk-heading-s grid-column-header-one-fifth">Product Price</div>
+                                <div className="govuk-heading-s grid-column-header-one-fifth">Product Duration</div>
+                                <div className="govuk-heading-s grid-column-header-one-fifth" id="24hr-header">
+                                    24hr
+                                </div>
+                                <div className="govuk-heading-s grid-column-header-one-fifth" id="calendar-header">
+                                    Calendar
+                                </div>
+                            </div>
+                            {multipleProducts.map((product, index) => (
+                                <fieldset className="govuk-fieldset">
+                                    <div className="grid-content-wrapper">
+                                        <label
+                                            className="govuk-label grid-column-content-one-fifth"
+                                            htmlFor={`product${index}`}
                                         >
-                                            <>
+                                            {product.productName}
+                                        </label>
+                                        <label
+                                            className="govuk-label grid-column-content-one-fifth"
+                                            htmlFor={`product${index}`}
+                                        >
+                                            £{product.productPrice}
+                                        </label>
+                                        <label
+                                            className="govuk-label grid-column-content-one-fifth"
+                                            htmlFor={`product${index}`}
+                                        >
+                                            {`${product.productDuration} day${
+                                                Number(product.productDuration) > 1 ? 's' : ''
+                                            }`}
+                                        </label>
+                                        <div className="govuk-radios govuk-radios--inline validity-select-wrapper">
+                                            <div className="govuk-radios__item">
                                                 <input
                                                     className="govuk-radios__input"
                                                     id={`twenty-four-hours-row${index}`}
@@ -108,22 +109,14 @@ const MultiProductValidity = ({
                                                 />
                                                 <label
                                                     className={`govuk-label govuk-radios__label validity-radio-button-margin ${
-                                                        errors.length === 0 ? 'validity-radio-button-error-margin' : ''
+                                                        errors.length > 0 ? 'validity-radio-button-error-margin' : ''
                                                     }`}
                                                     htmlFor={`twenty-four-hours-row${index}`}
                                                 >
                                                     <span className="visually-hidden-label">24 hour</span>
                                                 </label>
-                                            </>
-                                        </FormElementWrapper>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <FormElementWrapper
-                                            errors={errors}
-                                            errorId={errorId}
-                                            errorClass="govuk-radios--error"
-                                        >
-                                            <>
+                                            </div>
+                                            <div className="govuk-radios__item">
                                                 <input
                                                     className="govuk-radios__input"
                                                     id={`calendar-day-row${index}`}
@@ -133,19 +126,19 @@ const MultiProductValidity = ({
                                                 />
                                                 <label
                                                     className={`govuk-label govuk-radios__label validity-radio-button-margin ${
-                                                        errors.length === 0 ? 'validity-radio-button-error-margin' : ''
+                                                        errors.length > 0 ? 'validity-radio-button-error-margin' : ''
                                                     }`}
                                                     htmlFor={`calendar-day-row${index}`}
                                                 >
                                                     <span className="visually-hidden-label">Calendar</span>
                                                 </label>
-                                            </>
-                                        </FormElementWrapper>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    ))}
+                                </fieldset>
+                            ))}
+                        </>
+                    </FormElementWrapper>
                 </div>
                 <input
                     type="submit"
@@ -160,16 +153,12 @@ const MultiProductValidity = ({
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    // deleteCookieOnServerSide(ctx, MULTIPLE_PRODUCT_COOKIE);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
     const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
-    // MULTIPLE_PRODUCT_COOKIE DEV VALUE = [{"productName": "dannys", "productPrice": "300", "productDuration": "7"}, {"productName": "robs", "productPrice": "200", "productDuration": "2"}, {"productName": "laurences", "productPrice": "800", "productDuration": "14"}, {"productName": "giles", "productPrice": "150", "productDuration": "1"}, {"productName": "tejs", "productPrice": "650", "productDuration": "9"}]
 
     if (!operatorCookie || !numberOfProductsCookie || !multipleProductCookie) {
-        throw new Error(
-            'Necessary cookies not found. The OPERATOR_COOKIE, NUMBER_OF_PRODUCTS_COOKIE and/or MULTIPLE_PRODUCT_COOKIE could not be retrieved',
-        );
+        throw new Error('Necessary cookies not found to display the multiple product vaidity page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
@@ -178,15 +167,9 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const errors: ErrorInfo[] = [];
     if (multipleProducts.some(el => el.productValidity && el.productValidity.error !== '')) {
-        for (let i = 0; i < multipleProducts.length; i += 1) {
-            const product = multipleProducts[i];
-            if (product.productValidity) {
-                const errorHref =
-                    product.productValidity.validity === '24hr' ? `twenty-four-hours-row${i}` : `calendar-day-row${i}`;
-                const error: ErrorInfo = { errorMessage: product.productValidity.error, id: errorHref };
-                errors.push(error);
-            }
-        }
+        const errorHref = 'multiple-product-validity-radios-error';
+        const error: ErrorInfo = { errorMessage: 'Select one of the two validity options', id: errorHref };
+        errors.push(error);
     }
 
     return { props: { operator, numberOfProducts, multipleProducts, errors } };

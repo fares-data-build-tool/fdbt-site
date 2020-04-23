@@ -1,11 +1,28 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { NUMBER_OF_PRODUCTS_COOKIE, MULTIPLE_PRODUCT_COOKIE } from '../../constants/index';
+import Cookies from 'cookies';
+import {
+    NUMBER_OF_PRODUCTS_COOKIE,
+    MULTIPLE_PRODUCT_COOKIE,
+    OPERATOR_COOKIE,
+    CSV_ZONE_UPLOAD_COOKIE,
+    PERIOD_SINGLE_OPERATOR_SERVICES,
+    PERIOD_TYPE,
+    MATCHING_DATA_BUCKET_NAME,
+} from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo } from './apiUtils';
 import { Product } from '../multipleProductValidity';
+import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
+import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 
-export const isInputValid = (req: NextApiRequest, products: Product[]): Product[] => {
-    const numberOfProducts = Number(JSON.parse(req.cookies[NUMBER_OF_PRODUCTS_COOKIE]).numberOfProductsInput);
+interface DecisionData {
+    operatorName: string;
+    type: string;
+    nocCode: string;
+    products: Product[];
+}
+
+export const isInputValid = (req: NextApiRequest, numberOfProducts: number, products: Product[]): Product[] => {
     const limiter = new Array(numberOfProducts);
     const response: Product[] = [];
     for (let i = 0; i < limiter.length; i += 1) {
@@ -26,30 +43,81 @@ export const isInputValid = (req: NextApiRequest, products: Product[]): Product[
     return response;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-        if (!req.cookies[NUMBER_OF_PRODUCTS_COOKIE] || !req.cookies[MULTIPLE_PRODUCT_COOKIE]) {
-            throw new Error(
-                'Necessary cookies not found. NUMBER_OF_PRODUCTS_COOKIE and/or MULTIPLE_PRODUCT_COOKIE are missing',
-            );
+
+        const cookies = new Cookies(req, res);
+        const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
+        const fareZoneCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
+        const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
+        const periodTypeCookie = unescape(decodeURI(cookies.get(PERIOD_TYPE) || ''));
+        const numberOfProductsCookie = unescape(decodeURI(cookies.get(NUMBER_OF_PRODUCTS_COOKIE) || ''));
+        const multipleProductCookie = unescape(decodeURI(cookies.get(MULTIPLE_PRODUCT_COOKIE) || ''));
+
+        if (
+            numberOfProductsCookie === '' ||
+            multipleProductCookie === '' ||
+            periodTypeCookie === '' ||
+            (operatorCookie === '' && (fareZoneCookie === '' || singleOperatorCookie === ''))
+        ) {
+            throw new Error('Necessary cookies not found for multiple product validity page');
         }
 
-        const products = JSON.parse(req.cookies[MULTIPLE_PRODUCT_COOKIE]);
+        const numberOfProducts = Number(JSON.parse(numberOfProductsCookie).numberOfProductsInput);
+        const products: Product[] = JSON.parse(multipleProductCookie);
 
-        const userInputValidity = isInputValid(req, products);
-        const multipleProductCookieValue = JSON.stringify(userInputValidity);
-        setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, multipleProductCookieValue, req, res);
+        const userInputValidity = isInputValid(req, numberOfProducts, products);
+        const newMultipleProductCookieValue = JSON.stringify(userInputValidity);
+        setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
 
         if (userInputValidity.some(el => el.productValidity?.error !== '')) {
             redirectTo(res, '/multipleProductValidity');
         }
 
-        // CREATE DECISION DATA AND PUT DATA IN S3
+        let props = {};
+        const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
+        const { periodTypeName } = JSON.parse(periodTypeCookie);
 
-        redirectTo(res, '/thankyou');
+        if (fareZoneCookie) {
+            const { fareZoneName } = JSON.parse(fareZoneCookie);
+            const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
+            const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+
+            if (zoneStops.length === 0) {
+                throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
+            }
+
+            props = {
+                zoneName: fareZoneName,
+                stops: zoneStops,
+            };
+        }
+
+        if (singleOperatorCookie) {
+            const { selectedServices } = JSON.parse(singleOperatorCookie);
+            props = {
+                selectedServices,
+            };
+        }
+
+        const multipleProductPeriod: DecisionData = {
+            operatorName: operator,
+            type: periodTypeName,
+            nocCode,
+            products,
+            ...props,
+        };
+
+        await putStringInS3(
+            MATCHING_DATA_BUCKET_NAME,
+            `${uuid}.json`,
+            JSON.stringify(multipleProductPeriod),
+            'application/json; charset=utf-8',
+        );
+        redirectTo(res, '/multipleProductValidity');
     } catch (error) {
         const message = 'There was a problem collecting the user defined products:';
         redirectToError(res, message, error);
