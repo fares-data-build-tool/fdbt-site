@@ -7,6 +7,7 @@ import ProductRow from '../components/ProductRow';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProduct';
+import { unescapeAndDecodeCookieServerSide } from '../utils';
 
 const title = 'Multiple Product - Fares data build tool';
 const description = 'Multiple Product page of the Fares data build tool';
@@ -58,21 +59,18 @@ const MultipleProduct = ({
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
 
-    const baseOperatorCookie = cookies[OPERATOR_COOKIE];
-    const baseNumberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
-
-    if (!baseOperatorCookie || !baseNumberOfProductsCookie) {
+    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
         throw new Error('Necessary cookies not found to show multiple products page');
     }
 
-    const operatorCookie = unescape(decodeURI(baseOperatorCookie));
-    const numberOfProductsCookie = unescape(decodeURI(baseNumberOfProductsCookie));
+    const operatorCookie = unescapeAndDecodeCookieServerSide(cookies, OPERATOR_COOKIE);
+    const numberOfProductsCookie = unescapeAndDecodeCookieServerSide(cookies, NUMBER_OF_PRODUCTS_COOKIE);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const nameOfOperator: string = JSON.parse(operatorCookie).operator;
 
     if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
-        const multipleProductCookie = unescape(decodeURI(cookies[MULTIPLE_PRODUCT_COOKIE]));
+        const multipleProductCookie = unescapeAndDecodeCookieServerSide(cookies, MULTIPLE_PRODUCT_COOKIE);
         const parsedMultipleProductCookie = JSON.parse(multipleProductCookie);
         const { errors } = parsedMultipleProductCookie;
 

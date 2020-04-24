@@ -3,8 +3,13 @@ import Cookies from 'cookies';
 import { ErrorSummary } from '../../components/ErrorSummary';
 import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo } from './apiUtils';
-import { trimInputOfWhiteSpace, isCurrency } from './periodProduct';
+import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import {
+    removeExcessWhiteSpace,
+    checkProductNameIsValid,
+    checkPriceIsValid,
+    checkDurationIsValid,
+} from './service/inputValidator';
 
 export interface MultiProduct {
     productName: string;
@@ -48,29 +53,16 @@ export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorSumma
 };
 
 export const containsErrors = (products: MultiProduct[]): boolean => {
-    let errorsExist = false;
-    products.forEach(product => {
-        if (product.productNameError || product.productPriceError || product.productDurationError) {
-            errorsExist = true;
-        }
-    });
-
-    return errorsExist;
+    return products.some(
+        product => product.productNameError || product.productPriceError || product.productDurationError,
+    );
 };
 
 export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiProduct[] => {
     const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productDuration } = product;
-        const trimmedDuration = trimInputOfWhiteSpace(productDuration);
-        let productDurationError;
-
-        if (trimmedDuration === '') {
-            productDurationError = `This field cannot be empty`;
-        } else if (Number.isNaN(Number(trimmedDuration))) {
-            productDurationError = `Product duration must be a whole, positive number`;
-        } else if (!(Number(trimmedDuration) > 0)) {
-            productDurationError = `Product duration cannot be zero or a negative number`;
-        }
+        const trimmedDuration = removeExcessWhiteSpace(productDuration);
+        const productDurationError = checkDurationIsValid(trimmedDuration);
 
         if (productDurationError) {
             return {
@@ -88,16 +80,8 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
 export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProduct[] => {
     const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productPrice } = product;
-        const trimmedPrice = trimInputOfWhiteSpace(productPrice);
-        let productPriceError;
-
-        if (trimmedPrice === '') {
-            productPriceError = `This field cannot be empty`;
-        } else if (Math.sign(Number(trimmedPrice)) === -1) {
-            productPriceError = `This must be a positive number`;
-        } else if (!isCurrency(trimmedPrice)) {
-            productPriceError = `This must be a valid price in pounds and pence`;
-        }
+        const trimmedPrice = removeExcessWhiteSpace(productPrice);
+        const productPriceError = checkPriceIsValid(trimmedPrice);
 
         if (productPriceError) {
             return {
@@ -115,14 +99,8 @@ export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProdu
 export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduct[] => {
     const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productName } = product;
-        const trimmedProductName = trimInputOfWhiteSpace(productName);
-        let productNameError;
-
-        if (trimmedProductName.length > 50) {
-            productNameError = `Product name cannot have more than 50 characters`;
-        } else if (trimmedProductName.length < 2) {
-            productNameError = `Product name cannot have less than 2 characters`;
-        }
+        const trimmedProductName = removeExcessWhiteSpace(productName);
+        const productNameError = checkProductNameIsValid(trimmedProductName);
 
         if (productNameError) {
             return {
@@ -143,7 +121,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
         const cookies = new Cookies(req, res);
-        const numberOfProductsCookie = unescape(decodeURI(cookies.get(NUMBER_OF_PRODUCTS_COOKIE) || ''));
+        const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_COOKIE);
         const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
         const numberOfReceivedProducts: number = Object.entries(req.body).length / 3;
 

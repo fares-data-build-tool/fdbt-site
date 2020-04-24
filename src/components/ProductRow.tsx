@@ -20,7 +20,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 errors={errors}
                 errorId={`multipleProductNameInput${index}`}
                 errorClass="govuk-form-group--error"
-                wrapFormGroup
+                addFormGroupError
             >
                 <div className="govuk-form-group">
                     <label className="govuk-label" htmlFor={`multipleProductName${index}`}>
@@ -49,7 +49,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 errors={errors}
                 errorId={`multipleProductPriceInput${index}`}
                 errorClass="govuk-form-group--error"
-                wrapFormGroup
+                addFormGroupError
             >
                 <div className="govuk-form-group">
                     <label className="govuk-label" htmlFor={`multipleProductPrice${index}`}>
@@ -84,7 +84,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 errors={errors}
                 errorId={`multipleProductDurationInput${index}`}
                 errorClass="govuk-form-group--error"
-                wrapFormGroup
+                addFormGroupError
             >
                 <div className="govuk-form-group">
                     <label className="govuk-label" htmlFor={`multipleProductDuration${index}`}>

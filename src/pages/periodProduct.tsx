@@ -2,7 +2,12 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PERIOD_PRODUCT_COOKIE, CSV_ZONE_UPLOAD_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE } from '../constants';
+import {
+    OPERATOR_COOKIE,
+    PERIOD_PRODUCT_COOKIE,
+    CSV_ZONE_UPLOAD_COOKIE,
+    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
+} from '../constants';
 import { PeriodProductType } from '../interfaces';
 
 const title = 'Period Product - Fares data build tool';
@@ -19,37 +24,6 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     const productPrice = product && product.productPrice;
     const productNameError = product && product.productNameError;
     const productPriceError = product && product.productPriceError;
-
-    let priceErrorMessage = '';
-    let nameErrorMessage = '';
-    if (product.productPriceError !== '') {
-        switch (productPriceError) {
-            case 'empty':
-                priceErrorMessage = 'Enter a Product Price';
-                break;
-            case 'notCurrency':
-                priceErrorMessage = 'Enter a valid currency';
-                break;
-            case 'zero':
-                priceErrorMessage = 'Product Price cannot be zero';
-                break;
-            default:
-                priceErrorMessage = 'Invalid input';
-        }
-
-        if (product.productNameError !== '') {
-            switch (productNameError) {
-                case 'empty':
-                    nameErrorMessage = 'Enter a Product Name';
-                    break;
-                case 'short':
-                    nameErrorMessage = 'Product Name cannot be 1 character';
-                    break;
-                default:
-                    nameErrorMessage = 'Invalid input';
-            }
-        }
-    }
 
     return (
         <Layout title={title} description={description}>
@@ -75,7 +49,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
                                 <span className={productNameError ? '' : 'govuk-visually-hidden'}>
-                                    {nameErrorMessage}
+                                    {productNameError}
                                 </span>
                             </span>
                             <input
@@ -98,7 +72,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             </span>
                             <span id="product-price-error" className="govuk-error-message">
                                 <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
-                                    {priceErrorMessage}
+                                    {productPriceError}
                                 </span>
                             </span>
                             <div className="govuk-currency-input">

@@ -3,15 +3,7 @@ import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnR
 import { isSessionValid } from './service/validator';
 import { PeriodProductType } from '../../interfaces';
 import { PERIOD_PRODUCT_COOKIE } from '../../constants';
-
-export const isCurrency = (periodPriceInput: string): boolean => {
-    const regex = /^\d+(\.\d{1,2})?$/;
-    return regex.test(periodPriceInput);
-};
-
-export const trimInputOfWhiteSpace = (input: string): string => {
-    return input.trim().replace(/\s+/g, ' ');
-};
+import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 
 export const checkIfInputInvalid = (
     periodProductNameInput: string,
@@ -21,21 +13,12 @@ export const checkIfInputInvalid = (
     let productNameError = '';
     let productPriceError = '';
 
-    const cleanedNameInput = trimInputOfWhiteSpace(periodProductNameInput);
+    const cleanedNameInput = removeExcessWhiteSpace(periodProductNameInput);
+    const cleanedPriceInput = removeExcessWhiteSpace(periodProductPriceInput);
 
-    if (cleanedNameInput === '') {
-        productNameError = 'empty';
-    } else if (cleanedNameInput.length < 2) {
-        productNameError = 'short';
-    }
+    productNameError = checkProductNameIsValid(cleanedNameInput);
 
-    if (periodProductPriceInput === '') {
-        productPriceError = 'empty';
-    } else if (!isCurrency(periodProductPriceInput)) {
-        productPriceError = 'notCurrency';
-    } else if (!(Number(periodProductPriceInput) > 0)) {
-        productPriceError = 'zero';
-    }
+    productPriceError = checkPriceIsValid(cleanedPriceInput);
 
     return {
         uuid,
@@ -53,7 +36,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const uuid = getUuidFromCookie(req, res);
-        
+
         const { periodProductNameInput, periodProductPriceInput } = req.body;
 
         const periodProduct = checkIfInputInvalid(periodProductNameInput, periodProductPriceInput, uuid);

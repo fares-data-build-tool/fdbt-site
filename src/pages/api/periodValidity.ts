@@ -10,7 +10,7 @@ import {
     PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
     PERIOD_TYPE_COOKIE,
 } from '../../constants';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
@@ -40,12 +40,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const cookies = new Cookies(req, res);
 
-            const periodProductCookie = unescape(decodeURI(cookies.get(PERIOD_PRODUCT_COOKIE) || ''));
-            const daysValidCookie = unescape(decodeURI(cookies.get(DAYS_VALID_COOKIE) || ''));
-            const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
-            const fareZoneCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
-            const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE) || ''));
-            const periodTypeCookie = unescape(decodeURI(cookies.get(PERIOD_TYPE_COOKIE) || ''));
+            const periodProductCookie = unescapeAndDecodeCookie(cookies, PERIOD_PRODUCT_COOKIE);
+            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
+            const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+            const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
+            const singleOperatorCookie = unescapeAndDecodeCookie(cookies, PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE);
+            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
 
             if (
                 periodProductCookie === '' ||

@@ -6,7 +6,7 @@ interface FormElementWrapperProps {
     errorId: string;
     errorClass: string;
     children: ReactElement;
-    wrapFormGroup?: boolean;
+    addFormGroupError?: boolean;
 }
 
 const addErrorClasses = (child: ReactElement, errorClass: string, errorId: string): ReactElement =>
@@ -20,12 +20,12 @@ const FormElementWrapper = ({
     errorId,
     errorClass,
     children,
-    wrapFormGroup,
+    addFormGroupError,
 }: FormElementWrapperProps): ReactElement => {
     const errorForElement = errors.find(err => err.id === errorId);
 
     return (
-        <div className={wrapFormGroup && errorForElement ? 'govuk-form-group--error' : ''}>
+        <div className={addFormGroupError && errorForElement ? 'govuk-form-group--error' : ''}>
             {errorForElement && (
                 <span id={errorId} className="govuk-error-message">
                     {errorForElement.errorMessage}
