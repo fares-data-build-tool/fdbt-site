@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getUuidFromCookie, getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils/index';
-import { SERVICE_COOKIE } from '../../constants/index';
+import { FARETYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -23,6 +23,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const cookieValue = JSON.stringify({ service, uuid });
         setCookieOnResponseObject(getDomain(req), SERVICE_COOKIE, cookieValue, req, res);
+        const fareTypeCookie = JSON.parse(req.cookies[FARETYPE_COOKIE]).fareType;
+
+        if(fareTypeCookie === 'returnSingle') {
+            redirectTo(res, '/selectJourneyDirection');
+        }
+
         redirectTo(res, '/direction');
     } catch (error) {
         const message = 'There was a problem selecting the service:';

@@ -43,7 +43,7 @@ const Direction = ({ operator, lineName, service }: DirectionProps): ReactElemen
                             <span className="govuk-hint" id="direction-journey-description-hint">
                                 {`Journey: ${service.serviceDescription}`}
                             </span>
-                            <DirectionDropdown journeyPatterns={service.journeyPatterns} />
+                            <DirectionDropdown journeyPatterns={service.journeyPatterns} selectNameID="directionJourneyPattern" />
                         </fieldset>
                     </div>
                     <input
@@ -58,7 +58,7 @@ const Direction = ({ operator, lineName, service }: DirectionProps): ReactElemen
     );
 };
 
-export const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPattern[]): Promise<JourneyPattern[]> =>
+const enrichJourneyPatternsWithNaptanInfo = async (journeyPatterns: RawJourneyPattern[]): Promise<JourneyPattern[]> =>
     Promise.all(
         journeyPatterns.map(
             async (item: RawJourneyPattern): Promise<JourneyPattern> => {
