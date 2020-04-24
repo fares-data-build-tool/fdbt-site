@@ -37,7 +37,7 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/selectJourneyDirection" method="post">
                     <ErrorSummary errors={errors} />
-                    <div className="govuk-form-group">
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
