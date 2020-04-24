@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import Direction, { getServerSideProps } from '../../src/pages/direction';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
@@ -32,8 +32,9 @@ describe('pages', () => {
             expect(journeyWelcome.text()).toBe('Connexions Buses - X6A');
         });
 
-        it('shows a list of journey patterns for the service in the select box', () => {
-            const wrapper = shallow(<Direction operator="Connexions Buses" lineName="X6A" service={mockService} />);
+        it.only('shows a list of journey patterns for the service in the select box', () => {
+            const wrapper = mount(<Direction operator="Connexions Buses" lineName="X6A" service={mockService} />);
+
             const serviceJourney = wrapper.find('.journey-option');
 
             expect(serviceJourney).toHaveLength(2);
