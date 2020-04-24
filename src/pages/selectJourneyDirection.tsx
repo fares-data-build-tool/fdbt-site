@@ -126,7 +126,8 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
 
     if (journeyCookie) {
         const journeyCookieInfo = JSON.parse(journeyCookie);
-        if (journeyCookieInfo.errorMessages.length > 0) {
+
+        if (journeyCookieInfo?.errorMessages?.length > 0) {
             const { outboundJourney = '', inboundJourney = '' } = journeyCookieInfo;
             return {
                 props: {
