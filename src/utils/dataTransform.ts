@@ -1,5 +1,5 @@
 import flatMap from 'array.prototype.flatmap';
-import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern } from '../data/auroradb';
+import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern, RawJourneyPatternStops } from '../data/auroradb';
 
 // eslint-disable-next-line import/prefer-default-export
 export const enrichJourneyPatternsWithNaptanInfo = async (
@@ -8,7 +8,7 @@ export const enrichJourneyPatternsWithNaptanInfo = async (
     Promise.all(
         journeyPatterns.map(
             async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                const stopList = flatMap(item.JourneyPattern, stop => {
+                const stopList = flatMap(item.JourneyPattern, (stop: RawJourneyPatternStops) => {
                     return stop.OrderedStopPoints.map(stopPoint => stopPoint.StopPointRef);
                 });
 

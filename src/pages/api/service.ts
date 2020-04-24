@@ -29,8 +29,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const fareTypeCookie = unescape(decodeURI(cookies.get(FARETYPE_COOKIE) || ''));
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
-        if (fareTypeObject && fareTypeObject === 'returnSingle') {
+        if (fareTypeObject && fareTypeObject.fareType === 'returnSingle') {
             redirectTo(res, '/selectJourneyDirection');
+            return;
         }
 
         redirectTo(res, '/direction');
