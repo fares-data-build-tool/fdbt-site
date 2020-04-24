@@ -25,7 +25,6 @@ interface DirectionProps {
 }
 
 const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
-    console.log('erros', errors);
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
