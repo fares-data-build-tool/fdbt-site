@@ -125,7 +125,6 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
     const { nocCode } = operatorObject;
-    console.log('journeyObject', journeyObject);
     const [selectedStartPoint, selectedEndPoint] = journeyObject.directionJourneyPattern.split('#');
     const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
