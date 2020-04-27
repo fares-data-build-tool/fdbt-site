@@ -51,6 +51,9 @@ const MultiProductValidity = ({
                             When does the product expire?
                         </h1>
                     </legend>
+                    <span className="govuk-hint" id="operator-products-hint">
+                        {operator} - {numberOfProducts} products
+                    </span>
                     <span className="govuk-hint" id="multiProductValidity-page-hint">
                         We need to know the time that this product would be valid until
                     </span>
@@ -59,9 +62,6 @@ const MultiProductValidity = ({
                             Ensure one option is selected for each set of radio buttons
                         </span>
                     </span>
-                    <span className="govuk-hint" id="operator-products-hint">
-                        {operator} - {numberOfProducts} products
-                    </span>
                     <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                         <>
                             <div className="grid-headers-wrapper">
@@ -69,9 +69,12 @@ const MultiProductValidity = ({
                                 <div className="govuk-heading-s grid-column-header-one-fifth">Product Price</div>
                                 <div className="govuk-heading-s grid-column-header-one-fifth">Product Duration</div>
                                 <div className="govuk-heading-s grid-column-header-one-fifth" id="24hr-header">
-                                    24hr
+                                    24hrs
                                 </div>
-                                <div className="govuk-heading-s grid-column-header-one-fifth" id="calendar-header">
+                                <div
+                                    className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
+                                    id="calendar-header"
+                                >
                                     Calendar
                                 </div>
                             </div>

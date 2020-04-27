@@ -22,7 +22,7 @@ interface DecisionData {
     products: Product[];
 }
 
-export const isInputValid = (req: NextApiRequest, numberOfProducts: number, products: Product[]): Product[] => {
+export const addErrorsIfInvalid = (req: NextApiRequest, numberOfProducts: number, products: Product[]): Product[] => {
     const limiter = new Array(numberOfProducts);
     const response: Product[] = [];
     for (let i = 0; i < limiter.length; i += 1) {
@@ -69,7 +69,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const numberOfProducts = Number(JSON.parse(numberOfProductsCookie).numberOfProductsInput);
         const products: Product[] = JSON.parse(multipleProductCookie);
 
-        const userInputValidity = isInputValid(req, numberOfProducts, products);
+        const userInputValidity = addErrorsIfInvalid(req, numberOfProducts, products);
         const newMultipleProductCookieValue = JSON.stringify(userInputValidity);
         setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
 
