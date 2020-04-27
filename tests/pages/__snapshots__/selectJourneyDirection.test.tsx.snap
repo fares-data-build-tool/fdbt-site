@@ -45,7 +45,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
               <div>
                 <span
                   className="govuk-hint"
-                  id="journey-selection-hint"
+                  id="outbound-journey-selection-hint"
                 >
                   Outbound Journey
                 </span>
@@ -124,7 +124,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
               <div>
                 <span
                   className="govuk-hint"
-                  id="journey-selection-hint"
+                  id="inbound-journey-selection-hint"
                 >
                   Inbound Journey
                 </span>

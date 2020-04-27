@@ -44,7 +44,7 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorClass="govuk-radios--error"
                                 >
                                     <div>
-                                        <span className="govuk-hint" id="journey-selection-hint">
+                                        <span className="govuk-hint" id="outbound-journey-selection-hint">
                                             Outbound Journey
                                         </span>
                                         <DirectionDropdown
@@ -62,7 +62,7 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorClass="govuk-radios--error"
                                 >
                                     <div>
-                                        <span className="govuk-hint" id="journey-selection-hint">
+                                        <span className="govuk-hint" id="inbound-journey-selection-hint">
                                             Inbound Journey
                                         </span>
                                         <DirectionDropdown
