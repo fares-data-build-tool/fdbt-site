@@ -5,8 +5,8 @@ import {
     MULTIPLE_PRODUCT_COOKIE,
     OPERATOR_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_SINGLE_OPERATOR_SERVICES,
-    PERIOD_TYPE,
+    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
+    PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
 } from '../../constants/index';
 import { isSessionValid } from './service/validator';
@@ -51,8 +51,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const cookies = new Cookies(req, res);
         const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
         const fareZoneCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
-        const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES) || ''));
-        const periodTypeCookie = unescape(decodeURI(cookies.get(PERIOD_TYPE) || ''));
+        const singleOperatorCookie = unescape(decodeURI(cookies.get(PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE) || ''));
+        const periodTypeCookie = unescape(decodeURI(cookies.get(PERIOD_TYPE_COOKIE) || ''));
         const numberOfProductsCookie = unescape(decodeURI(cookies.get(NUMBER_OF_PRODUCTS_COOKIE) || ''));
         const multipleProductCookie = unescape(decodeURI(cookies.get(MULTIPLE_PRODUCT_COOKIE) || ''));
 
