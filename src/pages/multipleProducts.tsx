@@ -6,7 +6,7 @@ import { OPERATOR_COOKIE, NUMBER_OF_PRODUCTS_COOKIE, MULTIPLE_PRODUCT_COOKIE } f
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { MultiProduct } from './api/multipleProduct';
+import { MultiProduct } from './api/multipleProducts';
 import { unescapeAndDecodeCookieServerSide } from '../utils';
 
 const title = 'Multiple Product - Fares data build tool';
@@ -19,7 +19,7 @@ export interface MultipleProductProps {
     userInput: MultiProduct[];
 }
 
-const MultipleProduct = ({
+const MultipleProducts = ({
     numberOfProductsToDisplay,
     nameOfOperator,
     errors = [],
@@ -28,7 +28,7 @@ const MultipleProduct = ({
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/multipleProduct" method="post">
+                <form action="/api/multipleProducts" method="post">
                     <ErrorSummary errors={errors} />
                     <div className="govuk-form-group">
                         <fieldset className="govuk-fieldset" aria-describedby="period-product-page-heading">
@@ -95,4 +95,4 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     };
 };
 
-export default MultipleProduct;
+export default MultipleProducts;

@@ -159,7 +159,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const cookieContent = JSON.stringify({ ...errors, userInput: multipleProducts });
 
             setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, cookieContent, req, res);
-            redirectTo(res, '/multipleProduct');
+            redirectTo(res, '/multipleProducts');
             return;
         }
 
