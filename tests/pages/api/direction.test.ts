@@ -26,7 +26,7 @@ describe('direction', () => {
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "single"}' };
         const { req, res } = getMockRequestAndResponse(
             mockFareTypeCookie,
-            { journeyPattern: 'test_journey' },
+            { directionJourneyPattern: 'test_journey' },
             {},
             writeHeadMock,
         );
@@ -43,7 +43,7 @@ describe('direction', () => {
         const mockFareTypeCookie = { 'fdbt-fareType': '{"fareType": "returnSingle"}' };
         const { req, res } = getMockRequestAndResponse(
             mockFareTypeCookie,
-            { journeyPattern: 'test_journey' },
+            { directionJourneyPattern: 'test_journey' },
             {},
             writeHeadMock,
         );

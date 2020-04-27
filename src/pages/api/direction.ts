@@ -8,10 +8,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-        const { journeyPattern } = req.body;
+
+        const { directionJourneyPattern } = req.body;
+
         const fareTypeCookie = JSON.parse(req.cookies[FARETYPE_COOKIE]).fareType;
 
-        if (!journeyPattern || !fareTypeCookie) {
+        if (!directionJourneyPattern || !fareTypeCookie) {
             redirectTo(res, '/direction');
             return;
         }
@@ -22,7 +24,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('No UUID found');
         }
 
-        const cookieValue = JSON.stringify({ journeyPattern, uuid });
+        const cookieValue = JSON.stringify({ directionJourneyPattern, uuid });
         setCookieOnResponseObject(getDomain(req), JOURNEY_COOKIE, cookieValue, req, res);
 
         if (fareTypeCookie === 'returnSingle') {

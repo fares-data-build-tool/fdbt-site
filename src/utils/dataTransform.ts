@@ -1,5 +1,4 @@
-import flatMap from 'array.prototype.flatmap';
-import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern, RawJourneyPatternStops } from '../data/auroradb';
+import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern } from '../data/auroradb';
 
 // eslint-disable-next-line import/prefer-default-export
 export const enrichJourneyPatternsWithNaptanInfo = async (
@@ -8,28 +7,26 @@ export const enrichJourneyPatternsWithNaptanInfo = async (
     Promise.all(
         journeyPatterns.map(
             async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                const stopList = flatMap(item.JourneyPattern, (stop: RawJourneyPatternStops) => {
-                    return stop.OrderedStopPoints.map(stopPoint => stopPoint.StopPointRef);
-                });
+                const stopList = item.orderedStopPoints.flatMap(stopPoint => stopPoint.stopPointRef);
 
-                const startPoint = item.JourneyPattern[0].OrderedStopPoints[0];
-                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.StopPointRef]);
+                const startPoint = item.orderedStopPoints[0];
+                const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.stopPointRef]);
 
-                const endPoint = item.JourneyPattern.slice(-1)[0].OrderedStopPoints.slice(-1)[0];
-                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.StopPointRef]);
+                const endPoint = item.orderedStopPoints.slice(-1)[0];
+                const [endPointStopLocality] = await batchGetStopsByAtcoCode([endPoint.stopPointRef]);
 
                 return {
                     startPoint: {
-                        Display: `${startPoint.CommonName}${
+                        Display: `${startPoint.commonName}${
                             startPointStopLocality?.localityName ? `, ${startPointStopLocality.localityName}` : ''
                         }`,
-                        Id: startPoint.StopPointRef,
+                        Id: startPoint.stopPointRef,
                     },
                     endPoint: {
-                        Display: `${endPoint.CommonName}${
+                        Display: `${endPoint.commonName}${
                             endPointStopLocality?.localityName ? `, ${endPointStopLocality.localityName}` : ''
                         }`,
-                        Id: endPoint.StopPointRef,
+                        Id: endPoint.stopPointRef,
                     },
                     stopList,
                 };
