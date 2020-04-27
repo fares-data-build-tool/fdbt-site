@@ -2,14 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { shallow } from 'enzyme';
 import React from 'react';
-import MultipleProduct, { getServerSideProps } from '../../src/pages/multipleProduct';
+import MultipleProducts, { getServerSideProps } from '../../src/pages/multipleProducts';
 import { getMockContext } from '../testData/mockData';
 
 describe('pages', () => {
     describe('multipleProduct', () => {
         it('should render correctly', () => {
             const wrapper = shallow(
-                <MultipleProduct
+                <MultipleProducts
                     numberOfProductsToDisplay="2"
                     nameOfOperator="Infinity Line"
                     errors={[]}

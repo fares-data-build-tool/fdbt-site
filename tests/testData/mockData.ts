@@ -19,7 +19,7 @@ import {
     PERIOD_TYPE_COOKIE,
 } from '../../src/constants/index';
 
-import { MultiProduct } from '../../src/pages/api/multipleProduct';
+import { MultiProduct } from '../../src/pages/api/multipleProducts';
 
 export const getMockRequestAndResponse = (
     cookieValues: any = {},

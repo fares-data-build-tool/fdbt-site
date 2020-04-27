@@ -4,7 +4,7 @@ import multipleProduct, {
     containsErrors,
     getErrorsForCookie,
     checkProductNamesAreValid,
-} from '../../../src/pages/api/multipleProduct';
+} from '../../../src/pages/api/multipleProducts';
 import {
     multipleProducts,
     multipleProductsWithoutErrors,
@@ -78,7 +78,7 @@ describe('multipleProduct', () => {
                 multipleProductPriceInput1: '2.05',
                 multipleProductDurationInput1: '54',
             },
-            { Location: '/multipleProduct' },
+            { Location: '/multipleProducts' },
         ],
 
         [
@@ -90,7 +90,7 @@ describe('multipleProduct', () => {
                 multipleProductPriceInput1: '2',
                 multipleProductDurationInput1: '54',
             },
-            { Location: '/multipleProduct' },
+            { Location: '/multipleProducts' },
         ],
 
         [
@@ -103,7 +103,7 @@ describe('multipleProduct', () => {
                 multipleProductPriceInput1: '2.05',
                 multipleProductDurationInput1: '54',
             },
-            { Location: '/multipleProduct' },
+            { Location: '/multipleProducts' },
         ],
 
         [

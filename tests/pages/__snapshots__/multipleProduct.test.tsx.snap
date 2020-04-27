@@ -11,7 +11,7 @@ exports[`pages multipleProduct should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/multipleProduct"
+      action="/api/multipleProducts"
       method="post"
     >
       <ErrorSummary

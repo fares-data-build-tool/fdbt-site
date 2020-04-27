@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../types';
 import FormElementWrapper from './FormElementWrapper';
-import { MultiProduct } from '../pages/api/multipleProduct';
+import { MultiProduct } from '../pages/api/multipleProducts';
 
 export interface ProductRowProps {
     numberOfProductsToDisplay: string;
