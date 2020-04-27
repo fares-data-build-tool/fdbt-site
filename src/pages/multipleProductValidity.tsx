@@ -108,7 +108,7 @@ const MultiProductValidity = ({
                                                     id={`twenty-four-hours-row${index}`}
                                                     name={`validity-row${index}`}
                                                     type="radio"
-                                                    value="24hr"
+                                                    value="24hrs"
                                                 />
                                                 <label
                                                     className={`govuk-label govuk-radios__label validity-radio-button-margin ${

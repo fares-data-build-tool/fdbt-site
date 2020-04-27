@@ -48,7 +48,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-
         const cookies = new Cookies(req, res);
         const operatorCookie = unescape(decodeURI(cookies.get(OPERATOR_COOKIE) || ''));
         const fareZoneCookie = unescape(decodeURI(cookies.get(CSV_ZONE_UPLOAD_COOKIE) || ''));
@@ -69,11 +68,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const numberOfProducts = Number(JSON.parse(numberOfProductsCookie).numberOfProductsInput);
         const products: Product[] = JSON.parse(multipleProductCookie);
 
-        const userInputValidity = addErrorsIfInvalid(req, numberOfProducts, products);
-        const newMultipleProductCookieValue = JSON.stringify(userInputValidity);
+        const checkedUserInput = addErrorsIfInvalid(req, numberOfProducts, products);
+        const newMultipleProductCookieValue = JSON.stringify(checkedUserInput);
         setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
 
-        if (userInputValidity.some(el => el.productValidity?.error !== '')) {
+        if (checkedUserInput.some(el => el.productValidity?.error !== '')) {
             redirectTo(res, '/multipleProductValidity');
         }
 
