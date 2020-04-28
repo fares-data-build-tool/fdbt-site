@@ -31,7 +31,7 @@ interface MatchingFareZones {
 export const putDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `  cx vm/*                                                                                                                                                                                                                                                                                                                                                                */${uuid}_${data.lineName}_${data.nocCode}.json`,
+        `outbound-matching/${uuid}_.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
@@ -111,7 +111,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const error = { error: true };
             setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error }), req, res);
-            redirectTo(res, '/matching');
+            redirectTo(res, '/outboundMatching');
             return;
         }
 
@@ -123,11 +123,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones);
 
-        setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
-
         await putDataInS3(matchingJson, uuid);
 
-        redirectTo(res, '/inboukndJourney');
+        redirectTo(res, '/inboundJourney');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';
         redirectToError(res, message, error);

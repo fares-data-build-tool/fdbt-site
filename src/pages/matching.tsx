@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import Layout from '../layout/Layout';
 import {
     getServiceByNocCodeAndLineName,
     batchGetStopsByAtcoCode,
@@ -11,10 +10,12 @@ import {
 } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
-import MatchingList from '../components/MatchingList';
+import MatchingBase from '../components/matching/Matching';
 
 const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the fares data build tool';
+const heading = 'Match stops to fares stages';
+const hintText = 'Please select the correct fare stages for each stop.';
 
 export interface BasicService {
     lineName: string;
@@ -30,30 +31,16 @@ interface MatchingProps {
 }
 
 const Matching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
-    <Layout title={title} description={description}>
-        <main className="govuk-main-wrapper app-main-class matching-page" id="main-content" role="main">
-            <form action="/api/matching" method="post">
-                <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                        <h1 className="govuk-fieldset__heading">Match stops to fares stages</h1>
-                    </legend>
-                    <span id="dropdown-error" className="govuk-error-message">
-                        <span className={error ? '' : 'govuk-visually-hidden'}>
-                            Ensure each fare stage is assigned at least once.
-                        </span>
-                    </span>
-                    <span className="govuk-hint" id="match-fares-hint">
-                        Please select the correct fare stages for each stop.
-                    </span>
-                    <MatchingList userFareStages={userFareStages} stops={stops} />
-                </div>
-
-                <input type="hidden" name="service" value={JSON.stringify(service)} />
-                <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
-                <input type="submit" value="Submit" id="submit-button" className="govuk-button govuk-button--start" />
-            </form>
-        </main>
-    </Layout>
+    <MatchingBase
+        userFareStages={userFareStages}
+        stops={stops}
+        service={service}
+        error={error}
+        heading={heading}
+        title={title}
+        description={description}
+        hintText={hintText}
+    />
 );
 
 // Gets a list of journey pattern sections with a given start and end point

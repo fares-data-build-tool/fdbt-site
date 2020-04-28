@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { FARE_STAGES_COOKIE, FARETYPE_COOKIE, JOURNEY_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
+import { FARE_STAGES_COOKIE, JOURNEY_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
@@ -110,7 +110,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const journeyCookie = unescape(decodeURI(cookies.get(JOURNEY_COOKIE) || ''));
         const journeyObject = JSON.parse(journeyCookie);
 
-        if(journeyObject?.outboundJourney !== '') {
+        if (journeyObject?.outboundJourney) {
             redirectTo(res, '/outboundMatching');
         }
 

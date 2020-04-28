@@ -1,349 +1,301 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Matching Page should render correctly 1`] = `
-<Layout
+<MatchingBase
   description="Matching page of the fares data build tool"
+  error={false}
+  heading="Match stops to fares stages"
+  hintText="Please select the correct fare stages for each stop."
+  service={
+    Object {
+      "lineName": "215",
+      "nocCode": "DCCL",
+      "operatorShortName": "DCC",
+      "type": "pointToPoint",
+    }
+  }
+  stops={
+    Array [
+      Object {
+        "atcoCode": "13003305E",
+        "indicator": "S-bound",
+        "localityCode": "N0077347",
+        "localityName": "New Seaham",
+        "naptanCode": "durapmja",
+        "parentLocalityName": "IW Test",
+        "stopName": "Westlea shops",
+        "street": "B1285 Stockton Road",
+      },
+      Object {
+        "atcoCode": "13003622B",
+        "indicator": "NE-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "duratgtm",
+        "parentLocalityName": "IW Test",
+        "stopName": "The Avenue Shops",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003655B",
+        "indicator": "B",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratjwd",
+        "parentLocalityName": "IW Test",
+        "stopName": "Interchange Stand B",
+        "street": "South Crescent",
+      },
+      Object {
+        "atcoCode": "13003635B",
+        "indicator": "NE-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratjga",
+        "parentLocalityName": "IW Test",
+        "stopName": "Adolphus Place",
+        "street": "South Terrace",
+      },
+      Object {
+        "atcoCode": "13003618B",
+        "indicator": "NE-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "duratgpt",
+        "parentLocalityName": "IW Test",
+        "stopName": "The Avenue - Essex Crescent",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003612D",
+        "indicator": "SE-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratgma",
+        "parentLocalityName": "IW Test",
+        "stopName": "New Strangford Road",
+        "street": "New Stranford Road",
+      },
+      Object {
+        "atcoCode": "13003611B",
+        "indicator": "NE-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratgjt",
+        "parentLocalityName": "IW Test",
+        "stopName": "New Tempest Road - York House",
+        "street": "Tempest Road",
+      },
+      Object {
+        "atcoCode": "13003306B",
+        "indicator": "NE-bound",
+        "localityCode": "N0077347",
+        "localityName": "New Seaham",
+        "naptanCode": "durapmjg",
+        "parentLocalityName": "IW Test",
+        "stopName": "Mount Pleasant",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003949C",
+        "indicator": "E-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "durgawmt",
+        "parentLocalityName": "IW Test",
+        "stopName": "Viceroy Street",
+        "street": "Viceroy street",
+      },
+      Object {
+        "atcoCode": "13003609E",
+        "indicator": "S-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratgdt",
+        "parentLocalityName": "IW Test",
+        "stopName": "Vane Terrace - Castlereagh",
+        "street": "Vane Terrace",
+      },
+      Object {
+        "atcoCode": "13003921A",
+        "indicator": "N-bound",
+        "localityCode": "N0077347",
+        "localityName": "New Seaham",
+        "naptanCode": "durgawjp",
+        "parentLocalityName": "IW Test",
+        "stopName": "Estate Hail and Ride",
+        "street": "Windermere Road",
+      },
+      Object {
+        "atcoCode": "13003923B",
+        "indicator": "NE-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "durawagw",
+        "parentLocalityName": "IW Test",
+        "stopName": "Kingston Avenue",
+        "street": "Kingston Avenue",
+      },
+      Object {
+        "atcoCode": "13003625C",
+        "indicator": "E-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "duratgwg",
+        "parentLocalityName": "IW Test",
+        "stopName": "Park",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003939H",
+        "indicator": "NW-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "durawamp",
+        "parentLocalityName": "IW Test",
+        "stopName": "Laurel Avenue",
+        "street": "Laurel Avenue",
+      },
+      Object {
+        "atcoCode": "13003661E",
+        "indicator": "S-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "durgapwp",
+        "parentLocalityName": "IW Test",
+        "stopName": "Sophia Street",
+        "street": "Sophia Street",
+      },
+    ]
+  }
   title="Matching - Fares data build tool"
->
-  <main
-    className="govuk-main-wrapper app-main-class matching-page"
-    id="main-content"
-    role="main"
-  >
-    <form
-      action="/api/matching"
-      method="post"
-    >
-      <div
-        className="govuk-form-group"
-      >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--xl"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-          >
-            Match stops to fares stages
-          </h1>
-        </legend>
-        <span
-          className="govuk-error-message"
-          id="dropdown-error"
-        >
-          <span
-            className="govuk-visually-hidden"
-          >
-            Ensure each fare stage is assigned at least once.
-          </span>
-        </span>
-        <span
-          className="govuk-hint"
-          id="match-fares-hint"
-        >
-          Please select the correct fare stages for each stop.
-        </span>
-        <MatchingList
-          stops={
-            Array [
-              Object {
-                "atcoCode": "13003305E",
-                "indicator": "S-bound",
-                "localityCode": "N0077347",
-                "localityName": "New Seaham",
-                "naptanCode": "durapmja",
-                "parentLocalityName": "IW Test",
-                "stopName": "Westlea shops",
-                "street": "B1285 Stockton Road",
-              },
-              Object {
-                "atcoCode": "13003622B",
-                "indicator": "NE-bound",
-                "localityCode": "E0010170",
-                "localityName": "Deneside",
-                "naptanCode": "duratgtm",
-                "parentLocalityName": "IW Test",
-                "stopName": "The Avenue Shops",
-                "street": "The Avenue",
-              },
-              Object {
-                "atcoCode": "13003655B",
-                "indicator": "B",
-                "localityCode": "E0045957",
-                "localityName": "Seaham",
-                "naptanCode": "duratjwd",
-                "parentLocalityName": "IW Test",
-                "stopName": "Interchange Stand B",
-                "street": "South Crescent",
-              },
-              Object {
-                "atcoCode": "13003635B",
-                "indicator": "NE-bound",
-                "localityCode": "E0045957",
-                "localityName": "Seaham",
-                "naptanCode": "duratjga",
-                "parentLocalityName": "IW Test",
-                "stopName": "Adolphus Place",
-                "street": "South Terrace",
-              },
-              Object {
-                "atcoCode": "13003618B",
-                "indicator": "NE-bound",
-                "localityCode": "E0010170",
-                "localityName": "Deneside",
-                "naptanCode": "duratgpt",
-                "parentLocalityName": "IW Test",
-                "stopName": "The Avenue - Essex Crescent",
-                "street": "The Avenue",
-              },
-              Object {
-                "atcoCode": "13003612D",
-                "indicator": "SE-bound",
-                "localityCode": "E0045957",
-                "localityName": "Seaham",
-                "naptanCode": "duratgma",
-                "parentLocalityName": "IW Test",
-                "stopName": "New Strangford Road",
-                "street": "New Stranford Road",
-              },
-              Object {
-                "atcoCode": "13003611B",
-                "indicator": "NE-bound",
-                "localityCode": "E0045957",
-                "localityName": "Seaham",
-                "naptanCode": "duratgjt",
-                "parentLocalityName": "IW Test",
-                "stopName": "New Tempest Road - York House",
-                "street": "Tempest Road",
-              },
-              Object {
-                "atcoCode": "13003306B",
-                "indicator": "NE-bound",
-                "localityCode": "N0077347",
-                "localityName": "New Seaham",
-                "naptanCode": "durapmjg",
-                "parentLocalityName": "IW Test",
-                "stopName": "Mount Pleasant",
-                "street": "The Avenue",
-              },
-              Object {
-                "atcoCode": "13003949C",
-                "indicator": "E-bound",
-                "localityCode": "E0045957",
-                "localityName": "Seaham",
-                "naptanCode": "durgawmt",
-                "parentLocalityName": "IW Test",
-                "stopName": "Viceroy Street",
-                "street": "Viceroy street",
-              },
-              Object {
-                "atcoCode": "13003609E",
-                "indicator": "S-bound",
-                "localityCode": "E0045957",
-                "localityName": "Seaham",
-                "naptanCode": "duratgdt",
-                "parentLocalityName": "IW Test",
-                "stopName": "Vane Terrace - Castlereagh",
-                "street": "Vane Terrace",
-              },
-              Object {
-                "atcoCode": "13003921A",
-                "indicator": "N-bound",
-                "localityCode": "N0077347",
-                "localityName": "New Seaham",
-                "naptanCode": "durgawjp",
-                "parentLocalityName": "IW Test",
-                "stopName": "Estate Hail and Ride",
-                "street": "Windermere Road",
-              },
-              Object {
-                "atcoCode": "13003923B",
-                "indicator": "NE-bound",
-                "localityCode": "E0010170",
-                "localityName": "Deneside",
-                "naptanCode": "durawagw",
-                "parentLocalityName": "IW Test",
-                "stopName": "Kingston Avenue",
-                "street": "Kingston Avenue",
-              },
-              Object {
-                "atcoCode": "13003625C",
-                "indicator": "E-bound",
-                "localityCode": "E0010170",
-                "localityName": "Deneside",
-                "naptanCode": "duratgwg",
-                "parentLocalityName": "IW Test",
-                "stopName": "Park",
-                "street": "The Avenue",
-              },
-              Object {
-                "atcoCode": "13003939H",
-                "indicator": "NW-bound",
-                "localityCode": "E0010170",
-                "localityName": "Deneside",
-                "naptanCode": "durawamp",
-                "parentLocalityName": "IW Test",
-                "stopName": "Laurel Avenue",
-                "street": "Laurel Avenue",
-              },
-              Object {
-                "atcoCode": "13003661E",
-                "indicator": "S-bound",
-                "localityCode": "E0045957",
-                "localityName": "Seaham",
-                "naptanCode": "durgapwp",
-                "parentLocalityName": "IW Test",
-                "stopName": "Sophia Street",
-                "street": "Sophia Street",
-              },
-            ]
-          }
-          userFareStages={
+  userFareStages={
+    Object {
+      "fareStages": Array [
+        Object {
+          "prices": Array [
             Object {
-              "fareStages": Array [
-                Object {
-                  "prices": Array [
-                    Object {
-                      "fareZones": Array [
-                        "Mattison Way",
-                        "Nursery Drive",
-                        "Holl Bank/Beech Ave",
-                      ],
-                      "price": "1.10",
-                    },
-                    Object {
-                      "fareZones": Array [
-                        "Cambridge Street (York)",
-                        "Blossom Street",
-                        "Rail Station (York)",
-                        "Piccadilly (York)",
-                      ],
-                      "price": "1.70",
-                    },
-                  ],
-                  "stageName": "Acomb Green Lane",
-                },
-                Object {
-                  "prices": Array [
-                    Object {
-                      "fareZones": Array [
-                        "Nursery Drive",
-                        "Holl Bank/Beech Ave",
-                      ],
-                      "price": "1.10",
-                    },
-                    Object {
-                      "fareZones": Array [
-                        "Cambridge Street (York)",
-                        "Blossom Street",
-                        "Rail Station (York)",
-                        "Piccadilly (York)",
-                      ],
-                      "price": "1.70",
-                    },
-                  ],
-                  "stageName": "Mattison Way",
-                },
-                Object {
-                  "prices": Array [
-                    Object {
-                      "fareZones": Array [
-                        "Holl Bank/Beech Ave",
-                        "Cambridge Street (York)",
-                        "Blossom Street",
-                      ],
-                      "price": "1.10",
-                    },
-                    Object {
-                      "fareZones": Array [
-                        "Rail Station (York)",
-                        "Piccadilly (York)",
-                      ],
-                      "price": "1.70",
-                    },
-                  ],
-                  "stageName": "Nursery Drive",
-                },
-                Object {
-                  "prices": Array [
-                    Object {
-                      "fareZones": Array [
-                        "Cambridge Street (York)",
-                        "Blossom Street",
-                      ],
-                      "price": "1.10",
-                    },
-                    Object {
-                      "fareZones": Array [
-                        "Rail Station (York)",
-                        "Piccadilly (York)",
-                      ],
-                      "price": "1.70",
-                    },
-                  ],
-                  "stageName": "Holl Bank/Beech Ave",
-                },
-                Object {
-                  "prices": Array [
-                    Object {
-                      "fareZones": Array [
-                        "Blossom Street",
-                        "Rail Station (York)",
-                        "Piccadilly (York)",
-                      ],
-                      "price": "1.00",
-                    },
-                  ],
-                  "stageName": "Cambridge Street (York)",
-                },
-                Object {
-                  "prices": Array [
-                    Object {
-                      "fareZones": Array [
-                        "Rail Station (York)",
-                        "Piccadilly (York)",
-                      ],
-                      "price": "1.00",
-                    },
-                  ],
-                  "stageName": "Blossom Street",
-                },
-                Object {
-                  "prices": Array [
-                    Object {
-                      "fareZones": Array [
-                        "Piccadilly (York)",
-                      ],
-                      "price": "1.00",
-                    },
-                  ],
-                  "stageName": "Rail Station (York)",
-                },
-                Object {
-                  "prices": Array [],
-                  "stageName": "Piccadilly (York)",
-                },
+              "fareZones": Array [
+                "Mattison Way",
+                "Nursery Drive",
+                "Holl Bank/Beech Ave",
               ],
-            }
-          }
-        />
-      </div>
-      <input
-        name="service"
-        type="hidden"
-        value="{\\"type\\":\\"pointToPoint\\",\\"lineName\\":\\"215\\",\\"nocCode\\":\\"DCCL\\",\\"operatorShortName\\":\\"DCC\\"}"
-      />
-      <input
-        name="userfarestages"
-        type="hidden"
-        value="{\\"fareStages\\":[{\\"stageName\\":\\"Acomb Green Lane\\",\\"prices\\":[{\\"price\\":\\"1.10\\",\\"fareZones\\":[\\"Mattison Way\\",\\"Nursery Drive\\",\\"Holl Bank/Beech Ave\\"]},{\\"price\\":\\"1.70\\",\\"fareZones\\":[\\"Cambridge Street (York)\\",\\"Blossom Street\\",\\"Rail Station (York)\\",\\"Piccadilly (York)\\"]}]},{\\"stageName\\":\\"Mattison Way\\",\\"prices\\":[{\\"price\\":\\"1.10\\",\\"fareZones\\":[\\"Nursery Drive\\",\\"Holl Bank/Beech Ave\\"]},{\\"price\\":\\"1.70\\",\\"fareZones\\":[\\"Cambridge Street (York)\\",\\"Blossom Street\\",\\"Rail Station (York)\\",\\"Piccadilly (York)\\"]}]},{\\"stageName\\":\\"Nursery Drive\\",\\"prices\\":[{\\"price\\":\\"1.10\\",\\"fareZones\\":[\\"Holl Bank/Beech Ave\\",\\"Cambridge Street (York)\\",\\"Blossom Street\\"]},{\\"price\\":\\"1.70\\",\\"fareZones\\":[\\"Rail Station (York)\\",\\"Piccadilly (York)\\"]}]},{\\"stageName\\":\\"Holl Bank/Beech Ave\\",\\"prices\\":[{\\"price\\":\\"1.10\\",\\"fareZones\\":[\\"Cambridge Street (York)\\",\\"Blossom Street\\"]},{\\"price\\":\\"1.70\\",\\"fareZones\\":[\\"Rail Station (York)\\",\\"Piccadilly (York)\\"]}]},{\\"stageName\\":\\"Cambridge Street (York)\\",\\"prices\\":[{\\"price\\":\\"1.00\\",\\"fareZones\\":[\\"Blossom Street\\",\\"Rail Station (York)\\",\\"Piccadilly (York)\\"]}]},{\\"stageName\\":\\"Blossom Street\\",\\"prices\\":[{\\"price\\":\\"1.00\\",\\"fareZones\\":[\\"Rail Station (York)\\",\\"Piccadilly (York)\\"]}]},{\\"stageName\\":\\"Rail Station (York)\\",\\"prices\\":[{\\"price\\":\\"1.00\\",\\"fareZones\\":[\\"Piccadilly (York)\\"]}]},{\\"stageName\\":\\"Piccadilly (York)\\",\\"prices\\":[]}]}"
-      />
-      <input
-        className="govuk-button govuk-button--start"
-        id="submit-button"
-        type="submit"
-        value="Submit"
-      />
-    </form>
-  </main>
-</Layout>
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Cambridge Street (York)",
+                "Blossom Street",
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Acomb Green Lane",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Nursery Drive",
+                "Holl Bank/Beech Ave",
+              ],
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Cambridge Street (York)",
+                "Blossom Street",
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Mattison Way",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Holl Bank/Beech Ave",
+                "Cambridge Street (York)",
+                "Blossom Street",
+              ],
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Nursery Drive",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Cambridge Street (York)",
+                "Blossom Street",
+              ],
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Holl Bank/Beech Ave",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Blossom Street",
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.00",
+            },
+          ],
+          "stageName": "Cambridge Street (York)",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.00",
+            },
+          ],
+          "stageName": "Blossom Street",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Piccadilly (York)",
+              ],
+              "price": "1.00",
+            },
+          ],
+          "stageName": "Rail Station (York)",
+        },
+        Object {
+          "prices": Array [],
+          "stageName": "Piccadilly (York)",
+        },
+      ],
+    }
+  }
+/>
 `;

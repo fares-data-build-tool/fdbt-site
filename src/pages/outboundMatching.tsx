@@ -1,19 +1,16 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import Layout from '../layout/Layout';
-import {
-    getServiceByNocCodeAndLineName,
-    batchGetStopsByAtcoCode,
-    Stop,
-} from '../data/auroradb';
+import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
-import MatchingList from '../components/MatchingList';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
+import MatchingBase from '../components/matching/Matching';
 
+const heading = 'Outbound: Match stops to fare stages';
 const title = 'Outbound Matching - Fares data build tool';
 const description = 'Outbound Matching page of the fares data build tool';
+const hintText = 'Select the correct fare stage for each stop on the Outbound Journey.';
 
 export interface BasicService {
     lineName: string;
@@ -29,30 +26,16 @@ interface MatchingProps {
 }
 
 const OutboundMatching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
-    <Layout title={title} description={description}>
-        <main className="govuk-main-wrapper app-main-class matching-page" id="main-content" role="main">
-            <form action="/api/outboundMatching" method="post">
-                <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                        <h1 className="govuk-fieldset__heading">Outbound: Match stops to fare stages</h1>
-                    </legend>
-                    <span id="dropdown-error" className="govuk-error-message">
-                        <span className={error ? '' : 'govuk-visually-hidden'}>
-                            Ensure each fare stage is assigned at least once.
-                        </span>
-                    </span>
-                    <span className="govuk-hint" id="match-fares-hint">
-                        Select the correct fare stage for each stop on the Outbound Journey.
-                    </span>
-                    <MatchingList userFareStages={userFareStages} stops={stops} />
-                </div>
-
-                <input type="hidden" name="service" value={JSON.stringify(service)} />
-                <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
-                <input type="submit" value="Submit" id="submit-button" className="govuk-button govuk-button--start" />
-            </form>
-        </main>
-    </Layout>
+    <MatchingBase
+        userFareStages={userFareStages}
+        stops={stops}
+        service={service}
+        error={error}
+        heading={heading}
+        title={title}
+        description={description}
+        hintText={hintText}
+    />
 );
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
