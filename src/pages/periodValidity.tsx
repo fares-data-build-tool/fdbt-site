@@ -64,7 +64,7 @@ const PeriodValidity = ({ errors = [] }: PeriodValidityProps): ReactElement => {
                                             id="period-twenty-four-hours"
                                             name="periodValid"
                                             type="radio"
-                                            value="24hrs"
+                                            value="24hr"
                                         />
                                         <label
                                             className="govuk-label govuk-radios__label govuk-label--s"

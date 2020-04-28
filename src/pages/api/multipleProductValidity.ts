@@ -20,6 +20,9 @@ interface DecisionData {
     type: string;
     nocCode: string;
     products: Product[];
+    selectedServices?: [];
+    zoneName?: string;
+    stops?: Stop[];
 }
 
 export const addErrorsIfInvalid = (req: NextApiRequest, numberOfProducts: number, products: Product[]): Product[] => {
@@ -34,8 +37,11 @@ export const addErrorsIfInvalid = (req: NextApiRequest, numberOfProducts: number
         }
         const product = {
             productName: products[i].productName,
+            productNameId: products[i].productNameId,
             productPrice: products[i].productPrice,
+            productPriceId: products[i].productPriceId,
             productDuration: products[i].productDuration,
+            productDurationId: products[i].productDurationId,
             productValidity: { validity, error },
         };
         response.push(product);
@@ -66,14 +72,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         const numberOfProducts = Number(JSON.parse(numberOfProductsCookie).numberOfProductsInput);
-        const products: Product[] = JSON.parse(multipleProductCookie);
-
-        const checkedUserInput = addErrorsIfInvalid(req, numberOfProducts, products);
-        const newMultipleProductCookieValue = JSON.stringify(checkedUserInput);
+        const productsFromCookie: Product[] = JSON.parse(multipleProductCookie);
+        const products = addErrorsIfInvalid(req, numberOfProducts, productsFromCookie);
+        const newMultipleProductCookieValue = JSON.stringify(products);
         setCookieOnResponseObject(getDomain(req), MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
 
-        if (checkedUserInput.some(el => el.productValidity?.error !== '')) {
+        if (products.some(el => el.productValidity?.error !== '')) {
             redirectTo(res, '/multipleProductValidity');
+            return;
         }
 
         let props = {};

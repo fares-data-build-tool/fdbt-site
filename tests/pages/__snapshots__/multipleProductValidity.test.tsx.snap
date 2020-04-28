@@ -82,7 +82,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               className="govuk-heading-s grid-column-header-one-fifth"
               id="24hr-header"
             >
-              24hrs
+              24hr
             </div>
             <div
               className="govuk-heading-s grid-column-header-one-fifth header-text-alignment"
@@ -101,20 +101,20 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                 className="govuk-label grid-column-content-one-fifth"
                 htmlFor="product0"
               >
-                super ticket
+                Weekly Ticket
               </label>
               <label
                 className="govuk-label grid-column-content-one-fifth"
                 htmlFor="product0"
               >
                 £
-                3.50
+                50
               </label>
               <label
                 className="govuk-label grid-column-content-one-fifth"
                 htmlFor="product0"
               >
-                3 days
+                5 days
               </label>
               <div
                 className="govuk-radios govuk-radios--inline validity-select-wrapper"
@@ -127,7 +127,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                     id="twenty-four-hours-row0"
                     name="validity-row0"
                     type="radio"
-                    value="24hrs"
+                    value="24hr"
                   />
                   <label
                     className="govuk-label govuk-radios__label validity-radio-button-margin "
@@ -174,20 +174,20 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                 className="govuk-label grid-column-content-one-fifth"
                 htmlFor="product1"
               >
-                best ticket
+                Day Ticket
               </label>
               <label
                 className="govuk-label grid-column-content-one-fifth"
                 htmlFor="product1"
               >
                 £
-                30.90
+                2.50
               </label>
               <label
                 className="govuk-label grid-column-content-one-fifth"
                 htmlFor="product1"
               >
-                30 days
+                1 day
               </label>
               <div
                 className="govuk-radios govuk-radios--inline validity-select-wrapper"
@@ -200,7 +200,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                     id="twenty-four-hours-row1"
                     name="validity-row1"
                     type="radio"
-                    value="24hrs"
+                    value="24hr"
                   />
                   <label
                     className="govuk-label govuk-radios__label validity-radio-button-margin "

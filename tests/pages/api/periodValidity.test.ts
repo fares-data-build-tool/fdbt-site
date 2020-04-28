@@ -28,7 +28,6 @@ describe('Period Validity API', () => {
         const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
         await periodValidity(req, res);
 
-        expect(putStringInS3Spy).toBeCalledTimes(1);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
             '1e0459b3-082e-4e70-89db-96e8ae173e10.json',

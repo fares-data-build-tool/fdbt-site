@@ -12,14 +12,20 @@ describe('pages', () => {
                 numberOfProducts="2"
                 multipleProducts={[
                     {
-                        productName: 'super ticket',
-                        productPrice: '3.50',
-                        productDuration: '3',
+                        productName: 'Weekly Ticket',
+                        productNameId: 'multipleProductName1',
+                        productPrice: '50',
+                        productPriceId: 'multipleProductPrice1',
+                        productDuration: '5',
+                        productDurationId: 'multipleProductDuration1',
                     },
                     {
-                        productName: 'best ticket',
-                        productPrice: '30.90',
-                        productDuration: '30',
+                        productName: 'Day Ticket',
+                        productNameId: 'multipleProductName2',
+                        productPrice: '2.50',
+                        productPriceId: 'multipleProductPrice2',
+                        productDuration: '1',
+                        productDurationId: 'multipleProductDuration2',
                     },
                 ]}
                 errors={[]}
@@ -35,16 +41,16 @@ describe('pages', () => {
         });
     });
 
-    describe('server side props', () => {
+    describe('multipleProductValidityGetServerSideProps', () => {
         it('should return number of products to display, name of operator and products if they are set in the cookie', () => {
             const ctx = getMockContext();
             const result = getServerSideProps(ctx);
 
             expect(result.props.numberOfProducts).toBe('2');
             expect(result.props.operator).toBe('test');
-            expect(result.props.multipleProducts[0].productName).toBe('Best Product');
-            expect(result.props.multipleProducts[0].productPrice).toBe('2');
-            expect(result.props.multipleProducts[0].productDuration).toBe('3');
+            expect(result.props.multipleProducts[0].productName).toBe('Weekly Ticket');
+            expect(result.props.multipleProducts[0].productPrice).toBe('50');
+            expect(result.props.multipleProducts[0].productDuration).toBe('5');
             expect(result.props.multipleProducts.length).toBe(3);
         });
 
@@ -72,7 +78,7 @@ describe('pages', () => {
                         productValidity: {
                             validity: '',
                             error: 'Select one of the two validity options',
-                        }
+                        },
                     },
                     {
                         productName: 'Super Product',
@@ -82,9 +88,9 @@ describe('pages', () => {
                         productDuration: '4',
                         productDurationId: 'multipleProductDurationInput1',
                         productValidity: {
-                            validity: '24hrs',
+                            validity: '24hr',
                             error: '',
-                        }
+                        },
                     },
                 ],
             });
