@@ -55,7 +55,7 @@ describe('pages', () => {
                 multipleProduct: null,
             });
             expect(() => getServerSideProps(ctx)).toThrow(
-                'Necessary cookies not found to display the multiple product vaidity page',
+                'Necessary cookies not found to display the multiple product validity page',
             );
         });
 

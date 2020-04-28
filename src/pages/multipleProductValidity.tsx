@@ -161,7 +161,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
 
     if (!operatorCookie || !numberOfProductsCookie || !multipleProductCookie) {
-        throw new Error('Necessary cookies not found to display the multiple product vaidity page');
+        throw new Error('Necessary cookies not found to display the multiple product validity page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
