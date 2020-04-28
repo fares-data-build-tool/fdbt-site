@@ -46,14 +46,7 @@ export const getMockRequestAndResponse = (
         daysValid = '2',
         periodTypeName = 'period',
         numberOfProducts = '2',
-        multipleProduct = {
-            multipleProductNameInput0: 'Best Product',
-            multipleProductPriceInput0: '2.00',
-            multipleProductDurationInput0: '-1',
-            multipleProductNameInput1: 'Second Best Product',
-            multipleProductPriceInput1: '2.05',
-            multipleProductDurationInput1: '54',
-        },
+        multipleProduct = [{ "productName": "Best Product", "productNameId": "multipleProductNameInput0", "productPrice": "2", "productPriceId": "multipleProductPriceInput0", "productDuration": "3", "productDurationId": "multipleProductDurationInput0" }, { "productName": "Super Product", "productNameId": "multipleProductNameInput1", "productPrice": "3", "productPriceId": "multipleProductPriceInput1", "productDuration": "4", "productDurationId": "multipleProductDurationInput1" }, { "productName": "Quality Product", "productNameId": "multipleProductNameInput2", "productPrice": "4", "productPriceId": "multipleProductPriceInput2", "productDuration": "5", "productDurationId": "multipleProductDurationInput2" }],
     } = cookieValues;
 
     const {
@@ -100,15 +93,15 @@ export const getMockRequestAndResponse = (
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += periodTypeName
-        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += numberOfProducts
-        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += multipleProduct
-        ? `${MULTIPLE_PRODUCT_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${multipleProduct}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${MULTIPLE_PRODUCT_COOKIE}=%5B%7B%20%22productName%22%3A%20%22Best%20Product%22%2C%20%22productNameId%22%3A%20%22multipleProductNameInput0%22%2C%20%22productPrice%22%3A%20%222%22%2C%20%22productPriceId%22%3A%20%22multipleProductPriceInput0%22%2C%20%22productDuration%22%3A%20%223%22%2C%20%22productDurationId%22%3A%20%22multipleProductDurationInput0%22%20%7D%2C%20%7B%20%22productName%22%3A%20%22Super%20Product%22%2C%20%22productNameId%22%3A%20%22multipleProductNameInput1%22%2C%20%22productPrice%22%3A%20%223%22%2C%20%22productPriceId%22%3A%20%22multipleProductPriceInput1%22%2C%20%22productDuration%22%3A%20%224%22%2C%20%22productDurationId%22%3A%20%22multipleProductDurationInput1%22%20%7D%2C%20%7B%20%22productName%22%3A%20%22Quality%20Product%22%2C%20%22productNameId%22%3A%20%22multipleProductNameInput2%22%2C%20%22productPrice%22%3A%20%224%22%2C%20%22productPriceId%22%3A%20%22multipleProductPriceInput2%22%2C%20%22productDuration%22%3A%20%225%22%2C%20%22productDurationId%22%3A%20%22multipleProductDurationInput2%22%20%7D%5D;`
         : '';
 
     const req = mockRequest({

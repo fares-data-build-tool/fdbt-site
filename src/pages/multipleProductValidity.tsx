@@ -154,7 +154,7 @@ const MultiProductValidity = ({
     </Layout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
