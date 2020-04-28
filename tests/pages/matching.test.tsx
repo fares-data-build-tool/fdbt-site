@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import * as auroradb from '../../src/data/auroradb';
 import * as s3 from '../../src/data/s3';
 import {
@@ -45,8 +45,12 @@ describe('Matching Page', () => {
     });
 
     it('shows the correct amount of fare stages in the select boxes', () => {
+        const mountedWrapper = mount(
+            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+        );
+
         expect(
-            wrapper
+            mountedWrapper
                 .find('.farestage-select')
                 .first()
                 .find('option'),

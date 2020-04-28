@@ -6,15 +6,14 @@ import {
     getServiceByNocCodeAndLineName,
     batchGetStopsByAtcoCode,
     Stop,
-    RawService,
-    RawJourneyPattern,
 } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingList from '../components/MatchingList';
+import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 
-const title = 'Matching - Fares data build tool';
-const description = 'Matching page of the fares data build tool';
+const title = 'Outbound Matching - Fares data build tool';
+const description = 'Outbound Matching page of the fares data build tool';
 
 export interface BasicService {
     lineName: string;
@@ -29,13 +28,13 @@ interface MatchingProps {
     error: boolean;
 }
 
-const Matching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
+const OutboundMatching = ({ userFareStages, stops, service, error }: MatchingProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class matching-page" id="main-content" role="main">
-            <form action="/api/matching" method="post">
+            <form action="/api/outboundMatching" method="post">
                 <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                        <h1 className="govuk-fieldset__heading">Match stops to fares stages</h1>
+                        <h1 className="govuk-fieldset__heading">Outbound: Match stops to fare stages</h1>
                     </legend>
                     <span id="dropdown-error" className="govuk-error-message">
                         <span className={error ? '' : 'govuk-visually-hidden'}>
@@ -43,7 +42,7 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
                         </span>
                     </span>
                     <span className="govuk-hint" id="match-fares-hint">
-                        Please select the correct fare stages for each stop.
+                        Select the correct fare stage for each stop on the Outbound Journey.
                     </span>
                     <MatchingList userFareStages={userFareStages} stops={stops} />
                 </div>
@@ -55,23 +54,6 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
         </main>
     </Layout>
 );
-
-// Gets a list of journey pattern sections with a given start and end point
-const getJourneysByStartAndEndPoint = (
-    service: RawService,
-    selectedStartPoint: string,
-    selectedEndPoint: string,
-): RawJourneyPattern[] =>
-    service.journeyPatterns.filter(
-        item =>
-            item.orderedStopPoints[0].stopPointRef === selectedStartPoint &&
-            item.orderedStopPoints.slice(-1)[0].stopPointRef === selectedEndPoint,
-    );
-
-// Gets a unique set of stop point refs from an array of journey pattern sections
-const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
-    ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
-];
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
@@ -89,7 +71,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
     const { nocCode } = operatorObject;
-    const [selectedStartPoint, selectedEndPoint] = journeyObject.directionJourneyPattern.split('#');
+    const [selectedStartPoint, selectedEndPoint] = journeyObject.outboundJourney.split('#');
     const service = await getServiceByNocCodeAndLineName(operatorObject.nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
@@ -120,4 +102,4 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     };
 };
 
-export default Matching;
+export default OutboundMatching;
