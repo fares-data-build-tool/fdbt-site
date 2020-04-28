@@ -3,7 +3,6 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -34,7 +33,7 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    Please select your journey direction
+                                    Select your journey direction
                                 </h1>
                             </legend>
                             <div className="govuk-!-margin-top-5">
@@ -88,7 +87,6 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
 };
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
-    deleteCookieOnServerSide(ctx, JOURNEY_COOKIE);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];

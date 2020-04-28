@@ -31,7 +31,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              Please select your journey direction
+              Select your journey direction
             </h1>
           </legend>
           <div
