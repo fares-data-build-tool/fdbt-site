@@ -924,7 +924,7 @@ export const expectedMatchingJson = {
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
-    description: 'Worthing - Seahm - Crawley',
+    description: 'Worthing - Seaham - Crawley',
     fareZones: [
         {
             name: 'Acomb Green Lane',
