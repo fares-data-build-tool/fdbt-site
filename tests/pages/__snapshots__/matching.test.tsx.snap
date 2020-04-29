@@ -2,6 +2,7 @@
 
 exports[`Matching Page should render correctly 1`] = `
 <MatchingBase
+  apiEndpoint="/api/matching"
   description="Matching page of the fares data build tool"
   error={false}
   heading="Match stops to fares stages"

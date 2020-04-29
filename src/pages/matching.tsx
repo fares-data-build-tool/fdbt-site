@@ -16,6 +16,7 @@ const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the fares data build tool';
 const heading = 'Match stops to fares stages';
 const hintText = 'Please select the correct fare stages for each stop.';
+const apiEndpoint = '/api/matching';
 
 export interface BasicService {
     lineName: string;
@@ -40,6 +41,7 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
         title={title}
         description={description}
         hintText={hintText}
+        apiEndpoint={apiEndpoint}
     />
 );
 

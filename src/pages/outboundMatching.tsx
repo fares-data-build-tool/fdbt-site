@@ -11,6 +11,7 @@ const heading = 'Outbound: Match stops to fare stages';
 const title = 'Outbound Matching - Fares data build tool';
 const description = 'Outbound Matching page of the fares data build tool';
 const hintText = 'Select the correct fare stage for each stop on the Outbound Journey.';
+const apiEndpoint = '/api/outboundMatching';
 
 export interface BasicService {
     lineName: string;
@@ -35,6 +36,7 @@ const OutboundMatching = ({ userFareStages, stops, service, error }: MatchingPro
         title={title}
         description={description}
         hintText={hintText}
+        apiEndpoint={apiEndpoint}
     />
 );
 

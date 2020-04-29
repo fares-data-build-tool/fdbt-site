@@ -1,37 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
-import { BasicService } from '../matching';
-import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
+import { MatchingFareZones } from '../../interfaces/matchingInterface';
 
-interface MatchingData {
-    type: string;
-    lineName: string;
-    nocCode: string;
-    operatorShortName: string;
-    fareZones: {
-        name: string;
-        stops: Stop[];
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
-
-interface MatchingFareZones {
-    [key: string]: {
-        name: string;
-        stops: Stop[];
-    };
-}
-
-export const putDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
+export const putDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `outbound-matching/${uuid}_.json`,
+        `outbound-matching/${uuid}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
@@ -63,29 +40,6 @@ const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones =>
     return matchingFareZones;
 };
 
-const getMatchingJson = (
-    service: BasicService,
-    userFareStages: UserFareStages,
-    matchingFareZones: MatchingFareZones,
-): MatchingData => ({
-    ...service,
-    type: 'pointToPoint',
-    fareZones: userFareStages.fareStages
-        .filter(userStage => matchingFareZones[userStage.stageName])
-        .map(userStage => {
-            const matchedZone = matchingFareZones[userStage.stageName];
-
-            return {
-                name: userStage.stageName,
-                stops: matchedZone.stops.map((stop: Stop) => ({
-                    ...stop,
-                    qualifierName: '',
-                })),
-                prices: userStage.prices,
-            };
-        }),
-});
-
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
 
@@ -103,7 +57,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('No service or userfarestages info found');
         }
 
-        const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
@@ -121,11 +74,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const uuid = getUuidFromCookie(req, res);
 
-        const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones);
+        await putDataInS3(matchingFareZones, uuid);
 
-        await putDataInS3(matchingJson, uuid);
-
-        redirectTo(res, '/inboundJourney');
+        redirectTo(res, '/inboundMatching');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';
         redirectToError(res, message, error);

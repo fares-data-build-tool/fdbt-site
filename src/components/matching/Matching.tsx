@@ -14,6 +14,7 @@ interface MatchingBaseProps {
     description: string;
     hintText: string;
     heading: string;
+    apiEndpoint: string;
 }
 
 const MatchingBase = ({
@@ -25,10 +26,11 @@ const MatchingBase = ({
     description,
     hintText,
     heading,
+    apiEndpoint,
 }: MatchingBaseProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class matching-page" id="main-content" role="main">
-            <form action="/api/matching" method="post">
+            <form action={apiEndpoint} method="post">
                 <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                         <h1 className="govuk-fieldset__heading">{heading}</h1>
@@ -46,7 +48,7 @@ const MatchingBase = ({
 
                 <input type="hidden" name="service" value={JSON.stringify(service)} />
                 <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
-                <input type="submit" value="Submit" id="submit-button" className="govuk-button govuk-button--start" />
+                <input type="submit" value="Continue" id="submit-button" className="govuk-button govuk-button--start" />
             </form>
         </main>
     </Layout>

@@ -11,6 +11,7 @@ const heading = 'Inbound: Match stops to fare stages';
 const title = 'Inbound Matching - Fares data build tool';
 const description = 'Inbound Matching page of the fares data build tool';
 const hintText = 'Select the correct fare stage for each stop on the Inbound Journey.';
+const apiEndpoint = '/api/inboundMatching';
 
 export interface BasicService {
     lineName: string;
@@ -35,6 +36,7 @@ const InboundMatching = ({ userFareStages, stops, service, error }: MatchingProp
         title={title}
         description={description}
         hintText={hintText}
+        apiEndpoint={apiEndpoint}
     />
 );
 
