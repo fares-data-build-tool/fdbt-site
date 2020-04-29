@@ -16,15 +16,13 @@ const errorId = 'multiple-product-validity-error';
 
 export interface Product {
     productName: string;
-    productNameId: string;
+    productNameId?: string;
     productPrice: string;
-    productPriceId: string;
+    productPriceId?: string;
     productDuration: string;
-    productDurationId: string;
-    productValidity?: {
-        validity: string;
-        error: string;
-    };
+    productDurationId?: string;
+    productValidity?: string;
+    productValidityError?: string;
 }
 
 interface MultipleProductValidityProps {
@@ -62,7 +60,7 @@ const MultiProductValidity = ({
                     </span>
                     <span id="multiple-product-validity-radios-error" className="govuk-error-message">
                         <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
-                            Ensure one option is selected for each set of radio buttons
+                            {errors.length > 0 ? errors[0].errorMessage : ''}
                         </span>
                     </span>
                     <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
@@ -172,9 +170,13 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     const multipleProducts: Product[] = JSON.parse(multipleProductCookie);
 
     const errors: ErrorInfo[] = [];
-    if (multipleProducts.some(el => el.productValidity && el.productValidity.error !== '')) {
+    const productWithErrors = multipleProducts.find(el => el.productValidityError);
+    if (productWithErrors) {
         const errorHref = 'multiple-product-validity-radios-error';
-        const error: ErrorInfo = { errorMessage: 'Select one of the two validity options', id: errorHref };
+        const error: ErrorInfo = {
+            errorMessage: productWithErrors.productValidityError ?? '',
+            id: errorHref,
+        };
         errors.push(error);
     }
 

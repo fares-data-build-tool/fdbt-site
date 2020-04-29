@@ -74,22 +74,14 @@ describe('pages', () => {
                         productPriceId: 'multipleProductPriceInput0',
                         productDuration: '3',
                         productDurationId: 'multipleProductDurationInput0',
-                        productValidity: {
-                            validity: '',
-                            error: 'Select one of the two validity options',
-                        },
+                        productValidity: '',
+                        productValidityError: 'Select one of the two validity options',
                     },
                     {
                         productName: 'Super Product',
-                        productNameId: 'multipleProductNameInput1',
                         productPrice: '3',
-                        productPriceId: 'multipleProductPriceInput1',
                         productDuration: '4',
-                        productDurationId: 'multipleProductDurationInput1',
-                        productValidity: {
-                            validity: '24hr',
-                            error: '',
-                        },
+                        productValidity: '24hr',
                     },
                 ],
             });

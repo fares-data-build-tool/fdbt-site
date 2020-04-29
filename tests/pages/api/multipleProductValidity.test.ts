@@ -56,7 +56,7 @@ describe('multipleProductValidity API', () => {
     it('redirects to thankyou page if all valid', async () => {
         const { req, res } = getMockRequestAndResponse(
             '',
-            { 'validity-row0': 'endOfCalendarDay', 'validity-row1': 'endOfCalendarDay' },
+            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
             '',
             writeHeadMock,
         );
@@ -105,29 +105,19 @@ describe('multipleProductValidity API', () => {
                 'validity-row1': '',
             });
 
-            const numberOfProducts = 2;
-            const products: Product[] = [
-                {
-                    productName: 'super ticket',
-                    productNameId: '',
-                    productPrice: '3.50',
-                    productPriceId: '',
-                    productDuration: '3',
-                    productDurationId: '',
-                },
-                {
-                    productName: 'best ticket',
-                    productNameId: '',
-                    productPrice: '30.90',
-                    productPriceId: '',
-                    productDuration: '30',
-                    productDurationId: '',
-                },
-            ];
-            const result = addErrorsIfInvalid(req, numberOfProducts, products);
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'super ticket',
+                productNameId: '',
+                productPrice: '3.50',
+                productPriceId: '',
+                productDuration: '3',
+                productDurationId: '',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
 
-            expect(result[0].productValidity?.error).toBe('Select one of the two validity options');
-            expect(result[1].productValidity?.error).toBe('Select one of the two validity options');
+            expect(result.productValidity).toBe('');
+            expect(result.productValidityError).toBe('Select one of the two validity options');
         });
 
         it('does not add errors to correct data', () => {
@@ -136,29 +126,19 @@ describe('multipleProductValidity API', () => {
                 'validity-row1': '24hr',
             });
 
-            const numberOfProducts = 2;
-            const products: Product[] = [
-                {
-                    productName: 'super ticket',
-                    productNameId: '',
-                    productPrice: '3.50',
-                    productPriceId: '',
-                    productDuration: '3',
-                    productDurationId: '',
-                },
-                {
-                    productName: 'best ticket',
-                    productNameId: '',
-                    productPrice: '30.90',
-                    productPriceId: '',
-                    productDuration: '30',
-                    productDurationId: '',
-                },
-            ];
-            const result = addErrorsIfInvalid(req, numberOfProducts, products);
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
 
-            expect(result[0].productValidity?.error).toBe('');
-            expect(result[1].productValidity?.error).toBe('');
+            expect(result.productValidity).toBe('endOfCalendarDay');
+            expect(result.productValidityError).toBe(undefined);
         });
     });
 });

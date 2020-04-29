@@ -1057,41 +1057,30 @@ export const expectedPeriodValidity = {
     stops: naptanStopInfo,
 };
 
-export const listOfMultipleProducts = [
-    {
-        productName: 'Weekly Ticket',
-        productNameId: 'multipleProductName1',
-        productPrice: '50',
-        productPriceId: 'multipleProductPrice1',
-        productDuration: '5',
-        productDurationId: 'multipleProductDuration1',
-        productValidity: { validity: '24hr', error: '' },
-    },
-    {
-        productName: 'Day Ticket',
-        productNameId: 'multipleProductName2',
-        productPrice: '2.50',
-        productPriceId: 'multipleProductPrice2',
-        productDuration: '1',
-        productDurationId: 'multipleProductDuration2',
-        productValidity: { validity: '24hr', error: '' },
-    },
-    {
-        productName: 'Monthly Ticket',
-        productNameId: 'multipleProductName3',
-        productPrice: '200',
-        productPriceId: 'multipleProductPrice3',
-        productDuration: '28',
-        productDurationId: 'multipleProductDuration3',
-        productValidity: { validity: 'endOfCalendarDay', error: '' },
-    },
-];
-
 export const expectedCsvUploadMultiProduct = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
-    products: listOfMultipleProducts,
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28',
+            productValidity: 'endOfCalendarDay',
+        },
+    ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
 };

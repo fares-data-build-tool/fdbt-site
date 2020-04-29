@@ -51,9 +51,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
         >
           <span
             className="govuk-visually-hidden"
-          >
-            Ensure one option is selected for each set of radio buttons
-          </span>
+          />
         </span>
         <FormElementWrapper
           errorClass="govuk-radios--error"

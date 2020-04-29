@@ -18,8 +18,6 @@ export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
 export const DAYS_VALID_COOKIE = 'fdbt-days-valid';
 
-export const VALIDITY_COOKIE = 'fdbt-days-valid';
-
 export const PERIOD_PRODUCT_COOKIE = 'fdbt-period-product';
 
 export const PERIOD_TYPE_COOKIE = 'fdbt-period-type';
