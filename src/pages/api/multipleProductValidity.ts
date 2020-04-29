@@ -122,7 +122,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             JSON.stringify(multipleProductPeriod),
             'application/json; charset=utf-8',
         );
-        redirectTo(res, '/multipleProductValidity');
+        redirectTo(res, '/thankyou');
     } catch (error) {
         const message = 'There was a problem collecting the user defined products:';
         redirectToError(res, message, error);

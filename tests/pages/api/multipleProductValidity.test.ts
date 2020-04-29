@@ -54,10 +54,17 @@ describe('multipleProductValidity API', () => {
     });
 
     it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse('', { 'validity-row0': 'endOfCalendarDay' }, '', writeHeadMock);
+        const { req, res } = getMockRequestAndResponse(
+            '',
+            { 'validity-row0': 'endOfCalendarDay', 'validity-row1': 'endOfCalendarDay' },
+            '',
+            writeHeadMock,
+        );
         await multipleProductValidity(req, res);
 
-        expect(writeHeadMock).toBeCalled();
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/thankyou',
+        });
     });
 
     it('should redirect to the error page if a required cookie is missing', async () => {
