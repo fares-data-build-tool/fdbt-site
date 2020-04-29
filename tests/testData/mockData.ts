@@ -6,16 +6,20 @@ import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
+    MULTIPLE_PRODUCT_COOKIE,
+    NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
     FARETYPE_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_PRODUCT,
-    VALIDITY_COOKIE,
-    PERIOD_TYPE,
-} from '../../src/constants';
+    PERIOD_PRODUCT_COOKIE,
+    DAYS_VALID_COOKIE,
+    PERIOD_TYPE_COOKIE,
+} from '../../src/constants/index';
+
+import { MultiProduct } from '../../src/pages/api/multipleProducts';
 
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
@@ -41,6 +45,15 @@ export const getMockRequestAndResponse = (
         fareZoneName = 'fare zone 1',
         daysValid = '2',
         periodTypeName = 'period',
+        numberOfProducts = '2',
+        multipleProduct = {
+            multipleProductNameInput0: 'Best Product',
+            multipleProductPriceInput0: '2.00',
+            multipleProductDurationInput0: '-1',
+            multipleProductNameInput1: 'Second Best Product',
+            multipleProductPriceInput1: '2.05',
+            multipleProductDurationInput1: '54',
+        },
     } = cookieValues;
 
     const {
@@ -69,11 +82,11 @@ export const getMockRequestAndResponse = (
 
     cookieString +=
         startPoint && endPoint
-            ? `${JOURNEY_COOKIE}=%7B%22journeyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
+            ? `${JOURNEY_COOKIE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
             : '';
 
     cookieString += productName
-        ? `${PERIOD_PRODUCT}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
+        ? `${PERIOD_PRODUCT_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
         : '';
 
     cookieString += fareZoneName
@@ -81,13 +94,21 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += daysValid
-        ? `${VALIDITY_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
+        ? `${DAYS_VALID_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += periodTypeName
-        ? `${PERIOD_TYPE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        : '';
+
+    cookieString += numberOfProducts
+        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
+        : '';
+
+    cookieString += multipleProduct
+        ? `${MULTIPLE_PRODUCT_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${multipleProduct}%22%2C%22uuid%22%3A%22${operatorUuid}%22%2C%22nocCode%22%3A%22HCTY%22%7D;`
         : '';
 
     const req = mockRequest({
@@ -135,26 +156,22 @@ export const mockSingleService: RawService = {
     operatorShortName: 'HCTY',
     journeyPatterns: [
         {
-            JourneyPattern: [
+            orderedStopPoints: [
                 {
-                    OrderedStopPoints: [
-                        {
-                            StopPointRef: '13003921A',
-                            CommonName: 'Estate (Hail and Ride) N/B',
-                        },
-                        {
-                            StopPointRef: '13003612D',
-                            CommonName: 'New Strangford Road SE/B',
-                        },
-                        {
-                            StopPointRef: '13003611B',
-                            CommonName: 'New Tempest Road (York House) NE/B',
-                        },
-                        {
-                            StopPointRef: '13003655B',
-                            CommonName: 'Interchange Stand B',
-                        },
-                    ],
+                    stopPointRef: '13003921A',
+                    commonName: 'Estate (Hail and Ride) N/B',
+                },
+                {
+                    stopPointRef: '13003612D',
+                    commonName: 'New Strangford Road SE/B',
+                },
+                {
+                    stopPointRef: '13003611B',
+                    commonName: 'New Tempest Road (York House) NE/B',
+                },
+                {
+                    stopPointRef: '13003655B',
+                    commonName: 'Interchange Stand B',
                 },
             ],
         },
@@ -166,125 +183,117 @@ export const mockRawService: RawService = {
     operatorShortName: 'HCTY',
     journeyPatterns: [
         {
-            JourneyPattern: [
+            orderedStopPoints: [
                 {
-                    OrderedStopPoints: [
-                        {
-                            StopPointRef: '13003921A',
-                            CommonName: 'Estate (Hail and Ride) N/B',
-                        },
-                        {
-                            StopPointRef: '13003305E',
-                            CommonName: 'Westlea shops S/B',
-                        },
-                        {
-                            StopPointRef: '13003306B',
-                            CommonName: 'Mount Pleasant NE/B',
-                        },
-                        {
-                            StopPointRef: '13003618B',
-                            CommonName: 'The Avenue/Essex Crescent NE/B',
-                        },
-                        {
-                            StopPointRef: '13003622B',
-                            CommonName: 'The Avenue Shops NE/B',
-                        },
-                        {
-                            StopPointRef: '13003923B',
-                            CommonName: 'Kingston Avenue Hail and Ride NE/B',
-                        },
-                        {
-                            StopPointRef: '13003939H',
-                            CommonName: 'Laurel Avenue NW/B',
-                        },
-                        { StopPointRef: '13003625C', CommonName: 'Park E/B' },
-                        {
-                            StopPointRef: '13003612D',
-                            CommonName: 'New Strangford Road SE/B',
-                        },
-                        {
-                            StopPointRef: '13003611B',
-                            CommonName: 'New Tempest Road (York House) NE/B',
-                        },
-                        {
-                            StopPointRef: '13003609E',
-                            CommonName: 'Vane Terrace/Castlereagh S/B',
-                        },
-                        {
-                            StopPointRef: '13003661E',
-                            CommonName: 'Sophia Street S/B',
-                        },
-                        {
-                            StopPointRef: '13003949C',
-                            CommonName: 'Viceroy Street E/B',
-                        },
-                        {
-                            StopPointRef: '13003635B',
-                            CommonName: 'Adolphus Place NE/B',
-                        },
-                        {
-                            StopPointRef: '13003655B',
-                            CommonName: 'Interchange Stand B',
-                        },
-                    ],
+                    stopPointRef: '13003921A',
+                    commonName: 'Estate (Hail and Ride) N/B',
+                },
+                {
+                    stopPointRef: '13003305E',
+                    commonName: 'Westlea shops S/B',
+                },
+                {
+                    stopPointRef: '13003306B',
+                    commonName: 'Mount Pleasant NE/B',
+                },
+                {
+                    stopPointRef: '13003618B',
+                    commonName: 'The Avenue/Essex Crescent NE/B',
+                },
+                {
+                    stopPointRef: '13003622B',
+                    commonName: 'The Avenue Shops NE/B',
+                },
+                {
+                    stopPointRef: '13003923B',
+                    commonName: 'Kingston Avenue Hail and Ride NE/B',
+                },
+                {
+                    stopPointRef: '13003939H',
+                    commonName: 'Laurel Avenue NW/B',
+                },
+                { stopPointRef: '13003625C', commonName: 'Park E/B' },
+                {
+                    stopPointRef: '13003612D',
+                    commonName: 'New Strangford Road SE/B',
+                },
+                {
+                    stopPointRef: '13003611B',
+                    commonName: 'New Tempest Road (York House) NE/B',
+                },
+                {
+                    stopPointRef: '13003609E',
+                    commonName: 'Vane Terrace/Castlereagh S/B',
+                },
+                {
+                    stopPointRef: '13003661E',
+                    commonName: 'Sophia Street S/B',
+                },
+                {
+                    stopPointRef: '13003949C',
+                    commonName: 'Viceroy Street E/B',
+                },
+                {
+                    stopPointRef: '13003635B',
+                    commonName: 'Adolphus Place NE/B',
+                },
+                {
+                    stopPointRef: '13003655B',
+                    commonName: 'Interchange Stand B',
                 },
             ],
         },
         {
-            JourneyPattern: [
+            orderedStopPoints: [
                 {
-                    OrderedStopPoints: [
-                        {
-                            StopPointRef: '13003655B',
-                            CommonName: 'Interchange Stand B',
-                        },
-                        {
-                            StopPointRef: '13003654G',
-                            CommonName: 'North Railway Street W/B',
-                        },
-                        {
-                            StopPointRef: '13003609A',
-                            CommonName: 'Vane Terrace/Castlereagh N/B',
-                        },
-                        {
-                            StopPointRef: '13003611F',
-                            CommonName: 'New Tempest Road (York House) SW/B',
-                        },
-                        {
-                            StopPointRef: '13003612H',
-                            CommonName: 'New Strangford Road NW/B',
-                        },
-                        { StopPointRef: '13003625G', CommonName: 'Park W/B' },
-                        {
-                            StopPointRef: '13003939D',
-                            CommonName: 'Laurel Avenue SE/B',
-                        },
-                        {
-                            StopPointRef: '13003923F',
-                            CommonName: 'Kingston Avenue Hail and Ride SW/B',
-                        },
-                        {
-                            StopPointRef: '13003622F',
-                            CommonName: 'The Avenue Shops SW/B',
-                        },
-                        { StopPointRef: '13003621F', CommonName: 'The Lawns SW/B' },
-                        {
-                            StopPointRef: '13003618F',
-                            CommonName: 'The Avenue/Essex Crescent SW/B',
-                        },
-                        {
-                            StopPointRef: '13003306A',
-                            CommonName: 'Mount Pleasant N/B',
-                        },
-                        {
-                            StopPointRef: '13003305A',
-                            CommonName: 'Westlea shops N/B',
-                        },
-                        {
-                            StopPointRef: '13003921A',
-                            CommonName: 'Estate (Hail and Ride) N/B',
-                        },
-                    ],
+                    stopPointRef: '13003655B',
+                    commonName: 'Interchange Stand B',
+                },
+                {
+                    stopPointRef: '13003654G',
+                    commonName: 'North Railway Street W/B',
+                },
+                {
+                    stopPointRef: '13003609A',
+                    commonName: 'Vane Terrace/Castlereagh N/B',
+                },
+                {
+                    stopPointRef: '13003611F',
+                    commonName: 'New Tempest Road (York House) SW/B',
+                },
+                {
+                    stopPointRef: '13003612H',
+                    commonName: 'New Strangford Road NW/B',
+                },
+                { stopPointRef: '13003625G', commonName: 'Park W/B' },
+                {
+                    stopPointRef: '13003939D',
+                    commonName: 'Laurel Avenue SE/B',
+                },
+                {
+                    stopPointRef: '13003923F',
+                    commonName: 'Kingston Avenue Hail and Ride SW/B',
+                },
+                {
+                    stopPointRef: '13003622F',
+                    commonName: 'The Avenue Shops SW/B',
+                },
+                { stopPointRef: '13003621F', commonName: 'The Lawns SW/B' },
+                {
+                    stopPointRef: '13003618F',
+                    commonName: 'The Avenue/Essex Crescent SW/B',
+                },
+                {
+                    stopPointRef: '13003306A',
+                    commonName: 'Mount Pleasant N/B',
+                },
+                {
+                    stopPointRef: '13003305A',
+                    commonName: 'Westlea shops N/B',
+                },
+                {
+                    stopPointRef: '13003921A',
+                    commonName: 'Estate (Hail and Ride) N/B',
                 },
             ],
         },
@@ -296,162 +305,150 @@ export const mockRawServiceWithDuplicates: RawService = {
     operatorShortName: 'HCTY',
     journeyPatterns: [
         {
-            JourneyPattern: [
+            orderedStopPoints: [
                 {
-                    OrderedStopPoints: [
-                        {
-                            StopPointRef: '13003921A',
-                            CommonName: 'Estate (Hail and Ride) N/B',
-                        },
-                        {
-                            StopPointRef: '13003305E',
-                            CommonName: 'Westlea shops S/B',
-                        },
-                        {
-                            StopPointRef: '13003306B',
-                            CommonName: 'Mount Pleasant NE/B',
-                        },
-                        {
-                            StopPointRef: '13003618B',
-                            CommonName: 'The Avenue/Essex Crescent NE/B',
-                        },
-                        {
-                            StopPointRef: '13003622B',
-                            CommonName: 'The Avenue Shops NE/B',
-                        },
-                        {
-                            StopPointRef: '13003923B',
-                            CommonName: 'Kingston Avenue Hail and Ride NE/B',
-                        },
-                        {
-                            StopPointRef: '13003939H',
-                            CommonName: 'Laurel Avenue NW/B',
-                        },
-                        { StopPointRef: '13003625C', CommonName: 'Park E/B' },
-                        {
-                            StopPointRef: '13003612D',
-                            CommonName: 'New Strangford Road SE/B',
-                        },
-                        {
-                            StopPointRef: '13003611B',
-                            CommonName: 'New Tempest Road (York House) NE/B',
-                        },
-                        {
-                            StopPointRef: '13003609E',
-                            CommonName: 'Vane Terrace/Castlereagh S/B',
-                        },
-                        {
-                            StopPointRef: '13003661E',
-                            CommonName: 'Sophia Street S/B',
-                        },
-                        {
-                            StopPointRef: '13003949C',
-                            CommonName: 'Viceroy Street E/B',
-                        },
-                        {
-                            StopPointRef: '13003635B',
-                            CommonName: 'Adolphus Place NE/B',
-                        },
-                        {
-                            StopPointRef: '13003655B',
-                            CommonName: 'Interchange Stand B',
-                        },
-                    ],
+                    stopPointRef: '13003921A',
+                    commonName: 'Estate (Hail and Ride) N/B',
+                },
+                {
+                    stopPointRef: '13003305E',
+                    commonName: 'Westlea shops S/B',
+                },
+                {
+                    stopPointRef: '13003306B',
+                    commonName: 'Mount Pleasant NE/B',
+                },
+                {
+                    stopPointRef: '13003618B',
+                    commonName: 'The Avenue/Essex Crescent NE/B',
+                },
+                {
+                    stopPointRef: '13003622B',
+                    commonName: 'The Avenue Shops NE/B',
+                },
+                {
+                    stopPointRef: '13003923B',
+                    commonName: 'Kingston Avenue Hail and Ride NE/B',
+                },
+                {
+                    stopPointRef: '13003939H',
+                    commonName: 'Laurel Avenue NW/B',
+                },
+                { stopPointRef: '13003625C', commonName: 'Park E/B' },
+                {
+                    stopPointRef: '13003612D',
+                    commonName: 'New Strangford Road SE/B',
+                },
+                {
+                    stopPointRef: '13003611B',
+                    commonName: 'New Tempest Road (York House) NE/B',
+                },
+                {
+                    stopPointRef: '13003609E',
+                    commonName: 'Vane Terrace/Castlereagh S/B',
+                },
+                {
+                    stopPointRef: '13003661E',
+                    commonName: 'Sophia Street S/B',
+                },
+                {
+                    stopPointRef: '13003949C',
+                    commonName: 'Viceroy Street E/B',
+                },
+                {
+                    stopPointRef: '13003635B',
+                    commonName: 'Adolphus Place NE/B',
+                },
+                {
+                    stopPointRef: '13003655B',
+                    commonName: 'Interchange Stand B',
                 },
             ],
         },
         {
-            JourneyPattern: [
+            orderedStopPoints: [
                 {
-                    OrderedStopPoints: [
-                        {
-                            StopPointRef: '13003655B',
-                            CommonName: 'Interchange Stand B',
-                        },
-                        {
-                            StopPointRef: '13003654G',
-                            CommonName: 'North Railway Street W/B',
-                        },
-                        {
-                            StopPointRef: '13003609A',
-                            CommonName: 'Vane Terrace/Castlereagh N/B',
-                        },
-                        {
-                            StopPointRef: '13003611F',
-                            CommonName: 'New Tempest Road (York House) SW/B',
-                        },
-                        {
-                            StopPointRef: '13003612H',
-                            CommonName: 'New Strangford Road NW/B',
-                        },
-                        { StopPointRef: '13003625G', CommonName: 'Park W/B' },
-                        {
-                            StopPointRef: '13003939D',
-                            CommonName: 'Laurel Avenue SE/B',
-                        },
-                        {
-                            StopPointRef: '13003923F',
-                            CommonName: 'Kingston Avenue Hail and Ride SW/B',
-                        },
-                        {
-                            StopPointRef: '13003622F',
-                            CommonName: 'The Avenue Shops SW/B',
-                        },
-                        { StopPointRef: '13003621F', CommonName: 'The Lawns SW/B' },
-                        {
-                            StopPointRef: '13003618F',
-                            CommonName: 'The Avenue/Essex Crescent SW/B',
-                        },
-                        {
-                            StopPointRef: '13003306A',
-                            CommonName: 'Mount Pleasant N/B',
-                        },
-                        {
-                            StopPointRef: '13003305A',
-                            CommonName: 'Westlea shops N/B',
-                        },
-                        {
-                            StopPointRef: '13003921A',
-                            CommonName: 'Estate (Hail and Ride) N/B',
-                        },
-                    ],
+                    stopPointRef: '13003655B',
+                    commonName: 'Interchange Stand B',
+                },
+                {
+                    stopPointRef: '13003654G',
+                    commonName: 'North Railway Street W/B',
+                },
+                {
+                    stopPointRef: '13003609A',
+                    commonName: 'Vane Terrace/Castlereagh N/B',
+                },
+                {
+                    stopPointRef: '13003611F',
+                    commonName: 'New Tempest Road (York House) SW/B',
+                },
+                {
+                    stopPointRef: '13003612H',
+                    commonName: 'New Strangford Road NW/B',
+                },
+                { stopPointRef: '13003625G', commonName: 'Park W/B' },
+                {
+                    stopPointRef: '13003939D',
+                    commonName: 'Laurel Avenue SE/B',
+                },
+                {
+                    stopPointRef: '13003923F',
+                    commonName: 'Kingston Avenue Hail and Ride SW/B',
+                },
+                {
+                    stopPointRef: '13003622F',
+                    commonName: 'The Avenue Shops SW/B',
+                },
+                { stopPointRef: '13003621F', commonName: 'The Lawns SW/B' },
+                {
+                    stopPointRef: '13003618F',
+                    commonName: 'The Avenue/Essex Crescent SW/B',
+                },
+                {
+                    stopPointRef: '13003306A',
+                    commonName: 'Mount Pleasant N/B',
+                },
+                {
+                    stopPointRef: '13003305A',
+                    commonName: 'Westlea shops N/B',
+                },
+                {
+                    stopPointRef: '13003921A',
+                    commonName: 'Estate (Hail and Ride) N/B',
                 },
             ],
         },
         {
-            JourneyPattern: [
+            orderedStopPoints: [
                 {
-                    OrderedStopPoints: [
-                        {
-                            StopPointRef: '13003655B',
-                            CommonName: 'Interchange Stand B',
-                        },
-                        {
-                            StopPointRef: '13003654G',
-                            CommonName: 'North Railway Street W/B',
-                        },
-                        {
-                            StopPointRef: '13003999F',
-                            CommonName: 'New Tempest Road (York House) SW/B',
-                        },
-                        {
-                            StopPointRef: '13003111A',
-                            CommonName: 'Vane Terrace/Castlereagh N/B',
-                        },
-                        {
-                            StopPointRef: '13003612H',
-                            CommonName: 'New Strangford Road NW/B',
-                        },
-                        { StopPointRef: '13003625G', CommonName: 'Park W/B' },
-                        {
-                            StopPointRef: '13003939D',
-                            CommonName: 'Laurel Avenue SE/B',
-                        },
-                        {
-                            StopPointRef: '13003921A',
-                            CommonName: 'Estate (Hail and Ride) N/B',
-                        },
-                    ],
+                    stopPointRef: '13003655B',
+                    commonName: 'Interchange Stand B',
+                },
+                {
+                    stopPointRef: '13003654G',
+                    commonName: 'North Railway Street W/B',
+                },
+                {
+                    stopPointRef: '13003999F',
+                    commonName: 'New Tempest Road (York House) SW/B',
+                },
+                {
+                    stopPointRef: '13003111A',
+                    commonName: 'Vane Terrace/Castlereagh N/B',
+                },
+                {
+                    stopPointRef: '13003612H',
+                    commonName: 'New Strangford Road NW/B',
+                },
+                { stopPointRef: '13003625G', commonName: 'Park W/B' },
+                {
+                    stopPointRef: '13003939D',
+                    commonName: 'Laurel Avenue SE/B',
+                },
+                {
+                    stopPointRef: '13003921A',
+                    commonName: 'Estate (Hail and Ride) N/B',
                 },
             ],
         },
@@ -1041,3 +1038,158 @@ export const expectedPeriodValidity = {
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
 };
+
+export const multipleProducts: MultiProduct[] = [
+    {
+        productName: 'p',
+        productNameId: 'productOneId',
+        productNameError: 'Name too short',
+        productPrice: '3.50',
+        productPriceId: 'productOnePriceId',
+        productDuration: '66.5',
+        productDurationId: 'productOneDurationId',
+        productDurationError: 'Product duration must be a whole number',
+    },
+    {
+        productName: 'Super ticket',
+        productNameId: 'productOneId',
+        productPrice: '3.50gg',
+        productPriceId: 'productOnePriceId',
+        productPriceError: 'Product price must be a valid price',
+        productDuration: '7',
+        productDurationId: 'productOneDurationId',
+    },
+];
+
+export const multipleProductsWithoutErrors: MultiProduct[] = [
+    {
+        productName: 'Best ticket',
+        productNameId: 'productOneId',
+        productPrice: '3.50',
+        productPriceId: 'productOnePriceId',
+        productDuration: '66',
+        productDurationId: 'productOneDurationId',
+    },
+    {
+        productName: 'Super ticket',
+        productNameId: 'productOneId',
+        productPrice: '3.50',
+        productPriceId: 'productOnePriceId',
+        productDuration: '7',
+        productDurationId: 'productOneDurationId',
+    },
+];
+
+export const invalidDurationProducts: MultiProduct[] = [
+    {
+        productName: 'valid duration',
+        productNameId: 'multipleProductNameInput0',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '66',
+        productDurationId: '.',
+    },
+    {
+        productName: 'zero duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '0',
+        productDurationId: '.',
+    },
+    {
+        productName: 'negative duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '-1',
+        productDurationId: '.',
+    },
+    {
+        productName: 'empty duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '',
+        productDurationId: '.',
+    },
+    {
+        productName: 'non-numeric duration',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: 'ddd',
+        productDurationId: '.',
+    },
+];
+
+export const invalidPriceProducts: MultiProduct[] = [
+    {
+        productName: 'valid price',
+        productNameId: '.',
+        productPrice: '4.50',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'empty price',
+        productNameId: '.',
+        productPrice: '',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'negative price',
+        productNameId: '.',
+        productPrice: '-3.00',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'non-numeric / invalid price',
+        productNameId: '.',
+        productPrice: '3.g6',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];
+
+export const invalidNameProducts: MultiProduct[] = [
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: 'valid name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: '',
+        productNameId: 'empty name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'S',
+        productNameId: 'Too short name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName:
+            'Super Saver Bus Ticket for the cheapest you have ever seen and no other bus service will compare to this one, or your money back',
+        productNameId: 'Too Long name',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];
