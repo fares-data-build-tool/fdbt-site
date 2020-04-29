@@ -1048,11 +1048,15 @@ export const expectedMatchingJson = {
 export const expectedPeriodValidity = {
     operatorName: 'test',
     type: 'period',
-    productName: 'Product A',
-    productPrice: '1234',
-    daysValid: '2',
-    expiryRules: '24hr',
     nocCode: 'HCTY',
+    product: [
+        {
+            productName: 'Product A',
+            productPrice: '1234',
+            productDuration: '2',
+            productValidity: '24hr',
+        },
+    ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
 };
