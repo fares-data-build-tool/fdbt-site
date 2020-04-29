@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { shallow } from 'enzyme';
 import React from 'react';
 import MultiProductValidity, { getServerSideProps } from '../../src/pages/multipleProductValidity';

@@ -53,7 +53,6 @@ export const ALL_COOKIES: string[] = [
     'fdbt-stage-names-validation',
     'fdbt-stage-names',
     'fdbt-price-entry',
-    'fdbt-multiple-product',
     'fdbt-days-valid',
     'fdbt-period-product',
     'fdbt-period-type',

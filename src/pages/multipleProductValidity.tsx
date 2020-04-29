@@ -182,13 +182,3 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
 };
 
 export default MultiProductValidity;
-
-// fdbt-multiple-product = [{"productName": "dannys", "productPrice": "100", "productDuration": "3"}, {"productName": "robs", "productPrice": "250", "productDuration": "1"}, {"productName": "laurences", "productPrice": "1050", "productDuration": "21"}]
-// fdbt-number-of-products = {"numberOfProductsInput": "3"}
-// fdbt-fareType = {"errorMessage":"","uuid":"dfc2e313-d5e8-4acb-899e-fdbf29c020cd","fareType":"period"}
-// FOR PERIOD ZONE ROUTE
-//      fdbt-period-type = {"periodTypeName":"periodGeoZone","uuid":"dfc2e313-d5e8-4acb-899e-fdbf29c020cd"}
-//      fdbt-csv-zone-upload = {"fareZoneName":"Test Town Centre","uuid":"dfc2e313-d5e8-4acb-899e-fdbf29c020cd"}
-// FOR MULTI OPERATOR SINGLE SERVICE ROUTE
-//      fdbt-period-type = {"periodTypeName":"periodMultipleServices","uuid":"dfc2e313-d5e8-4acb-899e-fdbf29c020cd"}
-//      fdbt-period-single-services = {"error":false,"selectedServices":[$$$ LIST $$$],"uuid":"dfc2e313-d5e8-4acb-899e-fdbf29c020cd"}
