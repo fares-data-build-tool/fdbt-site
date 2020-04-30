@@ -77,7 +77,7 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
 export const getMatchingFareStages = async (uuid: string): Promise<MatchingFareZones> => {
     const params = {
         Bucket: MATCHING_DATA_BUCKET_NAME,
-        Key: `outbound-matching/${uuid}.json`,
+        Key: `return-single/outbound/${uuid}.json`,
     };
 
     try {
@@ -86,7 +86,7 @@ export const getMatchingFareStages = async (uuid: string): Promise<MatchingFareZ
 
         return JSON.parse(dataAsString);
     } catch (err) {
-        throw new Error(`Could not retrieve outbound matching fare zones from S3: ${err.name}, ${err.message}`);
+        throw new Error(`Could not retrieve outbound matching fare zones from S3: ${err.stack}`);
     }
 };
 
