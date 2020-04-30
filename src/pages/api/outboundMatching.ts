@@ -4,6 +4,7 @@ import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
+import { Stop } from '../../data/auroradb';
 
 export const putDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
     await putStringInS3(
@@ -74,7 +75,25 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const uuid = getUuidFromCookie(req, res);
 
-        await putDataInS3(matchingFareZones, uuid);
+        const formatMatchingFareZones = userFareStages.fareStages
+            .filter(userStage => matchingFareZones[userStage.stageName])
+            .map(userStage => {
+                const matchedZone = matchingFareZones[userStage.stageName];
+                return {
+                    name: userStage.stageName,
+                    stops: matchedZone.stops.map((stop: Stop) => ({
+                        ...stop,
+                        qualifierName: '',
+                    })),
+                };
+            });
+
+        const matchedFareZones: MatchingFareZones = {};
+        formatMatchingFareZones.forEach(fareStage => {
+            matchedFareZones[fareStage.name] = fareStage;
+        });
+
+        await putDataInS3(matchedFareZones, uuid);
 
         redirectTo(res, '/inboundMatching');
     } catch (error) {
