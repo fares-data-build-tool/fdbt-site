@@ -31,7 +31,7 @@ describe('Period Validity API', () => {
         expect(putStringInS3Spy).toBeCalledTimes(1);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            'period/matching/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
             JSON.stringify(expectedPeriodValidity),
             'application/json; charset=utf-8',
         );

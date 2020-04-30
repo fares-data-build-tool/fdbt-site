@@ -6,10 +6,10 @@ import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
 import { Stop } from '../../data/auroradb';
 
-export const putDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
+export const putMatchingDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `outbound-matching/${uuid}.json`,
+        `return-single/outbound/${uuid}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
@@ -93,7 +93,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             matchedFareZones[fareStage.name] = fareStage;
         });
 
-        await putDataInS3(matchedFareZones, uuid);
+        await putMatchingDataInS3(matchedFareZones, uuid);
 
         redirectTo(res, '/inboundMatching');
     } catch (error) {

@@ -34,7 +34,7 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    Select your inbound and outbound journeys
+                                    Select the inbound and outbound journeys for your service
                                 </h1>
                             </legend>
                             <div className="govuk-!-margin-top-5">

@@ -31,7 +31,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              Please select your journey direction
+              Select the inbound and outbound journeys for your service
             </h1>
           </legend>
           <div
@@ -42,13 +42,8 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
               errorId="outbound-error"
               errors={Array []}
             >
-              <span
-                className="govuk-label"
-                id="outbound-journey-selection-hint"
-              >
-                Outbound Journey
-              </span>
               <DirectionDropdown
+                dropdownLabel="Outbound Journey"
                 journeyPatterns={
                   Array [
                     Object {
@@ -119,13 +114,8 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
               errorId="inbound-error"
               errors={Array []}
             >
-              <span
-                className="govuk-label"
-                id="inbound-journey-selection-hint"
-              >
-                Inbound Journey
-              </span>
               <DirectionDropdown
+                dropdownLabel="Inbound Journey"
                 inboundJourney=""
                 journeyPatterns={
                   Array [

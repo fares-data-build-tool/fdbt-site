@@ -73,7 +73,7 @@ describe('Inbound Matching API', () => {
         expect(putStringInS3Spy).toBeCalledTimes(1);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            'inbound-outbound-matching/1e0459b3-082e-4e70-89db-96e8ae173e10_.json',
+            'return-single/matching/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
             JSON.stringify(expectedInboundOutboundMatchingJson),
             'application/json; charset=utf-8',
         );

@@ -31,10 +31,10 @@ interface MatchingFareZones {
     };
 }
 
-export const putDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
+export const putMatchingDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `inbound-outbound-matching/${uuid}_.json`,
+        `return-single/matching/${uuid}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
@@ -153,7 +153,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             outboundMatchingFareZones,
         );
 
-        await putDataInS3(matchingJson, uuid);
+        await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');
     } catch (error) {
