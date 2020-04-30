@@ -34,7 +34,7 @@ interface MatchingFareZones {
 export const putDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `inbound-matching/${uuid}_.json`,
+        `inbound-outbound-matching/${uuid}_.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
