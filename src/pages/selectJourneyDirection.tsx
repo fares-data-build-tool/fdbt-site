@@ -34,7 +34,7 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    Please select your journey direction
+                                    Select your inbound and outbound journeys
                                 </h1>
                             </legend>
                             <div className="govuk-!-margin-top-5">
@@ -43,16 +43,12 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorId={outboundErrorId}
                                     errorClass="govuk-radios--error"
                                 >
-                                    <div>
-                                        <span className="govuk-hint" id="outbound-journey-selection-hint">
-                                            Outbound Journey
-                                        </span>
-                                        <DirectionDropdown
-                                            journeyPatterns={service.journeyPatterns}
-                                            selectNameID="outboundJourney"
-                                            outboundJourney={outboundJourney}
-                                        />
-                                    </div>
+                                    <DirectionDropdown
+                                        selectNameID="outboundJourney"
+                                        dropdownLabel="Outbound Journey"
+                                        journeyPatterns={service.journeyPatterns}
+                                        outboundJourney={outboundJourney}
+                                    />
                                 </FormElementWrapper>
                             </div>
                             <div className="govuk-!-margin-top-6">
@@ -61,16 +57,12 @@ const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourn
                                     errorId={inboundErrorId}
                                     errorClass="govuk-radios--error"
                                 >
-                                    <div>
-                                        <span className="govuk-hint" id="inbound-journey-selection-hint">
-                                            Inbound Journey
-                                        </span>
-                                        <DirectionDropdown
-                                            journeyPatterns={service.journeyPatterns}
-                                            selectNameID="inboundJourney"
-                                            inboundJourney={inboundJourney}
-                                        />
-                                    </div>
+                                    <DirectionDropdown
+                                        selectNameID="inboundJourney"
+                                        dropdownLabel="Inbound Journey"
+                                        journeyPatterns={service.journeyPatterns}
+                                        inboundJourney={inboundJourney}
+                                    />
                                 </FormElementWrapper>
                             </div>
                         </fieldset>

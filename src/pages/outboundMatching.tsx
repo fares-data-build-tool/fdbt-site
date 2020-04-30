@@ -7,10 +7,10 @@ import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/matching/Matching';
 
-const heading = 'Outbound: Match stops to fare stages';
+const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Fares data build tool';
 const description = 'Outbound Matching page of the fares data build tool';
-const hintText = 'Select the correct fare stage for each stop on the Outbound Journey.';
+const hintText = 'Select the correct fare stage for each stop on the outbound journey.';
 const apiEndpoint = '/api/outboundMatching';
 
 export interface BasicService {
