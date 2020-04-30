@@ -1049,7 +1049,7 @@ export const expectedPeriodValidity = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
-    product: [
+    products: [
         {
             productName: 'Product A',
             productPrice: '1234',

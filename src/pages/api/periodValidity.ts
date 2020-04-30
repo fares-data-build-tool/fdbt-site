@@ -26,7 +26,7 @@ interface DecisionData {
     operatorName: string;
     type: string;
     nocCode: string;
-    product: Product[];
+    products: Product[];
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -99,7 +99,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 operatorName: operator,
                 type: periodTypeName,
                 nocCode,
-                product: [
+                products: [
                     {
                         productName,
                         productPrice,
