@@ -703,7 +703,7 @@ export const service = {
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
-    description: 'Worthing - Seaham - Crawley',
+    serviceDescription: 'Worthing - Seaham - Crawley',
 };
 
 export const mockService: Service = {
@@ -924,7 +924,7 @@ export const expectedMatchingJson = {
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',
-    description: 'Worthing - Seaham - Crawley',
+    serviceDescription: 'Worthing - Seaham - Crawley',
     fareZones: [
         {
             name: 'Acomb Green Lane',

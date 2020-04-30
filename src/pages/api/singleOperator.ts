@@ -55,9 +55,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         Object.entries(requestBody).forEach(entry => {
             const checkedBoxValues = entry[1].split('/');
-            const serviceDescription = checkedBoxValues[0];
-            const startDate = checkedBoxValues[1];
-            const data: ServicesInfo = { lineName: entry[0], startDate, serviceDescription };
+            const data: ServicesInfo = {
+                lineName: entry[0],
+                startDate: checkedBoxValues[1],
+                serviceDescription: checkedBoxValues[0],
+            };
             checkedServiceList.push(data);
         });
 
