@@ -63,8 +63,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
-            const error = { error: true };
-            setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error }), req, res);
+            const outbound = { error: true };
+            setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
             redirectTo(res, '/outboundMatching');
             return;
         }
@@ -94,6 +94,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         });
 
         await putMatchingDataInS3(matchedFareZones, uuid);
+
+        setCookieOnResponseObject(
+            getDomain(req),
+            MATCHING_COOKIE,
+            JSON.stringify({ outbound: { error: false } }),
+            req,
+            res,
+        );
 
         redirectTo(res, '/inboundMatching');
     } catch (error) {
