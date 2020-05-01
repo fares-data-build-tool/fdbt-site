@@ -68,12 +68,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
-    let isError = false;
-    if (!matchingCookie) {
-        isError = false;
-    } else if (matchingCookie && JSON.parse(matchingCookie).outbound.error) {
-        isError = true;
-    }
+    const parsedMatchingCookie = !matchingCookie ? false : JSON.parse(matchingCookie);
 
     return {
         props: {
@@ -85,7 +80,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: isError,
+            error: !parsedMatchingCookie.outbound ? false : JSON.parse(matchingCookie).outbound.error,
         },
     };
 };
