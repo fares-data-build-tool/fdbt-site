@@ -16,7 +16,7 @@ import InboundMatching, { getServerSideProps } from '../../src/pages/inboundMatc
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
 
-describe('Inbound InboundMatching Page', () => {
+describe('Inbound Matching Page', () => {
     let wrapper: any;
     let getServiceByNocCodeAndLineNameSpy: any;
     let batchGetStopsByAtcoCodeSpy: any;

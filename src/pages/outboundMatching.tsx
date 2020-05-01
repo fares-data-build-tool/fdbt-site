@@ -6,18 +6,13 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/matching/Matching';
+import { BasicService } from '../interfaces/index';
 
 const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Fares data build tool';
 const description = 'Outbound Matching page of the fares data build tool';
 const hintText = 'Select the correct fare stage for each stop on the outbound journey.';
 const apiEndpoint = '/api/outboundMatching';
-
-export interface BasicService {
-    lineName: string;
-    nocCode: string;
-    operatorShortName: string;
-}
 
 interface MatchingProps {
     userFareStages: UserFareStages;
@@ -88,6 +83,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 lineName,
                 nocCode,
                 operatorShortName: service.operatorShortName,
+                serviceDescription: service.serviceDescription,
             },
             error: isError,
         },

@@ -6,18 +6,13 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/matching/Matching';
+import { BasicService } from '../interfaces/index';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Fares data build tool';
 const description = 'Inbound Matching page of the fares data build tool';
 const hintText = 'Select the correct fare stage for each stop on the inbound journey.';
 const apiEndpoint = '/api/inboundMatching';
-
-export interface BasicService {
-    lineName: string;
-    nocCode: string;
-    operatorShortName: string;
-}
 
 interface MatchingProps {
     userFareStages: UserFareStages;
@@ -73,7 +68,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
-    const parsedMatchingCookie = JSON.parse(matchingCookie);
+    const parsedMatchingCookie = !matchingCookie ? false : JSON.parse(matchingCookie);
 
     return {
         props: {
@@ -83,6 +78,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 lineName,
                 nocCode,
                 operatorShortName: service.operatorShortName,
+                serviceDescription: service.serviceDescription,
             },
             error: !parsedMatchingCookie.inbound ? false : JSON.parse(matchingCookie).inbound.error,
         },

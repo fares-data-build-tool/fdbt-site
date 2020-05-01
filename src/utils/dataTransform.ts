@@ -1,6 +1,5 @@
 import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern, RawService } from '../data/auroradb';
 
-// eslint-disable-next-line import/prefer-default-export
 export const enrichJourneyPatternsWithNaptanInfo = async (
     journeyPatterns: RawJourneyPattern[],
 ): Promise<JourneyPattern[]> =>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Inbound InboundMatching Page should render correctly 1`] = `
+exports[`Inbound Matching Page should render correctly 1`] = `
 <MatchingBase
   apiEndpoint="/api/inboundMatching"
   description="Inbound Matching page of the fares data build tool"
@@ -12,6 +12,7 @@ exports[`Inbound InboundMatching Page should render correctly 1`] = `
       "lineName": "215",
       "nocCode": "DCCL",
       "operatorShortName": "DCC",
+      "serviceDescription": "Worthing - Seaham - Crawley",
       "type": "pointToPoint",
     }
   }

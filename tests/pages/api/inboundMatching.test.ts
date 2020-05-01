@@ -70,13 +70,14 @@ describe('Inbound Matching API', () => {
 
         await inboundMatching(req, res);
 
-        expect(putStringInS3Spy).toBeCalledTimes(1);
+        const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
             'return-single/matching/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
-            JSON.stringify(expectedInboundOutboundMatchingJson),
+            expect.any(String),
             'application/json; charset=utf-8',
         );
+        expect(expectedInboundOutboundMatchingJson).toEqual(actualMatchingData);
     });
 
     it('correctly redirects to inboundMatching page when there are fare stages that have not been assigned to stops', async () => {
