@@ -3,9 +3,8 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE } from '../constants';
-import { deleteCookieOnServerSide, getUuidFromCookies, setCookieOnServerSide } from '../utils';
+import { deleteCookieOnServerSide } from '../utils';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
-import { redirectTo } from './api/apiUtils';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 
@@ -67,7 +66,6 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
 
     const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
-    const fareTypeInfo = JSON.parse(fareTypeCookie);
 
     const lineName = serviceInfo.service.split('#')[0];
 
@@ -90,17 +88,6 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
                 item => item.endPoint.Id === pattern.endPoint.Id && item.startPoint.Id === pattern.startPoint.Id,
             ) === index,
     );
-
-    // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
-    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'return') {
-        if (ctx.res) {
-            const uuid = getUuidFromCookies(ctx);
-            const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
-            const cookieValue = JSON.stringify({ journeyPattern: journeyPatternCookie, uuid });
-            setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
-            redirectTo(ctx.res, '/inputMethod');
-        }
-    }
 
     return { props: { operator: operatorInfo.operator, lineName, service } };
 };
