@@ -114,7 +114,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
             const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
-            const cookieValue = JSON.stringify({ journeyPattern: journeyPatternCookie, uuid });
+            const cookieValue = JSON.stringify({ directionJourneyPattern: journeyPatternCookie, uuid });
             setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
             redirectTo(ctx.res, '/inputMethod');
         }
