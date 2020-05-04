@@ -11,7 +11,7 @@ import {
 import { BasicService } from '../interfaces/index';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
-import MatchingBase from '../components/matching/Matching';
+import MatchingBase from '../components/MatchingBase';
 
 const title = 'Matching - Fares data build tool';
 const description = 'Matching page of the fares data build tool';

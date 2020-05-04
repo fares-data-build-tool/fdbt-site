@@ -34,7 +34,7 @@ interface MatchingFareZones {
 export const putMatchingDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `return-single/matching/${uuid}.json`,
+        `${uuid}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
@@ -73,7 +73,7 @@ const getMatchingJson = (
     outboundMatchingFareZones: MatchingFareZones,
 ): MatchingData => ({
     ...service,
-    type: 'ReturnSingle',
+    type: 'return',
     inboundFareZones: userFareStages.fareStages
         .filter(userStage => inboundMatchingFareZones[userStage.stageName])
         .map(userStage => {

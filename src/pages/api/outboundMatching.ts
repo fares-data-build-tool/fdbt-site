@@ -2,14 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
+import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
 import { Stop } from '../../data/auroradb';
 
 export const putMatchingDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
     await putStringInS3(
-        MATCHING_DATA_BUCKET_NAME,
-        `return-single/outbound/${uuid}.json`,
+        USER_DATA_BUCKET_NAME,
+        `return/outbound/${uuid}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );

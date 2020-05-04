@@ -11,7 +11,7 @@ exports[`pages selectJourneyDirection should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/selectJourneyDirection"
+      action="/api/returnDirection"
       method="post"
     >
       <ErrorSummary

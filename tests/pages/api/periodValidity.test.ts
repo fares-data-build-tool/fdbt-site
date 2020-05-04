@@ -31,7 +31,7 @@ describe('Period Validity API', () => {
         const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            'period/matching/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
             expect.any(String),
             'application/json; charset=utf-8',
         );

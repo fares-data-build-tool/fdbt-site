@@ -73,7 +73,7 @@ describe('Inbound Matching API', () => {
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            'return-single/matching/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
             expect.any(String),
             'application/json; charset=utf-8',
         );

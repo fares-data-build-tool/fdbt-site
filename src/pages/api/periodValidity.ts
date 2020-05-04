@@ -112,7 +112,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             await putStringInS3(
                 MATCHING_DATA_BUCKET_NAME,
-                `period/matching/${uuid}.json`,
+                `${uuid}.json`,
                 JSON.stringify(period),
                 'application/json; charset=utf-8',
             );

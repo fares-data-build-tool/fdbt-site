@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME, MATCHING_DATA_BUCKET_NAME } from '../constants';
+import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME } from '../constants';
 import { MatchingFareZones } from '../interfaces/matchingInterface';
 
 export interface FareStage {
@@ -76,8 +76,8 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
 
 export const getMatchingFareStages = async (uuid: string): Promise<MatchingFareZones> => {
     const params = {
-        Bucket: MATCHING_DATA_BUCKET_NAME,
-        Key: `return-single/outbound/${uuid}.json`,
+        Bucket: USER_DATA_BUCKET_NAME,
+        Key: `return/outbound/${uuid}.json`,
     };
 
     try {

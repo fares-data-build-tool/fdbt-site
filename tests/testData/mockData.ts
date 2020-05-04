@@ -1053,7 +1053,7 @@ export const expectedMatchingJson = {
 };
 
 export const expectedInboundOutboundMatchingJson = {
-    type: 'ReturnSingle',
+    type: 'return',
     lineName: '215',
     nocCode: 'DCCL',
     operatorShortName: 'DCC',

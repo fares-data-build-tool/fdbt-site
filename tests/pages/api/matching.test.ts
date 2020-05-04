@@ -49,7 +49,7 @@ describe('Matching API', () => {
         expect(putStringInS3Spy).toBeCalledTimes(1);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
-            'single/matching/1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10_215_DCCL.json',
             JSON.stringify(expectedMatchingJson),
             'application/json; charset=utf-8',
         );

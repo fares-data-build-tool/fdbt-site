@@ -134,8 +134,8 @@ describe('Outbound Matching API', () => {
 
         expect(putStringInS3Spy).toBeCalledTimes(1);
         expect(putStringInS3Spy).toBeCalledWith(
-            'fdbt-matching-data-dev',
-            'return-single/outbound/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            'fdbt-user-data-dev',
+            'return/outbound/1e0459b3-082e-4e70-89db-96e8ae173e10.json',
             expect.any(String),
             'application/json; charset=utf-8',
         );

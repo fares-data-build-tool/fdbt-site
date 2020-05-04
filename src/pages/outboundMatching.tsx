@@ -5,7 +5,7 @@ import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '.
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
-import MatchingBase from '../components/matching/Matching';
+import MatchingBase from '../components/MatchingBase';
 import { BasicService } from '../interfaces/index';
 
 const heading = 'Outbound - Match stops to fare stages';

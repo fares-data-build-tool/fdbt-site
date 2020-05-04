@@ -18,11 +18,11 @@ interface DirectionProps {
     service: Service;
 }
 
-const Direction = ({ operator, lineName, service }: DirectionProps): ReactElement => {
+const SingleDirection = ({ operator, lineName, service }: DirectionProps): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/direction" method="post">
+                <form action="/api/singleDirection" method="post">
                     <div className="govuk-form-group">
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -92,7 +92,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     );
 
     // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
-    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
+    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'return') {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
             const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
@@ -105,4 +105,4 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     return { props: { operator: operatorInfo.operator, lineName, service } };
 };
 
-export default Direction;
+export default SingleDirection;

@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import ErrorSummary from '../ErrorSummary';
-import Layout from '../../layout/Layout';
-import MatchingList from '../MatchingList';
-import { UserFareStages } from '../../data/s3';
-import { Stop } from '../../data/auroradb';
-import { BasicService } from '../../interfaces/index';
-import { ErrorInfo } from '../../types';
+import ErrorSummary from './ErrorSummary';
+import Layout from '../layout/Layout';
+import MatchingList from './MatchingList';
+import { UserFareStages } from '../data/s3';
+import { Stop } from '../data/auroradb';
+import { BasicService } from '../interfaces';
+import { ErrorInfo } from '../types';
 
 interface MatchingBaseProps {
     userFareStages: UserFareStages;

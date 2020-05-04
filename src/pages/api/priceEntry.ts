@@ -107,7 +107,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         await putDataInS3(uuid, JSON.stringify(mappedData));
 
         const cookies = new Cookies(req, res);
-        const journeyCookie = unescape(decodeURI(cookies.get(JOURNEY_COOKIE) || ''));
+        const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
         const journeyObject = JSON.parse(journeyCookie);
 
         if (journeyObject?.outboundJourney) {

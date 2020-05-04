@@ -25,11 +25,11 @@ interface DirectionProps {
     inboundJourney: string;
 }
 
-const SelectJourneyDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
+const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: DirectionProps): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/selectJourneyDirection" method="post">
+                <form action="/api/returnDirection" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
@@ -110,7 +110,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     }
 
     // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
-    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'returnSingle') {
+    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'return') {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
             const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
@@ -147,4 +147,4 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     return { props: { service, errors: [] } };
 };
 
-export default SelectJourneyDirection;
+export default ReturnDirection;
