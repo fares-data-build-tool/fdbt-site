@@ -1,17 +1,30 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
+import Cookies from 'cookies';
+import {
+    redirectTo,
+    redirectToError,
+    getUuidFromCookie,
+    setCookieOnResponseObject,
+    getDomain,
+    unescapeAndDecodeCookie,
+} from './apiUtils';
 import { BasicService } from '../../interfaces/index';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
+import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARETYPE_COOKIE } from '../../constants';
+import getFareZones from './apiUtils/matching';
+import { Price } from '../../interfaces/matchingInterface';
 
-interface MatchingData {
+interface MatchingBaseData {
     type: string;
     lineName: string;
     nocCode: string;
     operatorShortName: string;
     serviceDescription: string;
+}
+
+interface MatchingData extends MatchingBaseData {
     fareZones: {
         name: string;
         stops: Stop[];
@@ -22,14 +35,26 @@ interface MatchingData {
     }[];
 }
 
+interface MatchingReturnData extends MatchingBaseData {
+    outboundMatchingFareZones: {
+        name: string;
+        stops: Stop[];
+        prices: {
+            price: string;
+            fareZones: string[];
+        }[];
+    }[];
+    inboundMatchingFareZones: [];
+}
+
 interface MatchingFareZones {
     [key: string]: {
         name: string;
         stops: Stop[];
+        prices: Price[];
     };
 }
-
-export const putMatchingDataInS3 = async (data: MatchingData, uuid: string): Promise<void> => {
+export const putMatchingDataInS3 = async (data: MatchingData | MatchingReturnData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
         `${uuid}_${data.lineName}_${data.nocCode}.json`,
@@ -52,6 +77,7 @@ const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones =>
                 matchingFareZones[zone.stage] = {
                     name: zone.stage,
                     stops: [zone.stop],
+                    prices: [zone.price],
                 };
             }
         }
@@ -68,24 +94,23 @@ const getMatchingJson = (
     service: BasicService,
     userFareStages: UserFareStages,
     matchingFareZones: MatchingFareZones,
-): MatchingData => ({
-    ...service,
-    type: 'pointToPoint',
-    fareZones: userFareStages.fareStages
-        .filter(userStage => matchingFareZones[userStage.stageName])
-        .map(userStage => {
-            const matchedZone = matchingFareZones[userStage.stageName];
+    fareType: string,
+): MatchingData | MatchingReturnData => {
+    if (fareType === 'return') {
+        return {
+            ...service,
+            type: 'return',
+            outboundMatchingFareZones: getFareZones(userFareStages, matchingFareZones),
+            inboundMatchingFareZones: [],
+        };
+    }
 
-            return {
-                name: userStage.stageName,
-                stops: matchedZone.stops.map((stop: Stop) => ({
-                    ...stop,
-                    qualifierName: '',
-                })),
-                prices: userStage.prices,
-            };
-        }),
-});
+    return {
+        ...service,
+        type: 'pointToPoint',
+        fareZones: getFareZones(userFareStages, matchingFareZones),
+    };
+};
 
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
@@ -122,7 +147,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const uuid = getUuidFromCookie(req, res);
 
-        const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones);
+        const cookies = new Cookies(req, res);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const fareTypeObject = JSON.parse(fareTypeCookie);
+
+        const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones, fareTypeObject.fareType);
 
         setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
 

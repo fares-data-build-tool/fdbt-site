@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import ErrorSummary from './ErrorSummary';
+import FormElementWrapper from './FormElementWrapper';
 import Layout from '../layout/Layout';
 import MatchingList from './MatchingList';
 import { UserFareStages } from '../data/s3';
@@ -45,15 +46,12 @@ const MatchingBase = ({
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading">{heading}</h1>
                         </legend>
-                        <span id="dropdown-error" className="govuk-error-message">
-                            <span className={error ? '' : 'govuk-visually-hidden'}>
-                                Ensure each fare stage is assigned at least once.
-                            </span>
-                        </span>
                         <span className="govuk-hint" id="match-fares-hint">
                             {hintText}
                         </span>
-                        <MatchingList userFareStages={userFareStages} stops={stops} />
+                        <FormElementWrapper errors={errors} errorId="dropdown-error" errorClass="">
+                            <MatchingList userFareStages={userFareStages} stops={stops} />
+                        </FormElementWrapper>
                     </div>
 
                     <input type="hidden" name="service" value={JSON.stringify(service)} />

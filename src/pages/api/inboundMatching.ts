@@ -2,9 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
 import { BasicService } from '../../interfaces/index';
 import { Stop } from '../../data/auroradb';
-import { getMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
+import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE } from '../../constants';
+import getFareZones from './apiUtils/matching';
+import { Price } from '../../interfaces/matchingInterface';
 
 interface FareZones {
     name: string;
@@ -28,6 +30,7 @@ interface MatchingFareZones {
     [key: string]: {
         name: string;
         stops: Stop[];
+        prices: Price[];
     };
 }
 
@@ -54,6 +57,7 @@ const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones =>
                 matchingFareZones[zone.stage] = {
                     name: zone.stage,
                     stops: [zone.stop],
+                    prices: [zone.price],
                 };
             }
         }
@@ -74,34 +78,8 @@ const getMatchingJson = (
 ): MatchingData => ({
     ...service,
     type: 'return',
-    inboundFareZones: userFareStages.fareStages
-        .filter(userStage => inboundMatchingFareZones[userStage.stageName])
-        .map(userStage => {
-            const matchedZone = inboundMatchingFareZones[userStage.stageName];
-
-            return {
-                name: userStage.stageName,
-                stops: matchedZone.stops.map((stop: Stop) => ({
-                    ...stop,
-                    qualifierName: '',
-                })),
-                prices: userStage.prices,
-            };
-        }),
-    outboundFareZones: userFareStages.fareStages
-        .filter(userStage => outboundMatchingFareZones[userStage.stageName])
-        .map(userStage => {
-            const matchedZone = outboundMatchingFareZones[userStage.stageName];
-
-            return {
-                name: userStage.stageName,
-                stops: matchedZone.stops.map((stop: Stop) => ({
-                    ...stop,
-                    qualifierName: '',
-                })),
-                prices: userStage.prices,
-            };
-        }),
+    inboundFareZones: getFareZones(userFareStages, inboundMatchingFareZones),
+    outboundFareZones: getFareZones(userFareStages, outboundMatchingFareZones),
 });
 
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
@@ -145,7 +123,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const uuid = getUuidFromCookie(req, res);
 
         // get the outbound matching fare zones for outbound
-        const outboundMatchingFareZones = await getMatchingFareStages(uuid);
+        const outboundMatchingFareZones = await getOutboundMatchingFareStages(uuid);
 
         if (!outboundMatchingFareZones) {
             throw new Error('no outbound fare stages retrieved');

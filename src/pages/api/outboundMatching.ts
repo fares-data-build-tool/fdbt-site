@@ -4,9 +4,9 @@ import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
-import { Stop } from '../../data/auroradb';
+import getFareZones from './apiUtils/matching';
 
-export const putMatchingDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
+export const putOutboundMatchingDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
     await putStringInS3(
         USER_DATA_BUCKET_NAME,
         `return/outbound/${uuid}.json`,
@@ -29,6 +29,7 @@ const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones =>
                 matchingFareZones[zone.stage] = {
                     name: zone.stage,
                     stops: [zone.stop],
+                    prices: [zone.price],
                 };
             }
         }
@@ -75,25 +76,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const uuid = getUuidFromCookie(req, res);
 
-        const formatMatchingFareZones = userFareStages.fareStages
-            .filter(userStage => matchingFareZones[userStage.stageName])
-            .map(userStage => {
-                const matchedZone = matchingFareZones[userStage.stageName];
-                return {
-                    name: userStage.stageName,
-                    stops: matchedZone.stops.map((stop: Stop) => ({
-                        ...stop,
-                        qualifierName: '',
-                    })),
-                };
-            });
+        const formatMatchingFareZones = getFareZones(userFareStages, matchingFareZones);
 
         const matchedFareZones: MatchingFareZones = {};
         formatMatchingFareZones.forEach(fareStage => {
             matchedFareZones[fareStage.name] = fareStage;
         });
 
-        await putMatchingDataInS3(matchedFareZones, uuid);
+        await putOutboundMatchingDataInS3(matchedFareZones, uuid);
 
         setCookieOnResponseObject(
             getDomain(req),

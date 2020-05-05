@@ -1197,6 +1197,112 @@ export const expectedInboundOutboundMatchingJson = {
     ],
 };
 
+export const matchingOutBound = {
+    'Acomb Green Lane': {
+        name: 'Acomb Green Lane',
+        stops: [
+            {
+                stopName: 'Yoden Way - Chapel Hill Road',
+                atcoCode: '13003521G',
+                localityCode: 'E0045956',
+                naptanCode: 'duratdmj',
+                localityName: 'Peterlee',
+                indicator: 'W-bound',
+                street: 'Yodan Way',
+                qualifierName: '',
+                parentLocalityName: 'IW Test',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Mattison Way': {
+        name: 'Mattison Way',
+        stops: [
+            {
+                stopName: 'Yoden Way',
+                naptanCode: 'duratdmt',
+                atcoCode: '13003522F',
+                localityCode: 'E0010183',
+                localityName: 'Horden',
+                indicator: 'SW-bound',
+                street: 'Yoden Way',
+                qualifierName: '',
+                parentLocalityName: 'IW Test',
+            },
+        ],
+        prices: [
+            { price: '1.10', fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'] },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Holl Bank/Beech Ave': {
+        name: 'Holl Bank/Beech Ave',
+        stops: [
+            {
+                stopName: 'Surtees Rd-Edenhill Rd',
+                naptanCode: 'durapgdw',
+                atcoCode: '13003219H',
+                localityCode: 'E0045956',
+                localityName: 'Peterlee',
+                indicator: 'NW-bound',
+                street: 'Surtees Road',
+                qualifierName: '',
+                parentLocalityName: 'IW Test',
+            },
+        ],
+        prices: [
+            { price: '1.10', fareZones: ['Cambridge Street (York)', 'Blossom Street'] },
+            { price: '1.70', fareZones: ['Rail Station (York)', 'Piccadilly (York)'] },
+        ],
+    },
+    'Blossom Street': {
+        name: 'Blossom Street',
+        stops: [
+            {
+                stopName: 'Bus Station',
+                naptanCode: 'duratdma',
+                atcoCode: '13003519H',
+                localityCode: 'E0045956',
+                localityName: 'Peterlee',
+                indicator: 'H',
+                street: 'Bede Way',
+                qualifierName: '',
+                parentLocalityName: 'IW Test',
+            },
+        ],
+        prices: [{ price: '1.00', fareZones: ['Rail Station (York)', 'Piccadilly (York)'] }],
+    },
+    'Piccadilly (York)': {
+        name: 'Piccadilly (York)',
+        stops: [
+            {
+                stopName: 'Kell Road',
+                naptanCode: 'duraptwp',
+                atcoCode: '13003345D',
+                localityCode: 'E0010183',
+                localityName: 'Horden',
+                indicator: 'SE-bound',
+                street: 'Kell Road',
+                qualifierName: '',
+                parentLocalityName: 'IW Test',
+            },
+        ],
+        prices: {},
+    },
+};
+
 export const expectedPeriodValidity = {
     operatorName: 'test',
     type: 'period',

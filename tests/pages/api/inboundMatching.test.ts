@@ -41,6 +41,16 @@ const matchingOutBound: MatchingFareZones = {
                 parentLocalityName: 'IW Test',
             },
         ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
     },
 };
 
@@ -48,7 +58,7 @@ describe('Inbound Matching API', () => {
     const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
     putStringInS3Spy.mockImplementation(() => Promise.resolve());
 
-    const matchingFareZones = jest.spyOn(s3, 'getMatchingFareStages');
+    const matchingFareZones = jest.spyOn(s3, 'getOutboundMatchingFareStages');
     matchingFareZones.mockImplementation(() => Promise.resolve(matchingOutBound));
     const writeHeadMock = jest.fn();
 

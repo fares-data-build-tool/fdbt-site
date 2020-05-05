@@ -5,9 +5,9 @@ import {
     service,
     mockMatchingUserFareStagesWithUnassignedStages,
     mockMatchingUserFareStagesWithAllStagesAssigned,
+    matchingOutBound,
 } from '../../testData/mockData';
 import * as s3 from '../../../src/data/s3';
-import { MatchingFareZones } from '../../../src/interfaces/matchingInterface';
 
 jest.mock('../../../src/data/s3.ts');
 
@@ -22,89 +22,6 @@ const selectedOptions = {
         '{"stop":{"stopName":"Bus Station","naptanCode":"duratdma","atcoCode":"13003519H","localityCode":"E0045956","localityName":"Peterlee","indicator":"H","street":"Bede Way","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Blossom Street"}',
     option4:
         '{"stop":{"stopName":"Kell Road","naptanCode":"duraptwp","atcoCode":"13003345D","localityCode":"E0010183","localityName":"Horden","indicator":"SE-bound","street":"Kell Road","qualifierName":"","parentLocalityName":"IW Test"},"stage":"Piccadilly (York)"}',
-};
-
-const matchingOutBound: MatchingFareZones = {
-    'Acomb Green Lane': {
-        name: 'Acomb Green Lane',
-        stops: [
-            {
-                stopName: 'Yoden Way - Chapel Hill Road',
-                atcoCode: '13003521G',
-                localityCode: 'E0045956',
-                naptanCode: 'duratdmj',
-                localityName: 'Peterlee',
-                indicator: 'W-bound',
-                street: 'Yodan Way',
-                qualifierName: '',
-                parentLocalityName: 'IW Test',
-            },
-        ],
-    },
-    'Mattison Way': {
-        name: 'Mattison Way',
-        stops: [
-            {
-                stopName: 'Yoden Way',
-                naptanCode: 'duratdmt',
-                atcoCode: '13003522F',
-                localityCode: 'E0010183',
-                localityName: 'Horden',
-                indicator: 'SW-bound',
-                street: 'Yoden Way',
-                qualifierName: '',
-                parentLocalityName: 'IW Test',
-            },
-        ],
-    },
-    'Holl Bank/Beech Ave': {
-        name: 'Holl Bank/Beech Ave',
-        stops: [
-            {
-                stopName: 'Surtees Rd-Edenhill Rd',
-                naptanCode: 'durapgdw',
-                atcoCode: '13003219H',
-                localityCode: 'E0045956',
-                localityName: 'Peterlee',
-                indicator: 'NW-bound',
-                street: 'Surtees Road',
-                qualifierName: '',
-                parentLocalityName: 'IW Test',
-            },
-        ],
-    },
-    'Blossom Street': {
-        name: 'Blossom Street',
-        stops: [
-            {
-                stopName: 'Bus Station',
-                naptanCode: 'duratdma',
-                atcoCode: '13003519H',
-                localityCode: 'E0045956',
-                localityName: 'Peterlee',
-                indicator: 'H',
-                street: 'Bede Way',
-                qualifierName: '',
-                parentLocalityName: 'IW Test',
-            },
-        ],
-    },
-    'Piccadilly (York)': {
-        name: 'Piccadilly (York)',
-        stops: [
-            {
-                stopName: 'Kell Road',
-                naptanCode: 'duraptwp',
-                atcoCode: '13003345D',
-                localityCode: 'E0010183',
-                localityName: 'Horden',
-                indicator: 'SE-bound',
-                street: 'Kell Road',
-                qualifierName: '',
-                parentLocalityName: 'IW Test',
-            },
-        ],
-    },
 };
 
 describe('Outbound Matching API', () => {

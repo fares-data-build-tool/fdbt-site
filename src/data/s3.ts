@@ -74,7 +74,7 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
     }
 };
 
-export const getMatchingFareStages = async (uuid: string): Promise<MatchingFareZones> => {
+export const getOutboundMatchingFareStages = async (uuid: string): Promise<MatchingFareZones> => {
     const params = {
         Bucket: USER_DATA_BUCKET_NAME,
         Key: `return/outbound/${uuid}.json`,
