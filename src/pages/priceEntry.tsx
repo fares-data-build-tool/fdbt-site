@@ -47,7 +47,7 @@ const PriceEntry = ({ stageNamesArray }: PriceEntryProps): ReactElement => (
                                             className={`govuk-input govuk-input--width-4 fare-triangle-input ${
                                                 rowIndex % 2 === 0
                                                     ? 'fare-triangle-input-white'
-                                                    : 'fare-triangle-input-mid-grey'
+                                                    : 'fare-triangle-input-light-grey'
                                             }`}
                                             id={`cell-${rowIndex}-${columnIndex}`}
                                             name={`${rowStage}-${columnStage}`}
