@@ -1,8 +1,11 @@
 import { UserFareStages } from '../../../data/s3';
 import { Stop } from '../../../data/auroradb';
-import { MatchingFareZones } from '../../../interfaces/matchingInterface';
+import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
 
-const getFareZones = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones) => {
+const getFareZones = (
+    userFareStages: UserFareStages,
+    matchingFareZones: MatchingFareZones,
+): MatchingFareZonesData[] => {
     return userFareStages.fareStages
         .filter(userStage => matchingFareZones[userStage.stageName])
         .map(userStage => {
