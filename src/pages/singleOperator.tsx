@@ -63,6 +63,7 @@ const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
                                     if (checkboxTitles.length > 110) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
                                     }
+                                    const checkBoxValues = `${serviceDescription}#${startDate}`;
 
                                     return (
                                         <div className="govuk-checkboxes__item" key={`checkbox-item-${lineName}`}>
@@ -71,7 +72,7 @@ const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
                                                 id={`checkbox-${index}`}
                                                 name={lineName}
                                                 type="checkbox"
-                                                value={startDate}
+                                                value={checkBoxValues}
                                                 defaultChecked={checked}
                                             />
                                             <label
