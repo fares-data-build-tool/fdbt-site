@@ -27,7 +27,7 @@ const Direction = ({ operator, lineName, service }: DirectionProps): ReactElemen
                         <fieldset className="govuk-fieldset" aria-describedby="page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="page-heading">
-                                    Please select your journey direction
+                                    Select a journey direction
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="direction-operator-linename-hint">
@@ -40,6 +40,9 @@ const Direction = ({ operator, lineName, service }: DirectionProps): ReactElemen
                                 journeyPatterns={service.journeyPatterns}
                                 selectNameID="directionJourneyPattern"
                             />
+                            <span className="govuk-hint" id="traveline-hint">
+                                This data is taken from the Traveline National Dataset{' '}
+                            </span>
                         </fieldset>
                     </div>
                     <input
