@@ -14,7 +14,7 @@
             height: 40px;
             margin: 0;
             flex: 0 0 auto;
-            width: 80px;
+            width: 125px;
             white-space: nowrap;
 
             span {
@@ -59,7 +59,7 @@
         }
 
         .fare-triangle-input-mid-grey {
-            background-color: govuk-colour('mid-grey');
+            background-color: govuk-colour("light-grey");
         }
 
         .fare-triangle-input:not(:nth-child(1)) {
@@ -69,7 +69,7 @@
         .fare-triangle-label-right {
             flex: 0 0 auto;
             margin: auto 0;
-            width: 110px;
+            width: 125px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
