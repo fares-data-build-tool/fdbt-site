@@ -52,7 +52,7 @@ const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
                                 className="govuk-button govuk-button--secondary"
                             />
                             <span className="govuk-hint" id="traveline-hint">
-                                This data is taken from the Traveline National Dataset.{' '}
+                                This data is taken from the Traveline National Dataset.
                             </span>
                             <div className="govuk-checkboxes">
                                 {selectedServices.map((service, index) => {

@@ -42,8 +42,8 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                                 </option>
                             ))}
                         </select>
-                        <span className="govuk-hint" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset{' '}
+                        <span className="govuk-hint hint-text" id="traveline-hint">
+                            This data is taken from the Traveline National Dataset
                         </span>
                     </fieldset>
                 </div>

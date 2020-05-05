@@ -46,7 +46,7 @@ const Matching = ({ userFareStages, stops, service, error }: MatchingProps): Rea
                         Select a fares stage for each stop.
                     </span>
                     <span className="govuk-hint" id="traveline-hint">
-                        This data is taken from the Traveline National Dataset and the NaPTAN database.{' '}
+                        This data is taken from the Traveline National Dataset and the NaPTAN database.
                     </span>
                     <div>
                         <div className="matching-wrapper">

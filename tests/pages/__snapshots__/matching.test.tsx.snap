@@ -47,7 +47,6 @@ exports[`Matching Page should render correctly 1`] = `
           id="traveline-hint"
         >
           This data is taken from the Traveline National Dataset and the NaPTAN database.
-           
         </span>
         <div>
           <div
