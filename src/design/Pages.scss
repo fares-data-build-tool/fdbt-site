@@ -54,6 +54,14 @@
             flex: 0 0 auto;
         }
 
+        .fare-triangle-input-white {
+            background-color: govuk-colour('white');
+        }
+
+        .fare-triangle-input-mid-grey {
+            background-color: govuk-colour('mid-grey');
+        }
+
         .fare-triangle-input:not(:nth-child(1)) {
             border-left: none;
         }
