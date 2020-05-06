@@ -11,7 +11,7 @@ exports[`pages direction should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/direction"
+      action="/api/singleDirection"
       method="post"
     >
       <div
