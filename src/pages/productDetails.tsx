@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PRODUCT_DETAILS_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST } from '../constants';
+import { OPERATOR_COOKIE, PRODUCT_DETAILS_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST_COOKIE } from '../constants';
 import { ProductInfo } from '../interfaces';
 
 const title = 'Product Details - Fares Data Build Tool';
@@ -105,7 +105,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
-    const serviceListCookie = cookies[SERVICE_LIST];
+    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
 
     let props = {};
 
@@ -114,7 +114,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     }
 
     if (!zoneCookie && !serviceListCookie) {
-        throw new Error('Failed to retrieve zone cookie info for period product page.');
+        throw new Error('Failed to retrieve zone and/or service list cookie info for period product page.');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);

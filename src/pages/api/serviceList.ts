@@ -1,7 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import Cookies from 'cookies';
+import {
+    getDomain,
+    getUuidFromCookie,
+    redirectTo,
+    redirectToError,
+    setCookieOnResponseObject,
+    unescapeAndDecodeCookie,
+} from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { SERVICE_LIST } from '../../constants';
+import { SERVICE_LIST_COOKIE, FARETYPE_COOKIE } from '../../constants';
 import { ServiceLists, ServicesInfo } from '../../interfaces';
 
 const redirectUrl = '/serviceList';
@@ -18,7 +26,7 @@ const setServiceListCookie = (
 
     setCookieOnResponseObject(
         getDomain(req),
-        SERVICE_LIST,
+        SERVICE_LIST_COOKIE,
         JSON.stringify({ ...serviceListObject, selectedServices: checkServiceList, error: !!error, uuid }),
         req,
         res,
@@ -29,6 +37,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
+        }
+
+        const cookies = new Cookies(req, res);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const fareTypeObject = JSON.parse(fareTypeCookie);
+
+        if (!fareTypeObject || !fareTypeObject.fareType) {
+            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for serviceList API');
         }
 
         const refererUrl = req?.headers?.referer;
@@ -54,6 +70,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const requestBody: { [key: string]: string } = req.body;
 
         Object.entries(requestBody).forEach(entry => {
+            console.log(entry);
             const checkedBoxValues = entry[1].split('/');
             const data: ServicesInfo = {
                 lineName: entry[0],
@@ -64,10 +81,16 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         });
 
         setServiceListCookie(req, res, false, checkedServiceList);
+
+        if (fareTypeObject.fareType === 'flatFare') {
+            redirectTo(res, '/productDetails');
+            return;
+        }
+
         redirectTo(res, '/howManyProducts');
         return;
     } catch (error) {
-        const message = 'There was a problem selecting the selecting the services for a single operator:';
+        const message = 'There was a problem processing the selected services from the servicesList page:';
         redirectToError(res, message, error);
     }
 };

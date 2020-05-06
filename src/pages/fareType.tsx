@@ -41,7 +41,7 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                             value="single"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="fare-type-single">
-                                            Single - Point to Point
+                                            Single Ticket - Point to Point
                                         </label>
                                     </div>
                                     <div className="govuk-radios__item">
@@ -53,7 +53,7 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                             value="period"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="fare-type-period">
-                                            Period Tickets
+                                            Period Ticket
                                         </label>
                                     </div>
                                     <div className="govuk-radios__item">
@@ -65,7 +65,19 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                             value="return"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="fare-type-return">
-                                            Return - Single Service
+                                            Return Ticket - Single Service
+                                        </label>
+                                    </div>
+                                    <div className="govuk-radios__item">
+                                        <input
+                                            className="govuk-radios__input"
+                                            id="fare-type-flatFare"
+                                            name="fareType"
+                                            type="radio"
+                                            value="flatFare"
+                                        />
+                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-flatFare">
+                                            Flat Fare Ticket - Single Journey
                                         </label>
                                     </div>
                                 </div>

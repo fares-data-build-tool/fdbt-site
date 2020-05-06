@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_LIST } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_LIST_COOKIE } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServiceLists, ServicesInfo } from '../interfaces';
 
@@ -101,10 +101,10 @@ export const getServerSideProps = async (
 ): Promise<{ props: { service: ServiceLists; buttonText: string } }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceListCookie = cookies[SERVICE_LIST];
+    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
 
     if (!operatorCookie) {
-        throw new Error('Failed to retrieve operator cookie for single operator page');
+        throw new Error('Failed to retrieve OPERATOR_COOKIE for serviceList page');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);

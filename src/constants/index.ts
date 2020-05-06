@@ -28,7 +28,7 @@ export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
 
 export const PERIOD_EXPIRY_COOKIE = 'fdbt-period-expiry';
 
-export const SERVICE_LIST = 'fdbt-services';
+export const SERVICE_LIST_COOKIE = 'fdbt-services';
 
 export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 

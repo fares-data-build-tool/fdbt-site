@@ -7,7 +7,7 @@ import {
     MATCHING_DATA_BUCKET_NAME,
     CSV_ZONE_UPLOAD_COOKIE,
     DAYS_VALID_COOKIE,
-    SERVICE_LIST,
+    SERVICE_LIST_COOKIE,
     PERIOD_TYPE_COOKIE,
 } from '../../constants';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
@@ -48,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST);
+            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
 
             if (

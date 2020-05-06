@@ -6,7 +6,7 @@ import {
     JOURNEY_COOKIE,
     PRODUCT_DETAILS_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    SERVICE_LIST,
+    SERVICE_LIST_COOKIE,
 } from '../../../constants';
 import { unescapeAndDecodeCookie } from '../apiUtils';
 
@@ -52,7 +52,7 @@ export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiRespon
     const csvUploadZoneUploadCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
     const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST);
+    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
 
     try {
         const operatorInfo = JSON.parse(operatorCookie);

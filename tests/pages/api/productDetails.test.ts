@@ -17,7 +17,7 @@ describe('productDetails', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse(
-            {},
+            { fareType: 'period' },
             { productDetailsNameInput: '', productDetailsPriceInput: '' },
         );
 
@@ -44,7 +44,7 @@ describe('productDetails', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse(
-            {},
+            { fareType: 'period' },
             {
                 productDetailsNameInput: 'ProductA',
                 productDetailsPriceInput: '121',
@@ -75,7 +75,7 @@ describe('productDetails', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse(
-            {},
+            { fareType: 'period' },
             {
                 productDetailsNameInput: '     ProductBA',
                 productDetailsPriceInput: '121',
