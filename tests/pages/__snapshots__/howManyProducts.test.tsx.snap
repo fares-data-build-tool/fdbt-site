@@ -42,7 +42,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
             Enter the number of period tickets below. Up to a maximum of 10 at once.
@@ -123,7 +123,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
             Enter the number of period tickets below. Up to a maximum of 10 at once.
@@ -204,7 +204,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
             Enter the number of period tickets below. Up to a maximum of 10 at once.
@@ -285,7 +285,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
             Enter the number of period tickets below. Up to a maximum of 10 at once.
@@ -366,7 +366,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
             Enter the number of period tickets below. Up to a maximum of 10 at once.
@@ -447,7 +447,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
             Enter the number of period tickets below. Up to a maximum of 10 at once.
@@ -528,7 +528,7 @@ exports[`pages howManyProducts should render correctly when a user is redirected
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
             Enter the number of period tickets below. Up to a maximum of 10 at once.

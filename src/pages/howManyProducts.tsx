@@ -33,7 +33,7 @@ const HowManyProducts = ({ inputCheck, errors }: HowManyProductProps): ReactElem
                                 How many period tickets do you have for the selected services?
                             </h1>
                         </legend>
-                        <label className="govuk-label" htmlFor="numberOfProducts">
+                        <label className="govuk-hint" htmlFor="numberOfProducts">
                             Enter the number of period tickets below. Up to a maximum of 10 at once.
                         </label>
                         <FormElementWrapper
