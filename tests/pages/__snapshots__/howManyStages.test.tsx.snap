@@ -30,14 +30,14 @@ exports[`pages howManyStages should render correctly 1`] = `
             <h1
               className="govuk-fieldset__heading"
             >
-              How many fares stages does the service have?
+              How many fare stages does the service have?
             </h1>
           </legend>
           <span
             className="govuk-hint"
             id="selection-hint"
           >
-            If the service has more than 20 stages fares stages you will be required to upload a csv file. A template file is available if required.
+            If the service has more than 20 fare stages you will be required to upload a csv file. A template file is available if required.
           </span>
           <FormElementWrapper
             errorClass="govuk-radios--error"

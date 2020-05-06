@@ -26,13 +26,11 @@ const HowManyStages = ({ errors = [] }: HowManyStagesProps): ReactElement => {
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="selection-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading">
-                                    How many fares stages does the service have?
-                                </h1>
+                                <h1 className="govuk-fieldset__heading">How many fare stages does the service have?</h1>
                             </legend>
                             <span className="govuk-hint" id="selection-hint">
-                                If the service has more than 20 stages fares stages you will be required to upload a csv
-                                file. A template file is available if required.
+                                If the service has more than 20 fare stages you will be required to upload a csv file. A
+                                template file is available if required.
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                 <div className="govuk-radios" id="radio-buttons">
