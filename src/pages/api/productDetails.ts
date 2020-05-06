@@ -1,20 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { PeriodProductType } from '../../interfaces';
-import { PERIOD_PRODUCT_COOKIE } from '../../constants';
+import { ProductInfo } from '../../interfaces';
+import { PRODUCT_DETAILS_COOKIE } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 
 export const checkIfInputInvalid = (
-    periodProductNameInput: string,
-    periodProductPriceInput: string,
+    productDetailsNameInput: string,
+    productDetailsPriceInput: string,
     uuid: string,
-): PeriodProductType => {
+): ProductInfo => {
     let productNameError = '';
     let productPriceError = '';
 
-    const cleanedNameInput = removeExcessWhiteSpace(periodProductNameInput);
-    const cleanedPriceInput = removeExcessWhiteSpace(periodProductPriceInput);
+    const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
+    const cleanedPriceInput = removeExcessWhiteSpace(productDetailsPriceInput);
 
     productNameError = checkProductNameIsValid(cleanedNameInput);
 
@@ -23,7 +23,7 @@ export const checkIfInputInvalid = (
     return {
         uuid,
         productName: cleanedNameInput,
-        productPrice: periodProductPriceInput,
+        productPrice: cleanedPriceInput,
         productNameError,
         productPriceError,
     };
@@ -37,21 +37,21 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const uuid = getUuidFromCookie(req, res);
 
-        const { periodProductNameInput, periodProductPriceInput } = req.body;
+        const { productDetailsNameInput, productDetailsPriceInput } = req.body;
 
-        const periodProduct = checkIfInputInvalid(periodProductNameInput, periodProductPriceInput, uuid);
+        const productDetails = checkIfInputInvalid(productDetailsNameInput, productDetailsPriceInput, uuid);
 
-        if (periodProduct.productNameError !== '' || periodProduct.productPriceError !== '') {
-            const invalidInputs = JSON.stringify(periodProduct);
+        if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
+            const invalidInputs = JSON.stringify(productDetails);
 
-            setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT_COOKIE, invalidInputs, req, res);
-            redirectTo(res, '/periodProduct');
+            setCookieOnResponseObject(getDomain(req), PRODUCT_DETAILS_COOKIE, invalidInputs, req, res);
+            redirectTo(res, '/productDetails');
             return;
         }
 
-        const validInputs = JSON.stringify(periodProduct);
+        const validInputs = JSON.stringify(productDetails);
 
-        setCookieOnResponseObject(getDomain(req), PERIOD_PRODUCT_COOKIE, validInputs, req, res);
+        setCookieOnResponseObject(getDomain(req), PRODUCT_DETAILS_COOKIE, validInputs, req, res);
 
         redirectTo(res, '/chooseValidity');
     } catch (error) {

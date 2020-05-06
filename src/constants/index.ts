@@ -18,7 +18,7 @@ export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
 export const DAYS_VALID_COOKIE = 'fdbt-days-valid';
 
-export const PERIOD_PRODUCT_COOKIE = 'fdbt-period-product';
+export const PRODUCT_DETAILS_COOKIE = 'fdbt-product-details';
 
 export const PERIOD_TYPE_COOKIE = 'fdbt-period-type';
 
@@ -52,7 +52,7 @@ export const ALL_COOKIES: string[] = [
     'fdbt-stage-names',
     'fdbt-price-entry',
     'fdbt-days-valid',
-    'fdbt-period-product',
+    'fdbt-product-details',
     'fdbt-period-type',
     'fdbt-csv-upload',
     'fdbt-csv-zone-upload',

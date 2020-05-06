@@ -1,10 +1,10 @@
-import periodProduct from '../../../src/pages/api/periodProduct';
-import { PERIOD_PRODUCT_COOKIE } from '../../../src/constants';
+import productDetails from '../../../src/pages/api/productDetails';
+import { PRODUCT_DETAILS_COOKIE } from '../../../src/constants';
 import * as validator from '../../../src/pages/api/service/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-describe('periodProduct', () => {
+describe('productDetails', () => {
     beforeEach(() => {
         jest.resetAllMocks();
 
@@ -16,9 +16,12 @@ describe('periodProduct', () => {
     it('should set period product cookie with errors on submit', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
-        const { req, res } = getMockRequestAndResponse({}, { periodProductNameInput: '', periodProductPriceInput: '' });
+        const { req, res } = getMockRequestAndResponse(
+            {},
+            { productDetailsNameInput: '', productDetailsPriceInput: '' },
+        );
 
-        const mockPeriodProductCookies = {
+        const mockProductDetailsCookies = {
             uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
             productName: '',
             productPrice: '',
@@ -26,12 +29,12 @@ describe('periodProduct', () => {
             productPriceError: 'This field cannot be empty',
         };
 
-        periodProduct(req, res);
+        productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT_COOKIE,
-            JSON.stringify(mockPeriodProductCookies),
+            PRODUCT_DETAILS_COOKIE,
+            JSON.stringify(mockProductDetailsCookies),
             req,
             res,
         );
@@ -43,13 +46,13 @@ describe('periodProduct', () => {
         const { req, res } = getMockRequestAndResponse(
             {},
             {
-                periodProductNameInput: 'ProductA',
-                periodProductPriceInput: '121',
+                productDetailsNameInput: 'ProductA',
+                productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
         );
 
-        const mockPeriodProductCookies = {
+        const mockProductDetailsCookies = {
             uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
             productName: 'ProductA',
             productPrice: '121',
@@ -57,12 +60,12 @@ describe('periodProduct', () => {
             productPriceError: '',
         };
 
-        periodProduct(req, res);
+        productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT_COOKIE,
-            JSON.stringify(mockPeriodProductCookies),
+            PRODUCT_DETAILS_COOKIE,
+            JSON.stringify(mockProductDetailsCookies),
             req,
             res,
         );
@@ -74,13 +77,13 @@ describe('periodProduct', () => {
         const { req, res } = getMockRequestAndResponse(
             {},
             {
-                periodProductNameInput: '     ProductBA',
-                periodProductPriceInput: '121',
+                productDetailsNameInput: '     ProductBA',
+                productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
         );
 
-        const mockPeriodProductCookies = {
+        const mockProductDetailsCookies = {
             uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
             productName: 'ProductBA',
             productPrice: '121',
@@ -88,12 +91,12 @@ describe('periodProduct', () => {
             productPriceError: '',
         };
 
-        periodProduct(req, res);
+        productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
-            PERIOD_PRODUCT_COOKIE,
-            JSON.stringify(mockPeriodProductCookies),
+            PRODUCT_DETAILS_COOKIE,
+            JSON.stringify(mockProductDetailsCookies),
             req,
             res,
         );

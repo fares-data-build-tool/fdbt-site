@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import PeriodProduct from '../../src/pages/periodProduct';
-import { PeriodProductType } from '../../src/interfaces';
+import ProductDetails from '../../src/pages/productDetails';
+import { ProductInfo } from '../../src/interfaces';
 
-const mockPeriodProduct: PeriodProductType = {
+const mockproductDetails: ProductInfo = {
     productPrice: '',
     productName: '',
     productNameError: '',
@@ -14,10 +14,10 @@ const mockPeriodProduct: PeriodProductType = {
 };
 
 describe('pages', () => {
-    describe('periodProduct', () => {
+    describe('productDetails', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <PeriodProduct product={mockPeriodProduct} operator="bus company" zoneName="Test Zone" />,
+                <ProductDetails product={mockproductDetails} operator="bus company" zoneName="Test Zone" />,
             );
             expect(tree).toMatchSnapshot();
         });

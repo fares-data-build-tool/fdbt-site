@@ -8,8 +8,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Fare Type - Fares data build tool';
-const description = 'Fare Type selection page of the Fares data build tool';
+const title = 'Fare Type - Fares Data Build Tool';
+const description = 'Fare Type selection page of the Fares Data Build Tool';
 
 const errorId = 'fare-type-error';
 
@@ -24,9 +24,9 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                 <form action="/api/fareType" method="post">
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="fareType-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="fare-type-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="fareType-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="fare-type-page-heading">
                                     What type of fare would you like to provide?
                                 </h1>
                             </legend>
@@ -35,36 +35,36 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                     <div className="govuk-radios__item">
                                         <input
                                             className="govuk-radios__input"
-                                            id="fareType-single"
+                                            id="fare-type-single"
                                             name="fareType"
                                             type="radio"
                                             value="single"
                                         />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fareType-single">
+                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-single">
                                             Single - Point to Point
                                         </label>
                                     </div>
                                     <div className="govuk-radios__item">
                                         <input
                                             className="govuk-radios__input"
-                                            id="fareType-period"
+                                            id="fare-type-period"
                                             name="fareType"
                                             type="radio"
                                             value="period"
                                         />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fareType-period">
+                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-period">
                                             Period Tickets
                                         </label>
                                     </div>
                                     <div className="govuk-radios__item">
                                         <input
                                             className="govuk-radios__input"
-                                            id="fareType-return"
+                                            id="fare-type-return"
                                             name="fareType"
                                             type="radio"
                                             value="return"
                                         />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fareType-return">
+                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-return">
                                             Return - Single Service
                                         </label>
                                     </div>

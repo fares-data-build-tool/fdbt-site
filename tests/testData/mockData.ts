@@ -14,7 +14,7 @@ import {
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_PRODUCT_COOKIE,
+    PRODUCT_DETAILS_COOKIE,
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
 } from '../../src/constants/index';
@@ -80,7 +80,7 @@ export const getMockRequestAndResponse = (
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
-        periodProductUuid = defaultUuid,
+        productDetailsUuid = defaultUuid,
         daysValidUuid = defaultUuid,
     } = uuid;
 
@@ -104,7 +104,7 @@ export const getMockRequestAndResponse = (
             : '';
 
     cookieString += productName
-        ? `${PERIOD_PRODUCT_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${periodProductUuid}%22%7D;`
+        ? `${PRODUCT_DETAILS_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${productDetailsUuid}%22%7D;`
         : '';
 
     cookieString += fareZoneName

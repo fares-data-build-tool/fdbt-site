@@ -6,8 +6,8 @@ import { OPERATOR_COOKIE, SERVICE_LIST } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServiceLists, ServicesInfo } from '../interfaces';
 
-const title = 'Single Operator - Fares data build tool';
-const description = 'Single Operator selection page of the Fares data build tool';
+const title = 'Service List - Fares Data Build Tool';
+const description = 'Service List selection page of the Fares Data Build Tool';
 
 const buttonSelectedText = 'Select All';
 const buttonUnselectedText = 'Unselect All';
@@ -28,9 +28,9 @@ const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/serviceList" method="post">
                     <div className={`govuk-form-group ${error ? ' govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="service-list-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="periodtype-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="service-list-page-heading">
                                     Which service(s) is the ticket valid for?
                                 </h1>
                             </legend>
@@ -40,8 +40,8 @@ const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
                                 </span>
                             </span>
                         </fieldset>
-                        <fieldset className="govuk-fieldset" aria-describedby="waste-hint">
-                            <span id="waste-hint" className="govuk-hint">
+                        <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
+                            <span id="service-list-hint" className="govuk-hint">
                                 Select all services that apply
                             </span>
                             <input

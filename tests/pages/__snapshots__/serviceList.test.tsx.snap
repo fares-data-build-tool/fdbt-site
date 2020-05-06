@@ -2,8 +2,8 @@
 
 exports[`pages serviceList should render correctly 1`] = `
 <Layout
-  description="Single Operator selection page of the Fares data build tool"
-  title="Single Operator - Fares data build tool"
+  description="Service List selection page of the Fares Data Build Tool"
+  title="Service List - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -18,7 +18,7 @@ exports[`pages serviceList should render correctly 1`] = `
         className="govuk-form-group "
       >
         <fieldset
-          aria-describedby="periodtype-page-heading"
+          aria-describedby="service-list-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -26,7 +26,7 @@ exports[`pages serviceList should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="periodtype-page-heading"
+              id="service-list-page-heading"
             >
               Which service(s) is the ticket valid for?
             </h1>
@@ -43,12 +43,12 @@ exports[`pages serviceList should render correctly 1`] = `
           </span>
         </fieldset>
         <fieldset
-          aria-describedby="waste-hint"
+          aria-describedby="service-list-hint"
           className="govuk-fieldset"
         >
           <span
             className="govuk-hint"
-            id="waste-hint"
+            id="service-list-hint"
           >
             Select all services that apply
           </span>

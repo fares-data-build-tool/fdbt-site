@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
     OPERATOR_COOKIE,
-    PERIOD_PRODUCT_COOKIE,
+    PRODUCT_DETAILS_COOKIE,
     PERIOD_EXPIRY_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
     CSV_ZONE_UPLOAD_COOKIE,
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const cookies = new Cookies(req, res);
 
-            const periodProductCookie = unescapeAndDecodeCookie(cookies, PERIOD_PRODUCT_COOKIE);
+            const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_COOKIE);
             const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
@@ -52,7 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
 
             if (
-                periodProductCookie === '' ||
+                productDetailsCookie === '' ||
                 daysValidCookie === '' ||
                 (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie))
             ) {
@@ -60,7 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }
 
             let props = {};
-            const { productName, productPrice } = JSON.parse(periodProductCookie);
+            const { productName, productPrice } = JSON.parse(productDetailsCookie);
             const { daysValid } = JSON.parse(daysValidCookie);
             const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
             const { periodTypeName } = JSON.parse(periodTypeCookie);

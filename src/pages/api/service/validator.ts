@@ -4,7 +4,7 @@ import {
     OPERATOR_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
-    PERIOD_PRODUCT_COOKIE,
+    PRODUCT_DETAILS_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     SERVICE_LIST,
 } from '../../../constants';
@@ -50,13 +50,13 @@ export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiRespon
     const cookies = new Cookies(req, res);
 
     const csvUploadZoneUploadCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-    const periodProductCookie = unescapeAndDecodeCookie(cookies, PERIOD_PRODUCT_COOKIE);
+    const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST);
 
     try {
         const operatorInfo = JSON.parse(operatorCookie);
-        const periodProduct = JSON.parse(periodProductCookie);
+        const productDetails = JSON.parse(productDetailsCookie);
 
         if (csvUploadZoneUploadCookie) {
             csvZoneUpload = JSON.parse(csvUploadZoneUploadCookie);
@@ -67,7 +67,7 @@ export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiRespon
 
         const { uuid } = operatorInfo;
 
-        if (periodProduct.uuid === uuid && (csvZoneUpload?.uuid === uuid || serviceList?.uuid === uuid)) {
+        if (productDetails.uuid === uuid && (csvZoneUpload?.uuid === uuid || serviceList?.uuid === uuid)) {
             return true;
         }
     } catch (err) {

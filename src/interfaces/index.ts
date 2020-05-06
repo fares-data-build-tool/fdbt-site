@@ -1,4 +1,4 @@
-export interface PeriodProductType {
+export interface ProductInfo {
     uuid: string;
     productName: string;
     productPrice: string;

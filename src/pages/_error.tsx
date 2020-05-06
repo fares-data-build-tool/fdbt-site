@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
 
-const title = 'Error - Fares data build tool';
-const description = 'Error page of the Fares data build tool';
+const title = 'Error - Fares Data Build Tool';
+const description = 'Error page of the Fares Data Build Tool';
 
 interface ErrorProps {
     statusCode: number;

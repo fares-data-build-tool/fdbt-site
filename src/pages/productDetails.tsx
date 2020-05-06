@@ -2,19 +2,19 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PERIOD_PRODUCT_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST } from '../constants';
-import { PeriodProductType } from '../interfaces';
+import { OPERATOR_COOKIE, PRODUCT_DETAILS_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST } from '../constants';
+import { ProductInfo } from '../interfaces';
 
-const title = 'Period Product - Fares data build tool';
-const description = 'Period Product page of the Fares data build tool';
+const title = 'Product Details - Fares Data Build Tool';
+const description = 'Product Details entry page of the Fares Data Build Tool';
 
-type PeriodProduct = {
-    product: PeriodProductType;
+type ProductDetailsProps = {
+    product: ProductInfo;
     operator: string;
     zoneName?: string;
 };
 
-const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactElement => {
+const ProductDetails = ({ product, operator, zoneName }: ProductDetailsProps): ReactElement => {
     const productName = product && product.productName;
     const productPrice = product && product.productPrice;
     const productNameError = product && product.productNameError;
@@ -23,11 +23,11 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/periodProduct" method="post">
+                <form action="/api/productDetails" method="post">
                     <div className="govuk-form-group">
-                        <fieldset className="govuk-fieldset" aria-describedby="period-product-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="product-details-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                                <h1 className="govuk-fieldset__heading" id="period-product-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="product-details-page-heading">
                                     Enter your product details
                                 </h1>
                             </legend>
@@ -36,7 +36,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                             </span>
                         </fieldset>
                         <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductName">
+                            <label className="govuk-label" htmlFor="productDetailsName">
                                 Product Name
                             </label>
                             <span className="govuk-hint" id="product-name-hint">
@@ -51,15 +51,15 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                 className={`govuk-input govuk-input--width-30 govuk-product-name-input__inner__input ${
                                     productNameError ? 'govuk-input--error' : ''
                                 } `}
-                                id="periodProductName"
-                                name="periodProductNameInput"
+                                id="productDetailsName"
+                                name="productDetailsNameInput"
                                 type="text"
                                 maxLength={50}
                                 defaultValue={productName}
                             />
                         </div>
                         <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="periodProductPrice">
+                            <label className="govuk-label" htmlFor="productDetailsPrice">
                                 Product Price
                             </label>
                             <span className="govuk-hint" id="product-price-hint">
@@ -78,10 +78,10 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
                                             productPriceError ? 'govuk-input--error' : ''
                                         }`}
                                         aria-label="Enter amount in pounds"
-                                        name="periodProductPriceInput"
+                                        name="productDetailsPriceInput"
                                         data-non-numeric
                                         type="text"
-                                        id="periodProductPrice"
+                                        id="productDetailsPrice"
                                         defaultValue={productPrice}
                                     />
                                 </div>
@@ -102,7 +102,7 @@ const PeriodProduct = ({ product, operator, zoneName }: PeriodProduct): ReactEle
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const periodProductCookie = cookies[PERIOD_PRODUCT_COOKIE];
+    const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
     const serviceListCookie = cookies[SERVICE_LIST];
@@ -135,11 +135,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     return {
         props: {
-            product: !periodProductCookie ? {} : JSON.parse(periodProductCookie),
+            product: !productDetailsCookie ? {} : JSON.parse(productDetailsCookie),
             operator: operatorInfo.operator,
             ...props,
         },
     };
 };
 
-export default PeriodProduct;
+export default ProductDetails;

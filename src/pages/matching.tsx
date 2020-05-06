@@ -13,8 +13,8 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
 
-const title = 'Matching - Fares data build tool';
-const description = 'Matching page of the fares data build tool';
+const title = 'Matching - Fares Data Build Tool';
+const description = 'Matching page of the Fares Data Build Tool';
 const heading = 'Match stops to fares stages';
 const hintText = 'Please select the correct fare stages for each stop.';
 const apiEndpoint = '/api/matching';

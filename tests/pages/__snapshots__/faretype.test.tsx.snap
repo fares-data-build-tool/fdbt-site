@@ -2,8 +2,8 @@
 
 exports[`pages fareType should render correctly 1`] = `
 <Layout
-  description="Fare Type selection page of the Fares data build tool"
-  title="Fare Type - Fares data build tool"
+  description="Fare Type selection page of the Fares Data Build Tool"
+  title="Fare Type - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -21,7 +21,7 @@ exports[`pages fareType should render correctly 1`] = `
         className="govuk-form-group "
       >
         <fieldset
-          aria-describedby="fareType-page-heading"
+          aria-describedby="fare-type-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -29,7 +29,7 @@ exports[`pages fareType should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="fareType-page-heading"
+              id="fare-type-page-heading"
             >
               What type of fare would you like to provide?
             </h1>
@@ -47,14 +47,14 @@ exports[`pages fareType should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  id="fareType-single"
+                  id="fare-type-single"
                   name="fareType"
                   type="radio"
                   value="single"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="fareType-single"
+                  htmlFor="fare-type-single"
                 >
                   Single - Point to Point
                 </label>
@@ -64,14 +64,14 @@ exports[`pages fareType should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  id="fareType-period"
+                  id="fare-type-period"
                   name="fareType"
                   type="radio"
                   value="period"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="fareType-period"
+                  htmlFor="fare-type-period"
                 >
                   Period Tickets
                 </label>
@@ -81,14 +81,14 @@ exports[`pages fareType should render correctly 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  id="fareType-return"
+                  id="fare-type-return"
                   name="fareType"
                   type="radio"
                   value="return"
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor="fareType-return"
+                  htmlFor="fare-type-return"
                 >
                   Return - Single Service
                 </label>

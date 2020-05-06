@@ -2,8 +2,8 @@
 
 exports[`pages periodValidity should render correctly 1`] = `
 <Layout
-  description="Period Validity selection page of the Fares data build tool"
-  title="Period Validity - Fares data build tool"
+  description="Period Validity selection page of the Fares Data Build Tool"
+  title="Period Validity - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -21,7 +21,7 @@ exports[`pages periodValidity should render correctly 1`] = `
         className="govuk-form-group "
       >
         <fieldset
-          aria-describedby="periodValidity-page-heading"
+          aria-describedby="period-validity-page-heading"
           className="govuk-fieldset"
         >
           <legend
@@ -29,14 +29,14 @@ exports[`pages periodValidity should render correctly 1`] = `
           >
             <h1
               className="govuk-fieldset__heading"
-              id="periodValidity-page-heading"
+              id="period-validity-page-heading"
             >
               When does the product expire?
             </h1>
           </legend>
           <span
             className="govuk-hint"
-            id="heading-period-validity-hint"
+            id="period-validity-hint"
           >
             We need to know the time that this product would be valid until
           </span>
