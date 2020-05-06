@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import SingleOperator from '../../../src/pages/api/singleOperator';
+import serviceList from '../../../src/pages/api/serviceList';
 
-const url = '/singleOperator?selectAll=false';
+const url = '/serviceList?selectAll=false';
 
 describe('Single Operator API', () => {
     const writeHeadMock = jest.fn();
@@ -12,10 +12,10 @@ describe('Single Operator API', () => {
 
     it('redirects back to single operator page if there are errors', () => {
         const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock, jest.fn(), {
-            referer: 'http://localhost:5000/singleOperator?selectAll=false',
+            referer: 'http://localhost:5000/serviceList?selectAll=false',
         });
 
-        SingleOperator(req, res);
+        serviceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: url,
@@ -24,13 +24,13 @@ describe('Single Operator API', () => {
 
     it('should change the query string for select all to true when select all button is selected', () => {
         const { req, res } = getMockRequestAndResponse({}, { selectAll: 'Select All' }, {}, writeHeadMock, jest.fn(), {
-            referer: 'http://localhost:5000/singleOperator?selectAll=false',
+            referer: 'http://localhost:5000/serviceList?selectAll=false',
         });
 
-        SingleOperator(req, res);
+        serviceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/singleOperator?selectAll=true',
+            Location: '/serviceList?selectAll=true',
         });
     });
 
@@ -42,10 +42,10 @@ describe('Single Operator API', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({}, { ...serviceInfo }, {}, writeHeadMock, jest.fn(), {
-            referer: 'http://localhost:5000/singleOperator?selectAll=false',
+            referer: 'http://localhost:5000/serviceList?selectAll=false',
         });
 
-        SingleOperator(req, res);
+        serviceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/howManyProducts',

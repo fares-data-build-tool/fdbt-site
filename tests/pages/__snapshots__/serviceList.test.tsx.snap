@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages singleOperator should render correctly 1`] = `
+exports[`pages serviceList should render correctly 1`] = `
 <Layout
   description="Single Operator selection page of the Fares data build tool"
   title="Single Operator - Fares data build tool"
@@ -11,7 +11,7 @@ exports[`pages singleOperator should render correctly 1`] = `
     role="main"
   >
     <form
-      action="/api/singleOperator"
+      action="/api/serviceList"
       method="post"
     >
       <div

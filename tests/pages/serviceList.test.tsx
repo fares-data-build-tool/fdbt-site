@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import SingleOperator, { SelectedServiceProps } from '../../src/pages/singleOperator';
+import ServiceList, { SelectedServiceProps } from '../../src/pages/serviceList';
 
 const serviceInfo: SelectedServiceProps = {
     service: {
@@ -13,10 +13,10 @@ const serviceInfo: SelectedServiceProps = {
 };
 
 describe('pages', () => {
-    describe('singleOperator', () => {
+    describe('serviceList', () => {
         it('should render correctly', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<SingleOperator {...serviceInfo} />);
+            const tree = shallow(<ServiceList {...serviceInfo} />);
             expect(tree).toMatchSnapshot();
         });
     });

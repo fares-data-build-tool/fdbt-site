@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_LIST } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServiceLists, ServicesInfo } from '../interfaces';
 
@@ -17,7 +17,7 @@ export type SelectedServiceProps = {
     buttonText: string;
 };
 
-const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
+const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
     const {
         service: { error, selectedServices },
         buttonText,
@@ -26,7 +26,7 @@ const SingleOperator = (serviceProps: SelectedServiceProps): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
-                <form action="/api/singleOperator" method="post">
+                <form action="/api/serviceList" method="post">
                     <div className={`govuk-form-group ${error ? ' govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="periodtype-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -101,7 +101,7 @@ export const getServerSideProps = async (
 ): Promise<{ props: { service: ServiceLists; buttonText: string } }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const periodSingleOperatorCookie = cookies[PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE];
+    const serviceListCookie = cookies[SERVICE_LIST];
 
     if (!operatorCookie) {
         throw new Error('Failed to retrieve operator cookie for single operator page');
@@ -124,7 +124,7 @@ export const getServerSideProps = async (
         };
     });
 
-    if (!periodSingleOperatorCookie) {
+    if (!serviceListCookie) {
         return {
             props: {
                 service: {
@@ -136,9 +136,9 @@ export const getServerSideProps = async (
         };
     }
 
-    const periodSingleOperatorObject = JSON.parse(periodSingleOperatorCookie);
+    const serviceListObject = JSON.parse(serviceListCookie);
 
-    const { error } = periodSingleOperatorObject;
+    const { error } = serviceListObject;
 
     return {
         props: {
@@ -151,4 +151,4 @@ export const getServerSideProps = async (
     };
 };
 
-export default SingleOperator;
+export default ServiceList;

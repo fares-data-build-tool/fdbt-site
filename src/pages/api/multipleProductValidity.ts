@@ -4,7 +4,7 @@ import {
     MULTIPLE_PRODUCT_COOKIE,
     OPERATOR_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
+    SERVICE_LIST,
     PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
 } from '../../constants/index';
@@ -57,14 +57,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const cookies = new Cookies(req, res);
         const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
         const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-        const singleOperatorCookie = unescapeAndDecodeCookie(cookies, PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE);
+        const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
 
         if (
             multipleProductCookie === '' ||
             periodTypeCookie === '' ||
-            (operatorCookie === '' && (fareZoneCookie === '' || singleOperatorCookie === ''))
+            (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie === ''))
         ) {
             throw new Error('Necessary cookies not found for multiple product validity page');
         }
@@ -98,8 +98,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             };
         }
 
-        if (singleOperatorCookie) {
-            const { selectedServices } = JSON.parse(singleOperatorCookie);
+        if (serviceListCookie) {
+            const { selectedServices } = JSON.parse(serviceListCookie);
             props = {
                 selectedServices,
             };

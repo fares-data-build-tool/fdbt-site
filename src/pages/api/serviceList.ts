@@ -1,14 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE } from '../../constants';
+import { SERVICE_LIST } from '../../constants';
 import { ServiceLists, ServicesInfo } from '../../interfaces';
 
-const redirectUrl = '/singleOperator';
+const redirectUrl = '/serviceList';
 const selectAllText = 'Select All';
 const serviceListObject: ServiceLists = { error: false, selectedServices: [] };
 
-const setSingleOperatorCookie = (
+const setServiceListCookie = (
     req: NextApiRequest,
     res: NextApiResponse,
     error?: boolean,
@@ -18,7 +18,7 @@ const setSingleOperatorCookie = (
 
     setCookieOnResponseObject(
         getDomain(req),
-        PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
+        SERVICE_LIST,
         JSON.stringify({ ...serviceListObject, selectedServices: checkServiceList, error: !!error, uuid }),
         req,
         res,
@@ -38,13 +38,13 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const isSelected = selectAll === selectAllText;
 
         if (selectAll && queryString) {
-            setSingleOperatorCookie(req, res);
+            setServiceListCookie(req, res);
             redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
             return;
         }
 
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
-            setSingleOperatorCookie(req, res, true);
+            setServiceListCookie(req, res, true);
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }
@@ -63,7 +63,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             checkedServiceList.push(data);
         });
 
-        setSingleOperatorCookie(req, res, false, checkedServiceList);
+        setServiceListCookie(req, res, false, checkedServiceList);
         redirectTo(res, '/howManyProducts');
         return;
     } catch (error) {

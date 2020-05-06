@@ -6,7 +6,7 @@ import {
     JOURNEY_COOKIE,
     PERIOD_PRODUCT_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE,
+    SERVICE_LIST,
 } from '../../../constants';
 import { unescapeAndDecodeCookie } from '../apiUtils';
 
@@ -46,13 +46,13 @@ export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): b
 
 export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): boolean => {
     let csvZoneUpload;
-    let singleOperator;
+    let serviceList;
     const cookies = new Cookies(req, res);
 
     const csvUploadZoneUploadCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
     const periodProductCookie = unescapeAndDecodeCookie(cookies, PERIOD_PRODUCT_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-    const singleOperatorCookie = unescapeAndDecodeCookie(cookies, PERIOD_SINGLE_OPERATOR_SERVICES_COOKIE);
+    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST);
 
     try {
         const operatorInfo = JSON.parse(operatorCookie);
@@ -61,13 +61,13 @@ export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiRespon
         if (csvUploadZoneUploadCookie) {
             csvZoneUpload = JSON.parse(csvUploadZoneUploadCookie);
         }
-        if (singleOperatorCookie) {
-            singleOperator = JSON.parse(singleOperatorCookie);
+        if (serviceListCookie) {
+            serviceList = JSON.parse(serviceListCookie);
         }
 
         const { uuid } = operatorInfo;
 
-        if (periodProduct.uuid === uuid && (csvZoneUpload?.uuid === uuid || singleOperator?.uuid === uuid)) {
+        if (periodProduct.uuid === uuid && (csvZoneUpload?.uuid === uuid || serviceList?.uuid === uuid)) {
             return true;
         }
     } catch (err) {
