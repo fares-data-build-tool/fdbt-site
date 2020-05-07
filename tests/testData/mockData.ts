@@ -80,7 +80,6 @@ export const getMockRequestAndResponse = (
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
-        productDetailsUuid = defaultUuid,
         daysValidUuid = defaultUuid,
     } = uuid;
 
@@ -104,7 +103,7 @@ export const getMockRequestAndResponse = (
             : '';
 
     cookieString += productName
-        ? `${PRODUCT_DETAILS_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%2C%22uuid%22%3A%22${productDetailsUuid}%22%7D;`
+        ? `${PRODUCT_DETAILS_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
         : '';
 
     cookieString += fareZoneName
