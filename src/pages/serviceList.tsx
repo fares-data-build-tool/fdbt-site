@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_LIST_COOKIE } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
-import { ServiceLists, ServicesInfo } from '../interfaces';
+import { ServicesInfo } from '../interfaces';
 
 const title = 'Service List - Fares Data Build Tool';
 const description = 'Service List selection page of the Fares Data Build Tool';
@@ -12,10 +12,15 @@ const description = 'Service List selection page of the Fares Data Build Tool';
 const buttonSelectedText = 'Select All';
 const buttonUnselectedText = 'Unselect All';
 
-export type SelectedServiceProps = {
-    service: ServiceLists;
+interface ServiceList {
+    selectedServices: ServicesInfo[];
+    error: boolean;
+}
+
+export interface SelectedServiceProps {
+    service: ServiceList;
     buttonText: string;
-};
+}
 
 const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
     const {
@@ -60,14 +65,14 @@ const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
                                     if (checkboxTitles.length > 110) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
                                     }
-                                    const checkBoxValues = `${serviceDescription}#${startDate}`;
+                                    const checkBoxValues = `${serviceDescription}`;
 
                                     return (
                                         <div className="govuk-checkboxes__item" key={`checkbox-item-${lineName}`}>
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
-                                                name={lineName}
+                                                name={`${lineName}#${startDate}`}
                                                 type="checkbox"
                                                 value={checkBoxValues}
                                                 defaultChecked={checked}
@@ -98,7 +103,7 @@ const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
 
 export const getServerSideProps = async (
     ctx: NextPageContext,
-): Promise<{ props: { service: ServiceLists; buttonText: string } }> => {
+): Promise<{ props: { service: ServiceList; buttonText: string } }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceListCookie = cookies[SERVICE_LIST_COOKIE];

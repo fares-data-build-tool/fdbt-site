@@ -14,6 +14,7 @@ import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unes
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
+import { ServicesInfo } from '../../interfaces';
 
 interface Product {
     productName: string;
@@ -27,6 +28,9 @@ interface DecisionData {
     type: string;
     nocCode: string;
     products: Product[];
+    selectedServices?: ServicesInfo[];
+    zoneName?: string;
+    stops?: Stop[];
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -82,8 +86,16 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             if (serviceListCookie) {
                 const { selectedServices } = JSON.parse(serviceListCookie);
+                const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
+                    const service = selectedService.split('#');
+                    return {
+                        lineName: service[0],
+                        startDate: service[1],
+                        serviceDescription: service[2],
+                    };
+                });
                 props = {
-                    selectedServices,
+                    formattedServiceInfo,
                 };
             }
 

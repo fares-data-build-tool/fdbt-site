@@ -11,10 +11,10 @@ const description = 'Product Details entry page of the Fares Data Build Tool';
 type ProductDetailsProps = {
     product: ProductInfo;
     operator: string;
-    zoneName?: string;
+    hintText: string;
 };
 
-const ProductDetails = ({ product, operator, zoneName }: ProductDetailsProps): ReactElement => {
+const ProductDetails = ({ product, operator, hintText }: ProductDetailsProps): ReactElement => {
     const productName = product && product.productName;
     const productPrice = product && product.productPrice;
     const productNameError = product && product.productNameError;
@@ -32,7 +32,7 @@ const ProductDetails = ({ product, operator, zoneName }: ProductDetailsProps): R
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {operator} - {zoneName}
+                                {operator} - {hintText}
                             </span>
                         </fieldset>
                         <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
@@ -122,14 +122,14 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     if (zoneCookie) {
         const { fareZoneName } = JSON.parse(zoneCookie);
         props = {
-            zoneName: fareZoneName,
+            hintText: fareZoneName,
         };
     }
 
     if (serviceListCookie) {
         const { selectedServices } = JSON.parse(serviceListCookie);
         props = {
-            zoneName: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
+            hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
         };
     }
 

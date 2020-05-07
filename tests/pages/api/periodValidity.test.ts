@@ -56,7 +56,7 @@ describe('Period Validity API', () => {
     });
 
     it('should redirect to the error page if the cookie UUIDs to do not match', async () => {
-        const { req, res } = getMockRequestAndResponse({}, null, { productDetailsUuid: 'someUuid' }, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({}, null, { csvUploadZoneUuid: 'someUuid' }, writeHeadMock);
 
         await periodValidity(req, res);
 

@@ -1,39 +1,36 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import {
-    getDomain,
-    getUuidFromCookie,
-    redirectTo,
-    redirectToError,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-} from './apiUtils';
+import { isArray } from 'util';
+import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { SERVICE_LIST_COOKIE, FARETYPE_COOKIE } from '../../constants';
-import { ServiceLists, ServicesInfo } from '../../interfaces';
 
-const redirectUrl = '/serviceList';
-const selectAllText = 'Select All';
-const serviceListObject: ServiceLists = { error: false, selectedServices: [] };
+interface ServiceList {
+    selectedServices: string[];
+    error: boolean;
+}
 
 const setServiceListCookie = (
     req: NextApiRequest,
     res: NextApiResponse,
     error?: boolean,
-    checkServiceList?: ServicesInfo[],
+    checkedServiceList?: string[],
 ): void => {
-    const uuid = getUuidFromCookie(req, res);
+    const serviceListObject: ServiceList = { error: false, selectedServices: [] };
 
     setCookieOnResponseObject(
         getDomain(req),
         SERVICE_LIST_COOKIE,
-        JSON.stringify({ ...serviceListObject, selectedServices: checkServiceList, error: !!error, uuid }),
+        JSON.stringify({ ...serviceListObject, selectedServices: checkedServiceList, error: !!error }),
         req,
         res,
     );
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
+    const redirectUrl = '/serviceList';
+    const selectAllText = 'Select All';
+
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -65,18 +62,20 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             return;
         }
 
-        const checkedServiceList: ServicesInfo[] = [];
+        const checkedServiceList: string[] = [];
 
-        const requestBody: { [key: string]: string } = req.body;
+        const requestBody: { [key: string]: string | string[] } = req.body;
 
         Object.entries(requestBody).forEach(entry => {
-            console.log(entry);
-            const checkedBoxValues = entry[1].split('/');
-            const data: ServicesInfo = {
-                lineName: entry[0],
-                startDate: checkedBoxValues[1],
-                serviceDescription: checkedBoxValues[0],
-            };
+            const lineNameStartDate = entry[0];
+            const description = entry[1];
+            let serviceDescription: string;
+            if (isArray(description)) {
+                [serviceDescription] = description;
+            } else {
+                serviceDescription = description;
+            }
+            const data = `${lineNameStartDate}#${serviceDescription}`;
             checkedServiceList.push(data);
         });
 

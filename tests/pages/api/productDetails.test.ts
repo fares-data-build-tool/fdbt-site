@@ -22,7 +22,6 @@ describe('productDetails', () => {
         );
 
         const mockProductDetailsCookies = {
-            uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
             productName: '',
             productPrice: '',
             productNameError: 'Product name cannot have less than 2 characters',
@@ -53,7 +52,6 @@ describe('productDetails', () => {
         );
 
         const mockProductDetailsCookies = {
-            uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
             productName: 'ProductA',
             productPrice: '121',
             productNameError: '',
@@ -84,7 +82,6 @@ describe('productDetails', () => {
         );
 
         const mockProductDetailsCookies = {
-            uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
             productName: 'ProductBA',
             productPrice: '121',
             productNameError: '',

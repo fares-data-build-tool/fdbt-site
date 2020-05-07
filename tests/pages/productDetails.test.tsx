@@ -10,14 +10,13 @@ const mockproductDetails: ProductInfo = {
     productName: '',
     productNameError: '',
     productPriceError: '',
-    uuid: '',
 };
 
 describe('pages', () => {
     describe('productDetails', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <ProductDetails product={mockproductDetails} operator="bus company" zoneName="Test Zone" />,
+                <ProductDetails product={mockproductDetails} operator="bus company" hintText="Test Zone" />,
             );
             expect(tree).toMatchSnapshot();
         });

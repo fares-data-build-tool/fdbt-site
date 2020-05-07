@@ -13,13 +13,14 @@ import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo, unes
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
+import { ServicesInfo } from '../../interfaces';
 
 interface DecisionData {
     operatorName: string;
     type: string;
     nocCode: string;
     products: Product[];
-    selectedServices?: [];
+    selectedServices?: ServicesInfo[];
     zoneName?: string;
     stops?: Stop[];
 }
@@ -100,8 +101,16 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (serviceListCookie) {
             const { selectedServices } = JSON.parse(serviceListCookie);
+            const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
+                const service = selectedService.split('#');
+                return {
+                    lineName: service[0],
+                    startDate: service[1],
+                    serviceDescription: service[2],
+                };
+            });
             props = {
-                selectedServices,
+                formattedServiceInfo,
             };
         }
 

@@ -1,13 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import {
-    OPERATOR_COOKIE,
-    SERVICE_COOKIE,
-    JOURNEY_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    SERVICE_LIST_COOKIE,
-} from '../../../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, CSV_ZONE_UPLOAD_COOKIE } from '../../../constants';
 import { unescapeAndDecodeCookie } from '../apiUtils';
 
 export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
@@ -46,28 +39,21 @@ export const isCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): b
 
 export const isPeriodCookiesUUIDMatch = (req: NextApiRequest, res: NextApiResponse): boolean => {
     let csvZoneUpload;
-    let serviceList;
     const cookies = new Cookies(req, res);
 
     const csvUploadZoneUploadCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-    const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
 
     try {
         const operatorInfo = JSON.parse(operatorCookie);
-        const productDetails = JSON.parse(productDetailsCookie);
 
         if (csvUploadZoneUploadCookie) {
             csvZoneUpload = JSON.parse(csvUploadZoneUploadCookie);
         }
-        if (serviceListCookie) {
-            serviceList = JSON.parse(serviceListCookie);
-        }
 
         const { uuid } = operatorInfo;
 
-        if (productDetails.uuid === uuid && (csvZoneUpload?.uuid === uuid || serviceList?.uuid === uuid)) {
+        if (csvZoneUpload?.uuid === uuid) {
             return true;
         }
     } catch (err) {

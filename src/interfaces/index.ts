@@ -1,5 +1,4 @@
 export interface ProductInfo {
-    uuid: string;
     productName: string;
     productPrice: string;
     productNameError: string;
@@ -11,11 +10,6 @@ export interface ServicesInfo {
     startDate: string;
     serviceDescription?: string;
     checked?: boolean;
-}
-
-export interface ServiceLists {
-    selectedServices: ServicesInfo[];
-    error: boolean;
 }
 
 export interface BasicService {
