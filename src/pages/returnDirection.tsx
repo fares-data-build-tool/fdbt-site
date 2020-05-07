@@ -52,10 +52,6 @@ const ReturnDirection = ({ service, errors, outboundJourney, inboundJourney }: D
                                     />
                                 </FormElementWrapper>
                             </div>
-                            <span className="govuk-hint hint-text" id="traveline-hint">
-                                This data is taken from the Traveline National Dataset
-                            </span>
-
                             <div className="govuk-!-margin-top-6">
                                 <FormElementWrapper
                                     errors={errors}
