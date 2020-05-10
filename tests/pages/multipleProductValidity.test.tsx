@@ -5,37 +5,63 @@ import { getMockContext } from '../testData/mockData';
 
 describe('pages', () => {
     describe('multipleProductValidity', () => {
-        const wrapper = shallow(
-            <MultiProductValidity
-                operator="Infinity Line"
-                numberOfProducts="2"
-                multipleProducts={[
-                    {
-                        productName: 'Weekly Ticket',
-                        productNameId: 'multipleProductName1',
-                        productPrice: '50',
-                        productPriceId: 'multipleProductPrice1',
-                        productDuration: '5',
-                        productDurationId: 'multipleProductDuration1',
-                    },
-                    {
-                        productName: 'Day Ticket',
-                        productNameId: 'multipleProductName2',
-                        productPrice: '2.50',
-                        productPriceId: 'multipleProductPrice2',
-                        productDuration: '1',
-                        productDurationId: 'multipleProductDuration2',
-                    },
-                ]}
-                errors={[]}
-            />,
-        );
+        const multipleProducts = [
+            {
+                productName: 'Weekly Ticket',
+                productNameId: 'multipleProductName1',
+                productPrice: '50',
+                productPriceId: 'multipleProductPrice1',
+                productDuration: '5',
+                productDurationId: 'multipleProductDuration1',
+            },
+            {
+                productName: 'Day Ticket',
+                productNameId: 'multipleProductName2',
+                productPrice: '2.50',
+                productPriceId: 'multipleProductPrice2',
+                productDuration: '1',
+                productDurationId: 'multipleProductDuration2',
+            },
+        ];
 
         it('should render correctly', () => {
+            const wrapper = shallow(
+                <MultiProductValidity
+                    operator="Infinity Line"
+                    numberOfProducts="2"
+                    multipleProducts={multipleProducts}
+                    errors={[]}
+                />,
+            );
             expect(wrapper).toMatchSnapshot();
         });
 
-        it('renders 2 radio buttons per number of products', () => {
+        it('should render error messaging when errors are passed', () => {
+            const wrapper = shallow(
+                <MultiProductValidity
+                    operator="Infinity Line"
+                    numberOfProducts="2"
+                    multipleProducts={multipleProducts}
+                    errors={[
+                        {
+                            errorMessage: 'Select one of the two validity options',
+                            id: 'multiple-product-validity-error',
+                        },
+                    ]}
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
+        it('renders 2 radio buttons per product', () => {
+            const wrapper = shallow(
+                <MultiProductValidity
+                    operator="Infinity Line"
+                    numberOfProducts="2"
+                    multipleProducts={multipleProducts}
+                    errors={[]}
+                />,
+            );
             expect(wrapper.find('.govuk-radios__item')).toHaveLength(4);
         });
     });

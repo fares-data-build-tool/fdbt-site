@@ -121,7 +121,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             products,
             ...props,
         };
-
         await putStringInS3(
             MATCHING_DATA_BUCKET_NAME,
             `${uuid}.json`,

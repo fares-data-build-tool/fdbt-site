@@ -4,7 +4,7 @@ import { getMockRequestAndResponse, naptanStopInfo, expectedCsvUploadMultiProduc
 import multipleProductValidity, { addErrorsIfInvalid } from '../../../src/pages/api/multipleProductValidity';
 import { Product } from '../../../src/pages/multipleProductValidity';
 
-describe('multipleProductValidity API', () => {
+describe('multipleProductValidity', () => {
     const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
     const writeHeadMock = jest.fn();
 
@@ -25,7 +25,51 @@ describe('multipleProductValidity API', () => {
             .mockImplementation(() => Promise.resolve(naptanStopInfo));
     });
 
-    it('generates JSON for period data and uploads to S3 when the user uploads a zone via csv', async () => {
+    describe('addErrorsIfInvalid', () => {
+        it('adds errors to incorrect data if there are invalid inputs', () => {
+            const { req } = getMockRequestAndResponse('', {
+                'validity-row0': '',
+                'validity-row1': '',
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'super ticket',
+                productNameId: '',
+                productPrice: '3.50',
+                productPriceId: '',
+                productDuration: '3',
+                productDurationId: '',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('');
+            expect(result.productValidityError).toBe('Select one of the two validity options');
+        });
+
+        it('does not add errors to correct data', () => {
+            const { req } = getMockRequestAndResponse('', {
+                'validity-row0': 'endOfCalendarDay',
+                'validity-row1': '24hr',
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('endOfCalendarDay');
+            expect(result.productValidityError).toBe(undefined);
+        });
+    });
+
+    it('generates and dumps multiple period product JSON in S3 when the user uploads a fare zone via csv', async () => {
         const { req, res } = getMockRequestAndResponse(
             { fareType: 'period', numberOfProducts: '3' },
             { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
@@ -95,50 +139,6 @@ describe('multipleProductValidity API', () => {
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
-        });
-    });
-
-    describe('addErrorsIfInvalid', () => {
-        it('adds errors to incorrect data if there are invalid inputs', () => {
-            const { req } = getMockRequestAndResponse('', {
-                'validity-row0': '',
-                'validity-row1': '',
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'super ticket',
-                productNameId: '',
-                productPrice: '3.50',
-                productPriceId: '',
-                productDuration: '3',
-                productDurationId: '',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('');
-            expect(result.productValidityError).toBe('Select one of the two validity options');
-        });
-
-        it('does not add errors to correct data', () => {
-            const { req } = getMockRequestAndResponse('', {
-                'validity-row0': 'endOfCalendarDay',
-                'validity-row1': '24hr',
-            });
-
-            const userInputIndex = 0;
-            const product: Product = {
-                productName: 'best ticket',
-                productNameId: '',
-                productPrice: '30.90',
-                productPriceId: '',
-                productDuration: '30',
-                productDurationId: '',
-            };
-            const result = addErrorsIfInvalid(req, product, userInputIndex);
-
-            expect(result.productValidity).toBe('endOfCalendarDay');
-            expect(result.productValidityError).toBe(undefined);
         });
     });
 });
