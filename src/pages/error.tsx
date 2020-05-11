@@ -3,10 +3,10 @@ import { NextPageContext } from 'next';
 import Error from './_error';
 
 interface ErrorPageProps {
-    statusCode: number;
+    error: boolean;
 }
 
-const ErrorPage = ({ statusCode }: ErrorPageProps): ReactElement => <Error statusCode={statusCode} />;
+const ErrorPage = ({ error }: ErrorPageProps): ReactElement => <Error error={error} />;
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     return { props: { statusCode: ctx?.res?.statusCode } };
