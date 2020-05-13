@@ -24,11 +24,17 @@ const Error = (): ReactElement => (
                             us for assistance.
                         </p>
                     </div>
+                    <br />
+                    <a
+                        href="/operator"
+                        role="button"
+                        draggable="false"
+                        className="govuk-button"
+                        data-module="govuk-button"
+                    >
+                        Start again
+                    </a>
                 </div>
-                <br />
-                <a href="operator" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
-                    Start again
-                </a>
             </div>
         </main>
     </Layout>

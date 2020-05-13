@@ -47,17 +47,17 @@ exports[`pages error page should render error page correctly 1`] = `
             us for assistance.
           </p>
         </div>
+        <br />
+        <a
+          className="govuk-button"
+          data-module="govuk-button"
+          draggable="false"
+          href="/operator"
+          role="button"
+        >
+          Start again
+        </a>
       </div>
-      <br />
-      <a
-        className="govuk-button"
-        data-module="govuk-button"
-        draggable="false"
-        href="operator"
-        role="button"
-      >
-        Start again
-      </a>
     </div>
   </main>
 </Layout>
