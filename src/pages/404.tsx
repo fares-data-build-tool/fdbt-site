@@ -23,17 +23,16 @@ const PageNotFound = (): ReactElement => (
                             </a>{' '}
                             us about your fares data.
                         </p>
-                        <p className="govuk-body">Click continue to start again.</p>
                     </div>
                     <br />
                     <a
-                        href="operator"
+                        href="/operator"
                         role="button"
                         draggable="false"
-                        className="govuk-button govuk-button--start"
+                        className="govuk-button"
                         data-module="govuk-button"
                     >
-                        Continue
+                        Start again
                     </a>
                 </div>
             </div>

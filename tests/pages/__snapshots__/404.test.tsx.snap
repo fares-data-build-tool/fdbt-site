@@ -47,21 +47,16 @@ exports[`pages 404 should render 404 page correctly 1`] = `
              
             us about your fares data.
           </p>
-          <p
-            className="govuk-body"
-          >
-            Click continue to start again.
-          </p>
         </div>
         <br />
         <a
-          className="govuk-button govuk-button--start"
+          className="govuk-button"
           data-module="govuk-button"
           draggable="false"
-          href="operator"
+          href="/operator"
           role="button"
         >
-          Continue
+          Start again
         </a>
       </div>
     </div>
