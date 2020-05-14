@@ -154,7 +154,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones, fareTypeObject.fareType);
 
         setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
-        console.log(matchingJson);
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');
