@@ -1,5 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages howManyProducts should render correctly 1`] = `
+<Layout
+  description="How Many Products entry page of the Fares Data Build Tool"
+  title="How Many Products - Fares Data Build Tool"
+>
+  <main
+    className="govuk-main-wrapper app-main-class"
+    id="main-content"
+    role="main"
+  >
+    <form
+      action="/api/howManyProducts"
+      method="post"
+    >
+      <ErrorSummary
+        errors={Array []}
+      />
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          aria-describedby="page-heading"
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--xl"
+          >
+            <h1
+              className="govuk-fieldset__heading"
+              id="page-heading"
+            >
+              How many products do you have for this zone or selected services?
+            </h1>
+          </legend>
+          <label
+            className="govuk-label"
+            htmlFor="numberOfProducts"
+          >
+            Number of fare products (up to a maximum of 10)
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="how-many-products-error"
+            errors={Array []}
+          >
+            <input
+              aria-describedby=""
+              className="govuk-input govuk-input--width-2"
+              id="numberOfProducts"
+              name="numberOfProductsInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </fieldset>
+      </div>
+      <input
+        className="govuk-button govuk-button--start"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </form>
+  </main>
+</Layout>
+`;
+
 exports[`pages howManyProducts should render correctly when a user is redirected to the page from itself when incorrect data is entered 1`] = `
 <Layout
   description="How Many Products entry page of the Fares Data Build Tool"

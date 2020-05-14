@@ -1,6 +1,11 @@
 import * as s3 from '../../../src/data/s3';
 import * as dynamodb from '../../../src/data/auroradb';
-import { getMockRequestAndResponse, naptanStopInfo, expectedCsvUploadMultiProduct } from '../../testData/mockData';
+import {
+    getMockRequestAndResponse,
+    naptanStopInfo,
+    expectedMultiValidityCsvUpload,
+    expectedMultiValiditySelectedServices,
+} from '../../testData/mockData';
 import multipleProductValidity, { addErrorsIfInvalid } from '../../../src/pages/api/multipleProductValidity';
 import { Product } from '../../../src/pages/multipleProductValidity';
 
@@ -71,7 +76,7 @@ describe('multipleProductValidity', () => {
 
     it('generates and dumps multiple period product JSON in S3 when the user uploads a fare zone via csv', async () => {
         const { req, res } = getMockRequestAndResponse(
-            { fareType: 'period', numberOfProducts: '3' },
+            { fareType: 'period', numberOfProducts: '3', selectedServices: null },
             { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
             '',
             writeHeadMock,
@@ -84,7 +89,26 @@ describe('multipleProductValidity', () => {
             expect.any(String),
             'application/json; charset=utf-8',
         );
-        expect(actualMultipleProductData).toEqual(expectedCsvUploadMultiProduct);
+        expect(actualMultipleProductData).toEqual(expectedMultiValidityCsvUpload);
+    });
+
+    it('generates and dumps multiple period product JSON in S3 when the user selects a list of services', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { fareType: 'period', numberOfProducts: '3', fareZoneName: null },
+            { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            '',
+            writeHeadMock,
+        );
+        await multipleProductValidity(req, res);
+        const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+        console.log(actualMultipleProductData);
+        expect(putStringInS3Spy).toBeCalledWith(
+            'fdbt-matching-data-dev',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            expect.any(String),
+            'application/json; charset=utf-8',
+        );
+        expect(actualMultipleProductData).toEqual(expectedMultiValiditySelectedServices);
     });
 
     it('redirects back to the multipleProductValidity page if there is no body', async () => {
@@ -99,7 +123,7 @@ describe('multipleProductValidity', () => {
 
     it('redirects to thankyou page if all valid', async () => {
         const { req, res } = getMockRequestAndResponse(
-            '',
+            { fareZoneName: null },
             { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
             '',
             writeHeadMock,

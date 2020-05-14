@@ -1,9 +1,14 @@
 import * as s3 from '../../../src/data/s3';
 import * as dynamodb from '../../../src/data/auroradb';
-import { expectedPeriodValidity, getMockRequestAndResponse, naptanStopInfo } from '../../testData/mockData';
+import {
+    expectedPeriodValidityCsvUpload,
+    getMockRequestAndResponse,
+    naptanStopInfo,
+    expectedPeriodValiditySelectedServices,
+} from '../../testData/mockData';
 import periodValidity from '../../../src/pages/api/periodValidity';
 
-describe('Period Validity API', () => {
+describe('periodValidity', () => {
     const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
     const writeHeadMock = jest.fn();
 
@@ -24,8 +29,13 @@ describe('Period Validity API', () => {
             .mockImplementation(() => Promise.resolve(naptanStopInfo));
     });
 
-    it('correctly generates JSON for period data and uploads to S3', async () => {
-        const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
+    it('correctly generates JSON for period data and uploads to S3 when a user uploads a csv', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { selectedServices: null },
+            { periodValid: '24hr' },
+            '',
+            writeHeadMock,
+        );
         await periodValidity(req, res);
 
         const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
@@ -35,7 +45,26 @@ describe('Period Validity API', () => {
             expect.any(String),
             'application/json; charset=utf-8',
         );
-        expect(actualProductData).toEqual(expectedPeriodValidity);
+        expect(actualProductData).toEqual(expectedPeriodValidityCsvUpload);
+    });
+
+    it('correctly generates JSON for period data and uploads to S3 when a user selects a list of services', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            { fareZoneName: null },
+            { periodValid: '24hr' },
+            '',
+            writeHeadMock,
+        );
+        await periodValidity(req, res);
+
+        const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
+        expect(putStringInS3Spy).toBeCalledWith(
+            'fdbt-matching-data-dev',
+            '1e0459b3-082e-4e70-89db-96e8ae173e10.json',
+            expect.any(String),
+            'application/json; charset=utf-8',
+        );
+        expect(actualProductData).toEqual(expectedPeriodValiditySelectedServices);
     });
 
     it('redirects back to period validity page if there is no body', async () => {
@@ -53,16 +82,6 @@ describe('Period Validity API', () => {
         await periodValidity(req, res);
 
         expect(writeHeadMock).toBeCalled();
-    });
-
-    it('should redirect to the error page if the cookie UUIDs to do not match', async () => {
-        const { req, res } = getMockRequestAndResponse({}, null, { csvUploadZoneUuid: 'someUuid' }, writeHeadMock);
-
-        await periodValidity(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
     });
 
     it('throws an error if no stops are returned from query', async () => {

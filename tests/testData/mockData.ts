@@ -17,6 +17,7 @@ import {
     PRODUCT_DETAILS_COOKIE,
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
+    SERVICE_LIST_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -72,6 +73,11 @@ export const getMockRequestAndResponse = (
                 productDurationId: 'multipleProductDuration3',
             },
         ],
+        selectedServices = [
+            '12A#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
+            '6#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
+            '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+        ],
     } = cookieValues;
 
     const {
@@ -126,6 +132,12 @@ export const getMockRequestAndResponse = (
 
     cookieString += multipleProducts
         ? `${MULTIPLE_PRODUCT_COOKIE}=${encodeURI(JSON.stringify(multipleProducts))};`
+        : '';
+
+    cookieString += selectedServices
+        ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
+              selectedServices,
+          )}%7D`
         : '';
 
     const req = mockRequest({
@@ -1302,7 +1314,7 @@ export const matchingOutBound = {
     },
 };
 
-export const expectedPeriodValidity = {
+export const expectedPeriodValidityCsvUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1318,7 +1330,38 @@ export const expectedPeriodValidity = {
     stops: naptanStopInfo,
 };
 
-export const expectedCsvUploadMultiProduct = {
+export const expectedPeriodValiditySelectedServices = {
+    operatorName: 'test',
+    type: 'period',
+    nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Product A',
+            productPrice: '1234',
+            productDuration: '2',
+            productValidity: '24hr',
+        },
+    ],
+    formattedServiceInfo: [
+        {
+            lineName: '12A',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
+};
+
+export const expectedMultiValidityCsvUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1344,6 +1387,49 @@ export const expectedCsvUploadMultiProduct = {
     ],
     zoneName: 'fare zone 1',
     stops: naptanStopInfo,
+};
+
+export const expectedMultiValiditySelectedServices = {
+    operatorName: 'test',
+    type: 'period',
+    nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1',
+            productValidity: '24hr',
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28',
+            productValidity: 'endOfCalendarDay',
+        },
+    ],
+    formattedServiceInfo: [
+        {
+            lineName: '12A',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
 };
 
 export const multipleProducts: MultiProduct[] = [

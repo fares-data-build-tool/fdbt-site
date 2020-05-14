@@ -32,74 +32,74 @@ describe('howManyProducts', () => {
             const inputCheck = isNumberOfProductsInvalid(req);
             expect(inputCheck).toEqual(mockInputCheck);
         });
+    });
 
-        it('should return 302 redirect to /howManyProducts (i.e. itself) when the session is valid, but there is no request body', () => {
-            const mockBody = { numberOfProductsInput: '' };
-            const mockWriteHeadFn = jest.fn();
-            const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
-            howManyProducts(req, res);
-            expect(mockWriteHeadFn).toBeCalledWith(302, {
-                Location: '/howManyProducts',
-            });
+    it('should return 302 redirect to /howManyProducts (i.e. itself) when the session is valid, but there is no request body', () => {
+        const mockBody = { numberOfProductsInput: '' };
+        const mockWriteHeadFn = jest.fn();
+        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
+        howManyProducts(req, res);
+        expect(mockWriteHeadFn).toBeCalledWith(302, {
+            Location: '/howManyProducts',
         });
+    });
 
-        it('should return 302 redirect to /productDetails when the user only defines one product', () => {
-            const mockBody = { numberOfProductsInput: '1' };
-            const mockWriteHeadFn = jest.fn();
-            const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
-            howManyProducts(req, res);
-            expect(mockWriteHeadFn).toBeCalledWith(302, {
-                Location: '/productDetails',
-            });
+    it('should return 302 redirect to /productDetails when the user only defines one product', () => {
+        const mockBody = { numberOfProductsInput: '1' };
+        const mockWriteHeadFn = jest.fn();
+        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
+        howManyProducts(req, res);
+        expect(mockWriteHeadFn).toBeCalledWith(302, {
+            Location: '/productDetails',
         });
+    });
 
-        it('should return 302 redirect to /multipleProducts when the user defines more than one product', () => {
-            const mockBody = { numberOfProductsInput: '5' };
-            const mockWriteHeadFn = jest.fn();
-            const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
-            howManyProducts(req, res);
-            expect(mockWriteHeadFn).toBeCalledWith(302, {
-                Location: '/multipleProducts',
-            });
+    it('should return 302 redirect to /multipleProducts when the user defines more than one product', () => {
+        const mockBody = { numberOfProductsInput: '5' };
+        const mockWriteHeadFn = jest.fn();
+        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
+        howManyProducts(req, res);
+        expect(mockWriteHeadFn).toBeCalledWith(302, {
+            Location: '/multipleProducts',
         });
+    });
 
-        it('should return 302 redirect to /error when session is not valid', () => {
-            const mockWriteHeadFn = jest.fn();
-            const { req, res } = getMockRequestAndResponse({ operator: null }, {}, {}, mockWriteHeadFn);
-            howManyProducts(req, res);
-            expect(mockWriteHeadFn).toBeCalledWith(302, {
-                Location: '/error',
-            });
+    it('should return 302 redirect to /error when session is not valid', () => {
+        const mockWriteHeadFn = jest.fn();
+        const { req, res } = getMockRequestAndResponse({ operator: null }, {}, {}, mockWriteHeadFn);
+        howManyProducts(req, res);
+        expect(mockWriteHeadFn).toBeCalledWith(302, {
+            Location: '/error',
         });
+    });
 
-        it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
-            const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-            const mockBody = { numberOfProductsInput: '' };
-            const { req, res } = getMockRequestAndResponse({}, mockBody);
-            const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '', error: 'Enter a number' });
-            howManyProducts(req, res);
-            expect(setCookieSpy).toHaveBeenCalledWith(
-                'localhost',
-                NUMBER_OF_PRODUCTS_COOKIE,
-                mockStringifiedInputCheck,
-                req,
-                res,
-            );
-        });
+    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
+        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+        const mockBody = { numberOfProductsInput: '' };
+        const { req, res } = getMockRequestAndResponse({}, mockBody);
+        const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '', error: 'Enter a number' });
+        howManyProducts(req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(
+            'localhost',
+            NUMBER_OF_PRODUCTS_COOKIE,
+            mockStringifiedInputCheck,
+            req,
+            res,
+        );
+    });
 
-        it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /multipleProducts', () => {
-            const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-            const mockBody = { numberOfProductsInput: '8' };
-            const { req, res } = getMockRequestAndResponse({}, mockBody);
-            const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '8' });
-            howManyProducts(req, res);
-            expect(setCookieSpy).toBeCalledWith(
-                'localhost',
-                NUMBER_OF_PRODUCTS_COOKIE,
-                mockStringifiedInputCheck,
-                req,
-                res,
-            );
-        });
+    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /multipleProducts', () => {
+        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+        const mockBody = { numberOfProductsInput: '8' };
+        const { req, res } = getMockRequestAndResponse({}, mockBody);
+        const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '8' });
+        howManyProducts(req, res);
+        expect(setCookieSpy).toBeCalledWith(
+            'localhost',
+            NUMBER_OF_PRODUCTS_COOKIE,
+            mockStringifiedInputCheck,
+            req,
+            res,
+        );
     });
 });

@@ -13,7 +13,7 @@ import {
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
-import { isPeriodCookiesUUIDMatch, isSessionValid } from './service/validator';
+import { isSessionValid } from './service/validator';
 import { ServicesInfo } from '../../interfaces';
 
 interface Product {
@@ -37,10 +37,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
-        }
-
-        if (!isPeriodCookiesUUIDMatch(req, res)) {
-            throw new Error('Cookie UUIDs do not match');
         }
 
         if (req.body.periodValid) {
@@ -139,6 +135,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem selecting the period validity:';
+        console.log(error);
         redirectToError(res, message, error);
     }
 };
