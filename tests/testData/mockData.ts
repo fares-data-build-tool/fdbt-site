@@ -1314,7 +1314,7 @@ export const matchingOutBound = {
     },
 };
 
-export const expectedPeriodValidityCsvUpload = {
+export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1330,7 +1330,7 @@ export const expectedPeriodValidityCsvUpload = {
     stops: naptanStopInfo,
 };
 
-export const expectedPeriodValiditySelectedServices = {
+export const expectedSingleProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1342,7 +1342,7 @@ export const expectedPeriodValiditySelectedServices = {
             productValidity: '24hr',
         },
     ],
-    formattedServiceInfo: [
+    selectedServices: [
         {
             lineName: '12A',
             startDate: '13/05/2020',
@@ -1361,7 +1361,7 @@ export const expectedPeriodValiditySelectedServices = {
     ],
 };
 
-export const expectedMultiValidityCsvUpload = {
+export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1389,7 +1389,7 @@ export const expectedMultiValidityCsvUpload = {
     stops: naptanStopInfo,
 };
 
-export const expectedMultiValiditySelectedServices = {
+export const expectedMultiProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'HCTY',
@@ -1413,7 +1413,36 @@ export const expectedMultiValiditySelectedServices = {
             productValidity: 'endOfCalendarDay',
         },
     ],
-    formattedServiceInfo: [
+    selectedServices: [
+        {
+            lineName: '12A',
+            startDate: '13/05/2020',
+            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+        },
+        {
+            lineName: '6',
+            startDate: '08/05/2020',
+            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+        },
+        {
+            lineName: '101',
+            startDate: '06/05/2020',
+            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+        },
+    ],
+};
+
+export const expectedFlatFareProductUploadJson = {
+    operatorName: 'test',
+    type: 'flatFare',
+    nocCode: 'HCTY',
+    products: [
+        {
+            productName: 'Weekly Rider',
+            productPrice: '7',
+        },
+    ],
+    selectedServices: [
         {
             lineName: '12A',
             startDate: '13/05/2020',

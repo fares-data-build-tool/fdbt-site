@@ -110,7 +110,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 };
             });
             props = {
-                formattedServiceInfo,
+                selectedServices: formattedServiceInfo,
             };
         }
 

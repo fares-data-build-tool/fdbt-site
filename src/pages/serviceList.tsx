@@ -9,20 +9,17 @@ import { ServicesInfo } from '../interfaces';
 const title = 'Service List - Fares Data Build Tool';
 const description = 'Service List selection page of the Fares Data Build Tool';
 
-const buttonSelectedText = 'Select All';
-const buttonUnselectedText = 'Unselect All';
-
 interface ServiceList {
     selectedServices: ServicesInfo[];
     error: boolean;
 }
 
-export interface SelectedServiceProps {
+export interface ServiceListProps {
     service: ServiceList;
     buttonText: string;
 }
 
-const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
+const ServiceList = (serviceProps: ServiceListProps): ReactElement => {
     const {
         service: { error, selectedServices },
         buttonText,
@@ -101,9 +98,7 @@ const ServiceList = (serviceProps: SelectedServiceProps): ReactElement => {
     );
 };
 
-export const getServerSideProps = async (
-    ctx: NextPageContext,
-): Promise<{ props: { service: ServiceList; buttonText: string } }> => {
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
@@ -119,7 +114,7 @@ export const getServerSideProps = async (
 
     const { selectAll } = ctx.query;
 
-    const buttonText = selectAll === 'true' ? buttonUnselectedText : buttonSelectedText;
+    const buttonText = selectAll === 'true' ? 'Unselect All' : 'Select All';
 
     const checkedServiceList: ServicesInfo[] = servicesList.map(service => {
         return {
@@ -129,26 +124,10 @@ export const getServerSideProps = async (
         };
     });
 
-    if (!serviceListCookie) {
-        return {
-            props: {
-                service: {
-                    error: false,
-                    selectedServices: checkedServiceList,
-                },
-                buttonText,
-            },
-        };
-    }
-
-    const serviceListObject = JSON.parse(serviceListCookie);
-
-    const { error } = serviceListObject;
-
     return {
         props: {
             service: {
-                error,
+                error: !serviceListCookie ? false : JSON.parse(serviceListCookie).error,
                 selectedServices: checkedServiceList,
             },
             buttonText,

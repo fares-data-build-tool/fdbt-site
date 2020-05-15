@@ -1,10 +1,10 @@
 import * as s3 from '../../../src/data/s3';
 import * as dynamodb from '../../../src/data/auroradb';
 import {
-    expectedPeriodValidityCsvUpload,
+    expectedSingleProductUploadJsonWithZoneUpload,
     getMockRequestAndResponse,
     naptanStopInfo,
-    expectedPeriodValiditySelectedServices,
+    expectedSingleProductUploadJsonWithSelectedServices,
 } from '../../testData/mockData';
 import periodValidity from '../../../src/pages/api/periodValidity';
 
@@ -45,7 +45,7 @@ describe('periodValidity', () => {
             expect.any(String),
             'application/json; charset=utf-8',
         );
-        expect(actualProductData).toEqual(expectedPeriodValidityCsvUpload);
+        expect(actualProductData).toEqual(expectedSingleProductUploadJsonWithZoneUpload);
     });
 
     it('correctly generates JSON for period data and uploads to S3 when a user selects a list of services', async () => {
@@ -64,11 +64,11 @@ describe('periodValidity', () => {
             expect.any(String),
             'application/json; charset=utf-8',
         );
-        expect(actualProductData).toEqual(expectedPeriodValiditySelectedServices);
+        expect(actualProductData).toEqual(expectedSingleProductUploadJsonWithSelectedServices);
     });
 
     it('redirects back to period validity page if there is no body', async () => {
-        const { req, res } = getMockRequestAndResponse({}, {}, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({}, {}, '', writeHeadMock);
 
         await periodValidity(req, res);
 
@@ -78,10 +78,17 @@ describe('periodValidity', () => {
     });
 
     it('redirects to thankyou page if all valid', async () => {
-        const { req, res } = getMockRequestAndResponse('', { periodValid: '24hr' }, '', writeHeadMock);
+        const { req, res } = getMockRequestAndResponse(
+            { fareZoneName: null },
+            { periodValid: '24hr' },
+            '',
+            writeHeadMock,
+        );
         await periodValidity(req, res);
 
-        expect(writeHeadMock).toBeCalled();
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/thankyou',
+        });
     });
 
     it('throws an error if no stops are returned from query', async () => {

@@ -11,7 +11,7 @@ const description = 'Product Details entry page of the Fares Data Build Tool';
 type ProductDetailsProps = {
     product: ProductInfo;
     operator: string;
-    hintText: string;
+    hintText?: string;
 };
 
 const ProductDetails = ({ product, operator, hintText }: ProductDetailsProps): ReactElement => {
@@ -100,7 +100,7 @@ const ProductDetails = ({ product, operator, hintText }: ProductDetailsProps): R
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
     const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
@@ -110,11 +110,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     let props = {};
 
     if (!operatorCookie) {
-        throw new Error('Failed to retrieve operator cookie info for period product page.');
+        throw new Error('Failed to retrieve operator cookie info for product details page.');
     }
 
     if (!zoneCookie && !serviceListCookie) {
-        throw new Error('Failed to retrieve zone and/or service list cookie info for period product page.');
+        throw new Error('Failed to retrieve zone or service list cookie info for product details page.');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
@@ -124,9 +124,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         props = {
             hintText: fareZoneName,
         };
-    }
-
-    if (serviceListCookie) {
+    } else if (serviceListCookie) {
         const { selectedServices } = JSON.parse(serviceListCookie);
         props = {
             hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,

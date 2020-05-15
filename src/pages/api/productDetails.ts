@@ -17,8 +17,7 @@ interface DecisionData {
     operatorName: string;
     nocCode: string;
     type: string;
-    productName: string;
-    productPrice: string;
+    products: { productName: string; productPrice: string }[];
     selectedServices: ServicesInfo[];
 }
 
@@ -90,8 +89,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 operatorName: operator,
                 nocCode,
                 type: fareType,
-                productName: productDetails.productName,
-                productPrice: productDetails.productPrice,
+                products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
                 selectedServices: formattedServiceInfo,
             };
 

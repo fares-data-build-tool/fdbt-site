@@ -3,8 +3,8 @@ import * as dynamodb from '../../../src/data/auroradb';
 import {
     getMockRequestAndResponse,
     naptanStopInfo,
-    expectedMultiValidityCsvUpload,
-    expectedMultiValiditySelectedServices,
+    expectedMultiProductUploadJsonWithZoneUpload,
+    expectedMultiProductUploadJsonWithSelectedServices,
 } from '../../testData/mockData';
 import multipleProductValidity, { addErrorsIfInvalid } from '../../../src/pages/api/multipleProductValidity';
 import { Product } from '../../../src/pages/multipleProductValidity';
@@ -89,7 +89,7 @@ describe('multipleProductValidity', () => {
             expect.any(String),
             'application/json; charset=utf-8',
         );
-        expect(actualMultipleProductData).toEqual(expectedMultiValidityCsvUpload);
+        expect(actualMultipleProductData).toEqual(expectedMultiProductUploadJsonWithZoneUpload);
     });
 
     it('generates and dumps multiple period product JSON in S3 when the user selects a list of services', async () => {
@@ -108,7 +108,7 @@ describe('multipleProductValidity', () => {
             expect.any(String),
             'application/json; charset=utf-8',
         );
-        expect(actualMultipleProductData).toEqual(expectedMultiValiditySelectedServices);
+        expect(actualMultipleProductData).toEqual(expectedMultiProductUploadJsonWithSelectedServices);
     });
 
     it('redirects back to the multipleProductValidity page if there is no body', async () => {
