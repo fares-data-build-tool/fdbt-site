@@ -73,7 +73,7 @@ exports[`pages fareType should render correctly 1`] = `
                   className="govuk-label govuk-radios__label"
                   htmlFor="fare-type-period"
                 >
-                  Period Tickets (Day, Week, Month and Annual)
+                  Period Ticket (Day, Week, Month and Annual)
                 </label>
               </div>
               <div
@@ -212,7 +212,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
                   className="govuk-label govuk-radios__label"
                   htmlFor="fare-type-period"
                 >
-                  Period Tickets (Day, Week, Month and Annual)
+                  Period Ticket (Day, Week, Month and Annual)
                 </label>
               </div>
               <div

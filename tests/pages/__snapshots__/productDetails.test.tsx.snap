@@ -57,7 +57,7 @@ exports[`pages productDetails should render correctly 1`] = `
           </span>
           <span
             className="govuk-error-message"
-            id="product-price-error"
+            id="product-name-error"
           >
             <span
               className="govuk-visually-hidden"

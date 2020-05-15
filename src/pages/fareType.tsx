@@ -53,7 +53,7 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                             value="period"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="fare-type-period">
-                                            Period Tickets (Day, Week, Month and Annual)
+                                            Period Ticket (Day, Week, Month and Annual)
                                         </label>
                                     </div>
                                     <div className="govuk-radios__item">

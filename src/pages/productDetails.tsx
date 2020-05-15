@@ -42,7 +42,7 @@ const ProductDetails = ({ product, operator, hintText }: ProductDetailsProps): R
                             <span className="govuk-hint" id="product-name-hint">
                                 Enter the name of your product
                             </span>
-                            <span id="product-price-error" className="govuk-error-message">
+                            <span id="product-name-error" className="govuk-error-message">
                                 <span className={productNameError ? '' : 'govuk-visually-hidden'}>
                                     {productNameError}
                                 </span>
