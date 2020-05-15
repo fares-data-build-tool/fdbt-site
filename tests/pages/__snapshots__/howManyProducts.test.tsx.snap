@@ -31,14 +31,14 @@ exports[`pages howManyProducts should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
@@ -104,14 +104,14 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
@@ -185,14 +185,14 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
@@ -266,14 +266,14 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
@@ -347,14 +347,14 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
@@ -428,14 +428,14 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
@@ -509,14 +509,14 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
@@ -590,14 +590,14 @@ exports[`pages howManyProducts should render correctly when a user is redirected
               className="govuk-fieldset__heading"
               id="page-heading"
             >
-              How many products do you have for this zone or selected services?
+              How many period tickets do you have for the selected services?
             </h1>
           </legend>
           <label
-            className="govuk-label"
+            className="govuk-hint"
             htmlFor="numberOfProducts"
           >
-            Number of fare products (up to a maximum of 10)
+            Enter the number of period tickets below. Up to a maximum of 10 at once.
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
