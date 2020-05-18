@@ -46,29 +46,29 @@ describe('pages', () => {
             const tree = shallow(<ServiceList {...serviceInfoWithError} />);
             expect(tree).toMatchSnapshot();
         });
-    });
 
-    describe('serviceListGetServerSideProps', () => {
-        it('should return expected props to the page when the page is first visited by the user', async () => {
-            const ctx = getMockContext({ selectedServices: null });
-            const result = await getServerSideProps(ctx);
-            const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => {
-                return {
-                    ...mockService,
-                    serviceDescription: mockService.description,
-                    checked: false,
-                };
+        describe('getServerSideProps', () => {
+            it('should return expected props to the page when the page is first visited by the user', async () => {
+                const ctx = getMockContext({ selectedServices: null });
+                const result = await getServerSideProps(ctx);
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => {
+                    return {
+                        ...mockService,
+                        serviceDescription: mockService.description,
+                        checked: false,
+                    };
+                });
+                expect(result.props.service.error).toBe(false);
+                expect(result.props.service.selectedServices).toEqual(expectedCheckedServiceList);
+                expect(result.props.buttonText).toEqual('Select All');
             });
-            expect(result.props.service.error).toBe(false);
-            expect(result.props.service.selectedServices).toEqual(expectedCheckedServiceList);
-            expect(result.props.buttonText).toEqual('Select All');
-        });
 
-        it('should throw an error when the OPERATOR_COOKIE is missing', async () => {
-            const ctx = getMockContext({ operator: null });
-            await expect(getServerSideProps(ctx)).rejects.toThrow(
-                'Failed to retrieve OPERATOR_COOKIE for serviceList page',
-            );
+            it('should throw an error when the OPERATOR_COOKIE is missing', async () => {
+                const ctx = getMockContext({ operator: null });
+                await expect(getServerSideProps(ctx)).rejects.toThrow(
+                    'Failed to retrieve OPERATOR_COOKIE for serviceList page',
+                );
+            });
         });
     });
 });

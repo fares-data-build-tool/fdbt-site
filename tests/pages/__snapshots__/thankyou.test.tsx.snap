@@ -2,8 +2,8 @@
 
 exports[`pages thankyou should render correctly 1`] = `
 <Layout
-  description="Thankyou page for the Fares Data Build Tool"
-  title="Thankyou - Fares Data Build Tool"
+  description="Thank you page for the Fares Data Build Tool"
+  title="Thank You - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper govuk-main-wrapper--l"
@@ -18,7 +18,7 @@ exports[`pages thankyou should render correctly 1`] = `
       >
         <h1
           className="govuk-panel__title"
-          id="thankyou-page-heading"
+          id="thank-you-page-heading"
         >
           Upload complete
         </h1>

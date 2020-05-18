@@ -4,19 +4,19 @@ import Layout from '../layout/Layout';
 import { FEEDBACK_LINK } from '../constants';
 import { getUuidFromCookies, deleteAllCookiesOnServerSide } from '../utils';
 
-const title = 'Thankyou - Fares Data Build Tool';
-const description = 'Thankyou page for the Fares Data Build Tool';
+const title = 'Thank You - Fares Data Build Tool';
+const description = 'Thank you page for the Fares Data Build Tool';
 
-type ThankyouProps = {
+type ThankYouProps = {
     uuid: string;
 };
 
-const Thankyou = ({ uuid }: ThankyouProps): ReactElement => (
+const ThankYou = ({ uuid }: ThankYouProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
             <div className="govuk-grid-row">
                 <div className="govuk-panel govuk-panel--confirmation">
-                    <h1 className="govuk-panel__title" id="thankyou-page-heading">
+                    <h1 className="govuk-panel__title" id="thank-you-page-heading">
                         Upload complete
                     </h1>
                     <div className="govuk-panel__body" id="uuid-ref-number">
@@ -58,4 +58,4 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     return { props: { uuid } };
 };
 
-export default Thankyou;
+export default ThankYou;
