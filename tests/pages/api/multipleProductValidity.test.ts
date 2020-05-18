@@ -101,7 +101,6 @@ describe('multipleProductValidity', () => {
         );
         await multipleProductValidity(req, res);
         const actualMultipleProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
-        console.log(actualMultipleProductData);
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
             '1e0459b3-082e-4e70-89db-96e8ae173e10.json',

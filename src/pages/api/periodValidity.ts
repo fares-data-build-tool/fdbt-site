@@ -135,7 +135,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem selecting the period validity:';
-        console.log(error);
         redirectToError(res, message, error);
     }
 };
