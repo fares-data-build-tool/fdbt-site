@@ -136,8 +136,8 @@ export const getMockRequestAndResponse = (
 
     cookieString += selectedServices
         ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
-              selectedServices,
-          )}%7D`
+            selectedServices,
+        )}%7D`
         : '';
 
     const req = mockRequest({
