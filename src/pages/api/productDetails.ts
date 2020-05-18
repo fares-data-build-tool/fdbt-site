@@ -74,6 +74,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
 
+            if (!serviceListCookie) {
+                throw new Error('Failed to retrieve SERVICE_LIST_COOKIE info for productDetails API');
+            }
+
             const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
             const { selectedServices } = JSON.parse(serviceListCookie);
             const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
