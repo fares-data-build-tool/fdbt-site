@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PRODUCT_DETAILS_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, PRODUCT_DETAILS_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST_COOKIE, PASSENGERTYPE_COOKIE } from '../constants';
 import { ProductInfo } from '../interfaces';
 
 const title = 'Product Details - Fares Data Build Tool';
@@ -11,10 +11,11 @@ const description = 'Product Details entry page of the Fares Data Build Tool';
 type ProductDetailsProps = {
     product: ProductInfo;
     operator: string;
+    passengerType: string;
     hintText?: string;
 };
 
-const ProductDetails = ({ product, operator, hintText }: ProductDetailsProps): ReactElement => {
+const ProductDetails = ({ product, operator, passengerType, hintText }: ProductDetailsProps): ReactElement => {
     const productName = product && product.productName;
     const productPrice = product && product.productPrice;
     const productNameError = product && product.productNameError;
@@ -32,7 +33,7 @@ const ProductDetails = ({ product, operator, hintText }: ProductDetailsProps): R
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {operator} - {hintText}
+                                {operator} - {hintText} - {passengerType}
                             </span>
                         </fieldset>
                         <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
@@ -104,6 +105,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
     const cookies = parseCookies(ctx);
     const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGERTYPE_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
     const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
 
@@ -112,12 +114,17 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
     if (!operatorCookie) {
         throw new Error('Failed to retrieve operator cookie info for product details page.');
     }
+    
+    if (!passengerTypeCookie) {
+        throw new Error('Failed to retrieve passenger type cookie info for product details page.');
+    }
 
     if (!zoneCookie && !serviceListCookie) {
         throw new Error('Failed to retrieve zone or service list cookie info for product details page.');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
+    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
 
     if (zoneCookie) {
         const { fareZoneName } = JSON.parse(zoneCookie);
@@ -135,6 +142,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
         props: {
             product: !productDetailsCookie ? {} : JSON.parse(productDetailsCookie),
             operator: operatorInfo.operator,
+            passengerType: passengerTypeInfo.passengerType,
             ...props,
         },
     };

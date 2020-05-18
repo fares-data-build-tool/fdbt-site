@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGERTYPE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 
@@ -11,10 +11,11 @@ const description = 'Service selection page of the Fares Data Build Tool';
 
 type ServiceProps = {
     operator: string;
+    passengerType: string;
     services: ServiceType[];
 };
 
-const Service = ({ operator, services }: ServiceProps): ReactElement => (
+const Service = ({ operator, passengerType, services }: ServiceProps): ReactElement => (
     <Layout title={title} description={description}>
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/service" method="post">
@@ -26,7 +27,7 @@ const Service = ({ operator, services }: ServiceProps): ReactElement => (
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-hint">
-                            {operator}
+                            {operator} - {passengerType}
                         </span>
                         <select className="govuk-select" id="service" name="service" defaultValue="">
                             <option value="" disabled>
@@ -63,12 +64,14 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
 
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGERTYPE_COOKIE];
 
-    if (!operatorCookie) {
-        throw new Error('Necessary operator cookie not found to show matching page');
+    if (!operatorCookie || !passengerTypeCookie) {
+        throw new Error('Necessary cookies not found to show matching page');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
+    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
 
     const services = await getServicesByNocCode(operatorInfo.nocCode);
 
@@ -76,7 +79,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error(`No services found for NOC Code: ${operatorInfo.nocCode}`);
     }
 
-    return { props: { operator: operatorInfo.operator, services } };
+    return { props: { operator: operatorInfo.operator, passengerType: passengerTypeInfo.passengerType, services } };
 };
 
 export default Service;
