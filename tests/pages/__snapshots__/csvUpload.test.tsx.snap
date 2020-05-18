@@ -2,8 +2,8 @@
 
 exports[`pages csvUpload should render correctly 1`] = `
 <Layout
-  description="Input method selection page of the Fares data build tool"
-  title="Input Method - Fares data build tool"
+  description="Input Method selection page of the Fares Data Build Tool"
+  title="Input Method - Fares Data Build Tool"
 >
   <main
     className="govuk-main-wrapper app-main-class"
@@ -31,7 +31,7 @@ exports[`pages csvUpload should render correctly 1`] = `
               className="govuk-fieldset__heading"
               id="input-method-heading"
             >
-              Select your preferred input method
+              Select an input method
             </h1>
           </legend>
           <FormElementWrapper
@@ -93,7 +93,7 @@ exports[`pages csvUpload should render correctly 1`] = `
                   className="govuk-label govuk-radios__label"
                   htmlFor="interactive-map"
                 >
-                  Interactive Map (Beta)
+                  Interactive Map (not yet available)
                 </label>
               </div>
             </div>

@@ -8,8 +8,8 @@ import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 
-const title = 'Input Method - Fares data build tool';
-const description = 'Input method selection page of the Fares data build tool';
+const title = 'Input Method - Fares Data Build Tool';
+const description = 'Input Method selection page of the Fares Data Build Tool';
 
 const errorId = 'input-method-error';
 
@@ -27,7 +27,7 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                         <fieldset className="govuk-fieldset" aria-describedby="input-method-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 id="input-method-heading" className="govuk-fieldset__heading">
-                                    Select your preferred input method
+                                    Select an input method
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
@@ -73,7 +73,7 @@ const InputMethod = ({ errors = [] }: InputMethodProps): ReactElement => {
                                             aria-disabled="true"
                                         />
                                         <label className="govuk-label govuk-radios__label" htmlFor="interactive-map">
-                                            Interactive Map (Beta)
+                                            Interactive Map (not yet available)
                                         </label>
                                     </div>
                                 </div>
