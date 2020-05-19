@@ -13,9 +13,11 @@ class MyDocument extends Document {
         return (
             <Html lang="en" className="govuk-template app-html-class flexbox no-flexboxtweener">
                 <Head />
-                <body className="govuk-template__body app-body-class">
+                <body className="govuk-template__body app-body-class js-enabled">
                     <Main />
                     <NextScript />
+                    <script src="/javascript/govuk.js" />
+                    <script>window.GOVUKFrontend.initAll()</script>
                 </body>
             </Html>
         );

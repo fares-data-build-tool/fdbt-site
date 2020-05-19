@@ -7,10 +7,16 @@ exports[`_document should render correctly 1`] = `
 >
   <Head />
   <body
-    className="govuk-template__body app-body-class"
+    className="govuk-template__body app-body-class js-enabled"
   >
     <Main />
     <NextScript />
+    <script
+      src="/javascript/govuk.js"
+    />
+    <script>
+      window.GOVUKFrontend.initAll()
+    </script>
   </body>
 </Html>
 `;

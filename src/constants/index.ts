@@ -42,6 +42,8 @@ export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
 
 export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 
+export const USER_TYPE_COOKIE = 'fdbt-user-types';
+
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
     'fdbt-fareType',
