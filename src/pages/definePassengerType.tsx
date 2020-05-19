@@ -6,7 +6,7 @@ import { USER_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
-import FormElementWrapper from '../components/FormElementWrapper';
+import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
@@ -15,9 +15,10 @@ const errorId = 'define-passenger-type-error';
 
 type DefinePassengerTypeProps = {
     errors: ErrorInfo[];
+    fieldsets: RadioConditionalInputFieldset[];
 };
 
-const DefinePassengerType = ({ errors = [] }: DefinePassengerTypeProps): ReactElement => {
+const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProps): ReactElement => {
     return (
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -34,155 +35,11 @@ const DefinePassengerType = ({ errors = [] }: DefinePassengerTypeProps): ReactEl
                             student ticket may be available for someone between the ages of 13 and 18 and require a
                             student ID card.
                         </span>
-                        <fieldset className="govuk-fieldset" aria-describedby="define-passenger-age-range">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h2 className="govuk-fieldset__heading" id="define-passenger-age-range">
-                                    Does your user type have an age range?
-                                </h2>
-                            </legend>
-                            <span className="govuk-hint" id="define-passenger-age-range-hint">
-                                Enter a minimum and/or maximum age for this user type.
-                            </span>
-                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="age-range-required"
-                                            name="age-range"
-                                            type="radio"
-                                            value="yes"
-                                            data-aria-controls="age-range-required-conditional-min"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="age-range-required">
-                                            Yes
-                                        </label>
-                                    </div>
-                                    <div
-                                        className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                        id="age-range-required-conditional-min"
-                                    >
-                                        <div className="govuk-form-group">
-                                            <label className="govuk-label" htmlFor="age-range-min">
-                                                Minimum Age (if applicable)
-                                            </label>
-                                            <input
-                                                className="govuk-input govuk-!-width-one-third"
-                                                id="age-range-min"
-                                                name="age-range-min"
-                                                type="text"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                        id="age-range-required-conditional-max"
-                                    >
-                                        <div className="govuk-form-group">
-                                            <label className="govuk-label" htmlFor="age-range-max">
-                                                Maximum Age (if applicable)
-                                            </label>
-                                            <input
-                                                className="govuk-input govuk-!-width-one-third"
-                                                id="age-range-max"
-                                                name="age-range-max"
-                                                type="text"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="age-range-not-required"
-                                            name="age-range"
-                                            type="radio"
-                                            value="no"
-                                        />
-                                        <label
-                                            className="govuk-label govuk-radios__label"
-                                            htmlFor="age-range-not-required"
-                                        >
-                                            No
-                                        </label>
-                                    </div>
-                                </div>
-                            </FormElementWrapper>
-                        </fieldset>
                         <br />
-                        <fieldset className="govuk-fieldset" aria-describedby="define-passenger-age-range">
-                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h2 className="govuk-fieldset__heading" id="define-passenger-age-range">
-                                    Does your user type have an age range?
-                                </h2>
-                            </legend>
-                            <span className="govuk-hint" id="define-passenger-age-range-hint">
-                                Enter a minimum and/or maximum age for this user type.
-                            </span>
-                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="age-range-required"
-                                            name="age-range"
-                                            type="radio"
-                                            value="yes"
-                                            data-aria-controls="age-range-required-conditional-min"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="age-range-required">
-                                            Yes
-                                        </label>
-                                    </div>
-                                    <div
-                                        className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                        id="age-range-required-conditional-min"
-                                    >
-                                        <div className="govuk-form-group">
-                                            <label className="govuk-label" htmlFor="age-range-min">
-                                                Minimum Age (if applicable)
-                                            </label>
-                                            <input
-                                                className="govuk-input govuk-!-width-one-third"
-                                                id="age-range-min"
-                                                name="age-range-min"
-                                                type="text"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                        id="age-range-required-conditional-max"
-                                    >
-                                        <div className="govuk-form-group">
-                                            <label className="govuk-label" htmlFor="age-range-max">
-                                                Maximum Age (if applicable)
-                                            </label>
-                                            <input
-                                                className="govuk-input govuk-!-width-one-third"
-                                                id="age-range-max"
-                                                name="age-range-max"
-                                                type="text"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="age-range-not-required"
-                                            name="age-range"
-                                            type="radio"
-                                            value="no"
-                                        />
-                                        <label
-                                            className="govuk-label govuk-radios__label"
-                                            htmlFor="age-range-not-required"
-                                        >
-                                            No
-                                        </label>
-                                    </div>
-                                </div>
-                            </FormElementWrapper>
-                        </fieldset>
+                        <br />
+                        {fieldsets.map(fieldset => {
+                            return <RadioConditionalInput errors={errors} errorId={errorId} fieldset={fieldset} />;
+                        })}
                     </div>
                     <input
                         type="submit"
@@ -210,7 +67,84 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         }
     }
 
-    return { props: {} };
+    const fieldset1 = {
+        heading: {
+            id: 'define-passenger-age-range',
+            content: 'Does your user type have an age range?',
+        },
+        hint: {
+            id: 'define-passenger-age-range-hint',
+            content: 'Enter a minimum and/or maximum age for this user type.',
+        },
+        radios: [
+            {
+                id: 'age-range-required',
+                name: 'age-range',
+                value: 'yes',
+                dataAriaControls: 'age-range-required-conditional',
+                label: 'Yes',
+                textInputs: [
+                    {
+                        id: 'age-range-min',
+                        name: 'age-range-min',
+                        label: 'Minimum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'age-range-max',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+            },
+            {
+                id: 'age-range-not-required',
+                name: 'age-range',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+    };
+    const fieldset2 = {
+        heading: {
+            id: 'define-passenger-proof',
+            content: 'Does your user type need a type of proof?',
+        },
+        hint: {
+            id: 'define-passenger-proof-hint',
+            content: 'Select all proof types that apply',
+        },
+        radios: [
+            {
+                id: 'proof-required',
+                name: 'proof',
+                value: 'yes',
+                dataAriaControls: 'proof-required-conditional',
+                label: 'Yes',
+                textInputs: [
+                    {
+                        id: 'proof1',
+                        name: 'proof1',
+                        label: 'Proof 1',
+                    },
+                    {
+                        id: 'proof2',
+                        name: 'proof2',
+                        label: 'Proof 2',
+                    },
+                ],
+            },
+            {
+                id: 'proof-not-required',
+                name: 'proof',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+    };
+    const fieldsets = [];
+    fieldsets.push(fieldset1, fieldset2);
+
+    return { props: { errors: [], fieldsets } };
 };
 
 export default DefinePassengerType;
