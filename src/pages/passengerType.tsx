@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { PASSENGERTYPE_COOKIE, FARETYPE_COOKIE } from '../constants';
+import { PASSENGERTYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
@@ -13,10 +13,32 @@ const description = 'Passenger Type selection page of the Fares Data Build Tool'
 
 const errorId = 'passenger-type-error';
 
+type PassengerAttributes = {
+    passengerType: string;
+    greyedOut: boolean;
+};
+
 type PassengerTypeProps = {
-    fareType: string;
     errors?: ErrorInfo[];
 };
+
+const passengerTypesList: PassengerAttributes[] = [
+    {passengerType: 'Any', greyedOut: false},
+    {passengerType: 'Adult', greyedOut: false},
+    {passengerType: 'Child', greyedOut: false},
+    {passengerType: 'Infant', greyedOut: false},
+    {passengerType: 'Senior', greyedOut: false},
+    {passengerType: 'School Pupil', greyedOut:true},
+    {passengerType: 'Student', greyedOut: false},
+    {passengerType: 'Young Person', greyedOut: false},
+    {passengerType: 'Disabled', greyedOut: true},
+    {passengerType: 'Disabled Companion', greyedOut: true},
+    {passengerType: 'Employee', greyedOut: true},
+    {passengerType: 'Military', greyedOut: true},
+    {passengerType: 'Job Seeker', greyedOut: true},
+    {passengerType: 'Guide Dog', greyedOut: true},
+    {passengerType: 'Animal', greyedOut:true}
+];
 
 const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => {
     return (
@@ -36,202 +58,21 @@ const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => {
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                 <div className="govuk-radios">
-                                    <div className="govuk-radios__item">
-                                        <input
+                                    {passengerTypesList.map((passenger, index): ReactElement => (
+                                        <div className="govuk-radios__item" key={passenger.passengerType}>
+                                            <input
                                             className="govuk-radios__input"
-                                            id="passenger-type-any"
+                                            id={`passenger-type${index}`}
                                             name="passengerType"
                                             type="radio"
-                                            value="any"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-any">
-                                            Any Passenger
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-adult"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="adult"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-adult">
-                                            Adult
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-child"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="child"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-child">
-                                            Child
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-infant"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="infant"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-infant">
-                                            Infant
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-senior"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="senior"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-senior">
-                                            Senior
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-schoolPupil"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="schoolPupil"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-schoolPupil">
-                                            School Pupil
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-student"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="student"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-student">
-                                            Student
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-youngPerson"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="youngPerson"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-youngPerson">
-                                            Young Person
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-disabled"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="disabled"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-disabled">
-                                            Disabled
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-disabledCompanion"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="disabledCompanion"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-disabledCompanion">
-                                            Disabled Companion
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-employee"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="employee"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-employee">
-                                            Employee
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-military"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="military"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-military">
-                                            Military
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-jobSeeker"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="jobSeeker"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-jobSeeker">
-                                            Job Seeker
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-guideDog"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="guideDog"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-guideDog">
-                                            Guide Dog
-                                        </label>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className="govuk-radios__input"
-                                            id="passenger-type-animal"
-                                            name="passengerType"
-                                            type="radio"
-                                            value="animal"
-                                            disabled
-                                            aria-disabled="true"
-                                        />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="passenger-type-animal">
-                                            Animal
-                                        </label>
-                                    </div>
+                                            value={passenger.passengerType}
+                                            disabled={passenger.greyedOut}
+                                            aria-disabled={passenger.greyedOut}
+                                            />
+                                            <label className="govuk-label govuk-radios__label" htmlFor={`passenger-type${index}`}>
+                                                {`${passenger.passengerType}`}
+                                            </label>
+                                        </div>),)}
                                 </div>
                             </FormElementWrapper>
                         </fieldset>
@@ -248,16 +89,8 @@ const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => {
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {props: PassengerTypeProps} => {
+export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const fareTypeCookie = cookies[FARETYPE_COOKIE];
-
-    if (!fareTypeCookie) {
-        throw new Error('Necessary FareType cookie not found');
-    }
-
-    const fareTypeObject = JSON.parse(fareTypeCookie);
-    const {fareType} = fareTypeObject;
 
     if (cookies[PASSENGERTYPE_COOKIE]) {
         const passengerTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGERTYPE_COOKIE);
@@ -266,11 +99,11 @@ export const getServerSideProps = (ctx: NextPageContext): {props: PassengerTypeP
         if (parsedPassengerTypeCookie.errorMessage) {
             const { errorMessage } = parsedPassengerTypeCookie;
             deleteCookieOnServerSide(ctx, PASSENGERTYPE_COOKIE);
-            return { props: { fareType, errors: [{ errorMessage, id: errorId }] } };
+            return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }
 
-    return { props: {fareType} };
+    return { props: {} };
 };
 
 export default PassengerType;
