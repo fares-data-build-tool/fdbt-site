@@ -9,7 +9,7 @@ import {
     MULTIPLE_PRODUCT_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
-    FARETYPE_COOKIE,
+    FARE_TYPE_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
@@ -96,7 +96,7 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += fareType
-        ? `${FARETYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
+        ? `${FARE_TYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
         : '';
 
     cookieString += serviceLineName
@@ -136,8 +136,8 @@ export const getMockRequestAndResponse = (
 
     cookieString += selectedServices
         ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
-            selectedServices,
-        )}%7D`
+              selectedServices,
+          )}%7D`
         : '';
 
     const req = mockRequest({

@@ -1,6 +1,6 @@
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
-export const FARETYPE_COOKIE = 'fdbt-fareType';
+export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
 
 export const SERVICE_COOKIE = 'fdbt-service';
 
@@ -46,7 +46,7 @@ export const USER_TYPE_COOKIE = 'fdbt-user-types';
 
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
-    'fdbt-fareType',
+    'fdbt-fare-type',
     'fdbt-service',
     'fdbt-journey',
     'fdbt-fare-stages',

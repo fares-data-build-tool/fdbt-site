@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
-import { OPERATOR_COOKIE } from '../../../constants';
+import { OPERATOR_COOKIE, FARE_TYPE_COOKIE } from '../../../constants';
 
 export const getDomain = (req: NextApiRequest): string => {
     const host = req?.headers?.host;
@@ -64,8 +64,12 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
 };
 
 export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    if (req.body.fareType) {
-        switch (req.body.fareType) {
+    const cookies = new Cookies(req, res);
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const { fareType } = JSON.parse(fareTypeCookie);
+
+    if (fareType) {
+        switch (fareType) {
             case 'period':
                 redirectTo(res, '/periodType');
                 return;
@@ -82,6 +86,6 @@ export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): v
                 throw new Error('Fare Type we expect was not received.');
         }
     } else {
-        throw new Error('No fare type received');
+        throw new Error('Could not extract fareType from the FARE_TYPE_COOKIE.');
     }
 };

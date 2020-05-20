@@ -18,6 +18,95 @@ type DefinePassengerTypeProps = {
     fieldsets: RadioConditionalInputFieldset[];
 };
 
+export const getFieldsets = (): RadioConditionalInputFieldset[] => {
+    const fieldsets = [];
+
+    const ageRangeFieldset: RadioConditionalInputFieldset = {
+        heading: {
+            id: 'define-passenger-age-range',
+            content: 'Does your user type have an age range?',
+        },
+        radios: [
+            {
+                id: 'age-range-required',
+                name: 'ageRange',
+                value: 'yes',
+                dataAriaControls: 'age-range-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-age-range-hint',
+                    content: 'Enter a minimum and/or maximum age for this user type.',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'age-range-min',
+                        name: 'ageRangeMin',
+                        label: 'Minimum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+            },
+            {
+                id: 'age-range-not-required',
+                name: 'ageRange',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+    };
+
+    const proofRequiredFieldset: RadioConditionalInputFieldset = {
+        heading: {
+            id: 'define-passenger-proof',
+            content: 'Does your user type need a type of proof?',
+        },
+        radios: [
+            {
+                id: 'proof-required',
+                name: 'proof',
+                value: 'yes',
+                dataAriaControls: 'proof-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-proof-hint',
+                    content: 'Select all that apply',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    {
+                        id: 'identity-document',
+                        name: 'membershipCard',
+                        label: 'Membership Card',
+                    },
+                    {
+                        id: 'student-card',
+                        name: 'studentCard',
+                        label: 'Student Card',
+                    },
+                    {
+                        id: 'identity-document',
+                        name: 'identityDocument',
+                        label: 'Identity Document',
+                    },
+                ],
+            },
+            {
+                id: 'proof-not-required',
+                name: 'proof',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+    };
+    fieldsets.push(ageRangeFieldset, proofRequiredFieldset);
+    return fieldsets;
+};
+
 const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProps): ReactElement => {
     return (
         <Layout title={buildTitle(errors, title)} description={description}>
@@ -56,95 +145,25 @@ const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProp
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
+    const fieldsets = getFieldsets();
+    let errors: ErrorInfo[] = [];
+
     if (cookies[USER_TYPE_COOKIE]) {
         const userTypeCookie = unescapeAndDecodeCookieServerSide(cookies, USER_TYPE_COOKIE);
         const parsedUserTypeCookie = JSON.parse(userTypeCookie);
+        errors = parsedUserTypeCookie.errors.map((error: any) => ({
+            errorId: error.errorId,
+            errorMessage: error.errorMessage,
+        }));
 
         if (parsedUserTypeCookie.errorMessage) {
             const { errorMessage } = parsedUserTypeCookie;
             deleteCookieOnServerSide(ctx, USER_TYPE_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
+            return { props: { errors: [{ errorMessage, id: errorId }], fieldsets } };
         }
     }
 
-    const fieldset1 = {
-        heading: {
-            id: 'define-passenger-age-range',
-            content: 'Does your user type have an age range?',
-        },
-        hint: {
-            id: 'define-passenger-age-range-hint',
-            content: 'Enter a minimum and/or maximum age for this user type.',
-        },
-        radios: [
-            {
-                id: 'age-range-required',
-                name: 'age-range',
-                value: 'yes',
-                dataAriaControls: 'age-range-required-conditional',
-                label: 'Yes',
-                textInputs: [
-                    {
-                        id: 'age-range-min',
-                        name: 'age-range-min',
-                        label: 'Minimum Age (if applicable)',
-                    },
-                    {
-                        id: 'age-range-max',
-                        name: 'age-range-max',
-                        label: 'Maximum Age (if applicable)',
-                    },
-                ],
-            },
-            {
-                id: 'age-range-not-required',
-                name: 'age-range',
-                value: 'no',
-                label: 'No',
-            },
-        ],
-    };
-    const fieldset2 = {
-        heading: {
-            id: 'define-passenger-proof',
-            content: 'Does your user type need a type of proof?',
-        },
-        hint: {
-            id: 'define-passenger-proof-hint',
-            content: 'Select all proof types that apply',
-        },
-        radios: [
-            {
-                id: 'proof-required',
-                name: 'proof',
-                value: 'yes',
-                dataAriaControls: 'proof-required-conditional',
-                label: 'Yes',
-                textInputs: [
-                    {
-                        id: 'proof1',
-                        name: 'proof1',
-                        label: 'Proof 1',
-                    },
-                    {
-                        id: 'proof2',
-                        name: 'proof2',
-                        label: 'Proof 2',
-                    },
-                ],
-            },
-            {
-                id: 'proof-not-required',
-                name: 'proof',
-                value: 'no',
-                label: 'No',
-            },
-        ],
-    };
-    const fieldsets = [];
-    fieldsets.push(fieldset1, fieldset2);
-
-    return { props: { errors: [], fieldsets } };
+    return { props: { errors, fieldsets } };
 };
 
 export default DefinePassengerType;

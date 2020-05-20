@@ -9,13 +9,20 @@ interface RadioWithoutConditionals {
     label: string;
 }
 
+interface ConditionalInput {
+    id: string;
+    name: string;
+    label: string;
+}
+
 interface RadioWithConditionalInputs extends RadioWithoutConditionals {
     dataAriaControls: string;
-    textInputs: {
+    hint: {
         id: string;
-        name: string;
-        label: string;
-    }[];
+        content: string;
+    };
+    inputType: string;
+    inputs: ConditionalInput[];
 }
 
 type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
@@ -25,11 +32,7 @@ export interface RadioConditionalInputFieldset {
         id: string;
         content: string;
     };
-    hint: {
-        id: string;
-        content: string;
-    };
-    radios: [RadioWithoutConditionals | RadioWithConditionalInputs];
+    radios: RadioButton[];
 }
 
 export interface RadioConditionalInputProps {
@@ -38,60 +41,107 @@ export interface RadioConditionalInputProps {
     errorId: string;
 }
 
-const renderConditionalInputs = (radio: RadioWithConditionalInputs): ReactElement => {
+const renderConditionalTextInput = (radio: RadioWithConditionalInputs): ReactElement => {
     return (
         <div className="govuk-radios__conditional govuk-radios__conditional--hidden" id={radio.dataAriaControls}>
-            {radio.textInputs.length !== 0
-                ? radio.textInputs.map(input => {
-                      return (
-                          <div className="govuk-form-group">
-                              <label className="govuk-label" htmlFor={input.id}>
-                                  {input.label}
-                              </label>
-                              <input
-                                  className="govuk-input govuk-!-width-one-third"
-                                  id={input.id}
-                                  name={input.name}
-                                  type="text"
-                              />
-                          </div>
-                      );
-                  })
-                : ''}
+            <span className="govuk-hint" id={radio.hint.id}>
+                {radio.hint.content}
+            </span>
+            {radio.inputs.map(input => {
+                return (
+                    <div className="govuk-form-group">
+                        <label className="govuk-label" htmlFor={input.id}>
+                            {input.label}
+                        </label>
+                        <input
+                            className="govuk-input govuk-!-width-one-third"
+                            id={input.id}
+                            name={input.name}
+                            type="text"
+                        />
+                    </div>
+                );
+            })}
         </div>
     );
 };
 
+const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElement => {
+    return (
+        <div className="govuk-radios__conditional govuk-radios__conditional--hidden" id={radio.dataAriaControls}>
+            <div className="govuk-form-group">
+                <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
+                    <span className="govuk-hint" id={radio.hint.id}>
+                        {radio.hint.content}
+                    </span>
+                    <div className="govuk-checkboxes">
+                        {radio.inputs.map(input => {
+                            return (
+                                <div className="govuk-checkboxes__item">
+                                    <label className="govuk-label govuk-checkboxes__label" htmlFor={input.id}>
+                                        {input.label}
+                                    </label>
+                                    <input
+                                        className="govuk-checkboxes__input"
+                                        id={input.id}
+                                        name={input.name}
+                                        value={input.label}
+                                        type="checkbox"
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    );
+};
+
+const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLabel: ReactElement): ReactElement => {
+    return (
+        <>
+            <div className="govuk-radios__item">
+                <input
+                    className="govuk-radios__input"
+                    id={radio.id}
+                    name={radio.name}
+                    type="radio"
+                    value={radio.value}
+                    data-aria-controls={radio.dataAriaControls}
+                />
+                {radioLabel}
+            </div>
+            {radio.inputType === 'checkbox' ? renderConditionalCheckbox(radio) : renderConditionalTextInput(radio)}
+        </>
+    );
+};
+
 const renderRadioButton = (radio: RadioButton): ReactElement => {
+    const radioButtonLabel: ReactElement = (
+        <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
+            {radio.label}
+        </label>
+    );
     if (
         (radio as RadioWithConditionalInputs).dataAriaControls !== undefined &&
-        (radio as RadioWithConditionalInputs).textInputs !== undefined
+        (radio as RadioWithConditionalInputs).inputs !== undefined &&
+        (radio as RadioWithConditionalInputs).hint !== undefined
     ) {
-        return (
-            <>
-                <div className="govuk-radios__item">
-                    <input
-                        className="govuk-radios__input"
-                        id={radio.id}
-                        name={radio.name}
-                        type="radio"
-                        value={radio.value}
-                        data-aria-controls={(radio as RadioWithConditionalInputs).dataAriaControls}
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
-                        {radio.label}
-                    </label>
-                </div>
-                {renderConditionalInputs(radio as RadioWithConditionalInputs)}
-            </>
-        );
+        const radioButton = radio as RadioWithConditionalInputs;
+        return renderConditionalRadioButton(radioButton, radioButtonLabel);
     }
+    const radioButton = radio as RadioWithoutConditionals;
     return (
         <div className="govuk-radios__item">
-            <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
-            <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
-                {radio.label}
-            </label>
+            <input
+                className="govuk-radios__input"
+                id={radioButton.id}
+                name={radioButton.name}
+                type="radio"
+                value={radioButton.value}
+            />
+            {radioButtonLabel}
         </div>
     );
 };
@@ -105,9 +155,6 @@ const RadioConditionalInput = ({ errors = [], errorId, fieldset }: RadioConditio
                         {fieldset.heading.content}
                     </h2>
                 </legend>
-                <span className="govuk-hint" id={fieldset.hint.id}>
-                    {fieldset.hint.content}
-                </span>
                 <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
                         {fieldset.radios.map(radio => renderRadioButton(radio))}

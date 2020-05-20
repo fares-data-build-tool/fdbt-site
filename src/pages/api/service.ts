@@ -8,7 +8,7 @@ import {
     redirectTo,
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
-import { FARETYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
+import { FARE_TYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -33,7 +33,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         setCookieOnResponseObject(getDomain(req), SERVICE_COOKIE, cookieValue, req, res);
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
         if (fareTypeObject && fareTypeObject.fareType === 'return') {

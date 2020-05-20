@@ -12,7 +12,7 @@ import { BasicService } from '../../interfaces/index';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARETYPE_COOKIE } from '../../constants';
+import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
 import getFareZones from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
@@ -148,7 +148,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const uuid = getUuidFromCookie(req, res);
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARETYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
         const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones, fareTypeObject.fareType);
