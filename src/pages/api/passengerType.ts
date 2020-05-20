@@ -28,7 +28,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const { fareType } = JSON.parse(fareTypeCookie);
 
         if (req.body.passengerType) {
-            const { passengerType } = req.body
+            const { passengerType } = req.body;
 
             const cookieValue = JSON.stringify({
                 errorMessage: '',
@@ -49,7 +49,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             uuid: getUuidFromCookie(req, res),
         });
         setCookieOnResponseObject(getDomain(req), PASSENGERTYPE_COOKIE, passengerTypeCookieValue, req, res);
-        redirectTo(res, '/fareType');
+        redirectTo(res, '/passengerType');
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';
         redirectToError(res, message, error);

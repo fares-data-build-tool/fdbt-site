@@ -26,7 +26,7 @@ const Service = ({ operator, passengerType, services }: ServiceProps): ReactElem
                                 Select a service
                             </h1>
                         </legend>
-                        <span className="govuk-hint" id="service-operator-hint">
+                        <span className="govuk-hint" id="service-operator-passengertype-hint">
                             {operator} - {passengerType}
                         </span>
                         <select className="govuk-select" id="service" name="service" defaultValue="">

@@ -30,7 +30,7 @@ const SingleDirection = ({ operator, passengerType, lineName, service }: Directi
                                     Select a journey direction
                                 </h1>
                             </legend>
-                            <span className="govuk-hint" id="direction-operator-linename-hint">
+                            <span className="govuk-hint" id="direction-operator-linename-passengertype-hint">
                                 {operator} - {lineName} - {passengerType}
                             </span>
                             <span className="govuk-hint" id="direction-journey-description-hint">
@@ -71,7 +71,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
 
     const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
-    const passengerTypeInfo = JSON.parse(passengerTypeCookie); 
+    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
 
     const lineName = serviceInfo.service.split('#')[0];
 
@@ -95,7 +95,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
             ) === index,
     );
 
-    return { props: { operator: operatorInfo.operator, passengerType: passengerTypeInfo.passengerType, lineName, service } };
+    return {
+        props: { operator: operatorInfo.operator, passengerType: passengerTypeInfo.passengerType, lineName, service },
+    };
 };
 
 export default SingleDirection;
