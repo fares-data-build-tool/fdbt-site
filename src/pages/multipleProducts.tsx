@@ -2,7 +2,12 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, NUMBER_OF_PRODUCTS_COOKIE, MULTIPLE_PRODUCT_COOKIE, PASSENGERTYPE_COOKIE } from '../constants';
+import {
+    OPERATOR_COOKIE,
+    NUMBER_OF_PRODUCTS_COOKIE,
+    MULTIPLE_PRODUCT_COOKIE,
+    PASSENGER_TYPE_COOKIE,
+} from '../constants';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
@@ -61,13 +66,13 @@ const MultipleProducts = ({
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
 
-    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !cookies[PASSENGERTYPE_COOKIE]) {
+    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !cookies[PASSENGER_TYPE_COOKIE]) {
         throw new Error('Necessary cookies not found to show multiple products page');
     }
 
     const operatorCookie = unescapeAndDecodeCookieServerSide(cookies, OPERATOR_COOKIE);
     const numberOfProductsCookie = unescapeAndDecodeCookieServerSide(cookies, NUMBER_OF_PRODUCTS_COOKIE);
-    const passengerTypeInfo = JSON.parse(cookies[PASSENGERTYPE_COOKIE]);
+    const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const nameOfOperator: string = JSON.parse(operatorCookie).operator;

@@ -2,7 +2,7 @@ export const OPERATOR_COOKIE = 'fdbt-operator';
 
 export const FARETYPE_COOKIE = 'fdbt-fareType';
 
-export const PASSENGERTYPE_COOKIE = 'fdbt-passengerType';
+export const PASSENGER_TYPE_COOKIE = 'fdbt-passengerType';
 
 export const SERVICE_COOKIE = 'fdbt-service';
 

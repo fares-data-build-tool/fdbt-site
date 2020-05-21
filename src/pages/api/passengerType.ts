@@ -9,7 +9,7 @@ import {
     redirectOnFareType,
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
-import { PASSENGERTYPE_COOKIE, FARETYPE_COOKIE } from '../../constants/index';
+import { PASSENGER_TYPE_COOKIE, FARETYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -35,7 +35,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 uuid: getUuidFromCookie(req, res),
                 passengerType,
             });
-            setCookieOnResponseObject(getDomain(req), PASSENGERTYPE_COOKIE, cookieValue, req, res);
+
+            setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, cookieValue, req, res);
 
             if (passengerType === 'Any') {
                 redirectOnFareType(fareType, res);
@@ -44,11 +45,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             redirectTo(res, '/definePassengerType');
             return;
         }
+
         const passengerTypeCookieValue = JSON.stringify({
             errorMessage: 'Choose a passenger type from the options',
             uuid: getUuidFromCookie(req, res),
         });
-        setCookieOnResponseObject(getDomain(req), PASSENGERTYPE_COOKIE, passengerTypeCookieValue, req, res);
+        setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/passengerType');
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';

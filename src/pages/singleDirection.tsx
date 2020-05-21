@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE, PASSENGERTYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARETYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
@@ -63,7 +63,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const fareTypeCookie = cookies[FARETYPE_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGERTYPE_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
     if (!operatorCookie || !serviceCookie || !fareTypeCookie || !passengerTypeCookie) {
         throw new Error('Necessary cookies not found to show direction page');
@@ -72,6 +72,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     const operatorInfo = JSON.parse(operatorCookie);
     const serviceInfo = JSON.parse(serviceCookie);
     const passengerTypeInfo = JSON.parse(passengerTypeCookie);
+    const { passengerType } = passengerTypeInfo;
 
     const lineName = serviceInfo.service.split('#')[0];
 
@@ -96,7 +97,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     );
 
     return {
-        props: { operator: operatorInfo.operator, passengerType: passengerTypeInfo.passengerType, lineName, service },
+        props: { operator: operatorInfo.operator, passengerType, lineName, service },
     };
 };
 

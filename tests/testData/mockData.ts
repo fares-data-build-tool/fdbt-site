@@ -12,7 +12,7 @@ import {
     FARETYPE_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
-    PASSENGERTYPE_COOKIE,
+    PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_COOKIE,
@@ -103,7 +103,7 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += passengerType
-        ? `${PASSENGERTYPE_COOKIE}=%7B%22passengerType%22%3A%22${passengerType}%22%2C%22uuid%22%3A%22${passengerTypeUuid}%22%7D;`
+        ? `${PASSENGER_TYPE_COOKIE}=%7B%22passengerType%22%3A%22${passengerType}%22%2C%22uuid%22%3A%22${passengerTypeUuid}%22%7D;`
         : '';
 
     cookieString += serviceLineName
@@ -143,8 +143,8 @@ export const getMockRequestAndResponse = (
 
     cookieString += selectedServices
         ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
-            selectedServices,
-        )}%7D`
+              selectedServices,
+          )}%7D`
         : '';
 
     const req = mockRequest({

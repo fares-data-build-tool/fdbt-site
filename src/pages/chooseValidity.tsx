@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
 import Layout from '../layout/Layout';
-import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE, PASSENGERTYPE_COOKIE } from '../constants';
+import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';
@@ -15,7 +15,13 @@ type ValidityProps = {
     error: string;
 };
 
-const ChooseValidity = ({ productName, productPrice, passengerType, daysValid, error }: ValidityProps): ReactElement => {
+const ChooseValidity = ({
+    productName,
+    productPrice,
+    passengerType,
+    daysValid,
+    error,
+}: ValidityProps): ReactElement => {
     let isError = false;
 
     if (error !== '') {
@@ -73,19 +79,19 @@ const ChooseValidity = ({ productName, productPrice, passengerType, daysValid, e
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const productCookie = cookies[PRODUCT_DETAILS_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGERTYPE_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const validityCookie = cookies[DAYS_VALID_COOKIE];
 
     if (!productCookie) {
         throw new Error('Failed to retrieve productCookie info for choose validity page.');
     }
-    
+
     if (!passengerTypeCookie) {
         throw new Error('Failed to retrieve passengerTypeCookie info for choose validity page.');
     }
 
     const product = JSON.parse(productCookie);
-    const passengerType = JSON.parse(passengerTypeCookie);  
+    const passengerType = JSON.parse(passengerTypeCookie);
 
     let validity;
 

@@ -2,7 +2,13 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, PRODUCT_DETAILS_COOKIE, CSV_ZONE_UPLOAD_COOKIE, SERVICE_LIST_COOKIE, PASSENGERTYPE_COOKIE } from '../constants';
+import {
+    OPERATOR_COOKIE,
+    PRODUCT_DETAILS_COOKIE,
+    CSV_ZONE_UPLOAD_COOKIE,
+    SERVICE_LIST_COOKIE,
+    PASSENGER_TYPE_COOKIE,
+} from '../constants';
 import { ProductInfo } from '../interfaces';
 
 const title = 'Product Details - Fares Data Build Tool';
@@ -105,7 +111,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
     const cookies = parseCookies(ctx);
     const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGERTYPE_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
     const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
 
@@ -114,7 +120,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
     if (!operatorCookie) {
         throw new Error('Failed to retrieve operator cookie info for product details page.');
     }
-    
+
     if (!passengerTypeCookie) {
         throw new Error('Failed to retrieve passenger type cookie info for product details page.');
     }
@@ -123,8 +129,10 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
         throw new Error('Failed to retrieve zone or service list cookie info for product details page.');
     }
 
-    const operatorInfo = JSON.parse(operatorCookie);
+    const operatorTypeInfo = JSON.parse(operatorCookie);
     const passengerTypeInfo = JSON.parse(passengerTypeCookie);
+    const { passengerType } = passengerTypeInfo;
+    const { operator } = operatorTypeInfo;
 
     if (zoneCookie) {
         const { fareZoneName } = JSON.parse(zoneCookie);
@@ -134,15 +142,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
     } else if (serviceListCookie) {
         const { selectedServices } = JSON.parse(serviceListCookie);
         props = {
-            hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].lineName,
+            hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0],
         };
     }
 
     return {
         props: {
             product: !productDetailsCookie ? {} : JSON.parse(productDetailsCookie),
-            operator: operatorInfo.operator,
-            passengerType: passengerTypeInfo.passengerType,
+            operator,
+            passengerType,
             ...props,
         },
     };

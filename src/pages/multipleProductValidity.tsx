@@ -6,7 +6,7 @@ import Layout from '../layout/Layout';
 import {
     MULTIPLE_PRODUCT_COOKIE,
     OPERATOR_COOKIE,
-    PASSENGERTYPE_COOKIE,
+    PASSENGER_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
 } from '../constants';
 import { buildTitle } from '../utils';
@@ -165,7 +165,7 @@ const MultipleProductValidity = ({
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGERTYPE_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
     const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
 

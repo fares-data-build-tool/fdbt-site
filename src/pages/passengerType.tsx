@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { PASSENGERTYPE_COOKIE } from '../constants';
+import { PASSENGER_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
@@ -23,21 +23,21 @@ type PassengerTypeProps = {
 };
 
 const passengerTypesList: PassengerAttributes[] = [
-    {passengerType: 'Any', greyedOut: false},
-    {passengerType: 'Adult', greyedOut: false},
-    {passengerType: 'Child', greyedOut: false},
-    {passengerType: 'Infant', greyedOut: false},
-    {passengerType: 'Senior', greyedOut: false},
-    {passengerType: 'School Pupil', greyedOut:true},
-    {passengerType: 'Student', greyedOut: false},
-    {passengerType: 'Young Person', greyedOut: false},
-    {passengerType: 'Disabled', greyedOut: true},
-    {passengerType: 'Disabled Companion', greyedOut: true},
-    {passengerType: 'Employee', greyedOut: true},
-    {passengerType: 'Military', greyedOut: true},
-    {passengerType: 'Job Seeker', greyedOut: true},
-    {passengerType: 'Guide Dog', greyedOut: true},
-    {passengerType: 'Animal', greyedOut:true}
+    { passengerType: 'Any', greyedOut: false },
+    { passengerType: 'Adult', greyedOut: false },
+    { passengerType: 'Child', greyedOut: false },
+    { passengerType: 'Infant', greyedOut: false },
+    { passengerType: 'Senior', greyedOut: false },
+    { passengerType: 'School Pupil', greyedOut: true },
+    { passengerType: 'Student', greyedOut: false },
+    { passengerType: 'Young Person', greyedOut: false },
+    { passengerType: 'Disabled', greyedOut: true },
+    { passengerType: 'Disabled Companion', greyedOut: true },
+    { passengerType: 'Employee', greyedOut: true },
+    { passengerType: 'Military', greyedOut: true },
+    { passengerType: 'Job Seeker', greyedOut: true },
+    { passengerType: 'Guide Dog', greyedOut: true },
+    { passengerType: 'Animal', greyedOut: true },
 ];
 
 const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => {
@@ -58,21 +58,27 @@ const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => {
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                 <div className="govuk-radios">
-                                    {passengerTypesList.map((passenger, index): ReactElement => (
-                                        <div className="govuk-radios__item" key={passenger.passengerType}>
-                                            <input
-                                            className="govuk-radios__input"
-                                            id={`passenger-type${index}`}
-                                            name="passengerType"
-                                            type="radio"
-                                            value={passenger.passengerType}
-                                            disabled={passenger.greyedOut}
-                                            aria-disabled={passenger.greyedOut}
-                                            />
-                                            <label className="govuk-label govuk-radios__label" htmlFor={`passenger-type${index}`}>
-                                                {`${passenger.passengerType}`}
-                                            </label>
-                                        </div>),)}
+                                    {passengerTypesList.map(
+                                        (passenger, index): ReactElement => (
+                                            <div className="govuk-radios__item" key={passenger.passengerType}>
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id={`passenger-type${index}`}
+                                                    name="passengerType"
+                                                    type="radio"
+                                                    value={passenger.passengerType}
+                                                    disabled={passenger.greyedOut}
+                                                    aria-disabled={passenger.greyedOut}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor={`passenger-type${index}`}
+                                                >
+                                                    {`${passenger.passengerType}`}
+                                                </label>
+                                            </div>
+                                        ),
+                                    )}
                                 </div>
                             </FormElementWrapper>
                         </fieldset>
@@ -92,13 +98,13 @@ const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => {
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[PASSENGERTYPE_COOKIE]) {
-        const passengerTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGERTYPE_COOKIE);
+    if (cookies[PASSENGER_TYPE_COOKIE]) {
+        const passengerTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGER_TYPE_COOKIE);
         const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
 
         if (parsedPassengerTypeCookie.errorMessage) {
             const { errorMessage } = parsedPassengerTypeCookie;
-            deleteCookieOnServerSide(ctx, PASSENGERTYPE_COOKIE);
+            deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
             return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }

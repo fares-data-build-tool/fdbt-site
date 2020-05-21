@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGERTYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 
@@ -64,7 +64,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
 
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGERTYPE_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
     if (!operatorCookie || !passengerTypeCookie) {
         throw new Error('Necessary cookies not found to show matching page');

@@ -64,6 +64,7 @@ describe('apiUtils', () => {
 
             expect(writeHeadMock).toBeCalledWith(302, { Location: '/periodType' });
         });
+
         it('should return 302 redirect to /service when single is selected', () => {
             const { res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
             const fareType = 'single';
@@ -71,6 +72,7 @@ describe('apiUtils', () => {
 
             expect(writeHeadMock).toBeCalledWith(302, { Location: '/service' });
         });
+
         it('should return 302 redirect to /service when return is selected', () => {
             const { res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
             const fareType = 'return';
@@ -78,6 +80,7 @@ describe('apiUtils', () => {
 
             expect(writeHeadMock).toBeCalledWith(302, { Location: '/service' });
         });
+
         it('should return 302 redirect to /serviceList when flatFare is selected', () => {
             const { res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
             const fareType = 'flatFare';
@@ -85,6 +88,7 @@ describe('apiUtils', () => {
 
             expect(writeHeadMock).toBeCalledWith(302, { Location: '/serviceList' });
         });
+
         it('should throw error if unexpected fare type is selected', () => {
             const { res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
             const fareType = 'roundAbout';
@@ -93,6 +97,7 @@ describe('apiUtils', () => {
                 redirectOnFareType(fareType, res);
             }).toThrowError(new Error('Fare Type we expect was not received.'));
         });
+
         it('should throw error if no fare type is selected', () => {
             const { res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
             const fareType = '';
