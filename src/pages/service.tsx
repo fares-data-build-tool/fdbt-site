@@ -72,6 +72,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
 
     const operatorInfo = JSON.parse(operatorCookie);
     const passengerTypeInfo = JSON.parse(passengerTypeCookie);
+    const { passengerType } = passengerTypeInfo;
 
     const services = await getServicesByNocCode(operatorInfo.nocCode);
 
@@ -79,7 +80,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
         throw new Error(`No services found for NOC Code: ${operatorInfo.nocCode}`);
     }
 
-    return { props: { operator: operatorInfo.operator, passengerType: passengerTypeInfo.passengerType, services } };
+    return { props: { operator: operatorInfo.operator, passengerType, services } };
 };
 
 export default Service;
