@@ -1,18 +1,24 @@
 import express, { Request, Response, Express } from 'express';
-import next from 'next';
+import nextjs from 'next';
 import helmet from 'helmet';
 import nocache from 'nocache';
 import { v4 as uuidv4 } from 'uuid';
+import { getUuidFromCookie } from '../src/pages/api/apiUtils';
 
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
+const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 5555;
 
 const setHeaders = (server: Express): void => {
-    server.use((_req, res, nextServer) => {
+    server.use((req, res, next) => {
+        if (!req.url.startsWith('/_next/') && !req.url.startsWith('/assets/')) {
+            const uuid = getUuidFromCookie(req, res);
+            console.info(`Call: ${req.url}`, { uuid });
+        }
+
         res.locals.nonce = Buffer.from(uuidv4()).toString('base64');
-        nextServer();
+        next();
     });
 
     const nonce = (_req: Request, res: Response): string => `'nonce-${res.locals.nonce}'`;
