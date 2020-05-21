@@ -39,7 +39,7 @@ const setHeaders = (server: Express): void => {
                     objectSrc: ["'none'"],
                     scriptSrc,
                     baseUri: ["'none'"],
-                    styleSrc: ["'unsafe-inline'"],
+                    styleSrc: ["'self'", "'unsafe-inline'"],
                     imgSrc: ["'self'", 'data:', 'https:'],
                     defaultSrc: ["'self'", 'https:'],
                 },
