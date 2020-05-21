@@ -1,16 +1,19 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+// import { NextPageContext } from 'next';
+// import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { USER_TYPE_COOKIE } from '../constants';
+// import { PASSENGER_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
+import {
+    // deleteCookieOnServerSide,
+    buildTitle,
+    // unescapeAndDecodeCookieServerSide
+} from '../utils/index';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
-
 const errorId = 'define-passenger-type-error';
 
 type DefinePassengerTypeProps = {
@@ -24,7 +27,7 @@ export const getFieldsets = (): RadioConditionalInputFieldset[] => {
     const ageRangeFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-age-range',
-            content: 'Does your user type have an age range?',
+            content: 'Does the passenger type have an age range?',
         },
         radios: [
             {
@@ -35,7 +38,7 @@ export const getFieldsets = (): RadioConditionalInputFieldset[] => {
                 label: 'Yes',
                 hint: {
                     id: 'define-passenger-age-range-hint',
-                    content: 'Enter a minimum and/or maximum age for this user type.',
+                    content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
                 inputType: 'text',
                 inputs: [
@@ -63,7 +66,7 @@ export const getFieldsets = (): RadioConditionalInputFieldset[] => {
     const proofRequiredFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-passenger-proof',
-            content: 'Does your user type need a type of proof?',
+            content: 'Does the passenger type require a proof document?',
         },
         radios: [
             {
@@ -74,23 +77,23 @@ export const getFieldsets = (): RadioConditionalInputFieldset[] => {
                 label: 'Yes',
                 hint: {
                     id: 'define-passenger-proof-hint',
-                    content: 'Select all that apply',
+                    content: 'Select the applicable proof document(s).',
                 },
                 inputType: 'checkbox',
                 inputs: [
                     {
-                        id: 'identity-document',
-                        name: 'membershipCard',
+                        id: 'membership-card',
+                        name: 'proofDocument',
                         label: 'Membership Card',
                     },
                     {
                         id: 'student-card',
-                        name: 'studentCard',
+                        name: 'proofDocument',
                         label: 'Student Card',
                     },
                     {
                         id: 'identity-document',
-                        name: 'identityDocument',
+                        name: 'proofDocument',
                         label: 'Identity Document',
                     },
                 ],
@@ -116,13 +119,11 @@ const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProp
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
-                                Which user group does this fare apply to?
+                                Provide passenger type details
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="define-passenger-type-hint">
-                            Tell us whether this fare has an applicable age range or proof requirement. Example: A
-                            student ticket may be available for someone between the ages of 13 and 18 and require a
-                            student ID card.
+                            Select if the passenger type requires an age range or proof document
                         </span>
                         <br />
                         <br />
@@ -142,26 +143,26 @@ const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProp
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (): {} => {
+    // const cookies = parseCookies(ctx);
 
     const fieldsets = getFieldsets();
-    let errors: ErrorInfo[] = [];
+    const errors: ErrorInfo[] = [];
 
-    if (cookies[USER_TYPE_COOKIE]) {
-        const userTypeCookie = unescapeAndDecodeCookieServerSide(cookies, USER_TYPE_COOKIE);
-        const parsedUserTypeCookie = JSON.parse(userTypeCookie);
-        errors = parsedUserTypeCookie.errors.map((error: any) => ({
-            errorId: error.errorId,
-            errorMessage: error.errorMessage,
-        }));
+    // if (cookies[PASSENGER_TYPE_COOKIE]) {
+    //     const userTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGER_TYPE_COOKIE);
+    //     const parsedUserTypeCookie = JSON.parse(userTypeCookie);
+    //     errors = parsedUserTypeCookie.errors.map((error: any) => ({
+    //         errorId: error.errorId,
+    //         errorMessage: error.errorMessage,
+    //     }));
 
-        if (parsedUserTypeCookie.errorMessage) {
-            const { errorMessage } = parsedUserTypeCookie;
-            deleteCookieOnServerSide(ctx, USER_TYPE_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }], fieldsets } };
-        }
-    }
+    //     if (parsedUserTypeCookie.errorMessage) {
+    //         const { errorMessage } = parsedUserTypeCookie;
+    //         deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
+    //         return { props: { errors: [{ errorMessage, id: errorId }], fieldsets } };
+    //     }
+    // }
 
     return { props: { errors, fieldsets } };
 };

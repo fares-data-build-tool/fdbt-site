@@ -78,9 +78,6 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                         {radio.inputs.map(input => {
                             return (
                                 <div className="govuk-checkboxes__item">
-                                    <label className="govuk-label govuk-checkboxes__label" htmlFor={input.id}>
-                                        {input.label}
-                                    </label>
                                     <input
                                         className="govuk-checkboxes__input"
                                         id={input.id}
@@ -88,6 +85,9 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                                         value={input.label}
                                         type="checkbox"
                                     />
+                                    <label className="govuk-label govuk-checkboxes__label" htmlFor={input.id}>
+                                        {input.label}
+                                    </label>
                                 </div>
                             );
                         })}
@@ -150,7 +150,7 @@ const RadioConditionalInput = ({ errors = [], errorId, fieldset }: RadioConditio
     return (
         <div>
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2 className="govuk-fieldset__heading" id={fieldset.heading.id}>
                         {fieldset.heading.content}
                     </h2>

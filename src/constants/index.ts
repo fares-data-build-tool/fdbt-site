@@ -42,7 +42,7 @@ export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
 
 export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 
-export const USER_TYPE_COOKIE = 'fdbt-user-types';
+export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
 
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
@@ -67,6 +67,7 @@ export const ALL_COOKIES: string[] = [
     'fdbt-multiple-service',
     'fdbt-number-of-products',
     'fdbt-multiple-product',
+    'fdbt-passenger-type',
 ];
 
 export const ALLOWED_CSV_FILE_TYPES = [
