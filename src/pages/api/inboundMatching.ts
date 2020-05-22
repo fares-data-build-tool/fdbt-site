@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain, unescapeAndDecodeCookie } from './apiUtils';
+import {
+    redirectTo,
+    redirectToError,
+    getUuidFromCookie,
+    setCookieOnResponseObject,
+    getDomain,
+    unescapeAndDecodeCookie,
+} from './apiUtils';
 import { BasicService, PassengerDetails } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
@@ -76,13 +83,13 @@ const getMatchingJson = (
     userFareStages: UserFareStages,
     inboundFareZones: MatchingFareZones,
     outboundFareZones: MatchingFareZones,
-    passengerTypeObject: PassengerDetails
+    passengerTypeObject: PassengerDetails,
 ): MatchingData => ({
     ...service,
     type: 'return',
     inboundFareZones: getFareZones(userFareStages, inboundFareZones),
     outboundFareZones: getFareZones(userFareStages, outboundFareZones),
-    ...passengerTypeObject
+    ...passengerTypeObject,
 });
 
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
@@ -136,7 +143,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
-        const matchingJson = getMatchingJson(service, userFareStages, inboundFareZones, outboundFareZones, passengerTypeObject);
+        const matchingJson = getMatchingJson(
+            service,
+            userFareStages,
+            inboundFareZones,
+            outboundFareZones,
+            passengerTypeObject,
+        );
 
         await putMatchingDataInS3(matchingJson, uuid);
 

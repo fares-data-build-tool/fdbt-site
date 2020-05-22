@@ -103,7 +103,7 @@ const getMatchingJson = (
             type: 'return',
             outboundFareZones: getFareZones(userFareStages, matchingFareZones),
             inboundFareZones: [],
-            ...passengerTypeObject
+            ...passengerTypeObject,
         };
     }
 
@@ -111,7 +111,7 @@ const getMatchingJson = (
         ...service,
         type: 'pointToPoint',
         fareZones: getFareZones(userFareStages, matchingFareZones),
-        ...passengerTypeObject
+        ...passengerTypeObject,
     };
 };
 
@@ -156,7 +156,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
-        const matchingJson = getMatchingJson(service, userFareStages, matchingFareZones, fareTypeObject.fareType, passengerTypeObject);
+        const matchingJson = getMatchingJson(
+            service,
+            userFareStages,
+            matchingFareZones,
+            fareTypeObject.fareType,
+            passengerTypeObject,
+        );
 
         setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
         await putMatchingDataInS3(matchingJson, uuid);
