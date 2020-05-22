@@ -9,7 +9,7 @@ import {
     OPERATOR_COOKIE,
     SERVICE_LIST_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
-    PASSENGER_TYPE_COOKIE
+    PASSENGER_TYPE_COOKIE,
 } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 import { putStringInS3 } from '../../data/s3';
@@ -20,6 +20,10 @@ interface DecisionData {
     type: string;
     products: { productName: string; productPrice: string }[];
     selectedServices: ServicesInfo[];
+    passengerType: string;
+    ageRangeMin?: string;
+    AgeRangeMax?: string;
+    proof?: string[];
 }
 
 export const checkIfInputInvalid = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
@@ -98,7 +102,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 type: fareType,
                 products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
                 selectedServices: formattedServiceInfo,
-                ...passengerTypeObject
+                ...passengerTypeObject,
             };
 
             await putStringInS3(

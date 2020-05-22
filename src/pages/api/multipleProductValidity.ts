@@ -7,14 +7,14 @@ import {
     SERVICE_LIST_COOKIE,
     PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
-    PASSENGER_TYPE_COOKIE
+    PASSENGER_TYPE_COOKIE,
 } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { redirectToError, setCookieOnResponseObject, getDomain, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
-import { ServicesInfo, PassengerDetails } from '../../interfaces';
+import { ServicesInfo } from '../../interfaces';
 
 interface DecisionData {
     operatorName: string;
@@ -24,6 +24,10 @@ interface DecisionData {
     selectedServices?: ServicesInfo[];
     zoneName?: string;
     stops?: Stop[];
+    passengerType: string;
+    ageRangeMin?: string;
+    AgeRangeMax?: string;
+    proof?: string[];
 }
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
@@ -86,7 +90,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         let props = {};
         const { operator, uuid, nocCode } = JSON.parse(operatorCookie);
         const { periodTypeName } = JSON.parse(periodTypeCookie);
-        const passengerTypeObject: PassengerDetails = JSON.parse(passengerTypeCookie);
+        const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
         if (fareZoneCookie) {
             const { fareZoneName } = JSON.parse(fareZoneCookie);
