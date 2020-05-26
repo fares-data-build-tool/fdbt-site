@@ -66,12 +66,15 @@ jobs:
     steps:
       - aws-cli/setup:
           profile-name: default
-      - run:
-          command: |
-            git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
-            cd fdbt-ui-automation
+      - when:
+          condition: true
+          steps:
+            - run:
+                command: |
+                  git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+                  cd fdbt-ui-automation
 
-            ./ci_scripts/cleanup_waf_ipset.sh
+                  ./ci_scripts/cleanup_waf_ipset.sh
 
   build-site:
     docker:
@@ -233,7 +236,6 @@ workflows:
             - run-ui-tests-chrome
             - run-ui-tests-firefox
             - run-ui-tests-ie
-          when: true
           context: tfn-fdbt-test
           filters:
             branches:
