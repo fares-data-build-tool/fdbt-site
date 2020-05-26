@@ -50,7 +50,7 @@ const Register = ({ inputChecks, errors }: RegisterProps): ReactElement => {
                                     <p className="govuk-hint hint-text">Enter your details to create an account</p>
                                     <div className="govuk-form-group">
                                         <label className="govuk-label" htmlFor="email">
-                                            Email address
+                                            Create an Email address
                                         </label>
                                         <FormElementWrapper
                                             errors={errors}
@@ -72,7 +72,7 @@ const Register = ({ inputChecks, errors }: RegisterProps): ReactElement => {
 
                                     <div className="govuk-form-group">
                                         <label className="govuk-label" htmlFor="password">
-                                            Password
+                                            Create a Password
                                         </label>
                                         <span id="password-hint" className="govuk-hint">
                                             Your password should be at least 8 characters long.
