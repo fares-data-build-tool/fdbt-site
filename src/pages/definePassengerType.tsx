@@ -1,122 +1,132 @@
 import React, { ReactElement } from 'react';
-// import { NextPageContext } from 'next';
-// import { parseCookies } from 'nookies';
+import { NextPageContext } from 'next';
+import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-// import { PASSENGER_TYPE_COOKIE } from '../constants';
-import { ErrorInfo } from '../types';
+import { PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import {
-    // deleteCookieOnServerSide,
-    buildTitle,
-    // unescapeAndDecodeCookieServerSide
-} from '../utils/index';
+import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
+import { ExtractedValidationError } from './api/definePassengerType';
+import { ErrorInfo } from '../types';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
-const errorId = 'define-passenger-type-error';
 
-type DefinePassengerTypeProps = {
-    errors: ErrorInfo[];
+export interface ErrorCollection {
+    combinedErrors: ErrorInfo[];
+    ageRangeRadioError: ErrorInfo[];
+    proofSelectRadioError: ErrorInfo[];
+    ageRangeInputErrors: ErrorInfo[];
+    proofSelectInputError: ErrorInfo[];
+}
+
+export interface DefinePassengerTypeProps {
+    combinedErrors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
-};
+}
 
-export const getFieldsets = (): RadioConditionalInputFieldset[] => {
-    const fieldsets = [];
-
-    const ageRangeFieldset: RadioConditionalInputFieldset = {
+export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditionalInputFieldset[] => {
+    const fieldsetParams = [
+        {
+            type: 'ageRange',
+            conditionalInputs: ['min', 'max'],
+            inputErrors: collectedErrors.ageRangeInputErrors,
+            radioError: collectedErrors.ageRangeRadioError,
+        },
+        {
+            type: 'proof',
+            conditionalInputs: ['membership-card', 'student-card', 'identity-document'],
+            inputErrors: collectedErrors.proofSelectInputError,
+            radioError: collectedErrors.proofSelectRadioError,
+        },
+    ];
+    const fieldsets = fieldsetParams.map(fieldset => ({
         heading: {
-            id: 'define-passenger-age-range',
-            content: 'Does the passenger type have an age range?',
+            id: `define-passenger-${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}`,
+            content: `Does the passenger type ${
+                fieldset.type === 'ageRange' ? 'have an age range' : 'require a proof document'
+            }?`,
         },
         radios: [
             {
-                id: 'age-range-required',
-                name: 'ageRange',
+                id: `${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-required`,
+                name: `${fieldset.type}`,
                 value: 'yes',
-                dataAriaControls: 'age-range-required-conditional',
+                dataAriaControls: `${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-required-conditional`,
                 label: 'Yes',
                 hint: {
-                    id: 'define-passenger-age-range-hint',
-                    content: 'Enter a minimum and/or maximum age for this passenger type.',
+                    id: `define-passenger-${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-hint`,
+                    content: `${
+                        fieldset.type === 'ageRange'
+                            ? 'Enter a minimum and/or maximum age for this passenger type.'
+                            : 'Select the applicable proof document(s).'
+                    }`,
                 },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'age-range-min',
-                        name: 'ageRangeMin',
-                        label: 'Minimum Age (if applicable)',
-                    },
-                    {
-                        id: 'age-range-max',
-                        name: 'ageRangeMax',
-                        label: 'Maximum Age (if applicable)',
-                    },
-                ],
+                inputType: `${fieldset.type === 'ageRange' ? 'text' : 'checkbox'}`,
+                inputs: fieldset.conditionalInputs.map(input => ({
+                    id: `${input === 'min' ? 'age-range-min' : 'age-range-max'}`,
+                    name: `${input === 'min' ? 'ageRangeMin' : 'ageRangeMax'}`,
+                    label: `${input === 'min' ? 'Minimum Age (if applicable)' : 'Maximum Age (if applicable)'}`,
+                })),
+                inputErrors: fieldset.inputErrors,
             },
             {
-                id: 'age-range-not-required',
-                name: 'ageRange',
+                id: `${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-not-required`,
+                name: `${fieldset.type}`,
                 value: 'no',
                 label: 'No',
             },
         ],
-    };
+        radioError: fieldset.radioError,
+    }));
 
-    const proofRequiredFieldset: RadioConditionalInputFieldset = {
-        heading: {
-            id: 'define-passenger-proof',
-            content: 'Does the passenger type require a proof document?',
-        },
-        radios: [
-            {
-                id: 'proof-required',
-                name: 'proof',
-                value: 'yes',
-                dataAriaControls: 'proof-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-passenger-proof-hint',
-                    content: 'Select the applicable proof document(s).',
-                },
-                inputType: 'checkbox',
-                inputs: [
-                    {
-                        id: 'membership-card',
-                        name: 'proofDocument',
-                        label: 'Membership Card',
-                    },
-                    {
-                        id: 'student-card',
-                        name: 'proofDocument',
-                        label: 'Student Card',
-                    },
-                    {
-                        id: 'identity-document',
-                        name: 'proofDocument',
-                        label: 'Identity Document',
-                    },
-                ],
-            },
-            {
-                id: 'proof-not-required',
-                name: 'proof',
-                value: 'no',
-                label: 'No',
-            },
-        ],
-    };
-    fieldsets.push(ageRangeFieldset, proofRequiredFieldset);
     return fieldsets;
 };
 
-const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProps): ReactElement => {
+export const collectErrors = (error: ExtractedValidationError, collectedErrors: ErrorCollection): void => {
+    switch (error.input) {
+        case 'ageRange':
+            collectedErrors.ageRangeRadioError.push({
+                errorMessage: error.message,
+                id: 'define-passenger-age-range',
+            });
+            break;
+        case 'proof':
+            collectedErrors.proofSelectRadioError.push({
+                errorMessage: error.message,
+                id: 'define-passenger-proof',
+            });
+            break;
+        case 'ageRangeMin':
+            collectedErrors.ageRangeInputErrors.push({
+                errorMessage: error.message,
+                id: 'define-passenger-age-range',
+            });
+            break;
+        case 'ageRangeMax':
+            collectedErrors.ageRangeInputErrors.push({
+                errorMessage: error.message,
+                id: 'define-passenger-age-range',
+            });
+            break;
+        case 'proofDocuments':
+            collectedErrors.proofSelectInputError.push({
+                errorMessage: error.message,
+                id: 'define-passenger-proof',
+            });
+            break;
+        default:
+            throw new Error('Could not match the following error with an expected input.');
+    }
+};
+
+const DefinePassengerType = ({ combinedErrors = [], fieldsets }: DefinePassengerTypeProps): ReactElement => {
     return (
-        <Layout title={buildTitle(errors, title)} description={description}>
+        <Layout title={buildTitle(combinedErrors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/definePassengerType" method="post">
-                    <ErrorSummary errors={errors} />
-                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <ErrorSummary errors={combinedErrors} />
+                    <div>
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
                                 Provide passenger type details
@@ -128,7 +138,7 @@ const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProp
                         <br />
                         <br />
                         {fieldsets.map(fieldset => {
-                            return <RadioConditionalInput errors={errors} errorId={errorId} fieldset={fieldset} />;
+                            return <RadioConditionalInput fieldset={fieldset} />;
                         })}
                     </div>
                     <input
@@ -143,28 +153,36 @@ const DefinePassengerType = ({ errors = [], fieldsets }: DefinePassengerTypeProp
     );
 };
 
-export const getServerSideProps = (): {} => {
-    // const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: NextPageContext): { props: DefinePassengerTypeProps } => {
+    const cookies = parseCookies(ctx);
+    const passengerTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGER_TYPE_COOKIE);
 
-    const fieldsets = getFieldsets();
-    const errors: ErrorInfo[] = [];
+    if (!passengerTypeCookie) {
+        throw new Error('Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page');
+    }
 
-    // if (cookies[PASSENGER_TYPE_COOKIE]) {
-    //     const userTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGER_TYPE_COOKIE);
-    //     const parsedUserTypeCookie = JSON.parse(userTypeCookie);
-    //     errors = parsedUserTypeCookie.errors.map((error: any) => ({
-    //         errorId: error.errorId,
-    //         errorMessage: error.errorMessage,
-    //     }));
+    const collectedErrors: ErrorCollection = {
+        combinedErrors: [],
+        ageRangeRadioError: [],
+        proofSelectRadioError: [],
+        ageRangeInputErrors: [],
+        proofSelectInputError: [],
+    };
 
-    //     if (parsedUserTypeCookie.errorMessage) {
-    //         const { errorMessage } = parsedUserTypeCookie;
-    //         deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
-    //         return { props: { errors: [{ errorMessage, id: errorId }], fieldsets } };
-    //     }
-    // }
+    const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
+    if (parsedPassengerTypeCookie.errors) {
+        parsedPassengerTypeCookie.errors.forEach((error: ExtractedValidationError) =>
+            collectErrors(error, collectedErrors),
+        );
+        collectedErrors.combinedErrors = collectedErrors.ageRangeRadioError.concat(
+            collectedErrors.proofSelectRadioError,
+            collectedErrors.ageRangeInputErrors,
+            collectedErrors.proofSelectInputError,
+        );
+    }
+    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(collectedErrors);
 
-    return { props: { errors, fieldsets } };
+    return { props: { combinedErrors: collectedErrors.combinedErrors, fieldsets } };
 };
 
 export default DefinePassengerType;

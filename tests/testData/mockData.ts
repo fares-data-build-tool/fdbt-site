@@ -21,6 +21,8 @@ import {
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
+import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
+import { ErrorInfo } from '../../src/types';
 
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
@@ -1729,5 +1731,304 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+    },
+];
+
+export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-passenger-age-range',
+            content: 'Does the passenger type have an age range?',
+        },
+        radios: [
+            {
+                id: 'age-range-required',
+                name: 'ageRange',
+                value: 'yes',
+                dataAriaControls: 'age-range-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-age-range-hint',
+                    content: 'Enter a minimum and/or maximum age for this passenger type.',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'age-range-min',
+                        name: 'ageRangeMin',
+                        label: 'Minimum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'age-range-not-required',
+                name: 'ageRange',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-passenger-proof',
+            content: 'Does the passenger type require a proof document?',
+        },
+        radios: [
+            {
+                id: 'proof-required',
+                name: 'proof',
+                value: 'yes',
+                dataAriaControls: 'proof-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-proof-hint',
+                    content: 'Select the applicable proof document(s).',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            { id: 'proof-not-required', name: 'proof', value: 'no', label: 'No' },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-passenger-age-range',
+            content: 'Does the passenger type have an age range?',
+        },
+        radios: [
+            {
+                id: 'age-range-required',
+                name: 'ageRange',
+                value: 'yes',
+                dataAriaControls: 'age-range-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-age-range-hint',
+                    content: 'Enter a minimum and/or maximum age for this passenger type.',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'age-range-min',
+                        name: 'ageRangeMin',
+                        label: 'Minimum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'age-range-not-required',
+                name: 'ageRange',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                errorMessage: 'Choose one of the options below',
+                id: 'define-passenger-age-range',
+            },
+        ],
+    },
+    {
+        heading: {
+            id: 'define-passenger-proof',
+            content: 'Does the passenger type require a proof document?',
+        },
+        radios: [
+            {
+                id: 'proof-required',
+                name: 'proof',
+                value: 'yes',
+                dataAriaControls: 'proof-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-proof-hint',
+                    content: 'Select the applicable proof document(s).',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            { id: 'proof-not-required', name: 'proof', value: 'no', label: 'No' },
+        ],
+        radioError: [
+            {
+                errorMessage: 'Choose one of the options below',
+                id: 'define-passenger-proof',
+            },
+        ],
+    },
+];
+
+export const mockCombinedErrorInfoForRadioErrors: ErrorInfo[] = [
+    {
+        errorMessage: 'Choose one of the options below',
+        id: 'define-passenger-age-range',
+    },
+    {
+        errorMessage: 'Choose one of the options below',
+        id: 'define-passenger-proof',
+    },
+];
+
+export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-passenger-age-range',
+            content: 'Does the passenger type have an age range?',
+        },
+        radios: [
+            {
+                id: 'age-range-required',
+                name: 'ageRange',
+                value: 'yes',
+                dataAriaControls: 'age-range-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-age-range-hint',
+                    content: 'Enter a minimum and/or maximum age for this passenger type.',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'age-range-min',
+                        name: 'ageRangeMin',
+                        label: 'Minimum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        errorMessage: 'Enter a minimum or maximum age',
+                        id: 'define-passenger-age-range',
+                    },
+                    {
+                        errorMessage: 'Enter a minimum or maximum age',
+                        id: 'define-passenger-age-range',
+                    },
+                ],
+            },
+            {
+                id: 'age-range-not-required',
+                name: 'ageRange',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-passenger-proof',
+            content: 'Does the passenger type require a proof document?',
+        },
+        radios: [
+            {
+                id: 'proof-required',
+                name: 'proof',
+                value: 'yes',
+                dataAriaControls: 'proof-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-proof-hint',
+                    content: 'Select the applicable proof document(s).',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        errorMessage: 'Select at least one proof document',
+                        id: 'define-passenger-proof',
+                    },
+                ],
+            },
+            { id: 'proof-not-required', name: 'proof', value: 'no', label: 'No' },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockCombinedErrorInfoForInputErrors: ErrorInfo[] = [
+    {
+        errorMessage: 'Enter a minimum or maximum age',
+        id: 'define-passenger-age-range',
+    },
+    {
+        errorMessage: 'Enter a minimum or maximum age',
+        id: 'define-passenger-age-range',
+    },
+    {
+        errorMessage: 'Select at least one proof document',
+        id: 'define-passenger-proof',
     },
 ];

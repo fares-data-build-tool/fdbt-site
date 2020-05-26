@@ -5,14 +5,21 @@ import {
     redirectToError,
     redirectTo,
     unescapeAndDecodeCookie,
-    // setCookieOnResponseObject,
-    // getDomain,
+    redirectOnFareType,
+    setCookieOnResponseObject,
+    getDomain,
 } from './apiUtils/index';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
+export interface ExtractedValidationError {
+    input: string;
+    message: string;
+}
+
 const validAgeInputRegex = new RegExp('^([0-9]|[1-8][0-9]|9[0-9]|1[0-4][0-9]|150)$');
-const radioButtonError = 'Select one of the options for each question';
+
+const radioButtonError = 'Choose one of the options below';
 const ageRangeValidityError = 'Enter a whole number between 0-150';
 const ageRangeInputError = 'Enter a minimum or maximum age';
 const proofSelectionError = 'Select at least one proof document';
@@ -58,61 +65,29 @@ export const passengerTypeDetailsSchema = yup
                     then: ageRangeInputSchema,
                 }),
         }),
-        proofDocument: yup.string().when('proof', { is: 'yes', then: yup.string().required(proofSelectionError) }),
+        proofDocuments: yup.string().when('proof', { is: 'yes', then: yup.string().required(proofSelectionError) }),
     })
     .required();
 
-// export const isAgeInputValid = (ageInput: number): string => {
-//     let error = '';
-//     if (Number.isNaN(ageInput)) {
-//         error = 'Enter a number';
-//     } else if (ageInput < 0 || ageInput > 150) {
-//         error = 'Enter an age between 0-150';
-//     }
-//     return error;
-// };
-
-// export const isTextInputValid = (req: NextApiRequest): {} => {
-//     const ageRangeMin = Number(req.body.ageRangeMin);
-//     const ageRangeMax = Number(req.body.ageRangeMax);
-//     let textInputError = '';
-//     let ageRangeMinError = '';
-//     let ageRangeMaxError = '';
-//     if (ageRangeMin === 0 && ageRangeMax === 0) {
-//         textInputError = 'Enter a minimum or maximum age';
-//     }
-//     ageRangeMinError = isAgeInputValid(ageRangeMin);
-//     ageRangeMaxError = isAgeInputValid(ageRangeMax);
-//     return { textInputError, ageRangeMinError, ageRangeMaxError };
-// };
-
-// export const checkAgeRangeInput = (req: NextApiRequest, errors: {}): {} => {
-//     if (req.body.ageRange === 'yes') {
-//         const ageRangeInputErrors = isTextInputValid(req);
-//         if (Object.values(ageRangeInputErrors).map(error => error !== '')) {
-//             return { ...errors, ageRangeInputErrors };
-//         }
-//     }
-//     return errors;
-// };
-
-// export const checkCheckboxInput = (req: NextApiRequest, errors: {}, expectedUserInputs: number): {} => {
-//     if (req.body.proof === 'yes') {
-//         if (Object.keys(req.body).length < expectedUserInputs) {
-//             const proofSelectError = 'Select at least one proof document';
-//             return { ...errors, proofSelectError };
-//         }
-//     }
-//     return errors;
-// };
+export const filterReqBodyTextInputForWhitespace = (req: NextApiRequest): { [key: string]: string } => {
+    const filteredReqBody: { [key: string]: string } = {};
+    Object.entries(req.body).forEach(entry => {
+        if (entry[0] === 'ageRangeMin' || entry[0] === 'ageRangeMax') {
+            const input = entry[1] as string;
+            const strippedInput = input.replace(/\s+/g, '');
+            filteredReqBody[entry[0]] = strippedInput;
+            return;
+        }
+        filteredReqBody[entry[0]] = entry[1] as string;
+    });
+    return filteredReqBody;
+};
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-
-        console.log(req.body);
 
         const cookies = new Cookies(req, res);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
@@ -128,58 +103,24 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Could not extract the relevant data from the request.');
         }
 
-        let validationError = '';
+        let errors: ExtractedValidationError[] = [];
+
+        const filteredReqBody = filterReqBodyTextInputForWhitespace(req);
 
         try {
-            const validationResult = await passengerTypeDetailsSchema.validate(req.body);
-            console.log({ validationResult });
-        } catch (ValidationError) {
-            validationError = ValidationError.message;
+            await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
+        } catch (validationErrors) {
+            const validityErrors: yup.ValidationError = validationErrors;
+            errors = validityErrors.inner.map(error => ({ input: error.path, message: error.message }));
         }
 
-        // let errors: {} = {};
-
-        // if (!req.body.ageRange || !req.body.proof) {
-        //     const radioButtonError = 'Select one of the options';
-
-        //     if (!req.body.ageRange && !req.body.proof) {
-        //         errors = { ageRangeError: radioButtonError, proofError: radioButtonError };
-        //     } else if (req.body.ageRange && !req.body.proof) {
-        //         errors = { proofError: radioButtonError };
-        //         errors = checkAgeRangeInput(req, errors);
-        //     } else if (!req.body.ageRange && req.body.proof) {
-        //         errors = { ageRangeError: radioButtonError };
-        //         errors = checkCheckboxInput(req, errors, 4);
-        //     }
-
-        //     // console.log({ errors });
-
-        //     const passengerTypeCookieValue = JSON.stringify({ passengerType, errors });
-        //     setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
-
-        //     redirectTo(res, '/definePassengerType');
-        //     return;
-        // }
-
-        // if (req.body.ageRange === 'no' && req.body.proof === 'no') {
-        //     const passengerTypeCookieValue = JSON.stringify({ passengerType });
-        //     setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
-        //     redirectTo(res, '/definePassengerType');
-        //     return;
-        // }
-
-        // errors = checkAgeRangeInput(req, errors);
-        // errors = checkCheckboxInput(req, errors, 5);
-
-        // // console.log({ errors });
-
-        // const passengerTypeCookieValue = JSON.stringify({
-        //     passengerType,
-        //     ageRangeMax: req.body.ageRangeMax,
-        //     ageRangeMin: req.body.ageRangeMin,
-        // });
-        // setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
-        console.log(validationError);
+        if (errors.length === 0) {
+            setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookie, req, res);
+            redirectOnFareType(req, res);
+            return;
+        }
+        const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
+        setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';

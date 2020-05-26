@@ -2,17 +2,14 @@ import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../types';
 import FormElementWrapper from './FormElementWrapper';
 
-interface RadioWithoutConditionals {
+interface BaseElementAttributes {
     id: string;
     name: string;
-    value: string;
     label: string;
 }
 
-interface ConditionalInput {
-    id: string;
-    name: string;
-    label: string;
+interface RadioWithoutConditionals extends BaseElementAttributes {
+    value: string;
 }
 
 interface RadioWithConditionalInputs extends RadioWithoutConditionals {
@@ -22,7 +19,8 @@ interface RadioWithConditionalInputs extends RadioWithoutConditionals {
         content: string;
     };
     inputType: string;
-    inputs: ConditionalInput[];
+    inputs: BaseElementAttributes[];
+    inputErrors: ErrorInfo[];
 }
 
 type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
@@ -33,12 +31,11 @@ export interface RadioConditionalInputFieldset {
         content: string;
     };
     radios: RadioButton[];
+    radioError: ErrorInfo[];
 }
 
 export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
-    errors: ErrorInfo[];
-    errorId: string;
 }
 
 const renderConditionalTextInput = (radio: RadioWithConditionalInputs): ReactElement => {
@@ -68,7 +65,12 @@ const renderConditionalTextInput = (radio: RadioWithConditionalInputs): ReactEle
 
 const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElement => {
     return (
-        <div className="govuk-radios__conditional govuk-radios__conditional--hidden" id={radio.dataAriaControls}>
+        <div
+            className={`govuk-radios__conditional ${
+                radio.inputErrors.length > 0 ? '' : 'govuk-radios__conditional--hidden'
+            }`}
+            id={radio.dataAriaControls}
+        >
             <div className="govuk-form-group">
                 <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
                     <span className="govuk-hint" id={radio.hint.id}>
@@ -117,7 +119,7 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
     );
 };
 
-const renderRadioButton = (radio: RadioButton): ReactElement => {
+const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     const radioButtonLabel: ReactElement = (
         <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
             {radio.label}
@@ -146,18 +148,45 @@ const renderRadioButton = (radio: RadioButton): ReactElement => {
     );
 };
 
-const RadioConditionalInput = ({ errors = [], errorId, fieldset }: RadioConditionalInputProps): ReactElement => {
+const checkInputsForErrors = (fieldset: RadioConditionalInputFieldset): ErrorInfo[] => {
+    let inputErrors: ErrorInfo[] = [];
+    fieldset.radios.forEach((radio: RadioButton) => {
+        const conditionalRadio: RadioWithConditionalInputs = radio as RadioWithConditionalInputs;
+        if (conditionalRadio.inputErrors && conditionalRadio.inputErrors.length > 0) {
+            inputErrors = conditionalRadio.inputErrors;
+        }
+    });
+    return inputErrors;
+};
+
+const checkFieldsetForErrors = (fieldset: RadioConditionalInputFieldset): ErrorInfo[] => {
+    let errorToDisplay: ErrorInfo[] = [];
+    const inputErrors = checkInputsForErrors(fieldset);
+    if (fieldset.radioError.length > 0) {
+        errorToDisplay = fieldset.radioError;
+    } else if (inputErrors.length > 0) {
+        errorToDisplay = inputErrors;
+    }
+    return errorToDisplay;
+};
+
+const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactElement => {
+    const errorToDisplay = checkFieldsetForErrors(fieldset);
     return (
-        <div>
+        <div className={`govuk-form-group ${errorToDisplay.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>
                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2 className="govuk-fieldset__heading" id={fieldset.heading.id}>
                         {fieldset.heading.content}
                     </h2>
                 </legend>
-                <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                <FormElementWrapper
+                    errors={errorToDisplay}
+                    errorId={fieldset.heading.id}
+                    errorClass="govuk-radios--error"
+                >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => renderRadioButton(radio))}
+                        {fieldset.radios.map(radio => renderRadioButtonSet(radio))}
                     </div>
                 </FormElementWrapper>
             </fieldset>
