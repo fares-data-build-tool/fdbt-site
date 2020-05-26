@@ -7,4 +7,4 @@ const nextConfig = {
     poweredByHeader: false,
 };
 
-module.exports = withPlugins([[withFonts], [withImages], nextConfig]);
+module.exports = withPlugins([[withFonts], [withImages]], nextConfig);

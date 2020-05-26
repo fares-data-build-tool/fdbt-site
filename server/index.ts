@@ -23,9 +23,11 @@ const setHeaders = (server: Express): void => {
 
     const nonce = (_req: Request, res: Response): string => `'nonce-${res.locals.nonce}'`;
     const scriptSrc = [nonce, "'strict-dynamic'", "'unsafe-inline'"];
+    const styleSrc = ["'self'"];
 
     if (process.env.NODE_ENV !== 'production') {
         scriptSrc.push("'unsafe-eval'");
+        styleSrc.push("'unsafe-inline'");
     }
 
     server.use(
@@ -37,11 +39,12 @@ const setHeaders = (server: Express): void => {
             contentSecurityPolicy: {
                 directives: {
                     objectSrc: ["'none'"],
+                    frameAncestors: ["'none'"],
                     scriptSrc,
                     baseUri: ["'none'"],
-                    styleSrc: ["'self'", "'unsafe-inline'"],
+                    styleSrc,
                     imgSrc: ["'self'", 'data:', 'https:'],
-                    defaultSrc: ["'self'", 'https:'],
+                    defaultSrc: ["'self'"],
                 },
             },
             hidePoweredBy: true,
@@ -69,6 +72,8 @@ const setHeaders = (server: Express): void => {
         const server = express();
 
         setHeaders(server);
+
+        server.use('/pub', express.static(`${__dirname}/pub`));
 
         server.all('*', (req: Request, res: Response) => {
             return handle(req, res);
