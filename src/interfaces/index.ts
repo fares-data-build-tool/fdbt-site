@@ -22,6 +22,6 @@ export interface BasicService {
 export interface PassengerDetails {
     passengerType: string;
     ageRangeMin?: string;
-    AgeRangeMax?: string;
+    ageRangeMax?: string;
     proof?: string[];
 }

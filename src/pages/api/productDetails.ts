@@ -13,18 +13,7 @@ import {
 } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 import { putStringInS3 } from '../../data/s3';
-
-interface DecisionData {
-    operatorName: string;
-    nocCode: string;
-    type: string;
-    products: { productName: string; productPrice: string }[];
-    selectedServices: ServicesInfo[];
-    passengerType: string;
-    ageRangeMin?: string;
-    AgeRangeMax?: string;
-    proof?: string[];
-}
+import { DecisionData } from './periodValidity';
 
 export const checkIfInputInvalid = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     let productNameError = '';

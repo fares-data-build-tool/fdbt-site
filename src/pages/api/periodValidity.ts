@@ -15,16 +15,16 @@ import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, unes
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
-import { ServicesInfo } from '../../interfaces';
+import { ServicesInfo, PassengerDetails } from '../../interfaces';
 
 interface Product {
     productName: string;
     productPrice: string;
-    productDuration: string;
-    productValidity: string;
+    productDuration?: string;
+    productValidity?: string;
 }
 
-interface DecisionData {
+export interface DecisionData extends PassengerDetails {
     operatorName: string;
     type: string;
     nocCode: string;
@@ -32,10 +32,6 @@ interface DecisionData {
     selectedServices?: ServicesInfo[];
     zoneName?: string;
     stops?: Stop[];
-    passengerType: string;
-    ageRangeMin?: string;
-    AgeRangeMax?: string;
-    proof?: string[];
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {

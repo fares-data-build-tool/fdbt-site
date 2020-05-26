@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import { DecisionData } from './periodValidity';
 import {
     MULTIPLE_PRODUCT_COOKIE,
     OPERATOR_COOKIE,
@@ -15,20 +16,6 @@ import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { ServicesInfo } from '../../interfaces';
-
-interface DecisionData {
-    operatorName: string;
-    type: string;
-    nocCode: string;
-    products: Product[];
-    selectedServices?: ServicesInfo[];
-    zoneName?: string;
-    stops?: Stop[];
-    passengerType: string;
-    ageRangeMin?: string;
-    AgeRangeMax?: string;
-    proof?: string[];
-}
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
