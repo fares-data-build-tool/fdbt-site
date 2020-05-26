@@ -26,10 +26,10 @@ jobs:
           profile-name: default
       - run:
           command: |
-            git clone --branch=ci-scripts-tweak https://github.com/fares-data-build-tool/fdbt-ui-automation.git
+            git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
             cd fdbt-ui-automation
 
-            ./ci_scripts/launch_browserstack_test.sh chrome
+            ./ci_scripts/run_tests_in_browserstack.sh
 
   build-site:
     docker:
@@ -164,11 +164,11 @@ workflows:
 
       - run-ui-tests:
           requires:
-            - checkout-repo
+            - deploy-site-to-test
           context: tfn-fdbt-automation-test
           filters:
             branches:
-              only: browserstack-ci
+              only: develop
 
       - hold-preprod-deployment:
           type: approval
