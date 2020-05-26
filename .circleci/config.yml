@@ -165,7 +165,7 @@ workflows:
       - run-ui-tests:
           requires:
             - checkout-repo
-          context: tfn-fdbt-test
+          context: tfn-fdbt-automation-test
           filters:
             branches:
               only: browserstack-ci
