@@ -1,4 +1,5 @@
 version: 2.1
+
 orbs:
   aws-cli: circleci/aws-cli@0.1.20
   aws-ecr: circleci/aws-ecr@6.7.1
@@ -66,7 +67,6 @@ jobs:
       - aws-cli/setup:
           profile-name: default
       - run:
-          when: always
           command: |
             git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
             cd fdbt-ui-automation
@@ -233,6 +233,7 @@ workflows:
             - run-ui-tests-chrome
             - run-ui-tests-firefox
             - run-ui-tests-ie
+          when: true
           context: tfn-fdbt-test
           filters:
             branches:
