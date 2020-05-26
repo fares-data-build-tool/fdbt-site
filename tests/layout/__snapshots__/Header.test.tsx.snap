@@ -53,6 +53,13 @@ exports[`Header should render correctly 1`] = `
         Fares Data Build Tool
       </a>
     </div>
+    <a
+      className="govuk-header__link signIn govuk-heading-s "
+      href="/signIn"
+      id="sign_in_link"
+    >
+      Sign In
+    </a>
   </div>
 </header>
 `;
