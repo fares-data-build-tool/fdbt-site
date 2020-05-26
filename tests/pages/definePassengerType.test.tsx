@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import DefinePassengerType, {
-    // getServerSideProps,
+    getServerSideProps,
     collectErrors,
     getFieldsets,
     ErrorCollection,
@@ -13,6 +13,9 @@ import {
     mockCombinedErrorInfoForRadioErrors,
     mockDefinePassengerTypeFieldsetsWithInputErrors,
     mockCombinedErrorInfoForInputErrors,
+    mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors,
+    mockCombinedErrorInfoForRadioAndInputErrors,
+    getMockContext,
 } from '../testData/mockData';
 import { ExtractedValidationError } from '../../src/pages/api/definePassengerType';
 
@@ -129,15 +132,55 @@ describe('pages', () => {
             collectErrors(mockValidationError, mockErrorCollection);
             expect(mockErrorCollection).toEqual(expectedErrorCollection);
         });
+
+        it('should throw an error when the error type does not match a case', () => {
+            const mockErrorCollection: ErrorCollection = {
+                combinedErrors: [],
+                ageRangeRadioError: [],
+                proofSelectRadioError: [],
+                ageRangeInputErrors: [],
+                proofSelectInputError: [],
+            };
+            const mockValidationError: ExtractedValidationError = {
+                input: 'fakeError',
+                message: 'Throw an error, I dare you',
+            };
+            expect(() => collectErrors(mockValidationError, mockErrorCollection)).toThrow(
+                'Could not match the following error with an expected input.',
+            );
+        });
     });
 
-    // describe('getServerSideProps', () => {
-    //     it('should throw an error if there is no PASSENGER_TYPE_COOKIE', () => {});
+    describe('getServerSideProps', () => {
+        it('should throw an error if there is no PASSENGER_TYPE_COOKIE', () => {
+            const ctx = getMockContext({ passengerType: null });
+            expect(() => getServerSideProps(ctx)).toThrow(
+                'Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page',
+            );
+        });
 
-    //     it('should return props containing no errors and valid fieldsets when no errors are present', () => {});
+        it('should return props containing no errors and valid fieldsets when no errors are present', () => {
+            const ctx = getMockContext();
+            const result = getServerSideProps(ctx);
+            expect(result.props.combinedErrors).toEqual([]);
+            expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
+        });
 
-    //     it('should return props containing errors and valid fieldsets when radio and input errors are present', () => {});
-    // });
+        it('should return props containing errors and valid fieldsets when radio and input errors are present', () => {
+            const mockPassengerTypeCookieValue = {
+                passengerType: 'Adult',
+                errors: [
+                    { input: 'ageRangeMin', message: 'Enter a minimum or maximum age' },
+                    { input: 'ageRangeMax', message: 'Enter a minimum or maximum age' },
+                    { input: 'proof', message: 'Choose one of the options below' },
+                ],
+            };
+            const ctx = getMockContext({ passengerType: mockPassengerTypeCookieValue });
+            const result = getServerSideProps(ctx);
+            expect(result.props.combinedErrors).toEqual(mockCombinedErrorInfoForRadioAndInputErrors);
+            expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors);
+        });
+    });
 
     describe('definePassengerType', () => {
         it('should render correctly', () => {

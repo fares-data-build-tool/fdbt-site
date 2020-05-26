@@ -8,11 +8,11 @@ interface BaseElementAttributes {
     label: string;
 }
 
-interface RadioWithoutConditionals extends BaseElementAttributes {
+export interface RadioWithoutConditionals extends BaseElementAttributes {
     value: string;
 }
 
-interface RadioWithConditionalInputs extends RadioWithoutConditionals {
+export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
     dataAriaControls: string;
     hint: {
         id: string;
@@ -23,7 +23,7 @@ interface RadioWithConditionalInputs extends RadioWithoutConditionals {
     inputErrors: ErrorInfo[];
 }
 
-type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
+export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
 
 export interface RadioConditionalInputFieldset {
     heading: {
@@ -159,7 +159,7 @@ const checkInputsForErrors = (fieldset: RadioConditionalInputFieldset): ErrorInf
     return inputErrors;
 };
 
-const checkFieldsetForErrors = (fieldset: RadioConditionalInputFieldset): ErrorInfo[] => {
+export const checkFieldsetForErrors = (fieldset: RadioConditionalInputFieldset): ErrorInfo[] => {
     let errorToDisplay: ErrorInfo[] = [];
     const inputErrors = checkInputsForErrors(fieldset);
     if (fieldset.radioError.length > 0) {
@@ -172,6 +172,7 @@ const checkFieldsetForErrors = (fieldset: RadioConditionalInputFieldset): ErrorI
 
 const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactElement => {
     const errorToDisplay = checkFieldsetForErrors(fieldset);
+    console.log({ errorToDisplay });
     return (
         <div className={`govuk-form-group ${errorToDisplay.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>

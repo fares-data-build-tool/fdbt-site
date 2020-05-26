@@ -57,7 +57,7 @@ const SingleDirection = ({ operator, passengerType, lineName, service }: Directi
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: DirectionProps }> => {
     deleteCookieOnServerSide(ctx, JOURNEY_COOKIE);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];

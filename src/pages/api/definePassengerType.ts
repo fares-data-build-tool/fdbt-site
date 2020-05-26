@@ -69,7 +69,7 @@ export const passengerTypeDetailsSchema = yup
     })
     .required();
 
-export const filterReqBodyTextInputForWhitespace = (req: NextApiRequest): { [key: string]: string } => {
+export const removeWhitespaceFromTextInput = (req: NextApiRequest): { [key: string]: string } => {
     const filteredReqBody: { [key: string]: string } = {};
     Object.entries(req.body).forEach(entry => {
         if (entry[0] === 'ageRangeMin' || entry[0] === 'ageRangeMax') {
@@ -98,14 +98,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (!passengerType || !fareType) {
             throw new Error('Failed to retrieve the necessary cookies for the definePassengerType API');
         }
-
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');
         }
 
         let errors: ExtractedValidationError[] = [];
 
-        const filteredReqBody = filterReqBodyTextInputForWhitespace(req);
+        const filteredReqBody = removeWhitespaceFromTextInput(req);
 
         try {
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });

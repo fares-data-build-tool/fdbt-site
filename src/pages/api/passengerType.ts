@@ -5,7 +5,6 @@ import {
     setCookieOnResponseObject,
     redirectToError,
     redirectTo,
-    getUuidFromCookie,
     redirectOnFareType,
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
@@ -32,7 +31,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
             const cookieValue = JSON.stringify({
                 errorMessage: '',
-                uuid: getUuidFromCookie(req, res),
                 passengerType,
             });
 
@@ -48,7 +46,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const passengerTypeCookieValue = JSON.stringify({
             errorMessage: 'Choose a passenger type from the options',
-            uuid: getUuidFromCookie(req, res),
         });
         setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/passengerType');
