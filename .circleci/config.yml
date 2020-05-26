@@ -19,7 +19,10 @@ jobs:
   run-ui-tests-chrome:
     docker:
       - image: circleci/openjdk:13-jdk-buster
+    executor: aws-cli/default
     steps:
+      - aws-cli/setup:
+          profile-name: default
       - run:
           command: |
             git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
@@ -30,7 +33,10 @@ jobs:
   run-ui-tests-firefox:
     docker:
       - image: circleci/openjdk:13-jdk-buster
+    executor: aws-cli/default
     steps:
+      - aws-cli/setup:
+          profile-name: default
       - run:
           command: |
             git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
@@ -41,7 +47,10 @@ jobs:
   run-ui-tests-ie:
     docker:
       - image: circleci/openjdk:13-jdk-buster
+    executor: aws-cli/default
     steps:
+      - aws-cli/setup:
+          profile-name: default
       - run:
           command: |
             git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
@@ -52,8 +61,12 @@ jobs:
   ui-tests-cleanup:
     docker:
       - image: circleci/openjdk:13-jdk-buster
+    executor: aws-cli/default
     steps:
+      - aws-cli/setup:
+          profile-name: default
       - run:
+          when: always
           command: |
             git clone https://github.com/fares-data-build-tool/fdbt-ui-automation.git
             cd fdbt-ui-automation
