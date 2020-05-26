@@ -6,12 +6,12 @@ describe('fareType', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /fareType when session is valid but there is no service cookie set', () => {
+    it('should return 302 redirect to /passengerType when a ticket option is selected', () => {
         const writeHeadMock = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, null, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({}, { fareType: 'single' }, {}, writeHeadMock);
         fareType(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/fareType',
+            Location: '/passengerType',
         });
     });
 

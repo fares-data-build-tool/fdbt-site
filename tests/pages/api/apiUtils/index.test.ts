@@ -90,5 +90,14 @@ describe('apiUtils', () => {
                 Location: '/serviceList',
             });
         });
+
+        it('should throw error if unexpected fare type is selected', () => {
+            const writeHeadMock = jest.fn();
+            const { req, res } = getMockRequestAndResponse({ fareType: 'roundabout' }, null, {}, writeHeadMock);
+
+            expect(() => {
+                redirectOnFareType(req, res);
+            }).toThrowError(new Error('Fare Type we expect was not received.'));
+        });
     });
 });

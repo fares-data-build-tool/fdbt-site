@@ -1,12 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {
-    getDomain,
-    setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
-    redirectOnFareType,
-    getUuidFromCookie,
-} from './apiUtils/index';
+import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils/index';
 import { FARE_TYPE_COOKIE } from '../../constants/index';
 
 import { isSessionValid } from './service/validator';
@@ -23,10 +16,8 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 uuid: getUuidFromCookie(req, res),
                 fareType: req.body.fareType,
             });
-
             setCookieOnResponseObject(getDomain(req), FARE_TYPE_COOKIE, cookieValue, req, res);
-
-            redirectOnFareType(req, res);
+            redirectTo(res, '/passengerType');
         } else {
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose a fare type from the options',
