@@ -28,7 +28,7 @@ const SingleDirection = ({ operator, passengerType, lineName, service, error }: 
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
                 <form action="/api/singleDirection" method="post">
                     <ErrorSummary errors={error} />
-                    <div className="govuk-form-group">
+                    <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="single-direction-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                                 <h1 className="govuk-fieldset__heading" id="single-direction-page-heading">
@@ -67,12 +67,12 @@ const SingleDirection = ({ operator, passengerType, lineName, service, error }: 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: DirectionProps }> => {
     const cookies = parseCookies(ctx);
     const journeyCookie = cookies[JOURNEY_COOKIE];
-    const errorInfo: ErrorInfo[] = [];
+    const error: ErrorInfo[] = [];
     if (journeyCookie) {
         const journeyInfo = JSON.parse(journeyCookie);
         if (journeyInfo.errorMessage) {
-            const error: ErrorInfo = { errorMessage: journeyInfo.errorMessage, id: errorId };
-            errorInfo.push(error);
+            const errorInfo: ErrorInfo = { errorMessage: journeyInfo.errorMessage, id: errorId };
+            error.push(errorInfo);
         }
     }
     const operatorCookie = cookies[OPERATOR_COOKIE];
@@ -112,7 +112,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     );
 
     return {
-        props: { operator: operatorInfo.operator, passengerType, lineName, service, error: errorInfo },
+        props: { operator: operatorInfo.operator, passengerType, lineName, service, error },
     };
 };
 

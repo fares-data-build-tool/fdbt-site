@@ -24,7 +24,7 @@ const Service = ({ operator, passengerType, services, error }: ServiceProps): Re
         <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
             <form action="/api/service" method="post">
                 <ErrorSummary errors={error} />
-                <div className="govuk-form-group">
+                <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <fieldset className="govuk-fieldset" aria-describedby="service-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 className="govuk-fieldset__heading" id="service-page-heading">
@@ -69,12 +69,12 @@ const Service = ({ operator, passengerType, services, error }: ServiceProps): Re
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
     const serviceCookie = cookies[SERVICE_COOKIE];
-    const errorInfo: ErrorInfo[] = [];
+    const error: ErrorInfo[] = [];
     if (serviceCookie) {
         const serviceInfo = JSON.parse(serviceCookie);
         if (serviceInfo.errorMessage) {
-            const error: ErrorInfo = { errorMessage: serviceInfo.errorMessage, id: errorId };
-            errorInfo.push(error);
+            const errorInfo: ErrorInfo = { errorMessage: serviceInfo.errorMessage, id: errorId };
+            error.push(errorInfo);
         }
     }
 
@@ -96,7 +96,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         throw new Error(`No services found for NOC Code: ${operatorInfo.nocCode}`);
     }
 
-    return { props: { operator, passengerType, services, error: errorInfo } };
+    return { props: { operator, passengerType, services, error } };
 };
 
 export default Service;

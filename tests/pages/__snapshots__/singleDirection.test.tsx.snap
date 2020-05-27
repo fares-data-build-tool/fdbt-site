@@ -18,7 +18,7 @@ exports[`pages direction should render correctly 1`] = `
         errors={Array []}
       />
       <div
-        className="govuk-form-group"
+        className="govuk-form-group "
       >
         <fieldset
           aria-describedby="single-direction-page-heading"
