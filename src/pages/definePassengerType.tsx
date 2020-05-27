@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import { PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import { buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
+import { buildTitle } from '../utils/index';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { ExtractedValidationError } from './api/definePassengerType';
 import { ErrorInfo } from '../types';
@@ -190,7 +190,7 @@ const DefinePassengerType = ({ combinedErrors = [], fieldsets }: DefinePassenger
 
 export const getServerSideProps = (ctx: NextPageContext): { props: DefinePassengerTypeProps } => {
     const cookies = parseCookies(ctx);
-    const passengerTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGER_TYPE_COOKIE);
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
     if (!passengerTypeCookie) {
         throw new Error('Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page');
