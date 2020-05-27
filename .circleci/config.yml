@@ -97,20 +97,6 @@ jobs:
                       echo "Linting site"
                       npm run lint
 
-    sync-static-files:
-        docker:
-            - image: circleci/node:12
-        working_directory: ~/project
-        executor: aws-cli/default
-        steps:
-            - attach_workspace:
-                  at: ~/project
-            - aws-cli/setup:
-                  profile-name: default
-            - run:
-                  command: |
-                      aws s3 sync --delete public/ s3://${STATIC_FILES_BUCKET_NAME}
-
 workflows:
     version: 2
     build-test-and-deploy-site:
@@ -132,24 +118,6 @@ workflows:
             - lint-site:
                   requires:
                       - build-site
-
-            - sync-static-files:
-                  requires:
-                      - test-site
-                      - lint-site
-                  context: tfn-fdbt-test
-                  filters:
-                      branches:
-                          only: develop
-
-            - sync-static-files:
-                  requires:
-                      - test-site
-                      - lint-site
-                  context: tfn-fdbt-preprod
-                  filters:
-                      branches:
-                          only: master
 
             - aws-ecr/build-and-push-image:
                   requires:

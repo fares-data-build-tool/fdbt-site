@@ -19,8 +19,12 @@
         "outDir": ".build",
         "rootDir": "./",
         "jsx": "preserve",
-        "sourceMap": true
+        "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "src/*": ["./src/*"]
+        }
     },
-    "exclude": ["node_modules", "next.config.js"],
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+    "exclude": ["node_modules"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"]
 }
