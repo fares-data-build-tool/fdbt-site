@@ -114,7 +114,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (errors.length === 0) {
-            setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookie, req, res);
+            const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
+            setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
             redirectOnFareType(req, res);
             return;
         }

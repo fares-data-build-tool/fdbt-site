@@ -16,9 +16,12 @@ exports[`_document should render correctly 1`] = `
       nonce=""
     />
     <script
+      nonce=""
       src="/javascript/govuk.js"
     />
-    <script>
+    <script
+      nonce=""
+    >
       window.GOVUKFrontend.initAll()
     </script>
   </body>

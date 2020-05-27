@@ -74,16 +74,17 @@ describe('definePassengerType', () => {
 
     it('should set the PASSENGER_TYPE_COOKIE and redirect depending on fare type when no errors are found', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-        const mockPassengerTypeCookieValue = { passengerType: 'Adult' };
+        const mockPassengerTypeDetails = {
+            ageRange: 'yes',
+            ageRangeMin: '1',
+            ageRangeMax: '100',
+            proof: 'yes',
+            proofDocuments: ['Membership Card', 'Student Card'],
+        };
+        const mockPassengerTypeCookieValue = { passengerType: 'Adult', ...mockPassengerTypeDetails };
         const { req, res } = getMockRequestAndResponse(
             { fareType: 'single' },
-            {
-                ageRange: 'yes',
-                ageRangeMin: '1',
-                ageRangeMax: '100',
-                proof: 'yes',
-                proofDocuments: ['Membership Card', 'Student Card'],
-            },
+            mockPassengerTypeDetails,
             {},
             writeHeadMock,
         );

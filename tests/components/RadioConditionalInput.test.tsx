@@ -1,11 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import RadioConditionalInput, {
-    RadioConditionalInputFieldset,
-    checkFieldsetForErrors,
-    RadioWithConditionalInputs,
-} from '../../src/components/RadioConditionalInput';
-import { mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors } from '../testData/mockData';
+import RadioConditionalInput, { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
 
 describe('RadioConditionalInput', () => {
     it('should render an ordinary set of radio buttons when given a base fieldset', () => {
@@ -48,16 +43,5 @@ describe('RadioConditionalInput', () => {
         };
         const wrapper = shallow(<RadioConditionalInput fieldset={fieldset} />);
         expect(wrapper).toMatchSnapshot();
-    });
-
-    describe('checkFieldsetForErrors', () => {
-        it('should extract input errors from the fieldset', () => {
-            const fieldset = mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors[0];
-            const conditionalRadioArray = (mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors[0]
-                .radios[0] as unknown) as RadioWithConditionalInputs;
-            const expectedError = conditionalRadioArray.inputErrors;
-            const errorToDisplay = checkFieldsetForErrors(fieldset);
-            expect(errorToDisplay).toBe(expectedError);
-        });
     });
 });

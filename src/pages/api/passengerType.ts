@@ -30,7 +30,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const { passengerType } = req.body;
 
             const cookieValue = JSON.stringify({
-                errorMessage: '',
                 passengerType,
             });
 

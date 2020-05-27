@@ -26,60 +26,95 @@ export interface DefinePassengerTypeProps {
 }
 
 export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditionalInputFieldset[] => {
-    const fieldsetParams = [
-        {
-            type: 'ageRange',
-            conditionalInputs: ['min', 'max'],
-            inputErrors: collectedErrors.ageRangeInputErrors,
-            radioError: collectedErrors.ageRangeRadioError,
-        },
-        {
-            type: 'proof',
-            conditionalInputs: ['membership-card', 'student-card', 'identity-document'],
-            inputErrors: collectedErrors.proofSelectInputError,
-            radioError: collectedErrors.proofSelectRadioError,
-        },
-    ];
-    const fieldsets = fieldsetParams.map(fieldset => ({
+    const fieldsets = [];
+
+    const ageRangeFieldset: RadioConditionalInputFieldset = {
         heading: {
-            id: `define-passenger-${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}`,
-            content: `Does the passenger type ${
-                fieldset.type === 'ageRange' ? 'have an age range' : 'require a proof document'
-            }?`,
+            id: 'define-passenger-age-range',
+            content: 'Does the passenger type have an age range?',
         },
         radios: [
             {
-                id: `${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-required`,
-                name: `${fieldset.type}`,
+                id: 'age-range-required',
+                name: 'ageRange',
                 value: 'yes',
-                dataAriaControls: `${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-required-conditional`,
+                dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 hint: {
-                    id: `define-passenger-${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-hint`,
-                    content: `${
-                        fieldset.type === 'ageRange'
-                            ? 'Enter a minimum and/or maximum age for this passenger type.'
-                            : 'Select the applicable proof document(s).'
-                    }`,
+                    id: 'define-passenger-age-range-hint',
+                    content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
-                inputType: `${fieldset.type === 'ageRange' ? 'text' : 'checkbox'}`,
-                inputs: fieldset.conditionalInputs.map(input => ({
-                    id: `${input === 'min' ? 'age-range-min' : 'age-range-max'}`,
-                    name: `${input === 'min' ? 'ageRangeMin' : 'ageRangeMax'}`,
-                    label: `${input === 'min' ? 'Minimum Age (if applicable)' : 'Maximum Age (if applicable)'}`,
-                })),
-                inputErrors: fieldset.inputErrors,
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'age-range-min',
+                        name: 'ageRangeMin',
+                        label: 'Minimum Age (if applicable)',
+                    },
+                    {
+                        id: 'age-range-max',
+                        name: 'ageRangeMax',
+                        label: 'Maximum Age (if applicable)',
+                    },
+                ],
+                inputErrors: collectedErrors.ageRangeInputErrors,
             },
             {
-                id: `${fieldset.type === 'ageRange' ? 'age-range' : 'proof'}-not-required`,
-                name: `${fieldset.type}`,
+                id: 'age-range-not-required',
+                name: 'ageRange',
                 value: 'no',
                 label: 'No',
             },
         ],
-        radioError: fieldset.radioError,
-    }));
+        radioError: collectedErrors.ageRangeRadioError,
+    };
 
+    const proofRequiredFieldset: RadioConditionalInputFieldset = {
+        heading: {
+            id: 'define-passenger-proof',
+            content: 'Does the passenger type require a proof document?',
+        },
+        radios: [
+            {
+                id: 'proof-required',
+                name: 'proof',
+                value: 'yes',
+                dataAriaControls: 'proof-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-passenger-proof-hint',
+                    content: 'Select the applicable proof document(s).',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    {
+                        id: 'membership-card',
+                        name: 'membershipCard',
+                        label: 'Membership Card',
+                    },
+                    {
+                        id: 'student-card',
+                        name: 'studentCard',
+                        label: 'Student Card',
+                    },
+                    {
+                        id: 'identity-document',
+                        name: 'identityDocument',
+                        label: 'Identity Document',
+                    },
+                ],
+                inputErrors: collectedErrors.proofSelectInputError,
+            },
+            {
+                id: 'proof-not-required',
+                name: 'proof',
+                value: 'no',
+                label: 'No',
+            },
+        ],
+        radioError: collectedErrors.proofSelectRadioError,
+    };
+    fieldsets.push(ageRangeFieldset, proofRequiredFieldset);
     return fieldsets;
 };
 
