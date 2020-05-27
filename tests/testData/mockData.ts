@@ -1756,7 +1756,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
             {
                 id: 'age-range-required',
                 name: 'ageRange',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -1781,7 +1781,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
             {
                 id: 'age-range-not-required',
                 name: 'ageRange',
-                value: 'no',
+                value: 'No',
                 label: 'No',
             },
         ],
@@ -1796,7 +1796,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
             {
                 id: 'proof-required',
                 name: 'proof',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -1823,7 +1823,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 ],
                 inputErrors: [],
             },
-            { id: 'proof-not-required', name: 'proof', value: 'no', label: 'No' },
+            { id: 'proof-not-required', name: 'proof', value: 'No', label: 'No' },
         ],
         radioError: [],
     },
@@ -1839,7 +1839,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
             {
                 id: 'age-range-required',
                 name: 'ageRange',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -1864,7 +1864,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
             {
                 id: 'age-range-not-required',
                 name: 'ageRange',
-                value: 'no',
+                value: 'No',
                 label: 'No',
             },
         ],
@@ -1884,7 +1884,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
             {
                 id: 'proof-required',
                 name: 'proof',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -1911,7 +1911,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 ],
                 inputErrors: [],
             },
-            { id: 'proof-not-required', name: 'proof', value: 'no', label: 'No' },
+            { id: 'proof-not-required', name: 'proof', value: 'No', label: 'No' },
         ],
         radioError: [
             {
@@ -1943,7 +1943,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
             {
                 id: 'age-range-required',
                 name: 'ageRange',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -1977,7 +1977,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
             {
                 id: 'age-range-not-required',
                 name: 'ageRange',
-                value: 'no',
+                value: 'No',
                 label: 'No',
             },
         ],
@@ -1992,7 +1992,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
             {
                 id: 'proof-required',
                 name: 'proof',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -2024,7 +2024,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                     },
                 ],
             },
-            { id: 'proof-not-required', name: 'proof', value: 'no', label: 'No' },
+            { id: 'proof-not-required', name: 'proof', value: 'No', label: 'No' },
         ],
         radioError: [],
     },
@@ -2055,7 +2055,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
             {
                 id: 'age-range-required',
                 name: 'ageRange',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -2089,7 +2089,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
             {
                 id: 'age-range-not-required',
                 name: 'ageRange',
-                value: 'no',
+                value: 'No',
                 label: 'No',
             },
         ],
@@ -2104,7 +2104,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
             {
                 id: 'proof-required',
                 name: 'proof',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -2131,7 +2131,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 ],
                 inputErrors: [],
             },
-            { id: 'proof-not-required', name: 'proof', value: 'no', label: 'No' },
+            { id: 'proof-not-required', name: 'proof', value: 'No', label: 'No' },
         ],
         radioError: [
             {

@@ -16,28 +16,28 @@ describe('definePassengerType', () => {
     describe('passengerTypeDetailsSchema', () => {
         it.each([
             [{}, false],
-            [{ ageRange: 'no' }, false],
-            [{ ageRange: 'yes' }, false],
+            [{ ageRange: 'No' }, false],
+            [{ ageRange: 'Yes' }, false],
             [{ proof: 'maybe' }, false],
-            [{ proof: 'no' }, false],
-            [{ proof: 'yes' }, false],
-            [{ ageRange: 'yes', proof: 'no' }, false],
-            [{ ageRange: 'no', proof: 'yes' }, false],
-            [{ ageRange: 'yes', ageRangeMin: '', ageRangeMax: '', proof: 'no' }, false],
-            [{ ageRange: 'yes', ageRangeMin: '11', ageRangeMax: 'daddy', proof: 'no' }, false],
-            [{ ageRange: 'yes', ageRangeMin: 'asda', ageRangeMax: 'tesco', proof: 'no' }, false],
-            [{ ageRange: 'yes', ageRangeMin: '-12', ageRangeMax: '12', proof: 'no' }, false],
-            [{ ageRange: 'yes', ageRangeMin: '1.23453', ageRangeMax: '12', proof: 'no' }, false],
-            [{ ageRange: 'no', proof: 'no' }, true],
-            [{ ageRange: 'yes', ageRangeMin: '10', ageRangeMax: '', proof: 'no' }, true],
-            [{ ageRange: 'yes', ageRangeMin: '12', ageRangeMax: '140', proof: 'no' }, true],
-            [{ ageRange: 'no', proof: 'yes', proofDocuments: ['Membership Card', 'Student Card'] }, true],
+            [{ proof: 'No' }, false],
+            [{ proof: 'Yes' }, false],
+            [{ ageRange: 'Yes', proof: 'No' }, false],
+            [{ ageRange: 'No', proof: 'Yes' }, false],
+            [{ ageRange: 'Yes', ageRangeMin: '', ageRangeMax: '', proof: 'No' }, false],
+            [{ ageRange: 'Yes', ageRangeMin: '11', ageRangeMax: 'daddy', proof: 'No' }, false],
+            [{ ageRange: 'Yes', ageRangeMin: 'asda', ageRangeMax: 'tesco', proof: 'No' }, false],
+            [{ ageRange: 'Yes', ageRangeMin: '-12', ageRangeMax: '12', proof: 'No' }, false],
+            [{ ageRange: 'Yes', ageRangeMin: '1.23453', ageRangeMax: '12', proof: 'No' }, false],
+            [{ ageRange: 'No', proof: 'No' }, true],
+            [{ ageRange: 'Yes', ageRangeMin: '10', ageRangeMax: '', proof: 'No' }, true],
+            [{ ageRange: 'Yes', ageRangeMin: '12', ageRangeMax: '140', proof: 'No' }, true],
+            [{ ageRange: 'No', proof: 'Yes', proofDocuments: ['Membership Card', 'Student Card'] }, true],
             [
                 {
-                    ageRange: 'yes',
+                    ageRange: 'Yes',
                     ageRangeMin: '0',
                     ageRangeMax: '150',
-                    proof: 'yes',
+                    proof: 'Yes',
                     proofDocuments: ['Membership Card', 'Student Card', 'Identity Document'],
                 },
                 true,
@@ -75,10 +75,10 @@ describe('definePassengerType', () => {
     it('should set the PASSENGER_TYPE_COOKIE and redirect depending on fare type when no errors are found', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockPassengerTypeDetails = {
-            ageRange: 'yes',
+            ageRange: 'Yes',
             ageRangeMin: '1',
             ageRangeMax: '100',
-            proof: 'yes',
+            proof: 'Yes',
             proofDocuments: ['Membership Card', 'Student Card'],
         };
         const mockPassengerTypeCookieValue = { passengerType: 'Adult', ...mockPassengerTypeDetails };
@@ -123,10 +123,10 @@ describe('definePassengerType', () => {
         const { req, res } = getMockRequestAndResponse(
             {},
             {
-                ageRange: 'yes',
+                ageRange: 'Yes',
                 ageRangeMin: '',
                 ageRangeMax: '',
-                proof: 'yes',
+                proof: 'Yes',
                 proofDocuments: [],
             },
             {},

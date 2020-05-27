@@ -37,7 +37,7 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
             {
                 id: 'age-range-required',
                 name: 'ageRange',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -62,7 +62,7 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
             {
                 id: 'age-range-not-required',
                 name: 'ageRange',
-                value: 'no',
+                value: 'No',
                 label: 'No',
             },
         ],
@@ -78,7 +78,7 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
             {
                 id: 'proof-required',
                 name: 'proof',
-                value: 'yes',
+                value: 'Yes',
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 hint: {
@@ -108,7 +108,7 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
             {
                 id: 'proof-not-required',
                 name: 'proof',
-                value: 'no',
+                value: 'No',
                 label: 'No',
             },
         ],

@@ -33,14 +33,14 @@ export const passengerTypeDetailsSchema = yup
     .object({
         ageRange: yup
             .string()
-            .oneOf(['yes', 'no'])
+            .oneOf(['Yes', 'No'])
             .required(radioButtonError),
         proof: yup
             .string()
-            .oneOf(['yes', 'no'])
+            .oneOf(['Yes', 'No'])
             .required(radioButtonError),
         ageRangeMin: yup.string().when('ageRange', {
-            is: 'yes',
+            is: 'Yes',
             then: yup
                 .string()
                 .when('ageRangeMax', {
@@ -53,7 +53,7 @@ export const passengerTypeDetailsSchema = yup
                 }),
         }),
         ageRangeMax: yup.string().when('ageRange', {
-            is: 'yes',
+            is: 'Yes',
             then: yup
                 .string()
                 .when('ageRangeMin', {
@@ -65,7 +65,7 @@ export const passengerTypeDetailsSchema = yup
                     then: ageRangeInputSchema,
                 }),
         }),
-        proofDocuments: yup.string().when('proof', { is: 'yes', then: yup.string().required(proofSelectionError) }),
+        proofDocuments: yup.string().when('proof', { is: 'Yes', then: yup.string().required(proofSelectionError) }),
     })
     .required();
 
