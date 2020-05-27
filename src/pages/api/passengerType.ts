@@ -24,8 +24,6 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Necessary fare type cookie not found for passenger type page');
         }
 
-        const { fareType } = JSON.parse(fareTypeCookie);
-
         if (req.body.passengerType) {
             const { passengerType } = req.body;
 
@@ -36,7 +34,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, cookieValue, req, res);
 
             if (passengerType === 'Any') {
-                redirectOnFareType(fareType, res);
+                redirectOnFareType(req, res);
                 return;
             }
             redirectTo(res, '/definePassengerType');
