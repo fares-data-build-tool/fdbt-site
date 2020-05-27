@@ -102,17 +102,17 @@ exports[`pages definePassengerType should render correctly 1`] = `
                     Object {
                       "id": "membership-card",
                       "label": "Membership Card",
-                      "name": "membershipCard",
+                      "name": "proofDocuments",
                     },
                     Object {
                       "id": "student-card",
                       "label": "Student Card",
-                      "name": "studentCard",
+                      "name": "proofDocuments",
                     },
                     Object {
                       "id": "identity-document",
                       "label": "Identity Document",
-                      "name": "identityDocument",
+                      "name": "proofDocuments",
                     },
                   ],
                   "label": "Yes",
@@ -272,17 +272,17 @@ exports[`pages definePassengerType should render errors correctly when input err
                     Object {
                       "id": "membership-card",
                       "label": "Membership Card",
-                      "name": "membershipCard",
+                      "name": "proofDocuments",
                     },
                     Object {
                       "id": "student-card",
                       "label": "Student Card",
-                      "name": "studentCard",
+                      "name": "proofDocuments",
                     },
                     Object {
                       "id": "identity-document",
                       "label": "Identity Document",
-                      "name": "identityDocument",
+                      "name": "proofDocuments",
                     },
                   ],
                   "label": "Yes",
@@ -434,17 +434,17 @@ exports[`pages definePassengerType should render errors correctly when radio err
                     Object {
                       "id": "membership-card",
                       "label": "Membership Card",
-                      "name": "membershipCard",
+                      "name": "proofDocuments",
                     },
                     Object {
                       "id": "student-card",
                       "label": "Student Card",
-                      "name": "studentCard",
+                      "name": "proofDocuments",
                     },
                     Object {
                       "id": "identity-document",
                       "label": "Identity Document",
-                      "name": "identityDocument",
+                      "name": "proofDocuments",
                     },
                   ],
                   "label": "Yes",

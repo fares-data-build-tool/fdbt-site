@@ -89,17 +89,17 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
                 inputs: [
                     {
                         id: 'membership-card',
-                        name: 'membershipCard',
+                        name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
                         id: 'student-card',
-                        name: 'studentCard',
+                        name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
                         id: 'identity-document',
-                        name: 'identityDocument',
+                        name: 'proofDocuments',
                         label: 'Identity Document',
                     },
                 ],

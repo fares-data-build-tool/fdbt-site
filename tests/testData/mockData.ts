@@ -1807,17 +1807,17 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 inputs: [
                     {
                         id: 'membership-card',
-                        name: 'membershipCard',
+                        name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
                         id: 'student-card',
-                        name: 'studentCard',
+                        name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
                         id: 'identity-document',
-                        name: 'identityDocument',
+                        name: 'proofDocuments',
                         label: 'Identity Document',
                     },
                 ],
@@ -1895,17 +1895,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 inputs: [
                     {
                         id: 'membership-card',
-                        name: 'membershipCard',
+                        name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
                         id: 'student-card',
-                        name: 'studentCard',
+                        name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
                         id: 'identity-document',
-                        name: 'identityDocument',
+                        name: 'proofDocuments',
                         label: 'Identity Document',
                     },
                 ],
@@ -2003,17 +2003,17 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputs: [
                     {
                         id: 'membership-card',
-                        name: 'membershipCard',
+                        name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
                         id: 'student-card',
-                        name: 'studentCard',
+                        name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
                         id: 'identity-document',
-                        name: 'identityDocument',
+                        name: 'proofDocuments',
                         label: 'Identity Document',
                     },
                 ],
@@ -2115,17 +2115,17 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 inputs: [
                     {
                         id: 'membership-card',
-                        name: 'membershipCard',
+                        name: 'proofDocuments',
                         label: 'Membership Card',
                     },
                     {
                         id: 'student-card',
-                        name: 'studentCard',
+                        name: 'proofDocuments',
                         label: 'Student Card',
                     },
                     {
                         id: 'identity-document',
-                        name: 'identityDocument',
+                        name: 'proofDocuments',
                         label: 'Identity Document',
                     },
                 ],
