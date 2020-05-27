@@ -31,7 +31,7 @@ class MyDocument extends Document<{ nonce: string }> {
                 <body className="govuk-template__body app-body-class js-enabled">
                     <Main />
                     <NextScript nonce={this.props.nonce} />
-                    <script src="/javascript/govuk.js" nonce={this.props.nonce} />
+                    <script src="/scripts/all.js" nonce={this.props.nonce} />
                     <script nonce={this.props.nonce}>window.GOVUKFrontend.initAll()</script>
                 </body>
             </Html>

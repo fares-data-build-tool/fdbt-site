@@ -17,7 +17,7 @@ exports[`_document should render correctly 1`] = `
     />
     <script
       nonce=""
-      src="/javascript/govuk.js"
+      src="/scripts/all.js"
     />
     <script
       nonce=""
