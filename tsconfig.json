@@ -25,6 +25,6 @@
             "src/*": ["./src/*"]
         }
     },
-    "exclude": ["node_modules", "next.config.js", "public"],
+    "exclude": ["node_modules", "next.config.js"],
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

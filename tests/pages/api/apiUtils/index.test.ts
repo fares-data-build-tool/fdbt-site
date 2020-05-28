@@ -9,6 +9,8 @@ import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
 
 describe('apiUtils', () => {
+    const writeHeadMock = jest.fn();
+
     beforeEach(() => {
         jest.spyOn(s3, 'putStringInS3');
 
@@ -56,7 +58,6 @@ describe('apiUtils', () => {
 
     describe('redirectOnFareType', () => {
         it('should return 302 redirect to /service when the single ticket option is selected', () => {
-            const writeHeadMock = jest.fn();
             const { req, res } = getMockRequestAndResponse({ fareType: 'single' }, {}, {}, writeHeadMock);
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -65,7 +66,6 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /service when the return ticket option is selected', () => {
-            const writeHeadMock = jest.fn();
             const { req, res } = getMockRequestAndResponse({ fareType: 'return' }, {}, {}, writeHeadMock);
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -74,7 +74,6 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /periodType when the period ticket option is selected', () => {
-            const writeHeadMock = jest.fn();
             const { req, res } = getMockRequestAndResponse({ fareType: 'period' }, {}, {}, writeHeadMock);
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -83,7 +82,6 @@ describe('apiUtils', () => {
         });
 
         it('should return 302 redirect to /serviceList when the flat fare ticket option is selected', () => {
-            const writeHeadMock = jest.fn();
             const { req, res } = getMockRequestAndResponse({ fareType: 'flatFare' }, {}, {}, writeHeadMock);
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -92,7 +90,6 @@ describe('apiUtils', () => {
         });
 
         it('should throw error if unexpected fare type is selected', () => {
-            const writeHeadMock = jest.fn();
             const { req, res } = getMockRequestAndResponse({ fareType: 'roundabout' }, null, {}, writeHeadMock);
 
             expect(() => {

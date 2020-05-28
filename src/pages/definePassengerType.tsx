@@ -215,7 +215,6 @@ export const getServerSideProps = (ctx: NextPageContext): { props: DefinePasseng
             collectedErrors.proofSelectInputError,
         );
     }
-    console.log(collectedErrors);
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(collectedErrors);
 
     return { props: { combinedErrors: collectedErrors.combinedErrors, fieldsets } };

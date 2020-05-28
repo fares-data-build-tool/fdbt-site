@@ -157,30 +157,24 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
     );
 };
 
+const isRadioWithConditionalInputs = (
+    radioButton: RadioWithConditionalInputs | RadioWithoutConditionals,
+): radioButton is RadioWithConditionalInputs => {
+    return (radioButton as RadioWithConditionalInputs).hint !== undefined;
+};
+
 const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     const radioButtonLabel: ReactElement = (
         <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
             {radio.label}
         </label>
     );
-    if (
-        (radio as RadioWithConditionalInputs).dataAriaControls !== undefined &&
-        (radio as RadioWithConditionalInputs).inputs !== undefined &&
-        (radio as RadioWithConditionalInputs).hint !== undefined
-    ) {
-        const radioButton = radio as RadioWithConditionalInputs;
-        return renderConditionalRadioButton(radioButton, radioButtonLabel);
+    if (isRadioWithConditionalInputs(radio)) {
+        return renderConditionalRadioButton(radio, radioButtonLabel);
     }
-    const radioButton = radio as RadioWithoutConditionals;
     return (
         <div className="govuk-radios__item">
-            <input
-                className="govuk-radios__input"
-                id={radioButton.id}
-                name={radioButton.name}
-                type="radio"
-                value={radioButton.value}
-            />
+            <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
             {radioButtonLabel}
         </div>
     );

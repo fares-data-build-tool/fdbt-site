@@ -71,18 +71,14 @@ describe('RadioConditionalInput', () => {
                 ],
                 inputErrors,
             };
-            const texInputElement: ReactElement = renderConditionalTextInput(mockRadio);
+            const textInputElements: ReactElement = renderConditionalTextInput(mockRadio);
+            const ageRangeMinTextInput = textInputElements.props.children[1][0];
+            const ageRangeMinFormElementWrapper = ageRangeMinTextInput.props.children[1];
 
-            // Expect the wrapper around the text input fields to have only the 'govuk-radios__conditional' class attached.
-            expect(texInputElement.props.className).toBe('govuk-radios__conditional');
-            // Expect the text input for 'age-range-min' to have an attached 'govuk-form-group--error' class.
-            expect(texInputElement.props.children[1][0].props.className).toBe(
-                'govuk-form-group govuk-form-group--error',
-            );
-            // Expect the FormElementWrapper around the text input for 'age-range-min' to have access to the input errors.
-            expect(texInputElement.props.children[1][0].props.children[1].props.errors).toBe(inputErrors);
-            // Expect the FormElementWrapper around the text input for 'age-rang-min' to have access to the error id of the only input error.
-            expect(texInputElement.props.children[1][0].props.children[1].props.errorId).toBe(inputErrors[0].id);
+            expect(textInputElements.props.className).toBe('govuk-radios__conditional');
+            expect(ageRangeMinTextInput.props.className).toBe('govuk-form-group govuk-form-group--error');
+            expect(ageRangeMinFormElementWrapper.props.errors).toBe(inputErrors);
+            expect(ageRangeMinFormElementWrapper.props.errorId).toBe(inputErrors[0].id);
         });
     });
 });
