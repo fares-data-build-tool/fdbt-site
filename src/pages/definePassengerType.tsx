@@ -135,13 +135,13 @@ export const collectErrors = (error: ExtractedValidationError, collectedErrors: 
         case 'ageRangeMin':
             collectedErrors.ageRangeInputErrors.push({
                 errorMessage: error.message,
-                id: 'define-passenger-age-range',
+                id: 'age-range-min',
             });
             break;
         case 'ageRangeMax':
             collectedErrors.ageRangeInputErrors.push({
                 errorMessage: error.message,
-                id: 'define-passenger-age-range',
+                id: 'age-range-max',
             });
             break;
         case 'proofDocuments':
@@ -215,6 +215,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: DefinePasseng
             collectedErrors.proofSelectInputError,
         );
     }
+    console.log(collectedErrors);
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(collectedErrors);
 
     return { props: { combinedErrors: collectedErrors.combinedErrors, fieldsets } };

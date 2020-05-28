@@ -2,13 +2,13 @@ import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../types';
 import FormElementWrapper from './FormElementWrapper';
 
-interface BaseElementAttributes {
+interface BaseElement {
     id: string;
     name: string;
     label: string;
 }
 
-export interface RadioWithoutConditionals extends BaseElementAttributes {
+export interface RadioWithoutConditionals extends BaseElement {
     value: string;
 }
 
@@ -19,7 +19,7 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
         content: string;
     };
     inputType: string;
-    inputs: BaseElementAttributes[];
+    inputs: BaseElement[];
     inputErrors: ErrorInfo[];
 }
 
@@ -38,25 +38,34 @@ export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
 }
 
-const renderConditionalTextInput = (radio: RadioWithConditionalInputs): ReactElement => {
+const createErrorId = (input: BaseElement, inputErrors: ErrorInfo[]): string => {
+    const el = inputErrors.find(({ id }) => id === input.id);
+    if (el) {
+        return el.id;
+    }
+    return '';
+};
+
+export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): ReactElement => {
     const error = radio.inputErrors.length > 0;
     return (
         <div
-            className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
+            className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
             <span className="govuk-hint" id={radio.hint.id}>
                 {radio.hint.content}
             </span>
-            {radio.inputs.map((input, index) => {
+            {radio.inputs.map(input => {
+                const errorId = createErrorId(input, radio.inputErrors);
                 return (
-                    <div className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}>
+                    <div className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}>
                         <label className="govuk-label" htmlFor={input.id}>
                             {input.label}
                         </label>
                         <FormElementWrapper
                             errors={radio.inputErrors}
-                            errorId={error ? radio.inputErrors[index].id : ''}
+                            errorId={errorId}
                             errorClass="govuk-input--error"
                         >
                             <input

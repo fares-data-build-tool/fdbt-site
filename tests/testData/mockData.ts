@@ -2078,11 +2078,11 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 inputErrors: [
                     {
                         errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
+                        id: 'age-range-min',
                     },
                     {
                         errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
+                        id: 'age-range-max',
                     },
                 ],
             },
@@ -2149,10 +2149,10 @@ export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
     },
     {
         errorMessage: 'Enter a minimum or maximum age',
-        id: 'define-passenger-age-range',
+        id: 'age-range-min',
     },
     {
         errorMessage: 'Enter a minimum or maximum age',
-        id: 'define-passenger-age-range',
+        id: 'age-range-max',
     },
 ];
