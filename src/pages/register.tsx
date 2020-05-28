@@ -19,13 +19,14 @@ export interface InputCheck {
 interface RegisterProps {
     inputChecks: InputCheck[];
     errors: ErrorInfo[];
+    regKey: string;
 }
 
-const Register = ({ inputChecks, errors }: RegisterProps): ReactElement => {
+const Register = ({ inputChecks, errors, regKey }: RegisterProps): ReactElement => {
     let email = '';
     let nocCode = '';
 
-    inputChecks.forEach((input: InputCheck) => {
+    inputChecks?.forEach((input: InputCheck) => {
         if (input.id === 'email') {
             email = input.inputValue;
         } else if (input.id === 'nocCode') {
@@ -164,6 +165,7 @@ const Register = ({ inputChecks, errors }: RegisterProps): ReactElement => {
                                 id="create-account-button"
                                 className="govuk-button"
                             />
+                            <input value={regKey} type="hidden" name="regKey" />
                         </form>
                     </div>
                     <div className="govuk-grid-column-one-thirds">
@@ -184,6 +186,9 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const errors: ErrorInfo[] = [];
 
+    console.log('ct query', ctx.query);
+    const { key } = ctx.query;
+
     if (userCookie) {
         const userCookieParsed = JSON.parse(userCookie);
         const { inputChecks } = userCookieParsed;
@@ -195,10 +200,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
             return errors;
         });
 
-        return { props: { inputChecks, errors } };
+        return { props: { inputChecks, errors, regKey: key } };
     }
 
-    return { props: { errors } };
+    return { props: { errors, regKey: key } };
 };
 
 export default Register;

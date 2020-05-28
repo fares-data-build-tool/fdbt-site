@@ -193,6 +193,11 @@ exports[`pages register should render correctly 1`] = `
             type="submit"
             value="Create account"
           />
+          <input
+            name="regKey"
+            type="hidden"
+            value="abcdefg"
+          />
         </form>
       </div>
       <div
@@ -436,6 +441,11 @@ exports[`pages register should render error messaging when errors are passed 1`]
             type="submit"
             value="Create account"
           />
+          <input
+            name="regKey"
+            type="hidden"
+            value="abcdefg"
+          />
         </form>
       </div>
       <div
@@ -678,6 +688,11 @@ exports[`pages register should store email if entered correctly but other fields
             name="createAccount"
             type="submit"
             value="Create account"
+          />
+          <input
+            name="regKey"
+            type="hidden"
+            value="abcdefg"
           />
         </form>
       </div>

@@ -5,7 +5,7 @@ import Register from '../../src/pages/register';
 describe('pages', () => {
     describe('register', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Register inputChecks={[]} errors={[]} />);
+            const tree = shallow(<Register inputChecks={[]} regKey="abcdefg" errors={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -13,6 +13,7 @@ describe('pages', () => {
             const tree = shallow(
                 <Register
                     inputChecks={[]}
+                    regKey="abcdefg"
                     errors={[
                         {
                             errorMessage: 'Enter an email address in the correct format, like name@example.com',
@@ -28,6 +29,7 @@ describe('pages', () => {
             const tree = shallow(
                 <Register
                     inputChecks={[{ inputValue: 'test@tfn.com', error: '', id: 'email' }]}
+                    regKey="abcdefg"
                     errors={[
                         {
                             errorMessage: 'Enter valid nocCode',
