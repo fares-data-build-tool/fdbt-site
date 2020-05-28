@@ -5,12 +5,25 @@ exports[`_document should render correctly 1`] = `
   className="govuk-template app-html-class flexbox no-flexboxtweener"
   lang="en"
 >
-  <Head />
+  <Head
+    nonce=""
+  />
   <body
-    className="govuk-template__body app-body-class"
+    className="govuk-template__body app-body-class js-enabled"
   >
     <Main />
-    <NextScript />
+    <NextScript
+      nonce=""
+    />
+    <script
+      nonce=""
+      src="/scripts/all.js"
+    />
+    <script
+      nonce=""
+    >
+      window.GOVUKFrontend.initAll()
+    </script>
   </body>
 </Html>
 `;

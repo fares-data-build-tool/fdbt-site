@@ -1,21 +1,38 @@
 import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document';
 import React, { ReactElement } from 'react';
+import { ServerResponse } from 'http';
 
-class MyDocument extends Document {
-    static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
+interface DocumentProps extends DocumentInitialProps {
+    nonce: string;
+}
+
+interface ResponseWithLocals extends ServerResponse {
+    locals: {
+        nonce: string;
+    };
+}
+
+class MyDocument extends Document<{ nonce: string }> {
+    static async getInitialProps(ctx: DocumentContext): Promise<DocumentProps> {
         const initialProps = await Document.getInitialProps(ctx);
-        ctx.res?.setHeader('X-Content-Type-Options', 'nosniff');
-        ctx.res?.setHeader('X-Frame-Options', 'DENY');
-        return { ...initialProps };
+        const nonce = (ctx.res as ResponseWithLocals)?.locals?.nonce ?? null;
+
+        if (ctx.pathname !== '/') {
+            ctx.res?.setHeader('X-Robots-Tag', 'none, noindex, nofollow, noimageindex, noarchive');
+        }
+
+        return { ...initialProps, nonce };
     }
 
     render(): ReactElement {
         return (
             <Html lang="en" className="govuk-template app-html-class flexbox no-flexboxtweener">
-                <Head />
-                <body className="govuk-template__body app-body-class">
+                <Head nonce={this.props.nonce} />
+                <body className="govuk-template__body app-body-class js-enabled">
                     <Main />
-                    <NextScript />
+                    <NextScript nonce={this.props.nonce} />
+                    <script src="/scripts/all.js" nonce={this.props.nonce} />
+                    <script nonce={this.props.nonce}>window.GOVUKFrontend.initAll()</script>
                 </body>
             </Html>
         );

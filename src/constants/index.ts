@@ -1,6 +1,8 @@
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
-export const FARETYPE_COOKIE = 'fdbt-fareType';
+export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
+
+export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
 
 export const SERVICE_COOKIE = 'fdbt-service';
 
@@ -46,7 +48,8 @@ export const USER_COOKIE = 'fdbt-user';
 
 export const ALL_COOKIES: string[] = [
     'fdbt-operator',
-    'fdbt-fareType',
+    'fdbt-fare-type',
+    'fdbt-passenger-type',
     'fdbt-service',
     'fdbt-journey',
     'fdbt-fare-stages',
@@ -87,6 +90,3 @@ export const STAGE = process.env.STAGE || 'dev';
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
-export const STATIC_FILES_PATH = process.env.STATIC_FILES_BUCKET_URL
-    ? `https://${process.env.STATIC_FILES_BUCKET_URL}`
-    : '';

@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
-import { OPERATOR_COOKIE } from '../../../constants';
+import { Request, Response } from 'express';
+import { OPERATOR_COOKIE, FARE_TYPE_COOKIE } from '../../../constants';
 
 export const getDomain = (req: NextApiRequest): string => {
     const host = req?.headers?.host;
@@ -45,10 +46,11 @@ export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string
     return unescape(decodeURI(cookies.get(cookieToDecode) || ''));
 };
 
-export const getUuidFromCookie = (req: NextApiRequest, res: NextApiResponse): string => {
+export const getUuidFromCookie = (req: NextApiRequest | Request, res: NextApiResponse | Response): string => {
     const cookies = new Cookies(req, res);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-    return JSON.parse(operatorCookie).uuid;
+
+    return operatorCookie ? JSON.parse(operatorCookie).uuid : '';
 };
 
 export const redirectTo = (res: NextApiResponse | ServerResponse, location: string): void => {
@@ -61,4 +63,31 @@ export const redirectTo = (res: NextApiResponse | ServerResponse, location: stri
 export const redirectToError = (res: NextApiResponse | ServerResponse, message: string, error: Error): void => {
     console.error(message, error.stack);
     redirectTo(res, '/error');
+};
+
+export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
+    const cookies = new Cookies(req, res);
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const { fareType } = JSON.parse(fareTypeCookie);
+
+    if (fareType) {
+        switch (fareType) {
+            case 'period':
+                redirectTo(res, '/periodType');
+                return;
+            case 'single':
+                redirectTo(res, '/service');
+                return;
+            case 'return':
+                redirectTo(res, '/service');
+                return;
+            case 'flatFare':
+                redirectTo(res, '/serviceList');
+                return;
+            default:
+                throw new Error('Fare Type we expect was not received.');
+        }
+    } else {
+        throw new Error('Could not extract fareType from the FARE_TYPE_COOKIE.');
+    }
 };

@@ -1,9 +1,16 @@
 import Cookies from 'cookies';
-import { getDomain, setCookieOnResponseObject, getUuidFromCookie } from '../../../../src/pages/api/apiUtils';
+import {
+    getDomain,
+    setCookieOnResponseObject,
+    getUuidFromCookie,
+    redirectOnFareType,
+} from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
 
 describe('apiUtils', () => {
+    const writeHeadMock = jest.fn();
+
     beforeEach(() => {
         jest.spyOn(s3, 'putStringInS3');
 
@@ -46,6 +53,48 @@ describe('apiUtils', () => {
             });
             const result = getUuidFromCookie(req, res);
             expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
+        });
+    });
+
+    describe('redirectOnFareType', () => {
+        it('should return 302 redirect to /service when the single ticket option is selected', () => {
+            const { req, res } = getMockRequestAndResponse({ fareType: 'single' }, {}, {}, writeHeadMock);
+            redirectOnFareType(req, res);
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/service',
+            });
+        });
+
+        it('should return 302 redirect to /service when the return ticket option is selected', () => {
+            const { req, res } = getMockRequestAndResponse({ fareType: 'return' }, {}, {}, writeHeadMock);
+            redirectOnFareType(req, res);
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/service',
+            });
+        });
+
+        it('should return 302 redirect to /periodType when the period ticket option is selected', () => {
+            const { req, res } = getMockRequestAndResponse({ fareType: 'period' }, {}, {}, writeHeadMock);
+            redirectOnFareType(req, res);
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/periodType',
+            });
+        });
+
+        it('should return 302 redirect to /serviceList when the flat fare ticket option is selected', () => {
+            const { req, res } = getMockRequestAndResponse({ fareType: 'flatFare' }, {}, {}, writeHeadMock);
+            redirectOnFareType(req, res);
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/serviceList',
+            });
+        });
+
+        it('should throw error if unexpected fare type is selected', () => {
+            const { req, res } = getMockRequestAndResponse({ fareType: 'roundabout' }, null, {}, writeHeadMock);
+
+            expect(() => {
+                redirectOnFareType(req, res);
+            }).toThrowError(new Error('Fare Type we expect was not received.'));
         });
     });
 });

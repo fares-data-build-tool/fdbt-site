@@ -15,21 +15,43 @@ describe('pages', () => {
         });
 
         it('should render correctly', () => {
-            const tree = shallow(<SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />);
+            const tree = shallow(
+                <SingleDirection
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    lineName="X6A"
+                    service={mockService}
+                    error={[]}
+                />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('shows operator name above the select box', () => {
             const wrapper = shallow(
-                <SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />,
+                <SingleDirection
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    lineName="X6A"
+                    service={mockService}
+                    error={[]}
+                />,
             );
-            const journeyWelcome = wrapper.find('#direction-operator-linename-hint').first();
+            const journeyWelcome = wrapper.find('#direction-operator-linename-passengertype-hint').first();
 
-            expect(journeyWelcome.text()).toBe('Connexions Buses - X6A');
+            expect(journeyWelcome.text()).toBe('Connexions Buses - X6A - Adult');
         });
 
         it('shows a list of journey patterns for the service in the select box', () => {
-            const wrapper = mount(<SingleDirection operator="Connexions Buses" lineName="X6A" service={mockService} />);
+            const wrapper = mount(
+                <SingleDirection
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    lineName="X6A"
+                    service={mockService}
+                    error={[]}
+                />,
+            );
 
             const serviceJourney = wrapper.find('.journey-option');
 
@@ -40,40 +62,23 @@ describe('pages', () => {
 
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
-            const operator = 'HCTY';
-            const lineName = 'X6A';
 
-            const ctx = getMockContext({ operator, serviceLineName: lineName });
+            const ctx = getMockContext();
 
             const result = await getServerSideProps(ctx);
 
-            expect(result).toEqual({
-                props: {
-                    operator,
-                    lineName,
-                    service: mockService,
-                },
-            });
+            expect(result.props.service).toEqual(mockService);
         });
 
         it('removes journeys that have the same start and end points before rendering', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
                 () => mockRawServiceWithDuplicates,
             ));
-            const operator = 'HCTY';
-            const lineName = 'X6A';
 
-            const ctx = getMockContext({ operator, serviceLineName: lineName });
+            const ctx = getMockContext();
 
             const result = await getServerSideProps(ctx);
-
-            expect(result).toEqual({
-                props: {
-                    operator,
-                    lineName,
-                    service: mockService,
-                },
-            });
+            expect(result.props.service).toEqual(mockService);
         });
 
         it('throws an error if no journey patterns can be found', async () => {

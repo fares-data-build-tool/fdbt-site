@@ -1,11 +1,24 @@
 const withPlugins = require('next-compose-plugins');
 const withImages = require('next-images');
-const withFonts = require('next-fonts');
 const { Amplify } = require('@aws-amplify/core');
 
 const nextConfig = {
     target: 'server',
-    webpack: function(config) {
+    poweredByHeader: false,
+    webpack: config => {
+        config.module.rules.push({
+            test: /\.(pdf|csv)$/,
+            use: {
+                loader: 'file-loader',
+                options: {
+                    publicPath: '/_next/static/files/',
+                    outputPath: '../static/files/',
+                    name: '[name]-[contentHash:8].[ext]',
+                    esModule: false,
+                },
+            },
+        });
+
         const originalEntry = config.entry;
         config.entry = async () => {
             const entries = await originalEntry();
@@ -18,8 +31,9 @@ const nextConfig = {
             });
             return entries;
         };
+
         return config;
     },
 };
 
-module.exports = withPlugins([[withFonts], [withImages]], nextConfig);
+module.exports = withPlugins([[withImages]], nextConfig);
