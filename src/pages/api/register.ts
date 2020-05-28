@@ -75,7 +75,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
                 await Auth.completeNewPassword(user, password, { 'custom:test-noc': nocCode });
                 await Auth.signOut({ global: true });
-                redirectTo(res, '/confirmRegister');
+                redirectTo(res, '/confirmRegistration');
             }
         } catch (error) {
             inputChecks.push({
