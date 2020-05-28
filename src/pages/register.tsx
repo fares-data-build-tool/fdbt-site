@@ -11,9 +11,9 @@ const title = 'Create Account - Fares data build tool';
 const description = 'Create Account page of the Fares data build tool';
 
 export interface InputCheck {
-    error: string;
-    inputValue: string;
     id: string;
+    inputValue: string;
+    error: string;
 }
 
 interface RegisterProps {

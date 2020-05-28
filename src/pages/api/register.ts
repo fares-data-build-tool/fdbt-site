@@ -54,14 +54,16 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             error: nocCode === '' ? 'NOC Code cannot be empty' : '',
         });
 
-        const servicesForNoc = await getServicesByNocCode(nocCode);
+        if (nocCode !== '') {
+            const servicesForNoc = await getServicesByNocCode(nocCode);
 
-        if (servicesForNoc.length === 0) {
-            inputChecks.push({
-                inputValue: nocCode,
-                id: 'nocCode',
-                error: nocCode === '' ? 'There was a problem logging you in' : '',
-            });
+            if (servicesForNoc.length === 0) {
+                inputChecks.push({
+                    inputValue: '',
+                    id: 'email',
+                    error: 'There was a problem logging you in',
+                });
+            }
         }
 
         if (inputChecks.some(el => el.error !== '')) {
@@ -73,9 +75,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const user = await Auth.signIn(email, regKey);
 
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-                await Auth.completeNewPassword(user, password, { 'custom:test-noc': nocCode });
+                await Auth.completeNewPassword(user, password, { 'custom:noc': nocCode });
                 await Auth.signOut({ global: true });
-                redirectTo(res, '/confirmRegister');
+                redirectTo(res, '/confirmRegistration');
             }
         } catch (error) {
             inputChecks.push({
