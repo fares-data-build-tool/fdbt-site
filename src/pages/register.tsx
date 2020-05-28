@@ -186,7 +186,6 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const errors: ErrorInfo[] = [];
 
-    console.log('ct query', ctx.query);
     const { key } = ctx.query;
 
     if (userCookie) {
