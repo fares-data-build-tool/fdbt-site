@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react';
-import { NextPage } from 'next';
+import { NextPage, NextPageContext } from 'next';
 import Layout from '../layout/Layout';
+import { deleteCookieOnServerSide } from '../utils';
+import { USER_COOKIE } from '../constants';
 
 const title = 'Registration Successful - Fares Data Build Tool';
 const description = 'Confirm Registration page for the Fares Data Build Tool';
@@ -23,5 +25,10 @@ const ConfirmRegistration: NextPage = (): ReactElement => (
         </main>
     </Layout>
 );
+
+export const getServerSideProps = (ctx: NextPageContext): {} => {
+    deleteCookieOnServerSide(ctx, USER_COOKIE);
+    return { props: {} };
+};
 
 export default ConfirmRegistration;
