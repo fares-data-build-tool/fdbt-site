@@ -1,6 +1,5 @@
 import definePassengerType, {
     passengerTypeDetailsSchema,
-    secondaryAgeRangeInputSchema,
     removeWhitespaceFromTextInput,
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
@@ -24,13 +23,14 @@ describe('definePassengerType', () => {
             [{ proof: 'Yes' }, false],
             [{ ageRange: 'Yes', proof: 'No' }, false],
             [{ ageRange: 'No', proof: 'Yes' }, false],
-            [{ ageRange: 'Yes', ageRangeMin: '', ageRangeMax: '', proof: 'No' }, false],
+            [{ ageRange: 'Yes', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: '11', ageRangeMax: 'daddy', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: 'asda', ageRangeMax: 'tesco', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: '-12', ageRangeMax: '12', proof: 'No' }, false],
             [{ ageRange: 'Yes', ageRangeMin: '1.23453', ageRangeMax: '12', proof: 'No' }, false],
+            [{ ageRange: 'Yes', ageRangeMin: '50', ageRangeMax: '25', proof: 'No' }, false],
             [{ ageRange: 'No', proof: 'No' }, true],
-            [{ ageRange: 'Yes', ageRangeMin: '10', ageRangeMax: '', proof: 'No' }, true],
+            [{ ageRange: 'Yes', ageRangeMin: '10', proof: 'No' }, true],
             [{ ageRange: 'Yes', ageRangeMin: '12', ageRangeMax: '140', proof: 'No' }, true],
             [{ ageRange: 'No', proof: 'Yes', proofDocuments: ['Membership Card', 'Student Card'] }, true],
             [
@@ -45,17 +45,6 @@ describe('definePassengerType', () => {
             ],
         ])('should validate that %s is %s', (candidate, validity) => {
             const result = passengerTypeDetailsSchema.isValidSync(candidate);
-            expect(result).toEqual(validity);
-        });
-    });
-
-    describe('secondaryAgeRangeInputSchema', () => {
-        it.each([
-            [{ ageRangeMin: '0', ageRangeMax: '150' }, true],
-            [{ ageRangeMin: '12', ageRangeMax: '100' }, true],
-            [{ ageRangeMin: '112', ageRangeMax: '100' }, false],
-        ])('should validate that %s is %s', (candidate, validity) => {
-            const result = secondaryAgeRangeInputSchema.isValidSync(candidate);
             expect(result).toEqual(validity);
         });
     });
