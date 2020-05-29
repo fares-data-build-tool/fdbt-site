@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         inputChecks.push({
             inputValue: nocCode,
             id: 'nocCode',
-            error: nocCode === '' ? 'NOC Code cannot be empty' : '',
+            error: nocCode === '' ? 'NOC cannot be empty' : '',
         });
 
         if (nocCode !== '') {
@@ -77,9 +77,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
                 await Auth.completeNewPassword(user, password, { 'custom:noc': nocCode });
                 await Auth.signOut({ global: true });
+                console.info('registration successful');
                 redirectTo(res, '/confirmRegistration');
             }
         } catch (error) {
+            console.warn('registration failed', error.code);
             inputChecks.push({
                 inputValue: '',
                 id: 'email',

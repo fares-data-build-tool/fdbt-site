@@ -6,6 +6,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
+import { redirectTo } from './api/apiUtils';
 
 const title = 'Create Account - Fares data build tool';
 const description = 'Create Account page of the Fares data build tool';
@@ -187,6 +188,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const errors: ErrorInfo[] = [];
 
     const { key } = ctx.query;
+
+    if (!key && ctx.res) {
+        redirectTo(ctx.res, '/requestAccess');
+    }
 
     if (userCookie) {
         const userCookieParsed = JSON.parse(userCookie);

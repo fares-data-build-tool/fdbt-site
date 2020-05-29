@@ -194,7 +194,7 @@ describe('register', () => {
                     error: '',
                 },
                 { inputValue: '', id: 'password', error: '' },
-                { inputValue: '', id: 'nocCode', error: 'NOC Code cannot be empty' },
+                { inputValue: '', id: 'nocCode', error: 'NOC cannot be empty' },
             ],
         };
 

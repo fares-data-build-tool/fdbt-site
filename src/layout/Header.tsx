@@ -31,9 +31,6 @@ const Header: FC = () => (
                     Fares Data Build Tool
                 </a>
             </div>
-            <a href="/signIn" id="sign_in_link" className="govuk-header__link signIn govuk-heading-s ">
-                Sign In
-            </a>
         </div>
     </header>
 );
