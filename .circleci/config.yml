@@ -96,7 +96,7 @@ workflows:
       - build-site:
           requires:
             - audit-site
-          context: tfn-fdbt-test
+          context: tfn-fdbt-build-test
           name: build-site-test
           filters:
             branches:
@@ -105,7 +105,7 @@ workflows:
       - build-site:
           requires:
             - audit-site
-          context: tfn-fdbt-preprod
+          context: tfn-fdbt-build-preprod
           name: build-site-preprod
           filters:
             branches:
