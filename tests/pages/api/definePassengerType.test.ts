@@ -1,5 +1,6 @@
 import definePassengerType, {
     passengerTypeDetailsSchema,
+    secondaryAgeRangeInputSchema,
     removeWhitespaceFromTextInput,
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
@@ -48,6 +49,17 @@ describe('definePassengerType', () => {
         });
     });
 
+    describe('secondaryAgeRangeInputSchema', () => {
+        it.each([
+            [{ ageRangeMin: '0', ageRangeMax: '150' }, true],
+            [{ ageRangeMin: '12', ageRangeMax: '100' }, true],
+            [{ ageRangeMin: '112', ageRangeMax: '100' }, false],
+        ])('should validate that %s is %s', (candidate, validity) => {
+            const result = secondaryAgeRangeInputSchema.isValidSync(candidate);
+            expect(result).toEqual(validity);
+        });
+    });
+
     describe('removeWhitespaceFromTextInput', () => {
         it('should remove whitespace from the request body text inputs of ageRangeMin and ageRangeMax', () => {
             const { req } = getMockRequestAndResponse({}, { ageRangeMin: '   2   4', ageRangeMax: '   10   0       ' });
@@ -76,8 +88,8 @@ describe('definePassengerType', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockPassengerTypeDetails = {
             ageRange: 'Yes',
-            ageRangeMin: '1',
-            ageRangeMax: '100',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
             proof: 'Yes',
             proofDocuments: ['Membership Card', 'Student Card'],
         };
@@ -101,10 +113,16 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set the PASSENGER_TYPE_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-        const mockPassengerTypeCookieValue = {
-            errors: [
+    it.each([
+        [
+            {
+                ageRange: 'Yes',
+                ageRangeMin: '',
+                ageRangeMax: '',
+                proof: 'Yes',
+                proofDocuments: [],
+            },
+            [
                 {
                     input: 'ageRangeMax',
                     message: 'Enter a minimum or maximum age',
@@ -118,30 +136,45 @@ describe('definePassengerType', () => {
                     message: 'Select at least one proof document',
                 },
             ],
-            passengerType: 'Adult',
-        };
-        const { req, res } = getMockRequestAndResponse(
-            {},
+        ],
+        [
             {
                 ageRange: 'Yes',
-                ageRangeMin: '',
-                ageRangeMax: '',
-                proof: 'Yes',
-                proofDocuments: [],
+                ageRangeMin: '25',
+                ageRangeMax: '12',
+                proof: 'No',
             },
-            {},
-            writeHeadMock,
-        );
-        await definePassengerType(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            PASSENGER_TYPE_COOKIE,
-            JSON.stringify(mockPassengerTypeCookieValue),
-            req,
-            res,
-        );
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/definePassengerType',
-        });
-    });
+            [
+                {
+                    input: 'ageRangeMax',
+                    message: 'Maximum age cannot be less than minimum age',
+                },
+                {
+                    input: 'ageRangeMin',
+                    message: 'Minimum age cannot be greater than maximum age',
+                },
+            ],
+        ],
+    ])(
+        'should set the PASSENGER_TYPE_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
+        async (mockUserInput, errors) => {
+            const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+            const mockPassengerTypeCookieValue = {
+                errors,
+                passengerType: 'Adult',
+            };
+            const { req, res } = getMockRequestAndResponse({}, mockUserInput, {}, writeHeadMock);
+            await definePassengerType(req, res);
+            expect(setCookieSpy).toHaveBeenCalledWith(
+                'localhost',
+                PASSENGER_TYPE_COOKIE,
+                JSON.stringify(mockPassengerTypeCookieValue),
+                req,
+                res,
+            );
+            expect(writeHeadMock).toBeCalledWith(302, {
+                Location: '/definePassengerType',
+            });
+        },
+    );
 });

@@ -24,7 +24,7 @@ const ageRangeValidityError = 'Enter a whole number between 0-150';
 const ageRangeInputError = 'Enter a minimum or maximum age';
 const proofSelectionError = 'Select at least one proof document';
 
-const ageRangeInputSchema = yup
+const primaryAgeRangeInputSchema = yup
     .string()
     .matches(validAgeInputRegex, { message: ageRangeValidityError, excludeEmptyString: true })
     .required(ageRangeInputError);
@@ -45,11 +45,11 @@ export const passengerTypeDetailsSchema = yup
                 .string()
                 .when('ageRangeMax', {
                     is: ageRangeMaxValue => !!ageRangeMaxValue,
-                    then: ageRangeInputSchema.notRequired(),
+                    then: primaryAgeRangeInputSchema.notRequired(),
                 })
                 .when('ageRangeMax', {
                     is: ageRangeMaxValue => !ageRangeMaxValue,
-                    then: ageRangeInputSchema,
+                    then: primaryAgeRangeInputSchema,
                 }),
         }),
         ageRangeMax: yup.string().when('ageRange', {
@@ -58,16 +58,27 @@ export const passengerTypeDetailsSchema = yup
                 .string()
                 .when('ageRangeMin', {
                     is: ageRangeMinValue => !!ageRangeMinValue,
-                    then: ageRangeInputSchema.notRequired(),
+                    then: primaryAgeRangeInputSchema.notRequired(),
                 })
                 .when('ageRangeMin', {
                     is: ageRangeMinValue => !ageRangeMinValue,
-                    then: ageRangeInputSchema,
+                    then: primaryAgeRangeInputSchema,
                 }),
         }),
         proofDocuments: yup.string().when('proof', { is: 'Yes', then: yup.string().required(proofSelectionError) }),
     })
     .required();
+
+export const secondaryAgeRangeInputSchema = yup.object({
+    ageRangeMax: yup
+        .number()
+        .typeError(ageRangeValidityError)
+        .moreThan(yup.ref('ageRangeMin'), 'Maximum age cannot be less than minimum age'),
+    ageRangeMin: yup
+        .number()
+        .typeError(ageRangeValidityError)
+        .lessThan(yup.ref('ageRangeMax'), 'Minimum age cannot be greater than maximum age'),
+});
 
 export const removeWhitespaceFromTextInput = (req: NextApiRequest): { [key: string]: string } => {
     const filteredReqBody: { [key: string]: string } = {};
@@ -81,6 +92,24 @@ export const removeWhitespaceFromTextInput = (req: NextApiRequest): { [key: stri
         filteredReqBody[entry[0]] = entry[1] as string;
     });
     return filteredReqBody;
+};
+
+export const runSecondValidation = async (filteredReqBody: {
+    [key: string]: string;
+}): Promise<ExtractedValidationError[]> => {
+    let secondaryErrors: ExtractedValidationError[] = [];
+    if (filteredReqBody.ageRangeMin && filteredReqBody.ageRangeMax) {
+        try {
+            await secondaryAgeRangeInputSchema.validate(filteredReqBody, { abortEarly: false });
+        } catch (secondaryValidationError) {
+            const validityErrors: yup.ValidationError = secondaryValidationError;
+            secondaryErrors = validityErrors.inner.map(error => ({
+                input: error.path,
+                message: error.message,
+            }));
+        }
+    }
+    return secondaryErrors;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -102,23 +131,29 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Could not extract the relevant data from the request.');
         }
 
-        let errors: ExtractedValidationError[] = [];
+        let primaryValidationErrors: ExtractedValidationError[] = [];
+        let secondaryValidationErrors: ExtractedValidationError[] = [];
 
         const filteredReqBody = removeWhitespaceFromTextInput(req);
 
         try {
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
+            secondaryValidationErrors = await runSecondValidation(filteredReqBody);
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
-            errors = validityErrors.inner.map(error => ({ input: error.path, message: error.message }));
+            primaryValidationErrors = validityErrors.inner.map(error => ({
+                input: error.path,
+                message: error.message,
+            }));
         }
 
-        if (errors.length === 0) {
+        if (primaryValidationErrors.length === 0 && secondaryValidationErrors.length === 0) {
             const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
             setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
             redirectOnFareType(req, res);
             return;
         }
+        const errors = primaryValidationErrors.concat(secondaryValidationErrors);
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
         setCookieOnResponseObject(getDomain(req), PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/definePassengerType');
