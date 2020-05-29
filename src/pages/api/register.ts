@@ -5,7 +5,7 @@ import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../register';
 import { getServicesByNocCode } from '../../data/auroradb';
 
-const checkEmailValid = (email: string) => {
+const checkEmailValid = (email: string): boolean => {
     const emailRegex = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
     return emailRegex.test(email) && email !== '';
 };
@@ -23,7 +23,7 @@ const validatePassword = (password: string, confirmPassword: string): string => 
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookie = (inputChecks: InputCheck[], regKey: string) => {
+    const setErrorsCookie = (inputChecks: InputCheck[], regKey: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
         setCookieOnResponseObject(getDomain(req), USER_COOKIE, cookieContent, req, res);
         redirectTo(res, `/register?key=${regKey}`);
@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         inputChecks.push({
             inputValue: nocCode,
             id: 'nocCode',
-            error: nocCode === '' ? 'NOC cannot be empty' : '',
+            error: nocCode === '' ? 'National Operator Code cannot be empty' : '',
         });
 
         if (nocCode !== '') {
@@ -77,11 +77,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
                 await Auth.completeNewPassword(user, password, { 'custom:noc': nocCode });
                 await Auth.signOut({ global: true });
-                console.info('registration successful');
+                console.info('registration successful', { noc: nocCode });
                 redirectTo(res, '/confirmRegistration');
+            } else {
+                throw new Error(`unexpected challenge: ${user.challengeName}`);
             }
         } catch (error) {
-            console.warn('registration failed', error.code);
+            console.warn('registration failed', { error: error.message });
             inputChecks.push({
                 inputValue: '',
                 id: 'email',

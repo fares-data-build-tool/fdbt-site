@@ -20,6 +20,7 @@ describe('register', () => {
     const authSignInSpy = jest.spyOn(Auth, 'signIn');
     const authCompletePasswordSpy = jest.spyOn(Auth, 'completeNewPassword');
     const authSignOutSpy = jest.spyOn(Auth, 'signOut');
+    const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
     beforeEach(() => {
         getServicesByNocCodeSpy.mockImplementation(() =>
@@ -27,45 +28,30 @@ describe('register', () => {
         );
     });
 
-    const writeHeadMock = jest.fn();
-
-    it('should error if the email is not correct or empty', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            { email: '', password: 'abcdefghi', confirmPassword: 'abcdefghi', nocCode: 'DCCL', regKey: 'abcdefg' },
-            '',
-            writeHeadMock,
-        );
-
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    inputValue: '',
-                    id: 'email',
-                    error: 'Enter an email address in the correct format, like name@example.com',
-                },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'nocCode', error: '' },
-            ],
-        };
-
-        await register(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
+    afterEach(() => {
+        jest.resetAllMocks();
     });
 
-    it('should error if the password is less than 8 characters', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+    const writeHeadMock = jest.fn();
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
+    const cases = [
+        [
+            'empty email',
+            { email: '', password: 'abcdefghi', confirmPassword: 'abcdefghi', nocCode: 'DCCL', regKey: 'abcdefg' },
+            {
+                inputChecks: [
+                    {
+                        inputValue: '',
+                        id: 'email',
+                        error: 'Enter an email address in the correct format, like name@example.com',
+                    },
+                    { inputValue: '', id: 'password', error: '' },
+                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                ],
+            },
+        ],
+        [
+            'password less than 8 characters',
             {
                 email: 'test@test.com',
                 password: 'abchi',
@@ -73,70 +59,35 @@ describe('register', () => {
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
-            '',
-            writeHeadMock,
-        );
-
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    inputValue: 'test@test.com',
-                    id: 'email',
-                    error: '',
-                },
-                { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                { inputValue: 'DCCL', id: 'nocCode', error: '' },
-            ],
-        };
-
-        await register(req, res);
-
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
-    });
-
-    it('should error if the password is empty', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
-        const { req, res } = getMockRequestAndResponse(
-            {},
+            {
+                inputChecks: [
+                    {
+                        inputValue: 'test@test.com',
+                        id: 'email',
+                        error: '',
+                    },
+                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
+                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                ],
+            },
+        ],
+        [
+            'password is empty',
             { email: 'test@test.com', password: '', confirmPassword: 'abcdefghi', nocCode: 'DCCL', regKey: 'abcdefg' },
-            '',
-            writeHeadMock,
-        );
-
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    inputValue: 'test@test.com',
-                    id: 'email',
-                    error: '',
-                },
-                { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                { inputValue: 'DCCL', id: 'nocCode', error: '' },
-            ],
-        };
-
-        await register(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
-    });
-
-    it('should error if the password fields do not match', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
-        const { req, res } = getMockRequestAndResponse(
-            {},
+            {
+                inputChecks: [
+                    {
+                        inputValue: 'test@test.com',
+                        id: 'email',
+                        error: '',
+                    },
+                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
+                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                ],
+            },
+        ],
+        [
+            'passwords fields do not match',
             {
                 email: 'test@test.com',
                 password: 'abcdefghidddd',
@@ -144,37 +95,20 @@ describe('register', () => {
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
-            '',
-            writeHeadMock,
-        );
-
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    inputValue: 'test@test.com',
-                    id: 'email',
-                    error: '',
-                },
-                { inputValue: '', id: 'password', error: 'Passwords do not match' },
-                { inputValue: 'DCCL', id: 'nocCode', error: '' },
-            ],
-        };
-
-        await register(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
-    });
-
-    it('should error if the Noc code fields are empty', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
-        const { req, res } = getMockRequestAndResponse(
-            {},
+            {
+                inputChecks: [
+                    {
+                        inputValue: 'test@test.com',
+                        id: 'email',
+                        error: '',
+                    },
+                    { inputValue: '', id: 'password', error: 'Passwords do not match' },
+                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                ],
+            },
+        ],
+        [
+            'empty NOC field',
             {
                 email: 'test@test.com',
                 password: 'abcdefghidddd',
@@ -182,34 +116,34 @@ describe('register', () => {
                 nocCode: '',
                 regKey: 'abcdefg',
             },
-            '',
-            writeHeadMock,
-        );
+            {
+                inputChecks: [
+                    {
+                        inputValue: 'test@test.com',
+                        id: 'email',
+                        error: '',
+                    },
+                    { inputValue: '', id: 'password', error: '' },
+                    { inputValue: '', id: 'nocCode', error: 'National Operator Code cannot be empty' },
+                ],
+            },
+        ],
+    ];
 
-        const mockUserCookieValue = {
-            inputChecks: [
-                {
-                    inputValue: 'test@test.com',
-                    id: 'email',
-                    error: '',
-                },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: '', id: 'nocCode', error: 'NOC cannot be empty' },
-            ],
-        };
+    test.each(cases)('given %p, sets the correct error cookie', async (_, testData, expectedCookieValue) => {
+        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
 
         await register(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
             'localhost',
             USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
+            JSON.stringify(expectedCookieValue),
             req,
             res,
         );
     });
 
     it('should error when the service noc code is invalid', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
 
         const { req, res } = getMockRequestAndResponse(
@@ -282,8 +216,6 @@ describe('register', () => {
     });
 
     it('should error when the sign in fails', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
         authSignInSpy.mockImplementation(() => Promise.resolve());
 
         const mockUserCookieValue = {

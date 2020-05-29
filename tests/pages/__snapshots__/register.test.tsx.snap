@@ -67,7 +67,7 @@ exports[`pages register should render correctly 1`] = `
                     id="email"
                     name="email"
                     spellCheck="false"
-                    type="email"
+                    type="text"
                   />
                 </FormElementWrapper>
               </div>
@@ -126,7 +126,7 @@ exports[`pages register should render correctly 1`] = `
                   className="govuk-label"
                   htmlFor="nocCode"
                 >
-                  Enter a NOC code
+                  Enter your National Operator Code
                 </label>
                 <FormElementWrapper
                   errorClass="govuk-input--error"
@@ -301,7 +301,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                     id="email"
                     name="email"
                     spellCheck="false"
-                    type="email"
+                    type="text"
                   />
                 </FormElementWrapper>
               </div>
@@ -367,7 +367,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                   className="govuk-label"
                   htmlFor="nocCode"
                 >
-                  Enter a NOC code
+                  Enter your National Operator Code
                 </label>
                 <FormElementWrapper
                   errorClass="govuk-input--error"
@@ -549,7 +549,7 @@ exports[`pages register should store email if entered correctly but other fields
                     id="email"
                     name="email"
                     spellCheck="false"
-                    type="email"
+                    type="text"
                   />
                 </FormElementWrapper>
               </div>
@@ -615,7 +615,7 @@ exports[`pages register should store email if entered correctly but other fields
                   className="govuk-label"
                   htmlFor="nocCode"
                 >
-                  Enter a NOC code
+                  Enter your National Operator Code
                 </label>
                 <FormElementWrapper
                   errorClass="govuk-input--error"

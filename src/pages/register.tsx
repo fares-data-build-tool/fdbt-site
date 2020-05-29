@@ -63,7 +63,7 @@ const Register = ({ inputChecks, errors, regKey }: RegisterProps): ReactElement 
                                                 className="govuk-input"
                                                 id="email"
                                                 name="email"
-                                                type="email"
+                                                type="text"
                                                 aria-describedby="email-hint"
                                                 autoComplete="email"
                                                 spellCheck="false"
@@ -110,7 +110,7 @@ const Register = ({ inputChecks, errors, regKey }: RegisterProps): ReactElement 
                                     </div>
                                     <div className="govuk-form-group">
                                         <label className="govuk-label" htmlFor="nocCode">
-                                            Enter a NOC code
+                                            Enter your National Operator Code
                                         </label>
                                         <FormElementWrapper
                                             errors={errors}
