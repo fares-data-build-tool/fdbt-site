@@ -5,7 +5,7 @@ import Layout from '../layout/Layout';
 import { PASSENGER_TYPE_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, buildTitle, unescapeAndDecodeCookieServerSide } from '../utils/index';
+import { buildTitle, deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'Passenger Type - Fares Data Build Tool';
@@ -28,9 +28,9 @@ const passengerTypesList: PassengerAttributes[] = [
     { passengerType: 'Child', greyedOut: false },
     { passengerType: 'Infant', greyedOut: false },
     { passengerType: 'Senior', greyedOut: false },
-    { passengerType: 'School Pupil', greyedOut: true },
     { passengerType: 'Student', greyedOut: false },
     { passengerType: 'Young Person', greyedOut: false },
+    { passengerType: 'School Pupil', greyedOut: true },
     { passengerType: 'Disabled', greyedOut: true },
     { passengerType: 'Disabled Companion', greyedOut: true },
     { passengerType: 'Employee', greyedOut: true },
@@ -99,7 +99,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[PASSENGER_TYPE_COOKIE]) {
-        const passengerTypeCookie = unescapeAndDecodeCookieServerSide(cookies, PASSENGER_TYPE_COOKIE);
+        const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
         const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
 
         if (parsedPassengerTypeCookie.errorMessage) {
