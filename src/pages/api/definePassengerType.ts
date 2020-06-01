@@ -21,20 +21,20 @@ const radioButtonError = 'Choose one of the options below';
 const ageRangeValidityError = 'Enter a whole number between 0-150';
 const ageRangeInputError = 'Enter a minimum or maximum age';
 const proofSelectionError = 'Select at least one proof document';
+const maxAgeLessThanMinError = 'Maximum age cannot be less than minimum age';
+const minAgeGreaterThanMaxError = 'Minimum age cannot be greater than maximum age';
 
 const primaryAgeRangeMaxInputSchema = yup
     .number()
     .typeError(ageRangeValidityError)
     .integer(ageRangeValidityError)
-    .min(0, ageRangeValidityError)
     .max(150, ageRangeValidityError);
 
 const primaryAgeRangeMinInputSchema = yup
     .number()
     .typeError(ageRangeValidityError)
     .integer(ageRangeValidityError)
-    .min(0, ageRangeValidityError)
-    .max(150, ageRangeValidityError);
+    .min(0, ageRangeValidityError);
 
 export const passengerTypeDetailsSchema = yup
     .object({
@@ -53,12 +53,12 @@ export const passengerTypeDetailsSchema = yup
                 .when('ageRangeMax', {
                     is: ageRangeMaxValue => !!ageRangeMaxValue,
                     then: primaryAgeRangeMinInputSchema
-                        .lessThan(yup.ref('ageRangeMax'), 'Minimum age cannot be greater than maximum age')
+                        .max(yup.ref('ageRangeMax'), minAgeGreaterThanMaxError)
                         .notRequired(),
                 })
                 .when('ageRangeMax', {
                     is: ageRangeMaxValue => !ageRangeMaxValue,
-                    then: primaryAgeRangeMinInputSchema.required(ageRangeInputError),
+                    then: primaryAgeRangeMinInputSchema.max(150, ageRangeValidityError).required(ageRangeInputError),
                 }),
         }),
         ageRangeMax: yup.number().when('ageRange', {
@@ -68,12 +68,12 @@ export const passengerTypeDetailsSchema = yup
                 .when('ageRangeMin', {
                     is: ageRangeMinValue => !!ageRangeMinValue,
                     then: primaryAgeRangeMaxInputSchema
-                        .moreThan(yup.ref('ageRangeMin'), 'Maximum age cannot be less than minimum age')
+                        .min(yup.ref('ageRangeMin'), maxAgeLessThanMinError)
                         .notRequired(),
                 })
                 .when('ageRangeMin', {
                     is: ageRangeMinValue => !ageRangeMinValue,
-                    then: primaryAgeRangeMaxInputSchema.required(ageRangeInputError),
+                    then: primaryAgeRangeMaxInputSchema.min(0, ageRangeValidityError).required(ageRangeInputError),
                 }),
         }),
         proofDocuments: yup.string().when('proof', { is: 'Yes', then: yup.string().required(proofSelectionError) }),
