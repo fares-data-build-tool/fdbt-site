@@ -1,7 +1,8 @@
 import { Auth } from '@aws-amplify/auth';
 
 const configureAmplifyAuth = (): void => {
-    console.log('CONFIGURING AMPLIFY');
+    console.info('Configuring Amplify Auth...');
+
     Auth.configure({
         region: 'eu-west-2',
         userPoolId: process.env.FDBT_USER_POOL_ID,
