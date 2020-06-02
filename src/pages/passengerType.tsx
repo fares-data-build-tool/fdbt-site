@@ -14,7 +14,8 @@ const description = 'Passenger Type selection page of the Fares Data Build Tool'
 const errorId = 'passenger-type-error';
 
 type PassengerAttributes = {
-    passengerType: string;
+    passengerTypeDisplay: string;
+    passengerTypeValue: string;
     greyedOut: boolean;
 };
 
@@ -23,21 +24,21 @@ type PassengerTypeProps = {
 };
 
 const passengerTypesList: PassengerAttributes[] = [
-    { passengerType: 'Any', greyedOut: false },
-    { passengerType: 'Adult', greyedOut: false },
-    { passengerType: 'Child', greyedOut: false },
-    { passengerType: 'Infant', greyedOut: false },
-    { passengerType: 'Senior', greyedOut: false },
-    { passengerType: 'Student', greyedOut: false },
-    { passengerType: 'Young Person', greyedOut: false },
-    { passengerType: 'School Pupil', greyedOut: true },
-    { passengerType: 'Disabled', greyedOut: true },
-    { passengerType: 'Disabled Companion', greyedOut: true },
-    { passengerType: 'Employee', greyedOut: true },
-    { passengerType: 'Military', greyedOut: true },
-    { passengerType: 'Job Seeker', greyedOut: true },
-    { passengerType: 'Guide Dog', greyedOut: true },
-    { passengerType: 'Animal', greyedOut: true },
+    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone', greyedOut: false },
+    { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult', greyedOut: false },
+    { passengerTypeDisplay: 'Child', passengerTypeValue: 'child', greyedOut: false },
+    { passengerTypeDisplay: 'Infant', passengerTypeValue: 'infant', greyedOut: false },
+    { passengerTypeDisplay: 'Senior', passengerTypeValue: 'senior', greyedOut: false },
+    { passengerTypeDisplay: 'Student', passengerTypeValue: 'student', greyedOut: false },
+    { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson', greyedOut: false },
+    { passengerTypeDisplay: 'School Pupil', passengerTypeValue: 'schoolPupil', greyedOut: true },
+    { passengerTypeDisplay: 'Disabled', passengerTypeValue: 'disabled', greyedOut: true },
+    { passengerTypeDisplay: 'Disabled Companion', passengerTypeValue: 'disabledCompanion', greyedOut: true },
+    { passengerTypeDisplay: 'Employee', passengerTypeValue: 'employee', greyedOut: true },
+    { passengerTypeDisplay: 'Military', passengerTypeValue: 'military', greyedOut: true },
+    { passengerTypeDisplay: 'Job Seeker', passengerTypeValue: 'jobSeeker', greyedOut: true },
+    { passengerTypeDisplay: 'Guide Dog', passengerTypeValue: 'guideDog', greyedOut: true },
+    { passengerTypeDisplay: 'Animal', passengerTypeValue: 'animal', greyedOut: true },
 ];
 
 const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => (
@@ -58,13 +59,13 @@ const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => (
                         <div className="govuk-radios">
                             {passengerTypesList.map(
                                 (passenger, index): ReactElement => (
-                                    <div className="govuk-radios__item" key={passenger.passengerType}>
+                                    <div className="govuk-radios__item" key={passenger.passengerTypeValue}>
                                         <input
                                             className="govuk-radios__input"
                                             id={`passenger-type${index}`}
                                             name="passengerType"
                                             type="radio"
-                                            value={passenger.passengerType}
+                                            value={passenger.passengerTypeValue}
                                             disabled={passenger.greyedOut}
                                             aria-disabled={passenger.greyedOut}
                                         />
@@ -72,7 +73,7 @@ const PassengerType = ({ errors = [] }: PassengerTypeProps): ReactElement => (
                                             className="govuk-label govuk-radios__label"
                                             htmlFor={`passenger-type${index}`}
                                         >
-                                            {`${passenger.passengerType}`}
+                                            {`${passenger.passengerTypeDisplay}`}
                                         </label>
                                     </div>
                                 ),
