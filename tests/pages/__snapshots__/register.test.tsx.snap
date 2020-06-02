@@ -48,7 +48,7 @@ exports[`pages register should render correctly 1`] = `
                 className="govuk-label"
                 htmlFor="email"
               >
-                Create an Email address
+                Enter email address
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
@@ -74,7 +74,7 @@ exports[`pages register should render correctly 1`] = `
                 className="govuk-label"
                 htmlFor="password"
               >
-                Create a Password
+                Create password
               </label>
               <span
                 className="govuk-hint"
@@ -122,7 +122,7 @@ exports[`pages register should render correctly 1`] = `
                 className="govuk-label"
                 htmlFor="nocCode"
               >
-                Enter your National Operator Code
+                Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
@@ -277,7 +277,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 className="govuk-label"
                 htmlFor="email"
               >
-                Create an Email address
+                Enter email address
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
@@ -310,7 +310,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 className="govuk-label"
                 htmlFor="password"
               >
-                Create a Password
+                Create password
               </label>
               <span
                 className="govuk-hint"
@@ -365,7 +365,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 className="govuk-label"
                 htmlFor="nocCode"
               >
-                Enter your National Operator Code
+                Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
@@ -527,7 +527,7 @@ exports[`pages register should store email if entered correctly but other fields
                 className="govuk-label"
                 htmlFor="email"
               >
-                Create an Email address
+                Enter email address
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
@@ -560,7 +560,7 @@ exports[`pages register should store email if entered correctly but other fields
                 className="govuk-label"
                 htmlFor="password"
               >
-                Create a Password
+                Create password
               </label>
               <span
                 className="govuk-hint"
@@ -615,7 +615,7 @@ exports[`pages register should store email if entered correctly but other fields
                 className="govuk-label"
                 htmlFor="nocCode"
               >
-                Enter your National Operator Code
+                Enter National Operator Code
               </label>
               <FormElementWrapper
                 errorClass="govuk-input--error"
