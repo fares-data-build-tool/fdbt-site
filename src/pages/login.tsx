@@ -4,9 +4,8 @@ import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_COOKIE } from '../constants';
+import { OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
-import { redirectTo } from './api/apiUtils';
 
 const title = 'Login - Fares data build tool';
 const description = 'Login page of the Fares data build tool';
@@ -20,10 +19,9 @@ export interface InputCheck {
 interface LoginProps {
     inputChecks: InputCheck[];
     errors: ErrorInfo[];
-    regKey: string;
 }
 
-const Login = ({ inputChecks, errors, regKey }: LoginProps): ReactElement => {
+const Login = ({ inputChecks, errors }: LoginProps): ReactElement => {
     let email = '';
 
     inputChecks?.forEach((input: InputCheck) => {
@@ -99,13 +97,12 @@ const Login = ({ inputChecks, errors, regKey }: LoginProps): ReactElement => {
                                 id="sign-in-button"
                                 className="govuk-button"
                             />
-                            <input value={regKey} type="hidden" name="regKey" />
                         </form>
                     </div>
                     <div className="govuk-grid-column-one-third">
                         <p>
                             <h1 className="govuk-heading-s">Forgot your Password?</h1>
-                            <a href="/forgottenPassword" className="govuk-link">
+                            <a href="/forgotPassword" className="govuk-link">
                                 Reset your password
                             </a>
                         </p>
@@ -125,19 +122,13 @@ const Login = ({ inputChecks, errors, regKey }: LoginProps): ReactElement => {
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
+    const operatorCookie = cookies[OPERATOR_COOKIE];
 
     const errors: ErrorInfo[] = [];
 
-    const { key } = ctx.query;
-
-    if (!key && ctx.res) {
-        redirectTo(ctx.res, '/requestAccess');
-    }
-
-    if (userCookie) {
-        const userCookieParsed = JSON.parse(userCookie);
-        const { inputChecks } = userCookieParsed;
+    if (operatorCookie) {
+        const operatorCookieParsed = JSON.parse(operatorCookie);
+        const { inputChecks } = operatorCookieParsed;
 
         inputChecks.map((check: InputCheck) => {
             if (check.error) {
@@ -145,11 +136,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
             }
             return errors;
         });
-
-        return { props: { inputChecks, errors, regKey: key } };
+        return { props: { inputChecks, errors } };
     }
 
-    return { props: { errors, regKey: key } };
+    return { props: { errors } };
 };
 
 export default Login;

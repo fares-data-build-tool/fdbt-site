@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import Layout from '../layout/Layout';
-import { FARE_TYPE_COOKIE } from '../constants';
+import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, buildTitle } from '../utils/index';
@@ -14,10 +14,11 @@ const description = 'Fare Type selection page of the Fares Data Build Tool';
 const errorId = 'fare-type-error';
 
 type FareTypeProps = {
+    operator: string;
     errors: ErrorInfo[];
 };
 
-const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
+const FareType = ({ operator, errors = [] }: FareTypeProps): ReactElement => {
     return (
         <Layout title={buildTitle(errors, title)} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -30,6 +31,9 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
                                     Select a fare type
                                 </h1>
                             </legend>
+                            <span className="govuk-hint" id="faretype-operator-hint">
+                                {operator}
+                            </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                 <div className="govuk-radios">
                                     <div className="govuk-radios__item">
@@ -99,6 +103,15 @@ const FareType = ({ errors = [] }: FareTypeProps): ReactElement => {
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+
+    if (!operatorCookie) {
+        throw new Error('Necessary cookies not found to show faretype page');
+    }
+
+    const operatorInfo = JSON.parse(operatorCookie);
+    const { operator } = operatorInfo;
+
     if (cookies[FARE_TYPE_COOKIE]) {
         const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
         const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
@@ -106,11 +119,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         if (parsedFareTypeCookie.errorMessage) {
             const { errorMessage } = parsedFareTypeCookie;
             deleteCookieOnServerSide(ctx, FARE_TYPE_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
+            return { props: { operator: operator.operatorPublicName, errors: [{ errorMessage, id: errorId }] } };
         }
     }
 
-    return { props: {} };
+    return { props: { operator: operator.operatorPublicName } };
 };
 
 export default FareType;

@@ -24,7 +24,7 @@ const Home: NextPage = (): ReactElement => (
             </div>
 
             <a
-                href="/operator"
+                href="/login"
                 role="button"
                 draggable="false"
                 className="govuk-button govuk-button--start"
