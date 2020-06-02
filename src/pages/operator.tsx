@@ -34,48 +34,46 @@ const hardCodedOperators: Operator[] = [
     { operatorName: "Warrington's Own Buses", nocCode: 'WBTR' },
 ];
 
-const Operator = ({ errors = [] }: OperatorProps): ReactElement => {
-    return (
-        <TwoThirdsLayout title={title} description={description} errors={errors}>
-            <form action="/api/operator" method="post">
-                <ErrorSummary errors={errors} />
-                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="operator-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="operator-page-heading">
-                                Which organisation are you representing?
-                            </h1>
-                        </legend>
-                        <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                            <div className="govuk-radios">
-                                {hardCodedOperators.map(
-                                    (operator, index): ReactElement => (
-                                        <div className="govuk-radios__item" key={operator.operatorName}>
-                                            <input
-                                                className="govuk-radios__input"
-                                                id={`operator-name${index}`}
-                                                name="operator"
-                                                type="radio"
-                                                value={JSON.stringify(operator)}
-                                            />
-                                            <label
-                                                className="govuk-label govuk-radios__label"
-                                                htmlFor={`operator-name${index}`}
-                                            >
-                                                {`${operator.operatorName}`}
-                                            </label>
-                                        </div>
-                                    ),
-                                )}
-                            </div>
-                        </FormElementWrapper>
-                    </fieldset>
-                </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-            </form>
-        </TwoThirdsLayout>
-    );
-};
+const Operator = ({ errors = [] }: OperatorProps): ReactElement => (
+    <TwoThirdsLayout title={title} description={description} errors={errors}>
+        <form action="/api/operator" method="post">
+            <ErrorSummary errors={errors} />
+            <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                <fieldset className="govuk-fieldset" aria-describedby="operator-page-heading">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 className="govuk-fieldset__heading" id="operator-page-heading">
+                            Which organisation are you representing?
+                        </h1>
+                    </legend>
+                    <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
+                        <div className="govuk-radios">
+                            {hardCodedOperators.map(
+                                (operator, index): ReactElement => (
+                                    <div className="govuk-radios__item" key={operator.operatorName}>
+                                        <input
+                                            className="govuk-radios__input"
+                                            id={`operator-name${index}`}
+                                            name="operator"
+                                            type="radio"
+                                            value={JSON.stringify(operator)}
+                                        />
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor={`operator-name${index}`}
+                                        >
+                                            {`${operator.operatorName}`}
+                                        </label>
+                                    </div>
+                                ),
+                            )}
+                        </div>
+                    </FormElementWrapper>
+                </fieldset>
+            </div>
+            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+        </form>
+    </TwoThirdsLayout>
+);
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);

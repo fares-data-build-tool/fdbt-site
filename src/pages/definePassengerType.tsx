@@ -154,31 +154,29 @@ export const collectErrors = (error: ExtractedValidationError, collectedErrors: 
     }
 };
 
-const DefinePassengerType = ({ combinedErrors = [], fieldsets }: DefinePassengerTypeProps): ReactElement => {
-    return (
-        <TwoThirdsLayout title={title} description={description} errors={combinedErrors}>
-            <form action="/api/definePassengerType" method="post">
-                <ErrorSummary errors={combinedErrors} />
-                <div>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
-                            Provide passenger type details
-                        </h1>
-                    </legend>
-                    <span className="govuk-hint" id="define-passenger-type-hint">
-                        Select if the passenger type requires an age range or proof document
-                    </span>
-                    <br />
-                    <br />
-                    {fieldsets.map(fieldset => {
-                        return <RadioConditionalInput fieldset={fieldset} />;
-                    })}
-                </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-            </form>
-        </TwoThirdsLayout>
-    );
-};
+const DefinePassengerType = ({ combinedErrors = [], fieldsets }: DefinePassengerTypeProps): ReactElement => (
+    <TwoThirdsLayout title={title} description={description} errors={combinedErrors}>
+        <form action="/api/definePassengerType" method="post">
+            <ErrorSummary errors={combinedErrors} />
+            <div>
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
+                        Provide passenger type details
+                    </h1>
+                </legend>
+                <span className="govuk-hint" id="define-passenger-type-hint">
+                    Select if the passenger type requires an age range or proof document
+                </span>
+                <br />
+                <br />
+                {fieldsets.map(fieldset => {
+                    return <RadioConditionalInput fieldset={fieldset} />;
+                })}
+            </div>
+            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+        </form>
+    </TwoThirdsLayout>
+);
 
 export const getServerSideProps = (ctx: NextPageContext): { props: DefinePassengerTypeProps } => {
     const cookies = parseCookies(ctx);
