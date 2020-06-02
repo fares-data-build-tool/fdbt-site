@@ -41,7 +41,7 @@ const MatchingBase = ({
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
-            <form action={apiEndpoint} method="post">
+            <form action={apiEndpoint} method="post" className="matching-page">
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group${error ? ' govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
