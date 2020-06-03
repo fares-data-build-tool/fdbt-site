@@ -1,55 +1,25 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 import Auth from '../../data/amplify';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { OPERATOR_COOKIE } from '../../constants';
-import { InputCheck } from '../login';
+import { ErrorInfo } from '../../types';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 
-const checkEmailValid = (email: string): boolean => {
-    const emailRegex = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
-    return emailRegex.test(email) && email !== '';
-};
-
-const validatePassword = (password: string): string => {
-    let passwordErrorMessage = '';
-
-    if (password.length < 8) {
-        passwordErrorMessage = 'Password cannot be empty or less than 8 characters';
-    }
-
-    return passwordErrorMessage;
-};
-
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookie = (inputChecks: InputCheck[]): void => {
-        const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
-        redirectTo(res, '/login');
-    };
-
     try {
         const { email, password } = req.body;
 
-        const inputChecks: InputCheck[] = [];
+        const errors: ErrorInfo[] = [];
 
-        const emailValid = checkEmailValid(email);
-
-        inputChecks.push({
-            inputValue: !emailValid ? '' : email,
-            id: 'email',
-            error: !emailValid ? 'Enter an email address in the correct format, like name@example.com' : '',
-        });
-
-        inputChecks.push({
-            inputValue: '',
-            id: 'password',
-            error: validatePassword(password),
-        });
-
-        if (inputChecks.some(el => el.error !== '')) {
-            setErrorsCookie(inputChecks);
-            return;
+        if (!checkEmailValid(email)) {
+            errors.push({
+                id: 'email',
+                errorMessage: 'Enter an email address in the correct format, like name@example.com',
+            });
+            const cookieContent = JSON.stringify({ errors });
+            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
+            redirectTo(res, '/login');
         }
 
         try {
@@ -68,13 +38,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }
         } catch (error) {
             console.warn('login failed', { error: error.message });
-            inputChecks.push({
-                inputValue: '',
-                id: 'email',
-                error: 'There was a problem signing into your account',
+            errors.push({
+                id: 'login',
+                errorMessage: 'The email address and/or password are not correct.',
             });
-
-            setErrorsCookie(inputChecks);
+            const cookieContent = JSON.stringify({ errors });
+            setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, cookieContent, req, res);
+            redirectTo(res, '/login');
         }
     } catch (error) {
         const message = 'There was a problem signing into your account';

@@ -91,3 +91,9 @@ export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): v
         throw new Error('Could not extract fareType from the FARE_TYPE_COOKIE.');
     }
 };
+
+export const checkEmailValid = (email: string): boolean => {
+    // eslint-disable-next-line prettier/prettier
+    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+.[^\s@]+$/);
+    return emailRegex.test(email) && email !== '';
+};

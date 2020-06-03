@@ -10,26 +10,11 @@ import { ErrorInfo } from '../types';
 const title = 'Login - Fares data build tool';
 const description = 'Login page of the Fares data build tool';
 
-export interface InputCheck {
-    id: string;
-    inputValue: string;
-    error: string;
-}
-
 interface LoginProps {
-    inputChecks: InputCheck[];
     errors: ErrorInfo[];
 }
 
-const Login = ({ inputChecks, errors }: LoginProps): ReactElement => {
-    let email = '';
-
-    inputChecks?.forEach((input: InputCheck) => {
-        if (input.id === 'email') {
-            email = input.inputValue;
-        }
-    });
-
+const Login = ({ errors = [] }: LoginProps): ReactElement => {
     return (
         <Layout title={title} description={description}>
             <main className="govuk-main-wrapper app-main-class" id="main-content" role="main">
@@ -64,7 +49,6 @@ const Login = ({ inputChecks, errors }: LoginProps): ReactElement => {
                                                 aria-describedby="email-hint"
                                                 autoComplete="email"
                                                 spellCheck="false"
-                                                defaultValue={email}
                                             />
                                         </FormElementWrapper>
                                     </div>
@@ -124,22 +108,14 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
-    const errors: ErrorInfo[] = [];
-
     if (operatorCookie) {
         const operatorCookieParsed = JSON.parse(operatorCookie);
-        const { inputChecks } = operatorCookieParsed;
+        const { errors } = operatorCookieParsed;
 
-        inputChecks.map((check: InputCheck) => {
-            if (check.error) {
-                errors.push({ id: check.id, errorMessage: check.error });
-            }
-            return errors;
-        });
-        return { props: { inputChecks, errors } };
+        return { props: { errors } };
     }
 
-    return { props: { errors } };
+    return { props: {} };
 };
 
 export default Login;
