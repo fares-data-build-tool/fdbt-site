@@ -955,7 +955,7 @@ export const mockMatchingUserFareStagesWithAllStagesAssigned = {
 };
 
 export const expectedMatchingJsonSingle = {
-    type: 'pointToPoint',
+    type: 'single',
     lineName: '215',
     nocCode: 'DCCL',
     passengerType: 'Adult',
