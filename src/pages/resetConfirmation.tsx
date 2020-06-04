@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import { BaseLayout } from '../layout/Layout';
+import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 
@@ -14,15 +14,15 @@ interface ResetConfirmationProps {
 
 const ResetConfirmation = ({ email }: ResetConfirmationProps): ReactElement => {
     return (
-        <BaseLayout title={title} description={description} errors={[]}>
+        <TwoThirdsLayout title={title} description={description} errors={[]}>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
                     <form action="/api/forgotPassword" method="post">
                         <ErrorSummary errors={[]} />
                         <div className="govuk-form-group">
-                            <div className="govuk-fieldset" aria-describedby="register-page-heading">
+                            <div className="govuk-fieldset" aria-describedby="reset-confirmation-page-heading">
                                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                    <h1 className="govuk-fieldset__heading" id="register-type-page-heading">
+                                    <h1 className="govuk-fieldset__heading" id="reset-confirmation-page-heading">
                                         Reset password link has been sent
                                     </h1>
                                 </legend>
@@ -50,7 +50,7 @@ const ResetConfirmation = ({ email }: ResetConfirmationProps): ReactElement => {
                     </form>
                 </div>
             </div>
-        </BaseLayout>
+        </TwoThirdsLayout>
     );
 };
 

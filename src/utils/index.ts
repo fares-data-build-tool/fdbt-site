@@ -2,7 +2,7 @@ import Cookies from 'cookies';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import axios from 'axios';
-import { parseCookies } from 'nookies';
+import { parseCookies, destroyCookie } from 'nookies';
 import { OPERATOR_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { ErrorInfo } from '../types';
@@ -27,19 +27,14 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
     }
 };
 
-export const deleteCookieOnServerSideFromDocument = (cookie: string): void => {
-    document.cookie = `${cookie}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-};
-
 export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
-    if (ctx.req && ctx.res) {
-        const cookies = document.cookie.split('; ');
-        cookies.forEach(cookie => {
-            if (cookie !== 'fdbt-operator') {
-                deleteCookieOnServerSideFromDocument(cookie);
-            }
-        });
-    }
+    const cookies = parseCookies(ctx);
+
+    Object.keys(cookies).forEach(cookie => {
+        if (cookie !== OPERATOR_COOKIE) {
+            destroyCookie(ctx, cookie);
+        }
+    });
 };
 
 export const getHost = (req: IncomingMessage | undefined): string => {

@@ -24,13 +24,18 @@ const ForgotPassword = ({ email, errors = [] }: ForgotEmailProps): ReactElement 
                     <form action="/api/forgotPassword" method="post">
                         <ErrorSummary errors={errors} />
                         <div className="govuk-form-group">
-                            <div className="govuk-fieldset" aria-describedby="register-page-heading">
+                            <div className="govuk-fieldset" aria-describedby="forgot-password-heading">
                                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                    <h1 className="govuk-fieldset__heading" id="register-type-page-heading">
+                                    <h1 className="govuk-fieldset__heading" id="forgot-password-heading">
                                         Forgot your Password?
                                     </h1>
                                 </legend>
-                                <p className="govuk-hint hint-text">Enter your email address to reset your password</p>
+                                <p className="govuk-hint hint-text" id="hint-text">
+                                    Enter your email address to reset your password
+                                </p>
+                                <label className="govuk-label govuk-visually-hidden" htmlFor="email">
+                                    Enter email address
+                                </label>
                                 <div className="govuk-form-group">
                                     <FormElementWrapper errors={errors} errorId={id} errorClass="govuk-input--error">
                                         <input
@@ -38,7 +43,7 @@ const ForgotPassword = ({ email, errors = [] }: ForgotEmailProps): ReactElement 
                                             id="email"
                                             name="email"
                                             type="text"
-                                            aria-describedby="email-hint"
+                                            aria-describedby="hint-text"
                                             autoComplete="email"
                                             spellCheck="false"
                                             defaultValue={email}
