@@ -4,6 +4,7 @@ import {
     setCookieOnResponseObject,
     getUuidFromCookie,
     redirectOnFareType,
+    checkEmailValid,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
@@ -20,6 +21,22 @@ describe('apiUtils', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
+
+    describe('checkEmailValid', () => {
+        it('returns true if email is valid', () => {
+            expect(checkEmailValid('test@email.com')).toBeTruthy();
+            expect(checkEmailValid('TEST@EMAIL.COM')).toBeTruthy();
+        });
+    
+        it('returns false if email is invalid', () => {
+            expect(checkEmailValid('@email.com')).toBeFalsy();
+            expect(checkEmailValid('test@email')).toBeFalsy();
+            expect(checkEmailValid('  test@email.com')).toBeFalsy();
+            expect(checkEmailValid('t est@email.com')).toBeFalsy();
+            expect(checkEmailValid('test@email.com   ')).toBeFalsy();
+            expect(checkEmailValid('test@email .com')).toBeFalsy();
+        });
+    })
 
     describe('getDomain', () => {
         it('should return the domain without a port number', () => {
