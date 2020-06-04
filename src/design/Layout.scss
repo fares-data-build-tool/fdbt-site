@@ -180,6 +180,11 @@ svg:not(:root) {
     background-image: url('https://assets.publishing.service.gov.uk/static/images/govuk-crest-2x-c6548884b516041752fc4156a50f084ca387b1e37e4f4668cd109058d924b197.png') !important;
 }
 
-.govuk-header__signin-icon {
-    background-image: url('../assets/images/np-person-781585-ffffff.a9472bb89c43.png');
+.govuk-header__signin {
+    float: right;
+    margin-bottom: 10px;
+}
+
+.govuk-header__person-icon {
+    padding-right: 3px;
 }
