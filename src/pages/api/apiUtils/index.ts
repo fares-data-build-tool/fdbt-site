@@ -93,7 +93,6 @@ export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): v
 };
 
 export const checkEmailValid = (email: string): boolean => {
-    // eslint-disable-next-line prettier/prettier
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+.[^\s@]+$/);
     return emailRegex.test(email) && email !== '';
 };
