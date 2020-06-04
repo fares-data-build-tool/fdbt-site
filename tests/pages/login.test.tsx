@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Login from '../../src/pages/login';
 
 describe('pages', () => {
-    describe('register', () => {
+    describe('login', () => {
         it('should render correctly', () => {
             const tree = shallow(<Login errors={[]} />);
             expect(tree).toMatchSnapshot();

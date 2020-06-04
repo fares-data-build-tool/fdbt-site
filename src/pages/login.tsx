@@ -6,6 +6,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
+import { deleteCookieOnServerSide } from '../utils/index';
 
 const title = 'Login - Fares data build tool';
 const description = 'Login page of the Fares data build tool';
@@ -106,13 +107,16 @@ const Login = ({ errors = [] }: LoginProps): ReactElement => {
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
 
-    if (operatorCookie) {
+    if (cookies[OPERATOR_COOKIE]) {
+        const operatorCookie = cookies[OPERATOR_COOKIE];
         const operatorCookieParsed = JSON.parse(operatorCookie);
-        const { errors } = operatorCookieParsed;
 
-        return { props: { errors } };
+        if (operatorCookieParsed.errors) {
+            const { errors } = operatorCookieParsed;
+            deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
+            return { props: { errors } };
+        }
     }
 
     return { props: {} };

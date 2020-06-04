@@ -8,14 +8,10 @@ import { OPERATOR_COOKIE } from '../../../src/constants';
 jest.mock('../../../src/data/auroradb.ts');
 
 const mockUserCognito = {
-    username: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-    challengeName: 'NEW_PASSWORD_REQUIRED',
-    challengeParam: {
-        requiredAttributes: [],
-    },
+    attributes: { 'custom:noc': 'DCCL' },
 };
 
-describe('register', () => {
+describe('login', () => {
     const getOperatorNameByNocCodeSpy = jest.spyOn(auroradb, 'getOperatorNameByNocCode');
     const authSignInSpy = jest.spyOn(Auth, 'signIn');
     const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
@@ -32,8 +28,8 @@ describe('register', () => {
 
     const cases = [
         [
-            'empty email',
-            { email: '', password: 'abcdefghi' },
+            'incorrectly formatted email address',
+            { email: 'testtfncom', password: 'abcdefghi' },
             {
                 errors: [
                     {
@@ -49,7 +45,7 @@ describe('register', () => {
             {
                 errors: [
                     {
-                        id: 'email',
+                        id: 'login',
                         errorMessage: 'The email address and/or password are not correct.',
                     },
                 ],
@@ -85,7 +81,7 @@ describe('register', () => {
 
         await login(req, res);
 
-        expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
+        expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefghi');
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/fareType',
         });
@@ -95,18 +91,10 @@ describe('register', () => {
         authSignInSpy.mockImplementation(() => Promise.resolve());
 
         const mockUserCookieValue = {
-            inputChecks: [
+            errors: [
                 {
-                    inputValue: 'test@test.com',
-                    id: 'email',
-                    error: '',
-                },
-                { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'nocCode', error: '' },
-                {
-                    inputValue: '',
-                    id: 'email',
-                    error: 'There was a problem creating your account',
+                    id: 'login',
+                    errorMessage: 'The email address and/or password are not correct.',
                 },
             ],
         };

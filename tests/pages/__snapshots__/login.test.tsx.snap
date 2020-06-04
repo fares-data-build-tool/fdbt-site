@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages register should render correctly 1`] = `
+exports[`pages login should render correctly 1`] = `
 <Component
   description="Login page of the Fares data build tool"
   title="Login - Fares data build tool"
@@ -141,7 +141,7 @@ exports[`pages register should render correctly 1`] = `
 </Component>
 `;
 
-exports[`pages register should render error messaging when errors are passed 1`] = `
+exports[`pages login should render error messaging when errors are passed 1`] = `
 <Component
   description="Login page of the Fares data build tool"
   title="Login - Fares data build tool"
