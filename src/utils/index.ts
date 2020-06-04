@@ -1,11 +1,9 @@
-import { ALL_COOKIES } from './../constants/index';
 import Cookies from 'cookies';
 import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
 import { OPERATOR_COOKIE } from '../constants/index';
-
 import { Stop } from '../data/auroradb';
 import { ErrorInfo } from '../types';
 
@@ -24,20 +22,20 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
         const cookies = new Cookies(ctx.req, ctx.res);
         const host = ctx?.req?.headers?.host;
         const domain = host ? host.split(':')[0] : '';
-        
+
         cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
     }
 };
 
 export const deleteCookieOnServerSideFromDocument = (cookie: string): void => {
-    document.cookie = cookie +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
+    document.cookie = `${cookie}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+};
 
 export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
     if (ctx.req && ctx.res) {
-        const cookies = document.cookie.split("; ");
-        cookies.forEach((cookie) => {
-            if (cookie !== "fdbt-operator") {
+        const cookies = document.cookie.split('; ');
+        cookies.forEach(cookie => {
+            if (cookie !== 'fdbt-operator') {
                 deleteCookieOnServerSideFromDocument(cookie);
             }
         });
@@ -97,7 +95,7 @@ export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | nul
 
 export const formatStopName = (stop: Stop): string =>
     `${stop.localityName ? `${stop.localityName}, ` : ''}${stop.indicator ?? ''} ${stop.stopName ?? ''}${
-    stop.street ? ` (on ${stop.street})` : ''
+        stop.street ? ` (on ${stop.street})` : ''
     }`;
 
 export const buildTitle = (errors: ErrorInfo[], title: string): string => {

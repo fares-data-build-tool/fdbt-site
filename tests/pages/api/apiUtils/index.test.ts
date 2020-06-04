@@ -27,7 +27,7 @@ describe('apiUtils', () => {
             expect(checkEmailValid('test@email.com')).toBeTruthy();
             expect(checkEmailValid('TEST@EMAIL.COM')).toBeTruthy();
         });
-    
+
         it('returns false if email is invalid', () => {
             expect(checkEmailValid('@email.com')).toBeFalsy();
             expect(checkEmailValid('test@email')).toBeFalsy();
@@ -36,7 +36,7 @@ describe('apiUtils', () => {
             expect(checkEmailValid('test@email.com   ')).toBeFalsy();
             expect(checkEmailValid('test@email .com')).toBeFalsy();
         });
-    })
+    });
 
     describe('getDomain', () => {
         it('should return the domain without a port number', () => {

@@ -29,11 +29,14 @@ const ResetConfirmation = ({ email }: ResetConfirmationProps): ReactElement => {
                             </div>
                             <p className="govuk-body">
                                 If this email address exists in our system, we will send a password reset email to
-                                <b>{' ' + email}</b>.
+                                <b>{` ${email}`}</b>.
                             </p>
-                            <p className="govuk-body">Check your email and follow the link within 24 hours to reset your
-                                password.</p>
-                            <p className="govuk-body">If you cannot find the email then look in your spam or junk email folder.</p>
+                            <p className="govuk-body">
+                                Check your email and follow the link within 24 hours to reset your password.
+                            </p>
+                            <p className="govuk-body">
+                                If you cannot find the email then look in your spam or junk email folder.
+                            </p>
                         </div>
                         <a
                             href="/operator"
@@ -55,9 +58,19 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ResetConfirma
     const cookies = parseCookies(ctx);
     const forgotPasswordCookie = cookies[FORGOT_PASSWORD_COOKIE];
 
+    // error in case user navigates to page manually or without cookie
+    if (!forgotPasswordCookie) {
+        throw new Error('No forgotPasswordCookie found.');
+    }
+
     const forgotPasswordInfo = JSON.parse(forgotPasswordCookie);
 
     const { email } = forgotPasswordInfo;
+
+    // error in case user navigates to page manually
+    if (!email) {
+        throw new Error('No email found.');
+    }
 
     return { props: { email } };
 };

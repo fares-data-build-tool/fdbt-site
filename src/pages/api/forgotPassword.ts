@@ -1,5 +1,5 @@
-import { FORGOT_PASSWORD_COOKIE } from './../../constants/index';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { FORGOT_PASSWORD_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject, redirectTo, getDomain, redirectToError, checkEmailValid } from './apiUtils';
 import Auth from '../../data/amplify';
 
@@ -8,9 +8,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const { email } = req.body;
 
         if (!email || !email.trim().length) {
-            const cookieContent = JSON.stringify({ email, error: "Enter your email address" });
+            const cookieContent = JSON.stringify({ email, error: 'Enter your email address' });
             setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/forgotPassword');
+            return;
         }
 
         if (checkEmailValid(email)) {
@@ -22,7 +23,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/resetConfirmation');
         } else {
-            const cookieContent = JSON.stringify({ email, error: "Invalid email format - Enter a valid email address" });
+            const cookieContent = JSON.stringify({
+                email,
+                error: 'Invalid email format - Enter a valid email address',
+            });
             setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/forgotPassword');
         }

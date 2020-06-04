@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { ErrorInfo } from '../types';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
-import { ErrorInfo } from 'src/types';
 
 const title = 'Forgot Password - Fares data build tool';
 const description = 'Forgot Password page of the Fares data build tool';
@@ -16,7 +16,7 @@ interface ForgotEmailProps {
     errors: ErrorInfo[];
 }
 
-const ForgotPassword = ({ email, errors }: ForgotEmailProps): ReactElement => {
+const ForgotPassword = ({ email, errors = [] }: ForgotEmailProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
@@ -32,7 +32,7 @@ const ForgotPassword = ({ email, errors }: ForgotEmailProps): ReactElement => {
                                 </legend>
                                 <p className="govuk-hint hint-text">Enter your email address to reset your password</p>
                                 <div className="govuk-form-group">
-                                    <FormElementWrapper errors={errors} errorId={id} errorClass={'govuk-input--error'}>
+                                    <FormElementWrapper errors={errors} errorId={id} errorClass="govuk-input--error">
                                         <input
                                             className="govuk-input"
                                             id="email"
@@ -58,7 +58,7 @@ const ForgotPassword = ({ email, errors }: ForgotEmailProps): ReactElement => {
                 </div>
                 <div className="govuk-grid-column-one-third">
                     <p>
-                        <h1 className="govuk-heading-s">Don't have an account?</h1>
+                        <h1 className="govuk-heading-s">Don&#39;t have an account?</h1>
                         <a href="/register" className="govuk-link">
                             Request Access
                         </a>
@@ -80,6 +80,10 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ForgotEmailPr
 
         if (error && email) {
             return { props: { errors: [{ errorMessage: error, id }], email } };
+        }
+
+        if (error) {
+            return { props: { errors: [{ errorMessage: error, id }], email: '' } };
         }
     }
 
