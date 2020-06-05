@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 import Auth from '../../data/amplify';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
-import { OPERATOR_COOKIE, USER_COOKIE } from '../../constants';
+import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import { ErrorInfo } from '../../types';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 
@@ -28,12 +28,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const nocCode = user.attributes['custom:noc'];
                 const operatorName = await getOperatorNameByNocCode(nocCode);
                 const uuid = uuidv4();
+                const domain = getDomain(req);
                 const operatorCookieValue = JSON.stringify({ operator: operatorName, uuid });
-                setCookieOnResponseObject(getDomain(req), OPERATOR_COOKIE, operatorCookieValue, req, res);
+                setCookieOnResponseObject(domain, OPERATOR_COOKIE, operatorCookieValue, req, res);
+
                 const idToken = user.signInUserSession.idToken.jwtToken;
                 const refreshToken = user.signInUserSession.refreshToken.token;
-                const userCookieValue = JSON.stringify({ idToken, refreshToken });
-                setCookieOnResponseObject(getDomain(req), USER_COOKIE, userCookieValue, req, res);
+                setCookieOnResponseObject(domain, ID_TOKEN_COOKIE, idToken, req, res);
+                setCookieOnResponseObject(domain, REFRESH_TOKEN_COOKIE, refreshToken, req, res);
+
                 console.info('login successful', { noc: nocCode });
                 redirectTo(res, '/fareType');
             } else {

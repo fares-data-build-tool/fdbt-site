@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import personIcon from '../assets/images/np-person-781585-ffffff.a9472bb89c43.png';
 
 type HeaderProps = {
-    idToken?: string;
+    isAuthed: boolean;
 };
 
-const Header: FC<HeaderProps> = ({ idToken }: HeaderProps) => (
+const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
     <header className="govuk-header " role="banner" data-module="govuk-header">
         <div className="govuk-header__container govuk-width-container">
             <div className="govuk-header__logo">
@@ -38,9 +38,9 @@ const Header: FC<HeaderProps> = ({ idToken }: HeaderProps) => (
             </div>
 
             <div className="govuk-header__signin">
-                <a href="/login" className="govuk-header__link">
+                <a href={isAuthed ? '/account' : '/login'} className="govuk-header__link">
                     <img src={personIcon} className="govuk-header__person-icon" alt="Person icon" />
-                    <span> {idToken ? `My Account` : `Sign in`} </span>
+                    <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
                 </a>
             </div>
         </div>
