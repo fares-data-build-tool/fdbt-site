@@ -15,9 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         if (checkEmailValid(email)) {
-            await Auth.forgotPassword(email)
-                .then(data => console.log(data))
-                .catch(err => console.log(err));
+            await Auth.forgotPassword(email);
 
             const cookieContent = JSON.stringify({ email });
             setCookieOnResponseObject(getDomain(req), FORGOT_PASSWORD_COOKIE, cookieContent, req, res);

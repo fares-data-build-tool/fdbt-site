@@ -12,47 +12,33 @@ interface ResetConfirmationProps {
     email: string;
 }
 
-const ResetConfirmation = ({ email }: ResetConfirmationProps): ReactElement => {
-    return (
-        <TwoThirdsLayout title={title} description={description} errors={[]}>
-            <div className="govuk-grid-row">
-                <div className="govuk-grid-column-two-thirds">
-                    <form action="/api/forgotPassword" method="post">
-                        <ErrorSummary errors={[]} />
-                        <div className="govuk-form-group">
-                            <div className="govuk-fieldset" aria-describedby="reset-confirmation-page-heading">
-                                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                    <h1 className="govuk-fieldset__heading" id="reset-confirmation-page-heading">
-                                        Reset password link has been sent
-                                    </h1>
-                                </legend>
-                            </div>
-                            <p className="govuk-body">
-                                If this email address exists in our system, we will send a password reset email to
-                                <b>{` ${email}`}</b>.
-                            </p>
-                            <p className="govuk-body">
-                                Check your email and follow the link within 24 hours to reset your password.
-                            </p>
-                            <p className="govuk-body">
-                                If you cannot find the email then look in your spam or junk email folder.
-                            </p>
-                        </div>
-                        <a
-                            href="/operator"
-                            role="button"
-                            draggable="false"
-                            className="govuk-button"
-                            data-module="govuk-button"
-                        >
-                            Home
-                        </a>
-                    </form>
+const ResetConfirmation = ({ email }: ResetConfirmationProps): ReactElement => (
+    <TwoThirdsLayout title={title} description={description} errors={[]}>
+        <form action="/api/forgotPassword" method="post">
+            <ErrorSummary errors={[]} />
+            <div className="govuk-form-group">
+                <div className="govuk-fieldset" aria-describedby="reset-confirmation-page-heading">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 className="govuk-fieldset__heading" id="reset-confirmation-page-heading">
+                            Reset password link has been sent
+                        </h1>
+                    </legend>
                 </div>
+                <p className="govuk-body">
+                    If this email address exists in our system, we will send a password reset email to
+                    <b>{` ${email}`}</b>.
+                </p>
+                <p className="govuk-body">
+                    Check your email and follow the link within 24 hours to reset your password.
+                </p>
+                <p className="govuk-body">If you cannot find the email then look in your spam or junk email folder.</p>
             </div>
-        </TwoThirdsLayout>
-    );
-};
+            <a href="/operator" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
+                Home
+            </a>
+        </form>
+    </TwoThirdsLayout>
+);
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ResetConfirmationProps } => {
     const cookies = parseCookies(ctx);
