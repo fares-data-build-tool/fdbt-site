@@ -62,9 +62,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             //     throw new Error(`unexpected challenge: ${user.challengeName}`);
             // }
         } catch (error) {
-            if(error.code === 'ExpiredCodeException') {
-
-            }
+            // if (error.code === 'ExpiredCodeException') {
+            // }
             console.log('error', error);
             console.warn('reset password failed', { error: error.message });
             inputChecks.push({

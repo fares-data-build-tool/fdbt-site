@@ -104,13 +104,18 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         redirectTo(ctx.res, '/resetError');
     }
 
-    //check date and expiry time is within the hour
     if (expiry) {
-        const expiryType: number = expiry;
+        if (typeof expiry === 'string') {
+            const parsedExpiry = parseInt(expiry, 10);
+            const currentTimeStamp = Math.floor(Date.now() / 1000);
+            const timeDifference = currentTimeStamp - parsedExpiry;
 
-        const milliseconds: number =                                                       * 1000;
-
-        const dateObject = new Date(milliseconds);
+            if (timeDifference >= 3600) {
+                if (ctx.res) {
+                    redirectTo(ctx.res, '/resetError');
+                }
+            }
+        }
     }
 
     if (userCookie) {
