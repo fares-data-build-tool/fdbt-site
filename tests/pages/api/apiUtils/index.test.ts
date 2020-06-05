@@ -24,17 +24,21 @@ describe('apiUtils', () => {
 
     describe('checkEmailValid', () => {
         it.each([
-            ['test@email.com', true],
-            ['TEST@EMAIL.COM', true],
-            ['@email.com', false],
-            ['test@email', false],
-            ['  test@email.com', false],
-            ['t est@email.com', false],
-            ['t est@email.com', false],
-            ['test@email.com   ', false],
-            ['test@email .com', false],
-        ])('should validate that %s returns %s', (input, validity) => {
-            expect(checkEmailValid(input)).toEqual(validity);
+            ['@email.com'],
+            ['test@email'],
+            ['  test@email.com'],
+            ['t est@email.com'],
+            ['t est@email.com'],
+            ['test@email.com   '],
+            ['test@email .com'],
+        ])('should validate that %s returns false', input => {
+            expect(checkEmailValid(input)).toBeFalsy();
+        });
+    });
+
+    describe('checkEmailValid', () => {
+        it.each([['test@email.com'], ['TEST@EMAIL.COM']])('should validate that %s returns true', input => {
+            expect(checkEmailValid(input)).toBeTruthy();
         });
     });
 
