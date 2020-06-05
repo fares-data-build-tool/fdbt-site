@@ -58,7 +58,7 @@ exports[`Header should render correctly 1`] = `
     >
       <a
         className="govuk-header__link"
-        href="/login"
+        href="/account"
       >
         <img
           alt="Person icon"
@@ -67,7 +67,7 @@ exports[`Header should render correctly 1`] = `
         />
         <span>
            
-          Sign in
+          My Account
            
         </span>
       </a>
