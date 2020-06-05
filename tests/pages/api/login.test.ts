@@ -8,6 +8,14 @@ import { OPERATOR_COOKIE } from '../../../src/constants';
 jest.mock('../../../src/data/auroradb.ts');
 
 const mockUserCognito = {
+    signInUserSession: {
+        idToken: {
+            jwtToken: 'eyJra',
+        },
+        refreshToken: {
+            token: 'eyJj',
+        },
+    },
     attributes: { 'custom:noc': 'DCCL' },
 };
 
