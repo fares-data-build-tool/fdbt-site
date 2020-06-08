@@ -1,3 +1,5 @@
+import { bool } from 'aws-sdk/clients/signer';
+
 export interface ProductInfo {
     productName: string;
     productPrice: string;
@@ -24,4 +26,25 @@ export interface PassengerDetails {
     ageRangeMin?: string;
     ageRangeMax?: string;
     proof?: string[];
+}
+
+export interface ErrorInfo {
+    errorMessage: string;
+    id: string;
+}
+
+/* eslint-disable camelcase */
+export interface CognitoJwt {
+    sub: string;
+    aud: string;
+    email_verified: bool;
+    event_id: string;
+    'custom:noc': string;
+    token_use: string;
+    auth_time: number;
+    iss: string;
+    'cognito:username': string;
+    exp: number;
+    iat: number;
+    email: string;
 }
