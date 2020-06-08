@@ -86,6 +86,7 @@ export const getMockRequestAndResponse = (
             '6#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
             '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
         ],
+        idToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.Hgdqdw7HX8cNT9NG7jcPP7ihZWHT1TYgPJyQNpKS8YQ',
     } = cookieValues;
 
     const {
@@ -152,9 +153,7 @@ export const getMockRequestAndResponse = (
           )}%7D;`
         : '';
 
-    cookieString += isLoggedin
-        ? `${ID_TOKEN_COOKIE}=eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.Hgdqdw7HX8cNT9NG7jcPP7ihZWHT1TYgPJyQNpKS8YQ;`
-        : '';
+    cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
 
     const req = mockRequest({
         connection: {
