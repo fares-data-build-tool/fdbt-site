@@ -1,5 +1,3 @@
-import { bool } from 'aws-sdk/clients/signer';
-
 export interface ProductInfo {
     productName: string;
     productPrice: string;
@@ -37,7 +35,7 @@ export interface ErrorInfo {
 export interface CognitoJwt {
     sub: string;
     aud: string;
-    email_verified: bool;
+    email_verified: boolean;
     event_id: string;
     'custom:noc': string;
     token_use: string;
