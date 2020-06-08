@@ -8,8 +8,8 @@ import { USER_COOKIE } from '../constants';
 import { ErrorInfo } from '../types';
 import { redirectTo } from './api/apiUtils';
 
-const title = 'Create Account - Fares data build tool';
-const description = 'Create Account page of the Fares data build tool';
+const title = 'Reset Password - Fares data build tool';
+const description = 'Reset Password page of the Fares data build tool';
 
 export interface InputCheck {
     id: string;
@@ -21,9 +21,10 @@ interface ResetPasswordProps {
     errors: ErrorInfo[];
     regKey: string;
     username: string;
+    expiry: string;
 }
 
-const ResetPassword = ({ errors, regKey, username }: ResetPasswordProps): ReactElement => {
+const ResetPassword = ({ errors, regKey, username, expiry }: ResetPasswordProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
@@ -84,6 +85,7 @@ const ResetPassword = ({ errors, regKey, username }: ResetPasswordProps): ReactE
                         />
                         <input value={regKey} type="hidden" name="regKey" />
                         <input value={username} type="hidden" name="username" />
+                        <input value={expiry} type="hidden" name="expiry" />
                     </form>
                 </div>
             </div>
@@ -101,7 +103,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const { key, user_name: username, expiry } = ctx.query;
 
     if ((!key || !username || !expiry) && ctx.res) {
-        redirectTo(ctx.res, '/resetError');
+        redirectTo(ctx.res, '/error');
     }
 
     if (expiry) {
@@ -112,7 +114,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
             if (timeDifference >= 3600) {
                 if (ctx.res) {
-                    redirectTo(ctx.res, '/resetError');
+                    redirectTo(ctx.res, '/resetLinkExpired');
                 }
             }
         }
@@ -129,10 +131,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
             return errors;
         });
 
-        return { props: { inputChecks, errors, regKey: key, username } };
+        return { props: { inputChecks, errors, regKey: key, username, expiry } };
     }
 
-    return { props: { errors, regKey: key, username } };
+    return { props: { errors, regKey: key, username, expiry } };
 };
 
 export default ResetPassword;

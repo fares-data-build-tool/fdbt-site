@@ -7,7 +7,7 @@ import { InputCheck } from '../register';
 const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';
 
-    console.log('valdiate', confirmPassword, password);
+    console.log('password errors', password, confirmPassword);
     if (password.length < 8) {
         passwordErrorMessage = 'Password cannot be empty or less than 8 characters';
     } else if (confirmPassword !== password) {
@@ -18,15 +18,16 @@ const validatePassword = (password: string, confirmPassword: string): string => 
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookie = (inputChecks: InputCheck[], regKey: string, username: string): void => {
+    const setErrorsCookie = (inputChecks: InputCheck[], regKey: string, username: string, expiry: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
         setCookieOnResponseObject(getDomain(req), USER_COOKIE, cookieContent, req, res);
-        redirectTo(res, `/resetPassword?key=${regKey}&user_name=${username}`);
+        redirectTo(res, `/resetPassword?key=${regKey}&user_name=${username}&expiry=${expiry}`);
     };
 
     try {
-        const { username, password, confirmPassword, regKey } = req.body;
+        const { username, password, confirmPassword, regKey, expiry } = req.body;
 
+        console.log('req boyds', req.body);
         const inputChecks: InputCheck[] = [];
 
         if (!username || !regKey) {
@@ -44,27 +45,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         });
 
         if (inputChecks.some(el => el.error !== '')) {
-            setErrorsCookie(inputChecks, regKey, username);
+            setErrorsCookie(inputChecks, regKey, username, expiry);
             return;
         }
 
         try {
-            const user = await Auth.forgotPasswordSubmit(username, regKey, password);
-
-            console.log('user====', user);
-
-            // if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-            //     await Auth.completeNewPassword(user, password, { 'custom:noc': nocCode });
-            //     await Auth.signOut({ global: true });
-            //     console.info('registration successful', { noc: nocCode });
-            //     redirectTo(res, '/confirmRegistration');
-            // } else {
-            //     throw new Error(`unexpected challenge: ${user.challengeName}`);
-            // }
+            await Auth.forgotPasswordSubmit(username, regKey, password);
+            redirectTo(res, '/resetPasswordSuccess');
         } catch (error) {
-            // if (error.code === 'ExpiredCodeException') {
-            // }
-            console.log('error', error);
+            if (error.code === 'ExpiredCodeException') {
+                redirectTo(res, '/resetLinkExpired');
+            }
             console.warn('reset password failed', { error: error.message });
             inputChecks.push({
                 inputValue: '',
@@ -72,7 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 error: 'There was a problem creating your account',
             });
 
-            setErrorsCookie(inputChecks, regKey, username);
+            setErrorsCookie(inputChecks, regKey, username, expiry);
         }
     } catch (error) {
         const message = 'There was a problem with the creation of the account';
