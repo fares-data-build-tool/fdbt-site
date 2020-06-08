@@ -6,7 +6,7 @@ import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
-import { ErrorInfo, CognitoJwt } from '../interfaces';
+import { ErrorInfo, CognitoIdToken } from '../interfaces';
 
 export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
     if (ctx.req && ctx.res) {
@@ -103,10 +103,10 @@ export const buildTitle = (errors: ErrorInfo[], title: string): string => {
     return title;
 };
 
-export const getAttributeFromIdToken = <T extends keyof CognitoJwt>(
+export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
     ctx: NextPageContext,
     attribute: T,
-): CognitoJwt[T] | null => {
+): CognitoIdToken[T] | null => {
     const cookies = parseCookies(ctx);
     const idToken = cookies[ID_TOKEN_COOKIE];
 
@@ -114,7 +114,7 @@ export const getAttributeFromIdToken = <T extends keyof CognitoJwt>(
         return null;
     }
 
-    const decodedIdToken = decode(idToken) as CognitoJwt;
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
 
     return decodedIdToken[attribute] ?? null;
 };

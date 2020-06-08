@@ -4,7 +4,7 @@ import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE } from '../../../constants';
-import { CognitoJwt } from '../../../interfaces';
+import { CognitoIdToken } from '../../../interfaces';
 
 export const getDomain = (req: NextApiRequest): string => {
     const host = req?.headers?.host;
@@ -99,11 +99,11 @@ export const checkEmailValid = (email: string): boolean => {
     return emailRegex.test(email) && email !== '';
 };
 
-export const getAttributeFromIdToken = <T extends keyof CognitoJwt>(
+export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
     req: NextApiRequest,
     res: NextApiResponse,
     attribute: T,
-): CognitoJwt[T] | null => {
+): CognitoIdToken[T] | null => {
     const cookies = new Cookies(req, res);
     const idToken = cookies.get(ID_TOKEN_COOKIE);
 
@@ -111,7 +111,7 @@ export const getAttributeFromIdToken = <T extends keyof CognitoJwt>(
         return null;
     }
 
-    const decodedIdToken = decode(idToken) as CognitoJwt;
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
 
     return decodedIdToken[attribute] ?? null;
 };

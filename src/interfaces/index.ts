@@ -32,7 +32,7 @@ export interface ErrorInfo {
 }
 
 /* eslint-disable camelcase */
-export interface CognitoJwt {
+export interface CognitoIdToken {
     sub: string;
     aud: string;
     email_verified: boolean;
