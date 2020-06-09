@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
-import { InputCheck } from '../register';
+import { InputCheck } from '../../interfaces';
 import { confirmForgotPassword } from '../../data/cognito';
 
 const validatePassword = (password: string, confirmPassword: string): string => {

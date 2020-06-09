@@ -5,17 +5,11 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, InputCheck } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 
 const title = 'Create Account - Fares data build tool';
 const description = 'Create Account page of the Fares data build tool';
-
-export interface InputCheck {
-    id: string;
-    inputValue: string;
-    error: string;
-}
 
 interface RegisterProps {
     inputChecks: InputCheck[];
