@@ -7,7 +7,6 @@ import { InputCheck } from '../register';
 const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';
 
-    console.log('password errors', password, confirmPassword);
     if (password.length < 8) {
         passwordErrorMessage = 'Password cannot be empty or less than 8 characters';
     } else if (confirmPassword !== password) {
@@ -27,7 +26,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     try {
         const { username, password, confirmPassword, regKey, expiry } = req.body;
 
-        console.log('req boyds', req.body);
         const inputChecks: InputCheck[] = [];
 
         if (!username || !regKey) {
@@ -38,11 +36,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             });
         }
 
-        inputChecks.push({
-            inputValue: '',
-            id: 'password',
-            error: validatePassword(password, confirmPassword),
-        });
+        const valid = validatePassword(password, confirmPassword);
+
+        if (valid !== '') {
+            inputChecks.push({
+                inputValue: '',
+                id: 'password',
+                error: valid,
+            });
+        }
 
         if (inputChecks.some(el => el.error !== '')) {
             setErrorsCookie(inputChecks, regKey, username, expiry);
@@ -53,13 +55,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             await Auth.forgotPasswordSubmit(username, regKey, password);
             redirectTo(res, '/resetPasswordSuccess');
         } catch (error) {
-            if (error.code === 'ExpiredCodeException') {
+            if (error?.code === 'ExpiredCodeException') {
                 redirectTo(res, '/resetLinkExpired');
             }
-            console.warn('reset password failed', { error: error.message });
+
+            console.warn('reset password failed', { error: error?.message });
             inputChecks.push({
                 inputValue: '',
-                id: 'email',
+                id: 'password',
                 error: 'There was a problem creating your account',
             });
 
