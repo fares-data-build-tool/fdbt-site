@@ -4,7 +4,7 @@ import ResetPassword from '../../src/pages/resetPassword';
 
 const expiryDate = Math.abs(new Date(2020, 5, 30).getTime() / 1000);
 
-describe('pages', () => {
+describe('reset password page', () => {
     describe('reset password', () => {
         it('should render correctly', () => {
             const tree = shallow(

@@ -1,11 +1,11 @@
-import Auth from '@aws-amplify/auth';
 import resetPassword from '../../../src/pages/api/resetPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { USER_COOKIE } from '../../../src/constants';
+import * as auth from '../../../src/data/cognito';
 
-describe('register', () => {
-    const forgotPasswordSubmitSpy = jest.spyOn(Auth, 'forgotPasswordSubmit');
+describe('reset password', () => {
+    const forgotPasswordSubmitSpy = jest.spyOn(auth, 'confirmForgotPassword');
     const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
     beforeEach(() => {
@@ -79,8 +79,6 @@ describe('register', () => {
     });
 
     it('should redirect when successfully resetting password', async () => {
-        forgotPasswordSubmitSpy.mockImplementation(() => Promise.resolve());
-
         const { req, res } = getMockRequestAndResponse(
             {},
             {
@@ -104,8 +102,7 @@ describe('register', () => {
 
     it('should redirect if the password link has expired', async () => {
         forgotPasswordSubmitSpy.mockImplementation(() => {
-            // eslint-disable-next-line no-throw-literal
-            throw { code: 'ExpiredCodeException' };
+            throw new Error('ExpiredCodeException');
         });
 
         const { req, res } = getMockRequestAndResponse(
@@ -129,7 +126,9 @@ describe('register', () => {
     });
 
     it('should error when the reset password fails', async () => {
-        forgotPasswordSubmitSpy.mockImplementation(() => Promise.reject());
+        forgotPasswordSubmitSpy.mockImplementation(() => {
+            throw new Error(`Failed to confirm forgotten password`);
+        });
 
         const mockUserCookieValue = {
             inputChecks: [

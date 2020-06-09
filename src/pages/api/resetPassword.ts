@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Auth from '../../data/amplify';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../register';
+import { confirmForgotPassword } from '../../data/cognito';
 
 const validatePassword = (password: string, confirmPassword: string): string => {
     let passwordErrorMessage = '';
@@ -52,10 +52,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         try {
-            await Auth.forgotPasswordSubmit(username, regKey, password);
+            await confirmForgotPassword(username, regKey, password);
             redirectTo(res, '/resetPasswordSuccess');
         } catch (error) {
-            if (error?.code === 'ExpiredCodeException') {
+            if (error.message === 'ExpiredCodeException') {
                 redirectTo(res, '/resetLinkExpired');
                 return;
             }
