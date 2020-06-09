@@ -36,6 +36,10 @@ const setStaticRoutes = (server: Express): void => {
     );
 };
 
+const validateToken = () => {
+    console.log('validation successful!');
+};
+
 const setHeaders = (server: Express): void => {
     server.use((_req, res, next) => {
         res.locals.nonce = Buffer.from(uuidv4()).toString('base64');
@@ -103,6 +107,8 @@ const setHeaders = (server: Express): void => {
         setStaticRoutes(server);
 
         server.use(nocache());
+
+        server.post('api/validateToken', validateToken);
 
         server.all('*', (req: Request, res: Response) => {
             return handle(req, res);

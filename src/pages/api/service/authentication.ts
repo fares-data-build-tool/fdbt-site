@@ -1,75 +1,50 @@
-import * as express from 'express';
-import { parseCookies } from 'nookies';
-import { NextPageContext } from 'next';
+/* eslint-disable import/prefer-default-export */
+import { NextApiRequest, NextApiResponse } from 'next';
+import Cookies from 'cookies';
+import exjwt from 'express-jwt';
+import jwksClient from 'jwks-rsa';
 import { ID_TOKEN_COOKIE } from '../../../constants';
-import * as jsonwebtoken from 'jsonwebtoken';
-import jwkToPem from 'jwk-to-pem';
-import * as request from 'request';
-import { get } from 'request';
 
-
-interface JsonWebKey {
-    kid: string;
-    alg: string;
-    kty: string
-    e: string;
-    n: string;
-    use: string;
-}
-
-
-
-// Retrieves ID Token from ID_TOKEN_COOKIE
-const getIdTokenFromCookie = (ctx: NextPageContext): string => {
-    const cookies = parseCookies(ctx);
-    const idTokenCookie = cookies[ID_TOKEN_COOKIE];
-    const idTokenCookieParsed = JSON.parse(idTokenCookie);
-    const { idToken }  = idTokenCookieParsed;
-    return idToken;
+const getIdToken = (req: NextApiRequest, res: NextApiResponse): string => {
+    const cookies = new Cookies(req, res);
+    const idToken = cookies.get(ID_TOKEN_COOKIE);
+    if (!idToken) {
+        console.log('Could not retrieve ID taken from cookie');
+    }
+    return idToken || '';
 };
 
+const client = jwksClient({
+    jwksUri: `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}/.well-known/jwks.json`,
+});
+const getKey = (header: { kid: string }, callback: any): void => {
+    client.getSigningKey(header.kid, (_err: Error | null, key: SigningKey) => {
+        const signingKey = key.getPublicKey();
+        callback(null, signingKey);
+    });
+};
 
+// export const verifyToken = (req: NextApiRequest, res: NextApiResponse): void => {
+//     const token = getIdToken(req, res);
+//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//     verify(token, getKey, {}, (error: VerifyErrors | null, _decoded: {} | undefined) => {
+//         if (error) {
+//             console.log('Verification failed.');
+//         }
+//         console.log('Verification successful!');
+//     });
+// };
 
-
-// Retrieves Public Key from Cognito
-const getPublicKeyfromCognito = () => {
-    const publicKey = get({
-        url: `https://cognito-idp.eu-west-2.amazonaws.com/8Bt13tfnT/.well-known/jwks.json`,
-        json: true
-}, (error, response, body) => {if (publicKey && express.response.statusCode === 200) {
-    const pems: JsonWebKey []= [];
-                
-    const keys = publicKey[keys];
-                
-    for(let i = 0; i < keys.length; i++) {
-        let key_id = keys[i].kid;
-        let modulus = keys[i].n;
-        let exponent = keys[i].e;
-        let key_type = keys[i].kty;
-        let jwk = { kty: key_type, n: modulus, e: exponent};
-        let pem = jwkToPem(jwk);
-        pems[key_id] = pem;
-}});
-
-
-
-
-// Compares Key on ID Token to Key retrieved from Cognito
-
-
-
-// Validates signature
-
-
-
-// Validates not expired
-
-
-
-
-// Uses Refresh Token to obtain new ID Token
-
-
-
-
-
+export const verifyToken = async (): Promise<void> => {
+    const result = await fetch('/api/validateToken', {
+        method: 'POST',
+        body: JSON.stringify({ token: 'aaaaaa' }),
+    });
+    console.log(result);
+    // const token = getIdToken(req, res);
+    // app.get(token, exjwt({ secret: publicKey }), (req, res) => {
+    //     if (error) {
+    //         console.log('Verification failed');
+    //     }
+    //     console.log('Verification successful!');
+};

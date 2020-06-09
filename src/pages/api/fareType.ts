@@ -1,11 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils/index';
 import { FARE_TYPE_COOKIE } from '../../constants/index';
+import { verifyToken } from './service/authentication';
 
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
+        verifyToken(req, res);
+
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
