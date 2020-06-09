@@ -57,6 +57,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         } catch (error) {
             if (error?.code === 'ExpiredCodeException') {
                 redirectTo(res, '/resetLinkExpired');
+                return;
             }
 
             console.warn('reset password failed', { error: error?.message });

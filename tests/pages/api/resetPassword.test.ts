@@ -102,6 +102,32 @@ describe('register', () => {
         });
     });
 
+    it('should redirect if the password link has expired', async () => {
+        forgotPasswordSubmitSpy.mockImplementation(() => {
+            // eslint-disable-next-line no-throw-literal
+            throw { code: 'ExpiredCodeException' };
+        });
+
+        const { req, res } = getMockRequestAndResponse(
+            {},
+            {
+                username: 'test@test.com',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                regKey: '123ABd$',
+                expiry: expiryDate,
+            },
+            '',
+            writeHeadMock,
+        );
+
+        await resetPassword(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/resetLinkExpired',
+        });
+    });
+
     it('should error when the reset password fails', async () => {
         forgotPasswordSubmitSpy.mockImplementation(() => Promise.reject());
 
