@@ -4,11 +4,27 @@ import nextjs from 'next';
 import helmet from 'helmet';
 import nocache from 'nocache';
 import { v4 as uuidv4 } from 'uuid';
+import { requireAuth } from './middleware/authentication';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 5555;
+
+const unauthenticatedGetRoutes = [
+    '/',
+    '/login',
+    '/register',
+    '/confirmRegistration',
+    '/forgotPassword',
+    '/resetConfirmation',
+    '/resetPassword',
+    '/_next/*',
+    '/assets/*',
+    '/scripts/*',
+];
+
+const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword'];
 
 const setStaticRoutes = (server: Express): void => {
     server.use(
@@ -34,10 +50,6 @@ const setStaticRoutes = (server: Express): void => {
             immutable: true,
         }),
     );
-};
-
-const validateToken = () => {
-    console.log('validation successful!');
 };
 
 const setHeaders = (server: Express): void => {
@@ -108,9 +120,19 @@ const setHeaders = (server: Express): void => {
 
         server.use(nocache());
 
-        server.post('api/validateToken', validateToken);
+        unauthenticatedGetRoutes.forEach(route => {
+            server.get(route, (req: Request, res: Response) => {
+                return handle(req, res);
+            });
+        });
 
-        server.all('*', (req: Request, res: Response) => {
+        unauthenticatedPostRoutes.forEach(route => {
+            server.post(route, (req: Request, res: Response) => {
+                return handle(req, res);
+            });
+        });
+
+        server.all('*', requireAuth, (req: Request, res: Response) => {
             return handle(req, res);
         });
 
