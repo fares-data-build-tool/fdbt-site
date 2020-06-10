@@ -1,108 +1,96 @@
-/* eslint-disable import/prefer-default-export */
 import Cookies from 'cookies';
-// import jwt from 'express-jwt';
 import jwksClient from 'jwks-rsa';
-import { verify, GetPublicKeyOrSecret } from 'jsonwebtoken';
+import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { ID_TOKEN_COOKIE } from '../../src/constants';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../src/constants';
+import { signOutUser, setCookieOnResponseObject, getDomain } from '../../src/pages/api/apiUtils';
+import { CognitoIdToken } from '../../src/interfaces';
+import { initiateRefreshAuth } from '../../src/data/cognito';
 
-const getIdToken = (req: Request, res: Response): string => {
-    const cookies = new Cookies(req, res);
-    const idToken = cookies.get(ID_TOKEN_COOKIE);
-    if (!idToken) {
-        console.log('Could not retrieve ID taken from cookie');
-    }
-    return idToken || '';
+const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
+
+const jwks = jwksClient({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `${cognitoUri}/.well-known/jwks.json`,
+});
+
+const getKey = (header: JwtHeader, callback: SigningKeyCallback): void => {
+    jwks.getSigningKey(header.kid ?? '', (err, key) => {
+        const signingKey = key.getPublicKey();
+        callback(err ?? null, signingKey);
+    });
 };
 
-// const client = jwksClient({
-//     jwksUri: `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}/.well-known/jwks.json`,
-// });
-// const getKey = (header: { kid: string }, callback: any): void => {
-//     client.getSigningKey(header.kid, (_err: Error | null, key: SigningKey) => {
-//         const signingKey = key.getPublicKey();
-//         callback(null, signingKey);
-//     });
-// };
+const verifyOptions: VerifyOptions = {
+    audience: process.env.FDBT_USER_POOL_CLIENT_ID,
+    issuer: cognitoUri,
+    algorithms: ['RS256'],
+};
 
-// export const verifyToken = (req: NextApiRequest, res: NextApiResponse): void => {
-//     const token = getIdToken(req, res);
-//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//     verify(token, getKey, {}, (error: VerifyErrors | null, _decoded: {} | undefined) => {
-//         if (error) {
-//             console.log('Verification failed.');
-//         }
-//         console.log('Verification successful!');
-//     });
-// };
-
-export const requireAuth = (req: Request, res: Response, next: NextFunction): void => {
-    const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
-
-    console.log(req.url);
-
-    const jwks = jwksClient({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: `${cognitoUri}/.well-known/jwks.json`,
-    });
-
-    const getKey: GetPublicKeyOrSecret = (header, callback): void => {
-        if (!header.kid) {
-            throw new Error();
-        }
-
-        jwks.getSigningKey(header.kid, (_err, key) => {
-            const signingKey = key.getPublicKey();
-            callback(null, signingKey);
-        });
+export default (req: Request, res: Response, next: NextFunction): void => {
+    const logoutAndRedirect = (username: string | null = null): void => {
+        signOutUser(username, req, res)
+            .then(() => res.redirect('/login'))
+            .catch(error => {
+                console.error(`failed to sign out user: ${error.stack}`);
+                res.redirect('/login');
+            });
     };
 
-    verify(getIdToken(req, res), getKey, {}, err => {
+    const cookies = new Cookies(req, res);
+    const idToken = cookies.get(ID_TOKEN_COOKIE) ?? null;
+
+    if (!idToken) {
+        res.redirect('/login');
+        return;
+    }
+
+    verify(idToken, getKey, verifyOptions, err => {
         if (err) {
+            const decodedToken = decode(idToken) as CognitoIdToken;
+            const username = decodedToken?.['cognito:username'] ?? null;
+
             if (err.name === 'TokenExpiredError') {
-                // REFRESH
+                const refreshToken = cookies.get(REFRESH_TOKEN_COOKIE) ?? null;
+
+                if (refreshToken) {
+                    console.info('ID Token expired, attempting refresh...');
+
+                    initiateRefreshAuth(username, refreshToken)
+                        .then(data => {
+                            if (data.AuthenticationResult?.IdToken) {
+                                setCookieOnResponseObject(
+                                    getDomain(req),
+                                    ID_TOKEN_COOKIE,
+                                    data.AuthenticationResult.IdToken,
+                                    req,
+                                    res,
+                                );
+                                console.info('successfully refreshed ID Token');
+                                next();
+
+                                return;
+                            }
+
+                            logoutAndRedirect(username);
+                        })
+                        .catch(error => {
+                            console.warn(`failed to refresh ID token: ${error.stack}`);
+                            logoutAndRedirect(username);
+                        });
+
+                    return;
+                }
             }
 
-            // DELETE COOKIES AND PERFORM SIGN OUT IF USERNAME PRESENT
-            res.redirect('/login');
+            console.warn('ID Token invalid, clearing user session...');
+            logoutAndRedirect(username);
+
             return;
         }
 
         next();
     });
-
-    // console.log('HELLO');
-
-    // const jwtCheck = jwt({
-    //     secret: jwksClient.expressJwtSecret({
-    //         cache: true,
-    //         rateLimit: true,
-    //         jwksRequestsPerMinute: 5,
-    //         jwksUri: `${cognitoUri}/.well-known/jwks.json`,
-    //     }),
-    //     audience: process.env.FDBT_USER_POOL_CLIENT_ID,
-    //     issuer: cognitoUri,
-    //     algorithms: ['RS256'],
-    //     getToken: (): string => {
-    //         const cookies = new Cookies(req, res);
-    //         const idToken = cookies.get(ID_TOKEN_COOKIE);
-    //         if (!idToken) {
-    //             console.log('Could not retrieve ID taken from cookie');
-    //         }
-
-    //         console.log('ID TOKEN', idToken);
-    //         return idToken || '';
-    //     },
-    // });
-
-    // console.log(jwtCheck);
-
-    // const token = getIdToken(req, res);
-    // app.get(token, exjwt({ secret: publicKey }), (req, res) => {
-    //     if (error) {
-    //         console.log('Verification failed');
-    //     }
-    //     console.log('Verification successful!');
 };

@@ -1,10 +1,12 @@
 import express, { Request, Response, Express } from 'express';
 import morgan from 'morgan';
 import nextjs from 'next';
+import cookieParser from 'cookie-parser';
+import csurf from 'csurf';
 import helmet from 'helmet';
 import nocache from 'nocache';
 import { v4 as uuidv4 } from 'uuid';
-import { requireAuth } from './middleware/authentication';
+import requireAuth from './middleware/authentication';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
@@ -120,8 +122,22 @@ const setHeaders = (server: Express): void => {
 
         server.use(nocache());
 
+        server.use(cookieParser());
+
+        server.use(
+            csurf({
+                cookie: {
+                    secure: process.env.NODE_ENV !== 'development',
+                    httpOnly: true,
+                },
+                value: req => req.cookies.csrfToken,
+            }),
+        );
+
         unauthenticatedGetRoutes.forEach(route => {
             server.get(route, (req: Request, res: Response) => {
+                res.cookie('csrfToken', req.csrfToken ? req.csrfToken() : null, { sameSite: true, httpOnly: true });
+                res.locals.csrfToken = req.csrfToken();
                 return handle(req, res);
             });
         });
@@ -130,6 +146,11 @@ const setHeaders = (server: Express): void => {
             server.post(route, (req: Request, res: Response) => {
                 return handle(req, res);
             });
+        });
+
+        server.get('*', requireAuth, (req: Request, res: Response) => {
+            res.cookie('csrfToken', req.csrfToken ? req.csrfToken() : null, { sameSite: true, httpOnly: true });
+            return handle(req, res);
         });
 
         server.all('*', requireAuth, (req: Request, res: Response) => {
