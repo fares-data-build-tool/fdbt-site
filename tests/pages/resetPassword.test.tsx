@@ -7,7 +7,7 @@ describe('reset password page', () => {
         let expiryDate: number;
 
         beforeEach(() => {
-            expiryDate = Math.abs(new Date(2020, 5, 30).getTime() / 1000);
+            expiryDate = Math.abs(new Date(2020, 5, 30).getUTCSeconds());
         });
 
         it('should render correctly', () => {
