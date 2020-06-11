@@ -1,3 +1,5 @@
+import { AppInitialProps } from 'next/app';
+
 export interface ProductInfo {
     productName: string;
     productPrice: string;
@@ -51,4 +53,8 @@ export interface CognitoIdToken {
     exp: number;
     iat: number;
     email: string;
+}
+
+export interface CustomAppProps extends AppInitialProps {
+    csrfToken: string;
 }
