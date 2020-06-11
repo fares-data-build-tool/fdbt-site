@@ -5,8 +5,9 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { ErrorInfo } from '../interfaces';
+import { CustomAppProps, ErrorInfo } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'Reset Password - Fares data build tool';
 const description = 'Reset Password page of the Fares data build tool';
@@ -24,69 +25,77 @@ interface ResetPasswordProps {
     expiry: string;
 }
 
-const ResetPassword = ({ errors, regKey, username, expiry }: ResetPasswordProps): ReactElement => {
+const ResetPassword = ({
+    errors,
+    regKey,
+    username,
+    expiry,
+    csrfToken,
+}: ResetPasswordProps & CustomAppProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
-                    <form action="/api/resetPassword" method="post">
-                        <ErrorSummary errors={errors} />
-                        <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                            <div className="govuk-fieldset" aria-describedby="resetPassword-page-heading">
-                                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                    <h1 className="govuk-fieldset__heading" id="resetPassword-type-page-heading">
-                                        Reset your password
-                                    </h1>
-                                </legend>
-                                <p className="govuk-hint hint-text">
-                                    Your password should be at least 8 characters long.
-                                </p>
-                                <div className="govuk-form-group">
-                                    <label className="govuk-label" htmlFor="password">
-                                        New password
-                                    </label>
-                                    <FormElementWrapper
-                                        errors={errors}
-                                        errorId="password"
-                                        errorClass="govuk-input--error"
-                                    >
+                    <CsrfForm action="/api/resetPassword" method="post" csrfToken={csrfToken}>
+                        <>
+                            <ErrorSummary errors={errors} />
+                            <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                                <div className="govuk-fieldset" aria-describedby="resetPassword-page-heading">
+                                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                        <h1 className="govuk-fieldset__heading" id="resetPassword-type-page-heading">
+                                            Reset your password
+                                        </h1>
+                                    </legend>
+                                    <p className="govuk-hint hint-text">
+                                        Your password should be at least 8 characters long.
+                                    </p>
+                                    <div className="govuk-form-group">
+                                        <label className="govuk-label" htmlFor="password">
+                                            New password
+                                        </label>
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId="password"
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input"
+                                                id="password"
+                                                name="password"
+                                                type="password"
+                                                aria-describedby="password-hint"
+                                                spellCheck="false"
+                                            />
+                                        </FormElementWrapper>
+                                    </div>
+
+                                    <div className="govuk-form-group">
+                                        <label className="govuk-label" htmlFor="confirmPassword">
+                                            Confirm your new password
+                                        </label>
                                         <input
                                             className="govuk-input"
-                                            id="password"
-                                            name="password"
+                                            id="confirmPassword"
+                                            name="confirmPassword"
                                             type="password"
-                                            aria-describedby="password-hint"
+                                            aria-describedby="confirmPassword-hint"
                                             spellCheck="false"
                                         />
-                                    </FormElementWrapper>
-                                </div>
-
-                                <div className="govuk-form-group">
-                                    <label className="govuk-label" htmlFor="confirmPassword">
-                                        Confirm your new password
-                                    </label>
-                                    <input
-                                        className="govuk-input"
-                                        id="confirmPassword"
-                                        name="confirmPassword"
-                                        type="password"
-                                        aria-describedby="confirmPassword-hint"
-                                        spellCheck="false"
-                                    />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <input
-                            type="submit"
-                            name="resetPassword"
-                            value="Reset Password"
-                            id="reset-password-button"
-                            className="govuk-button"
-                        />
-                        <input value={regKey} type="hidden" name="regKey" />
-                        <input value={username} type="hidden" name="username" />
-                        <input value={expiry} type="hidden" name="expiry" />
-                    </form>
+                            <input
+                                type="submit"
+                                name="resetPassword"
+                                value="Reset Password"
+                                id="reset-password-button"
+                                className="govuk-button"
+                            />
+                            <input value={regKey} type="hidden" name="regKey" />
+                            <input value={username} type="hidden" name="username" />
+                            <input value={expiry} type="hidden" name="expiry" />
+                        </>
+                    </CsrfForm>
                 </div>
             </div>
         </BaseLayout>

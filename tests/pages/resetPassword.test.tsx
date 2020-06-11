@@ -12,7 +12,14 @@ describe('reset password page', () => {
 
         it('should render correctly', () => {
             const tree = shallow(
-                <ResetPassword username="test@tfn.com" regKey="123456" expiry={expiryDate.toString()} errors={[]} />,
+                <ResetPassword
+                    username="test@tfn.com"
+                    regKey="123456"
+                    expiry={expiryDate.toString()}
+                    csrfToken=""
+                    errors={[]}
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -23,6 +30,8 @@ describe('reset password page', () => {
                     username="test@tfn.com"
                     regKey="123456"
                     expiry={expiryDate.toString()}
+                    csrfToken=""
+                    pageProps={[]}
                     errors={[
                         {
                             errorMessage: 'Passwords do not match',
