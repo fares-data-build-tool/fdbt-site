@@ -21,7 +21,7 @@ export default (server: Express): void => {
             return;
         }
 
-        console.warn(`misconfigured csrf: ${error.stack}`);
+        console.warn(`invalid csrf: ${error.stack}`);
         res.redirect('/error');
     };
 
