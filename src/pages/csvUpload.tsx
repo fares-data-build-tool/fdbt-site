@@ -63,7 +63,6 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             csvTemplateSize: '400B',
             errors: !csvUpload?.error ? [] : [{ errorMessage: csvUpload.error, id: errorId }],
             detailSummary: "My csv won't upload",
-            csrfToken: '',
         },
     };
 

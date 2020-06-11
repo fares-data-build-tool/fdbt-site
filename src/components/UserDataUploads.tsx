@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import FileAttachment from './FileAttachment';
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, CustomAppProps } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 import ErrorSummary from './ErrorSummary';
 import CsrfForm from './CsrfForm';
@@ -19,7 +19,6 @@ export interface UserDataUploadsProps {
     errors: ErrorInfo[];
     detailSummary?: string;
     detailBody?: ReactElement;
-    csrfToken: string;
 }
 
 const UserDataUploadComponent = ({
@@ -35,7 +34,7 @@ const UserDataUploadComponent = ({
     detailSummary,
     detailBody,
     csrfToken,
-}: UserDataUploadsProps): ReactElement => (
+}: UserDataUploadsProps & CustomAppProps): ReactElement => (
     <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
             <ErrorSummary errors={errors} />

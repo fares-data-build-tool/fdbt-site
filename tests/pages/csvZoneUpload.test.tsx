@@ -17,6 +17,7 @@ describe('pages', () => {
                     csvTemplateSize=""
                     errors={[]}
                     csrfToken=""
+                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
