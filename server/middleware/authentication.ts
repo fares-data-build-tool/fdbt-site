@@ -2,7 +2,7 @@ import Cookies from 'cookies';
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../src/constants';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../src/constants';
 import { signOutUser, setCookieOnResponseObject, getDomain } from '../../src/pages/api/apiUtils';
 import { CognitoIdToken } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
@@ -40,6 +40,16 @@ export default (req: Request, res: Response, next: NextFunction): void => {
     };
 
     const cookies = new Cookies(req, res);
+    const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
+
+    if (
+        (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
+        (disableAuthCookie === 'true' || req.query.disableAuth === 'true')
+    ) {
+        next();
+        return;
+    }
+
     const idToken = cookies.get(ID_TOKEN_COOKIE) ?? null;
 
     if (!idToken) {
