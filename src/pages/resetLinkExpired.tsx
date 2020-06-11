@@ -12,7 +12,7 @@ const ResetCodeExpiry: NextPage = (): ReactElement => (
         <h1 className="govuk-heading-l">Reset Password Link Expired</h1>
         <p className="govuk-body-l">Your password link has expired.</p>
         <a
-            href="/forgottenPassword"
+            href="/forgotPassword"
             role="button"
             draggable="false"
             className="govuk-button"
