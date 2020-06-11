@@ -33,7 +33,14 @@ describe('Matching Page', () => {
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
         wrapper = shallow(
-            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+            <Matching
+                userFareStages={userFareStages}
+                stops={naptanStopInfo}
+                service={service}
+                error={false}
+                csrfToken=""
+                pageProps={[]}
+            />,
         );
     });
 
@@ -47,7 +54,14 @@ describe('Matching Page', () => {
 
     it('shows the correct amount of fare stages in the select boxes', () => {
         const mountedWrapper = mount(
-            <Matching userFareStages={userFareStages} stops={naptanStopInfo} service={service} error={false} />,
+            <Matching
+                userFareStages={userFareStages}
+                stops={naptanStopInfo}
+                service={service}
+                error={false}
+                csrfToken=""
+                pageProps={[]}
+            />,
         );
 
         expect(
