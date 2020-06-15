@@ -1,10 +1,9 @@
 import express, { Request, Response, Express } from 'express';
-import morgan from 'morgan';
 import nextjs from 'next';
-import nocache from 'nocache';
-import requireAuth from './middleware/authentication';
-import setupCsrf from './middleware/csrf';
+import requireAuth, { setDisableAuthCookies } from './middleware/authentication';
+import setupCsrfProtection from './middleware/csrf';
 import setSecurityHeaders from './middleware/security';
+import setupLogging from './middleware/logging';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
@@ -30,9 +29,11 @@ const unauthenticatedGetRoutes = [
 const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword', '/api/resetPassword'];
 
 const setStaticRoutes = (server: Express): void => {
+    const rootPath = process.env.NODE_ENV === 'development' ? `${__dirname}/..` : `${__dirname}/../..`;
+
     server.use(
         '/assets',
-        express.static(`${__dirname}/../node_modules/govuk-frontend/govuk/assets`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/govuk/assets`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -40,7 +41,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/_next/static',
-        express.static(`${__dirname}/../.next/static`, {
+        express.static(`${rootPath}/.next/static`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -48,7 +49,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/scripts',
-        express.static(`${__dirname}/../node_modules/govuk-frontend/govuk`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/govuk`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -58,21 +59,13 @@ const setStaticRoutes = (server: Express): void => {
 (async (): Promise<void> => {
     try {
         await app.prepare();
-
         const server = express();
 
-        server.use(
-            morgan('short', {
-                skip: req => req.originalUrl.startsWith('/_next') || req.originalUrl.startsWith('/assets'),
-            }),
-        );
-
+        setupLogging(server);
         setStaticRoutes(server);
         setSecurityHeaders(server);
-
-        server.use(nocache());
-
-        setupCsrf(server);
+        setDisableAuthCookies(server);
+        setupCsrfProtection(server);
 
         unauthenticatedGetRoutes.forEach(route => {
             server.get(route, (req: Request, res: Response) => {
