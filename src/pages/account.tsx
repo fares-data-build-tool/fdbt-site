@@ -49,27 +49,13 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                     <p className="govuk-body">{nocCode}</p>
                 </div>
             </div>
-
-            <a
-                href="/"
-                role="button"
-                draggable="false"
-                className="govuk-button govuk-button--start"
-                data-module="govuk-button"
-                id="return-home-button"
-            >
-                Home
-            </a>
         </TwoThirdsLayout>
     );
 };
 
 export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetailsProps } => {
     const cookies = parseCookies(ctx);
-    console.log({ cookies });
-    console.log(cookies[ID_TOKEN_COOKIE]);
     if (!cookies[ID_TOKEN_COOKIE]) {
-        console.log('INSIDE ERROR');
         throw new Error('Necessary cookies not found to show account details');
     }
     const idToken = cookies[ID_TOKEN_COOKIE];
