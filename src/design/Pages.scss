@@ -131,21 +131,26 @@
     }
 
     .content-one-third {
-        width: 33%;
+        width: 25%;
     }
 
-    .content-two-thirds {
-        width: 66%;
+    .email-content {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .change-password {
+        margin-left: auto;
     }
 
     .password-dots {
         margin-bottom: 20px;
     }
 
-    .password-dot {
+    .dot {
         height: 10px;
         width: 10px;
-        margin: 0px 5px;
+        margin: 0px 3px;
         background-color: black;
         border-radius: 50%;
         display: inline-block;

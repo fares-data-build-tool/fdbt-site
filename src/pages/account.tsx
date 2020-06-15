@@ -17,7 +17,7 @@ interface AccountDetailsProps {
 const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactElement => {
     const passwordDots: ReactElement[] = [];
     for (let i = 0; i < 8; i += 1) {
-        passwordDots.push(<span className="password-dot" />);
+        passwordDots.push(<span className="dot" />);
     }
     return (
         <TwoThirdsLayout title={title} description={description}>
@@ -26,12 +26,12 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
 
                 <div className="content-wrapper">
                     <p className="govuk-body govuk-!-font-weight-bold content-one-third">Email Address</p>
-                    <p className="govuk-body">{emailAddress}</p>
+                    <p className="govuk-body email-content">{emailAddress}</p>
                 </div>
                 <div className="content-wrapper">
                     <p className="govuk-body govuk-!-font-weight-bold content-one-third">Password</p>
                     <span className="password-dots">{passwordDots}</span>
-                    <span className="change-password-button">
+                    <span className="change-password">
                         <a
                             href="/changePassword"
                             role="button"
@@ -66,7 +66,10 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
 
 export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetailsProps } => {
     const cookies = parseCookies(ctx);
+    console.log({ cookies });
+    console.log(cookies[ID_TOKEN_COOKIE]);
     if (!cookies[ID_TOKEN_COOKIE]) {
+        console.log('INSIDE ERROR');
         throw new Error('Necessary cookies not found to show account details');
     }
     const idToken = cookies[ID_TOKEN_COOKIE];
