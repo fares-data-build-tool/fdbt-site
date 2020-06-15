@@ -119,6 +119,33 @@
     }
 }
 
+.account-details-page {
+    margin-bottom: 30px;
+
+    .content-wrapper {
+        margin: 15px 0px 15px 0px;
+        display: flex;
+        border-bottom: solid 1px rgb(160, 160, 160);
+    }
+
+    .content-one-third {
+        width: 33%;
+    }
+
+    .content-two-thirds {
+        width: 66%;
+    }
+
+    .password-dot {
+        height: 10px;
+        width: 10px;
+        margin: 0px 5px;
+        background-color: black;
+        border-radius: 50%;
+        display: inline-block;
+    }
+}
+
 .multiple-product-validity-page {
     .grid-headers-wrapper {
         display: flex;
