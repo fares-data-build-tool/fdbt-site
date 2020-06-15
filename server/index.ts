@@ -1,4 +1,7 @@
 import express, { Request, Response, Express } from 'express';
+import AWS from 'aws-sdk';
+import session from 'express-session';
+import dynamoDbStore from 'connect-dynamodb';
 import nextjs from 'next';
 import requireAuth, { setDisableAuthCookies } from './middleware/authentication';
 import setupCsrfProtection from './middleware/csrf';
@@ -61,6 +64,28 @@ const setStaticRoutes = (server: Express): void => {
         await app.prepare();
         const server = express();
 
+        const Store = dynamoDbStore(session);
+
+        server.use(
+            session({
+                store: new Store(
+                    process.env.NODE_ENV === 'development'
+                        ? {
+                              client: new AWS.DynamoDB({ endpoint: 'http://localhost:4569' }),
+                          }
+                        : {},
+                ),
+                secret: process.env.SESSION_SECRET || 'test secret',
+                resave: false,
+                saveUninitialized: false,
+                cookie: {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV !== 'development',
+                    sameSite: 'strict',
+                },
+            }),
+        );
+
         setupLogging(server);
         setStaticRoutes(server);
         setSecurityHeaders(server);
@@ -82,6 +107,9 @@ const setStaticRoutes = (server: Express): void => {
 
         server.get('*', requireAuth, (req: Request, res: Response) => {
             res.locals.csrfToken = req.csrfToken();
+            if (req.session) {
+                req.session.test = 'hello';
+            }
             return handle(req, res);
         });
 
