@@ -1,8 +1,23 @@
 import React, { FC } from 'react';
+import { signOutUser } from '../pages/api/apiUtils';
 import personIcon from '../assets/images/np-person-781585-ffffff.a9472bb89c43.png';
 
 type HeaderProps = {
     isAuthed: boolean;
+};
+
+const cookies = new Cookies(req, res);
+const idToken = cookies.get(ID_TOKEN_COOKIE) ?? null;
+
+
+
+const logoutAndRedirect = (username: string | null = null, req, res): void => {
+    signOutUser(username, req, res)
+        .then(() => res.redirect('/login'))
+        .catch(error => {
+            console.error(`failed to sign out user: ${error.stack}`);
+            res.redirect('/login');
+        });
 };
 
 const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
@@ -41,6 +56,13 @@ const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
                 <a href={isAuthed ? '/account' : '/login'} className="govuk-header__link">
                     <img src={personIcon} className="govuk-header__person-icon" alt="Person icon" />
                     <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
+                </a>
+                <a
+                    href={isAuthed ? '/' : ' '}
+                    onClick={(): void => logoutAndRedirect(username, req, res)}
+                    className="govuk-header__link"
+                >
+                    <span> {isAuthed ? '| Sign out' : ' '} </span>
                 </a>
             </div>
         </div>

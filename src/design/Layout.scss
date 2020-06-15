@@ -186,13 +186,12 @@ svg:not(:root) {
 
 .govuk-header__signin {
     flex-shrink: 0;
-    width: 120px;
+    width: 180px;
     text-align: right;
     margin-left: -120px;
     margin-top: 4px;
 
     .govuk-header__link {
-        display: flex;
         align-items: center;
         justify-content: flex-end;
         text-align: right;

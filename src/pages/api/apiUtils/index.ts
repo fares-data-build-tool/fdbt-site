@@ -7,7 +7,7 @@ import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKI
 import { CognitoIdToken } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 
-type Req = NextApiRequest | Request;
+type  Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
 
 export const getDomain = (req: Req): string => {
