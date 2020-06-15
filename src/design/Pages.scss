@@ -123,9 +123,11 @@
     margin-bottom: 30px;
 
     .content-wrapper {
-        margin: 15px 0px 15px 0px;
+        margin: 0 0 15px 0;
         display: flex;
         border-bottom: solid 1px rgb(160, 160, 160);
+        align-items: center;
+        min-height: 60px;
     }
 
     .content-one-third {
@@ -136,6 +138,10 @@
         width: 66%;
     }
 
+    .password-dots {
+        margin-bottom: 20px;
+    }
+
     .password-dot {
         height: 10px;
         width: 10px;
@@ -143,6 +149,15 @@
         background-color: black;
         border-radius: 50%;
         display: inline-block;
+    }
+
+    .change-password-button {
+        height: 38px;
+        margin: 0 0 20px auto;
+
+        .govuk-button {
+            margin-bottom: 0;
+        }
     }
 }
 
