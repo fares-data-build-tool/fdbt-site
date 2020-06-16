@@ -1,26 +1,13 @@
-import React, { FC } from 'react';
-import { signOutUser } from '../pages/api/apiUtils';
+import React, { ReactElement } from 'react';
 import personIcon from '../assets/images/np-person-781585-ffffff.a9472bb89c43.png';
+import CsrfForm from '../components/CsrfForm';
 
 type HeaderProps = {
     isAuthed: boolean;
+    csrfToken: string;
 };
 
-const cookies = new Cookies(req, res);
-const idToken = cookies.get(ID_TOKEN_COOKIE) ?? null;
-
-
-
-const logoutAndRedirect = (username: string | null = null, req, res): void => {
-    signOutUser(username, req, res)
-        .then(() => res.redirect('/login'))
-        .catch(error => {
-            console.error(`failed to sign out user: ${error.stack}`);
-            res.redirect('/login');
-        });
-};
-
-const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
+const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
     <header className="govuk-header " role="banner" data-module="govuk-header">
         <div className="govuk-header__container govuk-width-container">
             <div className="govuk-header__logo">
@@ -57,13 +44,14 @@ const Header: FC<HeaderProps> = ({ isAuthed }: HeaderProps) => (
                     <img src={personIcon} className="govuk-header__person-icon" alt="Person icon" />
                     <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
                 </a>
-                <a
-                    href={isAuthed ? '/' : ' '}
-                    onClick={(): void => logoutAndRedirect(username, req, res)}
-                    className="govuk-header__link"
-                >
-                    <span> {isAuthed ? '| Sign out' : ' '} </span>
-                </a>
+                {isAuthed && (
+                    <>
+                        <span> | </span>
+                        <CsrfForm action="/api/signOut" method="post" csrfToken={csrfToken}>
+                            <input type="submit" className="govuk-header__link" value="Sign out" />
+                        </CsrfForm>{' '}
+                    </>
+                )}
             </div>
         </div>
     </header>
