@@ -14,7 +14,7 @@ const RequestAccess = (): ReactElement => (
                 <p className="govuk-body">The Fares Data Build Tool is not open to public registration.</p>
                 <p className="govuk-body">
                     Please contact{' '}
-                    <a className="govuk-link" id="feedback_link" href="/contact">
+                    <a className="govuk-link" id="access_link" href="/contact">
                         Fares Data Build Support
                     </a>{' '}
                     to register.
