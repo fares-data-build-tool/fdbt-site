@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo, getUuidFromCookie } from './apiUtils/index';
+import { Request, Response } from 'express';
+import { redirectToError, redirectTo, getUuidFromCookie } from './apiUtils/index';
 import { FARE_TYPE_COOKIE } from '../../constants/index';
 
 import { isSessionValid } from './service/validator';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: Request, res: Response): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -16,14 +16,23 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 uuid: getUuidFromCookie(req, res),
                 fareType: req.body.fareType,
             });
-            setCookieOnResponseObject(getDomain(req), FARE_TYPE_COOKIE, cookieValue, req, res);
+
+            if (req.session) {
+                req.session[FARE_TYPE_COOKIE] = cookieValue;
+            }
+
             redirectTo(res, '/passengerType');
         } else {
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose a fare type from the options',
                 uuid: getUuidFromCookie(req, res),
             });
-            setCookieOnResponseObject(getDomain(req), FARE_TYPE_COOKIE, cookieValue, req, res);
+
+            if (req.session) {
+                console.log('HELLO');
+                req.session[FARE_TYPE_COOKIE] = cookieValue;
+            }
+
             redirectTo(res, '/fareType');
         }
     } catch (error) {

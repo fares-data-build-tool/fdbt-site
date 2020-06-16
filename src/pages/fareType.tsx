@@ -1,11 +1,8 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 
@@ -96,25 +93,16 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: any): {} => {
+    const { operator } = JSON.parse(ctx.req.session[OPERATOR_COOKIE]);
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-
-    if (!operatorCookie) {
-        throw new Error('Necessary cookies not found to show faretype page');
-    }
-
-    const operatorInfo = JSON.parse(operatorCookie);
-    const { operator } = operatorInfo;
-
-    if (cookies[FARE_TYPE_COOKIE]) {
-        const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-        const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
+    if (ctx.req.session[FARE_TYPE_COOKIE]) {
+        const parsedFareTypeCookie = JSON.parse(ctx.req.session[FARE_TYPE_COOKIE]);
 
         if (parsedFareTypeCookie.errorMessage) {
             const { errorMessage } = parsedFareTypeCookie;
-            deleteCookieOnServerSide(ctx, FARE_TYPE_COOKIE);
+            delete ctx.req.session[FARE_TYPE_COOKIE];
+
             return { props: { operator: operator.operatorPublicName, errors: [{ errorMessage, id: errorId }] } };
         }
     }

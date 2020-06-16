@@ -19,6 +19,7 @@ interface ResponseWithLocals extends ServerResponse {
 class MyDocument extends Document<{ nonce: string; isAuthed: boolean }> {
     static async getInitialProps(ctx: DocumentContext): Promise<DocumentProps> {
         const initialProps = await Document.getInitialProps(ctx);
+        console.log((ctx.res as ResponseWithLocals).locals);
         const nonce = (ctx.res as ResponseWithLocals)?.locals?.nonce ?? null;
 
         if (ctx.pathname !== '/') {

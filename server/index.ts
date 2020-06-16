@@ -1,7 +1,7 @@
+import AWS, { DynamoDB } from 'aws-sdk';
 import express, { Request, Response, Express } from 'express';
-import AWS from 'aws-sdk';
 import session from 'express-session';
-import dynamoDbStore from 'connect-dynamodb';
+import connectDynamo from 'connect-dynamodb';
 import nextjs from 'next';
 import requireAuth, { setDisableAuthCookies } from './middleware/authentication';
 import setupCsrfProtection from './middleware/csrf';
@@ -63,28 +63,46 @@ const setStaticRoutes = (server: Express): void => {
     try {
         await app.prepare();
         const server = express();
+        const DynamoDBStore = connectDynamo(session);
 
-        const Store = dynamoDbStore(session);
+        const storeOptions: { table: string; client?: DynamoDB } = {
+            table: 'sessions',
+        };
+
+        const sessionOptions: session.SessionOptions = {
+            cookie: { httpOnly: true, secure: true, path: '/', sameSite: 'strict' },
+            saveUninitialized: false,
+            resave: false,
+            secret: process.env.SESSION_SECRET || '',
+        };
+
+        if (process.env.NODE_ENV === 'development') {
+            storeOptions.client = new AWS.DynamoDB({
+                endpoint: 'http://localhost:4569',
+            });
+
+            if (sessionOptions.cookie) {
+                sessionOptions.cookie.secure = false;
+            }
+
+            sessionOptions.secret = 'test secret';
+        }
 
         server.use(
             session({
-                store: new Store(
-                    process.env.NODE_ENV === 'development'
-                        ? {
-                              client: new AWS.DynamoDB({ endpoint: 'http://localhost:4569' }),
-                          }
-                        : {},
-                ),
-                secret: process.env.SESSION_SECRET || 'test secret',
-                resave: false,
-                saveUninitialized: false,
-                cookie: {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV !== 'development',
-                    sameSite: 'strict',
-                },
+                store: new DynamoDBStore(storeOptions),
+                ...sessionOptions,
             }),
         );
+
+        server.use((req, _res, next) => {
+            console.log('ORIGINAL', req.originalUrl);
+            if (req.headers && req.headers.referrer) {
+                console.log(req.headers.referer);
+            }
+
+            next();
+        });
 
         setupLogging(server);
         setStaticRoutes(server);
@@ -95,6 +113,7 @@ const setStaticRoutes = (server: Express): void => {
         unauthenticatedGetRoutes.forEach(route => {
             server.get(route, (req: Request, res: Response) => {
                 res.locals.csrfToken = req.csrfToken();
+                (req as any).session.test = 'hello';
                 return handle(req, res);
             });
         });
@@ -105,11 +124,13 @@ const setStaticRoutes = (server: Express): void => {
             });
         });
 
+        console.log({ store: new DynamoDBStore(storeOptions), ...sessionOptions });
+
+        server.use(session({ store: new DynamoDBStore(storeOptions), ...sessionOptions }));
+
         server.get('*', requireAuth, (req: Request, res: Response) => {
             res.locals.csrfToken = req.csrfToken();
-            if (req.session) {
-                req.session.test = 'hello';
-            }
+            (req as any).session.test = 'hello';
             return handle(req, res);
         });
 

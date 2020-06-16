@@ -44,15 +44,12 @@ export const setDisableAuthCookies = (server: Express): void => {
                     ID_TOKEN_COOKIE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyJ9.-1CZzSU-mmUoLn_RpWvrBKOib2tu_SXE2FQ1HmNYnZk',
                 );
-                cookies.set(
-                    OPERATOR_COOKIE,
-                    JSON.stringify({
-                        operator: {
-                            operatorPublicName: 'Blackpool Transport',
-                        },
-                        uuid: '0d1953f5-f57a-4ae3-8522-fef7da34c567',
-                    }),
-                );
+                (req as any).session[OPERATOR_COOKIE] = JSON.stringify({
+                    operator: {
+                        operatorPublicName: 'Blackpool Transport',
+                    },
+                    uuid: '0d1953f5-f57a-4ae3-8522-fef7da34c567',
+                });
             }
         }
 

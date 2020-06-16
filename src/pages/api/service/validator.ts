@@ -3,9 +3,8 @@ import Cookies from 'cookies';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../../../constants';
 import { unescapeAndDecodeCookie } from '../apiUtils';
 
-export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    const cookies = new Cookies(req, res);
-    const operatorCookie = cookies.get(OPERATOR_COOKIE) || '';
+export const isSessionValid = (req: any, _res: any): boolean => {
+    const operatorCookie = req.session[OPERATOR_COOKIE] || '';
     if (operatorCookie) {
         return true;
     }

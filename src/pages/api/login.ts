@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 import { decode } from 'jsonwebtoken';
 import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
@@ -7,7 +6,7 @@ import { ErrorInfo, CognitoIdToken } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 import { initiateAuth } from '../../data/cognito';
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: any, res: any): Promise<void> => {
     try {
         const { email, password } = req.body;
 
@@ -49,8 +48,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const operatorName = await getOperatorNameByNocCode(nocCode);
                 const uuid = uuidv4();
                 const domain = getDomain(req);
-                const operatorCookieValue = JSON.stringify({ operator: operatorName, uuid });
-                setCookieOnResponseObject(domain, OPERATOR_COOKIE, operatorCookieValue, req, res);
+
+                req.session[OPERATOR_COOKIE] = operatorName;
+                req.session.uuid = uuid;
 
                 setCookieOnResponseObject(domain, ID_TOKEN_COOKIE, idToken, req, res);
                 setCookieOnResponseObject(domain, REFRESH_TOKEN_COOKIE, refreshToken, req, res);
