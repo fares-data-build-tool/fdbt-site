@@ -102,16 +102,15 @@ const ResetPassword = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: ResetPasswordProps } => {
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
 
     const errors: ErrorInfo[] = [];
-
     const { key, user_name: username, expiry } = ctx.query;
 
-    if ((!key || !username || !expiry) && ctx.res) {
-        redirectTo(ctx.res, '/error');
+    if (!key || !username || !expiry) {
+        throw new Error('Could not retrieve parameters from query string');
     }
 
     if (expiry) {
@@ -138,11 +137,9 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
             }
             return errors;
         });
-
-        return { props: { inputChecks, errors, regKey: key, username, expiry } };
     }
 
-    return { props: { errors, regKey: key, username, expiry } };
+    return { props: { errors, regKey: key as string, username: username as string, expiry: expiry as string } };
 };
 
 export default ResetPassword;

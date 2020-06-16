@@ -1,78 +1,75 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { ErrorInfo } from '../../interfaces';
+import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, getAttributeFromIdToken } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
-import { InputCheck } from '../../interfaces';
-import { confirmForgotPassword } from '../../data/cognito';
+import { initiateAuth, updateUserPassword } from '../../data/cognito';
 
 // Move below into api utils? (Currently used in both resetPassword and here in changePassword)
 
-const validatePassword = (password: string, confirmPassword: string): string => {
-    let passwordErrorMessage = '';
-
+const validatePassword = (password: string, confirmPassword: string): ErrorInfo[] => {
+    const errors: ErrorInfo[] = [];
+    let passwordError = '';
     if (password.length < 8) {
-        passwordErrorMessage = 'Password cannot be empty or less than 8 characters';
-    } else if (confirmPassword !== password) {
-        passwordErrorMessage = 'Passwords do not match';
+        passwordError = 'Password must be at least 8 characters long';
+    } else if (password !== confirmPassword) {
+        passwordError = 'Passwords do not match';
     }
+    errors.push({ id: 'new-password', errorMessage: passwordError });
+    return errors;
+};
 
-    return passwordErrorMessage;
+export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, errors: ErrorInfo[]): void => {
+    const cookieContent = JSON.stringify({ errors });
+    setCookieOnResponseObject(getDomain(req), USER_COOKIE, cookieContent, req, res);
+    redirectTo(res, '/changePassword');
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const setErrorsCookie = (inputChecks: InputCheck[], regKey: string, username: string, expiry: string): void => {
-        const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(getDomain(req), USER_COOKIE, cookieContent, req, res);
-        redirectTo(res, `/resetPassword?key=${regKey}&user_name=${username}&expiry=${expiry}`);
-    };
-
     try {
-        const { username, password, confirmPassword, regKey, expiry } = req.body;
+        const username = getAttributeFromIdToken(req, res, 'email');
+        const { oldPassword, newPassword, confirmNewPassword } = req.body;
 
-        const inputChecks: InputCheck[] = [];
-
-        if (!username || !regKey) {
-            inputChecks.push({
-                inputValue: '',
-                id: 'password',
-                error: 'There was a problem resetting your password.',
-            });
+        if (!username) {
+            throw new Error('Could not retrieve email from ID_TOKEN_COOKIE');
         }
 
-        const valid = validatePassword(password, confirmPassword);
-
-        if (valid !== '') {
-            inputChecks.push({
-                inputValue: '',
-                id: 'password',
-                error: valid,
-            });
-        }
-
-        if (inputChecks.some(el => el.error !== '')) {
-            setErrorsCookie(inputChecks, regKey, username, expiry);
-            return;
-        }
+        let errors: ErrorInfo[] = [];
 
         try {
-            await confirmForgotPassword(username, regKey, password);
-            redirectTo(res, '/passwordChanged');
-        } catch (error) {
-            if (error.message === 'ExpiredCodeException') {
-                redirectTo(res, '/resetLinkExpired');
-                return;
+            const authResponse = await initiateAuth(username, oldPassword);
+
+            if (authResponse?.AuthenticationResult) {
+                errors = validatePassword(newPassword, confirmNewPassword);
+
+                if (errors.some(el => el.errorMessage !== '')) {
+                    setCookieAndRedirect(req, res, errors);
+                    return;
+                }
+
+                try {
+                    await updateUserPassword(newPassword, username);
+                    redirectTo(res, '/passwordChanged');
+                } catch (error) {
+                    console.warn('update password failed', { error: error?.message });
+                    errors.push({
+                        id: 'new-password',
+                        errorMessage: 'There was a problem resetting your password.',
+                    });
+                    setCookieAndRedirect(req, res, errors);
+                }
+            } else {
+                throw new Error('Auth response invalid');
             }
-
-            console.warn('reset password failed', { error: error?.message });
-            inputChecks.push({
-                inputValue: '',
-                id: 'password',
-                error: 'There was a problem resetting your password.',
+        } catch (error) {
+            console.warn('User authentication failed', { error: error.message });
+            errors.push({
+                id: 'old-password',
+                errorMessage: 'Your old password is incorrect.',
             });
-
-            setErrorsCookie(inputChecks, regKey, username, expiry);
+            setCookieAndRedirect(req, res, errors);
         }
     } catch (error) {
-        const message = 'There was an error resetting password.';
+        const message = 'There was an error updating the user password';
         redirectToError(res, message, error);
     }
 };

@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-// import { parseCookies } from 'nookies';
-import { BaseLayout } from '../layout/Layout';
+import { parseCookies } from 'nookies';
+import { TwoThirdsLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-// import { USER_COOKIE } from '../constants';
+import { USER_COOKIE } from '../constants';
 import { CustomAppProps, ErrorInfo } from '../interfaces';
-// import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Change Password - Fares data build tool';
@@ -20,20 +19,11 @@ export interface InputCheck {
 
 interface ChangePasswordProps {
     errors: ErrorInfo[];
-    regKey: string;
-    username: string;
-    expiry: string;
 }
 
-const ChangePassword = ({
-    errors,
-    regKey,
-    username,
-    expiry,
-    csrfToken,
-}: ChangePasswordProps & CustomAppProps): ReactElement => {
+const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppProps): ReactElement => {
     return (
-        <BaseLayout title={title} description={description} errors={errors}>
+        <TwoThirdsLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
                     <CsrfForm action="/api/changePassword" method="post" csrfToken={csrfToken}>
@@ -43,44 +33,71 @@ const ChangePassword = ({
                                 <div className="govuk-fieldset" aria-describedby="changePassword-page-heading">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                         <h1 className="govuk-fieldset__heading" id="changePassword-page-heading">
-                                            Change Password
+                                            Change your password
                                         </h1>
                                     </legend>
                                     <p className="govuk-hint hint-text" id="changePassword-page-hint">
                                         Your password should be at least 8 characters long.
                                     </p>
+
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="password">
-                                            New password
+                                        <label className="govuk-label" htmlFor="old-password">
+                                            Old password
                                         </label>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId="password"
+                                            errorId="old-password"
                                             errorClass="govuk-input--error"
                                         >
                                             <input
                                                 className="govuk-input"
-                                                id="password"
-                                                name="password"
+                                                id="old-password"
+                                                name="oldPassword"
                                                 type="password"
-                                                aria-describedby="password-hint"
+                                                aria-describedby="old-password-hint"
                                                 spellCheck="false"
                                             />
                                         </FormElementWrapper>
                                     </div>
 
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="confirmPassword">
-                                            Confirm password
+                                        <label className="govuk-label" htmlFor="new-password">
+                                            New password
                                         </label>
-                                        <input
-                                            className="govuk-input"
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            type="password"
-                                            aria-describedby="confirmPassword-hint"
-                                            spellCheck="false"
-                                        />
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId="new-password"
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input"
+                                                id="new-password"
+                                                name="newPassword"
+                                                type="password"
+                                                aria-describedby="new-password-hint"
+                                                spellCheck="false"
+                                            />
+                                        </FormElementWrapper>
+                                    </div>
+
+                                    <div className="govuk-form-group">
+                                        <label className="govuk-label" htmlFor="confirm-new-password">
+                                            Confirm new password
+                                        </label>
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId="confirm-new-password"
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input"
+                                                id="confirm-new-password"
+                                                name="confirmNewPassword"
+                                                type="password"
+                                                aria-describedby="confirm-new-password-hint"
+                                                spellCheck="false"
+                                            />
+                                        </FormElementWrapper>
                                     </div>
                                 </div>
                             </div>
@@ -91,49 +108,28 @@ const ChangePassword = ({
                                 id="change-password-button"
                                 className="govuk-button"
                             />
-                            <input value={regKey} type="hidden" name="regKey" />
-                            <input value={username} type="hidden" name="username" />
-                            <input value={expiry} type="hidden" name="expiry" />
                         </>
                     </CsrfForm>
                 </div>
             </div>
-        </BaseLayout>
+        </TwoThirdsLayout>
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext) => {
-    console.log(ctx);
-    // const cookies = parseCookies(ctx);
-    // const userCookie = cookies[USER_COOKIE];
-    // const errors: ErrorInfo[] = [];
-    // const { key, user_name: username, expiry } = ctx.query;
-    // if ((!key || !username || !expiry) && ctx.res) {
-    //     redirectTo(ctx.res, '/error');
-    // }
-    // if (expiry) {
-    //     if (typeof expiry === 'string') {
-    //         const parsedExpiry = parseInt(expiry, 10);
-    //         const currentTimeStamp = Math.floor(Date.now() / 1000);
-    //         if (currentTimeStamp > parsedExpiry) {
-    //             if (ctx.res) {
-    //                 redirectTo(ctx.res, '/resetLinkExpired');
-    //             }
-    //         }
-    //     }
-    // }
-    // if (userCookie) {
-    //     const userCookieParsed = JSON.parse(userCookie);
-    //     const { inputChecks } = userCookieParsed;
-    //     inputChecks.map((check: InputCheck) => {
-    //         if (check.error) {
-    //             errors.push({ id: check.id, errorMessage: check.error });
-    //         }
-    //         return errors;
-    //     });
-    //     return { props: { inputChecks, errors, regKey: key, username, expiry } };
-    // }
-    // return { props: { errors, regKey: key, username, expiry } };
+export const getServerSideProps = (ctx: NextPageContext): { props: ChangePasswordProps } => {
+    const cookies = parseCookies(ctx);
+    const userCookie = cookies[USER_COOKIE];
+    const errors: ErrorInfo[] = [];
+    if (userCookie) {
+        const { inputChecks } = JSON.parse(userCookie);
+        inputChecks.map((check: InputCheck) => {
+            if (check.error) {
+                errors.push({ id: check.id, errorMessage: check.error });
+            }
+            return errors;
+        });
+    }
+    return { props: { errors } };
 };
 
 export default ChangePassword;

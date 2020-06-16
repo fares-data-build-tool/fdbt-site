@@ -8,7 +8,7 @@ const validatePassword = (password: string, confirmPassword: string): string => 
     let passwordErrorMessage = '';
 
     if (password.length < 8) {
-        passwordErrorMessage = 'Password cannot be empty or less than 8 characters';
+        passwordErrorMessage = 'Password must be at least 8 characters long';
     } else if (confirmPassword !== password) {
         passwordErrorMessage = 'Passwords do not match';
     }

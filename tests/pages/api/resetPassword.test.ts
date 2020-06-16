@@ -30,9 +30,7 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                ],
+                inputChecks: [{ inputValue: '', id: 'password', error: 'Password must be at least 8 characters long' }],
             },
         ],
         [
@@ -45,9 +43,7 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [
-                    { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                ],
+                inputChecks: [{ inputValue: '', id: 'password', error: 'Password must be at least 8 characters long' }],
             },
         ],
         [
@@ -65,7 +61,7 @@ describe('reset password', () => {
         ],
     ];
 
-    test.each(cases)('given %p, sets the correct error cookie', async (_, testData, expectedCookieValue) => {
+    test.each(cases)('given %p, sets the correct error cookie', async (_case, testData, expectedCookieValue) => {
         const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
 
         await resetPassword(req, res);
