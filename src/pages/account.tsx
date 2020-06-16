@@ -25,11 +25,11 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                 <h1 className="govuk-heading-xl">Account Details</h1>
 
                 <div className="content-wrapper">
-                    <p className="govuk-body govuk-!-font-weight-bold content-one-third">Email Address</p>
-                    <p className="govuk-body email-content">{emailAddress}</p>
+                    <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Email Address</p>
+                    <p className="govuk-body email-content content-three-quarters">{emailAddress}</p>
                 </div>
                 <div className="content-wrapper">
-                    <p className="govuk-body govuk-!-font-weight-bold content-one-third">Password</p>
+                    <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Password</p>
                     <span className="password-dots">{passwordDots}</span>
                     <span className="change-password">
                         <a
@@ -45,8 +45,8 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
                     </span>
                 </div>
                 <div className="content-wrapper">
-                    <p className="govuk-body govuk-!-font-weight-bold content-one-third">Operator</p>
-                    <p className="govuk-body">{nocCode}</p>
+                    <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Operator</p>
+                    <p className="govuk-body content-three-quarters">{nocCode}</p>
                 </div>
             </div>
         </TwoThirdsLayout>

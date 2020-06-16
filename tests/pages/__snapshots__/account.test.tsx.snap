@@ -17,12 +17,12 @@ exports[`pages account should render correctly 1`] = `
       className="content-wrapper"
     >
       <p
-        className="govuk-body govuk-!-font-weight-bold content-one-third"
+        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
       >
         Email Address
       </p>
       <p
-        className="govuk-body email-content"
+        className="govuk-body email-content content-three-quarters"
       >
         joseppo.bloggo@somefakebuscompany.com
       </p>
@@ -31,7 +31,7 @@ exports[`pages account should render correctly 1`] = `
       className="content-wrapper"
     >
       <p
-        className="govuk-body govuk-!-font-weight-bold content-one-third"
+        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
       >
         Password
       </p>
@@ -82,12 +82,12 @@ exports[`pages account should render correctly 1`] = `
       className="content-wrapper"
     >
       <p
-        className="govuk-body govuk-!-font-weight-bold content-one-third"
+        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
       >
         Operator
       </p>
       <p
-        className="govuk-body"
+        className="govuk-body content-three-quarters"
       >
         FaBusCo
       </p>
