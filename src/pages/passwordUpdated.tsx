@@ -4,13 +4,13 @@ import TwoThirdsLayout from '../layout/Layout';
 import { deleteCookieOnServerSide } from '../utils';
 import { USER_COOKIE } from '../constants';
 
-const title = 'Reset Password Successful - Fares Data Build Tool';
-const description = 'Reset Password Registration page for the Fares Data Build Tool';
+const title = 'Password Updated - Fares Data Build Tool';
+const description = 'Password Updated page of the Fares Data Build Tool';
 
 const ConfirmRegistration: NextPage = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
-        <h1 className="govuk-heading-l">Reset your password</h1>
-        <p className="govuk-body-l">Your password has been reset.</p>
+        <h1 className="govuk-heading-l">Password Updated</h1>
+        <p className="govuk-body-l">Your password has been updated successfully</p>
         <a
             href="/login"
             role="button"

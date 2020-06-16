@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+// import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_COOKIE } from '../constants';
+// import { USER_COOKIE } from '../constants';
 import { CustomAppProps, ErrorInfo } from '../interfaces';
-import { redirectTo } from './api/apiUtils';
+// import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
-const title = 'Reset Password - Fares data build tool';
-const description = 'Reset Password page of the Fares data build tool';
+const title = 'Change Password - Fares data build tool';
+const description = 'Change Password page of the Fares data build tool';
 
 export interface InputCheck {
     id: string;
@@ -18,35 +18,35 @@ export interface InputCheck {
     error: string;
 }
 
-interface ResetPasswordProps {
+interface ChangePasswordProps {
     errors: ErrorInfo[];
     regKey: string;
     username: string;
     expiry: string;
 }
 
-const ResetPassword = ({
+const ChangePassword = ({
     errors,
     regKey,
     username,
     expiry,
     csrfToken,
-}: ResetPasswordProps & CustomAppProps): ReactElement => {
+}: ChangePasswordProps & CustomAppProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
-                    <CsrfForm action="/api/resetPassword" method="post" csrfToken={csrfToken}>
+                    <CsrfForm action="/api/changePassword" method="post" csrfToken={csrfToken}>
                         <>
                             <ErrorSummary errors={errors} />
                             <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                                <div className="govuk-fieldset" aria-describedby="resetPassword-page-heading">
+                                <div className="govuk-fieldset" aria-describedby="changePassword-page-heading">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                        <h1 className="govuk-fieldset__heading" id="resetPassword-page-heading">
-                                            Reset your password
+                                        <h1 className="govuk-fieldset__heading" id="changePassword-page-heading">
+                                            Change Password
                                         </h1>
                                     </legend>
-                                    <p className="govuk-hint hint-text" id="resetPassword-page-hint">
+                                    <p className="govuk-hint hint-text" id="changePassword-page-hint">
                                         Your password should be at least 8 characters long.
                                     </p>
                                     <div className="govuk-form-group">
@@ -86,9 +86,9 @@ const ResetPassword = ({
                             </div>
                             <input
                                 type="submit"
-                                name="resetPassword"
-                                value="Reset Password"
-                                id="reset-password-button"
+                                name="changePassword"
+                                value="Change Password"
+                                id="change-password-button"
                                 className="govuk-button"
                             />
                             <input value={regKey} type="hidden" name="regKey" />
@@ -102,47 +102,38 @@ const ResetPassword = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
-
-    const errors: ErrorInfo[] = [];
-
-    const { key, user_name: username, expiry } = ctx.query;
-
-    if ((!key || !username || !expiry) && ctx.res) {
-        redirectTo(ctx.res, '/error');
-    }
-
-    if (expiry) {
-        if (typeof expiry === 'string') {
-            const parsedExpiry = parseInt(expiry, 10);
-
-            const currentTimeStamp = Math.floor(Date.now() / 1000);
-
-            if (currentTimeStamp > parsedExpiry) {
-                if (ctx.res) {
-                    redirectTo(ctx.res, '/resetLinkExpired');
-                }
-            }
-        }
-    }
-
-    if (userCookie) {
-        const userCookieParsed = JSON.parse(userCookie);
-        const { inputChecks } = userCookieParsed;
-
-        inputChecks.map((check: InputCheck) => {
-            if (check.error) {
-                errors.push({ id: check.id, errorMessage: check.error });
-            }
-            return errors;
-        });
-
-        return { props: { inputChecks, errors, regKey: key, username, expiry } };
-    }
-
-    return { props: { errors, regKey: key, username, expiry } };
+export const getServerSideProps = (ctx: NextPageContext) => {
+    console.log(ctx);
+    // const cookies = parseCookies(ctx);
+    // const userCookie = cookies[USER_COOKIE];
+    // const errors: ErrorInfo[] = [];
+    // const { key, user_name: username, expiry } = ctx.query;
+    // if ((!key || !username || !expiry) && ctx.res) {
+    //     redirectTo(ctx.res, '/error');
+    // }
+    // if (expiry) {
+    //     if (typeof expiry === 'string') {
+    //         const parsedExpiry = parseInt(expiry, 10);
+    //         const currentTimeStamp = Math.floor(Date.now() / 1000);
+    //         if (currentTimeStamp > parsedExpiry) {
+    //             if (ctx.res) {
+    //                 redirectTo(ctx.res, '/resetLinkExpired');
+    //             }
+    //         }
+    //     }
+    // }
+    // if (userCookie) {
+    //     const userCookieParsed = JSON.parse(userCookie);
+    //     const { inputChecks } = userCookieParsed;
+    //     inputChecks.map((check: InputCheck) => {
+    //         if (check.error) {
+    //             errors.push({ id: check.id, errorMessage: check.error });
+    //         }
+    //         return errors;
+    //     });
+    //     return { props: { inputChecks, errors, regKey: key, username, expiry } };
+    // }
+    // return { props: { errors, regKey: key, username, expiry } };
 };
 
-export default ResetPassword;
+export default ChangePassword;
