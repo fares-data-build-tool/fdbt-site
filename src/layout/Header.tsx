@@ -39,7 +39,7 @@ const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
                 </a>
             </div>
 
-            <div className="govuk-header__signin">
+            <div className="govuk-header__account-link">
                 <a href={isAuthed ? '/account' : '/login'} className="govuk-header__link">
                     <img src={personIcon} className="govuk-header__person-icon" alt="Person icon" />
                     <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
@@ -47,8 +47,17 @@ const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
                 {isAuthed && (
                     <>
                         <span> | </span>
-                        <CsrfForm action="/api/signOut" method="post" csrfToken={csrfToken}>
-                            <input type="submit" className="govuk-header__link" value="Sign out" />
+                        <CsrfForm
+                            action="/api/signOut"
+                            method="post"
+                            csrfToken={csrfToken}
+                            className="govuk-header__form"
+                        >
+                            <input
+                                type="submit"
+                                value="Sign out"
+                                className=" govuk-header__link govuk-header__signout"
+                            />
                         </CsrfForm>{' '}
                     </>
                 )}
