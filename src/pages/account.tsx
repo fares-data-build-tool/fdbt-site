@@ -60,6 +60,9 @@ export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetail
     }
     const idToken = cookies[ID_TOKEN_COOKIE];
     const decodedIdToken = decode(idToken) as CognitoIdToken;
+    if (!decodedIdToken.email || !decodedIdToken['custom:noc']) {
+        throw new Error('Could not extract the user email address and/or noc code from their ID token');
+    }
     return { props: { emailAddress: decodedIdToken.email, nocCode: decodedIdToken['custom:noc'] } };
 };
 
