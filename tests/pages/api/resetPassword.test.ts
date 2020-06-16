@@ -96,7 +96,7 @@ describe('reset password', () => {
 
         expect(forgotPasswordSubmitSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/resetPasswordSuccess',
+            Location: '/passwordChanged',
         });
     });
 

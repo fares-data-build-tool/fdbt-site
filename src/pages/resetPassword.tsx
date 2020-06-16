@@ -108,7 +108,6 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const errors: ErrorInfo[] = [];
 
-    // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
     const { key, user_name: username, expiry } = ctx.query;
 
     if ((!key || !username || !expiry) && ctx.res) {

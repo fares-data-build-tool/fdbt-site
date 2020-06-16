@@ -53,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         try {
             await confirmForgotPassword(username, regKey, password);
-            redirectTo(res, '/resetPasswordSuccess');
+            redirectTo(res, '/passwordChanged');
         } catch (error) {
             if (error.message === 'ExpiredCodeException') {
                 redirectTo(res, '/resetLinkExpired');
