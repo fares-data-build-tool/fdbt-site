@@ -171,7 +171,7 @@ exports[`pages register should render correctly 1`] = `
                 <input
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkbox-user-research"
+                  name="checkboxUserResearch"
                   type="checkbox"
                   value="checkUserResearch"
                 />
@@ -424,7 +424,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 <input
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkbox-user-research"
+                  name="checkboxUserResearch"
                   type="checkbox"
                   value="checkUserResearch"
                 />
@@ -677,7 +677,7 @@ exports[`pages register should store email if entered correctly but other fields
                 <input
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkbox-user-research"
+                  name="checkboxUserResearch"
                   type="checkbox"
                   value="checkUserResearch"
                 />
