@@ -8,8 +8,8 @@ describe('Header', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    it('expect title_link to be root', () => {
+    it('expect title-link to be root', () => {
         const tree = shallow(<Header isAuthed />);
-        expect(tree.find('#title_link').prop('href')).toEqual('/');
+        expect(tree.find('#title-link').prop('href')).toEqual('/');
     });
 });
