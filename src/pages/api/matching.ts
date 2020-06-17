@@ -54,6 +54,7 @@ interface MatchingFareZones {
         prices: Price[];
     };
 }
+
 export const putMatchingDataInS3 = async (data: MatchingData | MatchingReturnData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
@@ -137,16 +138,29 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
 
+        delete req.body.service;
+        delete req.body.userfarestages;
+
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const error = { error: true };
-            setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ error }), req, res);
+            const requestBody: { [key: string]: string } = req.body;
+            const selectedStagesList: string[][] = [];
+            Object.entries(requestBody).forEach(entry => {
+                if (entry[1]) {
+                    selectedStagesList.push(entry);
+                }
+            });
+            console.log(selectedStagesList);
+            setCookieOnResponseObject(
+                getDomain(req),
+                MATCHING_COOKIE,
+                JSON.stringify({ error, selectedFareStages: selectedStagesList }),
+                req,
+                res,
+            );
             redirectTo(res, '/matching');
             return;
         }
-
-        // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
-        delete req.body.service;
-        delete req.body.userfarestages;
 
         const uuid = getUuidFromCookie(req, res);
 

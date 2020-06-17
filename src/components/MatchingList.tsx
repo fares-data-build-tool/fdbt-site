@@ -6,9 +6,10 @@ import { formatStopName } from '../utils';
 interface MatchingListProps {
     userFareStages: UserFareStages;
     stops: Stop[];
+    selectedFareStages: [];
 }
 
-const MatchingList = ({ userFareStages, stops }: MatchingListProps): ReactElement => (
+const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingListProps): ReactElement => (
     <div>
         <div className="matching-wrapper">
             <div className="govuk-heading-s matching-stop-header">Stop name</div>
@@ -28,11 +29,16 @@ const MatchingList = ({ userFareStages, stops }: MatchingListProps): ReactElemen
                         <select className="govuk-select farestage-select" id={`option${index}`} name={`option${index}`}>
                             <option value="">Not Applicable</option>
 
-                            {userFareStages.fareStages.map((stage: FareStage) => (
-                                <option key={stage.stageName} value={JSON.stringify({ stop, stage: stage.stageName })}>
-                                    {stage.stageName}
-                                </option>
-                            ))}
+                            {userFareStages.fareStages.map((stage: FareStage) => {
+                                return (
+                                    <option
+                                        key={stage.stageName}
+                                        value={JSON.stringify({ stop, stage: stage.stageName })}
+                                    >
+                                        {stage.stageName}
+                                    </option>
+                                );
+                            })}
                         </select>
                     </div>
                 </div>
