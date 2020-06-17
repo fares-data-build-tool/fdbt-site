@@ -11,12 +11,6 @@ import CsrfForm from '../components/CsrfForm';
 const title = 'Change Password - Fares data build tool';
 const description = 'Change Password page of the Fares data build tool';
 
-export interface InputCheck {
-    id: string;
-    inputValue: string;
-    error: string;
-}
-
 interface ChangePasswordProps {
     errors: ErrorInfo[];
 }
@@ -122,9 +116,9 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ChangePasswor
     const errors: ErrorInfo[] = [];
     if (userCookie) {
         const { inputChecks } = JSON.parse(userCookie);
-        inputChecks.map((check: InputCheck) => {
-            if (check.error) {
-                errors.push({ id: check.id, errorMessage: check.error });
+        inputChecks.map((check: ErrorInfo) => {
+            if (check.errorMessage) {
+                errors.push({ id: check.id, errorMessage: check.errorMessage });
             }
             return errors;
         });
