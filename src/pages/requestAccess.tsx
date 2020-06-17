@@ -8,7 +8,7 @@ const RequestAccess = (): ReactElement => (
     <BaseLayout title={title} description={description} errors={[]}>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
-                <h1 className="govuk-heading-l" id="register-type-page-heading">
+                <h1 className="govuk-heading-l" id="request-access-page-heading">
                     Request Access
                 </h1>
                 <p className="govuk-body">The Fares Data Build Tool is not open to public registration.</p>
