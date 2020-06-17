@@ -6,13 +6,13 @@ import { initiateAuth, updateUserPassword } from '../../data/cognito';
 
 // Move below into api utils? (Currently used in both resetPassword and here in changePassword)
 
-const validatePassword = (password: string, confirmPassword: string): ErrorInfo[] => {
-    const inputChecks: ErrorInfo[] = [];
+const validatePassword = (password: string, confirmPassword: string, inputChecks: ErrorInfo[]): ErrorInfo[] => {
     let passwordError = '';
     if (password.length < 8) {
-        passwordError = 'Password must be at least 8 characters long';
+        passwordError = password.length === 0 ? 'Enter a new password' : 'Password must be at least 8 characters long';
     } else if (password !== confirmPassword) {
         passwordError = 'Passwords do not match';
+        inputChecks.push({ id: 'confirm-new-password', errorMessage: passwordError });
     }
     inputChecks.push({ id: 'new-password', errorMessage: passwordError });
     return inputChecks;
@@ -35,11 +35,18 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         let inputChecks: ErrorInfo[] = [];
 
+        if (!oldPassword) {
+            inputChecks.push({ id: 'old-password', errorMessage: 'Enter your current password' });
+            inputChecks = validatePassword(newPassword, confirmNewPassword, inputChecks);
+            setCookieAndRedirect(req, res, inputChecks);
+            return;
+        }
+
         try {
             const authResponse = await initiateAuth(username, oldPassword);
 
             if (authResponse?.AuthenticationResult) {
-                inputChecks = validatePassword(newPassword, confirmNewPassword);
+                inputChecks = validatePassword(newPassword, confirmNewPassword, inputChecks);
 
                 if (inputChecks.some(el => el.errorMessage !== '')) {
                     setCookieAndRedirect(req, res, inputChecks);
@@ -48,7 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
                 try {
                     await updateUserPassword(newPassword, username);
-                    redirectTo(res, '/passwordChanged');
+                    redirectTo(res, '/passwordUpdated');
                 } catch (error) {
                     console.warn('update password failed', { error: error?.message });
                     inputChecks.push({
