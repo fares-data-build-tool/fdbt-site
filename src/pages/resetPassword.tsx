@@ -12,12 +12,6 @@ import CsrfForm from '../components/CsrfForm';
 const title = 'Reset Password - Fares data build tool';
 const description = 'Reset Password page of the Fares data build tool';
 
-export interface InputCheck {
-    id: string;
-    inputValue: string;
-    error: string;
-}
-
 interface ResetPasswordProps {
     errors: ErrorInfo[];
     regKey: string;
@@ -50,17 +44,17 @@ const ResetPassword = ({
                                         Your password should be at least 8 characters long.
                                     </p>
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="password">
+                                        <label className="govuk-label" htmlFor="new-password">
                                             New password
                                         </label>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId="password"
+                                            errorId="new-password"
                                             errorClass="govuk-input--error"
                                         >
                                             <input
                                                 className="govuk-input"
-                                                id="password"
+                                                id="new-password"
                                                 name="password"
                                                 type="password"
                                                 aria-describedby="password-hint"
@@ -68,19 +62,24 @@ const ResetPassword = ({
                                             />
                                         </FormElementWrapper>
                                     </div>
-
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="confirmPassword">
+                                        <label className="govuk-label" htmlFor="confirm-new-password">
                                             Confirm password
                                         </label>
-                                        <input
-                                            className="govuk-input"
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            type="password"
-                                            aria-describedby="confirmPassword-hint"
-                                            spellCheck="false"
-                                        />
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId="confirm-new-password"
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input"
+                                                id="confirm-new-password"
+                                                name="confirmPassword"
+                                                type="password"
+                                                aria-describedby="confirmPassword-hint"
+                                                spellCheck="false"
+                                            />
+                                        </FormElementWrapper>
                                     </div>
                                 </div>
                             </div>
@@ -131,9 +130,9 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ResetPassword
         const userCookieParsed = JSON.parse(userCookie);
         const { inputChecks } = userCookieParsed;
 
-        inputChecks.map((check: InputCheck) => {
-            if (check.error) {
-                errors.push({ id: check.id, errorMessage: check.error });
+        inputChecks.map((check: ErrorInfo) => {
+            if (check.errorMessage) {
+                errors.push({ id: check.id, errorMessage: check.errorMessage });
             }
             return errors;
         });

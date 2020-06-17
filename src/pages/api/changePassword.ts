@@ -1,22 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ErrorInfo } from '../../interfaces';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, getAttributeFromIdToken } from './apiUtils';
+import {
+    getDomain,
+    redirectTo,
+    redirectToError,
+    setCookieOnResponseObject,
+    getAttributeFromIdToken,
+    validateNewPassword,
+} from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
-
-// Move below into api utils? (Currently used in both resetPassword and here in changePassword)
-
-const validatePassword = (password: string, confirmPassword: string, inputChecks: ErrorInfo[]): ErrorInfo[] => {
-    let passwordError = '';
-    if (password.length < 8) {
-        passwordError = password.length === 0 ? 'Enter a new password' : 'Password must be at least 8 characters long';
-    } else if (password !== confirmPassword) {
-        passwordError = 'Passwords do not match';
-        inputChecks.push({ id: 'confirm-new-password', errorMessage: passwordError });
-    }
-    inputChecks.push({ id: 'new-password', errorMessage: passwordError });
-    return inputChecks;
-};
 
 export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
     const cookieContent = JSON.stringify({ inputChecks });
@@ -37,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (!oldPassword) {
             inputChecks.push({ id: 'old-password', errorMessage: 'Enter your current password' });
-            inputChecks = validatePassword(newPassword, confirmNewPassword, inputChecks);
+            inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
             setCookieAndRedirect(req, res, inputChecks);
             return;
         }
@@ -46,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const authResponse = await initiateAuth(username, oldPassword);
 
             if (authResponse?.AuthenticationResult) {
-                inputChecks = validatePassword(newPassword, confirmNewPassword, inputChecks);
+                inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
 
                 if (inputChecks.some(el => el.errorMessage !== '')) {
                     setCookieAndRedirect(req, res, inputChecks);
@@ -60,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                     console.warn('update password failed', { error: error?.message });
                     inputChecks.push({
                         id: 'new-password',
-                        errorMessage: 'There was a problem resetting your password.',
+                        errorMessage: 'There was a problem resetting your password',
                     });
                     setCookieAndRedirect(req, res, inputChecks);
                 }
@@ -71,7 +64,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             console.warn('User authentication failed', { error: error.message });
             inputChecks.push({
                 id: 'old-password',
-                errorMessage: 'Your old password is incorrect.',
+                errorMessage: 'Your old password is incorrect',
             });
             setCookieAndRedirect(req, res, inputChecks);
         }

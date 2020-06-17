@@ -4,7 +4,7 @@ import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { USER_COOKIE } from '../../../src/constants';
 import * as auth from '../../../src/data/cognito';
 
-describe('reset password', () => {
+describe('resetPassword', () => {
     const forgotPasswordSubmitSpy = jest.spyOn(auth, 'confirmForgotPassword');
     const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
@@ -30,7 +30,7 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [{ inputValue: '', id: 'password', error: 'Password must be at least 8 characters long' }],
+                inputChecks: [{ id: 'new-password', errorMessage: 'Password must be at least 8 characters long' }],
             },
         ],
         [
@@ -43,7 +43,7 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [{ inputValue: '', id: 'password', error: 'Password must be at least 8 characters long' }],
+                inputChecks: [{ id: 'new-password', errorMessage: 'Enter a new password' }],
             },
         ],
         [
@@ -56,7 +56,7 @@ describe('reset password', () => {
                 expiry: expiryDate,
             },
             {
-                inputChecks: [{ inputValue: '', id: 'password', error: 'Passwords do not match' }],
+                inputChecks: [{ id: 'new-password', errorMessage: 'Passwords do not match' }],
             },
         ],
     ];
@@ -92,7 +92,7 @@ describe('reset password', () => {
 
         expect(forgotPasswordSubmitSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/passwordChanged',
+            Location: '/passwordUpdated',
         });
     });
 
@@ -129,9 +129,8 @@ describe('reset password', () => {
         const mockUserCookieValue = {
             inputChecks: [
                 {
-                    inputValue: '',
-                    id: 'password',
-                    error: 'There was a problem resetting your password.',
+                    id: 'new-password',
+                    errorMessage: 'There was a problem resetting your password.',
                 },
             ],
         };

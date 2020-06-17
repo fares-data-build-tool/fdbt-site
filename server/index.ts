@@ -18,7 +18,7 @@ const unauthenticatedGetRoutes = [
     '/forgotPassword',
     '/resetConfirmation',
     '/resetPassword',
-    '/passwordChanged',
+    '/passwordUpdated',
     '/resetLinkExpired',
     '/_next/*',
     '/assets/*',
