@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 
-const title = 'Contact Us- Fares Data Build Tool';
-const description = 'Contact Us page for the Fares Data Build Tool';
+const title = 'Contact - Fares Data Build Tool';
+const description = 'Contact page for the Fares Data Build Tool';
 
-const ContactUs = (): ReactElement => {
+const Contact = (): ReactElement => {
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
-                <h1 className="govuk-heading-xl">Contact the Fares Data Build Service</h1>
+                <h1 className="govuk-heading-xl">Contact the Fares Data Build Tool team</h1>
                 <div className="govuk-grid-column-two-thirds">
                     <h2 className="govuk-heading-m">Feedback and support</h2>
                     <p className="govuk-body">
@@ -33,4 +33,4 @@ const ContactUs = (): ReactElement => {
     );
 };
 
-export default ContactUs;
+export default Contact;
