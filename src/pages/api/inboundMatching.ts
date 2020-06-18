@@ -7,6 +7,7 @@ import {
     setCookieOnResponseObject,
     getDomain,
     unescapeAndDecodeCookie,
+    getSelectedStages,
 } from './apiUtils';
 import { BasicService, PassengerDetails } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
@@ -119,12 +120,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         delete req.body.userfarestages;
 
         if (isFareStageUnassigned(userFareStages, inboundFareZones) && inboundFareZones !== {}) {
-            const selectedStagesList: {}[] = [];
-            selectedStagesList.push(
-                Object.values(req.body).filter(entry => {
-                    return entry !== '';
-                }),
-            );
+            const selectedStagesList: {}[] = getSelectedStages(req);
+
             setCookieOnResponseObject(
                 getDomain(req),
                 MATCHING_COOKIE,

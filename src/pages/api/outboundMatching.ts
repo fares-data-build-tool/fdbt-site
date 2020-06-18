@@ -1,5 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getUuidFromCookie, setCookieOnResponseObject, getDomain } from './apiUtils';
+import {
+    redirectTo,
+    redirectToError,
+    getUuidFromCookie,
+    setCookieOnResponseObject,
+    getDomain,
+    getSelectedStages,
+} from './apiUtils';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
@@ -68,12 +75,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         delete req.body.userfarestages;
 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
-            const selectedStagesList: {}[] = [];
-            selectedStagesList.push(
-                Object.values(req.body).filter(entry => {
-                    return entry !== '';
-                }),
-            );
+            const selectedStagesList: {}[] = getSelectedStages(req);
 
             const outbound = { error: true, selectedFareStages: selectedStagesList };
 

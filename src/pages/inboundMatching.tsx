@@ -94,7 +94,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
                 serviceDescription: service.serviceDescription,
             },
             error: !parsedMatchingCookie.inbound ? false : JSON.parse(matchingCookie).inbound.error,
-            selectedFareStages: !parsedMatchingCookie.inbound ? [] : JSON.parse(matchingCookie).inbound.selectedFareStages,
+            selectedFareStages: !parsedMatchingCookie.inbound
+                ? []
+                : JSON.parse(matchingCookie).inbound.selectedFareStages,
         },
     };
 };

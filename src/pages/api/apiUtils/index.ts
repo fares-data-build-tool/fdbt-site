@@ -129,3 +129,13 @@ export const signOutUser = async (username: string | null, req: Req, res: Res): 
     deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
     deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
 };
+
+export const getSelectedStages = (req: NextApiRequest): {}[] => {
+    const selectedStagesList: {}[] = [];
+    selectedStagesList.push(
+        Object.values(req.body).filter(entry => {
+            return entry !== '';
+        }),
+    );
+    return selectedStagesList;
+};

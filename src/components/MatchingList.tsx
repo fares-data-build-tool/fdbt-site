@@ -21,6 +21,7 @@ const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingLis
 
             userFareStages.fareStages.map((stage: FareStage) => {
                 const currentValue = JSON.stringify({ stop, stage: stage.stageName });
+                console.log(selectedFareStages);
 
                 const isSelected = selectedFareStages.flat().some(selectedObject => {
                     return selectedObject === currentValue;
