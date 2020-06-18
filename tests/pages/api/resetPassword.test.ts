@@ -89,7 +89,13 @@ describe('resetPassword', () => {
         );
 
         await resetPassword(req, res);
-
+        expect(setCookieSpy).toHaveBeenCalledWith(
+            'localhost',
+            USER_COOKIE,
+            JSON.stringify({ redirectFrom: '/resetPassword' }),
+            req,
+            res,
+        );
         expect(forgotPasswordSubmitSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/passwordUpdated',

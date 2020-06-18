@@ -21,7 +21,7 @@ describe('changePassword', () => {
 
     const writeHeadMock = jest.fn();
 
-    it('should redirect to /passwordUpdated when password update is succesful', async () => {
+    it('should set the USER_COOKIE and redirect to /passwordUpdated when password update is succesful', async () => {
         getAttributeSpy.mockImplementation(() => 'fake.address@email.com');
         initiateAuthSpy.mockImplementation(() => Promise.resolve({ AuthenticationResult: {} }));
         const { req, res } = getMockRequestAndResponse(
@@ -31,6 +31,13 @@ describe('changePassword', () => {
             writeHeadMock,
         );
         await changePassword(req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(
+            'localhost',
+            USER_COOKIE,
+            JSON.stringify({ redirectFrom: '/changePassword' }),
+            req,
+            res,
+        );
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/passwordUpdated',
         });

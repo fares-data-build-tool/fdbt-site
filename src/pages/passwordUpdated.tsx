@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { NextPage, NextPageContext } from 'next';
+import { NextPageContext } from 'next';
+import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { deleteCookieOnServerSide } from '../utils';
 import { USER_COOKIE } from '../constants';
@@ -7,12 +8,16 @@ import { USER_COOKIE } from '../constants';
 const title = 'Password Updated - Fares Data Build Tool';
 const description = 'Password Updated page of the Fares Data Build Tool';
 
-const ConfirmRegistration: NextPage = (): ReactElement => (
+interface PasswordUpdatedProps {
+    redirectTo: string;
+}
+
+const PasswordUpdated = ({ redirectTo }: PasswordUpdatedProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-l">Password Updated</h1>
         <p className="govuk-body-l">Your password has been updated successfully</p>
         <a
-            href="/login"
+            href={redirectTo}
             role="button"
             draggable="false"
             className="govuk-button"
@@ -25,8 +30,15 @@ const ConfirmRegistration: NextPage = (): ReactElement => (
 );
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
+    const cookies = parseCookies(ctx);
+    const userCookie = cookies[USER_COOKIE];
+    let redirectFrom = '';
+    if (userCookie) {
+        redirectFrom = JSON.parse(userCookie).redirectFrom;
+    }
+    const redirectTo = redirectFrom && redirectFrom === '/resetPassword' ? '/login' : '/';
     deleteCookieOnServerSide(ctx, USER_COOKIE);
-    return { props: {} };
+    return { props: { redirectTo } };
 };
 
-export default ConfirmRegistration;
+export default PasswordUpdated;

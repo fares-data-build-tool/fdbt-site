@@ -48,6 +48,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
                 try {
                     await updateUserPassword(newPassword, username);
+                    setCookieOnResponseObject(
+                        getDomain(req),
+                        USER_COOKIE,
+                        JSON.stringify({ redirectFrom: '/changePassword' }),
+                        req,
+                        res,
+                    );
                     redirectTo(res, '/passwordUpdated');
                 } catch (error) {
                     console.warn('update password failed', { error: error?.message });

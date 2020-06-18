@@ -32,6 +32,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         try {
             await confirmForgotPassword(username, regKey, password);
+            setCookieOnResponseObject(
+                getDomain(req),
+                USER_COOKIE,
+                JSON.stringify({ redirectFrom: '/resetPassword' }),
+                req,
+                res,
+            );
             redirectTo(res, '/passwordUpdated');
         } catch (error) {
             if (error.message === 'ExpiredCodeException') {
