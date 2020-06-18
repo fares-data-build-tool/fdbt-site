@@ -34,13 +34,13 @@ const ResetPassword = ({
                         <>
                             <ErrorSummary errors={errors} />
                             <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                                <div className="govuk-fieldset" aria-describedby="resetPassword-page-heading">
+                                <div className="govuk-fieldset" aria-describedby="reset-password-page-heading">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                        <h1 className="govuk-fieldset__heading" id="resetPassword-page-heading">
+                                        <h1 className="govuk-fieldset__heading" id="reset-password-page-heading">
                                             Reset your password
                                         </h1>
                                     </legend>
-                                    <p className="govuk-hint hint-text" id="resetPassword-page-hint">
+                                    <p className="govuk-hint hint-text" id="reset-password-page-hint">
                                         Your password should be at least 8 characters long.
                                     </p>
                                     <div className="govuk-form-group">
@@ -57,7 +57,7 @@ const ResetPassword = ({
                                                 id="new-password"
                                                 name="password"
                                                 type="password"
-                                                aria-describedby="password-hint"
+                                                aria-describedby="reset-password-page-hint"
                                                 spellCheck="false"
                                             />
                                         </FormElementWrapper>
@@ -76,7 +76,7 @@ const ResetPassword = ({
                                                 id="confirm-new-password"
                                                 name="confirmPassword"
                                                 type="password"
-                                                aria-describedby="confirmPassword-hint"
+                                                aria-describedby="reset-password-page-hint"
                                                 spellCheck="false"
                                             />
                                         </FormElementWrapper>
