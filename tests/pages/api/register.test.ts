@@ -39,7 +39,14 @@ describe('register', () => {
     const cases = [
         [
             'empty email',
-            { email: '', password: 'abcdefghi', confirmPassword: 'abcdefghi', nocCode: 'DCCL', regKey: 'abcdefg' },
+            {
+                email: '',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
+            },
             {
                 inputChecks: [
                     {
@@ -60,6 +67,7 @@ describe('register', () => {
                 confirmPassword: 'abcdefghi',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
             },
             {
                 inputChecks: [
@@ -75,7 +83,14 @@ describe('register', () => {
         ],
         [
             'password is empty',
-            { email: 'test@test.com', password: '', confirmPassword: 'abcdefghi', nocCode: 'DCCL', regKey: 'abcdefg' },
+            {
+                email: 'test@test.com',
+                password: '',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+                checkboxUserResearch: '',
+            },
             {
                 inputChecks: [
                     {
@@ -96,6 +111,7 @@ describe('register', () => {
                 confirmPassword: 'abcdefghi',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
+                checkboxUserResearch: '',
             },
             {
                 inputChecks: [
@@ -117,6 +133,7 @@ describe('register', () => {
                 confirmPassword: 'abcdefghidddd',
                 nocCode: '',
                 regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
             },
             {
                 inputChecks: [
@@ -266,5 +283,47 @@ describe('register', () => {
             req,
             res,
         );
+    });
+
+    it('should update user attributes with contactable if given', async () => {
+        authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
+        authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
+        authSignOutSpy.mockImplementation(() => Promise.resolve());
+        authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
+
+        const { req, res } = getMockRequestAndResponse(
+            {},
+            {
+                email: 'test@test.com',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
+            },
+            '',
+            writeHeadMock,
+        );
+
+        await register(req, res);
+
+        const thing = authUpdateAttributesSpy.mock.calls[0][1];
+
+        console.log(thing);
+
+        expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
+            { Name: 'custom:noc', Value: 'DCCL' },
+            { Name: 'custom:contactable', Value: 'yes' },
+        ]);
+        expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
+        expect(authCompletePasswordSpy).toHaveBeenCalledWith(
+            'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+            'abcdefghi',
+            'session',
+        );
+        expect(authSignOutSpy).toHaveBeenCalled();
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/confirmRegistration',
+        });
     });
 });

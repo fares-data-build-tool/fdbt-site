@@ -27,6 +27,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     try {
         const { email, password, confirmPassword, nocCode, regKey, checkboxUserResearch } = req.body;
 
+        console.log(checkboxUserResearch);
+
         const contactable = checkboxUserResearch ? 'yes' : 'no';
 
         const inputChecks: InputCheck[] = [];
@@ -79,7 +81,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 ]);
                 await globalSignOut(email);
 
-                console.info('Registration Successful', { noc: nocCode });
+                console.info('Registration Successful', { noc: nocCode, contactable });
                 redirectTo(res, '/confirmRegistration');
             } else {
                 throw new Error(`unexpected challenge: ${ChallengeName}`);
