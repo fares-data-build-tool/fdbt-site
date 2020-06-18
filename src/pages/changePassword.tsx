@@ -100,8 +100,18 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
                                 name="changePassword"
                                 value="Change Password"
                                 id="change-password-button"
-                                className="govuk-button"
+                                className="govuk-button govuk-!-margin-right-1"
                             />
+                            <a
+                                href="/account"
+                                role="button"
+                                draggable="false"
+                                className="govuk-button govuk-button--secondary"
+                                data-module="govuk-button"
+                                id="cancel-change-password-button"
+                            >
+                                Cancel
+                            </a>
                         </>
                     </CsrfForm>
                 </div>
