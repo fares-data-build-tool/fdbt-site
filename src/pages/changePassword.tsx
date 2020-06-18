@@ -24,13 +24,13 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
                         <>
                             <ErrorSummary errors={errors} />
                             <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                                <div className="govuk-fieldset" aria-describedby="changePassword-page-heading">
+                                <div className="govuk-fieldset" aria-describedby="change-password-page-heading">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                        <h1 className="govuk-fieldset__heading" id="changePassword-page-heading">
+                                        <h1 className="govuk-fieldset__heading" id="change-password-page-heading">
                                             Change your password
                                         </h1>
                                     </legend>
-                                    <p className="govuk-hint hint-text" id="changePassword-page-hint">
+                                    <p className="govuk-hint hint-text" id="change-password-page-hint">
                                         Your password should be at least 8 characters long.
                                     </p>
 
@@ -48,7 +48,7 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
                                                 id="old-password"
                                                 name="oldPassword"
                                                 type="password"
-                                                aria-describedby="old-password-hint"
+                                                aria-describedby="change-password-page-hint"
                                                 spellCheck="false"
                                             />
                                         </FormElementWrapper>
@@ -68,7 +68,7 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
                                                 id="new-password"
                                                 name="newPassword"
                                                 type="password"
-                                                aria-describedby="new-password-hint"
+                                                aria-describedby="change-password-page-hint"
                                                 spellCheck="false"
                                             />
                                         </FormElementWrapper>
@@ -88,7 +88,7 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
                                                 id="confirm-new-password"
                                                 name="confirmNewPassword"
                                                 type="password"
-                                                aria-describedby="confirm-new-password-hint"
+                                                aria-describedby="change-password-page-hint"
                                                 spellCheck="false"
                                             />
                                         </FormElementWrapper>
@@ -100,6 +100,7 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
                                 name="changePassword"
                                 value="Change Password"
                                 id="change-password-button"
+                                data-module="govuk-button"
                                 className="govuk-button govuk-!-margin-right-1"
                             />
                             <a
