@@ -16,41 +16,56 @@ const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingLis
             <div className="govuk-heading-s naptan-code-header">Naptan code</div>
             <div className="govuk-heading-s fare-stage-header">Fare stage</div>
         </div>
-        {stops.map((stop, index) => (
-            <fieldset key={stop.atcoCode} className="govuk-fieldset">
-                <div className="matching-wrapper">
-                    <label className="govuk-label matching-stop-name" htmlFor={`option${index}`}>
-                        {formatStopName(stop)}
-                    </label>
-                    <label className="govuk-label naptan-code" htmlFor={`option${index}`}>
-                        {stop.naptanCode}
-                    </label>
-                    <div className="farestage-select-wrapper">
-                        <select className="govuk-select farestage-select" id={`option${index}`} name={`option${index}`}>
-                            <option value="">Not Applicable</option>
-                            {userFareStages.fareStages.map((stage: FareStage) => {
-                                const isStageSelected = selectedFareStages
-                                    .flat()
-                                    .some(
-                                        selectedObject =>
-                                            selectedObject === JSON.stringify({ stop, stage: stage.stageName }),
-                                    );
+        {stops.map((stop, index) => {
+            let selectValue = '';
 
-                                return (
-                                    <option
-                                        key={stage.stageName}
-                                        value={JSON.stringify({ stop, stage: stage.stageName })}
-                                        selected={isStageSelected}
-                                    >
-                                        {stage.stageName}
-                                    </option>
-                                );
-                            })}
-                        </select>
+            userFareStages.fareStages.map((stage: FareStage) => {
+                const currentValue = JSON.stringify({ stop, stage: stage.stageName });
+
+                const isSelected = selectedFareStages.flat().some(selectedObject => {
+                    return selectedObject === currentValue;
+                });
+
+                if (isSelected) {
+                    selectValue = currentValue;
+                }
+
+                return '';
+            });
+
+            return (
+                <fieldset key={stop.atcoCode} className="govuk-fieldset">
+                    <div className="matching-wrapper">
+                        <label className="govuk-label matching-stop-name" htmlFor={`option${index}`}>
+                            {formatStopName(stop)}
+                        </label>
+                        <label className="govuk-label naptan-code" htmlFor={`option${index}`}>
+                            {stop.naptanCode}
+                        </label>
+                        <div className="farestage-select-wrapper">
+                            <select
+                                className="govuk-select farestage-select"
+                                id={`option${index}`}
+                                name={`option${index}`}
+                                defaultValue={selectValue}
+                            >
+                                <option value="">Not Applicable</option>
+                                {userFareStages.fareStages.map((stage: FareStage) => {
+                                    return (
+                                        <option
+                                            key={stage.stageName}
+                                            value={JSON.stringify({ stop, stage: stage.stageName })}
+                                        >
+                                            {stage.stageName}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
                     </div>
-                </div>
-            </fieldset>
-        ))}
+                </fieldset>
+            );
+        })}
     </div>
 );
 
