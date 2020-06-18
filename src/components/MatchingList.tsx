@@ -9,10 +9,6 @@ interface MatchingListProps {
     selectedFareStages: [];
 }
 
-type SelectedStage = {
-    values: string;
-};
-
 const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingListProps): ReactElement => (
     <div>
         <div className="matching-wrapper">
@@ -33,10 +29,12 @@ const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingLis
                         <select className="govuk-select farestage-select" id={`option${index}`} name={`option${index}`}>
                             <option value="">Not Applicable</option>
                             {userFareStages.fareStages.map((stage: FareStage) => {
-                                const isStageSelected = selectedFareStages.some(
-                                    (selectedObject: SelectedStage) =>
-                                        selectedObject.values === JSON.stringify({ stop, stage: stage.stageName }),
-                                );
+                                const isStageSelected = selectedFareStages
+                                    .flat()
+                                    .some(
+                                        selectedObject =>
+                                            selectedObject === JSON.stringify({ stop, stage: stage.stageName }),
+                                    );
 
                                 return (
                                     <option

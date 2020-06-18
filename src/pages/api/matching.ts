@@ -143,15 +143,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const error = { error: true };
-            const requestBody: { [key: string]: string } = req.body;
             const selectedStagesList: {}[] = [];
-            Object.entries(requestBody).forEach(entry => {
-                if (entry[1]) {
-                    const selectedObject = { selected: entry[0], values: entry[1] };
-                    selectedStagesList.push(selectedObject);
-                }
-            });
-            console.log(selectedStagesList);
+            selectedStagesList.push(
+                Object.values(req.body).filter(entry => {
+                    return entry !== '';
+                }),
+            );
+
             setCookieOnResponseObject(
                 getDomain(req),
                 MATCHING_COOKIE,
