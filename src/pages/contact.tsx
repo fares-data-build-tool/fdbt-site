@@ -8,8 +8,8 @@ const Contact = (): ReactElement => {
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
-                <h1 className="govuk-heading-xl">Contact the Fares Data Build Tool team</h1>
                 <div className="govuk-grid-column-two-thirds">
+                    <h1 className="govuk-heading-l">Contact the Fares Data Build Tool team</h1>
                     <h2 className="govuk-heading-m">Feedback and support</h2>
                     <p className="govuk-body">
                         If you are experiencing technical issues, please contact the Fares Data Build service through

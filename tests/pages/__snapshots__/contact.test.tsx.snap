@@ -8,14 +8,14 @@ exports[`contact should render correctly 1`] = `
   <div
     className="govuk-grid-row"
   >
-    <h1
-      className="govuk-heading-xl"
-    >
-      Contact the Fares Data Build Tool team
-    </h1>
     <div
       className="govuk-grid-column-two-thirds"
     >
+      <h1
+        className="govuk-heading-l"
+      >
+        Contact the Fares Data Build Tool team
+      </h1>
       <h2
         className="govuk-heading-m"
       >
