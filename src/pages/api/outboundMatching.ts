@@ -63,16 +63,24 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const matchingFareZones = getMatchingFareZonesFromForm(req);
 
+        // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
+        delete req.body.service;
+        delete req.body.userfarestages;
+
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
-            const outbound = { error: true };
+            const selectedStagesList: {}[] = [];
+            selectedStagesList.push(
+                Object.values(req.body).filter(entry => {
+                    return entry !== '';
+                }),
+            );
+
+            const outbound = { error: true, selectedFareStages: selectedStagesList };
+
             setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
             redirectTo(res, '/outboundMatching');
             return;
         }
-
-        // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
-        delete req.body.service;
-        delete req.body.userfarestages;
 
         const uuid = getUuidFromCookie(req, res);
 
