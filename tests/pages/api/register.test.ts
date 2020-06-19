@@ -307,10 +307,6 @@ describe('register', () => {
 
         await register(req, res);
 
-        const thing = authUpdateAttributesSpy.mock.calls[0][1];
-
-        console.log(thing);
-
         expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
             { Name: 'custom:noc', Value: 'DCCL' },
             { Name: 'custom:contactable', Value: 'yes' },
