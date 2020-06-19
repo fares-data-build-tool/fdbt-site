@@ -8,6 +8,25 @@ exports[`Inbound OutboundMatching Page should render correctly 1`] = `
   error={false}
   heading="Inbound - Match stops to fare stages"
   hintText="Select a fare stage for each stop on the inbound journey."
+  selectedFareStages={
+    Array [
+      Array [
+        Object {
+          "stage": "Roundhay",
+          "stop": Object {
+            "atcoCode": "25001666",
+            "indicator": "o/s",
+            "localityCode": "E0016564",
+            "localityName": "Knott End on Sea",
+            "naptanCode": "lanatatg",
+            "parentLocalityName": "Fleetwood",
+            "stopName": "Bourne Arms",
+            "street": "Bourne May Road",
+          },
+        },
+      ],
+    ]
+  }
   service={
     Object {
       "lineName": "215",
