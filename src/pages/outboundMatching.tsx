@@ -21,7 +21,7 @@ interface MatchingProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
-    selectedFareStages: [];
+    selectedFareStages: string[];
 }
 
 const OutboundMatching = ({

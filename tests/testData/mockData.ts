@@ -2176,20 +2176,6 @@ export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
     },
 ];
 
-export const selectedFareStages = [
-    [
-        {
-            stop: {
-                stopName: 'Bourne Arms',
-                naptanCode: 'lanatatg',
-                atcoCode: '25001666',
-                localityCode: 'E0016564',
-                localityName: 'Knott End on Sea',
-                parentLocalityName: 'Fleetwood',
-                indicator: 'o/s',
-                street: 'Bourne May Road',
-            },
-            stage: 'Roundhay',
-        },
-    ],
+export const selectedFareStages: string[] = [
+    '{"stop":{"stopName":"Bourne Arms","naptanCode":"lanatatg","atcoCode":"25001666","localityCode":"E0016564","localityName":"Knott End on Sea","parentLocalityName":"Fleetwood","indicator":"o/s","street":"Bourne May Road"},"stage":"stage 1"}',
 ];

@@ -6,7 +6,7 @@ import { formatStopName } from '../utils';
 interface MatchingListProps {
     userFareStages: UserFareStages;
     stops: Stop[];
-    selectedFareStages: [];
+    selectedFareStages: string[];
 }
 
 const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingListProps): ReactElement => (

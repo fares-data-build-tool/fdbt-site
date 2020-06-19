@@ -38,7 +38,7 @@ describe('Inbound Matching Page', () => {
                 stops={naptanStopInfo}
                 service={service}
                 error={false}
-                selectedFareStage={selectedFareStages}
+                selectedFareStages={selectedFareStages}
                 csrfToken=""
                 pageProps={[]}
             />,
