@@ -10,13 +10,11 @@ import { ErrorInfo, CognitoIdToken } from '../interfaces';
 export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
-        const host = ctx?.req?.headers?.host;
-        const domain = host ? host.split(':')[0] : '';
 
         cookies.set(cookieName, cookieValue, {
-            domain,
             path: '/',
             sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development',
         });
     }
 };

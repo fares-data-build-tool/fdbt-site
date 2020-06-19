@@ -41,6 +41,7 @@ export const setDisableAuthCookies = (server: Express): void => {
                 path: '/',
                 httpOnly: true,
                 sameSite: 'strict',
+                secure: !isDevelopment,
             };
 
             if (!disableAuthCookie || disableAuthCookie === 'false') {

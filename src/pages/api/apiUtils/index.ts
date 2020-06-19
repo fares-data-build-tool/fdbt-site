@@ -19,6 +19,7 @@ export const setCookieOnResponseObject = (cookieName: string, cookieValue: strin
         // The Cookies library applies units of Milliseconds to maxAge. For this reason, maxAge of 24 hours needs to be corrected by a factor of 1000.
         maxAge: 1000 * (3600 * 24),
         sameSite: 'strict',
+        secure: process.env.NODE_ENV !== 'development',
     });
 };
 
