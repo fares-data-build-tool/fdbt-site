@@ -10,6 +10,7 @@ export default (server: Express): void => {
             cookie: {
                 httpOnly: true,
                 sameSite: 'strict',
+                secure: process.env.NODE_ENV !== 'development',
             },
         }),
     );
