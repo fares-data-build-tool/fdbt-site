@@ -45,7 +45,7 @@ export const setDisableAuthCookies = (server: Express): void => {
             };
 
             if (!disableAuthCookie || disableAuthCookie === 'false') {
-                cookies.set(DISABLE_AUTH_COOKIE, 'true');
+                cookies.set(DISABLE_AUTH_COOKIE, 'true', cookieOptions);
                 cookies.set(
                     ID_TOKEN_COOKIE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
