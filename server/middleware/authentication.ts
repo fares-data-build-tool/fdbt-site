@@ -1,4 +1,4 @@
-import Cookies from 'cookies';
+import Cookies, { SetOption } from 'cookies';
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
@@ -31,18 +31,26 @@ const verifyOptions: VerifyOptions = {
 
 export const setDisableAuthCookies = (server: Express): void => {
     server.use((req, res, next) => {
-        if (
-            (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
-            req.query.disableAuth === 'true'
-        ) {
+        const isDevelopment = process.env.NODE_ENV === 'development';
+
+        if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && req.query.disableAuth === 'true') {
             const cookies = new Cookies(req, res);
             const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
+
+            const cookieOptions: SetOption = {
+                domain: getDomain(req),
+                path: '/',
+                httpOnly: true,
+                secure: !isDevelopment,
+                sameSite: 'strict',
+            };
 
             if (!disableAuthCookie || disableAuthCookie === 'false') {
                 cookies.set(DISABLE_AUTH_COOKIE, 'true');
                 cookies.set(
                     ID_TOKEN_COOKIE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyJ9.-1CZzSU-mmUoLn_RpWvrBKOib2tu_SXE2FQ1HmNYnZk',
+                    cookieOptions,
                 );
                 cookies.set(
                     OPERATOR_COOKIE,
@@ -51,6 +59,7 @@ export const setDisableAuthCookies = (server: Express): void => {
                             operatorPublicName: 'Blackpool Transport',
                         },
                     }),
+                    cookieOptions,
                 );
             }
         }
