@@ -21,7 +21,7 @@ describe('changePassword', () => {
 
     const writeHeadMock = jest.fn();
 
-    it('should set the USER_COOKIE and redirect to /passwordUpdated when password update is succesful', async () => {
+    it('should set the USER_COOKIE and redirect to /passwordUpdated when password update is successful', async () => {
         getAttributeSpy.mockImplementation(() => 'fake.address@email.com');
         initiateAuthSpy.mockImplementation(() => Promise.resolve({ AuthenticationResult: {} }));
         const { req, res } = getMockRequestAndResponse(
@@ -65,7 +65,7 @@ describe('changePassword', () => {
         ],
         [
             'the user enters an incorrect old password',
-            { oldPassword: 'iLoveBuses', newPassword: '', confirmNewPassword: '' },
+            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses', confirmNewPassword: 'iReallyLoveBuses' },
             [{ id: 'old-password', errorMessage: 'Your old password is incorrect' }],
             0,
         ],
@@ -77,7 +77,7 @@ describe('changePassword', () => {
         ],
         [
             "the 'new-password' input is too short",
-            { oldPassword: 'iLoveBuses', newPassword: 'short', confirmNewPassword: '' },
+            { oldPassword: 'iLoveBuses', newPassword: 'short', confirmNewPassword: 'short' },
             [{ id: 'new-password', errorMessage: 'Password must be at least 8 characters long' }],
             1,
         ],

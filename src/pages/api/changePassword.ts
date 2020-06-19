@@ -35,17 +35,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             return;
         }
 
+        inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
+
+        if (inputChecks.some(el => el.errorMessage !== '')) {
+            setCookieAndRedirect(req, res, inputChecks);
+            return;
+        }
+
         try {
             const authResponse = await initiateAuth(username, oldPassword);
 
             if (authResponse?.AuthenticationResult) {
-                inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
-
-                if (inputChecks.some(el => el.errorMessage !== '')) {
-                    setCookieAndRedirect(req, res, inputChecks);
-                    return;
-                }
-
                 try {
                     await updateUserPassword(newPassword, username);
                     setCookieOnResponseObject(

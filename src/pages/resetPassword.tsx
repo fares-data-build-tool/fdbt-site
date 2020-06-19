@@ -41,7 +41,7 @@ const ResetPassword = ({
                                         </h1>
                                     </legend>
                                     <p className="govuk-hint hint-text" id="reset-password-page-hint">
-                                        Your password should be at least 8 characters long.
+                                        Your password should be at least 8 characters long
                                     </p>
                                     <div className="govuk-form-group">
                                         <label className="govuk-label" htmlFor="new-password">

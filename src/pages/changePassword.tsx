@@ -31,7 +31,7 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
                                         </h1>
                                     </legend>
                                     <p className="govuk-hint hint-text" id="change-password-page-hint">
-                                        Your password should be at least 8 characters long.
+                                        Your password should be at least 8 characters long
                                     </p>
 
                                     <div className="govuk-form-group">

@@ -2,28 +2,28 @@
 
 exports[`passwordUpdated should render correctly 1`] = `
 <Component
-  description="Password Updated page of the Fares Data Build Tool"
-  title="Password Updated - Fares Data Build Tool"
+  description="Reset Password Link Expired page for the Fares Data Build Tool"
+  title="Reset Password Link Expired - Fares Data Build Tool"
 >
   <h1
     className="govuk-heading-l"
   >
-    Password Updated
+    Reset Password Link Expired
   </h1>
   <p
     className="govuk-body-l"
   >
-    Your password has been updated successfully
+    Your password link has expired.
   </p>
   <a
     className="govuk-button"
     data-module="govuk-button"
     draggable="false"
-    href="/"
-    id="continue-button"
+    href="/forgotPassword"
+    id="forgot-password-button"
     role="button"
   >
-    Continue
+    Forgotten Password
   </a>
 </Component>
 `;
