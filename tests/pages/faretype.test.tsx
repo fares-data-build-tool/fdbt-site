@@ -19,7 +19,7 @@ describe('pages', () => {
     });
 
     describe('buildUUid', () => {
-        it.only('should return a string starting with the NOC and then 8 characters of uuid', () => {
+        it('should return a string starting with the NOC and then 8 characters of uuid', () => {
             const ctx = getMockContext({
                 cookies: {
                     idToken:
