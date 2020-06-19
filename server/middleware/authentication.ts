@@ -48,7 +48,7 @@ export const setDisableAuthCookies = (server: Express): void => {
                 cookies.set(DISABLE_AUTH_COOKIE, 'true');
                 cookies.set(
                     ID_TOKEN_COOKIE,
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyJ9.-1CZzSU-mmUoLn_RpWvrBKOib2tu_SXE2FQ1HmNYnZk',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
                     cookieOptions,
                 );
                 cookies.set(
