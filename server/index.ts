@@ -24,6 +24,8 @@ const unauthenticatedGetRoutes = [
     '/assets/*',
     '/scripts/*',
     '/error',
+    '/contact',
+    '/requestAccess',
 ];
 
 const unauthenticatedPostRoutes = ['/api/login', '/api/register', '/api/forgotPassword', '/api/resetPassword'];
