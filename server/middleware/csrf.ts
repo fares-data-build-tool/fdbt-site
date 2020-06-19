@@ -8,7 +8,6 @@ export default (server: Express): void => {
     server.use(
         csurf({
             cookie: {
-                secure: process.env.NODE_ENV !== 'development',
                 httpOnly: true,
                 sameSite: 'strict',
             },

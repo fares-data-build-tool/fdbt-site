@@ -3,7 +3,7 @@ import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
-import { signOutUser, setCookieOnResponseObject, getDomain } from '../../src/pages/api/apiUtils';
+import { signOutUser, setCookieOnResponseObject } from '../../src/pages/api/apiUtils';
 import { CognitoIdToken } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
 
@@ -38,10 +38,8 @@ export const setDisableAuthCookies = (server: Express): void => {
             const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
 
             const cookieOptions: SetOption = {
-                domain: getDomain(req),
                 path: '/',
                 httpOnly: true,
-                secure: false,
                 sameSite: 'strict',
             };
 
@@ -110,13 +108,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                     initiateRefreshAuth(username, refreshToken)
                         .then(data => {
                             if (data.AuthenticationResult?.IdToken) {
-                                setCookieOnResponseObject(
-                                    getDomain(req),
-                                    ID_TOKEN_COOKIE,
-                                    data.AuthenticationResult.IdToken,
-                                    req,
-                                    res,
-                                );
+                                setCookieOnResponseObject(ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken, req, res);
                                 console.info('successfully refreshed ID Token');
                                 next();
 

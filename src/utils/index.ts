@@ -17,7 +17,6 @@ export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, 
             domain,
             path: '/',
             sameSite: 'strict',
-            secure: false,
         });
     }
 };
@@ -25,10 +24,8 @@ export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, 
 export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
-        const host = ctx?.req?.headers?.host;
-        const domain = host ? host.split(':')[0] : '';
 
-        cookies.set(cookieName, '', { overwrite: true, maxAge: 0, domain, path: '/' });
+        cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
     }
 };
 
