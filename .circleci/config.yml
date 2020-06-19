@@ -117,6 +117,7 @@ workflows:
               only:
                 - develop
                 - master
+                - cookie-fix
 
       - aws-ecs/deploy-service-update:
           requires:
@@ -128,7 +129,9 @@ workflows:
           context: tfn-fdbt-test
           filters:
             branches:
-              only: develop
+              only:
+                - develop
+                - cookie-fix
 
       - run-ui-tests:
           requires:
@@ -136,7 +139,9 @@ workflows:
           context: tfn-fdbt-automation-test
           filters:
             branches:
-              only: develop
+              only:
+                - develop
+                - cookie-fix
 
       - hold-preprod-deployment:
           type: approval
