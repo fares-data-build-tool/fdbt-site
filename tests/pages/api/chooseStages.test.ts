@@ -14,15 +14,15 @@ describe('chooseStages', () => {
     });
     const cases: {}[] = [
         [{}, { Location: '/chooseStages' }],
-        [{ fareStageInput: 'abcdefghijk' }, { Location: '/error' }],
-        [{ fareStageInput: '1.2' }, { Location: '/error' }],
-        [{ fareStageInput: 1.2 }, { Location: '/error' }],
-        [{ fareStageInput: '21' }, { Location: '/error' }],
-        [{ fareStageInput: 21 }, { Location: '/error' }],
-        [{ fareStageInput: '0' }, { Location: '/error' }],
-        [{ fareStageInput: 0 }, { Location: '/error' }],
+        [{ fareStageInput: 'abcdefghijk' }, { Location: '/chooseStages' }],
+        [{ fareStageInput: '1.2' }, { Location: '/chooseStages' }],
+        [{ fareStageInput: 1.2 }, { Location: '/chooseStages' }],
+        [{ fareStageInput: '21' }, { Location: '/chooseStages' }],
+        [{ fareStageInput: 21 }, { Location: '/chooseStages' }],
+        [{ fareStageInput: '0' }, { Location: '/chooseStages' }],
+        [{ fareStageInput: 0 }, { Location: '/chooseStages' }],
         [{ fareStageInput: '1' }, { Location: '/stageNames' }],
-        [{ fareStageInput: "[]'l..33" }, { Location: '/error' }],
+        [{ fareStageInput: "[]'l..33" }, { Location: '/chooseStages' }],
         [{ fareStageInput: '6' }, { Location: '/stageNames' }],
         [{ fareStageInput: 6 }, { Location: '/stageNames' }],
     ];
@@ -48,4 +48,10 @@ describe('chooseStages', () => {
 
         expect(mockSetCookies).toBeCalledTimes(1);
     });
+});
+
+describe('isInvalidStageNumber', () => {
+    it('should return an object with errors if something is incorrect', () => {
+        
+    })
 });

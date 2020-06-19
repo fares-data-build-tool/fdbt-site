@@ -2,23 +2,22 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { FARE_STAGES_COOKIE } from '../../constants/index';
 import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
+import { ChooseStagesInputCheck } from '../chooseStages';
 
-export const isInvalidFareStageNumber = (req: NextApiRequest): boolean => {
-    const { fareStageInput } = req.body;
+export const isInvalidFareStageNumber = (req: NextApiRequest): ChooseStagesInputCheck => {
+    const { fareStageInput = '' } = req.body;
+    const inputAsNumber = Number(fareStageInput);
+    let error;
 
-    if (Number.isNaN(fareStageInput)) {
-        return true;
+    if (fareStageInput === '' || Number.isNaN(inputAsNumber)) {
+        error = 'Enter a whole number between 1 and 20';
+    } else if (!Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1) {
+        error = 'Enter a whole number between 1 and 20';
+    } else {
+        error = '';
     }
-
-    if (!Number.isInteger(Number(fareStageInput))) {
-        return true;
-    }
-
-    if (fareStageInput > 20 || fareStageInput < 1) {
-        return true;
-    }
-
-    return false;
+    const inputCheck = { fareStageInput, error };
+    return inputCheck;
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -27,17 +26,12 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
 
-        if (req.body.fareStageInput === 0) {
-            throw new Error('0 farestages selected.');
-        }
-
-        if (!req.body.fareStageInput) {
+        const userInputValidity = isInvalidFareStageNumber(req);
+        if (userInputValidity.error !== '') {
+            const fareStageInputCookieValue = JSON.stringify(userInputValidity);
+            setCookieOnResponseObject(getDomain(req), FARE_STAGES_COOKIE, fareStageInputCookieValue, req, res);
             redirectTo(res, '/chooseStages');
             return;
-        }
-
-        if (isInvalidFareStageNumber(req)) {
-            throw new Error('Invalid number of farestages selected.');
         }
 
         const numberOfFareStages = req.body.fareStageInput;
