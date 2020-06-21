@@ -58,3 +58,9 @@ export interface CognitoIdToken {
 export interface CustomAppProps extends AppInitialProps {
     csrfToken: string;
 }
+
+export interface Breadcrumb {
+    name: string;
+    link: string;
+    show: boolean;
+}
