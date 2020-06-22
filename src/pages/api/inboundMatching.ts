@@ -13,7 +13,7 @@ import { Stop } from '../../data/auroradb';
 import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, PASSENGER_TYPE_COOKIE } from '../../constants';
-import getFareZones from './apiUtils/matching';
+import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
 interface FareZones {
@@ -49,33 +49,6 @@ export const putMatchingDataInS3 = async (data: MatchingData, uuid: string): Pro
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
-};
-
-const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones => {
-    const matchingFareZones: MatchingFareZones = {};
-    const bodyValues: string[] = Object.values(req.body);
-
-    bodyValues.forEach((zoneString: string) => {
-        if (zoneString && typeof zoneString === 'string') {
-            const zone = JSON.parse(zoneString);
-
-            if (matchingFareZones[zone.stage]) {
-                matchingFareZones[zone.stage].stops.push(zone.stop);
-            } else {
-                matchingFareZones[zone.stage] = {
-                    name: zone.stage,
-                    stops: [zone.stop],
-                    prices: [zone.price],
-                };
-            }
-        }
-    });
-
-    if (Object.keys(matchingFareZones).length === 0) {
-        throw new Error('No Stops allocated to fare stages');
-    }
-
-    return matchingFareZones;
 };
 
 const getMatchingJson = (

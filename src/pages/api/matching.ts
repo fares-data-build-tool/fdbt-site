@@ -13,7 +13,7 @@ import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../../constants';
-import getFareZones from './apiUtils/matching';
+import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
 interface MatchingBaseData {
@@ -64,33 +64,6 @@ export const putMatchingDataInS3 = async (data: MatchingData | MatchingReturnDat
     );
 };
 
-const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones => {
-    const matchingFareZones: MatchingFareZones = {};
-    const bodyValues: string[] = Object.values(req.body);
-
-    bodyValues.forEach((zoneString: string) => {
-        if (zoneString && typeof zoneString === 'string') {
-            const zone = JSON.parse(zoneString);
-
-            if (matchingFareZones[zone.stage]) {
-                matchingFareZones[zone.stage].stops.push(zone.stop);
-            } else {
-                matchingFareZones[zone.stage] = {
-                    name: zone.stage,
-                    stops: [zone.stop],
-                    prices: [zone.price],
-                };
-            }
-        }
-    });
-
-    if (Object.keys(matchingFareZones).length === 0) {
-        throw new Error('No Stops allocated to fare stages');
-    }
-
-    return matchingFareZones;
-};
-
 const getMatchingJson = (
     service: BasicService,
     userFareStages: UserFareStages,
@@ -124,30 +97,29 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-
         if (!isCookiesUUIDMatch(req, res)) {
             throw new Error('Cookie UUIDs do not match');
         }
-
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }
-
         const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
-
         const matchingFareZones = getMatchingFareZonesFromForm(req);
-
         delete req.body.service;
         delete req.body.userfarestages;
-
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const selectedStagesList: {}[] = getSelectedStages(req);
 
-            const matchingValue = { error: true, selectedFareStages: selectedStagesList };
+            setCookieOnResponseObject(
+                MATCHING_COOKIE,
+                JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
+                req,
+                res,
+            );
 
-            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ matchingValue }), req, res);
             redirectTo(res, '/matching');
+
             return;
         }
 
