@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { FARE_STAGES_COOKIE } from '../../constants/index';
-import { getDomain, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { ChooseStagesInputCheck } from '../chooseStages';
 
@@ -36,7 +36,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const numberOfFareStages = req.body.fareStageInput;
         const cookieValue = JSON.stringify({ fareStages: numberOfFareStages });
-        setCookieOnResponseObject(getDomain(req), FARE_STAGES_COOKIE, cookieValue, req, res);
+        setCookieOnResponseObject(FARE_STAGES_COOKIE, cookieValue, req, res);
         redirectTo(res, '/stageNames');
     } catch (error) {
         const message = 'There was a problem inputting the number of fare stages:';
