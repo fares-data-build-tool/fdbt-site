@@ -752,6 +752,10 @@ export const naptanStopInfo = [
     },
 ];
 
+export const selectedFareStages: string[] = [
+    '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
+];
+
 export const service = {
     type: 'pointToPoint',
     lineName: '215',
@@ -2174,8 +2178,4 @@ export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
         errorMessage: 'Enter a minimum or maximum age',
         id: 'age-range-max',
     },
-];
-
-export const selectedFareStages: string[] = [
-    '{"stop":{"stopName":"Bourne Arms","naptanCode":"lanatatg","atcoCode":"25001666","localityCode":"E0016564","localityName":"Knott End on Sea","parentLocalityName":"Fleetwood","indicator":"o/s","street":"Bourne May Road"},"stage":"stage 1"}',
 ];
