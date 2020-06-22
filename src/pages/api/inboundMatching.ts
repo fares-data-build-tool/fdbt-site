@@ -5,7 +5,6 @@ import {
     redirectToError,
     getUuidFromCookie,
     setCookieOnResponseObject,
-    getDomain,
     unescapeAndDecodeCookie,
     getSelectedStages,
 } from './apiUtils';
@@ -122,13 +121,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (isFareStageUnassigned(userFareStages, inboundFareZones) && inboundFareZones !== {}) {
             const selectedStagesList: {}[] = getSelectedStages(req);
 
-            setCookieOnResponseObject(
-                getDomain(req),
-                MATCHING_COOKIE,
-                JSON.stringify({ inbound: { error: true, selectedFareStages: selectedStagesList } }),
-                req,
-                res,
-            );
+            const inbound = { error: true, selectedFareStages: selectedStagesList };
+
+            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ inbound }), req, res);
             redirectTo(res, '/inboundMatching');
             return;
         }
@@ -156,13 +151,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         await putMatchingDataInS3(matchingJson, uuid);
 
-        setCookieOnResponseObject(
-            getDomain(req),
-            MATCHING_COOKIE,
-            JSON.stringify({ inbound: { error: false } }),
-            req,
-            res,
-        );
+        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ inbound: { error: false } }), req, res);
         redirectTo(res, '/thankyou');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';

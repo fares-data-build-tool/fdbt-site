@@ -48,7 +48,7 @@ describe('register', () => {
                         error: 'Enter an email address in the correct format, like name@example.com',
                     },
                     { inputValue: '', id: 'password', error: '' },
-                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
                 ],
             },
         ],
@@ -69,7 +69,7 @@ describe('register', () => {
                         error: '',
                     },
                     { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
                 ],
             },
         ],
@@ -84,7 +84,7 @@ describe('register', () => {
                         error: '',
                     },
                     { inputValue: '', id: 'password', error: 'Password cannot be empty or less than 8 characters' },
-                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
                 ],
             },
         ],
@@ -105,7 +105,7 @@ describe('register', () => {
                         error: '',
                     },
                     { inputValue: '', id: 'password', error: 'Passwords do not match' },
-                    { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                    { inputValue: 'DCCL', id: 'noc-code', error: '' },
                 ],
             },
         ],
@@ -126,7 +126,7 @@ describe('register', () => {
                         error: '',
                     },
                     { inputValue: '', id: 'password', error: '' },
-                    { inputValue: '', id: 'nocCode', error: 'National Operator Code cannot be empty' },
+                    { inputValue: '', id: 'noc-code', error: 'National Operator Code cannot be empty' },
                 ],
             },
         ],
@@ -136,13 +136,7 @@ describe('register', () => {
         const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
 
         await register(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(expectedCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should error when the service noc code is invalid', async () => {
@@ -169,7 +163,7 @@ describe('register', () => {
                     error: '',
                 },
                 { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'abcd', id: 'nocCode', error: '' },
+                { inputValue: 'abcd', id: 'noc-code', error: '' },
                 {
                     inputValue: '',
                     id: 'email',
@@ -180,13 +174,7 @@ describe('register', () => {
 
         await register(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 
     it('should redirect when successfully signed in', async () => {
@@ -235,7 +223,7 @@ describe('register', () => {
                     error: '',
                 },
                 { inputValue: '', id: 'password', error: '' },
-                { inputValue: 'DCCL', id: 'nocCode', error: '' },
+                { inputValue: 'DCCL', id: 'noc-code', error: '' },
                 {
                     inputValue: '',
                     id: 'email',
@@ -259,12 +247,6 @@ describe('register', () => {
 
         await register(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 });

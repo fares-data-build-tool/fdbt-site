@@ -4,7 +4,6 @@ import {
     redirectToError,
     getUuidFromCookie,
     setCookieOnResponseObject,
-    getDomain,
     getSelectedStages,
 } from './apiUtils';
 import { putStringInS3, UserFareStages } from '../../data/s3';
@@ -79,7 +78,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const outbound = { error: true, selectedFareStages: selectedStagesList };
 
-            setCookieOnResponseObject(getDomain(req), MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
+            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
             redirectTo(res, '/outboundMatching');
             return;
         }
@@ -95,13 +94,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         await putOutboundMatchingDataInS3(matchedFareZones, uuid);
 
-        setCookieOnResponseObject(
-            getDomain(req),
-            MATCHING_COOKIE,
-            JSON.stringify({ outbound: { error: false } }),
-            req,
-            res,
-        );
+        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound: { error: false } }), req, res);
 
         redirectTo(res, '/inboundMatching');
     } catch (error) {

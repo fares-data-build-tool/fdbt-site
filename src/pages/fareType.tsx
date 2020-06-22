@@ -6,7 +6,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, setCookieOnServerSide } from '../utils/index';
+import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 
@@ -18,6 +18,12 @@ const errorId = 'fare-type-error';
 type FareTypeProps = {
     operator: string;
     errors: ErrorInfo[];
+};
+
+export const buildUuid = (ctx: NextPageContext): string => {
+    const uuid = uuidv4();
+    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+    return noc + uuid.substring(0, 8);
 };
 
 const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAppProps): ReactElement => {
@@ -33,7 +39,7 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
                                     Select a fare type
                                 </h1>
                             </legend>
-                            <span className="govuk-hint" id="faretype-operator-hint">
+                            <span className="govuk-hint" id="fare-type-operator-hint">
                                 {operator}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
@@ -77,12 +83,15 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
                                     <div className="govuk-radios__item">
                                         <input
                                             className="govuk-radios__input"
-                                            id="fare-type-flatFare"
+                                            id="fare-type-flat-fare"
                                             name="fareType"
                                             type="radio"
                                             value="flatFare"
                                         />
-                                        <label className="govuk-label govuk-radios__label" htmlFor="fare-type-flatFare">
+                                        <label
+                                            className="govuk-label govuk-radios__label"
+                                            htmlFor="fare-type-flat-fare"
+                                        >
                                             Flat Fare Ticket - Single Journey
                                         </label>
                                     </div>
@@ -108,8 +117,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const operatorInfo = JSON.parse(operatorCookie);
     const { operator } = operatorInfo;
-
-    const uuid = uuidv4();
+    const uuid = buildUuid(ctx);
     const cookieValue = JSON.stringify({ operator, uuid });
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
