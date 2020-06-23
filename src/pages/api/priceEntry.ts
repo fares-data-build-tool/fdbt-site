@@ -1,7 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { FARE_STAGES_COOKIE, JOURNEY_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants/index';
-import { getUuidFromCookie, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import { JOURNEY_COOKIE, USER_DATA_BUCKET_NAME, PRICE_ENTRY_COOKIE } from '../../constants/index';
+import {
+    getUuidFromCookie,
+    redirectToError,
+    redirectTo,
+    unescapeAndDecodeCookie,
+    setCookieOnResponseObject,
+    deleteCookieOnResponseObject,
+} from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
 
@@ -24,26 +31,45 @@ interface FareTriangleData {
     };
 }
 
-export const numberOfInputsIsValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
-    const cookies = new Cookies(req, res);
-    const fareStagesCookie = unescapeAndDecodeCookie(cookies, FARE_STAGES_COOKIE);
-    const fareStagesObject = JSON.parse(fareStagesCookie);
-    const numberOfFareStages = fareStagesObject.fareStages;
-    const expectedNumberOfPriceInputs = (numberOfFareStages * (numberOfFareStages - 1)) / 2;
-    const numberOfInputInApiRequest = Object.entries(req.body).length;
+export interface FaresInformation {
+    inputs: FaresInput[];
+    errorInformation: PriceEntryError[];
+}
 
-    return expectedNumberOfPriceInputs === numberOfInputInApiRequest;
-};
+interface FaresInput {
+    input: string;
+    fieldName: string;
+}
 
-export const priceIsValid = (req: NextApiRequest): boolean => {
-    const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
-    for (let itemNum = 0; itemNum < arrayOfFareItemArrays.length; itemNum += 1) {
-        const price = arrayOfFareItemArrays[itemNum][1];
-        if (!Number.isNaN(Number(price))) {
-            return true;
+interface PriceEntryError {
+    errorMessage: string;
+    fieldName: string;
+}
+
+export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
+    const priceEntries = Object.entries(req.body);
+    const errors: PriceEntryError[] = [];
+    const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
+        if (!priceEntry[1]) {
+            errors.push({
+                errorMessage: 'Enter a price for these fare stages',
+                fieldName: priceEntry[0],
+            });
+        } else if (!Number.isNaN(Number(priceEntry[1]))) {
+            errors.push({
+                errorMessage: 'Enter a valid price for these fare stages',
+                fieldName: priceEntry[0],
+            });
         }
-    }
-    return false;
+        return {
+            input: priceEntry[1] as string,
+            fieldName: priceEntry[0],
+        };
+    });
+    return {
+        inputs: sortedInputs,
+        errorInformation: errors,
+    };
 };
 
 export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => {
@@ -98,7 +124,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Session is invalid.');
         }
 
-        if (!numberOfInputsIsValid(req, res) || !priceIsValid(req)) {
+        deleteCookieOnResponseObject(PRICE_ENTRY_COOKIE, req, res);
+
+        const errorCheck = inputsValidityCheck(req);
+
+        if (errorCheck.errorInformation.length > 0) {
+            const cookieValue = JSON.stringify(errorCheck);
+            setCookieOnResponseObject(PRICE_ENTRY_COOKIE, cookieValue, req, res);
             redirectTo(res, '/priceEntry');
             return;
         }

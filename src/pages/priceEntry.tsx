@@ -2,18 +2,29 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { FullColumnLayout } from '../layout/Layout';
-import { STAGE_NAMES_COOKIE } from '../constants';
+import { STAGE_NAMES_COOKIE, PRICE_ENTRY_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps } from '../interfaces';
+import { FaresInformation } from './api/priceEntry';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
 
-type PriceEntryProps = {
+interface PriceEntryProps {
     stageNamesArray: string[];
+    inputs: FaresInformation;
+}
+
+export const getDefaultValue = (fareInformation: FaresInformation, rowStage: string, columnStage: string): string => {
+    const cellName = `${rowStage}-${columnStage}`;
+    const defaultInput = fareInformation.inputs.find(input => {
+        return input.fieldName === cellName;
+    });
+
+    return defaultInput?.input || '';
 };
 
-const PriceEntry = ({ stageNamesArray, csrfToken }: PriceEntryProps & CustomAppProps): ReactElement => (
+const PriceEntry = ({ stageNamesArray, csrfToken, inputs }: PriceEntryProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={title} description={description}>
         <CsrfForm action="/api/priceEntry" method="post" csrfToken={csrfToken}>
             <>
@@ -55,13 +66,9 @@ const PriceEntry = ({ stageNamesArray, csrfToken }: PriceEntryProps & CustomAppP
                                             }`}
                                             id={`cell-${rowIndex}-${columnIndex}`}
                                             name={`${rowStage}-${columnStage}`}
-                                            type="number"
-                                            min="1"
-                                            max="10000"
-                                            maxLength={5}
-                                            required
-                                            pattern="^[0-9]*$"
+                                            type="text"
                                             key={stageNamesArray[columnIndex]}
+                                            defaultValue={getDefaultValue(inputs, rowStage, columnStage)}
                                         />
                                     ))}
                                     <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
@@ -76,9 +83,10 @@ const PriceEntry = ({ stageNamesArray, csrfToken }: PriceEntryProps & CustomAppP
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryProps } => {
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
+    const priceEntryCookie = cookies[PRICE_ENTRY_COOKIE];
 
     if (!stageNamesCookie) {
         throw new Error('Necessary stage names cookies not found to show price entry page');
@@ -90,7 +98,12 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         throw new Error('No stages in cookie data');
     }
 
-    return { props: { stageNamesArray } };
+    let priceEntryCookieContents;
+    if (priceEntryCookie) {
+        priceEntryCookieContents = JSON.parse(priceEntryCookie);
+    }
+
+    return { props: { stageNamesArray, inputs: priceEntryCookieContents } };
 };
 
 export default PriceEntry;
