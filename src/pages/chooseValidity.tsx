@@ -5,6 +5,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps } from '../interfaces';
+import _ from 'lodash';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';
@@ -42,7 +43,7 @@ const ChooseValidity = ({
                                     What duration is your product valid for?
                                 </h1>
                                 <p className="govuk-hint">
-                                    Product: {productName} - £{productPrice} - {passengerType}
+                                    Product: {productName} - £{productPrice} - {_.upperFirst(passengerType)}
                                 </p>
                             </legend>
                             <div className={`govuk-form-group ${isError ? 'govuk-form-group--error' : ''}`}>

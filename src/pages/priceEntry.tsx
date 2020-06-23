@@ -1,21 +1,28 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
 import { STAGE_NAMES_COOKIE, PRICE_ENTRY_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, ErrorInfo } from '../interfaces';
 import { FaresInformation } from './api/priceEntry';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
 
+const errorId = '';
+
 interface PriceEntryProps {
     stageNamesArray: string[];
-    inputs: FaresInformation;
+    inputs?: FaresInformation;
+    errors?: ErrorInfo[];
 }
 
 export const getDefaultValue = (fareInformation: FaresInformation, rowStage: string, columnStage: string): string => {
+    if (!fareInformation) {
+        return '';
+    }
     const cellName = `${rowStage}-${columnStage}`;
     const defaultInput = fareInformation.inputs.find(input => {
         return input.fieldName === cellName;
@@ -24,10 +31,16 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
     return defaultInput?.input || '';
 };
 
-const PriceEntry = ({ stageNamesArray, csrfToken, inputs }: PriceEntryProps & CustomAppProps): ReactElement => (
+const PriceEntry = ({
+    stageNamesArray,
+    csrfToken,
+    inputs,
+    errors = [],
+}: PriceEntryProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={title} description={description}>
         <CsrfForm action="/api/priceEntry" method="post" csrfToken={csrfToken}>
             <>
+                <ErrorSummary errors={errors} />
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset" aria-describedby="price-entry-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -68,7 +81,8 @@ const PriceEntry = ({ stageNamesArray, csrfToken, inputs }: PriceEntryProps & Cu
                                             name={`${rowStage}-${columnStage}`}
                                             type="text"
                                             key={stageNamesArray[columnIndex]}
-                                            defaultValue={getDefaultValue(inputs, rowStage, columnStage)}
+                                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                            defaultValue={getDefaultValue(inputs!, rowStage, columnStage)}
                                         />
                                     ))}
                                     <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
@@ -98,12 +112,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryPro
         throw new Error('No stages in cookie data');
     }
 
-    let priceEntryCookieContents;
     if (priceEntryCookie) {
-        priceEntryCookieContents = JSON.parse(priceEntryCookie);
+        const priceEntryCookieContents: FaresInformation = JSON.parse(priceEntryCookie);
+        const errors: ErrorInfo[] = priceEntryCookieContents.errorInformation.map(error => {
+            return { errorMessage: error.errorMessage, id: errorId };
+        });
+        return { props: { stageNamesArray, inputs: priceEntryCookieContents, errors } };
     }
 
-    return { props: { stageNamesArray, inputs: priceEntryCookieContents } };
+    return { props: { stageNamesArray } };
 };
 
 export default PriceEntry;

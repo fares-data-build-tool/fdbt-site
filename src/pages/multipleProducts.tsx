@@ -13,6 +13,7 @@ import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
+import _ from 'lodash';
 
 const title = 'Multiple Product - Fares Data Build Tool';
 const description = 'Multiple Product entry page of the Fares Data Build Tool';
@@ -45,7 +46,7 @@ const MultipleProducts = ({
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-hint">
-                            {operator} - {numberOfProductsToDisplay} Products - {passengerType}
+                            {operator} - {numberOfProductsToDisplay} Products - {_.upperFirst(passengerType)}
                         </span>
                     </fieldset>
                     <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>

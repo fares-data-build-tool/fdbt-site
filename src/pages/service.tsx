@@ -9,6 +9,7 @@ import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
+import _ from 'lodash';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
@@ -40,7 +41,7 @@ const Service = ({
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="service-operator-passenger-type-hint">
-                            {operator} - {passengerType}
+                            {operator} - {_.upperFirst(passengerType)}
                         </span>
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
                             <select className="govuk-select" id="service" name="service" defaultValue="">

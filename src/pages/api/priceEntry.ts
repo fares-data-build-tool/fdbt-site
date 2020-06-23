@@ -48,6 +48,7 @@ interface PriceEntryError {
 
 export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     const priceEntries = Object.entries(req.body);
+    console.log(priceEntries);
     const errors: PriceEntryError[] = [];
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
         if (!priceEntry[1]) {
@@ -55,7 +56,7 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
                 errorMessage: 'Enter a price for these fare stages',
                 fieldName: priceEntry[0],
             });
-        } else if (!Number.isNaN(Number(priceEntry[1]))) {
+        } else if (Number.isNaN(Number(priceEntry[1]))) {
             errors.push({
                 errorMessage: 'Enter a valid price for these fare stages',
                 fieldName: priceEntry[0],
@@ -124,9 +125,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Session is invalid.');
         }
 
-        deleteCookieOnResponseObject(PRICE_ENTRY_COOKIE, req, res);
-
         const errorCheck = inputsValidityCheck(req);
+
+        console.log(errorCheck);
 
         if (errorCheck.errorInformation.length > 0) {
             const cookieValue = JSON.stringify(errorCheck);
@@ -134,6 +135,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/priceEntry');
             return;
         }
+        deleteCookieOnResponseObject(PRICE_ENTRY_COOKIE, req, res);
+
         const mappedData = faresTriangleDataMapper(req);
         const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));

@@ -13,6 +13,7 @@ import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import _ from 'lodash';
 
 const title = 'Multiple Product Validity - Fares Data Build Tool';
 const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
@@ -62,7 +63,7 @@ const MultipleProductValidity = ({
                         </h1>
                     </legend>
                     <span className="govuk-hint" id="operator-products-hint">
-                        {operator} - {numberOfProducts} products - {passengerType}
+                        {operator} - {numberOfProducts} products - {_.upperFirst(passengerType)}
                     </span>
                     <span className="govuk-hint" id="multiple-product-validity-page-hint">
                         We need to know the time that this product would be valid until.

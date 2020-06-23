@@ -11,6 +11,7 @@ import {
 } from '../constants';
 import { ProductInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
+import _ from 'lodash';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -46,7 +47,7 @@ const ProductDetails = ({
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {operator} - {hintText} - {passengerType}
+                                {operator} - {hintText} - {_.upperFirst(passengerType)}
                             </span>
                         </fieldset>
                         <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
