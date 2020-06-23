@@ -175,9 +175,9 @@ exports[`pages register should render correctly 1`] = `
                   aria-describedby="checkbox-user-research-label"
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkboxUserResearch"
+                  name="contactable"
                   type="checkbox"
-                  value="checkUserResearch"
+                  value="yes"
                 />
                 <label
                   className="govuk-label govuk-checkboxes__label"
@@ -433,9 +433,9 @@ exports[`pages register should render error messaging when errors are passed 1`]
                   aria-describedby="checkbox-user-research-label"
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkboxUserResearch"
+                  name="contactable"
                   type="checkbox"
-                  value="checkUserResearch"
+                  value="yes"
                 />
                 <label
                   className="govuk-label govuk-checkboxes__label"
@@ -691,9 +691,9 @@ exports[`pages register should store email if entered correctly but other fields
                   aria-describedby="checkbox-user-research-label"
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkboxUserResearch"
+                  name="contactable"
                   type="checkbox"
-                  value="checkUserResearch"
+                  value="yes"
                 />
                 <label
                   className="govuk-label govuk-checkboxes__label"

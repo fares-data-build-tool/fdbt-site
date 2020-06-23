@@ -25,6 +25,10 @@ describe('register', () => {
     const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
     beforeEach(() => {
+        authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
+        authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
+        authSignOutSpy.mockImplementation(() => Promise.resolve());
+        authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
         getServicesByNocCodeSpy.mockImplementation(() =>
             Promise.resolve([{ lineName: '2AC', startDate: '01012020', description: 'linename for service ' }]),
         );
@@ -285,12 +289,7 @@ describe('register', () => {
         );
     });
 
-    it('should update user attributes with contactable if given', async () => {
-        authSignInSpy.mockImplementation(() => Promise.resolve(mockAuthResponse));
-        authCompletePasswordSpy.mockImplementation(() => Promise.resolve());
-        authSignOutSpy.mockImplementation(() => Promise.resolve());
-        authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
-
+    it('should update user attributes as contactable=yes if yes', async () => {
         const { req, res } = getMockRequestAndResponse(
             {},
             {
@@ -299,7 +298,7 @@ describe('register', () => {
                 confirmPassword: 'abcdefghi',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
-                checkboxUserResearch: 'checkboxUserResearch',
+                contactable: 'yes',
             },
             '',
             writeHeadMock,
@@ -310,6 +309,39 @@ describe('register', () => {
         expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
             { Name: 'custom:noc', Value: 'DCCL' },
             { Name: 'custom:contactable', Value: 'yes' },
+        ]);
+        expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
+        expect(authCompletePasswordSpy).toHaveBeenCalledWith(
+            'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+            'abcdefghi',
+            'session',
+        );
+        expect(authSignOutSpy).toHaveBeenCalled();
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/confirmRegistration',
+        });
+    });
+
+    it('should update user attributes as contactable=no if empty', async () => {
+        const { req, res } = getMockRequestAndResponse(
+            {},
+            {
+                email: 'test@test.com',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+                contactable: '',
+            },
+            '',
+            writeHeadMock,
+        );
+
+        await register(req, res);
+
+        expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
+            { Name: 'custom:noc', Value: 'DCCL' },
+            { Name: 'custom:contactable', Value: 'no' },
         ]);
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(

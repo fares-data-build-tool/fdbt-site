@@ -25,11 +25,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
     };
 
     try {
-        const { email, password, confirmPassword, nocCode, regKey, checkboxUserResearch } = req.body;
+        const { email, password, confirmPassword, nocCode, regKey } = req.body;
 
-        console.log(checkboxUserResearch);
+        let { contactable } = req.body;
 
-        const contactable = checkboxUserResearch ? 'yes' : 'no';
+        if (!contactable) {
+            contactable = 'no';
+        }
 
         const inputChecks: InputCheck[] = [];
 

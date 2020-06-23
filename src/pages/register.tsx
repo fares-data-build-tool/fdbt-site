@@ -145,9 +145,9 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id="checkbox-user-research"
-                                                name="checkboxUserResearch"
+                                                name="contactable"
                                                 type="checkbox"
-                                                value="checkUserResearch"
+                                                value="yes"
                                                 aria-describedby="checkbox-user-research-label"
                                             />
                                             <label
