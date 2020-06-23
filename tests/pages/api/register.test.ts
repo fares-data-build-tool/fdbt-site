@@ -157,13 +157,7 @@ describe('register', () => {
         const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
 
         await register(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(expectedCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should error when the service noc code is invalid', async () => {
@@ -201,13 +195,7 @@ describe('register', () => {
 
         await register(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 
     it('should redirect when successfully signed in', async () => {
@@ -280,13 +268,7 @@ describe('register', () => {
 
         await register(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 
     it('should update user attributes as contactable=yes if yes', async () => {
