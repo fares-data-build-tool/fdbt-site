@@ -46,7 +46,7 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                     </legend>
                                     <p className="govuk-hint hint-text">Enter your details to create an account</p>
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="email">
+                                        <label className="govuk-label" htmlFor="email" id="email-label">
                                             Enter email address
                                         </label>
                                         <FormElementWrapper
@@ -59,7 +59,7 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                                 id="email"
                                                 name="email"
                                                 type="text"
-                                                aria-describedby="email-hint"
+                                                aria-describedby="email-label"
                                                 autoComplete="email"
                                                 spellCheck="false"
                                                 defaultValue={email}
@@ -92,7 +92,11 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                     </div>
 
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="confirm-password">
+                                        <label
+                                            className="govuk-label"
+                                            htmlFor="confirm-password"
+                                            id="confirm-password-label"
+                                        >
                                             Confirm your password
                                         </label>
                                         <input
@@ -100,13 +104,13 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                             id="confirm-password"
                                             name="confirmPassword"
                                             type="password"
-                                            aria-describedby="confirmPassword-hint"
+                                            aria-describedby="confirm-password-label"
                                             spellCheck="false"
                                             autoComplete="new-password"
                                         />
                                     </div>
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="noc-code">
+                                        <label className="govuk-label" htmlFor="noc-code" id="noc-code-label">
                                             Enter National Operator Code
                                         </label>
                                         <FormElementWrapper
@@ -116,10 +120,10 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                         >
                                             <input
                                                 className="govuk-input"
-                                                id="nocCode"
-                                                name="noc-code"
+                                                id="noc-code"
+                                                name="nocCode"
                                                 type="text"
-                                                aria-describedby="nocCode-hint"
+                                                aria-describedby="noc-code-label"
                                                 spellCheck="false"
                                                 defaultValue={nocCode}
                                             />
@@ -141,11 +145,13 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id="checkbox-user-research"
-                                                name="checkbox-user-research"
+                                                name="contactable"
                                                 type="checkbox"
-                                                value="checkUserResearch"
+                                                value="yes"
+                                                aria-describedby="checkbox-user-research-label"
                                             />
                                             <label
+                                                id="checkbox-user-research-label"
                                                 className="govuk-label govuk-checkboxes__label"
                                                 htmlFor="checkbox-user-research"
                                             >

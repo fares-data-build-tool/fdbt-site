@@ -48,6 +48,7 @@ exports[`pages register should render correctly 1`] = `
               <label
                 className="govuk-label"
                 htmlFor="email"
+                id="email-label"
               >
                 Enter email address
               </label>
@@ -57,7 +58,7 @@ exports[`pages register should render correctly 1`] = `
                 errors={Array []}
               >
                 <input
-                  aria-describedby="email-hint"
+                  aria-describedby="email-label"
                   autoComplete="email"
                   className="govuk-input"
                   defaultValue=""
@@ -105,11 +106,12 @@ exports[`pages register should render correctly 1`] = `
               <label
                 className="govuk-label"
                 htmlFor="confirm-password"
+                id="confirm-password-label"
               >
                 Confirm your password
               </label>
               <input
-                aria-describedby="confirmPassword-hint"
+                aria-describedby="confirm-password-label"
                 autoComplete="new-password"
                 className="govuk-input"
                 id="confirm-password"
@@ -124,6 +126,7 @@ exports[`pages register should render correctly 1`] = `
               <label
                 className="govuk-label"
                 htmlFor="noc-code"
+                id="noc-code-label"
               >
                 Enter National Operator Code
               </label>
@@ -133,11 +136,11 @@ exports[`pages register should render correctly 1`] = `
                 errors={Array []}
               >
                 <input
-                  aria-describedby="nocCode-hint"
+                  aria-describedby="noc-code-label"
                   className="govuk-input"
                   defaultValue=""
-                  id="nocCode"
-                  name="noc-code"
+                  id="noc-code"
+                  name="nocCode"
                   spellCheck="false"
                   type="text"
                 />
@@ -169,15 +172,17 @@ exports[`pages register should render correctly 1`] = `
                 className="govuk-checkboxes__item"
               >
                 <input
+                  aria-describedby="checkbox-user-research-label"
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkbox-user-research"
+                  name="contactable"
                   type="checkbox"
-                  value="checkUserResearch"
+                  value="yes"
                 />
                 <label
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-user-research"
+                  id="checkbox-user-research-label"
                 >
                   If you are willing to be contacted as part of user research, please tick this box.
                 </label>
@@ -280,6 +285,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
               <label
                 className="govuk-label"
                 htmlFor="email"
+                id="email-label"
               >
                 Enter email address
               </label>
@@ -296,7 +302,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 }
               >
                 <input
-                  aria-describedby="email-hint"
+                  aria-describedby="email-label"
                   autoComplete="email"
                   className="govuk-input"
                   defaultValue=""
@@ -351,11 +357,12 @@ exports[`pages register should render error messaging when errors are passed 1`]
               <label
                 className="govuk-label"
                 htmlFor="confirm-password"
+                id="confirm-password-label"
               >
                 Confirm your password
               </label>
               <input
-                aria-describedby="confirmPassword-hint"
+                aria-describedby="confirm-password-label"
                 autoComplete="new-password"
                 className="govuk-input"
                 id="confirm-password"
@@ -370,6 +377,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
               <label
                 className="govuk-label"
                 htmlFor="noc-code"
+                id="noc-code-label"
               >
                 Enter National Operator Code
               </label>
@@ -386,11 +394,11 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 }
               >
                 <input
-                  aria-describedby="nocCode-hint"
+                  aria-describedby="noc-code-label"
                   className="govuk-input"
                   defaultValue=""
-                  id="nocCode"
-                  name="noc-code"
+                  id="noc-code"
+                  name="nocCode"
                   spellCheck="false"
                   type="text"
                 />
@@ -422,15 +430,17 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 className="govuk-checkboxes__item"
               >
                 <input
+                  aria-describedby="checkbox-user-research-label"
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkbox-user-research"
+                  name="contactable"
                   type="checkbox"
-                  value="checkUserResearch"
+                  value="yes"
                 />
                 <label
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-user-research"
+                  id="checkbox-user-research-label"
                 >
                   If you are willing to be contacted as part of user research, please tick this box.
                 </label>
@@ -533,6 +543,7 @@ exports[`pages register should store email if entered correctly but other fields
               <label
                 className="govuk-label"
                 htmlFor="email"
+                id="email-label"
               >
                 Enter email address
               </label>
@@ -549,7 +560,7 @@ exports[`pages register should store email if entered correctly but other fields
                 }
               >
                 <input
-                  aria-describedby="email-hint"
+                  aria-describedby="email-label"
                   autoComplete="email"
                   className="govuk-input"
                   defaultValue="test@tfn.com"
@@ -604,11 +615,12 @@ exports[`pages register should store email if entered correctly but other fields
               <label
                 className="govuk-label"
                 htmlFor="confirm-password"
+                id="confirm-password-label"
               >
                 Confirm your password
               </label>
               <input
-                aria-describedby="confirmPassword-hint"
+                aria-describedby="confirm-password-label"
                 autoComplete="new-password"
                 className="govuk-input"
                 id="confirm-password"
@@ -623,6 +635,7 @@ exports[`pages register should store email if entered correctly but other fields
               <label
                 className="govuk-label"
                 htmlFor="noc-code"
+                id="noc-code-label"
               >
                 Enter National Operator Code
               </label>
@@ -639,11 +652,11 @@ exports[`pages register should store email if entered correctly but other fields
                 }
               >
                 <input
-                  aria-describedby="nocCode-hint"
+                  aria-describedby="noc-code-label"
                   className="govuk-input"
                   defaultValue=""
-                  id="nocCode"
-                  name="noc-code"
+                  id="noc-code"
+                  name="nocCode"
                   spellCheck="false"
                   type="text"
                 />
@@ -675,15 +688,17 @@ exports[`pages register should store email if entered correctly but other fields
                 className="govuk-checkboxes__item"
               >
                 <input
+                  aria-describedby="checkbox-user-research-label"
                   className="govuk-checkboxes__input"
                   id="checkbox-user-research"
-                  name="checkbox-user-research"
+                  name="contactable"
                   type="checkbox"
-                  value="checkUserResearch"
+                  value="yes"
                 />
                 <label
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="checkbox-user-research"
+                  id="checkbox-user-research-label"
                 >
                   If you are willing to be contacted as part of user research, please tick this box.
                 </label>

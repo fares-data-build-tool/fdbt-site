@@ -32,7 +32,6 @@ describe('changePassword', () => {
         );
         await changePassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
             USER_COOKIE,
             JSON.stringify({ redirectFrom: '/changePassword' }),
             req,
@@ -99,7 +98,7 @@ describe('changePassword', () => {
         const { req, res } = getMockRequestAndResponse({}, input, {}, writeHeadMock);
         await changePassword(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith('localhost', USER_COOKIE, JSON.stringify({ inputChecks }), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify({ inputChecks }), req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/changePassword',
         });

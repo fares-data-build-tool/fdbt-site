@@ -65,13 +65,7 @@ describe('resetPassword', () => {
         const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
 
         await resetPassword(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(expectedCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should redirect when successfully resetting password', async () => {
@@ -90,7 +84,6 @@ describe('resetPassword', () => {
 
         await resetPassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
             USER_COOKIE,
             JSON.stringify({ redirectFrom: '/resetPassword' }),
             req,
@@ -156,12 +149,6 @@ describe('resetPassword', () => {
 
         await resetPassword(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            'localhost',
-            USER_COOKIE,
-            JSON.stringify(mockUserCookieValue),
-            req,
-            res,
-        );
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 });

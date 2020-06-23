@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDomain, redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../../interfaces';
 import { getServicesByNocCode } from '../../data/auroradb';
@@ -20,12 +20,18 @@ const validatePassword = (password: string, confirmPassword: string): string => 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: InputCheck[], regKey: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(getDomain(req), USER_COOKIE, cookieContent, req, res);
+        setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
         redirectTo(res, `/register?key=${regKey}`);
     };
 
     try {
         const { email, password, confirmPassword, nocCode, regKey } = req.body;
+
+        let { contactable } = req.body;
+
+        if (!contactable) {
+            contactable = 'no';
+        }
 
         const inputChecks: InputCheck[] = [];
 
@@ -71,16 +77,19 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters && Session) {
                 await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);
-                await updateUserAttributes(email, [{ Name: 'custom:noc', Value: nocCode }]);
+                await updateUserAttributes(email, [
+                    { Name: 'custom:noc', Value: nocCode },
+                    { Name: 'custom:contactable', Value: contactable },
+                ]);
                 await globalSignOut(email);
 
-                console.info('registration successful', { noc: nocCode });
+                console.info('Registration Successful', { noc: nocCode, contactable });
                 redirectTo(res, '/confirmRegistration');
             } else {
                 throw new Error(`unexpected challenge: ${ChallengeName}`);
             }
         } catch (error) {
-            console.warn('registration failed', { error: error.message });
+            console.warn('Registration Failed', { error: error.message });
             inputChecks.push({
                 inputValue: '',
                 id: 'email',
