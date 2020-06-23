@@ -24,7 +24,7 @@ import {
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, Breadcrumb } from '../../src/interfaces';
 
 interface GetMockContextInput {
     cookies?: any;
@@ -2174,4 +2174,11 @@ export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
         errorMessage: 'Enter a minimum or maximum age',
         id: 'age-range-max',
     },
+];
+
+export const mockBreadCrumbList: Breadcrumb[] = [
+    { name: 'Home', link: '/', show: true },
+    { name: 'Select Fare Type', link: '/fareType', show: true },
+    { name: 'Select Passenger Type', link: '/passengerType', show: true },
+    { name: 'Select Service', link: '/service', show: true },
 ];
