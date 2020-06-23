@@ -1,5 +1,6 @@
+import { ChooseStagesInputCheck } from '../../../src/pages/chooseStages';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
-import chooseStages from '../../../src/pages/api/chooseStages';
+import chooseStages, { isInvalidFareStageNumber } from '../../../src/pages/api/chooseStages';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('chooseStages', () => {
@@ -51,7 +52,13 @@ describe('chooseStages', () => {
 });
 
 describe('isInvalidStageNumber', () => {
-    it('should return an object with errors if something is incorrect', () => {
-        
-    })
+    it('should return an object with an error if something is incorrect', () => {
+        const result: ChooseStagesInputCheck = isInvalidFareStageNumber('f');
+        expect(result.error).toBeDefined();
+    });
+
+    it('should return an object with no errors if something is incorrect', () => {
+        const result: ChooseStagesInputCheck = isInvalidFareStageNumber('8');
+        expect(result.error).toBe('');
+    });
 });

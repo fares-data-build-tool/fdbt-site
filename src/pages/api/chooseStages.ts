@@ -4,8 +4,7 @@ import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUti
 import { isSessionValid } from './service/validator';
 import { ChooseStagesInputCheck } from '../chooseStages';
 
-export const isInvalidFareStageNumber = (req: NextApiRequest): ChooseStagesInputCheck => {
-    const { fareStageInput = '' } = req.body;
+export const isInvalidFareStageNumber = (fareStageInput: string): ChooseStagesInputCheck => {
     const inputAsNumber = Number(fareStageInput);
     let error;
 
@@ -26,16 +25,16 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
 
-        const userInputValidity = isInvalidFareStageNumber(req);
+        const { fareStageInput = '' } = req.body;
+        const userInputValidity = isInvalidFareStageNumber(fareStageInput);
         if (userInputValidity.error !== '') {
             const fareStageInputCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(getDomain(req), FARE_STAGES_COOKIE, fareStageInputCookieValue, req, res);
+            setCookieOnResponseObject(FARE_STAGES_COOKIE, fareStageInputCookieValue, req, res);
             redirectTo(res, '/chooseStages');
             return;
         }
 
-        const numberOfFareStages = req.body.fareStageInput;
-        const cookieValue = JSON.stringify({ fareStages: numberOfFareStages });
+        const cookieValue = JSON.stringify({ fareStages: fareStageInput });
         setCookieOnResponseObject(FARE_STAGES_COOKIE, cookieValue, req, res);
         redirectTo(res, '/stageNames');
     } catch (error) {
