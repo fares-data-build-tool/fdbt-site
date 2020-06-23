@@ -29,6 +29,7 @@ import { ErrorInfo, Breadcrumb } from '../../src/interfaces';
 interface GetMockContextInput {
     cookies?: any;
     body?: any;
+    url?: any;
     uuid?: any;
     mockWriteHeadFn?: jest.Mock<any, any>;
     mockEndFn?: jest.Mock<any, any>;
@@ -38,6 +39,7 @@ interface GetMockContextInput {
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
     body: any = null,
+    url: any = null,
     uuid: any = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
@@ -168,6 +170,7 @@ export const getMockRequestAndResponse = (
         connection: {
             encrypted: true,
         },
+        url,
         headers: {
             host: 'localhost:5000',
             cookie: cookieString,
@@ -187,12 +190,22 @@ export const getMockRequestAndResponse = (
 export const getMockContext = ({
     cookies = {},
     body = null,
+    url = null,
     uuid = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     isLoggedin = true,
 }: GetMockContextInput = {}): NextPageContext => {
-    const { req, res } = getMockRequestAndResponse(cookies, body, uuid, mockWriteHeadFn, mockEndFn, {}, isLoggedin);
+    const { req, res } = getMockRequestAndResponse(
+        cookies,
+        body,
+        url,
+        uuid,
+        mockWriteHeadFn,
+        mockEndFn,
+        {},
+        isLoggedin,
+    );
 
     const ctx: NextPageContext = {
         res,
