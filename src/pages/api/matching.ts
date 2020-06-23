@@ -106,8 +106,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
         const matchingFareZones = getMatchingFareZonesFromForm(req);
+
+        // Deleting these keys from the object in order to facilitate looping through the fare stage values in the body
         delete req.body.service;
         delete req.body.userfarestages;
+
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const selectedStagesList: {}[] = getSelectedStages(req);
 
