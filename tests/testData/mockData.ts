@@ -10,6 +10,7 @@ import {
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
     FARE_TYPE_COOKIE,
+    INPUT_METHOD_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
     PASSENGER_TYPE_COOKIE,
@@ -56,6 +57,7 @@ export const getMockRequestAndResponse = (
             operatorPublicName: 'test',
         },
         fareType = 'single',
+        inputMethod = 'csv',
         passengerType = { passengerType: 'Adult' },
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
@@ -103,6 +105,7 @@ export const getMockRequestAndResponse = (
     const {
         operatorUuid = defaultUuid,
         fareTypeUuid = defaultUuid,
+        inputMethodUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
@@ -119,6 +122,10 @@ export const getMockRequestAndResponse = (
 
     cookieString += fareType
         ? `${FARE_TYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
+        : '';
+
+    cookieString += inputMethod
+        ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
         : '';
 
     cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
@@ -2194,4 +2201,138 @@ export const mockBreadCrumbList: Breadcrumb[] = [
     { name: 'Select Fare Type', link: '/fareType', show: true },
     { name: 'Select Passenger Type', link: '/passengerType', show: true },
     { name: 'Select Service', link: '/service', show: true },
+];
+
+export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Enter Passenger Type Details',
+        link: '/definePassengerType',
+        show: true,
+    },
+    {
+        name: 'Select Service',
+        link: '/service',
+        show: true,
+    },
+    {
+        name: 'Select Direction',
+        link: '/singleDirection',
+        show: true,
+    },
+    {
+        name: 'Select Input Method',
+        link: '/inputMethod',
+        show: true,
+    },
+    {
+        name: 'Upload Fares Triangle CSV',
+        link: '/csvUpload',
+        show: true,
+    },
+    {
+        name: 'Match Stops',
+        link: '/matching',
+        show: true,
+    },
+];
+
+export const mockReturnAnyoneManualFromPriceEntryBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Select Service',
+        link: '/service',
+        show: true,
+    },
+    {
+        name: 'Select Direction',
+        link: '/returnDirection',
+        show: true,
+    },
+    {
+        name: 'Select Input Method',
+        link: '/inputMethod',
+        show: true,
+    },
+    {
+        name: 'Stage Count Check',
+        link: '/howManyStages',
+        show: true,
+    },
+    {
+        name: 'Enter Number of Stages',
+        link: '/chooseStages',
+        show: true,
+    },
+    {
+        name: 'Enter Stage Names',
+        link: '/stageNames',
+        show: true,
+    },
+    {
+        name: 'Enter Stage Prices',
+        link: '/priceEntry',
+        show: true,
+    },
+];
+
+export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Enter Passenger Type Details',
+        link: '/definePassengerType',
+        show: true,
+    },
+    {
+        name: 'Select Period Type',
+        link: '/periodType',
+        show: true,
+    },
+    {
+        name: 'Upload Zone CSV',
+        link: '/csvZoneUpload',
+        show: true,
+    },
 ];
