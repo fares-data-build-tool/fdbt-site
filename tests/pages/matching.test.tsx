@@ -11,6 +11,7 @@ import {
     error,
     getMockContext,
     mockRawServiceWithDuplicates,
+    selectedFareStages,
 } from '../testData/mockData';
 import Matching, { getServerSideProps } from '../../src/pages/matching';
 
@@ -38,6 +39,7 @@ describe('Matching Page', () => {
                 stops={naptanStopInfo}
                 service={service}
                 error={false}
+                selectedFareStages={selectedFareStages}
                 csrfToken=""
                 pageProps={[]}
             />,
@@ -59,6 +61,7 @@ describe('Matching Page', () => {
                 stops={naptanStopInfo}
                 service={service}
                 error={false}
+                selectedFareStages={selectedFareStages}
                 csrfToken=""
                 pageProps={[]}
             />,
