@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import { decode } from 'jsonwebtoken';
 import {
     redirectTo,
     redirectToError,
@@ -7,11 +8,17 @@ import {
     setCookieOnResponseObject,
     unescapeAndDecodeCookie,
 } from './apiUtils';
-import { BasicService, PassengerDetails } from '../../interfaces';
+import { BasicService, CognitoIdToken, PassengerDetails } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../../constants';
+import {
+    MATCHING_DATA_BUCKET_NAME,
+    MATCHING_COOKIE,
+    FARE_TYPE_COOKIE,
+    PASSENGER_TYPE_COOKIE,
+    ID_TOKEN_COOKIE,
+} from '../../constants';
 import getFareZones from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
@@ -21,6 +28,8 @@ interface MatchingBaseData {
     nocCode: string;
     operatorShortName: string;
     serviceDescription: string;
+    email: string;
+    uuid: string;
 }
 
 interface MatchingData extends MatchingBaseData {
@@ -56,7 +65,7 @@ interface MatchingFareZones {
 export const putMatchingDataInS3 = async (data: MatchingData | MatchingReturnData, uuid: string): Promise<void> => {
     await putStringInS3(
         MATCHING_DATA_BUCKET_NAME,
-        `${uuid}_${data.lineName}_${data.nocCode}.json`,
+        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
         JSON.stringify(data),
         'application/json; charset=utf-8',
     );
@@ -95,6 +104,8 @@ const getMatchingJson = (
     matchingFareZones: MatchingFareZones,
     fareType: string,
     passengerTypeObject: PassengerDetails,
+    email: string,
+    uuid: string,
 ): MatchingData | MatchingReturnData => {
     if (fareType === 'return') {
         return {
@@ -103,6 +114,8 @@ const getMatchingJson = (
             outboundFareZones: getFareZones(userFareStages, matchingFareZones),
             inboundFareZones: [],
             ...passengerTypeObject,
+            email,
+            uuid,
         };
     }
 
@@ -111,6 +124,8 @@ const getMatchingJson = (
         type: 'single',
         fareZones: getFareZones(userFareStages, matchingFareZones),
         ...passengerTypeObject,
+        email,
+        uuid,
     };
 };
 
@@ -155,12 +170,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
+        const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+        const decodedIdToken = decode(idToken) as CognitoIdToken;
+
         const matchingJson = getMatchingJson(
             service,
             userFareStages,
             matchingFareZones,
             fareTypeObject.fareType,
             passengerTypeObject,
+            decodedIdToken.email,
+            uuid,
         );
 
         setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
