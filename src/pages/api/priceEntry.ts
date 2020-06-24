@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { JOURNEY_COOKIE, USER_DATA_BUCKET_NAME, PRICE_ENTRY_COOKIE } from '../../constants/index';
+import {
+    JOURNEY_COOKIE,
+    USER_DATA_BUCKET_NAME,
+    PRICE_ENTRY_INPUTS_COOKIE,
+    PRICE_ENTRY_ERRORS_COOKIE,
+} from '../../constants/index';
 import {
     getUuidFromCookie,
     redirectToError,
@@ -36,35 +41,30 @@ export interface FaresInformation {
     errorInformation: PriceEntryError[];
 }
 
-interface FaresInput {
-    input: string;
-    fieldName: string;
+export interface FaresInput {
+    v: string;
+    k: string;
 }
 
-interface PriceEntryError {
-    errorMessage: string;
-    fieldName: string;
+export interface PriceEntryError {
+    v: string;
+    k: string;
 }
 
 export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     const priceEntries = Object.entries(req.body);
-    console.log(priceEntries);
     const errors: PriceEntryError[] = [];
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
-        if (!priceEntry[1]) {
+        if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1]))) {
+            // k and v used to keep cookie size small - key and value
             errors.push({
-                errorMessage: 'Enter a price for these fare stages',
-                fieldName: priceEntry[0],
-            });
-        } else if (Number.isNaN(Number(priceEntry[1]))) {
-            errors.push({
-                errorMessage: 'Enter a valid price for these fare stages',
-                fieldName: priceEntry[0],
+                v: 'err',
+                k: priceEntry[0],
             });
         }
         return {
-            input: priceEntry[1] as string,
-            fieldName: priceEntry[0],
+            v: priceEntry[1] as string,
+            k: priceEntry[0],
         };
     });
     return {
@@ -127,15 +127,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         const errorCheck = inputsValidityCheck(req);
 
-        console.log(errorCheck);
-
         if (errorCheck.errorInformation.length > 0) {
-            const cookieValue = JSON.stringify(errorCheck);
-            setCookieOnResponseObject(PRICE_ENTRY_COOKIE, cookieValue, req, res);
+            // two cookies as if there are too many fare stages, cookie gets too large
+            const inputCookieValue = JSON.stringify(errorCheck.inputs);
+            setCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, inputCookieValue, req, res);
+            const errorCookieValue = JSON.stringify(errorCheck.errorInformation);
+            setCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, errorCookieValue, req, res);
             redirectTo(res, '/priceEntry');
             return;
         }
-        deleteCookieOnResponseObject(PRICE_ENTRY_COOKIE, req, res);
+        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, req, res);
+        deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, req, res);
 
         const mappedData = faresTriangleDataMapper(req);
         const uuid = getUuidFromCookie(req, res);

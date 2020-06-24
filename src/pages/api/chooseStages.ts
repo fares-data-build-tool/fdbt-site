@@ -6,14 +6,16 @@ import { ChooseStagesInputCheck } from '../chooseStages';
 
 export const isInvalidFareStageNumber = (fareStageInput: string): ChooseStagesInputCheck => {
     const inputAsNumber = Number(fareStageInput);
-    let error;
+    let error = '';
 
-    if (fareStageInput === '' || Number.isNaN(inputAsNumber)) {
+    if (
+        fareStageInput === '' ||
+        Number.isNaN(inputAsNumber) ||
+        !Number.isInteger(inputAsNumber) ||
+        inputAsNumber > 20 ||
+        inputAsNumber < 1
+    ) {
         error = 'Enter a whole number between 1 and 20';
-    } else if (!Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1) {
-        error = 'Enter a whole number between 1 and 20';
-    } else {
-        error = '';
     }
     const inputCheck = { fareStageInput, error };
     return inputCheck;
