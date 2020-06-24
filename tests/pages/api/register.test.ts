@@ -133,7 +133,12 @@ describe('register', () => {
     ];
 
     test.each(cases)('given %p, sets the correct error cookie', async (_, testData, expectedCookieValue) => {
-        const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: testData,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await register(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
@@ -142,18 +147,18 @@ describe('register', () => {
     it('should error when the service noc code is invalid', async () => {
         getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 email: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 nocCode: 'abcd',
                 regKey: 'abcdefg',
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         const mockUserCookieValue = {
             inputChecks: [
@@ -183,18 +188,18 @@ describe('register', () => {
         authSignOutSpy.mockImplementation(() => Promise.resolve());
         authUpdateAttributesSpy.mockImplementation(() => Promise.resolve());
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 email: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await register(req, res);
 
@@ -232,18 +237,18 @@ describe('register', () => {
             ],
         };
 
-        const { req, res } = getMockRequestAndResponse(
-            {},
-            {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 email: 'test@test.com',
                 password: 'abcdefghi',
                 confirmPassword: 'abcdefghi',
                 nocCode: 'DCCL',
                 regKey: 'abcdefg',
             },
-            '',
-            writeHeadMock,
-        );
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
 
         await register(req, res);
 

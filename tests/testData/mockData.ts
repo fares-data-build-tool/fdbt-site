@@ -37,16 +37,27 @@ interface GetMockContextInput {
     isLoggedin?: boolean;
 }
 
-export const getMockRequestAndResponse = (
-    cookieValues: any = {},
-    body: any = null,
-    uuid: any = {},
+interface GetMockRequestAndResponse {
+    cookieValues?: any;
+    body?: any;
+    uuid?: any;
+    mockWriteHeadFn?: jest.Mock<any, any>;
+    mockEndFn?: jest.Mock<any, any>;
+    requestHeaders?: any;
+    isLoggedin?: boolean;
+    url?: any;
+}
+
+export const getMockRequestAndResponse = ({
+    cookieValues = {},
+    body = null,
+    uuid = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
-    requestHeaders: any = {},
+    requestHeaders = {},
     isLoggedin = true,
-    url: any = null,
-): { req: any; res: any } => {
+    url = null,
+}: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
     res.end = mockEndFn;
@@ -203,16 +214,16 @@ export const getMockContext = ({
     isLoggedin = true,
     url = null,
 }: GetMockContextInput = {}): NextPageContext => {
-    const { req, res } = getMockRequestAndResponse(
-        cookies,
+    const { req, res } = getMockRequestAndResponse({
+        cookieValues: cookies,
         body,
         uuid,
         mockWriteHeadFn,
         mockEndFn,
-        {},
+        requestHeaders: {},
         isLoggedin,
         url,
-    );
+    });
 
     const ctx: NextPageContext = {
         res,
