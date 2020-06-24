@@ -40,12 +40,12 @@ interface GetMockContextInput {
 export const getMockRequestAndResponse = (
     cookieValues: any = {},
     body: any = null,
-    url: any = null,
     uuid: any = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     requestHeaders: any = {},
     isLoggedin = true,
+    url: any = null,
 ): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -197,21 +197,21 @@ export const getMockRequestAndResponse = (
 export const getMockContext = ({
     cookies = {},
     body = null,
-    url = null,
     uuid = {},
     mockWriteHeadFn = jest.fn(),
     mockEndFn = jest.fn(),
     isLoggedin = true,
+    url = null,
 }: GetMockContextInput = {}): NextPageContext => {
     const { req, res } = getMockRequestAndResponse(
         cookies,
         body,
-        url,
         uuid,
         mockWriteHeadFn,
         mockEndFn,
         {},
         isLoggedin,
+        url,
     );
 
     const ctx: NextPageContext = {
