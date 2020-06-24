@@ -2347,3 +2347,26 @@ export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] =
         show: true,
     },
 ];
+
+export const mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs: Breadcrumb[] = [
+    {
+        name: 'Home',
+        link: '/',
+        show: true,
+    },
+    {
+        name: 'Select Fare Type',
+        link: '/fareType',
+        show: true,
+    },
+    {
+        name: 'Select Passenger Type',
+        link: '/passengerType',
+        show: true,
+    },
+    {
+        name: 'Enter Passenger Type Details',
+        link: '/definePassengerType',
+        show: true,
+    },
+];
