@@ -60,8 +60,13 @@ export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
     const filteredErrors: ErrorInfo[] = [];
     errors.forEach(error => {
         if (!filteredErrors.some(el => el.errorMessage === error.errorMessage)) {
-            filteredErrors.push({ errorMessage: 'Enter a valid price for these fare stages', id: error.id });
+            filteredErrors.push(error);
         }
+    });
+
+    filteredErrors.forEach(error => {
+        // eslint-disable-next-line no-param-reassign
+        error.errorMessage = 'Enter a valid price for each stage';
     });
     return filteredErrors;
 };

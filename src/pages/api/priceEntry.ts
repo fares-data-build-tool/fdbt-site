@@ -136,7 +136,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/priceEntry');
             return;
         }
-        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, req, res);
         deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, req, res);
 
         const mappedData = faresTriangleDataMapper(req);
