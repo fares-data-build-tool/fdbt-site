@@ -20,6 +20,7 @@ import {
     PERIOD_TYPE_COOKIE,
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
+    USER_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -96,6 +97,7 @@ export const getMockRequestAndResponse = (
             '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
         ],
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
+        userCookieValue = null,
     } = cookieValues;
 
     const {
@@ -163,6 +165,8 @@ export const getMockRequestAndResponse = (
         : '';
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
+
+    cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
 
     const req = mockRequest({
         connection: {
@@ -750,6 +754,10 @@ export const naptanStopInfo = [
         indicator: 'S-bound',
         street: 'Sophia Street',
     },
+];
+
+export const selectedFareStages: string[] = [
+    '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
 ];
 
 export const service = {

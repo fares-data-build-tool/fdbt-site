@@ -4,7 +4,7 @@ import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
-import { CognitoIdToken } from '../../../interfaces';
+import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 
 type Req = NextApiRequest | Request;
@@ -112,4 +112,34 @@ export const signOutUser = async (username: string | null, req: Req, res: Res): 
     deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
     deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
     deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
+};
+
+export const getSelectedStages = (req: NextApiRequest): string[] => {
+    const requestBody = req.body;
+
+    const selectObjectsArray: string[] = [];
+
+    Object.keys(requestBody).map(e => {
+        if (requestBody[e] !== '') {
+            selectObjectsArray.push(requestBody[e]);
+        }
+        return null;
+    });
+
+    return selectObjectsArray;
+};
+
+export const validateNewPassword = (
+    password: string,
+    confirmPassword: string,
+    inputChecks: ErrorInfo[],
+): ErrorInfo[] => {
+    let passwordError = '';
+    if (password.length < 8) {
+        passwordError = password.length === 0 ? 'Enter a new password' : 'Password must be at least 8 characters long';
+        inputChecks.push({ id: 'new-password', errorMessage: passwordError });
+    } else if (password !== confirmPassword) {
+        inputChecks.push({ id: 'new-password', errorMessage: 'Passwords do not match' });
+    }
+    return inputChecks;
 };
