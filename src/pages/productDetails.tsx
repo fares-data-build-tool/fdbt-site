@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
@@ -11,7 +12,6 @@ import {
 } from '../constants';
 import { ProductInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
-import _ from 'lodash';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
