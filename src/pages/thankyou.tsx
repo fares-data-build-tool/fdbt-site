@@ -28,6 +28,7 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
             </div>
         </div>
         <h2 className="govuk-heading-m">What happens next</h2>
+        <p className="govuk-body">Thank you for submitting your fares data.</p>
         <p className="govuk-body">
             Your data will be converted to the NeTEx format and will be emailed to <strong>{emailAddress}</strong>{' '}
             within the next 5 minutes for the fares you have just told us about.
@@ -54,7 +55,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const idToken = cookies[ID_TOKEN_COOKIE];
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     if (!decodedIdToken.email) {
-        throw new Error('Could not extract the user email address and/or noc code from their ID token');
+        throw new Error('Could not extract the user email address from their ID token');
     }
 
     deleteAllCookiesOnServerSide(ctx);

@@ -33,6 +33,11 @@ exports[`pages thankyou should render correctly 1`] = `
   <p
     className="govuk-body"
   >
+    Thank you for submitting your fares data.
+  </p>
+  <p
+    className="govuk-body"
+  >
     Your data will be converted to the NeTEx format and will be emailed to 
     <strong>
       test@example.com
