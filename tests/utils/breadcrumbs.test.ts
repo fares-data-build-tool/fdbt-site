@@ -3,9 +3,11 @@ import breadcrumb from '../../src/utils/breadcrumbs';
 import {
     getMockContext,
     mockSingleAdultCsvUploadFromMatchingBreadcrumbs,
-    mockReturnAnyoneManualFromPriceEntryBreadcrumbs,
+    mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs,
     mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs,
     mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs,
+    mockMultiServicesAnyoneFromMultipleProductValidityPageBreadcrumbs,
+    mockMultiServicesAnyoneFromPeriodValidityPageBreadcrumbs,
 } from '../testData/mockData';
 
 describe('breadcrumbs', () => {
@@ -18,14 +20,14 @@ describe('breadcrumbs', () => {
         expect(result).toEqual(mockSingleAdultCsvUploadFromMatchingBreadcrumbs);
     });
 
-    it('creates the correct array of Breadcrumbs if user is on price entry page having selected return, anyone and manual upload', () => {
+    it('creates the correct array of Breadcrumbs if user is on outbound matching page having selected return, anyone and manual upload', () => {
         ctx = getMockContext({
-            url: '/priceEntry',
+            url: '/outboundMatching',
             cookies: { fareType: 'return', inputMethod: 'manual', passengerType: { passengerType: 'anyone' } },
         });
         const result = breadcrumb(ctx).generate();
 
-        expect(result).toEqual(mockReturnAnyoneManualFromPriceEntryBreadcrumbs);
+        expect(result).toEqual(mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs);
     });
 
     it('creates the correct array of Breadcrumbs if user is on csv zone upload page having selected period geozone and senior', () => {
@@ -50,5 +52,47 @@ describe('breadcrumbs', () => {
         const result = breadcrumb(ctx).generate();
 
         expect(result).toEqual(mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs);
+    });
+
+    it('creates the correct array of Breadcrumbs if user is on multiple product validity page having selected multiple services and anyone', () => {
+        ctx = getMockContext({
+            url: '/multipleProductValidity',
+            cookies: {
+                fareType: 'period',
+                periodTypeName: 'periodMultipleServices',
+                passengerType: { passengerType: 'anyone' },
+            },
+        });
+        const result = breadcrumb(ctx).generate();
+
+        expect(result).toEqual(mockMultiServicesAnyoneFromMultipleProductValidityPageBreadcrumbs);
+    });
+
+    it('creates the correct array of Breadcrumbs if user is on multiple product validity page having selected multiple services and anyone', () => {
+        ctx = getMockContext({
+            url: '/multipleProductValidity',
+            cookies: {
+                fareType: 'period',
+                periodTypeName: 'periodMultipleServices',
+                passengerType: { passengerType: 'anyone' },
+            },
+        });
+        const result = breadcrumb(ctx).generate();
+
+        expect(result).toEqual(mockMultiServicesAnyoneFromMultipleProductValidityPageBreadcrumbs);
+    });
+
+    it('creates the correct array of Breadcrumbs if user is on period validity page having selected multiple services and anyone', () => {
+        ctx = getMockContext({
+            url: '/periodValidity',
+            cookies: {
+                fareType: 'period',
+                periodTypeName: 'periodMultipleServices',
+                passengerType: { passengerType: 'anyone' },
+                numberOfProducts: '1',
+            },
+        });
+        const result = breadcrumb(ctx).generate();
+        expect(result).toEqual(mockMultiServicesAnyoneFromPeriodValidityPageBreadcrumbs);
     });
 });
