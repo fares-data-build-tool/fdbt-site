@@ -21,6 +21,7 @@ import {
     PERIOD_TYPE_COOKIE,
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
+    USER_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -111,6 +112,7 @@ export const getMockRequestAndResponse = ({
             '101#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
         ],
         idToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.Hgdqdw7HX8cNT9NG7jcPP7ihZWHT1TYgPJyQNpKS8YQ',
+        userCookieValue = null,
     } = cookieValues;
 
     const {
@@ -183,6 +185,8 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
+
+    cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
 
     const req = mockRequest({
         connection: {
