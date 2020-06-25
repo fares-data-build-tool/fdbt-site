@@ -10,8 +10,11 @@ exports[`Price Entry Page should render correctly 1`] = `
     csrfToken=""
     method="post"
   >
+    <ErrorSummary
+      errors={Array []}
+    />
     <div
-      className="govuk-form-group"
+      className="govuk-form-group "
     >
       <fieldset
         aria-describedby="price-entry-page-heading"
@@ -36,6 +39,7 @@ exports[`Price Entry Page should render correctly 1`] = `
       </fieldset>
       <div
         className="fare-triangle-container"
+        id="fare-triangle-container"
       >
         <div
           className="fare-triangle-column"
@@ -171,16 +175,13 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Chapeltown"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-1-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Chapeltown-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -194,28 +195,22 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Chapel Allerton"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-2-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Chapel Allerton-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-2-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Chapel Allerton-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -229,40 +224,31 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Moortown"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-3-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Moortown-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-3-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Moortown-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-3-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Moortown-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -276,52 +262,40 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Harrogate Road"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-4-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harrogate Road-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-4-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harrogate Road-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-4-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harrogate Road-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-4-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harrogate Road-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -335,64 +309,49 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Harehills"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-5-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harehills-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-5-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harehills-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-5-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harehills-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-5-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harehills-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-5-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Harehills-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -406,76 +365,58 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Gipton"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-6-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Gipton-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-6-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Gipton-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-6-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Gipton-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-6-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Gipton-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-6-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Gipton-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-6-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Gipton-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -489,88 +430,67 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Armley"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-7-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Armley-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-7-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Armley-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-7-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Armley-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-7-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Armley-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-7-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Armley-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-7-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Armley-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-7-6"
               key="Gipton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Armley-Gipton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -584,100 +504,76 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Stanningley"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-6"
               key="Gipton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Gipton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-8-7"
               key="Armley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Stanningley-Armley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -691,112 +587,85 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Pudsey"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-6"
               key="Gipton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Gipton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-7"
               key="Armley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Armley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-9-8"
               key="Stanningley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Pudsey-Stanningley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -810,124 +679,94 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Seacroft"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-6"
               key="Gipton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Gipton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-7"
               key="Armley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Armley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-8"
               key="Stanningley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Stanningley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-10-9"
               key="Pudsey"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Seacroft-Pudsey"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -941,136 +780,103 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Rothwell"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-6"
               key="Gipton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Gipton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-7"
               key="Armley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Armley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-8"
               key="Stanningley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Stanningley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-9"
               key="Pudsey"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Pudsey"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-11-10"
               key="Seacroft"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Rothwell-Seacroft"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -1084,148 +890,112 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Dewsbury"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-6"
               key="Gipton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Gipton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-7"
               key="Armley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Armley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-8"
               key="Stanningley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Stanningley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-9"
               key="Pudsey"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Pudsey"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-10"
               key="Seacroft"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Seacroft"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
+              defaultValue=""
               id="cell-12-11"
               key="Rothwell"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Dewsbury-Rothwell"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"
@@ -1239,160 +1009,121 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Wakefield"
           >
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-0"
               key="Briggate"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Briggate"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-1"
               key="Chapeltown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Chapeltown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-2"
               key="Chapel Allerton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Chapel Allerton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-3"
               key="Moortown"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Moortown"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-4"
               key="Harrogate Road"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Harrogate Road"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-5"
               key="Harehills"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Harehills"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-6"
               key="Gipton"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Gipton"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-7"
               key="Armley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Armley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-8"
               key="Stanningley"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Stanningley"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-9"
               key="Pudsey"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Pudsey"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-10"
               key="Seacroft"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Seacroft"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-11"
               key="Rothwell"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Rothwell"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <input
+              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
+              defaultValue=""
               id="cell-13-12"
               key="Dewsbury"
-              max="10000"
-              maxLength={5}
-              min="1"
               name="Wakefield-Dewsbury"
-              pattern="^[0-9]*$"
-              required={true}
-              type="number"
+              type="text"
             />
             <div
               className="govuk-heading-s fare-triangle-label-right"

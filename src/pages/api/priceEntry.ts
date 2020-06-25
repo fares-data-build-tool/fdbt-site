@@ -16,6 +16,7 @@ import {
 } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
+import _ from 'lodash';
 
 interface UserFareStages {
     fareStages: {
@@ -55,12 +56,14 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     const priceEntries = Object.entries(req.body);
     const errors: PriceEntryError[] = [];
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
-        if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1]))) {
-            // k and v used to keep cookie size small - key and value
-            errors.push({
-                v: 'err',
-                k: priceEntry[0],
-            });
+        if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
+            if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
+                // k and v used to keep cookie size small - key and value
+                errors.push({
+                    v: 'A',
+                    k: priceEntry[0],
+                });
+            }
         }
         return {
             v: priceEntry[1] as string,
@@ -121,6 +124,10 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        if (!req.body || _.isEmpty(req.body)) {
+            throw new Error('Body of request not found.');
+        }
+
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
@@ -136,6 +143,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             redirectTo(res, '/priceEntry');
             return;
         }
+        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, req, res);
         deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, req, res);
 
         const mappedData = faresTriangleDataMapper(req);
@@ -147,10 +155,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const journeyObject = JSON.parse(journeyCookie);
 
         if (journeyObject?.outboundJourney) {
+            console.log('HIT');
             redirectTo(res, '/outboundMatching');
+            console.log('hit45');
             return;
         }
-
+        console.log('hit4');
         redirectTo(res, '/matching');
     } catch (error) {
         const message = 'There was a problem generating the priceEntry JSON:';
