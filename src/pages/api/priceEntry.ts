@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import _ from 'lodash';
 import {
     JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,
@@ -16,7 +17,6 @@ import {
 } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
-import _ from 'lodash';
 
 interface UserFareStages {
     fareStages: {
@@ -155,12 +155,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const journeyObject = JSON.parse(journeyCookie);
 
         if (journeyObject?.outboundJourney) {
-            console.log('HIT');
             redirectTo(res, '/outboundMatching');
-            console.log('hit45');
             return;
         }
-        console.log('hit4');
         redirectTo(res, '/matching');
     } catch (error) {
         const message = 'There was a problem generating the priceEntry JSON:';
