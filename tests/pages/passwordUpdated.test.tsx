@@ -13,7 +13,7 @@ describe('passwordUpdated', () => {
     describe('getServerSideProps', () => {
         it.each([
             ['/login', '/resetPassword'],
-            ['/', '/changePassword'],
+            ['/account', '/changePassword'],
         ])("should return redirectTo as '%s' when the user has come from the '%s' page", (redirectTo, redirectFrom) => {
             const mockUserCookieValue = { redirectFrom };
             const ctx = getMockContext({ cookies: { userCookieValue: mockUserCookieValue } });
@@ -24,7 +24,7 @@ describe('passwordUpdated', () => {
         it("should return redirectTo as '/' when the USER_COOKIE is missing", () => {
             const ctx = getMockContext();
             const props = getServerSideProps(ctx);
-            expect(props).toEqual({ props: { redirectTo: '/' } });
+            expect(props).toEqual({ props: { redirectTo: '/account' } });
         });
     });
 });
