@@ -78,7 +78,7 @@ describe('Matching API', () => {
         await matching(req, res);
 
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
-        console.log('mock date', mockDate);
+
         expect(putStringInS3Spy).toBeCalledWith(
             'fdbt-matching-data-dev',
             `DCCL/return/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
