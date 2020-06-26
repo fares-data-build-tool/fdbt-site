@@ -2,16 +2,24 @@ import { NextPageContext } from 'next';
 import breadcrumb from '../../src/utils/breadcrumbs';
 import {
     getMockContext,
+    mockFromHomeBreadcrumbs,
     mockSingleAdultCsvUploadFromMatchingBreadcrumbs,
     mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs,
     mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs,
     mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs,
-    mockMultiServicesAnyoneFromMultipleProductValidityPageBreadcrumbs,
-    mockMultiServicesAnyoneFromPeriodValidityPageBreadcrumbs,
+    mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs,
+    mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs,
 } from '../testData/mockData';
 
 describe('breadcrumbs', () => {
     let ctx: NextPageContext;
+
+    it('creates the correct array of Breadcrumbs if user is on home page', () => {
+        ctx = getMockContext({ url: '/' });
+        const result = breadcrumb(ctx).generate();
+
+        expect(result).toEqual(mockFromHomeBreadcrumbs);
+    });
 
     it('creates the correct array of Breadcrumbs if user is on matching page having selected single, adult and csv upload', () => {
         ctx = getMockContext({ url: '/matching' });
@@ -65,21 +73,7 @@ describe('breadcrumbs', () => {
         });
         const result = breadcrumb(ctx).generate();
 
-        expect(result).toEqual(mockMultiServicesAnyoneFromMultipleProductValidityPageBreadcrumbs);
-    });
-
-    it('creates the correct array of Breadcrumbs if user is on multiple product validity page having selected multiple services and anyone', () => {
-        ctx = getMockContext({
-            url: '/multipleProductValidity',
-            cookies: {
-                fareType: 'period',
-                periodTypeName: 'periodMultipleServices',
-                passengerType: { passengerType: 'anyone' },
-            },
-        });
-        const result = breadcrumb(ctx).generate();
-
-        expect(result).toEqual(mockMultiServicesAnyoneFromMultipleProductValidityPageBreadcrumbs);
+        expect(result).toEqual(mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs);
     });
 
     it('creates the correct array of Breadcrumbs if user is on period validity page having selected multiple services and anyone', () => {
@@ -93,6 +87,6 @@ describe('breadcrumbs', () => {
             },
         });
         const result = breadcrumb(ctx).generate();
-        expect(result).toEqual(mockMultiServicesAnyoneFromPeriodValidityPageBreadcrumbs);
+        expect(result).toEqual(mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs);
     });
 });
