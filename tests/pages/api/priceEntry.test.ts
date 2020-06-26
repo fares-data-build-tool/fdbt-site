@@ -5,9 +5,9 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 describe('Price Entry API', () => {
     describe('API validation of number of price inputs', () => {
         it('should return fares information with no errors if inputs are valid', () => {
-            const { req } = getMockRequestAndResponse(
-                {},
-                {
+            const { req } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: {
                     'Acomb Lane-Canning': '100',
                     'BewBush-Canning': '120',
                     'BewBush-Acomb Lane': '1120',
@@ -24,15 +24,15 @@ describe('Price Entry API', () => {
                     'Cranfield-Chorlton': '140',
                     'Cranfield-Crawley': '120',
                 },
-            );
+            });
             const result = priceEntryApi.inputsValidityCheck(req);
             expect(result.errorInformation.length).toBe(0);
         });
 
         it('should return fares information with errors if the inputs contains invalid data', () => {
-            const { req } = getMockRequestAndResponse(
-                {},
-                {
+            const { req } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: {
                     'Acomb Lane-Canning': '',
                     'BewBush-Canning': '120',
                     'BewBush-Acomb Lane': '1120',
@@ -49,7 +49,7 @@ describe('Price Entry API', () => {
                     'Cranfield-Chorlton': '140',
                     'Cranfield-Crawley': '120',
                 },
-            );
+            });
             const result = priceEntryApi.inputsValidityCheck(req);
             expect(result.errorInformation.length).toBe(4);
         });
@@ -75,7 +75,12 @@ describe('Price Entry API', () => {
         ];
 
         test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
-            const { req, res } = getMockRequestAndResponse({}, testData, {}, writeHeadMock);
+            const { req, res } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: testData,
+                uuid: {},
+                mockWriteHeadFn: writeHeadMock,
+            });
             priceEntry(req, res);
             expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
         });

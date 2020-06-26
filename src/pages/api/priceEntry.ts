@@ -6,6 +6,7 @@ import {
     USER_DATA_BUCKET_NAME,
     PRICE_ENTRY_INPUTS_COOKIE,
     PRICE_ENTRY_ERRORS_COOKIE,
+    INPUT_METHOD_COOKIE,
 } from '../../constants/index';
 import {
     getUuidFromCookie,
@@ -153,6 +154,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const cookies = new Cookies(req, res);
         const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
         const journeyObject = JSON.parse(journeyCookie);
+
+        setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'manual' }), req, res);
 
         if (journeyObject?.outboundJourney) {
             redirectTo(res, '/outboundMatching');

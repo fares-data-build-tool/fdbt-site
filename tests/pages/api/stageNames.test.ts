@@ -11,7 +11,7 @@ describe('stageNames', () => {
     describe('isStageNameValid', () => {
         it('should return an array of invalid input checks when the user enters no data', () => {
             const mockBody = { stageNameInput: ['', '', '', ''] };
-            const { req } = getMockRequestAndResponse({}, mockBody);
+            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
                 { error: 'Enter a name for this fare stage', input: '' },
                 { error: 'Enter a name for this fare stage', input: '' },
@@ -23,7 +23,7 @@ describe('stageNames', () => {
         });
         it('should return an array of valid input checks when the user enters correct data', () => {
             const mockBody = { stageNameInput: ['abcd', 'efg', 'hijkl', 'mn'] };
-            const { req } = getMockRequestAndResponse({}, mockBody);
+            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
                 { error: '', input: 'abcd' },
                 { error: '', input: 'efg' },
@@ -35,7 +35,7 @@ describe('stageNames', () => {
         });
         it('should return an array of invalid and valid input checks when the user enters incorrect data', () => {
             const mockBody = { stageNameInput: ['abcde', '   ', 'xyz', ''] };
-            const { req } = getMockRequestAndResponse({}, mockBody);
+            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
                 { error: '', input: 'abcde' },
                 { error: 'Enter a name for this fare stage', input: '   ' },
@@ -47,7 +47,7 @@ describe('stageNames', () => {
         });
         it('should return an array of invalid and valid input checks when the user enters correct data but with duplicates', () => {
             const mockBody = { stageNameInput: ['abc', 'abc', 'a', 'b'] };
-            const { req } = getMockRequestAndResponse({}, mockBody);
+            const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
                 { error: 'Stage names cannot share exact names', input: 'abc' },
                 { error: 'Stage names cannot share exact names', input: 'abc' },
@@ -62,7 +62,7 @@ describe('stageNames', () => {
     it('should return 302 redirect to /stageNames (i.e. itself) when the session is valid, but there is no request body', () => {
         const mockBody = { stageNameInput: ['', '', '', ''] };
         const mockWriteHeadFn = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
+        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody, uuid: {}, mockWriteHeadFn });
         stageNames(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
             Location: '/stageNames',
@@ -72,7 +72,7 @@ describe('stageNames', () => {
     it('should return 302 redirect to /priceEntry when session is valid and request body is present', () => {
         const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
         const mockWriteHeadFn = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
+        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody, uuid: {}, mockWriteHeadFn });
         stageNames(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
             Location: '/priceEntry',
@@ -82,7 +82,7 @@ describe('stageNames', () => {
     it('should return 302 redirect to /error when session is not valid', () => {
         const mockBody = {};
         const mockWriteHeadFn = jest.fn();
-        const { req, res } = getMockRequestAndResponse({}, mockBody, {}, mockWriteHeadFn);
+        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody, uuid: {}, mockWriteHeadFn });
         stageNames(req, res);
         expect(mockWriteHeadFn).toBeCalledWith(302, {
             Location: '/error',
@@ -92,7 +92,7 @@ describe('stageNames', () => {
     it('should set the STAGE_NAMES_COOKIE and STAGE_NAME_VALIDATION_COOKIE with values matching the valid data entered by the user ', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
-        const { req, res } = getMockRequestAndResponse({}, mockBody);
+        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockStageNamesCookieValue = '["a","b","c","d"]';
         stageNames(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(STAGE_NAMES_COOKIE, mockStageNamesCookieValue, req, res);
@@ -101,7 +101,7 @@ describe('stageNames', () => {
     it('should set the STAGE_NAME_VALIDATION_COOKIE with a value matching the invalid data entered by the user', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { stageNameInput: [' ', 'abcdefghijklmnopqrstuvwxyzabcdefgh', '   ', 'b'] };
-        const { req, res } = getMockRequestAndResponse({}, mockBody);
+        const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockInputCheck =
             '[{"input":" ","error":"Enter a name for this fare stage"},{"input":"abcdefghijklmnopqrstuvwxyzabcdefgh","error":"The name for Fare Stage 2 needs to be less than 30 characters"},{"input":"   ","error":"Enter a name for this fare stage"},{"input":"b","error":""}]';
         stageNames(req, res);

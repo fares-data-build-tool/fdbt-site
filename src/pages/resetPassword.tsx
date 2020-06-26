@@ -12,12 +12,6 @@ import CsrfForm from '../components/CsrfForm';
 const title = 'Reset Password - Fares data build tool';
 const description = 'Reset Password page of the Fares data build tool';
 
-export interface InputCheck {
-    id: string;
-    inputValue: string;
-    error: string;
-}
-
 interface ResetPasswordProps {
     errors: ErrorInfo[];
     regKey: string;
@@ -40,47 +34,52 @@ const ResetPassword = ({
                         <>
                             <ErrorSummary errors={errors} />
                             <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                                <div className="govuk-fieldset" aria-describedby="resetPassword-page-heading">
+                                <div className="govuk-fieldset" aria-describedby="reset-password-page-heading">
                                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                        <h1 className="govuk-fieldset__heading" id="resetPassword-type-page-heading">
+                                        <h1 className="govuk-fieldset__heading" id="reset-password-page-heading">
                                             Reset your password
                                         </h1>
                                     </legend>
-                                    <p className="govuk-hint hint-text">
-                                        Your password should be at least 8 characters long.
+                                    <p className="govuk-hint hint-text" id="reset-password-page-hint">
+                                        Your password should be at least 8 characters long
                                     </p>
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="password">
+                                        <label className="govuk-label" htmlFor="new-password">
                                             New password
                                         </label>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId="password"
+                                            errorId="new-password"
                                             errorClass="govuk-input--error"
                                         >
                                             <input
                                                 className="govuk-input"
-                                                id="password"
+                                                id="new-password"
                                                 name="password"
                                                 type="password"
-                                                aria-describedby="password-hint"
+                                                aria-describedby="reset-password-page-hint"
                                                 spellCheck="false"
                                             />
                                         </FormElementWrapper>
                                     </div>
-
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="confirm-password">
-                                            Confirm your new password
+                                        <label className="govuk-label" htmlFor="confirm-new-password">
+                                            Confirm password
                                         </label>
-                                        <input
-                                            className="govuk-input"
-                                            id="confirm-password"
-                                            name="confirmPassword"
-                                            type="password"
-                                            aria-describedby="confirmPassword-hint"
-                                            spellCheck="false"
-                                        />
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId="confirm-new-password"
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input"
+                                                id="confirm-new-password"
+                                                name="confirmPassword"
+                                                type="password"
+                                                aria-describedby="reset-password-page-hint"
+                                                spellCheck="false"
+                                            />
+                                        </FormElementWrapper>
                                     </div>
                                 </div>
                             </div>
@@ -102,17 +101,15 @@ const ResetPassword = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: ResetPasswordProps } => {
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
 
     const errors: ErrorInfo[] = [];
-
-    // eslint-disable-next-line camelcase,@typescript-eslint/camelcase
     const { key, user_name: username, expiry } = ctx.query;
 
-    if ((!key || !username || !expiry) && ctx.res) {
-        redirectTo(ctx.res, '/error');
+    if (!key || !username || !expiry) {
+        throw new Error('Could not retrieve parameters from query string');
     }
 
     if (expiry) {
@@ -133,17 +130,15 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const userCookieParsed = JSON.parse(userCookie);
         const { inputChecks } = userCookieParsed;
 
-        inputChecks.map((check: InputCheck) => {
-            if (check.error) {
-                errors.push({ id: check.id, errorMessage: check.error });
+        inputChecks.map((check: ErrorInfo) => {
+            if (check.errorMessage) {
+                errors.push({ id: check.id, errorMessage: check.errorMessage });
             }
             return errors;
         });
-
-        return { props: { inputChecks, errors, regKey: key, username, expiry } };
     }
 
-    return { props: { errors, regKey: key, username, expiry } };
+    return { props: { errors, regKey: key as string, username: username as string, expiry: expiry as string } };
 };
 
 export default ResetPassword;
