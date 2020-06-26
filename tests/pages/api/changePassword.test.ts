@@ -30,9 +30,9 @@ describe('changePassword', () => {
                 oldPassword: 'iLoveBuses',
                 newPassword: 'iReallyLoveBuses',
                 confirmNewPassword: 'iReallyLoveBuses',
-                uuid: {},
-                mockWriteHeadFn: writeHeadMock,
             },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
         });
         await changePassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
@@ -52,6 +52,7 @@ describe('changePassword', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {},
+            mockWriteHeadFn: writeHeadMock,
         });
         await changePassword(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -105,6 +106,7 @@ describe('changePassword', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: input,
+            mockWriteHeadFn: writeHeadMock,
         });
         await changePassword(req, res);
 
