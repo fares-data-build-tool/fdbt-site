@@ -34,6 +34,7 @@ interface MatchingData {
     operatorShortName: string;
     inboundFareZones: FareZones[];
     outboundFareZones: FareZones[];
+    uuid: string;
 }
 
 interface MatchingFareZones {
@@ -60,6 +61,7 @@ const getMatchingJson = (
     outboundFareZones: MatchingFareZones,
     passengerTypeObject: PassengerDetails,
     email: string,
+    uuid: string,
 ): MatchingData => ({
     ...service,
     type: 'return',
@@ -67,6 +69,7 @@ const getMatchingJson = (
     outboundFareZones: getFareZones(userFareStages, outboundFareZones),
     ...passengerTypeObject,
     email,
+    uuid,
 });
 
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
@@ -128,6 +131,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             outboundFareZones,
             passengerTypeObject,
             decodedIdToken.email,
+            uuid,
         );
 
         await putMatchingDataInS3(matchingJson, uuid);
