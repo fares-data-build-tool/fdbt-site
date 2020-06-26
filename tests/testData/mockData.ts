@@ -1476,6 +1476,8 @@ export const expectedSingleProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Product A',
@@ -1493,6 +1495,8 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Product A',
@@ -1525,6 +1529,8 @@ export const expectedMultiProductUploadJsonWithZoneUpload = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1554,6 +1560,8 @@ export const expectedMultiProductUploadJsonWithSelectedServices = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1599,6 +1607,8 @@ export const expectedFlatFareProductUploadJson = {
     passengerType: 'Adult',
     type: 'flatFare',
     nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
     products: [
         {
             productName: 'Weekly Rider',

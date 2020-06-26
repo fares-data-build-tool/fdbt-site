@@ -6,6 +6,7 @@ import {
     setCookieOnResponseObject,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
+    getAttributeFromIdToken,
 } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
@@ -92,9 +93,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 };
             });
 
+            const email = getAttributeFromIdToken(req, res, 'email');
+
+            if (!email) {
+                throw new Error('Could not extract the user email address from their ID token');
+            }
+
             const flatFareProduct: DecisionData = {
                 operatorName: operator.operatorPublicName,
                 nocCode,
+                email,
+                uuid,
                 type: fareType,
                 products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
                 selectedServices: formattedServiceInfo,
