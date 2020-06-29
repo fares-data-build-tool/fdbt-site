@@ -175,7 +175,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Chapeltown"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-1-0"
@@ -195,7 +194,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Chapel Allerton"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-2-0"
@@ -204,7 +202,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-2-1"
@@ -224,7 +221,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Moortown"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-3-0"
@@ -233,7 +229,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-3-1"
@@ -242,7 +237,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-3-2"
@@ -262,7 +256,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Harrogate Road"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-4-0"
@@ -271,7 +264,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-4-1"
@@ -280,7 +272,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-4-2"
@@ -289,7 +280,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-4-3"
@@ -309,7 +299,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Harehills"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-5-0"
@@ -318,7 +307,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-5-1"
@@ -327,7 +315,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-5-2"
@@ -336,7 +323,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-5-3"
@@ -345,7 +331,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-5-4"
@@ -365,7 +350,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Gipton"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-6-0"
@@ -374,7 +358,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-6-1"
@@ -383,7 +366,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-6-2"
@@ -392,7 +374,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-6-3"
@@ -401,7 +382,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-6-4"
@@ -410,7 +390,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-6-5"
@@ -430,7 +409,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Armley"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-7-0"
@@ -439,7 +417,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-7-1"
@@ -448,7 +425,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-7-2"
@@ -457,7 +433,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-7-3"
@@ -466,7 +441,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-7-4"
@@ -475,7 +449,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-7-5"
@@ -484,7 +457,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-7-6"
@@ -504,7 +476,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Stanningley"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-0"
@@ -513,7 +484,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-1"
@@ -522,7 +492,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-2"
@@ -531,7 +500,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-3"
@@ -540,7 +508,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-4"
@@ -549,7 +516,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-5"
@@ -558,7 +524,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-6"
@@ -567,7 +532,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-8-7"
@@ -587,7 +551,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Pudsey"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-0"
@@ -596,7 +559,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-1"
@@ -605,7 +567,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-2"
@@ -614,7 +575,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-3"
@@ -623,7 +583,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-4"
@@ -632,7 +591,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-5"
@@ -641,7 +599,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-6"
@@ -650,7 +607,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-7"
@@ -659,7 +615,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-9-8"
@@ -679,7 +634,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Seacroft"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-0"
@@ -688,7 +642,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-1"
@@ -697,7 +650,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-2"
@@ -706,7 +658,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-3"
@@ -715,7 +666,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-4"
@@ -724,7 +674,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-5"
@@ -733,7 +682,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-6"
@@ -742,7 +690,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-7"
@@ -751,7 +698,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-8"
@@ -760,7 +706,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-10-9"
@@ -780,7 +725,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Rothwell"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-0"
@@ -789,7 +733,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-1"
@@ -798,7 +741,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-2"
@@ -807,7 +749,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-3"
@@ -816,7 +757,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-4"
@@ -825,7 +765,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-5"
@@ -834,7 +773,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-6"
@@ -843,7 +781,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-7"
@@ -852,7 +789,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-8"
@@ -861,7 +797,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-9"
@@ -870,7 +805,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-11-10"
@@ -890,7 +824,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Dewsbury"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-0"
@@ -899,7 +832,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-1"
@@ -908,7 +840,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-2"
@@ -917,7 +848,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-3"
@@ -926,7 +856,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-4"
@@ -935,7 +864,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-5"
@@ -944,7 +872,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-6"
@@ -953,7 +880,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-7"
@@ -962,7 +888,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-8"
@@ -971,7 +896,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-9"
@@ -980,7 +904,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-10"
@@ -989,7 +912,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
               defaultValue=""
               id="cell-12-11"
@@ -1009,7 +931,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             key="Wakefield"
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-0"
@@ -1018,7 +939,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-1"
@@ -1027,7 +947,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-2"
@@ -1036,7 +955,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-3"
@@ -1045,7 +963,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-4"
@@ -1054,7 +971,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-5"
@@ -1063,7 +979,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-6"
@@ -1072,7 +987,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-7"
@@ -1081,7 +995,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-8"
@@ -1090,7 +1003,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-9"
@@ -1099,7 +1011,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-10"
@@ -1108,7 +1019,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-11"
@@ -1117,7 +1027,6 @@ exports[`Price Entry Page should render correctly 1`] = `
               type="text"
             />
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
               defaultValue=""
               id="cell-13-12"

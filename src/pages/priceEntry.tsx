@@ -135,7 +135,6 @@ const PriceEntry = ({
                                             type="text"
                                             key={stageNamesArray[columnIndex]}
                                             defaultValue={getDefaultValue(faresInformation, rowStage, columnStage)}
-                                            aria-describedby={errors.length > 0 ? `${rowStage}-${columnStage}` : ''}
                                         />
                                     ))}
                                     <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
