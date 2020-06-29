@@ -66,9 +66,9 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     let errors: ErrorInfo[] = [];
 
     if (cookies[FARE_STAGES_COOKIE]) {
-        const numberOfProductsCookie = cookies[FARE_STAGES_COOKIE];
-        inputCheck = JSON.parse(numberOfProductsCookie);
-        errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-products-error' }] : [];
+        const numberOfFareStagesCookie = cookies[FARE_STAGES_COOKIE];
+        inputCheck = JSON.parse(numberOfFareStagesCookie);
+        errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-stages-error' }] : [];
     }
 
     deleteCookieOnServerSide(ctx, FARE_STAGES_COOKIE);

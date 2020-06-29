@@ -2,7 +2,7 @@ import * as priceEntryApi from '../../../src/pages/api/priceEntry';
 import priceEntry from '../../../src/pages/api/priceEntry';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
-describe('Price Entry API', () => {
+describe('priceEntry', () => {
     describe('API validation of number of price inputs', () => {
         it('should return fares information with no errors if inputs are valid', () => {
             const { req } = getMockRequestAndResponse({

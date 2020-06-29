@@ -84,7 +84,7 @@ export const createErrorSpans = (errors: ErrorInfo[]): ReactElement[] => {
 const PriceEntry = ({
     stageNamesArray,
     csrfToken,
-    faresInformation,
+    faresInformation = { inputs: [], errorInformation: [] },
     errors = [],
 }: PriceEntryProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={title} description={description}>
@@ -133,8 +133,7 @@ const PriceEntry = ({
                                             name={`${rowStage}-${columnStage}`}
                                             type="text"
                                             key={stageNamesArray[columnIndex]}
-                                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                                            defaultValue={getDefaultValue(faresInformation!, rowStage, columnStage)}
+                                            defaultValue={getDefaultValue(faresInformation, rowStage, columnStage)}
                                             aria-describedby={errors.length > 0 ? `${rowStage}-${columnStage}` : ''}
                                         />
                                     ))}

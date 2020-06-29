@@ -67,7 +67,7 @@ describe('isInvalidStageNumber', () => {
         expect(result.error).toBeDefined();
     });
 
-    it('should return an object with no errors if something is incorrect', () => {
+    it('should return an object with no errors if input is valid', () => {
         const result: ChooseStagesInputCheck = isInvalidFareStageNumber('8');
         expect(result.error).toBe('');
     });
