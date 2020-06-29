@@ -66,22 +66,21 @@ describe('priceEntry', () => {
 
         const cases: {}[] = [
             [{}, { Location: '/error' }],
-            // below tests not working for some unknown reason, mock has no calls
-            // [{ 'Crawley-Acomb Lane': '0' }, { Location: '/outboundMatching' }],
-            // [{ 'Crawley-Acomb Lane': '100' }, { Location: '/outboundMatching' }],
+            [{ 'Crawley-Acomb Lane': '0' }, { Location: '/outboundMatching' }],
+            [{ 'Crawley-Acomb Lane': '100' }, { Location: '/outboundMatching' }],
             [{ 'Acomb Lane-Canning': 'fgrgregw' }, { Location: '/priceEntry' }],
             [{ 'Cranfield-Crawley': '1.2' }, { Location: '/priceEntry' }],
             [{ 'Acomb Lane-Chorlton': '[].. r43' }, { Location: '/priceEntry' }],
         ];
 
-        test.each(cases)('given %p as request, redirects to %p', (testData, expectedLocation) => {
+        test.each(cases)('given %p as request, redirects to %p', async (testData, expectedLocation) => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: testData,
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
             });
-            priceEntry(req, res);
+            await priceEntry(req, res);
             expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
         });
     });
