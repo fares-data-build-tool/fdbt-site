@@ -35,7 +35,7 @@ const ChooseStages = ({ inputCheck, errors, csrfToken }: ChooseStagesProps & Cus
                             </h1>
                         </legend>
 
-                        <label className="govuk-hint" htmlFor="fare-stages">
+                        <label className="govuk-hint" htmlFor="fare-stages" id="fare-stage-hint">
                             Enter the number of fare stages between 1 - 20 (for example 3)
                         </label>
                         <FormElementWrapper
@@ -49,7 +49,7 @@ const ChooseStages = ({ inputCheck, errors, csrfToken }: ChooseStagesProps & Cus
                                 name="fareStageInput"
                                 type="text"
                                 defaultValue={!inputCheck?.error ? inputCheck?.numberOfStagesInput : ''}
-                                aria-describedby={inputCheck?.error ? `fareStageInput-error` : ''}
+                                aria-describedby="fare-stage-hint"
                             />
                         </FormElementWrapper>
                     </fieldset>

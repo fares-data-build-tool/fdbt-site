@@ -33,6 +33,7 @@ exports[`pages chooseStages should render correctly 1`] = `
         <label
           className="govuk-hint"
           htmlFor="fare-stages"
+          id="fare-stage-hint"
         >
           Enter the number of fare stages between 1 - 20 (for example 3)
         </label>
@@ -42,7 +43,7 @@ exports[`pages chooseStages should render correctly 1`] = `
           errors={Array []}
         >
           <input
-            aria-describedby=""
+            aria-describedby="fare-stage-hint"
             className="govuk-input govuk-input--width-2"
             id="fare-stages"
             name="fareStageInput"
