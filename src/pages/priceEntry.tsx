@@ -57,17 +57,18 @@ export const createClassName = (
 };
 
 export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
+    const errorText = 'Enter a valid price for each stage';
     const filteredErrors: ErrorInfo[] = [];
     errors.forEach(error => {
-        if (!filteredErrors.some(el => el.errorMessage === error.errorMessage)) {
-            filteredErrors.push(error);
+        if (!filteredErrors.some(el => el.errorMessage === errorText)) {
+            let updatedErrorMessage = '';
+            if (error.errorMessage === 'A') {
+                updatedErrorMessage = errorText;
+            }
+            filteredErrors.push({ errorMessage: updatedErrorMessage, id: error.id });
         }
     });
 
-    filteredErrors.forEach(error => {
-        // eslint-disable-next-line no-param-reassign
-        error.errorMessage = 'Enter a valid price for each stage';
-    });
     return filteredErrors;
 };
 
