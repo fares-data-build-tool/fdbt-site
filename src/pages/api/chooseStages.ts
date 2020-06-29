@@ -13,9 +13,9 @@ export const isInvalidFareStageNumber = (fareStageInput: string): ChooseStagesIn
         Number.isNaN(inputAsNumber) ||
         !Number.isInteger(inputAsNumber) ||
         inputAsNumber > 20 ||
-        inputAsNumber < 1
+        inputAsNumber < 2
     ) {
-        error = 'Enter a whole number between 1 and 20';
+        error = 'Enter a whole number between 2 and 20';
     }
     const inputCheck = { fareStageInput, error };
     return inputCheck;
