@@ -23,6 +23,7 @@ const FormElementWrapper = ({
     addFormGroupError,
 }: FormElementWrapperProps): ReactElement => {
     const errorForElement = errors.find(err => err.id === errorId);
+    console.log(errorForElement);
 
     return (
         <div className={addFormGroupError && errorForElement ? 'govuk-form-group--error' : ''}>

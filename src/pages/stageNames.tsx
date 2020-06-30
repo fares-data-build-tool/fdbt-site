@@ -108,11 +108,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     }
 
     if (inputChecks.length > 0) {
-        const errors: ErrorInfo[] = inputChecks.map(inputCheck => {
-            return {
-                errorMessage: inputCheck.error,
-                id: inputCheck.id,
-            };
+        const errors: ErrorInfo[] = [];
+        inputChecks.forEach(inputCheck => {
+            if (inputCheck.error !== '') {
+                errors.push({ errorMessage: inputCheck.error, id: inputCheck.id });
+            }
         });
         return { props: { numberOfFareStages, inputChecks, errors } };
     }
