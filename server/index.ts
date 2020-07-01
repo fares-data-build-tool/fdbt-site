@@ -70,22 +70,16 @@ const setStaticRoutes = (server: Express): void => {
         };
 
         const sessionOptions: session.SessionOptions = {
-            cookie: { httpOnly: true, secure: true, path: '/', sameSite: 'strict' },
+            cookie: { sameSite: 'strict' },
             saveUninitialized: false,
             resave: false,
-            secret: process.env.SESSION_SECRET || '',
+            secret: process.env.SESSION_SECRET || 'secret',
         };
 
         if (process.env.NODE_ENV === 'development') {
             storeOptions.client = new AWS.DynamoDB({
                 endpoint: 'http://localhost:4569',
             });
-
-            if (sessionOptions.cookie) {
-                sessionOptions.cookie.secure = false;
-            }
-
-            sessionOptions.secret = 'test secret';
         }
 
         server.use(
@@ -123,10 +117,6 @@ const setStaticRoutes = (server: Express): void => {
                 return handle(req, res);
             });
         });
-
-        console.log({ store: new DynamoDBStore(storeOptions), ...sessionOptions });
-
-        server.use(session({ store: new DynamoDBStore(storeOptions), ...sessionOptions }));
 
         server.get('*', requireAuth, (req: Request, res: Response) => {
             res.locals.csrfToken = req.csrfToken();
