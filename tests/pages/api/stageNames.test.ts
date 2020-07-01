@@ -34,13 +34,15 @@ describe('stageNames', () => {
             expect(inputCheck).toEqual(expectedArray);
         });
         it('should return an array of invalid and valid input checks when the user enters incorrect data', () => {
-            const mockBody = { stageNameInput: ['abcde', '   ', 'xyz', ''] };
+            const mockBody = { stageNameInput: ['abcde', '   ', 'xyz', '', 'gggg', 'gggg'] };
             const { req } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
             const expectedArray = [
                 { error: '', id: 'fare-stage-name-1-error', input: 'abcde' },
                 { error: 'Enter a name for this fare stage', id: 'fare-stage-name-2-error', input: '   ' },
                 { error: '', id: 'fare-stage-name-3-error', input: 'xyz' },
                 { error: 'Enter a name for this fare stage', id: 'fare-stage-name-4-error', input: '' },
+                { error: 'Stage names cannot share exact names', id: 'fare-stage-name-5-error', input: 'gggg' },
+                { error: 'Stage names cannot share exact names', id: 'fare-stage-name-6-error', input: 'gggg' },
             ];
             const inputCheck = isStageNameValid(req);
             expect(inputCheck).toEqual(expectedArray);
