@@ -12,7 +12,7 @@ import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('renderInputFields', () => {
-        it('should return a list of html elements that macthes the number of fare stages and inputCheck objects', () => {
+        it('should return a list of html elements that matches the number of fare stages and inputCheck objects', () => {
             const mockNumberOfFareStages = 4;
             const mockInputCheck: InputCheck[] = [
                 { error: '', input: 'ab', id: 'fare-stage-name-1' },
