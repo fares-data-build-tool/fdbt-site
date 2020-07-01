@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
@@ -13,7 +12,6 @@ import ErrorSummary from '../components/ErrorSummary';
 
 const title = 'Stage Names - Fares Data Build Tool';
 const description = 'Stage Names entry page of the Fares Data Build Tool';
-const errorId = 'stage-name-error';
 
 export interface InputCheck {
     error: string;
