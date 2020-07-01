@@ -26,7 +26,10 @@ type StageNameProps = {
 };
 
 export const renderInputField = (index: number, inputCheck: InputCheck, errors: ErrorInfo[] = []): ReactElement => (
-    <div className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error input-error' : ''}`}>
+    <div
+        className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error input-error' : ''}`}
+        key={`fare-stage-name-${index + 1}`}
+    >
         <label className="govuk-label" htmlFor={`fare-stage-name-${index + 1}`}>
             Fare Stage {index + 1}
         </label>

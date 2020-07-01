@@ -34,6 +34,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
       <div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-1"
         >
           <label
             className="govuk-label"
@@ -58,6 +59,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-2"
         >
           <label
             className="govuk-label"
@@ -82,6 +84,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-3"
         >
           <label
             className="govuk-label"
@@ -106,6 +109,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-4"
         >
           <label
             className="govuk-label"
@@ -130,6 +134,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-5"
         >
           <label
             className="govuk-label"
@@ -154,6 +159,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-6"
         >
           <label
             className="govuk-label"
@@ -222,6 +228,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       <div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-1"
         >
           <label
             className="govuk-label"
@@ -247,6 +254,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-2"
         >
           <label
             className="govuk-label"
@@ -272,6 +280,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </div>
         <div
           className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-3"
         >
           <label
             className="govuk-label"
@@ -297,6 +306,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-4"
         >
           <label
             className="govuk-label"
@@ -322,6 +332,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </div>
         <div
           className="govuk-form-group"
+          key="fare-stage-name-5"
         >
           <label
             className="govuk-label"
@@ -391,6 +402,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
       <div>
         <div
           className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-1"
         >
           <label
             className="govuk-label"
@@ -416,6 +428,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </div>
         <div
           className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-2"
         >
           <label
             className="govuk-label"
@@ -441,6 +454,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </div>
         <div
           className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-3"
         >
           <label
             className="govuk-label"
@@ -466,6 +480,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         </div>
         <div
           className="govuk-form-group govuk-form-group--error input-error"
+          key="fare-stage-name-4"
         >
           <label
             className="govuk-label"
