@@ -11,7 +11,7 @@ export default (server: Express): void => {
     };
 
     if (process.env.NODE_ENV === 'development') {
-        dynamoDbOptions.client = new AWS.DynamoDB({ endpoint: 'http://localhost:4569' });
+        dynamoDbOptions.client = new AWS.DynamoDB({ endpoint: 'http://localhost:4569', region: 'eu-west-2' });
     }
 
     const sessionOptions: SessionOptions = {
