@@ -93,17 +93,10 @@ export const formatRequestBody = (req: NextApiRequest): {} => {
             return;
         }
         if (entry[0] === 'proofDocuments') {
-            if (!isArray(entry[1])) {
-                const proofDocuments = entry[1] as string;
-                filteredReqBody[entry[0]] = [proofDocuments];
-                return;
-            }
-            const proofDocuments = entry[1] as string[];
-            filteredReqBody[entry[0]] = proofDocuments;
+            filteredReqBody[entry[0]] = !isArray(entry[1]) ? [entry[1] as string] : (entry[1] as string[]);
             return;
         }
-        const entryValue = entry[1] as string;
-        filteredReqBody[entry[0]] = entryValue;
+        filteredReqBody[entry[0]] = entry[1] as string;
     });
     return filteredReqBody;
 };
