@@ -1,13 +1,20 @@
 import { Express } from 'express';
-import AWS from 'aws-sdk';
+import AWS, { DynamoDB } from 'aws-sdk';
 import session, { SessionOptions } from 'express-session';
 import connectDynamoDb from 'connect-dynamodb';
+
+interface DynamoDbOptions {
+    table: string;
+    AWSConfigJSON: {
+        region: string;
+    };
+    client?: DynamoDB;
+}
 
 export default (server: Express): void => {
     const DynamoDbStore = connectDynamoDb(session);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dynamoDbOptions: any = {
+    const dynamoDbOptions: DynamoDbOptions = {
         table: 'sessions',
         AWSConfigJSON: {
             region: 'eu-west-2',
