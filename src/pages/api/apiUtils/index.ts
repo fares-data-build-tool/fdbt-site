@@ -23,6 +23,13 @@ export const setCookieOnResponseObject = (cookieName: string, cookieValue: strin
     });
 };
 
+export const updateSession = (cookieName: string, cookieValue: {}, req: Req): void => {
+    (req as any).session[cookieName] = cookieValue;
+};
+
+export const retrieveSession = (cookieName: string, req: Req): { [key: string]: any } =>
+    (req as any).session[cookieName];
+
 export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
     const cookies = new Cookies(req, res);
 
