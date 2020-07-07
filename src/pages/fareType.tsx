@@ -9,6 +9,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { retrieveSession } from './api/apiUtils';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
@@ -108,6 +109,10 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
+    const { req } = ctx;
+    if (!req) {
+        throw new Error('No request on context object');
+    }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
@@ -124,17 +129,14 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     console.info('transaction start', { uuid });
 
-    if (cookies[FARE_TYPE_COOKIE]) {
-        const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-        const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
+    const fareTypeInfo = retrieveSession(FARE_TYPE_COOKIE, req as any);
 
-        if (parsedFareTypeCookie.errorMessage) {
-            const { errorMessage } = parsedFareTypeCookie;
-            deleteCookieOnServerSide(ctx, FARE_TYPE_COOKIE);
+    if (fareTypeInfo) {
+        if (fareTypeInfo.errorMessage) {
+            const { errorMessage } = fareTypeInfo;
             return { props: { operator: operator.operatorPublicName, errors: [{ errorMessage, id: errorId }] } };
         }
     }
-
     return { props: { operator: operator.operatorPublicName } };
 };
 

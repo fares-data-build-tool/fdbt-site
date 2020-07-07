@@ -60,9 +60,8 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
 };
 
 export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    const cookies = new Cookies(req, res);
-    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-    const { fareType } = JSON.parse(fareTypeCookie);
+    const session = retrieveSession(FARE_TYPE_COOKIE, req);
+    const { fareType } = session;
 
     if (fareType) {
         switch (fareType) {
@@ -82,7 +81,7 @@ export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): v
                 throw new Error('Fare Type we expect was not received.');
         }
     } else {
-        throw new Error('Could not extract fareType from the FARE_TYPE_COOKIE.');
+        throw new Error('Could not extract fareType from the session.');
     }
 };
 

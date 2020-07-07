@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
+import { deleteAllCookiesOnServerSide } from '../utils';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK } from '../constants';
 
@@ -8,9 +9,14 @@ const description = 'Error page of the Fares Data Build Tool';
 
 interface ErrorProps {
     statusCode: number;
+    ctx: NextPageContext;
 }
 
-const Error = ({ statusCode }: ErrorProps): ReactElement => (
+export const handleClick = () => {
+    
+}
+
+const Error = ({ statusCode, ctx }: ErrorProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         {statusCode === 404 ? (
             <div>
@@ -41,14 +47,21 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
         )}
 
         <br />
-        <a href="/operator" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
+        <a
+            href="/operator"
+            role="button"
+            draggable="false"
+            className="govuk-button"
+            data-module="govuk-button"
+            onClick={handleClick}
+        >
             Start again
         </a>
     </TwoThirdsLayout>
 );
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
-    return { props: { statusCode: ctx.res?.statusCode } };
+    return { props: { statusCode: ctx.res?.statusCode, ctx } };
 };
 
 export default Error;
