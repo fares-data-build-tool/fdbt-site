@@ -1,9 +1,9 @@
-import Cookies, { SetOption } from 'cookies';
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
-import { signOutUser, setCookieOnResponseObject } from '../../src/pages/api/apiUtils';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants/index';
+import { updateSessionAttribute, getSessionAttributes, signOutUser } from '../../src/pages/api/apiUtils/index';
+
 import { CognitoIdToken } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
 
@@ -30,36 +30,27 @@ const verifyOptions: VerifyOptions = {
 };
 
 export const setDisableAuthCookies = (server: Express): void => {
-    server.use((req, res, next) => {
+    server.use((req, _res, next) => {
         const isDevelopment = process.env.NODE_ENV === 'development';
 
         if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && req.query.disableAuth === 'true') {
-            const cookies = new Cookies(req, res);
-            const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
+            const { disableAuth } = getSessionAttributes(req, [DISABLE_AUTH_COOKIE]);
 
-            const cookieOptions: SetOption = {
-                path: '/',
-                httpOnly: true,
-                sameSite: 'strict',
-                secure: !isDevelopment,
-            };
-
-            if (!disableAuthCookie || disableAuthCookie === 'false') {
-                cookies.set(DISABLE_AUTH_COOKIE, 'true', cookieOptions);
-                cookies.set(
+            if (!disableAuth || disableAuth === 'false') {
+                console.log('in here');
+                updateSessionAttribute(req, DISABLE_AUTH_COOKIE, { disableAuth: 'true' });
+                console.log('in here2');
+                updateSessionAttribute(
+                    req,
                     ID_TOKEN_COOKIE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
-                    cookieOptions,
                 );
-                cookies.set(
-                    OPERATOR_COOKIE,
-                    JSON.stringify({
-                        operator: {
-                            operatorPublicName: 'Blackpool Transport',
-                        },
-                    }),
-                    cookieOptions,
-                );
+                console.log('in here3');
+                updateSessionAttribute(req, OPERATOR_COOKIE, {
+                    operator: {
+                        operatorPublicName: 'Blackpool Transport',
+                    },
+                });
             }
         }
 
@@ -77,18 +68,17 @@ export default (req: Request, res: Response, next: NextFunction): void => {
             });
     };
 
-    const cookies = new Cookies(req, res);
-    const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
+    const disableAuth = getSessionAttributes(req, [DISABLE_AUTH_COOKIE]);
 
     if (
         (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
-        (disableAuthCookie === 'true' || req.query.disableAuth === 'true')
+        (disableAuth.DISABLE_AUTH_COOKIE === 'true' || req.query.disableAuth === 'true')
     ) {
         next();
         return;
     }
 
-    const idToken = cookies.get(ID_TOKEN_COOKIE) ?? null;
+    const { idToken } = getSessionAttributes(req, [ID_TOKEN_COOKIE]);
 
     if (!idToken) {
         res.redirect('/login');
@@ -101,7 +91,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
             const username = decodedToken?.['cognito:username'] ?? null;
 
             if (err.name === 'TokenExpiredError') {
-                const refreshToken = cookies.get(REFRESH_TOKEN_COOKIE) ?? null;
+                const { refreshToken } = getSessionAttributes(req, [REFRESH_TOKEN_COOKIE]);
 
                 if (refreshToken) {
                     console.info('ID Token expired, attempting refresh...');
@@ -109,7 +99,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                     initiateRefreshAuth(username, refreshToken)
                         .then(data => {
                             if (data.AuthenticationResult?.IdToken) {
-                                setCookieOnResponseObject(ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken, req, res);
+                                updateSessionAttribute(req, ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken);
                                 console.info('successfully refreshed ID Token');
                                 next();
 

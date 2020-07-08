@@ -28,11 +28,15 @@ export const updateSessionAttribute = (req: Req, attributeName: string, attribut
 };
 
 export const getSessionAttributes = (req: Req, attributes: string[]): SessionAttributeCollection => {
-    const attributeCollection: SessionAttributeCollection = {};
-    attributes.forEach(attribute => {
-        attributeCollection[attribute] = (req as any).session[attribute];
-    });
-    return attributeCollection;
+    try {
+        const attributeCollection: SessionAttributeCollection = {};
+        attributes.forEach(attribute => {
+            attributeCollection[attribute] = (req as any).session[attribute];
+        });
+        return attributeCollection;
+    } catch (Error) {
+        return {};
+    }
 };
 
 export const overwriteSession = (req: Req, session: {}): void => {
@@ -75,7 +79,7 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
 };
 
 export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    const session = getSessionAttributes([FARE_TYPE_COOKIE], req);
+    const session = getSessionAttributes(req, [FARE_TYPE_COOKIE]);
     const { fareType } = session;
 
     if (fareType) {

@@ -1,15 +1,14 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
+import { getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { retrieveSession } from './api/apiUtils';
+import { getSessionAttributes, updateSessionAttribute } from './api/apiUtils';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
@@ -108,28 +107,21 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
 };
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
     const { req } = ctx;
-    if (!req) {
-        throw new Error('No request on context object');
+
+    const { operator } = getSessionAttributes(req as any, [OPERATOR_COOKIE]);
+    console.log("weeeeee" + operator);
+
+    if (!operator) {
+        throw new Error('Operator needed for fareType page and not found');
     }
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-
-    if (!operatorCookie) {
-        throw new Error('Necessary cookies not found to show faretype page');
-    }
-
-    const operatorInfo = JSON.parse(operatorCookie);
-    const { operator } = operatorInfo;
     const uuid = buildUuid(ctx);
-    const cookieValue = JSON.stringify({ operator, uuid });
-
-    setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
+    updateSessionAttribute(req as any, OPERATOR_COOKIE, { operator, uuid });
 
     console.info('transaction start', { uuid });
 
-    const fareTypeInfo = retrieveSession(FARE_TYPE_COOKIE, req as any);
+    const fareTypeInfo = getSessionAttributes(req as any, [FARE_TYPE_COOKIE]);
 
     if (fareTypeInfo) {
         if (fareTypeInfo.errorMessage) {

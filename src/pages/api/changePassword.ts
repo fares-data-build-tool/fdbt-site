@@ -1,18 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ErrorInfo } from '../../interfaces';
 import {
+    updateSessionAttribute,
     redirectTo,
     redirectToError,
-    setCookieOnResponseObject,
     getAttributeFromIdToken,
     validateNewPassword,
-} from './apiUtils';
+} from './apiUtils/index';
+import { ErrorInfo } from '../../interfaces';
+
 import { USER_COOKIE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
 
 export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
-    const cookieContent = JSON.stringify({ inputChecks });
-    setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
+    updateSessionAttribute(req, USER_COOKIE, { inputChecks });
     redirectTo(res, '/changePassword');
 };
 
@@ -41,12 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (authResponse?.AuthenticationResult) {
                 try {
                     await updateUserPassword(newPassword, username);
-                    setCookieOnResponseObject(
-                        USER_COOKIE,
-                        JSON.stringify({ redirectFrom: '/changePassword' }),
-                        req,
-                        res,
-                    );
+                    updateSessionAttribute(req, USER_COOKIE, { redirectFrom: '/changePassword' });
                     redirectTo(res, '/passwordUpdated');
                 } catch (error) {
                     console.warn('update password failed', { error: error?.message });
