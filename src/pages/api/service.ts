@@ -1,12 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import {
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-} from './apiUtils/index';
+import { getUuidFromCookie, setCookieOnResponseObject, unescapeAndDecodeCookie } from '../../utils';
+import { redirectToError, redirectTo } from '../../utils/redirects';
 import { FARE_TYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
@@ -19,7 +14,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         if (!service) {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose a service from the options' });
-            setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, SERVICE_COOKIE, cookieValue);
             redirectTo(res, '/service');
             return;
         }
@@ -31,7 +26,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookieValue = JSON.stringify({ service, uuid });
-        setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+        setCookieOnResponseObject(req, res, SERVICE_COOKIE, cookieValue);
 
         const cookies = new Cookies(req, res);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);

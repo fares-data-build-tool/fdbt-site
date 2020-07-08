@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils/index';
+import { setCookieOnResponseObject } from '../../utils';
+import { redirectToError, redirectTo } from '../../utils/redirects';
 import { NUMBER_OF_STAGES_COOKIE } from '../../constants/index';
 
 import { isSessionValid } from './service/validator';
@@ -25,7 +26,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose an option regarding how many fare stages you have',
             });
-            setCookieOnResponseObject(NUMBER_OF_STAGES_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, NUMBER_OF_STAGES_COOKIE, cookieValue);
             redirectTo(res, '/howManyStages');
         }
     } catch (error) {

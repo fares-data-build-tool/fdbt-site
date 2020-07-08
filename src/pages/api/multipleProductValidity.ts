@@ -12,13 +12,12 @@ import {
 } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import {
-    redirectToError,
     setCookieOnResponseObject,
-    redirectTo,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
     getAttributeFromIdToken,
-} from './apiUtils';
+} from '../../utils';
+import { redirectToError, redirectTo } from '../../utils/redirects';
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
@@ -76,7 +75,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const rawProducts: Product[] = JSON.parse(multipleProductCookie);
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
         const newMultipleProductCookieValue = JSON.stringify(products);
-        setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
+        setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue);
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');

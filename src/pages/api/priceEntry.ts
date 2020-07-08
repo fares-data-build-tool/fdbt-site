@@ -10,12 +10,11 @@ import {
 } from '../../constants/index';
 import {
     getUuidFromCookie,
-    redirectToError,
-    redirectTo,
     unescapeAndDecodeCookie,
     setCookieOnResponseObject,
     deleteCookieOnResponseObject,
-} from './apiUtils';
+} from '../../utils';
+import { redirectToError, redirectTo } from '../../utils/redirects';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
 
@@ -138,9 +137,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (errorCheck.errorInformation.length > 0) {
             // two cookies as if there are too many fare stages, cookie gets too large
             const inputCookieValue = JSON.stringify(errorCheck.inputs);
-            setCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, inputCookieValue, req, res);
+            setCookieOnResponseObject(req, res, PRICE_ENTRY_INPUTS_COOKIE, inputCookieValue);
             const errorCookieValue = JSON.stringify(errorCheck.errorInformation);
-            setCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, errorCookieValue, req, res);
+            setCookieOnResponseObject(req, res, PRICE_ENTRY_ERRORS_COOKIE, errorCookieValue);
             redirectTo(res, '/priceEntry');
             return;
         }
@@ -155,7 +154,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
         const journeyObject = JSON.parse(journeyCookie);
 
-        setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'manual' }), req, res);
+        setCookieOnResponseObject(req, res, INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'manual' }));
 
         if (journeyObject?.outboundJourney) {
             redirectTo(res, '/outboundMatching');

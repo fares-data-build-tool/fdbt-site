@@ -1,6 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { isArray } from 'util';
-import { redirectTo, redirectToError, getSessionAttributes, updateSessionAttribute } from './apiUtils';
+import { NextRequestWithSession } from '../../interfaces';
+import { getSessionAttributes, updateSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
 import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
 
@@ -9,13 +11,17 @@ interface ServiceList {
     error: boolean;
 }
 
-const setServiceListSessionAttribute = (req: NextApiRequest, error?: boolean, checkedServiceList?: string[]): void => {
+const setServiceListSessionAttribute = (
+    req: NextRequestWithSession,
+    error?: boolean,
+    checkedServiceList?: string[],
+): void => {
     const serviceListObject: ServiceList = { error: false, selectedServices: [] };
     const serviceListValue = { ...serviceListObject, selectedServices: checkedServiceList, error: !!error };
     updateSessionAttribute(req, SERVICE_LIST_COOKIE, serviceListValue);
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';
     const selectAllText = 'Select All';
 

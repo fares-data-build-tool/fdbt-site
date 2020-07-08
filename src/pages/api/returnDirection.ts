@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { setCookieOnResponseObject, redirectTo, redirectToError, getUuidFromCookie } from './apiUtils/index';
+import { setCookieOnResponseObject, getUuidFromCookie } from '../../utils';
+import { redirectTo, redirectToError } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
 import { JOURNEY_COOKIE } from '../../constants';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
@@ -20,7 +21,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ errorMessages: [], inboundJourney, outboundJourney, uuid });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
             redirectTo(res, '/inputMethod');
         } else {
             const errorMessages: object[] = [];
@@ -34,7 +35,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ errorMessages, inboundJourney, outboundJourney });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
             redirectTo(res, '/returnDirection');
         }
     } catch (error) {

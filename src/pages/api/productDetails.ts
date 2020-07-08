@@ -1,13 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
-    redirectTo,
-    redirectToError,
     setCookieOnResponseObject,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
     getAttributeFromIdToken,
-} from './apiUtils';
+} from '../../utils';
+import { redirectTo, redirectToError } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
 import {
@@ -62,14 +61,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
             const invalidInputs = JSON.stringify(productDetails);
 
-            setCookieOnResponseObject(PRODUCT_DETAILS_COOKIE, invalidInputs, req, res);
+            setCookieOnResponseObject(req, res, PRODUCT_DETAILS_COOKIE, invalidInputs);
             redirectTo(res, '/productDetails');
             return;
         }
 
         if (fareType === 'period') {
             const validInputs = JSON.stringify(productDetails);
-            setCookieOnResponseObject(PRODUCT_DETAILS_COOKIE, validInputs, req, res);
+            setCookieOnResponseObject(req, res, PRODUCT_DETAILS_COOKIE, validInputs);
             redirectTo(res, '/chooseValidity');
         } else if (fareType === 'flatFare') {
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);

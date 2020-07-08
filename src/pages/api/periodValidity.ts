@@ -13,12 +13,11 @@ import {
 } from '../../constants';
 import {
     setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
     getAttributeFromIdToken,
-} from './apiUtils';
+} from '../../utils';
+import { redirectToError, redirectTo } from '../../utils/redirects';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
@@ -111,7 +110,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 };
             }
 
-            setCookieOnResponseObject(PERIOD_EXPIRY_COOKIE, JSON.stringify({ periodValid, error: false }), req, res);
+            setCookieOnResponseObject(req, res, PERIOD_EXPIRY_COOKIE, JSON.stringify({ periodValid, error: false }));
 
             const email = getAttributeFromIdToken(req, res, 'email');
 
@@ -149,7 +148,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose an option regarding your period ticket validity',
             });
-            setCookieOnResponseObject(PERIOD_EXPIRY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, PERIOD_EXPIRY_COOKIE, cookieValue);
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {

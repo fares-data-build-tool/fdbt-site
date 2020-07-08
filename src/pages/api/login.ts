@@ -1,12 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import { updateSessionAttribute, redirectTo, redirectToError, checkEmailValid } from './apiUtils/index';
+import { checkEmailValid } from '../../utils';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError } from '../../utils/redirects';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
-import { CognitoIdToken } from '../../interfaces';
+import { CognitoIdToken, NextRequestWithSession } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 import { initiateAuth } from '../../data/cognito';
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { email, password } = req.body;
 

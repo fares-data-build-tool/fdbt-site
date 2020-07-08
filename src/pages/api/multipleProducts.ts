@@ -3,7 +3,8 @@ import Cookies from 'cookies';
 import { ErrorSummary } from '../../components/ErrorSummary';
 import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { redirectToError, setCookieOnResponseObject, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import { setCookieOnResponseObject, unescapeAndDecodeCookie } from '../../utils';
+import { redirectToError, redirectTo } from '../../utils/redirects';
 import {
     removeExcessWhiteSpace,
     checkProductNameIsValid,
@@ -162,14 +163,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const errors: ErrorSummary = getErrorsForCookie(fullValidationResult);
             const cookieContent = JSON.stringify({ ...errors, userInput: multipleProducts });
 
-            setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, cookieContent);
             redirectTo(res, '/multipleProducts');
             return;
         }
 
         const validInputs = JSON.stringify(multipleProducts);
 
-        setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, validInputs, req, res);
+        setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, validInputs);
 
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {

@@ -1,14 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
-import {
-    redirectTo,
-    redirectToError,
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-    getSelectedStages,
-} from './apiUtils';
+import { getUuidFromCookie, setCookieOnResponseObject, unescapeAndDecodeCookie, getSelectedStages } from '../../utils';
+import { redirectTo, redirectToError } from '../../utils/redirects';
+
 import { BasicService, CognitoIdToken, PassengerDetails } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
@@ -20,7 +15,7 @@ import {
     PASSENGER_TYPE_COOKIE,
     ID_TOKEN_COOKIE,
 } from '../../constants';
-import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
+import { getFareZones, getMatchingFareZonesFromForm } from '../../utils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
 interface MatchingBaseData {
@@ -130,10 +125,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const selectedStagesList: {}[] = getSelectedStages(req);
 
             setCookieOnResponseObject(
-                MATCHING_COOKIE,
-                JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
                 req,
                 res,
+                MATCHING_COOKIE,
+                JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
             );
 
             redirectTo(res, '/matching');
@@ -162,7 +157,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             uuid,
         );
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
+        setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ error: false }));
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');

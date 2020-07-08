@@ -1,9 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { redirectToError, redirectTo, redirectOnFareType, updateSessionAttribute } from './apiUtils/index';
+import { NextApiResponse } from 'next';
+import { NextRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { redirectToError, redirectTo, redirectOnFareType } from '../../utils/redirects';
 import { PASSENGER_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
