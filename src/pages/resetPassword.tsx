@@ -6,7 +6,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
 import { CustomAppProps, ErrorInfo } from '../interfaces';
-import { redirectTo } from './api/apiUtils';
+import { redirectTo } from '../utils/redirects';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Reset Password - Fares data build tool';

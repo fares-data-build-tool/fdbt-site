@@ -8,7 +8,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttributes, updateSessionAttribute } from './api/apiUtils';
+import { getSessionAttributes, updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
@@ -110,7 +110,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     const { req } = ctx;
 
     const { operator } = getSessionAttributes(req as any, [OPERATOR_COOKIE]);
-    console.log("weeeeee" + operator);
+    console.log('weeeeee' + operator);
 
     if (!operator) {
         throw new Error('Operator needed for fareType page and not found');

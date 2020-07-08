@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import {
@@ -12,7 +11,7 @@ import {
 } from '../constants';
 import { ProductInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttributesOnServerSide } from 'src/utils';
+import { getSessionAttributes } from '../utils/sessions';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -112,7 +111,7 @@ const ProductDetails = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
-    const productDetailsAttributes = getSessionAttributesOnServerSide(ctx, [
+    const productDetailsAttributes = getSessionAttributes(ctx.req as any, [
         PRODUCT_DETAILS_COOKIE,
         OPERATOR_COOKIE,
         PASSENGER_TYPE_COOKIE,

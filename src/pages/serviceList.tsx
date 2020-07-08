@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_COOKIE, noRequestError } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
-import { ServicesInfo, CustomAppProps, ErrorInfo } from '../interfaces';
-import { getNocFromIdToken, getSessionAttributesOnServerSide } from '../utils';
+import { ServicesInfo, CustomAppProps, ErrorInfo, NextContextWithSession } from '../interfaces';
+import { getNocFromIdToken } from '../utils';
+import { getSessionAttributes } from '../utils/sessions';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Service List - Fares Data Build Tool';
@@ -101,7 +101,7 @@ const ServiceList = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
+export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{ props: ServiceListProps }> => {
     const ctxReq = ctx.req;
     const nocCode = getNocFromIdToken(ctx);
 
@@ -113,7 +113,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         throw new Error('Could not retrieve NOC Code from the ID_TOKEN_COOKIE');
     }
 
-    const serviceListCookie = getSessionAttributesOnServerSide(ctx, [SERVICE_LIST_COOKIE]);
+    const serviceListCookie = getSessionAttributes(ctx.req, [SERVICE_LIST_COOKIE]);
 
     const servicesList = await getServicesByNocCode(nocCode);
 

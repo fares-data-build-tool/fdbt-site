@@ -1,11 +1,46 @@
 import Cookies from 'cookies';
-import { NextPageContext } from 'next';
+import { NextPageContext, NextApiRequest, NextApiResponse } from 'next';
 import { IncomingMessage } from 'http';
+import { Request, Response } from 'express';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
+import { globalSignOut } from '../data/cognito';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
-import { ErrorInfo, CognitoIdToken, SessionAttributeCollection } from '../interfaces';
+import { ErrorInfo, CognitoIdToken } from '../interfaces';
+
+type Req = NextApiRequest | Request;
+type Res = NextApiResponse | Response;
+
+export const setCookieOnResponseObject = (req: Req, res: Res, cookieName: string, cookieValue: string): void => {
+    const cookies = new Cookies(req, res);
+    // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
+    // default. An error will be thrown if you try to send secure cookies over an insecure socket.
+    cookies.set(cookieName, cookieValue, {
+        path: '/',
+        // The Cookies library applies units of Milliseconds to maxAge. For this reason, maxAge of 24 hours needs to be corrected by a factor of 1000.
+        maxAge: 1000 * (3600 * 24),
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV !== 'development',
+    });
+};
+
+export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
+    const cookies = new Cookies(req, res);
+
+    cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
+};
+
+export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string): string => {
+    return unescape(decodeURI(cookies.get(cookieToDecode) || ''));
+};
+
+export const getUuidFromCookie = (req: NextApiRequest | Request, res: NextApiResponse | Response): string => {
+    const cookies = new Cookies(req, res);
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+
+    return operatorCookie ? JSON.parse(operatorCookie).uuid : '';
+};
 
 export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
@@ -21,35 +56,6 @@ export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribu
     }
 
     return null;
-};
-
-export const getSessionAttributesOnServerSide = (
-    ctx: NextPageContext,
-    attributes: string[],
-): SessionAttributeCollection => {
-    const attributeCollection: SessionAttributeCollection = {};
-    if (ctx.req) {
-        attributes.forEach(attribute => {
-            attributeCollection[attribute] = (ctx.req as any).session[attribute];
-        });
-    }
-    return attributeCollection;
-};
-
-export const updateSessionAttributeOnServerSide = (
-    ctx: NextPageContext,
-    attributeName: string,
-    attributeValue: string | {},
-): void => {
-    if (ctx.req) {
-        (ctx.req as any).session[attributeName] = attributeValue;
-    }
-};
-
-export const overwriteSessionOnServerSide = (ctx: NextPageContext, session: {}): void => {
-    if (ctx.req) {
-        (ctx.req as any).session = session;
-    }
 };
 
 export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
@@ -83,6 +89,26 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
     });
 };
 
+export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
+    const cookies = parseCookies(ctx);
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    if (!operatorCookie) {
+        return null;
+    }
+    const operatorInfo = JSON.parse(operatorCookie);
+    return operatorInfo.uuid;
+};
+
+export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
+    if (username) {
+        await globalSignOut(username);
+    }
+
+    deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
+    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
+};
+
 export const getHost = (req: IncomingMessage | undefined): string => {
     if (!req) {
         return '';
@@ -97,16 +123,6 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     }
 
     return '';
-};
-
-export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    if (!operatorCookie) {
-        return null;
-    }
-    const operatorInfo = JSON.parse(operatorCookie);
-    return operatorInfo.uuid;
 };
 
 export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | null => {
@@ -148,4 +164,59 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
     return decodedIdToken[attribute] ?? null;
 };
 
+export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
+    req: NextApiRequest,
+    res: NextApiResponse,
+    attribute: T,
+): CognitoIdToken[T] | null => {
+    const cookies = new Cookies(req, res);
+    const idToken = cookies.get(ID_TOKEN_COOKIE);
+
+    if (!idToken) {
+        return null;
+    }
+
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+
+    return decodedIdToken[attribute] ?? null;
+};
+
 export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');
+
+export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
+    getAttributeFromIdToken(req, res, 'custom:noc');
+
+export const checkEmailValid = (email: string): boolean => {
+    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    return emailRegex.test(email) && email !== '';
+};
+
+export const getSelectedStages = (req: NextApiRequest): string[] => {
+    const requestBody = req.body;
+
+    const selectObjectsArray: string[] = [];
+
+    Object.keys(requestBody).map(e => {
+        if (requestBody[e] !== '') {
+            selectObjectsArray.push(requestBody[e]);
+        }
+        return null;
+    });
+
+    return selectObjectsArray;
+};
+
+export const validateNewPassword = (
+    password: string,
+    confirmPassword: string,
+    inputChecks: ErrorInfo[],
+): ErrorInfo[] => {
+    let passwordError = '';
+    if (password.length < 8) {
+        passwordError = password.length === 0 ? 'Enter a new password' : 'Password must be at least 8 characters long';
+        inputChecks.push({ id: 'new-password', errorMessage: passwordError });
+    } else if (password !== confirmPassword) {
+        inputChecks.push({ id: 'new-password', errorMessage: 'Passwords do not match' });
+    }
+    return inputChecks;
+};

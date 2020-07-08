@@ -8,7 +8,6 @@ const description = 'Error page of the Fares Data Build Tool';
 
 interface ErrorProps {
     statusCode: number;
-    ctx: NextPageContext;
 }
 
 const Error = ({ statusCode }: ErrorProps): ReactElement => (
@@ -49,7 +48,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
 );
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
-    return { props: { statusCode: ctx.res?.statusCode, ctx } };
+    return { props: { statusCode: ctx.res?.statusCode } };
 };
 
 export default Error;

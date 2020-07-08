@@ -7,7 +7,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttributes } from './api/apiUtils';
+import { getSessionAttributes } from '../utils/sessions';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';

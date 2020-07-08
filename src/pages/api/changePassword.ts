@@ -1,22 +1,22 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import {
-    updateSessionAttribute,
-    redirectTo,
-    redirectToError,
-    getAttributeFromIdToken,
-    validateNewPassword,
-} from './apiUtils/index';
-import { ErrorInfo } from '../../interfaces';
+import { NextApiResponse } from 'next';
+import { getAttributeFromIdToken, validateNewPassword } from '../../utils';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError } from '../../utils/redirects';
+import { ErrorInfo, NextRequestWithSession } from '../../interfaces';
 
 import { USER_COOKIE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
 
-export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
+export const setCookieAndRedirect = (
+    req: NextRequestWithSession,
+    res: NextApiResponse,
+    inputChecks: ErrorInfo[],
+): void => {
     updateSessionAttribute(req, USER_COOKIE, { inputChecks });
     redirectTo(res, '/changePassword');
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const username = getAttributeFromIdToken(req, res, 'email');
         const { oldPassword, newPassword, confirmNewPassword } = req.body;

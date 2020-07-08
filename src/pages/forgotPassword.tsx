@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { retrieveSession } from './api/apiUtils';
+import { getSessionAttributes } from '../utils/sessions';
 
 const title = 'Forgot Password - Fares data build tool';
 const description = 'Forgot Password page of the Fares data build tool';
@@ -75,15 +74,17 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ForgotEmailProps } => {
-    const { email, error } = retrieveSession(FORGOT_PASSWORD_COOKIE, ctx.req as any);
+export const getServerSideProps = (ctx: NextContextWithSession): { props: ForgotEmailProps } => {
+    if (ctx.req) {
+        const { email, error } = getSessionAttributes(ctx.req, [FORGOT_PASSWORD_COOKIE]);
 
-    if (email && error) {
-        return { props: { errors: [{ errorMessage: error, id }], email } };
-    }
+        if (email && error) {
+            return { props: { errors: [{ errorMessage: error, id }], email } };
+        }
 
-    if (error) {
-        return { props: { errors: [{ errorMessage: error, id }], email: '' } };
+        if (error) {
+            return { props: { errors: [{ errorMessage: error, id }], email: '' } };
+        }
     }
 
     return { props: { errors: [], email: '' } };

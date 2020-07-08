@@ -1,10 +1,11 @@
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants/index';
-import { updateSessionAttribute, getSessionAttributes, signOutUser } from '../../src/pages/api/apiUtils/index';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
+import { updateSessionAttribute, getSessionAttributes } from '../../src/utils/sessions';
+import { signOutUser } from '../../src/utils';
 
-import { CognitoIdToken } from '../../src/interfaces';
+import { CognitoIdToken, IncomingMessageWithSession } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
 
 const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
@@ -31,22 +32,23 @@ const verifyOptions: VerifyOptions = {
 
 export const setDisableAuthCookies = (server: Express): void => {
     server.use((req, _res, next) => {
+        console.log(req);
         const isDevelopment = process.env.NODE_ENV === 'development';
 
         if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && req.query.disableAuth === 'true') {
-            const { disableAuth } = getSessionAttributes(req, [DISABLE_AUTH_COOKIE]);
+            const { disableAuth } = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_COOKIE]);
 
             if (!disableAuth || disableAuth === 'false') {
                 console.log('in here');
-                updateSessionAttribute(req, DISABLE_AUTH_COOKIE, { disableAuth: 'true' });
+                updateSessionAttribute(req as IncomingMessageWithSession, DISABLE_AUTH_COOKIE, { disableAuth: 'true' });
                 console.log('in here2');
                 updateSessionAttribute(
-                    req,
+                    req as IncomingMessageWithSession,
                     ID_TOKEN_COOKIE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
                 );
                 console.log('in here3');
-                updateSessionAttribute(req, OPERATOR_COOKIE, {
+                updateSessionAttribute(req as IncomingMessageWithSession, OPERATOR_COOKIE, {
                     operator: {
                         operatorPublicName: 'Blackpool Transport',
                     },
@@ -68,7 +70,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
             });
     };
 
-    const disableAuth = getSessionAttributes(req, [DISABLE_AUTH_COOKIE]);
+    const disableAuth = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_COOKIE]);
 
     if (
         (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
@@ -78,7 +80,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
         return;
     }
 
-    const { idToken } = getSessionAttributes(req, [ID_TOKEN_COOKIE]);
+    const { idToken } = getSessionAttributes(req as IncomingMessageWithSession, [ID_TOKEN_COOKIE]);
 
     if (!idToken) {
         res.redirect('/login');
@@ -91,7 +93,9 @@ export default (req: Request, res: Response, next: NextFunction): void => {
             const username = decodedToken?.['cognito:username'] ?? null;
 
             if (err.name === 'TokenExpiredError') {
-                const { refreshToken } = getSessionAttributes(req, [REFRESH_TOKEN_COOKIE]);
+                const { refreshToken } = getSessionAttributes(req as IncomingMessageWithSession, [
+                    REFRESH_TOKEN_COOKIE,
+                ]);
 
                 if (refreshToken) {
                     console.info('ID Token expired, attempting refresh...');
@@ -99,7 +103,11 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                     initiateRefreshAuth(username, refreshToken)
                         .then(data => {
                             if (data.AuthenticationResult?.IdToken) {
-                                updateSessionAttribute(req, ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken);
+                                updateSessionAttribute(
+                                    req as IncomingMessageWithSession,
+                                    ID_TOKEN_COOKIE,
+                                    data.AuthenticationResult.IdToken,
+                                );
                                 console.info('successfully refreshed ID Token');
                                 next();
 

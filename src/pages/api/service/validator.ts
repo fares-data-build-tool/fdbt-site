@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE } from '../../../constants';
-import { unescapeAndDecodeCookie } from '../apiUtils';
+import { unescapeAndDecodeCookie } from '../../../utils';
 
 export const isSessionValid = (req: NextApiRequest, res: NextApiResponse): boolean => {
     const cookies = new Cookies(req, res);
