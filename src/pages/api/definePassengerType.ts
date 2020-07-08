@@ -1,14 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import * as yup from 'yup';
 import { isArray } from 'lodash';
-import {
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-    redirectOnFareType,
-    setCookieOnResponseObject,
-} from './apiUtils/index';
+import { redirectToError, redirectTo, redirectOnFareType, retrieveSession, updateSession } from './apiUtils/index';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
@@ -107,11 +100,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const { passengerType } = JSON.parse(passengerTypeCookie);
-        const { fareType } = JSON.parse(fareTypeCookie);
+        const { passengerType } = retrieveSession(PASSENGER_TYPE_COOKIE, req);
+        const { fareType } = retrieveSession(FARE_TYPE_COOKIE, req);
 
         if (!passengerType || !fareType) {
             throw new Error('Failed to retrieve the necessary cookies for the definePassengerType API');
@@ -134,13 +124,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }));
         }
         if (errors.length === 0) {
-            const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
-            setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+            updateSession(PASSENGER_TYPE_COOKIE, { passengerType, filteredReqBody }, req);
             redirectOnFareType(req, res);
             return;
         }
-        const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
-        setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+        updateSession(PASSENGER_TYPE_COOKIE, { errors, passengerType }, req);
         redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';

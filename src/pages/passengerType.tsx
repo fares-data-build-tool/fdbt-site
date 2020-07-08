@@ -2,12 +2,13 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE } from '../constants';
+import { PASSENGER_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { retrieveSession } from './api/apiUtils';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';
@@ -92,16 +93,11 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
+    const { errorMessage } = retrieveSession(OPERATOR_COOKIE, ctx.req as any);
 
-    if (cookies[PASSENGER_TYPE_COOKIE]) {
-        const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-        const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
-
-        if (parsedPassengerTypeCookie.errorMessage) {
-            const { errorMessage } = parsedPassengerTypeCookie;
-            deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
+    if (errorMessage) {
+        deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
+        return { props: { errors: [{ errorMessage, id: errorId }] } };
     }
 
     return { props: {} };

@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
+import { retrieveSession } from './api/apiUtils';
 
 const title = 'Forgot Password - Fares data build tool';
 const description = 'Forgot Password page of the Fares data build tool';
@@ -76,21 +76,14 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
 );
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ForgotEmailProps } => {
-    const cookies = parseCookies(ctx);
-    const forgotPasswordCookie = cookies[FORGOT_PASSWORD_COOKIE];
+    const { email, error } = retrieveSession(FORGOT_PASSWORD_COOKIE, ctx.req as any);
 
-    if (forgotPasswordCookie) {
-        const forgotPasswordInfo = JSON.parse(forgotPasswordCookie);
+    if (email && error) {
+        return { props: { errors: [{ errorMessage: error, id }], email } };
+    }
 
-        const { error, email } = forgotPasswordInfo;
-
-        if (error && email) {
-            return { props: { errors: [{ errorMessage: error, id }], email } };
-        }
-
-        if (error) {
-            return { props: { errors: [{ errorMessage: error, id }], email: '' } };
-        }
+    if (error) {
+        return { props: { errors: [{ errorMessage: error, id }], email: '' } };
     }
 
     return { props: { errors: [], email: '' } };
