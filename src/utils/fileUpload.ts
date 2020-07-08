@@ -1,7 +1,7 @@
 import formidable, { Files } from 'formidable';
-import { NextApiRequest } from 'next';
 import fs from 'fs';
-import { ALLOWED_CSV_FILE_TYPES } from '../../../constants';
+import { NextRequestWithSession } from '../interfaces';
+import { ALLOWED_CSV_FILE_TYPES } from '../constants';
 
 interface FileData {
     files: formidable.Files;
@@ -15,7 +15,7 @@ interface FileUploadResponse {
 
 const MAX_FILE_SIZE = 5242880;
 
-export const formParse = async (req: NextApiRequest): Promise<Files> => {
+export const formParse = async (req: NextRequestWithSession): Promise<Files> => {
     return new Promise<Files>((resolve, reject) => {
         const form = new formidable.IncomingForm();
         form.parse(req, (err, _fields, file) => {
@@ -27,7 +27,7 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
     });
 };
 
-export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
+export const getFormData = async (req: NextRequestWithSession): Promise<FileData> => {
     const files = await formParse(req);
     const fileContents = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
 
@@ -67,7 +67,10 @@ export const validateFile = (fileData: formidable.File, fileContents: string): s
     return '';
 };
 
-export const processFileUpload = async (req: NextApiRequest, inputName: string): Promise<FileUploadResponse> => {
+export const processFileUpload = async (
+    req: NextRequestWithSession,
+    inputName: string,
+): Promise<FileUploadResponse> => {
     const formData = await getFormData(req);
 
     const fileData = formData.files[inputName];

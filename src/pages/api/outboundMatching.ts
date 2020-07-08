@@ -1,4 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
+import { NextRequestWithSession } from '../../interfaces';
 import { getUuidFromCookie, setCookieOnResponseObject, getSelectedStages } from '../../utils';
 import { redirectTo, redirectToError } from '../../utils/redirects';
 import { putStringInS3, UserFareStages } from '../../data/s3';
@@ -19,7 +20,7 @@ export const putOutboundMatchingDataInS3 = async (data: MatchingFareZones, uuid:
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

@@ -1,6 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import _ from 'lodash';
+import { NextRequestWithSession } from '../../interfaces';
 import {
     JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,
@@ -52,7 +53,7 @@ export interface PriceEntryError {
     k: string;
 }
 
-export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
+export const inputsValidityCheck = (req: NextRequestWithSession): FaresInformation => {
     const priceEntries = Object.entries(req.body);
     const errors: PriceEntryError[] = [];
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
@@ -76,7 +77,7 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     };
 };
 
-export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => {
+export const faresTriangleDataMapper = (req: NextRequestWithSession): UserFareStages => {
     const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
     const fareTriangle: FareTriangleData = {};
 
@@ -122,7 +123,7 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
     await putStringInS3(USER_DATA_BUCKET_NAME, `${uuid}.json`, text, 'application/json; charset=utf-8');
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!req.body || _.isEmpty(req.body)) {
             throw new Error('Body of request not found.');

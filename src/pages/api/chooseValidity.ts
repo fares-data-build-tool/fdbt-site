@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { DAYS_VALID_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject, getUuidFromCookie } from '../../utils';
 import { redirectToError, redirectTo } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
+import { NextRequestWithSession } from '../../interfaces';
 
-export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
+export const isInvalidValidityNumber = (req: NextRequestWithSession): boolean => {
     const { validityInput } = req.body;
 
     if (Number.isNaN(validityInput)) {
@@ -22,7 +23,7 @@ export const isInvalidValidityNumber = (req: NextApiRequest): boolean => {
     return false;
 };
 
-export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+export const setCookie = (req: NextRequestWithSession, res: NextApiResponse, error = ''): void => {
     if (error === '') {
         const daysValid = req.body.validityInput;
 
@@ -37,7 +38,7 @@ export const setCookie = (req: NextApiRequest, res: NextApiResponse, error = '')
     setCookieOnResponseObject(req, res, DAYS_VALID_COOKIE, cookieValue);
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

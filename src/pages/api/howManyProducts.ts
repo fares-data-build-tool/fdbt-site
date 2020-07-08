@@ -1,11 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject } from '../../utils';
 import { redirectToError, redirectTo } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
 import { InputCheck } from '../howManyProducts';
+import { NextRequestWithSession } from '../../interfaces';
 
-export const isNumberOfProductsInvalid = (req: NextApiRequest): InputCheck => {
+export const isNumberOfProductsInvalid = (req: NextRequestWithSession): InputCheck => {
     const { numberOfProductsInput = '' } = req.body;
     const inputAsNumber = Number(numberOfProductsInput);
     let error;
@@ -20,7 +21,7 @@ export const isNumberOfProductsInvalid = (req: NextApiRequest): InputCheck => {
     return inputCheck;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

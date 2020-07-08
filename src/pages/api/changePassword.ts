@@ -18,7 +18,7 @@ export const setCookieAndRedirect = (
 
 export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const username = getAttributeFromIdToken(req, res, 'email');
+        const username = getAttributeFromIdToken(req, 'email');
         const { oldPassword, newPassword, confirmNewPassword } = req.body;
         if (!username) {
             throw new Error('Could not retrieve email from ID_TOKEN_COOKIE');

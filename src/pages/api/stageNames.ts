@@ -1,4 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
+import { NextRequestWithSession } from '../../interfaces';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { setCookieOnResponseObject } from '../../utils';
@@ -18,7 +19,7 @@ export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: s
     return true;
 };
 
-export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
+export const isStageNameValid = (req: NextRequestWithSession): InputCheck[] => {
     const { stageNameInput = [] } = req.body;
     const response: InputCheck[] = [];
     for (let i = 0; i < stageNameInput.length; i += 1) {
@@ -38,7 +39,7 @@ export const isStageNameValid = (req: NextApiRequest): InputCheck[] => {
     return response;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

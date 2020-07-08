@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE } from '../constants';
@@ -7,7 +6,7 @@ import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/aur
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getUuidFromCookies, setCookieOnServerSide, getNocFromIdToken } from '../utils';
 import { redirectTo } from '../utils/redirects';
@@ -85,12 +84,16 @@ const ReturnDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{}> => {
     const cookies = parseCookies(ctx);
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
     const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+
+    if (!ctx.req) {
+        throw new Error('Could not retrieve request from NextPageContext');
+    }
+    const nocCode = getNocFromIdToken(ctx.req);
 
     if (!serviceCookie || !fareTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');

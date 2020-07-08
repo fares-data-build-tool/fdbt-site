@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import { isArray } from 'lodash';
 import { NextRequestWithSession } from '../../interfaces';
@@ -75,7 +75,7 @@ export const passengerTypeDetailsSchema = yup
     })
     .required();
 
-export const formatRequestBody = (req: NextApiRequest): {} => {
+export const formatRequestBody = (req: NextRequestWithSession): {} => {
     const filteredReqBody: { [key: string]: string | string[] } = {};
     Object.entries(req.body).forEach(entry => {
         if (entry[0] === 'ageRangeMin' || entry[0] === 'ageRangeMax') {

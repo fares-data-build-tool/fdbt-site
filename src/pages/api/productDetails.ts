@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
     setCookieOnResponseObject,
@@ -8,7 +8,7 @@ import {
 } from '../../utils';
 import { redirectTo, redirectToError } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
-import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
+import { ProductInfo, ServicesInfo, PassengerDetails, NextRequestWithSession } from '../../interfaces';
 import {
     PRODUCT_DETAILS_COOKIE,
     FARE_TYPE_COOKIE,
@@ -40,7 +40,7 @@ export const checkIfInputInvalid = (productDetailsNameInput: string, productDeta
     };
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -74,7 +74,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
             const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-            const nocCode = getNocFromIdToken(req, res);
+            const nocCode = getNocFromIdToken(req);
 
             if (!serviceListCookie || !passengerTypeCookie || !nocCode) {
                 throw new Error('Necessary cookies not found for productDetails API');
@@ -93,7 +93,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 };
             });
 
-            const email = getAttributeFromIdToken(req, res, 'email');
+            const email = getAttributeFromIdToken(req, 'email');
 
             if (!email) {
                 throw new Error('Could not extract the user email address from their ID token');

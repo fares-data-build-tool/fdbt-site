@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
+import { NextRequestWithSession, ErrorInfo } from '../../interfaces';
 import { setCookieOnResponseObject, validateNewPassword } from '../../utils';
 import { redirectTo, redirectToError } from '../../utils/redirects';
 import { USER_COOKIE } from '../../constants';
-import { ErrorInfo } from '../../interfaces';
 import { confirmForgotPassword } from '../../data/cognito';
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: ErrorInfo[], regKey: string, username: string, expiry: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
         setCookieOnResponseObject(req, res, USER_COOKIE, cookieContent);

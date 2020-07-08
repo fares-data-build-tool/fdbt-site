@@ -103,7 +103,7 @@ const ServiceList = ({
 
 export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{ props: ServiceListProps }> => {
     const ctxReq = ctx.req;
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getNocFromIdToken(ctx.req);
 
     if (!ctxReq) {
         throw new Error(noRequestError);

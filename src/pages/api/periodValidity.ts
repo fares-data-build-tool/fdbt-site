@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
     OPERATOR_COOKIE,
@@ -21,7 +21,7 @@ import { redirectToError, redirectTo } from '../../utils/redirects';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
-import { ServicesInfo, PassengerDetails } from '../../interfaces';
+import { ServicesInfo, PassengerDetails, NextRequestWithSession } from '../../interfaces';
 
 interface Product {
     productName: string;
@@ -42,7 +42,7 @@ export interface DecisionData extends PassengerDetails {
     uuid: string;
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -60,7 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
             const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-            const nocCode = getNocFromIdToken(req, res);
+            const nocCode = getNocFromIdToken(req);
 
             if (
                 !nocCode ||
@@ -112,7 +112,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             setCookieOnResponseObject(req, res, PERIOD_EXPIRY_COOKIE, JSON.stringify({ periodValid, error: false }));
 
-            const email = getAttributeFromIdToken(req, res, 'email');
+            const email = getAttributeFromIdToken(req, 'email');
 
             if (!email) {
                 throw new Error('Could not extract the user email address from their ID token');

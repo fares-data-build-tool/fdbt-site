@@ -1,7 +1,7 @@
-import { NextApiRequest } from 'next';
-import { UserFareStages } from '../../../data/s3';
-import { Stop } from '../../../data/auroradb';
-import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
+import { NextRequestWithSession } from '../interfaces';
+import { MatchingFareZones, MatchingFareZonesData } from '../interfaces/matchingInterface';
+import { UserFareStages } from '../data/s3';
+import { Stop } from '../data/auroradb';
 
 export const getFareZones = (
     userFareStages: UserFareStages,
@@ -23,7 +23,7 @@ export const getFareZones = (
         });
 };
 
-export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZones => {
+export const getMatchingFareZonesFromForm = (req: NextRequestWithSession): MatchingFareZones => {
     const matchingFareZones: MatchingFareZones = {};
     const bodyValues: string[] = Object.values(req.body);
 

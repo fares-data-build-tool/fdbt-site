@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
 import { getUuidFromCookie, setCookieOnResponseObject } from '../../utils';
 import { redirectToError, redirectTo } from '../../utils/redirects';
@@ -7,6 +7,7 @@ import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
 import { processFileUpload } from '../../utils/fileUpload';
+import { NextRequestWithSession } from '../../interfaces';
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -15,7 +16,7 @@ export const config = {
     },
 };
 
-export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+export const setUploadCookieAndRedirect = (req: NextRequestWithSession, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
     setCookieOnResponseObject(req, res, CSV_ZONE_UPLOAD_COOKIE, cookieValue);
     redirectTo(res, '/csvZoneUpload');
@@ -54,7 +55,7 @@ export const getAtcoCodesForStops = async (
 
 export const processCsv = async (
     fileContent: string,
-    req: NextApiRequest,
+    req: NextRequestWithSession,
     res: NextApiResponse,
 ): Promise<UserFareZone[] | null> => {
     let parsedFileContent: UserFareZone[];
@@ -115,7 +116,7 @@ export const processCsv = async (
     }
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

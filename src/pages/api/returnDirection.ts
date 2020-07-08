@@ -1,11 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
+import { NextRequestWithSession } from '../../interfaces';
 import { setCookieOnResponseObject, getUuidFromCookie } from '../../utils';
 import { redirectTo, redirectToError } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
 import { JOURNEY_COOKIE } from '../../constants';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

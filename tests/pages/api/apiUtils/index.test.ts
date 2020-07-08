@@ -2,11 +2,11 @@ import Cookies from 'cookies';
 import {
     setCookieOnResponseObject,
     getUuidFromCookie,
-    redirectOnFareType,
     checkEmailValid,
     getAttributeFromIdToken,
     validateNewPassword,
-} from '../../../../src/pages/api/apiUtils';
+} from '../../../../src/utils';
+import { redirectOnFareType } from '../../../../src/utils/redirects';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
 import { ErrorInfo } from '../../../../src/interfaces';
@@ -49,7 +49,7 @@ describe('apiUtils', () => {
             const cookieName = 'test';
             const cookieValue = 'cookieValue';
             const { req, res } = getMockRequestAndResponse();
-            setCookieOnResponseObject(cookieName, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, cookieName, cookieValue);
             expect(Cookies.prototype.set).toBeCalledWith(cookieName, cookieValue, {
                 path: '/',
                 maxAge: 1000 * (3600 * 24),
@@ -155,7 +155,7 @@ describe('apiUtils', () => {
                     idToken: emailJwt,
                 },
             });
-            const email = getAttributeFromIdToken(req, res, 'email');
+            const email = getAttributeFromIdToken(req, 'email');
 
             expect(email).toBe('test@example.com');
         });
@@ -166,7 +166,7 @@ describe('apiUtils', () => {
                     idToken: emailJwt,
                 },
             });
-            const email = getAttributeFromIdToken(req, res, 'custom:noc');
+            const email = getAttributeFromIdToken(req, 'custom:noc');
 
             expect(email).toBeNull();
         });

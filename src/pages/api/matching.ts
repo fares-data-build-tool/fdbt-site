@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { getUuidFromCookie, setCookieOnResponseObject, unescapeAndDecodeCookie, getSelectedStages } from '../../utils';
 import { redirectTo, redirectToError } from '../../utils/redirects';
 
-import { BasicService, CognitoIdToken, PassengerDetails } from '../../interfaces';
+import { BasicService, CognitoIdToken, PassengerDetails, NextRequestWithSession } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
@@ -102,7 +102,7 @@ const getMatchingJson = (
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

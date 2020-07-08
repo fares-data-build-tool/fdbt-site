@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { getUuidFromCookie, setCookieOnResponseObject, unescapeAndDecodeCookie } from '../../utils';
 import { redirectToError, redirectTo } from '../../utils/redirects';
@@ -6,6 +6,7 @@ import { putDataInS3, UserFareStages } from '../../data/s3';
 import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE, INPUT_METHOD_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
 import { processFileUpload } from '../../utils/fileUpload';
+import { NextRequestWithSession } from '../../interfaces';
 
 interface FareTriangleData {
     fareStages: {
@@ -25,7 +26,7 @@ export const config = {
     },
 };
 
-export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
+export const setUploadCookieAndRedirect = (req: NextRequestWithSession, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
     setCookieOnResponseObject(req, res, CSV_UPLOAD_COOKIE, cookieValue);
 
@@ -36,7 +37,7 @@ export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResp
 
 export const faresTriangleDataMapper = (
     dataToMap: string,
-    req: NextApiRequest,
+    req: NextRequestWithSession,
     res: NextApiResponse,
 ): UserFareStages | null => {
     const fareTriangle: FareTriangleData = {
@@ -112,7 +113,7 @@ export const faresTriangleDataMapper = (
     return mappedFareTriangle;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

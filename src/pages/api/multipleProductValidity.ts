@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { DecisionData } from './periodValidity';
 import {
@@ -21,9 +21,9 @@ import { redirectToError, redirectTo } from '../../utils/redirects';
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
-import { ServicesInfo } from '../../interfaces';
+import { ServicesInfo, NextRequestWithSession } from '../../interfaces';
 
-export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
+export const addErrorsIfInvalid = (req: NextRequestWithSession, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
     let error = '';
     if (!validity) {
@@ -48,7 +48,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
     };
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -60,7 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-        const nocCode = getNocFromIdToken(req, res);
+        const nocCode = getNocFromIdToken(req);
 
         if (
             !nocCode ||
@@ -118,7 +118,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             };
         }
 
-        const email = getAttributeFromIdToken(req, res, 'email');
+        const email = getAttributeFromIdToken(req, 'email');
 
         if (!email) {
             throw new Error('Could not extract the user email address from their ID token');

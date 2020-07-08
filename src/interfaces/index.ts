@@ -1,7 +1,6 @@
 import { AppInitialProps } from 'next/app';
 import { NextPageContext, NextApiRequest } from 'next';
 import { IncomingMessage } from 'http';
-import * as Express from 'express';
 
 export interface ProductInfo {
     productName: string;

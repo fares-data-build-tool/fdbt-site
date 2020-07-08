@@ -1,9 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { FARE_STAGES_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject } from '../../utils';
 import { redirectToError, redirectTo } from '../../utils/redirects';
 import { isSessionValid } from './service/validator';
 import { ChooseStagesInputCheck } from '../chooseStages';
+import { NextRequestWithSession } from '../../interfaces';
 
 export const isInvalidFareStageNumber = (fareStageInput: string): ChooseStagesInputCheck => {
     const inputAsNumber = Number(fareStageInput);
@@ -22,7 +23,7 @@ export const isInvalidFareStageNumber = (fareStageInput: string): ChooseStagesIn
     return inputCheck;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');

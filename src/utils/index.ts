@@ -1,15 +1,16 @@
 import Cookies from 'cookies';
-import { NextPageContext, NextApiRequest, NextApiResponse } from 'next';
+import { NextPageContext, NextApiResponse } from 'next';
 import { IncomingMessage } from 'http';
 import { Request, Response } from 'express';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
+import { NextRequestWithSession, ErrorInfo, CognitoIdToken, IncomingMessageWithSession } from '../interfaces';
 import { globalSignOut } from '../data/cognito';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
-import { ErrorInfo, CognitoIdToken } from '../interfaces';
+import { getSessionAttributes } from './sessions';
 
-type Req = NextApiRequest | Request;
+type Req = NextRequestWithSession | Request;
 type Res = NextApiResponse | Response;
 
 export const setCookieOnResponseObject = (req: Req, res: Res, cookieName: string, cookieValue: string): void => {
@@ -35,7 +36,7 @@ export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string
     return unescape(decodeURI(cookies.get(cookieToDecode) || ''));
 };
 
-export const getUuidFromCookie = (req: NextApiRequest | Request, res: NextApiResponse | Response): string => {
+export const getUuidFromCookie = (req: NextRequestWithSession | Request, res: NextApiResponse | Response): string => {
     const cookies = new Cookies(req, res);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
 
@@ -149,11 +150,10 @@ export const buildTitle = (errors: ErrorInfo[], title: string): string => {
 };
 
 export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
-    ctx: NextPageContext,
+    req: IncomingMessageWithSession,
     attribute: T,
 ): CognitoIdToken[T] | null => {
-    const cookies = parseCookies(ctx);
-    const idToken = cookies[ID_TOKEN_COOKIE];
+    const { idToken } = getSessionAttributes(req, [ID_TOKEN_COOKIE]);
 
     if (!idToken) {
         return null;
@@ -164,34 +164,15 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
     return decodedIdToken[attribute] ?? null;
 };
 
-export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
-    req: NextApiRequest,
-    res: NextApiResponse,
-    attribute: T,
-): CognitoIdToken[T] | null => {
-    const cookies = new Cookies(req, res);
-    const idToken = cookies.get(ID_TOKEN_COOKIE);
-
-    if (!idToken) {
-        return null;
-    }
-
-    const decodedIdToken = decode(idToken) as CognitoIdToken;
-
-    return decodedIdToken[attribute] ?? null;
-};
-
-export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');
-
-export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
-    getAttributeFromIdToken(req, res, 'custom:noc');
+export const getNocFromIdToken = (req: IncomingMessageWithSession): string | null =>
+    getAttributeFromIdToken(req, 'custom:noc');
 
 export const checkEmailValid = (email: string): boolean => {
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     return emailRegex.test(email) && email !== '';
 };
 
-export const getSelectedStages = (req: NextApiRequest): string[] => {
+export const getSelectedStages = (req: NextRequestWithSession): string[] => {
     const requestBody = req.body;
 
     const selectObjectsArray: string[] = [];

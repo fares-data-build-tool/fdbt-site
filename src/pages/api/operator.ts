@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
+import { NextRequestWithSession } from '../../interfaces';
 import { OPERATOR_COOKIE } from '../../constants/index';
 import { setCookieOnResponseObject } from '../../utils';
 import { redirectToError, redirectTo } from '../../utils/redirects';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
         if (req.body.operator) {
             const { operatorName, nocCode } = JSON.parse(req.body.operator);

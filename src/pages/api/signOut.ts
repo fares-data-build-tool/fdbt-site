@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { signOutUser, getAttributeFromIdToken } from '../../utils';
 import { redirectToError, redirectTo } from '../../utils/redirects';
+import { NextRequestWithSession } from '../../interfaces';
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const username = getAttributeFromIdToken(req, res, 'cognito:username');
+        const username = getAttributeFromIdToken(req, 'cognito:username');
 
         try {
             await signOutUser(username, req, res);
