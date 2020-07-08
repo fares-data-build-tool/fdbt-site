@@ -1,5 +1,5 @@
 import { AppInitialProps } from 'next/app';
-import { NextContextWithSession, NextApiRequest } from 'next';
+import { NextPageContext, NextApiRequest } from 'next';
 import { IncomingMessage } from 'http';
 
 export interface ProductInfo {
@@ -71,7 +71,7 @@ export interface Breadcrumb {
 interface Session {
     session: { [key: string]: any };
 }
-export type NextContextWithSession = NextContextWithSession & {
+export type NextContextWithSession = NextPageContext & {
     req: Session;
 };
 export type NextRequestWithSession = NextApiRequest & Session;

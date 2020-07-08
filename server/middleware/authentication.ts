@@ -7,7 +7,6 @@ import { signOutUser } from '../../src/utils';
 
 import { CognitoIdToken, IncomingMessageWithSession } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
-import { IncomingMessage } from 'http';
 
 const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
 
