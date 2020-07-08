@@ -6,7 +6,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { retrieveSession } from './api/apiUtils';
+import { getSessionAttributes } from './api/apiUtils';
 
 const title = 'Forgot Password - Fares data build tool';
 const description = 'Forgot Password page of the Fares data build tool';
@@ -76,7 +76,7 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
 );
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ForgotEmailProps } => {
-    const { email, error } = retrieveSession(FORGOT_PASSWORD_COOKIE, ctx.req as any);
+    const { email, error } = getSessionAttributes(ctx.req as any, [FORGOT_PASSWORD_COOKIE]);
 
     if (email && error) {
         return { props: { errors: [{ errorMessage: error, id }], email } };

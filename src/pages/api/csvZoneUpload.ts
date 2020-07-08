@@ -16,7 +16,7 @@ export const config = {
 
 export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+    setCookieOnResponseObject(req, res, CSV_ZONE_UPLOAD_COOKIE, cookieValue);
     redirectTo(res, '/csvZoneUpload');
 };
 
@@ -139,7 +139,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
             const cookieValue = JSON.stringify({ fareZoneName, uuid });
-            setCookieOnResponseObject(CSV_ZONE_UPLOAD_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, CSV_ZONE_UPLOAD_COOKIE, cookieValue);
 
             redirectTo(res, '/howManyProducts');
         }

@@ -12,7 +12,7 @@ interface ServiceList {
 const setServiceListSessionAttribute = (req: NextApiRequest, error?: boolean, checkedServiceList?: string[]): void => {
     const serviceListObject: ServiceList = { error: false, selectedServices: [] };
     const serviceListValue = { ...serviceListObject, selectedServices: checkedServiceList, error: !!error };
-    updateSessionAttribute(SERVICE_LIST_COOKIE, serviceListValue, req);
+    updateSessionAttribute(req, SERVICE_LIST_COOKIE, serviceListValue);
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -24,7 +24,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
 
-        const fareTypeObject = getSessionAttributes([FARE_TYPE_COOKIE], req);
+        const fareTypeObject = getSessionAttributes(req, [FARE_TYPE_COOKIE]);
 
         if (!fareTypeObject || !fareTypeObject.fareType) {
             throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for serviceList API');
@@ -46,7 +46,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const errorValue = {
                 errorMessage: 'Choose at least one service from the options',
             };
-            updateSessionAttribute(SERVICE_LIST_COOKIE, errorValue, req);
+            updateSessionAttribute(req, SERVICE_LIST_COOKIE, errorValue);
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }

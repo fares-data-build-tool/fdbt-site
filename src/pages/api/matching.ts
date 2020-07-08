@@ -130,10 +130,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const selectedStagesList: {}[] = getSelectedStages(req);
 
             setCookieOnResponseObject(
-                MATCHING_COOKIE,
-                JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
                 req,
                 res,
+                MATCHING_COOKIE,
+                JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
             );
 
             redirectTo(res, '/matching');
@@ -162,7 +162,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             uuid,
         );
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
+        setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ error: false }));
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');

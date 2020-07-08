@@ -13,7 +13,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         if (!directionJourneyPattern) {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose a direction from the options' });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
             redirectTo(res, '/singleDirection');
             return;
         }
@@ -25,7 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookieValue = JSON.stringify({ directionJourneyPattern, uuid });
-        setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+        setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
 
         redirectTo(res, '/inputMethod');
     } catch (error) {

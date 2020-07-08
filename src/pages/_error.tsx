@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import { deleteAllCookiesOnServerSide } from '../utils';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK } from '../constants';
 
@@ -9,14 +8,9 @@ const description = 'Error page of the Fares Data Build Tool';
 
 interface ErrorProps {
     statusCode: number;
-    ctx: NextPageContext;
 }
 
-export const handleClick = () => {
-    
-}
-
-const Error = ({ statusCode, ctx }: ErrorProps): ReactElement => (
+const Error = ({ statusCode }: ErrorProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         {statusCode === 404 ? (
             <div>
@@ -47,14 +41,7 @@ const Error = ({ statusCode, ctx }: ErrorProps): ReactElement => (
         )}
 
         <br />
-        <a
-            href="/operator"
-            role="button"
-            draggable="false"
-            className="govuk-button"
-            data-module="govuk-button"
-            onClick={handleClick}
-        >
+        <a href="/operator" role="button" draggable="false" className="govuk-button" data-module="govuk-button">
             Start again
         </a>
     </TwoThirdsLayout>

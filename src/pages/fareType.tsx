@@ -6,10 +6,10 @@ import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
+import { setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { retrieveSession } from './api/apiUtils';
+import { getSessionAttributes } from './api/apiUtils';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
@@ -129,7 +129,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     console.info('transaction start', { uuid });
 
-    const fareTypeInfo = retrieveSession(FARE_TYPE_COOKIE, req as any);
+    const fareTypeInfo = getSessionAttributes(ctx.req as any, [FARE_TYPE_COOKIE]);
 
     if (fareTypeInfo) {
         if (fareTypeInfo.errorMessage) {

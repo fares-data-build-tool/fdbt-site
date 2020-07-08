@@ -20,7 +20,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ errorMessages: [], inboundJourney, outboundJourney, uuid });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
             redirectTo(res, '/inputMethod');
         } else {
             const errorMessages: object[] = [];
@@ -34,7 +34,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ errorMessages, inboundJourney, outboundJourney });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
             redirectTo(res, '/returnDirection');
         }
     } catch (error) {

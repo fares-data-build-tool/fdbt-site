@@ -25,7 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
         } else {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose an input method from the options' });
-            setCookieOnResponseObject(INPUT_METHOD_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, INPUT_METHOD_COOKIE, cookieValue);
             redirectTo(res, '/inputMethod');
         }
     } catch (error) {

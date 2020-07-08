@@ -75,7 +75,7 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
 };
 
 export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    const session = getSessionAttributes([FARE_TYPE_COOKIE], req);
+    const session = getSessionAttributes(req, [FARE_TYPE_COOKIE]);
     const { fareType } = session;
 
     if (fareType) {

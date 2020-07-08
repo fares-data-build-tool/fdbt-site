@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import { updateSession, redirectTo, redirectToError, checkEmailValid } from './apiUtils/index';
+import { updateSessionAttribute, redirectTo, redirectToError, checkEmailValid } from './apiUtils/index';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import { CognitoIdToken } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
@@ -11,28 +11,20 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const { email, password } = req.body;
 
         if (!checkEmailValid(email)) {
-            updateSession(
-                OPERATOR_COOKIE,
-                {
-                    id: 'email',
-                    errorMessage: 'Enter an email address in the correct format, like name@example.com',
-                },
-                req,
-            );
+            updateSessionAttribute(req, OPERATOR_COOKIE, {
+                id: 'email',
+                errorMessage: 'Enter an email address in the correct format, like name@example.com',
+            });
             redirectTo(res, '/login');
 
             return;
         }
 
         if (!password) {
-            updateSession(
-                OPERATOR_COOKIE,
-                {
-                    id: 'password',
-                    errorMessage: 'Enter a password',
-                },
-                req,
-            );
+            updateSessionAttribute(req, OPERATOR_COOKIE, {
+                id: 'password',
+                errorMessage: 'Enter a password',
+            });
             redirectTo(res, '/login');
 
             return;
@@ -48,9 +40,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const nocCode = decodedIdToken['custom:noc'];
                 const operatorName = await getOperatorNameByNocCode(nocCode);
 
-                updateSession(OPERATOR_COOKIE, { operator: operatorName }, req);
-                updateSession(ID_TOKEN_COOKIE, { idToken }, req);
-                updateSession(REFRESH_TOKEN_COOKIE, { refreshToken }, req);
+                updateSessionAttribute(req, OPERATOR_COOKIE, { operator: operatorName });
+                updateSessionAttribute(req, ID_TOKEN_COOKIE, { idToken });
+                updateSessionAttribute(req, REFRESH_TOKEN_COOKIE, { refreshToken });
 
                 console.info('login successful', { noc: nocCode });
                 redirectTo(res, '/fareType');
@@ -59,14 +51,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }
         } catch (error) {
             console.warn('login failed', { error: error.message });
-            updateSession(
-                OPERATOR_COOKIE,
-                {
-                    id: 'login',
-                    errorMessage: 'The email address and/or password are not correct.',
-                },
-                req,
-            );
+            updateSessionAttribute(req, OPERATOR_COOKIE, {
+                id: 'login',
+                errorMessage: 'The email address and/or password are not correct.',
+            });
             redirectTo(res, '/login');
         }
     } catch (error) {

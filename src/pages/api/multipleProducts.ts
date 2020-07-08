@@ -162,14 +162,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const errors: ErrorSummary = getErrorsForCookie(fullValidationResult);
             const cookieContent = JSON.stringify({ ...errors, userInput: multipleProducts });
 
-            setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, cookieContent);
             redirectTo(res, '/multipleProducts');
             return;
         }
 
         const validInputs = JSON.stringify(multipleProducts);
 
-        setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, validInputs, req, res);
+        setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, validInputs);
 
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {

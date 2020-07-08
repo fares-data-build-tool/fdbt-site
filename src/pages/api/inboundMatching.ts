@@ -103,7 +103,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const inbound = { error: true, selectedFareStages: selectedStagesList };
 
-            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ inbound }), req, res);
+            setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ inbound }));
             redirectTo(res, '/inboundMatching');
             return;
         }
@@ -136,7 +136,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         await putMatchingDataInS3(matchingJson, uuid);
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ inbound: { error: false } }), req, res);
+        setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ inbound: { error: false } }));
         redirectTo(res, '/thankyou');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';

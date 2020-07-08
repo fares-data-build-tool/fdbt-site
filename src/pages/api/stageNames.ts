@@ -49,11 +49,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const userInputValidity = isStageNameValid(req);
         if (!userInputValidity.some(el => el.error !== '')) {
             const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
-            setCookieOnResponseObject(STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
+            setCookieOnResponseObject(req, res, STAGE_NAMES_COOKIE, stageNameCookieValue);
             redirectTo(res, '/priceEntry');
         } else {
             const validationCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(STAGE_NAME_VALIDATION_COOKIE, validationCookieValue, req, res);
+            setCookieOnResponseObject(req, res, STAGE_NAME_VALIDATION_COOKIE, validationCookieValue);
             redirectTo(res, '/stageNames');
         }
     } catch (error) {

@@ -31,13 +31,13 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const userInputValidity = isInvalidFareStageNumber(fareStageInput);
         if (userInputValidity.error !== '') {
             const fareStageInputCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(FARE_STAGES_COOKIE, fareStageInputCookieValue, req, res);
+            setCookieOnResponseObject(req, res, FARE_STAGES_COOKIE, fareStageInputCookieValue);
             redirectTo(res, '/chooseStages');
             return;
         }
 
         const cookieValue = JSON.stringify({ fareStages: fareStageInput });
-        setCookieOnResponseObject(FARE_STAGES_COOKIE, cookieValue, req, res);
+        setCookieOnResponseObject(req, res, FARE_STAGES_COOKIE, cookieValue);
         redirectTo(res, '/stageNames');
     } catch (error) {
         const message = 'There was a problem inputting the number of fare stages:';

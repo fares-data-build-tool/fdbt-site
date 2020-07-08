@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const outbound = { error: true, selectedFareStages: selectedStagesList };
 
-            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
+            setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ outbound }));
             redirectTo(res, '/outboundMatching');
             return;
         }
@@ -67,7 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         await putOutboundMatchingDataInS3(matchedFareZones, uuid);
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound: { error: false } }), req, res);
+        setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ outbound: { error: false } }));
 
         redirectTo(res, '/inboundMatching');
     } catch (error) {

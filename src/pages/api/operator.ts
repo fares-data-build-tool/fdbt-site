@@ -12,11 +12,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
             console.info('transaction start', { uuid });
 
-            setCookieOnResponseObject(OPERATOR_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, OPERATOR_COOKIE, cookieValue);
             redirectTo(res, '/fareType');
         } else {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose an operator from the options' });
-            setCookieOnResponseObject(OPERATOR_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(req, res, OPERATOR_COOKIE, cookieValue);
             redirectTo(res, '/operator');
         }
     } catch (error) {

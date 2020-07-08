@@ -20,7 +20,7 @@ const validatePassword = (password: string, confirmPassword: string): string => 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: InputCheck[], regKey: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
+        setCookieOnResponseObject(req, res, USER_COOKIE, cookieContent);
         redirectTo(res, `/register?key=${regKey}`);
     };
 

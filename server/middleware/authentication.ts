@@ -109,7 +109,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                     initiateRefreshAuth(username, refreshToken)
                         .then(data => {
                             if (data.AuthenticationResult?.IdToken) {
-                                setCookieOnResponseObject(ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken, req, res);
+                                setCookieOnResponseObject(req, res, ID_TOKEN_COOKIE, data.AuthenticationResult.IdToken);
                                 console.info('successfully refreshed ID Token');
                                 next();
 

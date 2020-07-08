@@ -1,7 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as yup from 'yup';
 import { isArray } from 'lodash';
-import { redirectToError, redirectTo, redirectOnFareType, retrieveSession, updateSession } from './apiUtils/index';
+import {
+    redirectToError,
+    redirectTo,
+    redirectOnFareType,
+    getSessionAttributes,
+    updateSessionAttribute,
+} from './apiUtils/index';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
@@ -100,8 +106,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Session is invalid.');
         }
 
-        const { passengerType } = retrieveSession(PASSENGER_TYPE_COOKIE, req);
-        const { fareType } = retrieveSession(FARE_TYPE_COOKIE, req);
+        const { passengerType } = getSessionAttributes(req, [PASSENGER_TYPE_COOKIE]);
+        const { fareType } = getSessionAttributes(req, [FARE_TYPE_COOKIE]);
 
         if (!passengerType || !fareType) {
             throw new Error('Failed to retrieve the necessary cookies for the definePassengerType API');
@@ -124,11 +130,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }));
         }
         if (errors.length === 0) {
-            updateSession(PASSENGER_TYPE_COOKIE, { passengerType, filteredReqBody }, req);
+            updateSessionAttribute(req, PASSENGER_TYPE_COOKIE, { passengerType, filteredReqBody });
             redirectOnFareType(req, res);
             return;
         }
-        updateSession(PASSENGER_TYPE_COOKIE, { errors, passengerType }, req);
+        updateSessionAttribute(req, PASSENGER_TYPE_COOKIE, { errors, passengerType });
         redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';
