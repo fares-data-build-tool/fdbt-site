@@ -12,6 +12,7 @@ import {
 } from '../constants';
 import { ProductInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttributesOnServerSide } from 'src/utils';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -111,12 +112,15 @@ const ProductDetails = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
-    const cookies = parseCookies(ctx);
-    const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
-    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
+    const productDetailsAttributes = getSessionAttributesOnServerSide(ctx, [
+        PRODUCT_DETAILS_COOKIE,
+        OPERATOR_COOKIE,
+        PASSENGER_TYPE_COOKIE,
+        CSV_ZONE_UPLOAD_COOKIE,
+        SERVICE_LIST_COOKIE,
+    ]);
+
+    console.log({ productDetailsAttributes });
 
     let props = {};
 

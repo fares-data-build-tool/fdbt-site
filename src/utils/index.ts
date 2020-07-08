@@ -5,7 +5,7 @@ import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
-import { ErrorInfo, CognitoIdToken } from '../interfaces';
+import { ErrorInfo, CognitoIdToken, SessionAttributeCollection } from '../interfaces';
 
 export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
@@ -21,6 +21,35 @@ export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribu
     }
 
     return null;
+};
+
+export const getSessionAttributesOnServerSide = (
+    ctx: NextPageContext,
+    attributes: string[],
+): SessionAttributeCollection => {
+    const attributeCollection: SessionAttributeCollection = {};
+    if (ctx.req) {
+        attributes.forEach(attribute => {
+            attributeCollection[attribute] = (ctx.req as any).session[attribute];
+        });
+    }
+    return attributeCollection;
+};
+
+export const updateSessionAttributeOnServerSide = (
+    ctx: NextPageContext,
+    attributeName: string,
+    attributeValue: string | {},
+): void => {
+    if (ctx.req) {
+        (ctx.req as any).session[attributeName] = attributeValue;
+    }
+};
+
+export const overwriteSessionOnServerSide = (ctx: NextPageContext, session: {}): void => {
+    if (ctx.req) {
+        (ctx.req as any).session = session;
+    }
 };
 
 export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {

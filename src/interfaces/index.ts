@@ -66,3 +66,7 @@ export interface Breadcrumb {
     link: string;
     show: boolean;
 }
+
+export interface SessionAttributeCollection {
+    [key: string]: any;
+}

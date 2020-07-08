@@ -1,13 +1,12 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_COOKIE } from '../constants';
+import { SERVICE_LIST_COOKIE, noRequestError } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServicesInfo, CustomAppProps, ErrorInfo } from '../interfaces';
-import { getNocFromIdToken } from '../utils';
+import { getNocFromIdToken, getSessionAttributesOnServerSide } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Service List - Fares Data Build Tool';
@@ -103,13 +102,18 @@ const ServiceList = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
-    const cookies = parseCookies(ctx);
-    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
+    const ctxReq = ctx.req;
     const nocCode = getNocFromIdToken(ctx);
 
-    if (!nocCode) {
-        throw new Error('Necessary cookies not found to show serviceList page');
+    if (!ctxReq) {
+        throw new Error(noRequestError);
     }
+
+    if (!nocCode) {
+        throw new Error('Could not retrieve NOC Code from the ID_TOKEN_COOKIE');
+    }
+
+    const serviceListCookie = getSessionAttributesOnServerSide(ctx, [SERVICE_LIST_COOKIE]);
 
     const servicesList = await getServicesByNocCode(nocCode);
 
@@ -128,9 +132,8 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const error: ErrorInfo[] = [];
 
     if (serviceListCookie) {
-        const cookieContent = JSON.parse(serviceListCookie);
-        if (cookieContent.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: cookieContent.errorMessage, id: errorId };
+        if (serviceListCookie.errorMessage) {
+            const errorInfo: ErrorInfo = { errorMessage: serviceListCookie.errorMessage, id: errorId };
             error.push(errorInfo);
             return {
                 props: {

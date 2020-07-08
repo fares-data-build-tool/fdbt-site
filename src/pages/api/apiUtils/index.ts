@@ -4,13 +4,13 @@ import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
-import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
+import { CognitoIdToken, ErrorInfo, SessionAttributeCollection } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
 
-export const setCookieOnResponseObject = (cookieName: string, cookieValue: string, req: Req, res: Res): void => {
+export const setCookieOnResponseObject = (req: Req, res: Res, cookieName: string, cookieValue: string): void => {
     const cookies = new Cookies(req, res);
     // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
     // default. An error will be thrown if you try to send secure cookies over an insecure socket.
@@ -23,12 +23,27 @@ export const setCookieOnResponseObject = (cookieName: string, cookieValue: strin
     });
 };
 
-export const updateSession = (cookieName: string, cookieValue: {}, req: Req): void => {
-    (req as any).session[cookieName] = cookieValue;
+export const updateSessionAttribute = (req: Req, attributeName: string, attributeValue: string | {}): void => {
+    (req as any).session[attributeName] = attributeValue;
 };
 
-export const retrieveSession = (cookieName: string, req: Req): { [key: string]: any } =>
-    (req as any).session[cookieName];
+export const getSessionAttributes = (req: Req, attributes: string[]): SessionAttributeCollection => {
+    const attributeCollection: SessionAttributeCollection = {};
+    attributes.forEach(attribute => {
+        attributeCollection[attribute] = (req as any).session[attribute];
+    });
+    return attributeCollection;
+};
+
+export const overwriteSession = (req: Req, session: {}): void => {
+    (req as any).session = session;
+};
+
+export const destroySession = (req: Req): void => {
+    (req as any).session.destroy(() => {
+        throw new Error('Could not destroy session');
+    });
+};
 
 export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
     const cookies = new Cookies(req, res);
@@ -60,7 +75,7 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
 };
 
 export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    const session = retrieveSession(FARE_TYPE_COOKIE, req);
+    const session = getSessionAttributes([FARE_TYPE_COOKIE], req);
     const { fareType } = session;
 
     if (fareType) {

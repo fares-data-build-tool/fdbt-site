@@ -76,3 +76,5 @@ export const STAGE = process.env.STAGE || 'dev';
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
+
+export const noRequestError = 'Could not retrieve the request from the context';
