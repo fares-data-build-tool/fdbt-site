@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { ExtractedValidationError } from './api/definePassengerType';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
@@ -185,7 +184,7 @@ const DefinePassengerType = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: DefinePassengerTypeProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: DefinePassengerTypeProps } => {
     const cookies = parseCookies(ctx);
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 

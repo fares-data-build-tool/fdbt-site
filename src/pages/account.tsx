@@ -1,10 +1,9 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { decode } from 'jsonwebtoken';
+import { NextContextWithSession, CognitoIdToken } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { ID_TOKEN_COOKIE } from '../constants';
-import { CognitoIdToken } from '../interfaces';
 
 const title = 'Account Details - Fares Data Build Tool';
 const description = 'Account Details page of the Fares Data Build Tool';
@@ -63,7 +62,7 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetailsProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: AccountDetailsProps } => {
     const cookies = parseCookies(ctx);
     if (!cookies[ID_TOKEN_COOKIE]) {
         throw new Error('Necessary cookies not found to show account details');

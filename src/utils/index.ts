@@ -1,10 +1,16 @@
 import Cookies from 'cookies';
-import { NextPageContext, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { IncomingMessage } from 'http';
 import { Request, Response } from 'express';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
-import { NextRequestWithSession, ErrorInfo, CognitoIdToken, IncomingMessageWithSession } from '../interfaces';
+import {
+    NextRequestWithSession,
+    NextContextWithSession,
+    ErrorInfo,
+    CognitoIdToken,
+    IncomingMessageWithSession,
+} from '../interfaces';
 import { globalSignOut } from '../data/cognito';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
@@ -43,7 +49,7 @@ export const getUuidFromCookie = (req: NextRequestWithSession | Request, res: Ne
     return operatorCookie ? JSON.parse(operatorCookie).uuid : '';
 };
 
-export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
+export const getCookieValue = (ctx: NextContextWithSession, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
 
     if (cookies[cookie]) {
@@ -59,7 +65,7 @@ export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribu
     return null;
 };
 
-export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, cookieValue: string): void => {
+export const setCookieOnServerSide = (ctx: NextContextWithSession, cookieName: string, cookieValue: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
 
@@ -71,7 +77,7 @@ export const setCookieOnServerSide = (ctx: NextPageContext, cookieName: string, 
     }
 };
 
-export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: string): void => {
+export const deleteCookieOnServerSide = (ctx: NextContextWithSession, cookieName: string): void => {
     if (ctx.req && ctx.res) {
         const cookies = new Cookies(ctx.req, ctx.res);
 
@@ -79,7 +85,7 @@ export const deleteCookieOnServerSide = (ctx: NextPageContext, cookieName: strin
     }
 };
 
-export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
+export const deleteAllCookiesOnServerSide = (ctx: NextContextWithSession): void => {
     const cookies = parseCookies(ctx);
     const cookieWhitelist = [OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE];
 
@@ -90,7 +96,7 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
     });
 };
 
-export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
+export const getUuidFromCookies = (ctx: NextContextWithSession): string | null => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     if (!operatorCookie) {
@@ -126,7 +132,7 @@ export const getHost = (req: IncomingMessage | undefined): string => {
     return '';
 };
 
-export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | null => {
+export const getJourneyPatternFromCookies = (ctx: NextContextWithSession): string | null => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     if (!operatorCookie) {

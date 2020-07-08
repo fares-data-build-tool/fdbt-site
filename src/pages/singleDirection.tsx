@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
@@ -7,7 +6,7 @@ import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE, PASS
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getNocFromIdToken } from '../utils';
@@ -68,7 +67,7 @@ const SingleDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: DirectionProps }> => {
+export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{ props: DirectionProps }> => {
     const cookies = parseCookies(ctx);
     const journeyCookie = cookies[JOURNEY_COOKIE];
     const error: ErrorInfo[] = [];
@@ -83,7 +82,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     const serviceCookie = cookies[SERVICE_COOKIE];
     const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getNocFromIdToken(ctx.req);
 
     if (!operatorCookie || !serviceCookie || !fareTypeCookie || !passengerTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');

@@ -1,5 +1,5 @@
 import MockReq from 'mock-req';
-import { NextPageContext } from 'next';
+import { NextContextWithSession } from 'next';
 import { getHost, formatStopName, getAttributeFromIdToken } from '../../src/utils';
 import { Stop } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
@@ -81,7 +81,7 @@ describe('utils', () => {
 
     describe('getAttributeFromIdToken', () => {
         let emailJwt: string;
-        let ctx: NextPageContext;
+        let ctx: NextContextWithSession;
 
         beforeEach(() => {
             // This JWT encodes an email of test@example.com

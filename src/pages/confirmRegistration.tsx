@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { NextPage, NextPageContext } from 'next';
+import { NextPage } from 'next';
+import { NextContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { deleteCookieOnServerSide } from '../utils';
 import { USER_COOKIE } from '../constants';
@@ -24,7 +25,7 @@ const ConfirmRegistration: NextPage = (): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     deleteCookieOnServerSide(ctx, USER_COOKIE);
     return { props: {} };
 };

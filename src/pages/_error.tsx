@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
+import { NextContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK } from '../constants';
 
@@ -47,7 +47,7 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     return { props: { statusCode: ctx.res?.statusCode } };
 };
 

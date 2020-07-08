@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { NextPageContext } from 'next';
+import { NextContextWithSession } from 'next';
 import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
 import { STAGE_NAMES_COOKIE } from '../../src/constants';
 
@@ -52,7 +52,7 @@ describe('Price Entry Page', () => {
                 STAGE_NAMES_COOKIE: stageNames,
             },
         });
-        const ctx: NextPageContext = {
+        const ctx: NextContextWithSession = {
             res,
             req,
             pathname: '',
@@ -83,7 +83,7 @@ describe('Price Entry Page', () => {
                 STAGE_NAMES_COOKIE: stageNames,
             },
         });
-        const ctx: NextPageContext = {
+        const ctx: NextContextWithSession = {
             res,
             req,
             pathname: '',

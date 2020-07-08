@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { NextPageContext } from 'next';
 import _ from 'lodash';
+import { NextContextWithSession, CustomAppProps } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps } from '../interfaces';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';
@@ -75,7 +74,7 @@ const ChooseValidity = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
     const productCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];

@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
+import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces';
 import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 
@@ -90,7 +89,7 @@ const StageNames = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];

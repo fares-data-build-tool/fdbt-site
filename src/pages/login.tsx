@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { deleteCookieOnServerSide } from '../utils/index';
 import CsrfForm from '../components/CsrfForm';
 
@@ -100,7 +99,7 @@ const Login = ({ errors = [], csrfToken }: LoginProps & CustomAppProps): ReactEl
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[OPERATOR_COOKIE]) {

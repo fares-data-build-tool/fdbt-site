@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
+import { NextContextWithSession, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { FORGOT_PASSWORD_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps } from '../interfaces';
 
 const title = 'Reset Email Confirmation - Fares data build tool';
 const description = 'Reset Email Confirmation page of the Fares data build tool';
@@ -46,7 +45,7 @@ const ResetConfirmation = ({ email, csrfToken }: ResetConfirmationProps & Custom
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ResetConfirmationProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: ResetConfirmationProps } => {
     const cookies = parseCookies(ctx);
     const forgotPasswordCookie = cookies[FORGOT_PASSWORD_COOKIE];
 

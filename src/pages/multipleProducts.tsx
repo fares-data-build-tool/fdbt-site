@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
+import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
@@ -10,7 +10,6 @@ import {
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
@@ -63,7 +62,7 @@ const MultipleProducts = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
 
     if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !cookies[PASSENGER_TYPE_COOKIE]) {

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
+import { NextContextWithSession, ProductInfo, CustomAppProps } from '../interfaces';
 import {
     OPERATOR_COOKIE,
     PRODUCT_DETAILS_COOKIE,
@@ -9,7 +9,6 @@ import {
     SERVICE_LIST_COOKIE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
-import { ProductInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttributes } from '../utils/sessions';
 
@@ -110,7 +109,7 @@ const ProductDetails = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: ProductDetailsProps } => {
     const productDetailsAttributes = getSessionAttributes(ctx.req as any, [
         PRODUCT_DETAILS_COOKIE,
         OPERATOR_COOKIE,
@@ -118,8 +117,6 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
         CSV_ZONE_UPLOAD_COOKIE,
         SERVICE_LIST_COOKIE,
     ]);
-
-    console.log({ productDetailsAttributes });
 
     let props = {};
 

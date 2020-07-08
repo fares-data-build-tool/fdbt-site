@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
+import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
 import { redirectTo } from '../utils/redirects';
 import CsrfForm from '../components/CsrfForm';
 
@@ -101,7 +100,7 @@ const ResetPassword = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ResetPasswordProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: ResetPasswordProps } => {
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
 

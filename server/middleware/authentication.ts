@@ -7,6 +7,7 @@ import { signOutUser } from '../../src/utils';
 
 import { CognitoIdToken, IncomingMessageWithSession } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';
+import { IncomingMessage } from 'http';
 
 const cognitoUri = `https://cognito-idp.eu-west-2.amazonaws.com/${process.env.FDBT_USER_POOL_ID}`;
 
@@ -32,22 +33,18 @@ const verifyOptions: VerifyOptions = {
 
 export const setDisableAuthCookies = (server: Express): void => {
     server.use((req, _res, next) => {
-        console.log(req);
         const isDevelopment = process.env.NODE_ENV === 'development';
 
         if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && req.query.disableAuth === 'true') {
             const { disableAuth } = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_COOKIE]);
 
             if (!disableAuth || disableAuth === 'false') {
-                console.log('in here');
                 updateSessionAttribute(req as IncomingMessageWithSession, DISABLE_AUTH_COOKIE, { disableAuth: 'true' });
-                console.log('in here2');
                 updateSessionAttribute(
                     req as IncomingMessageWithSession,
                     ID_TOKEN_COOKIE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
                 );
-                console.log('in here3');
                 updateSessionAttribute(req as IncomingMessageWithSession, OPERATOR_COOKIE, {
                     operator: {
                         operatorPublicName: 'Blackpool Transport',

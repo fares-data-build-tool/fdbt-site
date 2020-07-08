@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { NUMBER_OF_PRODUCTS_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 
@@ -59,7 +58,7 @@ const HowManyProducts = ({ inputCheck, errors, csrfToken }: HowManyProductProps 
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
     let inputCheck: InputCheck = {};
     let errors: ErrorInfo[] = [];

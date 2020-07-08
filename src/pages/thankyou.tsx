@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import TwoThirdsLayout from '../layout/Layout';
+import { NextContextWithSession, CognitoIdToken } from '../interfaces';
 import { FEEDBACK_LINK, ID_TOKEN_COOKIE } from '../constants';
 import { getUuidFromCookies, deleteAllCookiesOnServerSide } from '../utils';
-import { CognitoIdToken } from '../interfaces';
 
 const title = 'Thank You - Fares Data Build Tool';
 const description = 'Thank you page for the Fares Data Build Tool';
@@ -47,7 +46,7 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const uuid = getUuidFromCookies(ctx);
     console.info('transaction complete', { uuid });
 

@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
+import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
+import ErrorSummary from '../components/ErrorSummary';
 import { STAGE_NAMES_COOKIE, PRICE_ENTRY_ERRORS_COOKIE, PRICE_ENTRY_INPUTS_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
 import { FaresInformation, FaresInput, PriceEntryError } from './api/priceEntry';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
@@ -149,7 +148,7 @@ const PriceEntry = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: PriceEntryProps } => {
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
     const priceEntryErrorsCookie = cookies[PRICE_ENTRY_ERRORS_COOKIE];

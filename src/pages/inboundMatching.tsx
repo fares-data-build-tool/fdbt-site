@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { NextContextWithSession, BasicService, CustomAppProps } from '../interfaces';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, CustomAppProps } from '../interfaces/index';
 import { getNocFromIdToken } from '../utils';
 
 const heading = 'Inbound - Match stops to fare stages';
@@ -48,13 +47,13 @@ const InboundMatching = ({
     />
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
+export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
     const matchingCookie = cookies[MATCHING_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getNocFromIdToken(ctx.req);
 
     if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');

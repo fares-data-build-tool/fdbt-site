@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import Error from './_error';
+import { NextContextWithSession } from '../interfaces';
 
 interface ErrorProps {
     statusCode: number;
@@ -8,7 +8,7 @@ interface ErrorProps {
 
 const ErrorPage = ({ statusCode }: ErrorProps): ReactElement => <Error statusCode={statusCode} />;
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     return { props: { statusCode: ctx?.res?.statusCode } };
 };
 

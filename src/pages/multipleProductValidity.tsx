@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-
 import _ from 'lodash';
+import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     MULTIPLE_PRODUCT_COOKIE,
@@ -10,7 +9,6 @@ import {
     PASSENGER_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
 } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -163,7 +161,7 @@ const MultipleProductValidity = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductValidityProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];

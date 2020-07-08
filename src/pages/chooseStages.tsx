@@ -1,13 +1,12 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { NextPageContext } from 'next';
+import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces';
 import { deleteCookieOnServerSide } from '../utils';
 import { FARE_STAGES_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
 
 const title = 'Choose Stages - Fares Data Build Tool';
 const description = 'Choose Stages page of the Fares Data Build Tool';
@@ -60,7 +59,7 @@ const ChooseStages = ({ inputCheck, errors, csrfToken }: ChooseStagesProps & Cus
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
     let inputCheck: ChooseStagesInputCheck = {};
     let errors: ErrorInfo[] = [];

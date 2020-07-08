@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { NUMBER_OF_STAGES_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
@@ -78,7 +77,7 @@ const HowManyStages = ({ errors = [], csrfToken }: HowManyStagesProps & CustomAp
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[NUMBER_OF_STAGES_COOKIE]) {

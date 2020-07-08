@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
+import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import { PERIOD_EXPIRY_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -91,7 +90,7 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & Custom
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
     if (cookies[PERIOD_EXPIRY_COOKIE]) {

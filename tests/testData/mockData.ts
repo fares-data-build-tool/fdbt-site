@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { NextPageContext } from 'next';
+import { NextContextWithSession } from 'next';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
@@ -217,7 +217,7 @@ export const getMockContext = ({
     mockEndFn = jest.fn(),
     isLoggedin = true,
     url = null,
-}: GetMockContextInput = {}): NextPageContext => {
+}: GetMockContextInput = {}): NextContextWithSession => {
     const { req, res } = getMockRequestAndResponse({
         cookieValues: cookies,
         body,
@@ -229,7 +229,7 @@ export const getMockContext = ({
         url,
     });
 
-    const ctx: NextPageContext = {
+    const ctx: NextContextWithSession = {
         res,
         req,
         pathname: '',

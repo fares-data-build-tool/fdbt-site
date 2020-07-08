@@ -1,14 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { NextContextWithSession, CustomAppProps } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
-import { CustomAppProps } from '../interfaces';
 
 const title = 'CSV Zone Upload - Fares Data Build Tool';
 const description = 'CSV Zone Upload page of the Fares Data Build Tool';
@@ -35,7 +34,7 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): Reac
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
+export const getServerSideProps = (ctx: NextContextWithSession): { props: UserDataUploadsProps } => {
     const cookies = parseCookies(ctx);
     const csvZoneUploadCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
 

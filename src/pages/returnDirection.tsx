@@ -91,7 +91,7 @@ export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{
     const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
 
     if (!ctx.req) {
-        throw new Error('Could not retrieve request from NextPageContext');
+        throw new Error('Could not retrieve request from NextContextWithSession');
     }
     const nocCode = getNocFromIdToken(ctx.req);
 

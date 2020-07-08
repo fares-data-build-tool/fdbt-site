@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
+import { NextContextWithSession, ErrorInfo, InputCheck, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { ErrorInfo, InputCheck, CustomAppProps } from '../interfaces';
 import { redirectTo } from '../utils/redirects';
 import CsrfForm from '../components/CsrfForm';
 
@@ -184,7 +183,7 @@ const Register = ({ inputChecks, errors, regKey, csrfToken }: RegisterProps & Cu
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
 

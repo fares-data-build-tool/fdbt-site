@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
@@ -70,7 +69,7 @@ const Service = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceProps }> => {
+export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
     const serviceCookie = cookies[SERVICE_COOKIE];
     const error: ErrorInfo[] = [];
@@ -84,7 +83,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getNocFromIdToken(ctx.req);
 
     if (!operatorCookie || !passengerTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');

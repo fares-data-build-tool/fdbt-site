@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
+import { NextContextWithSession, BasicService, CustomAppProps } from '../interfaces';
 import {
     getServiceByNocCodeAndLineName,
     batchGetStopsByAtcoCode,
@@ -8,7 +8,6 @@ import {
     RawService,
     RawJourneyPattern,
 } from '../data/auroradb';
-import { BasicService, CustomAppProps } from '../interfaces/index';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
@@ -70,7 +69,7 @@ const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
     ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
 ];
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
+export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];

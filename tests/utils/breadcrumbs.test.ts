@@ -1,4 +1,4 @@
-import { NextPageContext } from 'next';
+import { NextContextWithSession } from 'next';
 import breadcrumb from '../../src/utils/breadcrumbs';
 import {
     getMockContext,
@@ -12,7 +12,7 @@ import {
 } from '../testData/mockData';
 
 describe('breadcrumbs', () => {
-    let ctx: NextPageContext;
+    let ctx: NextContextWithSession;
 
     it('creates the correct array of Breadcrumbs if user is on home page', () => {
         ctx = getMockContext({ url: '/' });

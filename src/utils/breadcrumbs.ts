@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next';
 import {
     PASSENGER_TYPE_COOKIE,
     FARE_TYPE_COOKIE,
@@ -6,10 +5,10 @@ import {
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
 } from '../constants/index';
-import { Breadcrumb } from '../interfaces';
+import { Breadcrumb, NextContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
 
-export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
+export default (ctx: NextContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
 
     if (!url || url === '/') {

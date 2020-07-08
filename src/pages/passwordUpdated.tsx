@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
+import { NextContextWithSession } from '../interfaces';
 import { deleteCookieOnServerSide } from '../utils';
 import { USER_COOKIE } from '../constants';
 
@@ -29,7 +29,7 @@ const PasswordUpdated = ({ redirectTo }: PasswordUpdatedProps): ReactElement => 
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
     let redirectFrom = '';
