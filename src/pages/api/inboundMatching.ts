@@ -3,13 +3,17 @@ import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import { getUuidFromCookie, unescapeAndDecodeCookie, getSelectedStages } from '../../utils';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
-
 import { BasicService, CognitoIdToken, PassengerDetails, NextRequestWithSession } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, ID_TOKEN_ATTRIBUTE } from '../../constants';
+import {
+    MATCHING_DATA_BUCKET_NAME,
+    MATCHING_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    ID_TOKEN_ATTRIBUTE,
+} from '../../constants';
 import { Price } from '../../interfaces/matchingInterface';
 
 interface FareZones {

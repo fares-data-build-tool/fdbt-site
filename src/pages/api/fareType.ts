@@ -4,7 +4,6 @@ import { getUuidFromCookie } from '../../utils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectToError, redirectTo } from './apiUtils';
 import { FARE_TYPE_ATTRIBUTE } from '../../constants/index';
-
 import { isSessionValid } from './service/validator';
 
 export default (req: NextRequestWithSession, res: NextApiResponse): void => {
