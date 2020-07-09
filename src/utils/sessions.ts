@@ -22,7 +22,7 @@ export const getSessionAttribute = (
     // if (!req.session) {
     //     return undefined;
     // }
-    return req.session[attribute];
+    return req.session[attributeName];
 };
 
 // export const overwriteSession = (
