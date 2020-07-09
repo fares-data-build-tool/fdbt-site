@@ -1,5 +1,5 @@
 import MockReq from 'mock-req';
-import { NextContextWithSession } from 'next';
+import { NextContextWithSession } from '../../src/interfaces';
 import { getHost, formatStopName, getAttributeFromIdToken } from '../../src/utils';
 import { Stop } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';

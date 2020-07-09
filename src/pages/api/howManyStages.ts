@@ -1,6 +1,5 @@
 import { NextApiResponse } from 'next';
-import { setCookieOnResponseObject } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { NUMBER_OF_STAGES_COOKIE } from '../../constants/index';
 import { NextRequestWithSession } from '../../interfaces';
 

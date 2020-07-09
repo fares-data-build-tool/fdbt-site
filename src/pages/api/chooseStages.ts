@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import { FARE_STAGES_COOKIE } from '../../constants/index';
-import { setCookieOnResponseObject } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { ChooseStagesInputCheck } from '../chooseStages';
 import { NextRequestWithSession } from '../../interfaces';

@@ -11,32 +11,9 @@ import {
     CognitoIdToken,
     IncomingMessageWithSession,
 } from '../interfaces';
-import { globalSignOut } from '../data/cognito';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { getSessionAttributes } from './sessions';
-
-type Req = NextRequestWithSession | Request;
-type Res = NextApiResponse | Response;
-
-export const setCookieOnResponseObject = (req: Req, res: Res, cookieName: string, cookieValue: string): void => {
-    const cookies = new Cookies(req, res);
-    // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
-    // default. An error will be thrown if you try to send secure cookies over an insecure socket.
-    cookies.set(cookieName, cookieValue, {
-        path: '/',
-        // The Cookies library applies units of Milliseconds to maxAge. For this reason, maxAge of 24 hours needs to be corrected by a factor of 1000.
-        maxAge: 1000 * (3600 * 24),
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV !== 'development',
-    });
-};
-
-export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
-    const cookies = new Cookies(req, res);
-
-    cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
-};
 
 export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string): string => {
     return unescape(decodeURI(cookies.get(cookieToDecode) || ''));
@@ -104,16 +81,6 @@ export const getUuidFromCookies = (ctx: NextContextWithSession): string | null =
     }
     const operatorInfo = JSON.parse(operatorCookie);
     return operatorInfo.uuid;
-};
-
-export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
-    if (username) {
-        await globalSignOut(username);
-    }
-
-    deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
-    deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
-    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
 };
 
 export const getHost = (req: IncomingMessage | undefined): string => {

@@ -1,7 +1,7 @@
 import formidable, { Files } from 'formidable';
 import fs from 'fs';
-import { NextRequestWithSession } from '../interfaces';
-import { ALLOWED_CSV_FILE_TYPES } from '../constants';
+import { NextRequestWithSession } from '../../../interfaces';
+import { ALLOWED_CSV_FILE_TYPES } from '../../../constants';
 
 interface FileData {
     files: formidable.Files;

@@ -9,13 +9,8 @@ import {
     PRICE_ENTRY_ERRORS_COOKIE,
     INPUT_METHOD_COOKIE,
 } from '../../constants/index';
-import {
-    getUuidFromCookie,
-    unescapeAndDecodeCookie,
-    setCookieOnResponseObject,
-    deleteCookieOnResponseObject,
-} from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { getUuidFromCookie, unescapeAndDecodeCookie } from '../../utils';
+import { redirectToError, redirectTo, setCookieOnResponseObject, deleteCookieOnResponseObject } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
 

@@ -1,8 +1,8 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
-import { getUuidFromCookie, setCookieOnResponseObject, unescapeAndDecodeCookie, getSelectedStages } from '../../utils';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { getUuidFromCookie, unescapeAndDecodeCookie, getSelectedStages } from '../../utils';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 
 import { BasicService, CognitoIdToken, PassengerDetails, NextRequestWithSession } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
@@ -15,7 +15,7 @@ import {
     PASSENGER_TYPE_COOKIE,
     ID_TOKEN_COOKIE,
 } from '../../constants';
-import { getFareZones, getMatchingFareZonesFromForm } from '../../utils/matching';
+import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
 interface MatchingBaseData {

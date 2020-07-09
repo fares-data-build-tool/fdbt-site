@@ -21,7 +21,7 @@ type FareTypeProps = {
 
 export const buildUuid = (ctx: NextContextWithSession): string => {
     const uuid = uuidv4();
-    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+    const noc = getAttributeFromIdToken(ctx.req, 'custom:noc');
     return noc + uuid.substring(0, 8);
 };
 

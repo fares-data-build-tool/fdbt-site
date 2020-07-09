@@ -1,12 +1,12 @@
 import { NextApiResponse } from 'next';
 import { NextRequestWithSession } from '../../interfaces';
-import { getUuidFromCookie, setCookieOnResponseObject, getSelectedStages } from '../../utils';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { getUuidFromCookie, getSelectedStages } from '../../utils';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
-import { getFareZones, getMatchingFareZonesFromForm } from '../../utils/matching';
+import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 
 export const putOutboundMatchingDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
     await putStringInS3(

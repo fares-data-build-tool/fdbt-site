@@ -1,12 +1,7 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import {
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-    getNocFromIdToken,
-    getAttributeFromIdToken,
-} from '../../utils';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { unescapeAndDecodeCookie, getNocFromIdToken, getAttributeFromIdToken } from '../../utils';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails, NextRequestWithSession } from '../../interfaces';
 import {

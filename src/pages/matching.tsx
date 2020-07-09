@@ -75,7 +75,7 @@ export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
     const matchingCookie = cookies[MATCHING_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getNocFromIdToken(ctx.req);
 
     if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');

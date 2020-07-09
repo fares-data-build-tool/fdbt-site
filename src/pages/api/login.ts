@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import { checkEmailValid } from '../../utils';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { redirectTo, redirectToError } from './apiUtils';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import { CognitoIdToken, NextRequestWithSession } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';

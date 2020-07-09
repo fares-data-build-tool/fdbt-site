@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { getAttributeFromIdToken, validateNewPassword } from '../../utils';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { redirectTo, redirectToError } from './apiUtils';
 import { ErrorInfo, NextRequestWithSession } from '../../interfaces';
 
 import { USER_COOKIE } from '../../constants';

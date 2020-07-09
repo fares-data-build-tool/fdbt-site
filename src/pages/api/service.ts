@@ -1,8 +1,8 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { NextRequestWithSession } from '../../interfaces';
-import { getUuidFromCookie, setCookieOnResponseObject, unescapeAndDecodeCookie } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { getUuidFromCookie, unescapeAndDecodeCookie } from '../../utils';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { FARE_TYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 

@@ -1,7 +1,7 @@
-import { NextRequestWithSession } from '../interfaces';
-import { MatchingFareZones, MatchingFareZonesData } from '../interfaces/matchingInterface';
-import { UserFareStages } from '../data/s3';
-import { Stop } from '../data/auroradb';
+import { NextRequestWithSession } from '../../../interfaces';
+import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
+import { UserFareStages } from '../../../data/s3';
+import { Stop } from '../../../data/auroradb';
 
 export const getFareZones = (
     userFareStages: UserFareStages,

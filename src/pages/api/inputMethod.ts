@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextRequestWithSession } from '../../interfaces';
-import { setCookieOnResponseObject } from '../../utils';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { INPUT_METHOD_COOKIE } from '../../constants';
 

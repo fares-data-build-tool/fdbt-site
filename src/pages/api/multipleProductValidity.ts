@@ -11,13 +11,8 @@ import {
     PASSENGER_TYPE_COOKIE,
 } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import {
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-    getNocFromIdToken,
-    getAttributeFromIdToken,
-} from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { unescapeAndDecodeCookie, getNocFromIdToken, getAttributeFromIdToken } from '../../utils';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';

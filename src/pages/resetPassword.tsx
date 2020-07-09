@@ -5,7 +5,7 @@ import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { redirectTo } from '../utils/redirects';
+import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Reset Password - Fares data build tool';

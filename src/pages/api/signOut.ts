@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
-import { signOutUser, getAttributeFromIdToken } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { getAttributeFromIdToken } from '../../utils';
+import { redirectToError, redirectTo, signOutUser } from './apiUtils';
 import { NextRequestWithSession } from '../../interfaces';
 
 export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {

@@ -110,13 +110,21 @@ const ProductDetails = ({
 };
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: ProductDetailsProps } => {
-    const productDetailsAttributes = getSessionAttributes(ctx.req as any, [
+    const productDetailsAttributes = getSessionAttributes(ctx.req, [
         PRODUCT_DETAILS_COOKIE,
         OPERATOR_COOKIE,
         PASSENGER_TYPE_COOKIE,
         CSV_ZONE_UPLOAD_COOKIE,
         SERVICE_LIST_COOKIE,
     ]);
+
+    const {
+        operatorCookie,
+        passengerTypeCookie,
+        zoneCookie,
+        serviceListCookie,
+        productDetailsCookie,
+    } = productDetailsAttributes;
 
     let props = {};
 

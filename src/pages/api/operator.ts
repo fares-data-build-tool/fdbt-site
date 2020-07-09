@@ -2,8 +2,7 @@ import { NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 import { NextRequestWithSession } from '../../interfaces';
 import { OPERATOR_COOKIE } from '../../constants/index';
-import { setCookieOnResponseObject } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 
 export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {

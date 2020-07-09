@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { NextContextWithSession } from 'next';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
@@ -26,7 +25,7 @@ import {
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo, Breadcrumb } from '../../src/interfaces';
+import { ErrorInfo, Breadcrumb, NextContextWithSession } from '../../src/interfaces';
 
 interface GetMockContextInput {
     cookies?: any;

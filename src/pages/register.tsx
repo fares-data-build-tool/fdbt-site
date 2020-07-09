@@ -5,7 +5,7 @@ import { NextContextWithSession, ErrorInfo, InputCheck, CustomAppProps } from '.
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { redirectTo } from '../utils/redirects';
+import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Create Account - Fares data build tool';

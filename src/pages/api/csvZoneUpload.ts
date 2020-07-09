@@ -1,12 +1,12 @@
 import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { getUuidFromCookie, setCookieOnResponseObject } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { getUuidFromCookie } from '../../utils';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { CSV_ZONE_UPLOAD_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
-import { processFileUpload } from '../../utils/fileUpload';
+import { processFileUpload } from './apiUtils/fileUpload';
 import { NextRequestWithSession } from '../../interfaces';
 
 // The below 'config' needs to be exported for the formidable library to work.

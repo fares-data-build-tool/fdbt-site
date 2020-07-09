@@ -4,8 +4,8 @@ import { NextRequestWithSession } from '../../interfaces';
 import { ErrorSummary } from '../../components/ErrorSummary';
 import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { setCookieOnResponseObject, unescapeAndDecodeCookie } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { unescapeAndDecodeCookie } from '../../utils';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import {
     removeExcessWhiteSpace,
     checkProductNameIsValid,

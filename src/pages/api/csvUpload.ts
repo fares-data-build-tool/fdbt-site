@@ -1,11 +1,11 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { getUuidFromCookie, setCookieOnResponseObject, unescapeAndDecodeCookie } from '../../utils';
-import { redirectToError, redirectTo } from '../../utils/redirects';
+import { getUuidFromCookie, unescapeAndDecodeCookie } from '../../utils';
+import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
 import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE, INPUT_METHOD_COOKIE } from '../../constants';
 import { isSessionValid } from './service/validator';
-import { processFileUpload } from '../../utils/fileUpload';
+import { processFileUpload } from './apiUtils/fileUpload';
 import { NextRequestWithSession } from '../../interfaces';
 
 interface FareTriangleData {

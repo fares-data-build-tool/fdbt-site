@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { NextRequestWithSession, ErrorInfo } from '../../interfaces';
-import { setCookieOnResponseObject, validateNewPassword } from '../../utils';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { validateNewPassword } from '../../utils';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { confirmForgotPassword } from '../../data/cognito';
 

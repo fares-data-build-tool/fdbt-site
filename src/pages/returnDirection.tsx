@@ -9,7 +9,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, CustomAppProps, NextContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getUuidFromCookies, setCookieOnServerSide, getNocFromIdToken } from '../utils';
-import { redirectTo } from '../utils/redirects';
+import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Return Direction - Fares Data Build Tool';

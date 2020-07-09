@@ -1,6 +1,7 @@
 import { AppInitialProps } from 'next/app';
 import { NextPageContext, NextApiRequest } from 'next';
 import { IncomingMessage } from 'http';
+import { DocumentContext } from 'next/document';
 
 export interface ProductInfo {
     productName: string;
@@ -74,6 +75,11 @@ interface Session {
 export type NextContextWithSession = NextPageContext & {
     req: Session;
 };
+
+export type DocumentContextWithSession = DocumentContext & {
+    req: Session;
+};
+
 export type NextRequestWithSession = NextApiRequest & Session;
 
 export type IncomingMessageWithSession = IncomingMessage & Session;

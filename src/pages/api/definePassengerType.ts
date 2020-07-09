@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { isArray } from 'lodash';
 import { NextRequestWithSession } from '../../interfaces';
 import { getSessionAttributes, updateSessionAttribute } from '../../utils/sessions';
-import { redirectToError, redirectTo, redirectOnFareType } from '../../utils/redirects';
+import { redirectToError, redirectTo, redirectOnFareType } from './apiUtils';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 

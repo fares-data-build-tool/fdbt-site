@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { isArray } from 'util';
 import { NextRequestWithSession } from '../../interfaces';
 import { getSessionAttributes, updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
 

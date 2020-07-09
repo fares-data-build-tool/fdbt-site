@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { NextRequestWithSession } from '../../interfaces';
 import { checkEmailValid } from '../../utils';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { redirectTo, redirectToError } from './apiUtils';
 import { FORGOT_PASSWORD_COOKIE } from '../../constants/index';
 
 import { forgotPassword } from '../../data/cognito';

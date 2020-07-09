@@ -3,7 +3,7 @@ import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'js
 import { Request, Response, NextFunction, Express } from 'express';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
 import { updateSessionAttribute, getSessionAttributes } from '../../src/utils/sessions';
-import { signOutUser } from '../../src/utils';
+import { signOutUser } from '../../src/pages/api/apiUtils';
 
 import { CognitoIdToken, IncomingMessageWithSession } from '../../src/interfaces';
 import { initiateRefreshAuth } from '../../src/data/cognito';

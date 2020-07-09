@@ -2,8 +2,7 @@ import { NextApiResponse } from 'next';
 import { NextRequestWithSession } from '../../interfaces';
 import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
-import { setCookieOnResponseObject } from '../../utils';
-import { redirectTo, redirectToError } from '../../utils/redirects';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
 export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
