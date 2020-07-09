@@ -1,7 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
+import { NextApiResponse } from 'next';
 import { isArray } from 'util';
-import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession } from '../../interfaces';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 
@@ -10,23 +11,21 @@ interface ServiceList {
     error: boolean;
 }
 
-const setServiceListCookie = (
-    req: NextApiRequest,
-    res: NextApiResponse,
+const setServiceListAttribute = (
+    req: NextApiRequestWithSession,
     error?: boolean,
     checkedServiceList?: string[],
 ): void => {
     const serviceListObject: ServiceList = { error: false, selectedServices: [] };
 
-    setCookieOnResponseObject(
-        SERVICE_LIST_ATTRIBUTE,
-        JSON.stringify({ ...serviceListObject, selectedServices: checkedServiceList, error: !!error }),
-        req,
-        res,
-    );
+    updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, {
+        ...serviceListObject,
+        selectedServices: checkedServiceList,
+        error: !!error,
+    });
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';
     const selectAllText = 'Select All';
 
@@ -35,11 +34,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
-
-        if (!fareTypeObject || !fareTypeObject.fareType) {
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        console.log(fareType);
+        if (!fareType) {
             throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for serviceList API');
         }
 
@@ -50,14 +47,15 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const isSelected = selectAll === selectAllText;
 
         if (selectAll && queryString) {
-            setServiceListCookie(req, res);
+            setServiceListAttribute(req);
             redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
             return;
         }
 
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose at least one service from the options' });
-            setCookieOnResponseObject(SERVICE_LIST_ATTRIBUTE, cookieValue, req, res);
+            updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, {
+                errorMessage: 'Choose at least one service from the options',
+            });
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }
@@ -79,9 +77,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             checkedServiceList.push(data);
         });
 
-        setServiceListCookie(req, res, false, checkedServiceList);
+        setServiceListAttribute(req, false, checkedServiceList);
 
-        if (fareTypeObject.fareType === 'flatFare') {
+        if (fareType.fareType === 'flatFare') {
             redirectTo(res, '/productDetails');
             return;
         }

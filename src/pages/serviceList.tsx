@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+import { getSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_ATTRIBUTE } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
-import { ServicesInfo, CustomAppProps, ErrorInfo } from '../interfaces';
+import { ServicesInfo, CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 
@@ -102,9 +101,8 @@ const ServiceList = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
-    const cookies = parseCookies(ctx);
-    const serviceListCookie = cookies[SERVICE_LIST_ATTRIBUTE];
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceListProps }> => {
+    const serviceListInfo = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
     const nocCode = getNocFromIdToken(ctx);
 
     if (!nocCode) {
@@ -127,21 +125,18 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
 
     const error: ErrorInfo[] = [];
 
-    if (serviceListCookie) {
-        const cookieContent = JSON.parse(serviceListCookie);
-        if (cookieContent.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: cookieContent.errorMessage, id: errorId };
-            error.push(errorInfo);
-            return {
-                props: {
-                    service: {
-                        selectedServices: checkedServiceList,
-                    },
-                    buttonText,
-                    error,
+    if (serviceListInfo && serviceListInfo.errorMessage) {
+        const errorInfo: ErrorInfo = { errorMessage: serviceListInfo.errorMessage, id: errorId };
+        error.push(errorInfo);
+        return {
+            props: {
+                service: {
+                    selectedServices: checkedServiceList,
                 },
-            };
-        }
+                buttonText,
+                error,
+            },
+        };
     }
 
     return {

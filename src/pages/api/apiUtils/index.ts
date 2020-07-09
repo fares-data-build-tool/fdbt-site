@@ -3,8 +3,9 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
+import { getSessionAttribute } from '../../../utils/sessions';
 import { OPERATOR_COOKIE, FARE_TYPE_ATTRIBUTE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
-import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
+import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 
 type Req = NextApiRequest | Request;
@@ -52,13 +53,11 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
     redirectTo(res, '/error');
 };
 
-export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    const cookies = new Cookies(req, res);
-    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
-    const { fareType } = JSON.parse(fareTypeCookie);
+export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+    const fareTypeInfo = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-    if (fareType) {
-        switch (fareType) {
+    if (fareTypeInfo.fareType) {
+        switch (fareTypeInfo.fareType) {
             case 'period':
                 redirectTo(res, '/periodType');
                 return;
