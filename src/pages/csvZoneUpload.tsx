@@ -4,7 +4,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
-import { CSV_ZONE_UPLOAD_COOKIE } from '../constants';
+import { CSV_ZONE_UPLOAD_ATTRIBUTE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
@@ -37,7 +37,7 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): Reac
 
 export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
     const cookies = parseCookies(ctx);
-    const csvZoneUploadCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
+    const csvZoneUploadCookie = cookies[CSV_ZONE_UPLOAD_ATTRIBUTE];
 
     let csvZoneUpload;
 
@@ -65,7 +65,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
     };
 
     if (csvZoneUpload?.error) {
-        deleteCookieOnServerSide(ctx, CSV_ZONE_UPLOAD_COOKIE);
+        deleteCookieOnServerSide(ctx, CSV_ZONE_UPLOAD_ATTRIBUTE);
     }
 
     return uploadProps;

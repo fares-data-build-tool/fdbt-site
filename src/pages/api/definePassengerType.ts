@@ -9,7 +9,7 @@ import {
     redirectOnFareType,
     setCookieOnResponseObject,
 } from './apiUtils/index';
-import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
+import { PASSENGER_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export interface ExtractedValidationError {
@@ -108,8 +108,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         const cookies = new Cookies(req, res);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
         const { passengerType } = JSON.parse(passengerTypeCookie);
         const { fareType } = JSON.parse(fareTypeCookie);
 
@@ -135,12 +135,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
         if (errors.length === 0) {
             const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
-            setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+            setCookieOnResponseObject(PASSENGER_TYPE_ATTRIBUTE, passengerTypeCookieValue, req, res);
             redirectOnFareType(req, res);
             return;
         }
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
-        setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+        setCookieOnResponseObject(PASSENGER_TYPE_ATTRIBUTE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';

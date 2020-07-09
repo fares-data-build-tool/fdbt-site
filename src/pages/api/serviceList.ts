@@ -3,7 +3,7 @@ import Cookies from 'cookies';
 import { isArray } from 'util';
 import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
+import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 
 interface ServiceList {
     selectedServices: string[];
@@ -19,7 +19,7 @@ const setServiceListCookie = (
     const serviceListObject: ServiceList = { error: false, selectedServices: [] };
 
     setCookieOnResponseObject(
-        SERVICE_LIST_COOKIE,
+        SERVICE_LIST_ATTRIBUTE,
         JSON.stringify({ ...serviceListObject, selectedServices: checkedServiceList, error: !!error }),
         req,
         res,
@@ -36,11 +36,11 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
         if (!fareTypeObject || !fareTypeObject.fareType) {
-            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for serviceList API');
+            throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for serviceList API');
         }
 
         const refererUrl = req?.headers?.referer;
@@ -57,7 +57,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose at least one service from the options' });
-            setCookieOnResponseObject(SERVICE_LIST_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(SERVICE_LIST_ATTRIBUTE, cookieValue, req, res);
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }

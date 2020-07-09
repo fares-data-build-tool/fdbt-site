@@ -7,7 +7,7 @@ import {
     redirectOnFareType,
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
-import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
+import { PASSENGER_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -17,7 +17,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
 
         if (fareTypeCookie === '') {
             throw new Error('Necessary fare type cookie not found for passenger type page');
@@ -30,7 +30,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                 passengerType,
             });
 
-            setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(PASSENGER_TYPE_ATTRIBUTE, cookieValue, req, res);
 
             if (passengerType === 'anyone') {
                 redirectOnFareType(req, res);
@@ -43,7 +43,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const passengerTypeCookieValue = JSON.stringify({
             errorMessage: 'Choose a passenger type from the options',
         });
-        setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+        setCookieOnResponseObject(PASSENGER_TYPE_ATTRIBUTE, passengerTypeCookieValue, req, res);
         redirectTo(res, '/passengerType');
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';

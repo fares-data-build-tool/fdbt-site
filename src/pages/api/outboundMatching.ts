@@ -8,7 +8,7 @@ import {
 } from './apiUtils';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
+import { MATCHING_ATTRIBUTE, USER_DATA_BUCKET_NAME } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 
@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const outbound = { error: true, selectedFareStages: selectedStagesList };
 
-            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
+            setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ outbound }), req, res);
             redirectTo(res, '/outboundMatching');
             return;
         }
@@ -67,7 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         await putOutboundMatchingDataInS3(matchedFareZones, uuid);
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound: { error: false } }), req, res);
+        setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ outbound: { error: false } }), req, res);
 
         redirectTo(res, '/inboundMatching');
     } catch (error) {

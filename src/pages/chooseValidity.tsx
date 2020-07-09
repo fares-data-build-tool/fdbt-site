@@ -3,7 +3,7 @@ import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
-import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps } from '../interfaces';
 
@@ -77,9 +77,9 @@ const ChooseValidity = ({
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
-    const productCookie = cookies[PRODUCT_DETAILS_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const validityCookie = cookies[DAYS_VALID_COOKIE];
+    const productCookie = cookies[PRODUCT_DETAILS_ATTRIBUTE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
+    const validityCookie = cookies[DAYS_VALID_ATTRIBUTE];
 
     if (!productCookie) {
         throw new Error('Failed to retrieve productCookie info for choose validity page.');

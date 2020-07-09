@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -70,7 +70,7 @@ const SingleDirection = ({
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: DirectionProps }> => {
     const cookies = parseCookies(ctx);
-    const journeyCookie = cookies[JOURNEY_COOKIE];
+    const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
     const error: ErrorInfo[] = [];
     if (journeyCookie) {
         const journeyInfo = JSON.parse(journeyCookie);
@@ -80,9 +80,9 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         }
     }
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceCookie = cookies[SERVICE_COOKIE];
-    const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
+    const serviceCookie = cookies[SERVICE_ATTRIBUTE];
+    const fareTypeCookie = cookies[FARE_TYPE_ATTRIBUTE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx);
 
     if (!operatorCookie || !serviceCookie || !fareTypeCookie || !passengerTypeCookie || !nocCode) {

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { setCookieOnResponseObject, redirectTo, redirectToError, getUuidFromCookie } from './apiUtils/index';
-import { JOURNEY_COOKIE } from '../../constants/index';
+import { JOURNEY_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -13,7 +13,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         if (!directionJourneyPattern) {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose a direction from the options' });
-            setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(JOURNEY_ATTRIBUTE, cookieValue, req, res);
             redirectTo(res, '/singleDirection');
             return;
         }
@@ -25,7 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookieValue = JSON.stringify({ directionJourneyPattern, uuid });
-        setCookieOnResponseObject(JOURNEY_COOKIE, cookieValue, req, res);
+        setCookieOnResponseObject(JOURNEY_ATTRIBUTE, cookieValue, req, res);
 
         redirectTo(res, '/inputMethod');
     } catch (error) {

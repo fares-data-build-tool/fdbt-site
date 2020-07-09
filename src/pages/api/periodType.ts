@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { PERIOD_TYPE_COOKIE } from '../../constants';
+import { PERIOD_TYPE_ATTRIBUTE } from '../../constants';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
@@ -13,7 +13,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const { periodType } = req.body;
             const uuid = getUuidFromCookie(req, res);
             const periodTypeObject = { periodTypeName: periodType, uuid };
-            setCookieOnResponseObject(PERIOD_TYPE_COOKIE, JSON.stringify(periodTypeObject), req, res);
+            setCookieOnResponseObject(PERIOD_TYPE_ATTRIBUTE, JSON.stringify(periodTypeObject), req, res);
 
             switch (periodType) {
                 case 'periodGeoZone':
@@ -31,7 +31,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose an option regarding your period ticket type',
             });
-            setCookieOnResponseObject(PERIOD_TYPE_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(PERIOD_TYPE_ATTRIBUTE, cookieValue, req, res);
             redirectTo(res, '/periodType');
         }
     } catch (error) {

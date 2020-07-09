@@ -1,4 +1,4 @@
-import { IncomingMessageWithSession } from '../interfaces';
+import { IncomingMessageWithSession, NextApiRequestWithSession } from '../interfaces';
 
 export const createSession = (req: IncomingMessageWithSession): void => {
     req.session = {};
@@ -15,7 +15,10 @@ export const updateSessionAttribute = (
     req.session[attributeName] = attributeValue;
 };
 
-export const getSessionAttribute = (req: IncomingMessageWithSession, attribute: string): any => {
+export const getSessionAttribute = (
+    req: IncomingMessageWithSession | NextApiRequestWithSession,
+    attribute: string,
+): any => {
     if (!req.session) {
         return undefined;
     }

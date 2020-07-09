@@ -6,22 +6,22 @@ import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
-    MULTIPLE_PRODUCT_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
     OPERATOR_COOKIE,
-    FARE_TYPE_COOKIE,
-    INPUT_METHOD_COOKIE,
-    SERVICE_COOKIE,
-    JOURNEY_COOKIE,
-    PASSENGER_TYPE_COOKIE,
-    FARE_STAGES_COOKIE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
-    DAYS_VALID_COOKIE,
-    PERIOD_TYPE_COOKIE,
-    SERVICE_LIST_COOKIE,
+    FARE_TYPE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
+    CSV_ZONE_UPLOAD_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    DAYS_VALID_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
     ID_TOKEN_COOKIE,
-    USER_COOKIE,
+    USER_ATTRIBUTE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -134,59 +134,59 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += fareType
-        ? `${FARE_TYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
+        ? `${FARE_TYPE_ATTRIBUTE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
         : '';
 
     cookieString += inputMethod
-        ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
+        ? `${INPUT_METHOD_ATTRIBUTE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
         : '';
 
-    cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
+    cookieString += passengerType ? `${PASSENGER_TYPE_ATTRIBUTE}=${encodeURI(JSON.stringify(passengerType))};` : '';
 
     cookieString += serviceLineName
-        ? `${SERVICE_COOKIE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`
+        ? `${SERVICE_ATTRIBUTE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`
         : '';
 
     cookieString +=
         startPoint && endPoint
-            ? `${JOURNEY_COOKIE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22inboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22outboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
+            ? `${JOURNEY_ATTRIBUTE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22inboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22outboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
             : '';
 
     cookieString += productName
-        ? `${PRODUCT_DETAILS_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
+        ? `${PRODUCT_DETAILS_ATTRIBUTE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
         : '';
 
     cookieString += fareZoneName
-        ? `${CSV_ZONE_UPLOAD_COOKIE}=%7B%22fareZoneName%22%3A%22${fareZoneName}%22%2C%22uuid%22%3A%22${csvUploadZoneUuid}%22%7D;`
+        ? `${CSV_ZONE_UPLOAD_ATTRIBUTE}=%7B%22fareZoneName%22%3A%22${fareZoneName}%22%2C%22uuid%22%3A%22${csvUploadZoneUuid}%22%7D;`
         : '';
 
     cookieString += daysValid
-        ? `${DAYS_VALID_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
+        ? `${DAYS_VALID_ATTRIBUTE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
         : '';
 
-    cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
+    cookieString += fareStages ? `${FARE_STAGES_ATTRIBUTE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += periodTypeName
-        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
+        ? `${PERIOD_TYPE_ATTRIBUTE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += numberOfProducts
-        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
+        ? `${NUMBER_OF_PRODUCTS_ATTRIBUTE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += multipleProducts
-        ? `${MULTIPLE_PRODUCT_COOKIE}=${encodeURI(JSON.stringify(multipleProducts))};`
+        ? `${MULTIPLE_PRODUCT_ATTRIBUTE}=${encodeURI(JSON.stringify(multipleProducts))};`
         : '';
 
     cookieString += selectedServices
-        ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
+        ? `${SERVICE_LIST_ATTRIBUTE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
               selectedServices,
           )}%7D;`
         : '';
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
 
-    cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
+    cookieString += userCookieValue ? `${USER_ATTRIBUTE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
 
     const req = mockRequest({
         connection: {

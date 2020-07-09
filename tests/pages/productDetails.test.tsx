@@ -37,7 +37,7 @@ describe('pages', () => {
                 expect(result.props.hintText).toBe('Multiple Services');
             });
 
-            it('should throw an error when the CSV_ZONE_UPLOAD_COOKIE and SERVICE_LIST_COOKIE are missing', () => {
+            it('should throw an error when the CSV_ZONE_UPLOAD_ATTRIBUTE and SERVICE_LIST_ATTRIBUTE are missing', () => {
                 const ctx = getMockContext({
                     cookies: { fareZoneName: null, selectedServices: null, passengerType: 'Adult' },
                 });

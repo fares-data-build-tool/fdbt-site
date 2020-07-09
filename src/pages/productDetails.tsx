@@ -5,10 +5,10 @@ import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    SERVICE_LIST_COOKIE,
-    PASSENGER_TYPE_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    CSV_ZONE_UPLOAD_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants';
 import { ProductInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -112,11 +112,11 @@ const ProductDetails = ({
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
-    const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
+    const productDetailsCookie = cookies[PRODUCT_DETAILS_ATTRIBUTE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
-    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
+    const zoneCookie = cookies[CSV_ZONE_UPLOAD_ATTRIBUTE];
+    const serviceListCookie = cookies[SERVICE_LIST_ATTRIBUTE];
 
     let props = {};
 

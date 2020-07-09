@@ -5,7 +5,7 @@ import { ErrorInfo, CustomAppProps } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { FORGOT_PASSWORD_COOKIE } from '../constants';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Forgot Password - Fares data build tool';
@@ -77,7 +77,7 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ForgotEmailProps } => {
     const cookies = parseCookies(ctx);
-    const forgotPasswordCookie = cookies[FORGOT_PASSWORD_COOKIE];
+    const forgotPasswordCookie = cookies[FORGOT_PASSWORD_ATTRIBUTE];
 
     if (forgotPasswordCookie) {
         const forgotPasswordInfo = JSON.parse(forgotPasswordCookie);

@@ -7,7 +7,7 @@ import {
     redirectTo,
     unescapeAndDecodeCookie,
 } from './apiUtils/index';
-import { FARE_TYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
@@ -19,7 +19,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         if (!service) {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose a service from the options' });
-            setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+            setCookieOnResponseObject(SERVICE_ATTRIBUTE, cookieValue, req, res);
             redirectTo(res, '/service');
             return;
         }
@@ -31,10 +31,10 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         }
 
         const cookieValue = JSON.stringify({ service, uuid });
-        setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+        setCookieOnResponseObject(SERVICE_ATTRIBUTE, cookieValue, req, res);
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
 
         if (fareTypeObject && fareTypeObject.fareType === 'return') {

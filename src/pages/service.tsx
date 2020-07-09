@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getNocFromIdToken } from '../utils';
@@ -72,7 +72,7 @@ const Service = ({
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
-    const serviceCookie = cookies[SERVICE_COOKIE];
+    const serviceCookie = cookies[SERVICE_ATTRIBUTE];
     const error: ErrorInfo[] = [];
     if (serviceCookie) {
         const serviceInfo = JSON.parse(serviceCookie);
@@ -83,7 +83,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx);
 
     if (!operatorCookie || !passengerTypeCookie || !nocCode) {

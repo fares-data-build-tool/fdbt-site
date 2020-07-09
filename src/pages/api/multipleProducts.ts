@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { ErrorSummary } from '../../components/ErrorSummary';
-import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { redirectToError, setCookieOnResponseObject, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import {
@@ -121,7 +121,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
         const cookies = new Cookies(req, res);
-        const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_COOKIE);
+        const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_ATTRIBUTE);
         const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
         const numberOfReceivedProducts: number = Object.entries(req.body).length / 3;
 
@@ -162,14 +162,14 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             const errors: ErrorSummary = getErrorsForCookie(fullValidationResult);
             const cookieContent = JSON.stringify({ ...errors, userInput: multipleProducts });
 
-            setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, cookieContent, req, res);
+            setCookieOnResponseObject(MULTIPLE_PRODUCT_ATTRIBUTE, cookieContent, req, res);
             redirectTo(res, '/multipleProducts');
             return;
         }
 
         const validInputs = JSON.stringify(multipleProducts);
 
-        setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, validInputs, req, res);
+        setCookieOnResponseObject(MULTIPLE_PRODUCT_ATTRIBUTE, validInputs, req, res);
 
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {

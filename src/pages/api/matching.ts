@@ -15,9 +15,9 @@ import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import {
     MATCHING_DATA_BUCKET_NAME,
-    MATCHING_COOKIE,
-    FARE_TYPE_COOKIE,
-    PASSENGER_TYPE_COOKIE,
+    MATCHING_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
     ID_TOKEN_COOKIE,
 } from '../../constants';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
@@ -130,7 +130,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const selectedStagesList: {}[] = getSelectedStages(req);
 
             setCookieOnResponseObject(
-                MATCHING_COOKIE,
+                MATCHING_ATTRIBUTE,
                 JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
                 req,
                 res,
@@ -144,8 +144,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const uuid = getUuidFromCookie(req, res);
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
@@ -162,7 +162,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             uuid,
         );
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ error: false }), req, res);
+        setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ error: false }), req, res);
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');

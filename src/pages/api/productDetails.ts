@@ -11,12 +11,12 @@ import {
 import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
 import {
-    PRODUCT_DETAILS_COOKIE,
-    FARE_TYPE_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     OPERATOR_COOKIE,
-    SERVICE_LIST_COOKIE,
+    SERVICE_LIST_ATTRIBUTE,
     MATCHING_DATA_BUCKET_NAME,
-    PASSENGER_TYPE_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 import { putStringInS3 } from '../../data/s3';
@@ -48,11 +48,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
         const { fareType } = JSON.parse(fareTypeCookie);
 
         if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {
-            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for productDetails API');
+            throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
         }
 
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
@@ -62,19 +62,19 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
             const invalidInputs = JSON.stringify(productDetails);
 
-            setCookieOnResponseObject(PRODUCT_DETAILS_COOKIE, invalidInputs, req, res);
+            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, invalidInputs, req, res);
             redirectTo(res, '/productDetails');
             return;
         }
 
         if (fareType === 'period') {
             const validInputs = JSON.stringify(productDetails);
-            setCookieOnResponseObject(PRODUCT_DETAILS_COOKIE, validInputs, req, res);
+            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, validInputs, req, res);
             redirectTo(res, '/chooseValidity');
         } else if (fareType === 'flatFare') {
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
+            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req, res);
 
             if (!serviceListCookie || !passengerTypeCookie || !nocCode) {

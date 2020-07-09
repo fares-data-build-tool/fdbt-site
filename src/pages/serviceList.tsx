@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_COOKIE } from '../constants';
+import { SERVICE_LIST_ATTRIBUTE } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServicesInfo, CustomAppProps, ErrorInfo } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
@@ -104,7 +104,7 @@ const ServiceList = ({
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceListProps }> => {
     const cookies = parseCookies(ctx);
-    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
+    const serviceListCookie = cookies[SERVICE_LIST_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx);
 
     if (!nocCode) {

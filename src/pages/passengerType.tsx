@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE } from '../constants';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
@@ -93,13 +93,13 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[PASSENGER_TYPE_COOKIE]) {
-        const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
+    if (cookies[PASSENGER_TYPE_ATTRIBUTE]) {
+        const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
         const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
 
         if (parsedPassengerTypeCookie.errorMessage) {
             const { errorMessage } = parsedPassengerTypeCookie;
-            deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
+            deleteCookieOnServerSide(ctx, PASSENGER_TYPE_ATTRIBUTE);
             return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }

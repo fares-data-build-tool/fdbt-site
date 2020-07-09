@@ -2,11 +2,12 @@ import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { v4 as uuidv4 } from 'uuid';
+import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
+import { setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 
@@ -106,7 +107,7 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
@@ -124,15 +125,15 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     console.info('transaction start', { uuid });
 
-    if (cookies[FARE_TYPE_COOKIE]) {
-        const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-        const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
+    const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
-        if (parsedFareTypeCookie.errorMessage) {
-            const { errorMessage } = parsedFareTypeCookie;
-            deleteCookieOnServerSide(ctx, FARE_TYPE_COOKIE);
-            return { props: { operator: operator.operatorPublicName, errors: [{ errorMessage, id: errorId }] } };
-        }
+    if (fareTypeInfo && fareTypeInfo.errorMessage) {
+        return {
+            props: {
+                operator: operator.operatorPublicName,
+                errors: [{ errorMessage: fareTypeInfo.errorMessage, id: errorId }],
+            },
+        };
     }
 
     return { props: { operator: operator.operatorPublicName } };

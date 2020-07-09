@@ -2,11 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import _ from 'lodash';
 import {
-    JOURNEY_COOKIE,
+    JOURNEY_ATTRIBUTE,
     USER_DATA_BUCKET_NAME,
-    PRICE_ENTRY_INPUTS_COOKIE,
-    PRICE_ENTRY_ERRORS_COOKIE,
-    INPUT_METHOD_COOKIE,
+    PRICE_ENTRY_INPUTS_ATTRIBUTE,
+    PRICE_ENTRY_ERRORS_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
 } from '../../constants/index';
 import {
     getUuidFromCookie,
@@ -138,24 +138,24 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (errorCheck.errorInformation.length > 0) {
             // two cookies as if there are too many fare stages, cookie gets too large
             const inputCookieValue = JSON.stringify(errorCheck.inputs);
-            setCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, inputCookieValue, req, res);
+            setCookieOnResponseObject(PRICE_ENTRY_INPUTS_ATTRIBUTE, inputCookieValue, req, res);
             const errorCookieValue = JSON.stringify(errorCheck.errorInformation);
-            setCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, errorCookieValue, req, res);
+            setCookieOnResponseObject(PRICE_ENTRY_ERRORS_ATTRIBUTE, errorCookieValue, req, res);
             redirectTo(res, '/priceEntry');
             return;
         }
-        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_COOKIE, req, res);
-        deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_COOKIE, req, res);
+        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_ATTRIBUTE, req, res);
+        deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_ATTRIBUTE, req, res);
 
         const mappedData = faresTriangleDataMapper(req);
         const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));
 
         const cookies = new Cookies(req, res);
-        const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
+        const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_ATTRIBUTE);
         const journeyObject = JSON.parse(journeyCookie);
 
-        setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'manual' }), req, res);
+        setCookieOnResponseObject(INPUT_METHOD_ATTRIBUTE, JSON.stringify({ inputMethod: 'manual' }), req, res);
 
         if (journeyObject?.outboundJourney) {
             redirectTo(res, '/outboundMatching');

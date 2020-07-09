@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { FORGOT_PASSWORD_COOKIE } from '../constants';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps } from '../interfaces';
 
@@ -48,7 +48,7 @@ const ResetConfirmation = ({ email, csrfToken }: ResetConfirmationProps & Custom
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ResetConfirmationProps } => {
     const cookies = parseCookies(ctx);
-    const forgotPasswordCookie = cookies[FORGOT_PASSWORD_COOKIE];
+    const forgotPasswordCookie = cookies[FORGOT_PASSWORD_ATTRIBUTE];
 
     // error in case user navigates to page manually or without cookie
     if (!forgotPasswordCookie) {

@@ -5,10 +5,10 @@ import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import { FullColumnLayout } from '../layout/Layout';
 import {
-    MULTIPLE_PRODUCT_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_COOKIE,
-    PASSENGER_TYPE_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
@@ -166,9 +166,9 @@ const MultipleProductValidity = ({
 export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
-    const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
+    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
+    const multipleProductCookie = cookies[MULTIPLE_PRODUCT_ATTRIBUTE];
 
     if (!operatorCookie || !numberOfProductsCookie || !multipleProductCookie || !passengerTypeCookie) {
         throw new Error('Necessary cookies not found to display the multiple product validity page');
