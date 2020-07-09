@@ -1,11 +1,11 @@
 import { IncomingMessageWithSession, NextApiRequestWithSession } from '../interfaces';
 
-export const createSession = (req: IncomingMessageWithSession): void => {
+export const createSession = (req: IncomingMessageWithSession | NextApiRequestWithSession): void => {
     req.session = {};
 };
 
 export const updateSessionAttribute = (
-    req: IncomingMessageWithSession,
+    req: IncomingMessageWithSession | NextApiRequestWithSession,
     attributeName: string,
     attributeValue: any,
 ): void => {
@@ -17,19 +17,19 @@ export const updateSessionAttribute = (
 
 export const getSessionAttribute = (
     req: IncomingMessageWithSession | NextApiRequestWithSession,
-    attribute: string,
+    attributeName: string,
 ): any => {
     if (!req.session) {
         return undefined;
     }
-    return req.session[attribute];
+    return req.session[attributeName];
 };
 
-export const overwriteSession = (req: IncomingMessageWithSession, session: {}): void => {
+export const overwriteSession = (req: IncomingMessageWithSession | NextApiRequestWithSession, session: {}): void => {
     req.session = session;
 };
 
-export const destroySession = (req: IncomingMessageWithSession): void => {
+export const destroySession = (req: IncomingMessageWithSession | NextApiRequestWithSession): void => {
     req.session.destroy(() => {
         throw new Error('Could not destroy session');
     });

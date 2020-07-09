@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { NextPageContext } from 'next';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
+import { NextPageContextWithSession, ErrorInfo, Breadcrumb } from '../../src/interfaces/index';
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
@@ -26,7 +26,6 @@ import {
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo, Breadcrumb } from '../../src/interfaces';
 
 interface GetMockContextInput {
     cookies?: any;
@@ -200,6 +199,7 @@ export const getMockRequestAndResponse = ({
             ...requestHeaders,
         },
         cookies: cookieValues,
+        session: {},
     });
 
     if (body) {
@@ -217,7 +217,7 @@ export const getMockContext = ({
     mockEndFn = jest.fn(),
     isLoggedin = true,
     url = null,
-}: GetMockContextInput = {}): NextPageContext => {
+}: GetMockContextInput = {}): NextPageContextWithSession => {
     const { req, res } = getMockRequestAndResponse({
         cookieValues: cookies,
         body,
@@ -229,7 +229,7 @@ export const getMockContext = ({
         url,
     });
 
-    const ctx: NextPageContext = {
+    const ctx: NextPageContextWithSession = {
         res,
         req,
         pathname: '',

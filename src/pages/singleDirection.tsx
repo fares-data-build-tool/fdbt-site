@@ -3,7 +3,13 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import {
+    OPERATOR_COOKIE,
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+} from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
