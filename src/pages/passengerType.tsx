@@ -1,13 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPE_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';
@@ -90,18 +88,11 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (cookies[PASSENGER_TYPE_ATTRIBUTE]) {
-        const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
-        const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
-
-        if (parsedPassengerTypeCookie.errorMessage) {
-            const { errorMessage } = parsedPassengerTypeCookie;
-            deleteCookieOnServerSide(ctx, PASSENGER_TYPE_ATTRIBUTE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
+    if (passengerTypeInfo && passengerTypeInfo.errorMessage) {
+        return { props: { errors: [{ errorMessage: passengerTypeInfo.errorMessage, id: errorId }] } };
     }
 
     return { props: {} };
