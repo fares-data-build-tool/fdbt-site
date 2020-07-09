@@ -70,8 +70,8 @@ export interface Breadcrumb {
     show: boolean;
 }
 
-interface Session {
-    session: { [key: string]: any };
+export interface Session {
+    session: Express.Session;
 }
 
 export type NextApiRequestWithSession = NextApiRequest & Session;
