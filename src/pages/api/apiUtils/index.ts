@@ -4,8 +4,9 @@ import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, FARE_TYPE_ATTRIBUTE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
-import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
+import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
+import { getSessionAttribute } from '../../../utils/sessions';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -52,10 +53,8 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
     redirectTo(res, '/error');
 };
 
-export const redirectOnFareType = (req: NextApiRequest, res: NextApiResponse): void => {
-    const cookies = new Cookies(req, res);
-    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
-    const { fareType } = JSON.parse(fareTypeCookie);
+export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+    const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
     if (fareType) {
         switch (fareType) {

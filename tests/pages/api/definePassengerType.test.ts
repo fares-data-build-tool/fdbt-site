@@ -2,9 +2,9 @@ import definePassengerType, {
     passengerTypeDetailsSchema,
     formatRequestBody,
 } from '../../../src/pages/api/definePassengerType';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
+import * as sessionUtils from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { PASSENGER_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
@@ -99,7 +99,7 @@ describe('definePassengerType', () => {
     });
 
     it('should set the PASSENGER_TYPE_ATTRIBUTE and redirect depending on fare type when no errors are found', async () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+        const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
         const mockPassengerTypeDetails = {
             ageRange: 'Yes',
             ageRangeMin: '5',
@@ -107,19 +107,21 @@ describe('definePassengerType', () => {
             proof: 'Yes',
             proofDocuments: ['Membership Card', 'Student Card'],
         };
-        const mockPassengerTypeCookieValue = { passengerType: 'Adult', ...mockPassengerTypeDetails };
+        const mockPassengerTypeAttributes = { passengerType: 'Adult', ...mockPassengerTypeDetails };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'single' },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+            },
             body: mockPassengerTypeDetails,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
         await definePassengerType(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            PASSENGER_TYPE_ATTRIBUTE,
-            JSON.stringify(mockPassengerTypeCookieValue),
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
-            res,
+            PASSENGER_TYPE_ATTRIBUTE,
+            mockPassengerTypeAttributes,
         );
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/service',
@@ -171,23 +173,25 @@ describe('definePassengerType', () => {
     ])(
         'should set the PASSENGER_TYPE_ATTRIBUTE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
         async (mockUserInput, errors) => {
-            const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+            const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
             const mockPassengerTypeCookieValue = {
                 errors,
                 passengerType: 'Adult',
             };
             const { req, res } = getMockRequestAndResponse({
-                cookieValues: {},
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+                    [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+                },
                 body: mockUserInput,
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
             });
             await definePassengerType(req, res);
-            expect(setCookieSpy).toHaveBeenCalledWith(
-                PASSENGER_TYPE_ATTRIBUTE,
-                JSON.stringify(mockPassengerTypeCookieValue),
+            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
                 req,
-                res,
+                PASSENGER_TYPE_ATTRIBUTE,
+                mockPassengerTypeCookieValue,
             );
             expect(writeHeadMock).toBeCalledWith(302, {
                 Location: '/definePassengerType',

@@ -18,6 +18,7 @@ import {
     getMockContext,
 } from '../testData/mockData';
 import { ExtractedValidationError } from '../../src/pages/api/definePassengerType';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('getFieldsets', () => {
@@ -152,22 +153,15 @@ describe('pages', () => {
     });
 
     describe('getServerSideProps', () => {
-        it('should throw an error if there is no PASSENGER_TYPE_ATTRIBUTE', () => {
-            const ctx = getMockContext({ cookies: { passengerType: null } });
-            expect(() => getServerSideProps(ctx)).toThrow(
-                'Failed to retrieve PASSENGER_TYPE_ATTRIBUTE for the define passenger type page',
-            );
-        });
-
         it('should return props containing no errors and valid fieldsets when no errors are present', () => {
-            const ctx = getMockContext();
+            const ctx = getMockContext({ session: { [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' } } });
             const result = getServerSideProps(ctx);
             expect(result.props.combinedErrors).toEqual([]);
             expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
         });
 
         it('should return props containing errors and valid fieldsets when radio and input errors are present', () => {
-            const mockPassengerTypeCookieValue = {
+            const mockPassengerTypeAttributes = {
                 passengerType: 'Adult',
                 errors: [
                     { input: 'ageRangeMin', message: 'Enter a minimum or maximum age' },
@@ -175,7 +169,9 @@ describe('pages', () => {
                     { input: 'proof', message: 'Choose one of the options below' },
                 ],
             };
-            const ctx = getMockContext({ cookies: { passengerType: mockPassengerTypeCookieValue } });
+            const ctx = getMockContext({
+                session: { [PASSENGER_TYPE_ATTRIBUTE]: mockPassengerTypeAttributes },
+            });
             const result = getServerSideProps(ctx);
             expect(result.props.combinedErrors).toEqual(mockCombinedErrorInfoForRadioAndInputErrors);
             expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors);

@@ -28,6 +28,7 @@ import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
 
 interface GetMockContextInput {
+    session?: any;
     cookies?: any;
     body?: any;
     url?: any;
@@ -38,6 +39,7 @@ interface GetMockContextInput {
 }
 
 interface GetMockRequestAndResponse {
+    session?: any;
     cookieValues?: any;
     body?: any;
     uuid?: any;
@@ -49,6 +51,7 @@ interface GetMockRequestAndResponse {
 }
 
 export const getMockRequestAndResponse = ({
+    session = {},
     cookieValues = {},
     body = null,
     uuid = {},
@@ -199,7 +202,7 @@ export const getMockRequestAndResponse = ({
             ...requestHeaders,
         },
         cookies: cookieValues,
-        session: {},
+        session,
     });
 
     if (body) {
@@ -210,6 +213,7 @@ export const getMockRequestAndResponse = ({
 };
 
 export const getMockContext = ({
+    session = {},
     cookies = {},
     body = null,
     uuid = {},
@@ -219,6 +223,7 @@ export const getMockContext = ({
     url = null,
 }: GetMockContextInput = {}): NextPageContextWithSession => {
     const { req, res } = getMockRequestAndResponse({
+        session,
         cookieValues: cookies,
         body,
         uuid,
