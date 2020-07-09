@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { ExtractedValidationError } from './api/definePassengerType';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
@@ -185,11 +184,10 @@ const DefinePassengerType = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: DefinePassengerTypeProps } => {
-    const cookies = parseCookies(ctx);
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePassengerTypeProps } => {
+    const { passengerType, errors } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (!passengerTypeCookie) {
+    if (!passengerType) {
         throw new Error('Failed to retrieve PASSENGER_TYPE_ATTRIBUTE for the define passenger type page');
     }
 
@@ -201,11 +199,8 @@ export const getServerSideProps = (ctx: NextPageContext): { props: DefinePasseng
         proofSelectInputError: [],
     };
 
-    const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
-    if (parsedPassengerTypeCookie.errors) {
-        parsedPassengerTypeCookie.errors.forEach((error: ExtractedValidationError) =>
-            collectErrors(error, collectedErrors),
-        );
+    if (errors) {
+        errors.forEach((error: ExtractedValidationError) => collectErrors(error, collectedErrors));
         collectedErrors.combinedErrors = collectedErrors.ageRangeRadioError.concat(
             collectedErrors.proofSelectRadioError,
             collectedErrors.ageRangeInputErrors,

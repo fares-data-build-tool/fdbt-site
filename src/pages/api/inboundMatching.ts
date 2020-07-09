@@ -14,7 +14,12 @@ import { Stop } from '../../data/auroradb';
 import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, ID_TOKEN_COOKIE } from '../../constants';
+import {
+    MATCHING_DATA_BUCKET_NAME,
+    MATCHING_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    ID_TOKEN_COOKIE,
+} from '../../constants';
 import { Price } from '../../interfaces/matchingInterface';
 
 interface FareZones {

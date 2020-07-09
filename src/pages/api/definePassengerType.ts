@@ -1,14 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import * as yup from 'yup';
 import { isArray } from 'lodash';
-import {
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-    redirectOnFareType,
-    setCookieOnResponseObject,
-} from './apiUtils/index';
+import { NextApiRequestWithSession } from '../../interfaces/index';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { redirectToError, redirectTo, redirectOnFareType } from './apiUtils/index';
 import { PASSENGER_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
@@ -101,20 +96,17 @@ export const formatRequestBody = (req: NextApiRequest): {} => {
     return filteredReqBody;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
-        const { passengerType } = JSON.parse(passengerTypeCookie);
-        const { fareType } = JSON.parse(fareTypeCookie);
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const { passengerType } = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
 
         if (!passengerType || !fareType) {
-            throw new Error('Failed to retrieve the necessary cookies for the definePassengerType API');
+            throw new Error('Failed to retrieve the necessary information for the definePassengerType API');
         }
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');
@@ -134,13 +126,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }));
         }
         if (errors.length === 0) {
-            const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
-            setCookieOnResponseObject(PASSENGER_TYPE_ATTRIBUTE, passengerTypeCookieValue, req, res);
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType, ...filteredReqBody });
             redirectOnFareType(req, res);
             return;
         }
-        const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
-        setCookieOnResponseObject(PASSENGER_TYPE_ATTRIBUTE, passengerTypeCookieValue, req, res);
+        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { errors, passengerType });
         redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';
