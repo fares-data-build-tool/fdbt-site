@@ -17,7 +17,7 @@ export const updateSessionAttribute = (
 
 export const getSessionAttribute = (
     req: IncomingMessageWithSession | NextApiRequestWithSession,
-    attributeName: string,
+    attribute: string,
 ): any => {
     // if (!req.session) {
     //     return undefined;
