@@ -3,7 +3,7 @@ import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { NextContextWithSession } from '../interfaces';
 import { deleteCookieOnServerSide } from '../utils';
-import { USER_COOKIE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants';
 
 const title = 'Password Updated - Fares Data Build Tool';
 const description = 'Password Updated page of the Fares Data Build Tool';
@@ -31,13 +31,13 @@ const PasswordUpdated = ({ redirectTo }: PasswordUpdatedProps): ReactElement => 
 
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
+    const userCookie = cookies[USER_ATTRIBUTE];
     let redirectFrom = '';
     if (userCookie) {
         redirectFrom = JSON.parse(userCookie).redirectFrom;
     }
     const redirectTo = redirectFrom && redirectFrom === '/resetPassword' ? '/login' : '/account';
-    deleteCookieOnServerSide(ctx, USER_COOKIE);
+    deleteCookieOnServerSide(ctx, USER_ATTRIBUTE);
     return { props: { redirectTo } };
 };
 

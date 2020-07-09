@@ -3,11 +3,11 @@ import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import { NextContextWithSession, ProductInfo, CustomAppProps } from '../interfaces';
 import {
-    OPERATOR_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    SERVICE_LIST_COOKIE,
-    PASSENGER_TYPE_COOKIE,
+    OPERATOR_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    CSV_ZONE_UPLOAD_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttributes } from '../utils/sessions';
@@ -111,11 +111,11 @@ const ProductDetails = ({
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: ProductDetailsProps } => {
     const productDetailsAttributes = getSessionAttributes(ctx.req, [
-        PRODUCT_DETAILS_COOKIE,
-        OPERATOR_COOKIE,
-        PASSENGER_TYPE_COOKIE,
-        CSV_ZONE_UPLOAD_COOKIE,
-        SERVICE_LIST_COOKIE,
+        PRODUCT_DETAILS_ATTRIBUTE,
+        OPERATOR_ATTRIBUTE,
+        PASSENGER_TYPE_ATTRIBUTE,
+        CSV_ZONE_UPLOAD_ATTRIBUTE,
+        SERVICE_LIST_ATTRIBUTE,
     ]);
 
     const {

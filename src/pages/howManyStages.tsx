@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { NUMBER_OF_STAGES_COOKIE } from '../constants';
+import { NUMBER_OF_STAGES_ATTRIBUTE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -80,13 +80,13 @@ const HowManyStages = ({ errors = [], csrfToken }: HowManyStagesProps & CustomAp
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[NUMBER_OF_STAGES_COOKIE]) {
-        const numberOfFareStagesCookie = cookies[NUMBER_OF_STAGES_COOKIE];
+    if (cookies[NUMBER_OF_STAGES_ATTRIBUTE]) {
+        const numberOfFareStagesCookie = cookies[NUMBER_OF_STAGES_ATTRIBUTE];
         const parsedNumberOfFareStagesCookie = JSON.parse(numberOfFareStagesCookie);
 
         if (parsedNumberOfFareStagesCookie.errorMessage) {
             const { errorMessage } = parsedNumberOfFareStagesCookie;
-            deleteCookieOnServerSide(ctx, NUMBER_OF_STAGES_COOKIE);
+            deleteCookieOnServerSide(ctx, NUMBER_OF_STAGES_ATTRIBUTE);
             return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }

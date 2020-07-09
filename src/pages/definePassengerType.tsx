@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE } from '../constants';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { ExtractedValidationError } from './api/definePassengerType';
@@ -186,10 +186,10 @@ const DefinePassengerType = ({
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: DefinePassengerTypeProps } => {
     const cookies = parseCookies(ctx);
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
+    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
 
     if (!passengerTypeCookie) {
-        throw new Error('Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page');
+        throw new Error('Failed to retrieve PASSENGER_TYPE_ATTRIBUTE for the define passenger type page');
     }
 
     const collectedErrors: ErrorCollection = {

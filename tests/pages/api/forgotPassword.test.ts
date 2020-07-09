@@ -1,5 +1,5 @@
 import * as auth from '../../../src/data/cognito';
-import { FORGOT_PASSWORD_COOKIE } from '../../../src/constants/index';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../../../src/constants/index';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import forgotPassword from '../../../src/pages/api/forgotPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -41,12 +41,12 @@ describe('forgotPassword', () => {
         });
     });
 
-    it('should set the FORGOT_PASSWORD_COOKIE when redirecting', async () => {
+    it('should set the FORGOT_PASSWORD_ATTRIBUTE when redirecting', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { email: 'test@email.com' };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockStringifiedInputCheck = JSON.stringify(mockBody);
         await forgotPassword(req, res);
-        expect(setCookieSpy).toBeCalledWith(FORGOT_PASSWORD_COOKIE, mockStringifiedInputCheck, req, res);
+        expect(setCookieSpy).toBeCalledWith(FORGOT_PASSWORD_ATTRIBUTE, mockStringifiedInputCheck, req, res);
     });
 });

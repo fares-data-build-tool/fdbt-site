@@ -3,7 +3,7 @@ import { decode } from 'jsonwebtoken';
 import { checkEmailValid } from '../../utils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from './apiUtils';
-import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
+import { OPERATOR_ATTRIBUTE, ID_TOKEN_ATTRIBUTE, REFRESH_TOKEN_ATTRIBUTE } from '../../constants';
 import { CognitoIdToken, NextRequestWithSession } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 import { initiateAuth } from '../../data/cognito';
@@ -13,7 +13,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         const { email, password } = req.body;
 
         if (!checkEmailValid(email)) {
-            updateSessionAttribute(req, OPERATOR_COOKIE, {
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
                 id: 'email',
                 errorMessage: 'Enter an email address in the correct format, like name@example.com',
             });
@@ -23,7 +23,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         }
 
         if (!password) {
-            updateSessionAttribute(req, OPERATOR_COOKIE, {
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
                 id: 'password',
                 errorMessage: 'Enter a password',
             });
@@ -42,9 +42,9 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
                 const nocCode = decodedIdToken['custom:noc'];
                 const operatorName = await getOperatorNameByNocCode(nocCode);
 
-                updateSessionAttribute(req, OPERATOR_COOKIE, { operator: operatorName });
-                updateSessionAttribute(req, ID_TOKEN_COOKIE, { idToken });
-                updateSessionAttribute(req, REFRESH_TOKEN_COOKIE, { refreshToken });
+                updateSessionAttribute(req, OPERATOR_ATTRIBUTE, { operator: operatorName });
+                updateSessionAttribute(req, ID_TOKEN_ATTRIBUTE, { idToken });
+                updateSessionAttribute(req, REFRESH_TOKEN_ATTRIBUTE, { refreshToken });
 
                 console.info('login successful', { noc: nocCode });
                 redirectTo(res, '/fareType');
@@ -53,7 +53,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
             }
         } catch (error) {
             console.warn('login failed', { error: error.message });
-            updateSessionAttribute(req, OPERATOR_COOKIE, {
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, {
                 id: 'login',
                 errorMessage: 'The email address and/or password are not correct.',
             });

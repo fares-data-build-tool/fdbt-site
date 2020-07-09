@@ -1,15 +1,15 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import {
-    OPERATOR_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
-    PERIOD_EXPIRY_COOKIE,
+    OPERATOR_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
     MATCHING_DATA_BUCKET_NAME,
-    CSV_ZONE_UPLOAD_COOKIE,
-    DAYS_VALID_COOKIE,
-    SERVICE_LIST_COOKIE,
-    PERIOD_TYPE_COOKIE,
-    PASSENGER_TYPE_COOKIE,
+    CSV_ZONE_UPLOAD_ATTRIBUTE,
+    DAYS_VALID_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants';
 import { unescapeAndDecodeCookie, getNocFromIdToken, getAttributeFromIdToken } from '../../utils';
 import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
@@ -48,13 +48,13 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
 
             const cookies = new Cookies(req, res);
 
-            const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_COOKIE);
-            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
-            const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-            const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
-            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+            const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_ATTRIBUTE);
+            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_ATTRIBUTE);
+            const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_ATTRIBUTE);
+            const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_ATTRIBUTE);
+            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
+            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
+            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req);
 
             if (
@@ -105,7 +105,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
                 };
             }
 
-            setCookieOnResponseObject(req, res, PERIOD_EXPIRY_COOKIE, JSON.stringify({ periodValid, error: false }));
+            setCookieOnResponseObject(req, res, PERIOD_EXPIRY_ATTRIBUTE, JSON.stringify({ periodValid, error: false }));
 
             const email = getAttributeFromIdToken(req, 'email');
 
@@ -143,7 +143,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose an option regarding your period ticket validity',
             });
-            setCookieOnResponseObject(req, res, PERIOD_EXPIRY_COOKIE, cookieValue);
+            setCookieOnResponseObject(req, res, PERIOD_EXPIRY_ATTRIBUTE, cookieValue);
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {

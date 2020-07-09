@@ -4,7 +4,7 @@ import { ServerResponse } from 'http';
 import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { ID_TOKEN_COOKIE } from '../constants';
+import { ID_TOKEN_ATTRIBUTE } from '../constants';
 import AlphaBanner from '../layout/AlphaBanner';
 import { Breadcrumb, DocumentContextWithSession } from '../interfaces';
 import Footer from '../layout/Footer';
@@ -35,7 +35,7 @@ class MyDocument extends Document<DocumentProps> {
         }
 
         const cookies = parseCookies(ctx);
-        const idTokenCookie = cookies[ID_TOKEN_COOKIE];
+        const idTokenCookie = cookies[ID_TOKEN_ATTRIBUTE];
 
         const breadcrumbs = breadcrumb(ctx).generate();
 

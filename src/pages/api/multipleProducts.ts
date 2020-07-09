@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { NextRequestWithSession } from '../../interfaces';
 import { ErrorSummary } from '../../components/ErrorSummary';
-import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { unescapeAndDecodeCookie } from '../../utils';
 import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
@@ -123,7 +123,7 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
         const cookies = new Cookies(req, res);
-        const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_COOKIE);
+        const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_ATTRIBUTE);
         const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
         const numberOfReceivedProducts: number = Object.entries(req.body).length / 3;
 
@@ -164,14 +164,14 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             const errors: ErrorSummary = getErrorsForCookie(fullValidationResult);
             const cookieContent = JSON.stringify({ ...errors, userInput: multipleProducts });
 
-            setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, cookieContent);
+            setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_ATTRIBUTE, cookieContent);
             redirectTo(res, '/multipleProducts');
             return;
         }
 
         const validInputs = JSON.stringify(multipleProducts);
 
-        setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, validInputs);
+        setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_ATTRIBUTE, validInputs);
 
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {

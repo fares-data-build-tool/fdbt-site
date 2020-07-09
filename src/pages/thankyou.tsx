@@ -3,7 +3,7 @@ import { parseCookies } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import TwoThirdsLayout from '../layout/Layout';
 import { NextContextWithSession, CognitoIdToken } from '../interfaces';
-import { FEEDBACK_LINK, ID_TOKEN_COOKIE } from '../constants';
+import { FEEDBACK_LINK, ID_TOKEN_ATTRIBUTE } from '../constants';
 import { getUuidFromCookies, deleteAllCookiesOnServerSide } from '../utils';
 
 const title = 'Thank You - Fares Data Build Tool';
@@ -51,7 +51,7 @@ export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     console.info('transaction complete', { uuid });
 
     const cookies = parseCookies(ctx);
-    const idToken = cookies[ID_TOKEN_COOKIE];
+    const idToken = cookies[ID_TOKEN_ATTRIBUTE];
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     if (!decodedIdToken.email) {
         throw new Error('Could not extract the user email address from their ID token');

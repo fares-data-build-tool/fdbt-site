@@ -4,7 +4,7 @@ import { NextRequestWithSession } from '../../interfaces';
 import { getSessionAttributes, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
+import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 
 interface ServiceList {
     selectedServices: string[];
@@ -18,7 +18,7 @@ const setServiceListSessionAttribute = (
 ): void => {
     const serviceListObject: ServiceList = { error: false, selectedServices: [] };
     const serviceListValue = { ...serviceListObject, selectedServices: checkedServiceList, error: !!error };
-    updateSessionAttribute(req, SERVICE_LIST_COOKIE, serviceListValue);
+    updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, serviceListValue);
 };
 
 export default (req: NextRequestWithSession, res: NextApiResponse): void => {
@@ -30,10 +30,10 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
 
-        const fareTypeObject = getSessionAttributes(req, [FARE_TYPE_COOKIE]);
+        const fareTypeObject = getSessionAttributes(req, [FARE_TYPE_ATTRIBUTE]);
 
         if (!fareTypeObject || !fareTypeObject.fareType) {
-            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for serviceList API');
+            throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for serviceList API');
         }
 
         const refererUrl = req?.headers?.referer;
@@ -52,7 +52,7 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             const errorValue = {
                 errorMessage: 'Choose at least one service from the options',
             };
-            updateSessionAttribute(req, SERVICE_LIST_COOKIE, errorValue);
+            updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, errorValue);
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }

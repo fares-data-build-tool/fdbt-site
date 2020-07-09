@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { NUMBER_OF_PRODUCTS_COOKIE } from '../constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -63,13 +63,13 @@ export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     let inputCheck: InputCheck = {};
     let errors: ErrorInfo[] = [];
 
-    if (cookies[NUMBER_OF_PRODUCTS_COOKIE]) {
-        const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
+    if (cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE]) {
+        const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
         inputCheck = JSON.parse(numberOfProductsCookie);
         errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-products-error' }] : [];
     }
 
-    deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_COOKIE);
+    deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_ATTRIBUTE);
 
     return { props: { inputCheck, errors } };
 };

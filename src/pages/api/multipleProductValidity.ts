@@ -2,13 +2,13 @@ import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { DecisionData } from './periodValidity';
 import {
-    MULTIPLE_PRODUCT_COOKIE,
-    OPERATOR_COOKIE,
-    CSV_ZONE_UPLOAD_COOKIE,
-    SERVICE_LIST_COOKIE,
-    PERIOD_TYPE_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    CSV_ZONE_UPLOAD_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
     MATCHING_DATA_BUCKET_NAME,
-    PASSENGER_TYPE_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { unescapeAndDecodeCookie, getNocFromIdToken, getAttributeFromIdToken } from '../../utils';
@@ -49,12 +49,12 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
             throw new Error('Session is invalid.');
         }
         const cookies = new Cookies(req, res);
-        const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-        const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-        const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-        const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
-        const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+        const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_ATTRIBUTE);
+        const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_ATTRIBUTE);
+        const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
+        const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
+        const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_ATTRIBUTE);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
         const nocCode = getNocFromIdToken(req);
 
         if (
@@ -70,7 +70,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         const rawProducts: Product[] = JSON.parse(multipleProductCookie);
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
         const newMultipleProductCookieValue = JSON.stringify(products);
-        setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue);
+        setCookieOnResponseObject(req, res, MULTIPLE_PRODUCT_ATTRIBUTE, newMultipleProductCookieValue);
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');

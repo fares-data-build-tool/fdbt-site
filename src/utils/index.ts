@@ -11,7 +11,12 @@ import {
     CognitoIdToken,
     IncomingMessageWithSession,
 } from '../interfaces';
-import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
+import {
+    OPERATOR_ATTRIBUTE,
+    ID_TOKEN_ATTRIBUTE,
+    REFRESH_TOKEN_ATTRIBUTE,
+    DISABLE_AUTH_ATTRIBUTE,
+} from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { getSessionAttributes } from './sessions';
 
@@ -21,7 +26,7 @@ export const unescapeAndDecodeCookie = (cookies: Cookies, cookieToDecode: string
 
 export const getUuidFromCookie = (req: NextRequestWithSession | Request, res: NextApiResponse | Response): string => {
     const cookies = new Cookies(req, res);
-    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_ATTRIBUTE);
 
     return operatorCookie ? JSON.parse(operatorCookie).uuid : '';
 };
@@ -64,7 +69,7 @@ export const deleteCookieOnServerSide = (ctx: NextContextWithSession, cookieName
 
 export const deleteAllCookiesOnServerSide = (ctx: NextContextWithSession): void => {
     const cookies = parseCookies(ctx);
-    const cookieWhitelist = [OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE];
+    const cookieWhitelist = [OPERATOR_ATTRIBUTE, ID_TOKEN_ATTRIBUTE, REFRESH_TOKEN_ATTRIBUTE, DISABLE_AUTH_ATTRIBUTE];
 
     Object.keys(cookies).forEach(cookie => {
         if (!cookieWhitelist.includes(cookie)) {
@@ -75,7 +80,7 @@ export const deleteAllCookiesOnServerSide = (ctx: NextContextWithSession): void 
 
 export const getUuidFromCookies = (ctx: NextContextWithSession): string | null => {
     const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorCookie = cookies[OPERATOR_ATTRIBUTE];
     if (!operatorCookie) {
         return null;
     }
@@ -101,7 +106,7 @@ export const getHost = (req: IncomingMessage | undefined): string => {
 
 export const getJourneyPatternFromCookies = (ctx: NextContextWithSession): string | null => {
     const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorCookie = cookies[OPERATOR_ATTRIBUTE];
     if (!operatorCookie) {
         return null;
     }
@@ -126,7 +131,7 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
     req: IncomingMessageWithSession,
     attribute: T,
 ): CognitoIdToken[T] | null => {
-    const { idToken } = getSessionAttributes(req, [ID_TOKEN_COOKIE]);
+    const { idToken } = getSessionAttributes(req, [ID_TOKEN_ATTRIBUTE]);
 
     if (!idToken) {
         return null;

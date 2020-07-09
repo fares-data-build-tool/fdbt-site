@@ -3,7 +3,7 @@ import { NextRequestWithSession } from '../../interfaces';
 import { getUuidFromCookie } from '../../utils';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { JOURNEY_COOKIE } from '../../constants';
+import { JOURNEY_ATTRIBUTE } from '../../constants';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
 
 export default (req: NextRequestWithSession, res: NextApiResponse): void => {
@@ -22,7 +22,7 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ errorMessages: [], inboundJourney, outboundJourney, uuid });
-            setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
+            setCookieOnResponseObject(req, res, JOURNEY_ATTRIBUTE, cookieValue);
             redirectTo(res, '/inputMethod');
         } else {
             const errorMessages: object[] = [];
@@ -36,7 +36,7 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             }
 
             const cookieValue = JSON.stringify({ errorMessages, inboundJourney, outboundJourney });
-            setCookieOnResponseObject(req, res, JOURNEY_COOKIE, cookieValue);
+            setCookieOnResponseObject(req, res, JOURNEY_ATTRIBUTE, cookieValue);
             redirectTo(res, '/returnDirection');
         }
     } catch (error) {

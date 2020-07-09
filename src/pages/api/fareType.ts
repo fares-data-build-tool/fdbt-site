@@ -3,7 +3,7 @@ import { NextRequestWithSession } from '../../interfaces';
 import { getUuidFromCookie } from '../../utils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectToError, redirectTo } from './apiUtils';
-import { FARE_TYPE_COOKIE } from '../../constants/index';
+import { FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 
 import { isSessionValid } from './service/validator';
 
@@ -18,14 +18,14 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
                 uuid: getUuidFromCookie(req, res),
                 fareType: req.body.fareType,
             };
-            updateSessionAttribute(req, FARE_TYPE_COOKIE, fareTypeObj);
+            updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, fareTypeObj);
             redirectTo(res, '/passengerType');
         } else {
             const fareTypeObj = {
                 errorMessage: 'Choose a fare type from the options',
                 uuid: getUuidFromCookie(req, res),
             };
-            updateSessionAttribute(req, FARE_TYPE_COOKIE, fareTypeObj);
+            updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, fareTypeObj);
             redirectTo(res, '/fareType');
         }
     } catch (error) {

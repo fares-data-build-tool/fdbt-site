@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
-import { PERIOD_TYPE_COOKIE } from '../constants';
+import { PERIOD_TYPE_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -90,8 +90,8 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[PERIOD_TYPE_COOKIE]) {
-        const periodTypeCookie = cookies[PERIOD_TYPE_COOKIE];
+    if (cookies[PERIOD_TYPE_ATTRIBUTE]) {
+        const periodTypeCookie = cookies[PERIOD_TYPE_ATTRIBUTE];
         const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
 
         if (parsedPeriodTypeCookie.errorMessage) {

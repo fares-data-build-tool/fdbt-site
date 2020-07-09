@@ -3,7 +3,7 @@ import Cookies from 'cookies';
 import { getUuidFromCookie, unescapeAndDecodeCookie } from '../../utils';
 import { redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE, INPUT_METHOD_COOKIE } from '../../constants';
+import { CSV_UPLOAD_ATTRIBUTE, JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './service/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import { NextRequestWithSession } from '../../interfaces';
@@ -28,7 +28,7 @@ export const config = {
 
 export const setUploadCookieAndRedirect = (req: NextRequestWithSession, res: NextApiResponse, error = ''): void => {
     const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(req, res, CSV_UPLOAD_COOKIE, cookieValue);
+    setCookieOnResponseObject(req, res, CSV_UPLOAD_ATTRIBUTE, cookieValue);
 
     if (error) {
         redirectTo(res, '/csvUpload');
@@ -137,10 +137,10 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
             const cookies = new Cookies(req, res);
-            const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
+            const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_ATTRIBUTE);
             const journeyObject = JSON.parse(journeyCookie);
 
-            setCookieOnResponseObject(req, res, INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'csv' }));
+            setCookieOnResponseObject(req, res, INPUT_METHOD_ATTRIBUTE, JSON.stringify({ inputMethod: 'csv' }));
 
             if (journeyObject?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');

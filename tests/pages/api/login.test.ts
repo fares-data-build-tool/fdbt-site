@@ -4,7 +4,7 @@ import login from '../../../src/pages/api/login';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { OPERATOR_COOKIE } from '../../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants';
 
 const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
     AuthenticationResult: {
@@ -68,7 +68,7 @@ describe('login', () => {
         });
 
         await login(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(expectedCookieValue), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_ATTRIBUTE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should redirect when successfully signed in', async () => {
@@ -116,6 +116,6 @@ describe('login', () => {
 
         await login(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(OPERATOR_ATTRIBUTE, JSON.stringify(mockUserCookieValue), req, res);
     });
 });

@@ -4,7 +4,7 @@ import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { NextContextWithSession } from 'next';
 import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
-import { STAGE_NAMES_COOKIE } from '../../src/constants';
+import { STAGE_NAMES_ATTRIBUTE } from '../../src/constants';
 
 const mockFareStages: string[] = [
     'Briggate',
@@ -49,7 +49,7 @@ describe('Price Entry Page', () => {
                 cookie: `othername=${mockStageNamesCookieBody}`,
             },
             cookies: {
-                STAGE_NAMES_COOKIE: stageNames,
+                STAGE_NAMES_ATTRIBUTE: stageNames,
             },
         });
         const ctx: NextContextWithSession = {
@@ -77,10 +77,10 @@ describe('Price Entry Page', () => {
             },
             headers: {
                 host: 'localhost:5000',
-                cookie: `${STAGE_NAMES_COOKIE}=${mockStageNamesCookieBody}`,
+                cookie: `${STAGE_NAMES_ATTRIBUTE}=${mockStageNamesCookieBody}`,
             },
             cookies: {
-                STAGE_NAMES_COOKIE: stageNames,
+                STAGE_NAMES_ATTRIBUTE: stageNames,
             },
         });
         const ctx: NextContextWithSession = {

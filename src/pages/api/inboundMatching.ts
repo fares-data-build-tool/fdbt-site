@@ -9,7 +9,7 @@ import { Stop } from '../../data/auroradb';
 import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
-import { MATCHING_DATA_BUCKET_NAME, MATCHING_COOKIE, PASSENGER_TYPE_COOKIE, ID_TOKEN_COOKIE } from '../../constants';
+import { MATCHING_DATA_BUCKET_NAME, MATCHING_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, ID_TOKEN_ATTRIBUTE } from '../../constants';
 import { Price } from '../../interfaces/matchingInterface';
 
 interface FareZones {
@@ -98,7 +98,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
 
             const inbound = { error: true, selectedFareStages: selectedStagesList };
 
-            setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ inbound }));
+            setCookieOnResponseObject(req, res, MATCHING_ATTRIBUTE, JSON.stringify({ inbound }));
             redirectTo(res, '/inboundMatching');
             return;
         }
@@ -113,10 +113,10 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         }
 
         const cookies = new Cookies(req, res);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
-        const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+        const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_ATTRIBUTE);
         const decodedIdToken = decode(idToken) as CognitoIdToken;
 
         const matchingJson = getMatchingJson(
@@ -131,7 +131,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
 
         await putMatchingDataInS3(matchingJson, uuid);
 
-        setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ inbound: { error: false } }));
+        setCookieOnResponseObject(req, res, MATCHING_ATTRIBUTE, JSON.stringify({ inbound: { error: false } }));
         redirectTo(res, '/thankyou');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';

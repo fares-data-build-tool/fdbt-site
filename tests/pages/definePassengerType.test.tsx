@@ -152,10 +152,10 @@ describe('pages', () => {
     });
 
     describe('getServerSideProps', () => {
-        it('should throw an error if there is no PASSENGER_TYPE_COOKIE', () => {
+        it('should throw an error if there is no PASSENGER_TYPE_ATTRIBUTE', () => {
             const ctx = getMockContext({ cookies: { passengerType: null } });
             expect(() => getServerSideProps(ctx)).toThrow(
-                'Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page',
+                'Failed to retrieve PASSENGER_TYPE_ATTRIBUTE for the define passenger type page',
             );
         });
 

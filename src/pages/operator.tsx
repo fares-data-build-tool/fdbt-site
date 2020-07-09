@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE } from '../constants';
+import { OPERATOR_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -80,8 +80,8 @@ const Operator = ({ errors = [], csrfToken }: OperatorProps & CustomAppProps): R
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[OPERATOR_COOKIE]) {
-        const operatorCookie = cookies[OPERATOR_COOKIE];
+    if (cookies[OPERATOR_ATTRIBUTE]) {
+        const operatorCookie = cookies[OPERATOR_ATTRIBUTE];
         const parsedOperatorCookie = JSON.parse(operatorCookie);
 
         if (parsedOperatorCookie.errorMessage) {

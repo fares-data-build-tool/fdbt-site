@@ -1,7 +1,7 @@
 import changePassword from '../../../src/pages/api/changePassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { USER_COOKIE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants';
 import * as auth from '../../../src/data/cognito';
 
 describe('changePassword', () => {
@@ -21,7 +21,7 @@ describe('changePassword', () => {
 
     const writeHeadMock = jest.fn();
 
-    it('should set the USER_COOKIE and redirect to /passwordUpdated when password update is successful', async () => {
+    it('should set the USER_ATTRIBUTE and redirect to /passwordUpdated when password update is successful', async () => {
         getAttributeSpy.mockImplementation(() => 'fake.address@email.com');
         initiateAuthSpy.mockImplementation(() => Promise.resolve({ AuthenticationResult: {} }));
         const { req, res } = getMockRequestAndResponse({
@@ -36,7 +36,7 @@ describe('changePassword', () => {
         });
         await changePassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
-            USER_COOKIE,
+            USER_ATTRIBUTE,
             JSON.stringify({ redirectFrom: '/changePassword' }),
             req,
             res,
@@ -46,7 +46,7 @@ describe('changePassword', () => {
         });
     });
 
-    it('should redirect to the error page when the ID_TOKEN_COOKIE is missing the username attribute', async () => {
+    it('should redirect to the error page when the ID_TOKEN_ATTRIBUTE is missing the username attribute', async () => {
         getAttributeSpy.mockImplementation(() => null);
         initiateAuthSpy.mockImplementation(() => Promise.resolve({ AuthenticationResult: {} }));
         const { req, res } = getMockRequestAndResponse({
@@ -110,7 +110,7 @@ describe('changePassword', () => {
         });
         await changePassword(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify({ inputChecks }), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_ATTRIBUTE, JSON.stringify({ inputChecks }), req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/changePassword',
         });

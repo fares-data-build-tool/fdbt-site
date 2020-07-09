@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SERVICE_LIST_COOKIE, noRequestError } from '../constants';
+import { SERVICE_LIST_ATTRIBUTE, noRequestError } from '../constants';
 import { getServicesByNocCode } from '../data/auroradb';
 import { ServicesInfo, CustomAppProps, ErrorInfo, NextContextWithSession } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
@@ -110,10 +110,10 @@ export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{
     }
 
     if (!nocCode) {
-        throw new Error('Could not retrieve NOC Code from the ID_TOKEN_COOKIE');
+        throw new Error('Could not retrieve NOC Code from the ID_TOKEN_ATTRIBUTE');
     }
 
-    const serviceListCookie = getSessionAttributes(ctx.req, [SERVICE_LIST_COOKIE]);
+    const serviceListCookie = getSessionAttributes(ctx.req, [SERVICE_LIST_ATTRIBUTE]);
 
     const servicesList = await getServicesByNocCode(nocCode);
 

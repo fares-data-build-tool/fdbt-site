@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { NextRequestWithSession, InputCheck } from '../../interfaces';
 import { checkEmailValid } from '../../utils';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
-import { USER_COOKIE } from '../../constants';
+import { USER_ATTRIBUTE } from '../../constants';
 import { getServicesByNocCode } from '../../data/auroradb';
 import { initiateAuth, respondToNewPasswordChallenge, globalSignOut, updateUserAttributes } from '../../data/cognito';
 
@@ -21,7 +21,7 @@ const validatePassword = (password: string, confirmPassword: string): string => 
 export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: InputCheck[], regKey: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(req, res, USER_COOKIE, cookieContent);
+        setCookieOnResponseObject(req, res, USER_ATTRIBUTE, cookieContent);
         redirectTo(res, `/register?key=${regKey}`);
     };
 

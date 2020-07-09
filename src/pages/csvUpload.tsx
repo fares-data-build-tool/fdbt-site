@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import { NextContextWithSession, CustomAppProps } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
-import { CSV_UPLOAD_COOKIE } from '../constants';
+import { CSV_UPLOAD_ATTRIBUTE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
@@ -38,7 +38,7 @@ const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactEle
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: UserDataUploadsProps } => {
     const cookies = parseCookies(ctx);
-    const csvUploadCookie = cookies[CSV_UPLOAD_COOKIE];
+    const csvUploadCookie = cookies[CSV_UPLOAD_ATTRIBUTE];
 
     let csvUpload;
 
@@ -65,7 +65,7 @@ export const getServerSideProps = (ctx: NextContextWithSession): { props: UserDa
         },
     };
 
-    deleteCookieOnServerSide(ctx, CSV_UPLOAD_COOKIE);
+    deleteCookieOnServerSide(ctx, CSV_UPLOAD_ATTRIBUTE);
 
     return uploadProps;
 };

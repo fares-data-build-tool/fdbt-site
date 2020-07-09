@@ -4,7 +4,7 @@ import { BaseLayout } from '../layout/Layout';
 import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_COOKIE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 
@@ -102,7 +102,7 @@ const ResetPassword = ({
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: ResetPasswordProps } => {
     const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
+    const userCookie = cookies[USER_ATTRIBUTE];
 
     const errors: ErrorInfo[] = [];
     const { key, user_name: username, expiry } = ctx.query;

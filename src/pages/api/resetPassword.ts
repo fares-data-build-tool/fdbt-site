@@ -2,13 +2,13 @@ import { NextApiResponse } from 'next';
 import { NextRequestWithSession, ErrorInfo } from '../../interfaces';
 import { validateNewPassword } from '../../utils';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
-import { USER_COOKIE } from '../../constants';
+import { USER_ATTRIBUTE } from '../../constants';
 import { confirmForgotPassword } from '../../data/cognito';
 
 export default async (req: NextRequestWithSession, res: NextApiResponse): Promise<void> => {
     const setErrorsCookie = (inputChecks: ErrorInfo[], regKey: string, username: string, expiry: string): void => {
         const cookieContent = JSON.stringify({ inputChecks });
-        setCookieOnResponseObject(req, res, USER_COOKIE, cookieContent);
+        setCookieOnResponseObject(req, res, USER_ATTRIBUTE, cookieContent);
         redirectTo(res, `/resetPassword?key=${regKey}&user_name=${username}&expiry=${expiry}`);
     };
 
@@ -33,7 +33,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
 
         try {
             await confirmForgotPassword(username, regKey, password);
-            setCookieOnResponseObject(req, res, USER_COOKIE, JSON.stringify({ redirectFrom: '/resetPassword' }));
+            setCookieOnResponseObject(req, res, USER_ATTRIBUTE, JSON.stringify({ redirectFrom: '/resetPassword' }));
             redirectTo(res, '/passwordUpdated');
         } catch (error) {
             if (error.message === 'ExpiredCodeException') {

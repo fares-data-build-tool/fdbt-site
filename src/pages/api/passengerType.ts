@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { NextRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectToError, redirectTo, redirectOnFareType } from './apiUtils';
-import { PASSENGER_TYPE_COOKIE } from '../../constants/index';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 
 export default (req: NextRequestWithSession, res: NextApiResponse): void => {
@@ -13,7 +13,7 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
 
         if (req.body.passengerType) {
             const { passengerType } = req.body;
-            updateSessionAttribute(req, PASSENGER_TYPE_COOKIE, passengerType);
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, passengerType);
             if (passengerType === 'anyone') {
                 redirectOnFareType(req, res);
                 return;
@@ -22,7 +22,7 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        updateSessionAttribute(req, PASSENGER_TYPE_COOKIE, {
+        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
             errorMessage: 'Choose a passenger type from the options',
         });
         redirectTo(res, '/passengerType');

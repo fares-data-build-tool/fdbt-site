@@ -1,5 +1,5 @@
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../../src/constants';
+import { STAGE_NAMES_ATTRIBUTE, STAGE_NAME_VALIDATION_ATTRIBUTE } from '../../../src/constants';
 import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -81,22 +81,22 @@ describe('stageNames', () => {
         });
     });
 
-    it('should set the STAGE_NAMES_COOKIE and STAGE_NAME_VALIDATION_COOKIE with values matching the valid data entered by the user ', () => {
+    it('should set the STAGE_NAMES_ATTRIBUTE and STAGE_NAME_VALIDATION_ATTRIBUTE with values matching the valid data entered by the user ', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { stageNameInput: ['a', 'b', 'c', 'd'] };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockStageNamesCookieValue = '["a","b","c","d"]';
         stageNames(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(STAGE_NAMES_COOKIE, mockStageNamesCookieValue, req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(STAGE_NAMES_ATTRIBUTE, mockStageNamesCookieValue, req, res);
     });
 
-    it('should set the STAGE_NAME_VALIDATION_COOKIE with a value matching the invalid data entered by the user', () => {
+    it('should set the STAGE_NAME_VALIDATION_ATTRIBUTE with a value matching the invalid data entered by the user', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { stageNameInput: [' ', 'abcdefghijklmnopqrstuvwxyzabcdefgh', '   ', 'b'] };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockInputCheck =
             '[{"input":" ","error":"Enter a name for this fare stage","id":"fare-stage-name-1-error"},{"input":"abcdefghijklmnopqrstuvwxyzabcdefgh","error":"The name for Fare Stage 2 needs to be less than 30 characters","id":"fare-stage-name-2-error"},{"input":"   ","error":"Enter a name for this fare stage","id":"fare-stage-name-3-error"},{"input":"b","error":"","id":"fare-stage-name-4-error"}]';
         stageNames(req, res);
-        expect(setCookieSpy).toBeCalledWith(STAGE_NAME_VALIDATION_COOKIE, mockInputCheck, req, res);
+        expect(setCookieSpy).toBeCalledWith(STAGE_NAME_VALIDATION_ATTRIBUTE, mockInputCheck, req, res);
     });
 });

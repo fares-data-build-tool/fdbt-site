@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import TwoThirdsLayout from '../layout/Layout';
 import { NextContextWithSession } from '../interfaces';
-import { USER_COOKIE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 
 const title = 'Reset Password Link Expired - Fares Data Build Tool';
@@ -26,7 +26,7 @@ const ResetLinkExpired: NextPage = (): ReactElement => (
 );
 
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
-    deleteCookieOnServerSide(ctx, USER_COOKIE);
+    deleteCookieOnServerSide(ctx, USER_ATTRIBUTE);
     return { props: {} };
 };
 

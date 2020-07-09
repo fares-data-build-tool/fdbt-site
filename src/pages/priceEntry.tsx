@@ -3,7 +3,7 @@ import { parseCookies } from 'nookies';
 import { FullColumnLayout } from '../layout/Layout';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { STAGE_NAMES_COOKIE, PRICE_ENTRY_ERRORS_COOKIE, PRICE_ENTRY_INPUTS_COOKIE } from '../constants';
+import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ERRORS_ATTRIBUTE, PRICE_ENTRY_INPUTS_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { FaresInformation, FaresInput, PriceEntryError } from './api/priceEntry';
 
@@ -150,9 +150,9 @@ const PriceEntry = ({
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: PriceEntryProps } => {
     const cookies = parseCookies(ctx);
-    const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
-    const priceEntryErrorsCookie = cookies[PRICE_ENTRY_ERRORS_COOKIE];
-    const priceEntryInputsCookie = cookies[PRICE_ENTRY_INPUTS_COOKIE];
+    const stageNamesCookie = cookies[STAGE_NAMES_ATTRIBUTE];
+    const priceEntryErrorsCookie = cookies[PRICE_ENTRY_ERRORS_ATTRIBUTE];
+    const priceEntryInputsCookie = cookies[PRICE_ENTRY_INPUTS_ATTRIBUTE];
 
     if (!stageNamesCookie) {
         throw new Error('Necessary stage names cookies not found to show price entry page');

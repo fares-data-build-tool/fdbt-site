@@ -3,7 +3,7 @@ import { ErrorInfo, CustomAppProps, NextContextWithSession } from '../interfaces
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { FORGOT_PASSWORD_COOKIE } from '../constants';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttributes } from '../utils/sessions';
 
@@ -76,7 +76,7 @@ const ForgotPassword = ({ email, errors = [], csrfToken }: ForgotEmailProps & Cu
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: ForgotEmailProps } => {
     if (ctx.req) {
-        const { email, error } = getSessionAttributes(ctx.req, [FORGOT_PASSWORD_COOKIE]);
+        const { email, error } = getSessionAttributes(ctx.req, [FORGOT_PASSWORD_ATTRIBUTE]);
 
         if (email && error) {
             return { props: { errors: [{ errorMessage: error, id }], email } };

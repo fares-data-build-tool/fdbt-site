@@ -3,7 +3,12 @@ import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import Cookies from 'cookies';
 import { globalSignOut } from '../../../data/cognito';
-import { FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, OPERATOR_COOKIE } from '../../../constants';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    ID_TOKEN_ATTRIBUTE,
+    REFRESH_TOKEN_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../../../constants';
 import { NextRequestWithSession } from '../../../interfaces';
 import { getSessionAttributes } from '../../../utils/sessions';
 
@@ -34,9 +39,9 @@ export const signOutUser = async (username: string | null, req: Req, res: Res): 
         await globalSignOut(username);
     }
 
-    deleteCookieOnResponseObject(ID_TOKEN_COOKIE, req, res);
-    deleteCookieOnResponseObject(REFRESH_TOKEN_COOKIE, req, res);
-    deleteCookieOnResponseObject(OPERATOR_COOKIE, req, res);
+    deleteCookieOnResponseObject(ID_TOKEN_ATTRIBUTE, req, res);
+    deleteCookieOnResponseObject(REFRESH_TOKEN_ATTRIBUTE, req, res);
+    deleteCookieOnResponseObject(OPERATOR_ATTRIBUTE, req, res);
 };
 
 export const redirectTo = (res: NextApiResponse | ServerResponse, location: string): void => {
@@ -52,7 +57,7 @@ export const redirectToError = (res: NextApiResponse | ServerResponse, message: 
 };
 
 export const redirectOnFareType = (req: NextRequestWithSession, res: NextApiResponse): void => {
-    const session = getSessionAttributes(req, [FARE_TYPE_COOKIE]);
+    const session = getSessionAttributes(req, [FARE_TYPE_ATTRIBUTE]);
     const { fareType } = session;
 
     if (fareType) {

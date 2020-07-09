@@ -10,10 +10,10 @@ import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import {
     MATCHING_DATA_BUCKET_NAME,
-    MATCHING_COOKIE,
-    FARE_TYPE_COOKIE,
-    PASSENGER_TYPE_COOKIE,
-    ID_TOKEN_COOKIE,
+    MATCHING_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    ID_TOKEN_ATTRIBUTE,
 } from '../../constants';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
@@ -127,7 +127,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
             setCookieOnResponseObject(
                 req,
                 res,
-                MATCHING_COOKIE,
+                MATCHING_ATTRIBUTE,
                 JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
             );
 
@@ -139,12 +139,12 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         const uuid = getUuidFromCookie(req, res);
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
+        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
-        const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+        const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_ATTRIBUTE);
         const decodedIdToken = decode(idToken) as CognitoIdToken;
 
         const matchingJson = getMatchingJson(
@@ -157,7 +157,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
             uuid,
         );
 
-        setCookieOnResponseObject(req, res, MATCHING_COOKIE, JSON.stringify({ error: false }));
+        setCookieOnResponseObject(req, res, MATCHING_ATTRIBUTE, JSON.stringify({ error: false }));
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');

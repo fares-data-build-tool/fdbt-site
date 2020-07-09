@@ -26,7 +26,7 @@ describe('changePassword', () => {
     });
 
     describe('getServerSideProps', () => {
-        it('should return props containing no errors when the USER_COOKIE is missing (i.e. no errors are present)', () => {
+        it('should return props containing no errors when the USER_ATTRIBUTE is missing (i.e. no errors are present)', () => {
             const ctx = getMockContext();
             const res = getServerSideProps(ctx);
             expect(res).toEqual({ props: { errors: [] } });

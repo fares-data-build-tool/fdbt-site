@@ -8,7 +8,7 @@ import {
     RawService,
     RawJourneyPattern,
 } from '../data/auroradb';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_COOKIE } from '../constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
 import { getNocFromIdToken } from '../utils';
@@ -71,10 +71,10 @@ const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
 
 export const getServerSideProps = async (ctx: NextContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceCookie = cookies[SERVICE_COOKIE];
-    const journeyCookie = cookies[JOURNEY_COOKIE];
-    const matchingCookie = cookies[MATCHING_COOKIE];
+    const operatorCookie = cookies[OPERATOR_ATTRIBUTE];
+    const serviceCookie = cookies[SERVICE_ATTRIBUTE];
+    const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
+    const matchingCookie = cookies[MATCHING_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx.req);
 
     if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {

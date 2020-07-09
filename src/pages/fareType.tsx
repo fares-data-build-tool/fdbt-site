@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -108,18 +108,18 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const { req } = ctx;
 
-    const { operator } = getSessionAttributes(req, [OPERATOR_COOKIE]);
+    const { operator } = getSessionAttributes(req, [OPERATOR_ATTRIBUTE]);
 
     if (!operator) {
         throw new Error('Operator needed for fareType page and not found');
     }
 
     const uuid = buildUuid(ctx);
-    updateSessionAttribute(req, OPERATOR_COOKIE, { operator, uuid });
+    updateSessionAttribute(req, OPERATOR_ATTRIBUTE, { operator, uuid });
 
     console.info('transaction start', { uuid });
 
-    const fareTypeInfo = getSessionAttributes(req, [FARE_TYPE_COOKIE]);
+    const fareTypeInfo = getSessionAttributes(req, [FARE_TYPE_ATTRIBUTE]);
 
     if (fareTypeInfo) {
         if (fareTypeInfo.errorMessage) {

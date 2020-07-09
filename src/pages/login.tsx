@@ -4,7 +4,7 @@ import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { OPERATOR_COOKIE } from '../constants';
+import { OPERATOR_ATTRIBUTE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils/index';
 import CsrfForm from '../components/CsrfForm';
 
@@ -102,13 +102,13 @@ const Login = ({ errors = [], csrfToken }: LoginProps & CustomAppProps): ReactEl
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[OPERATOR_COOKIE]) {
-        const operatorCookie = cookies[OPERATOR_COOKIE];
+    if (cookies[OPERATOR_ATTRIBUTE]) {
+        const operatorCookie = cookies[OPERATOR_ATTRIBUTE];
         const operatorCookieParsed = JSON.parse(operatorCookie);
 
         if (operatorCookieParsed.errors) {
             const { errors } = operatorCookieParsed;
-            deleteCookieOnServerSide(ctx, OPERATOR_COOKIE);
+            deleteCookieOnServerSide(ctx, OPERATOR_ATTRIBUTE);
             return { props: { errors } };
         }
     }

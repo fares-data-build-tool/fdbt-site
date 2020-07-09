@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { NextContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import { deleteCookieOnServerSide } from '../utils';
-import { USER_COOKIE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants';
 
 const title = 'Registration Successful - Fares Data Build Tool';
 const description = 'Confirm Registration page for the Fares Data Build Tool';
@@ -26,7 +26,7 @@ const ConfirmRegistration: NextPage = (): ReactElement => (
 );
 
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
-    deleteCookieOnServerSide(ctx, USER_COOKIE);
+    deleteCookieOnServerSide(ctx, USER_ATTRIBUTE);
     return { props: {} };
 };
 

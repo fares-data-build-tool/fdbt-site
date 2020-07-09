@@ -1,5 +1,5 @@
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { NUMBER_OF_PRODUCTS_COOKIE } from '../../../src/constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
 import howManyProducts, { isNumberOfProductsInvalid } from '../../../src/pages/api/howManyProducts';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -78,21 +78,21 @@ describe('howManyProducts', () => {
         });
     });
 
-    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
+    it('should set the NUMBER_OF_PRODUCTS_ATTRIBUTE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { numberOfProductsInput: '' };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '', error: 'Enter a number' });
         howManyProducts(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(NUMBER_OF_PRODUCTS_COOKIE, mockStringifiedInputCheck, req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(NUMBER_OF_PRODUCTS_ATTRIBUTE, mockStringifiedInputCheck, req, res);
     });
 
-    it('should set the NUMBER_OF_PRODUCTS_COOKIE when redirecting to /multipleProducts', () => {
+    it('should set the NUMBER_OF_PRODUCTS_ATTRIBUTE when redirecting to /multipleProducts', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockBody = { numberOfProductsInput: '8' };
         const { req, res } = getMockRequestAndResponse({ cookieValues: {}, body: mockBody });
         const mockStringifiedInputCheck = JSON.stringify({ numberOfProductsInput: '8' });
         howManyProducts(req, res);
-        expect(setCookieSpy).toBeCalledWith(NUMBER_OF_PRODUCTS_COOKIE, mockStringifiedInputCheck, req, res);
+        expect(setCookieSpy).toBeCalledWith(NUMBER_OF_PRODUCTS_ATTRIBUTE, mockStringifiedInputCheck, req, res);
     });
 });

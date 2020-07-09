@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
-import { PASSENGER_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
+import { PASSENGER_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -90,10 +90,10 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
 );
 
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
-    const { errorMessage } = getSessionAttributes(ctx.req, [OPERATOR_COOKIE]);
+    const { errorMessage } = getSessionAttributes(ctx.req, [OPERATOR_ATTRIBUTE]);
 
     if (errorMessage) {
-        deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
+        deleteCookieOnServerSide(ctx, PASSENGER_TYPE_ATTRIBUTE);
         return { props: { errors: [{ errorMessage, id: errorId }] } };
     }
 

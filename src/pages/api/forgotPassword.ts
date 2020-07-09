@@ -3,7 +3,7 @@ import { NextRequestWithSession } from '../../interfaces';
 import { checkEmailValid } from '../../utils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from './apiUtils';
-import { FORGOT_PASSWORD_COOKIE } from '../../constants/index';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../../constants/index';
 
 import { forgotPassword } from '../../data/cognito';
 
@@ -12,17 +12,17 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         const { email } = req.body;
 
         if (!email || !email.trim().length) {
-            updateSessionAttribute(req, FORGOT_PASSWORD_COOKIE, { email, error: 'Enter your email address' });
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, { email, error: 'Enter your email address' });
             redirectTo(res, '/forgotPassword');
             return;
         }
 
         if (checkEmailValid(email)) {
             await forgotPassword(email);
-            updateSessionAttribute(req, FORGOT_PASSWORD_COOKIE, { email });
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, { email });
             redirectTo(res, '/resetConfirmation');
         } else {
-            updateSessionAttribute(req, FORGOT_PASSWORD_COOKIE, {
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, {
                 email,
                 error: 'Invalid email format - Enter a valid email address',
             });

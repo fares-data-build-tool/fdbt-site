@@ -3,7 +3,7 @@ import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces';
-import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
+import { FARE_STAGES_ATTRIBUTE, STAGE_NAMES_ATTRIBUTE, STAGE_NAME_VALIDATION_ATTRIBUTE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -90,9 +90,9 @@ const StageNames = ({
 );
 
 export const getServerSideProps = (ctx: NextContextWithSession): {} => {
-    deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
+    deleteCookieOnServerSide(ctx, STAGE_NAMES_ATTRIBUTE);
     const cookies = parseCookies(ctx);
-    const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
+    const fareStagesCookie = cookies[FARE_STAGES_ATTRIBUTE];
 
     if (!fareStagesCookie) {
         throw new Error('Necessary fare stage cookie not found to show stage names page');
@@ -102,8 +102,8 @@ export const getServerSideProps = (ctx: NextContextWithSession): {} => {
     const numberOfFareStages = Number(fareStagesObject.fareStages);
 
     let inputChecks: InputCheck[] = [];
-    if (cookies[STAGE_NAME_VALIDATION_COOKIE]) {
-        const validationCookie = cookies[STAGE_NAME_VALIDATION_COOKIE];
+    if (cookies[STAGE_NAME_VALIDATION_ATTRIBUTE]) {
+        const validationCookie = cookies[STAGE_NAME_VALIDATION_ATTRIBUTE];
         inputChecks = JSON.parse(validationCookie);
     }
 

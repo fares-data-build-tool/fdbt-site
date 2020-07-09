@@ -4,7 +4,7 @@ import definePassengerType, {
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { PASSENGER_TYPE_COOKIE } from '../../../src/constants';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
@@ -85,7 +85,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should throw an error and redirect to the error page when the PASSENGER_TYPE_COOKIE and FARE_TYPE_COOKIE are missing', async () => {
+    it('should throw an error and redirect to the error page when the PASSENGER_TYPE_ATTRIBUTE and FARE_TYPE_ATTRIBUTE are missing', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { passengerType: null, fareType: null },
             body: {},
@@ -98,7 +98,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set the PASSENGER_TYPE_COOKIE and redirect depending on fare type when no errors are found', async () => {
+    it('should set the PASSENGER_TYPE_ATTRIBUTE and redirect depending on fare type when no errors are found', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockPassengerTypeDetails = {
             ageRange: 'Yes',
@@ -116,7 +116,7 @@ describe('definePassengerType', () => {
         });
         await definePassengerType(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
-            PASSENGER_TYPE_COOKIE,
+            PASSENGER_TYPE_ATTRIBUTE,
             JSON.stringify(mockPassengerTypeCookieValue),
             req,
             res,
@@ -169,7 +169,7 @@ describe('definePassengerType', () => {
             ],
         ],
     ])(
-        'should set the PASSENGER_TYPE_COOKIE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
+        'should set the PASSENGER_TYPE_ATTRIBUTE and redirect to itself (i.e. /definePassengerType) when errors are present due to %s',
         async (mockUserInput, errors) => {
             const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
             const mockPassengerTypeCookieValue = {
@@ -184,7 +184,7 @@ describe('definePassengerType', () => {
             });
             await definePassengerType(req, res);
             expect(setCookieSpy).toHaveBeenCalledWith(
-                PASSENGER_TYPE_COOKIE,
+                PASSENGER_TYPE_ATTRIBUTE,
                 JSON.stringify(mockPassengerTypeCookieValue),
                 req,
                 res,

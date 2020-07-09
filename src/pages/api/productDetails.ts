@@ -5,12 +5,12 @@ import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUti
 import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails, NextRequestWithSession } from '../../interfaces';
 import {
-    PRODUCT_DETAILS_COOKIE,
-    FARE_TYPE_COOKIE,
-    OPERATOR_COOKIE,
-    SERVICE_LIST_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
     MATCHING_DATA_BUCKET_NAME,
-    PASSENGER_TYPE_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 import { putStringInS3 } from '../../data/s3';
@@ -42,11 +42,11 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
         const { fareType } = JSON.parse(fareTypeCookie);
 
         if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {
-            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for productDetails API');
+            throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
         }
 
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
@@ -56,19 +56,19 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
             const invalidInputs = JSON.stringify(productDetails);
 
-            setCookieOnResponseObject(req, res, PRODUCT_DETAILS_COOKIE, invalidInputs);
+            setCookieOnResponseObject(req, res, PRODUCT_DETAILS_ATTRIBUTE, invalidInputs);
             redirectTo(res, '/productDetails');
             return;
         }
 
         if (fareType === 'period') {
             const validInputs = JSON.stringify(productDetails);
-            setCookieOnResponseObject(req, res, PRODUCT_DETAILS_COOKIE, validInputs);
+            setCookieOnResponseObject(req, res, PRODUCT_DETAILS_ATTRIBUTE, validInputs);
             redirectTo(res, '/chooseValidity');
         } else if (fareType === 'flatFare') {
-            const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+            const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_ATTRIBUTE);
+            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
+            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req);
 
             if (!serviceListCookie || !passengerTypeCookie || !nocCode) {

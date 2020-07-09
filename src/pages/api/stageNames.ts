@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextRequestWithSession } from '../../interfaces';
-import { STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../../constants/index';
+import { STAGE_NAMES_ATTRIBUTE, STAGE_NAME_VALIDATION_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { InputCheck } from '../stageNames';
@@ -50,11 +50,11 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
         const userInputValidity = isStageNameValid(req);
         if (!userInputValidity.some(el => el.error !== '')) {
             const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
-            setCookieOnResponseObject(req, res, STAGE_NAMES_COOKIE, stageNameCookieValue);
+            setCookieOnResponseObject(req, res, STAGE_NAMES_ATTRIBUTE, stageNameCookieValue);
             redirectTo(res, '/priceEntry');
         } else {
             const validationCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(req, res, STAGE_NAME_VALIDATION_COOKIE, validationCookieValue);
+            setCookieOnResponseObject(req, res, STAGE_NAME_VALIDATION_ATTRIBUTE, validationCookieValue);
             redirectTo(res, '/stageNames');
         }
     } catch (error) {

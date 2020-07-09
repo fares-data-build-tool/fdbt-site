@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { NextRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { INPUT_METHOD_COOKIE } from '../../constants';
+import { INPUT_METHOD_ATTRIBUTE } from '../../constants';
 
 export default (req: NextRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -26,7 +26,7 @@ export default (req: NextRequestWithSession, res: NextApiResponse): void => {
             }
         } else {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose an input method from the options' });
-            setCookieOnResponseObject(req, res, INPUT_METHOD_COOKIE, cookieValue);
+            setCookieOnResponseObject(req, res, INPUT_METHOD_ATTRIBUTE, cookieValue);
             redirectTo(res, '/inputMethod');
         }
     } catch (error) {

@@ -4,7 +4,7 @@ import { NextContextWithSession, CustomAppProps, ErrorInfo } from '../interfaces
 import { TwoThirdsLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_COOKIE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Change Password - Fares data build tool';
@@ -122,7 +122,7 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
 
 export const getServerSideProps = (ctx: NextContextWithSession): { props: ChangePasswordProps } => {
     const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_COOKIE];
+    const userCookie = cookies[USER_ATTRIBUTE];
     const errors: ErrorInfo[] = [];
     if (userCookie) {
         const { inputChecks } = JSON.parse(userCookie);

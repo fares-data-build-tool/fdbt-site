@@ -4,10 +4,10 @@ import _ from 'lodash';
 import { NextContextWithSession, ErrorInfo, CustomAppProps } from '../interfaces';
 import { FullColumnLayout } from '../layout/Layout';
 import {
-    OPERATOR_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
-    MULTIPLE_PRODUCT_COOKIE,
-    PASSENGER_TYPE_COOKIE,
+    OPERATOR_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
 import ErrorSummary from '../components/ErrorSummary';
@@ -65,19 +65,19 @@ const MultipleProducts = ({
 export const getServerSideProps = (ctx: NextContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
 
-    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !cookies[PASSENGER_TYPE_COOKIE]) {
+    if (!cookies[OPERATOR_ATTRIBUTE] || !cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE] || !cookies[PASSENGER_TYPE_ATTRIBUTE]) {
         throw new Error('Necessary cookies not found to show multiple products page');
     }
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
-    const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
+    const operatorCookie = cookies[OPERATOR_ATTRIBUTE];
+    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
+    const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_ATTRIBUTE]);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const { operator } = JSON.parse(operatorCookie);
 
-    if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
-        const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
+    if (cookies[MULTIPLE_PRODUCT_ATTRIBUTE]) {
+        const multipleProductCookie = cookies[MULTIPLE_PRODUCT_ATTRIBUTE];
         const parsedMultipleProductCookie = JSON.parse(multipleProductCookie);
         const { errors } = parsedMultipleProductCookie;
 

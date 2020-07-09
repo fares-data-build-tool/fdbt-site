@@ -4,7 +4,7 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from './apiUtils';
 import { ErrorInfo, NextRequestWithSession } from '../../interfaces';
 
-import { USER_COOKIE } from '../../constants';
+import { USER_ATTRIBUTE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
 
 export const setCookieAndRedirect = (
@@ -12,7 +12,7 @@ export const setCookieAndRedirect = (
     res: NextApiResponse,
     inputChecks: ErrorInfo[],
 ): void => {
-    updateSessionAttribute(req, USER_COOKIE, { inputChecks });
+    updateSessionAttribute(req, USER_ATTRIBUTE, { inputChecks });
     redirectTo(res, '/changePassword');
 };
 
@@ -21,7 +21,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
         const username = getAttributeFromIdToken(req, 'email');
         const { oldPassword, newPassword, confirmNewPassword } = req.body;
         if (!username) {
-            throw new Error('Could not retrieve email from ID_TOKEN_COOKIE');
+            throw new Error('Could not retrieve email from ID_TOKEN_ATTRIBUTE');
         }
         let inputChecks: ErrorInfo[] = [];
 
@@ -41,7 +41,7 @@ export default async (req: NextRequestWithSession, res: NextApiResponse): Promis
             if (authResponse?.AuthenticationResult) {
                 try {
                     await updateUserPassword(newPassword, username);
-                    updateSessionAttribute(req, USER_COOKIE, { redirectFrom: '/changePassword' });
+                    updateSessionAttribute(req, USER_ATTRIBUTE, { redirectFrom: '/changePassword' });
                     redirectTo(res, '/passwordUpdated');
                 } catch (error) {
                     console.warn('update password failed', { error: error?.message });

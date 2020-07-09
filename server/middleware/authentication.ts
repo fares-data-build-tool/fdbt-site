@@ -1,7 +1,7 @@
 import jwksClient from 'jwks-rsa';
 import { verify, decode, VerifyOptions, JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
 import { Request, Response, NextFunction, Express } from 'express';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE, OPERATOR_COOKIE } from '../../src/constants';
+import { ID_TOKEN_ATTRIBUTE, REFRESH_TOKEN_ATTRIBUTE, DISABLE_AUTH_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants';
 import { updateSessionAttribute, getSessionAttributes } from '../../src/utils/sessions';
 import { signOutUser } from '../../src/pages/api/apiUtils';
 
@@ -35,16 +35,16 @@ export const setDisableAuthCookies = (server: Express): void => {
         const isDevelopment = process.env.NODE_ENV === 'development';
 
         if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && req.query.disableAuth === 'true') {
-            const { disableAuth } = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_COOKIE]);
+            const { disableAuth } = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_ATTRIBUTE]);
 
             if (!disableAuth || disableAuth === 'false') {
-                updateSessionAttribute(req as IncomingMessageWithSession, DISABLE_AUTH_COOKIE, { disableAuth: 'true' });
+                updateSessionAttribute(req as IncomingMessageWithSession, DISABLE_AUTH_ATTRIBUTE, { disableAuth: 'true' });
                 updateSessionAttribute(
                     req as IncomingMessageWithSession,
-                    ID_TOKEN_COOKIE,
+                    ID_TOKEN_ATTRIBUTE,
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
                 );
-                updateSessionAttribute(req as IncomingMessageWithSession, OPERATOR_COOKIE, {
+                updateSessionAttribute(req as IncomingMessageWithSession, OPERATOR_ATTRIBUTE, {
                     operator: {
                         operatorPublicName: 'Blackpool Transport',
                     },
@@ -66,17 +66,17 @@ export default (req: Request, res: Response, next: NextFunction): void => {
             });
     };
 
-    const disableAuth = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_COOKIE]);
+    const disableAuth = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_ATTRIBUTE]);
 
     if (
         (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
-        (disableAuth.DISABLE_AUTH_COOKIE === 'true' || req.query.disableAuth === 'true')
+        (disableAuth.DISABLE_AUTH_ATTRIBUTE === 'true' || req.query.disableAuth === 'true')
     ) {
         next();
         return;
     }
 
-    const { idToken } = getSessionAttributes(req as IncomingMessageWithSession, [ID_TOKEN_COOKIE]);
+    const { idToken } = getSessionAttributes(req as IncomingMessageWithSession, [ID_TOKEN_ATTRIBUTE]);
 
     if (!idToken) {
         res.redirect('/login');
@@ -90,7 +90,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
 
             if (err.name === 'TokenExpiredError') {
                 const { refreshToken } = getSessionAttributes(req as IncomingMessageWithSession, [
-                    REFRESH_TOKEN_COOKIE,
+                    REFRESH_TOKEN_ATTRIBUTE,
                 ]);
 
                 if (refreshToken) {
@@ -101,7 +101,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
                             if (data.AuthenticationResult?.IdToken) {
                                 updateSessionAttribute(
                                     req as IncomingMessageWithSession,
-                                    ID_TOKEN_COOKIE,
+                                    ID_TOKEN_ATTRIBUTE,
                                     data.AuthenticationResult.IdToken,
                                 );
                                 console.info('successfully refreshed ID Token');

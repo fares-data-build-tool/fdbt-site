@@ -21,7 +21,7 @@ describe('passwordUpdated', () => {
             expect(props).toEqual({ props: { redirectTo } });
         });
 
-        it("should return redirectTo as '/' when the USER_COOKIE is missing", () => {
+        it("should return redirectTo as '/' when the USER_ATTRIBUTE is missing", () => {
             const ctx = getMockContext();
             const props = getServerSideProps(ctx);
             expect(props).toEqual({ props: { redirectTo: '/account' } });

@@ -1,7 +1,7 @@
 import resetPassword from '../../../src/pages/api/resetPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { USER_COOKIE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants';
 import * as auth from '../../../src/data/cognito';
 
 describe('resetPassword', () => {
@@ -70,7 +70,7 @@ describe('resetPassword', () => {
         });
 
         await resetPassword(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_ATTRIBUTE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should redirect when successfully resetting password', async () => {
@@ -89,7 +89,7 @@ describe('resetPassword', () => {
 
         await resetPassword(req, res);
         expect(setCookieSpy).toHaveBeenCalledWith(
-            USER_COOKIE,
+            USER_ATTRIBUTE,
             JSON.stringify({ redirectFrom: '/resetPassword' }),
             req,
             res,
@@ -154,6 +154,6 @@ describe('resetPassword', () => {
 
         await resetPassword(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_ATTRIBUTE, JSON.stringify(mockUserCookieValue), req, res);
     });
 });
