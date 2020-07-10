@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
+import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
@@ -12,7 +12,6 @@ import {
 } from '../constants';
 import { ProductInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from 'src/utils/sessions';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -130,7 +129,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         throw new Error('Failed to retrieve passenger type info for product details page.');
     }
 
-    if (!csvZoneName && !serviceList) {
+    if (!csvZoneName || !serviceList) {
         throw new Error('Failed to retrieve zone or service list info for product details page.');
     }
 
@@ -141,16 +140,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         props = {
             hintText: csvZoneName,
         };
-    } else if (serviceListCookie) {
-        const { selectedServices } = JSON.parse(serviceListCookie);
+    } else if (serviceList) {
         props = {
-            hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0],
+            hintText: serviceList.length > 1 ? 'Multiple Services' : serviceList[0].split('#')[0],
         };
     }
 
     return {
         props: {
-            product: !productDetailsCookie ? {} : JSON.parse(productDetailsCookie),
+            product: !productDetails ? {} : JSON.parse(productDetails),
             operator: operator.operatorPublicName,
             passengerType,
             ...props,

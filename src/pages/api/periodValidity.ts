@@ -1,5 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import { NextApiRequestWithSession, ServicesInfo, PassengerDetails } from '../../interfaces';
+import { getSessionAttribute } from '../../utils/sessions';
 import {
     OPERATOR_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
@@ -22,7 +24,6 @@ import {
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
-import { ServicesInfo, PassengerDetails } from '../../interfaces';
 
 interface Product {
     productName: string;
@@ -43,7 +44,7 @@ export interface DecisionData extends PassengerDetails {
     uuid: string;
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -54,7 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const cookies = new Cookies(req, res);
 
-            const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_ATTRIBUTE);
+            const productDetails = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
             const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_ATTRIBUTE);
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_ATTRIBUTE);
@@ -65,7 +66,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             if (
                 !nocCode ||
-                productDetailsCookie === '' ||
+                productDetails === '' ||
                 daysValidCookie === '' ||
                 passengerTypeCookie === '' ||
                 (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie))
@@ -74,7 +75,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }
 
             let props = {};
-            const { productName, productPrice } = JSON.parse(productDetailsCookie);
+            const { productName, productPrice } = productDetails;
             const { daysValid } = JSON.parse(daysValidCookie);
             const { operator, uuid } = JSON.parse(operatorCookie);
             const { periodTypeName } = JSON.parse(periodTypeCookie);

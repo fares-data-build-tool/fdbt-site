@@ -3,7 +3,6 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
-import { getSessionAttribute } from '../../../utils/sessions';
 import { OPERATOR_COOKIE, FARE_TYPE_ATTRIBUTE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';

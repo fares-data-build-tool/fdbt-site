@@ -10,15 +10,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
-        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const fareType = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
         if (!fareType) {
             throw new Error('Necessary fare type info not found for passenger type page');
         }
 
         if (req.body.passengerType) {
             updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
-                errorMessage: '',
-                passengerType: req.body.passengerType,
+                body: {
+                    errorMessage: '',
+                    passengerType: req.body.passengerType,
+                },
             });
 
             if (req.body.passengerType === 'anyone') {
@@ -30,7 +32,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
-            errorMessage: 'Choose a passenger type from the options',
+            body: {
+                errorMessage: 'Choose a passenger type from the options',
+            },
         });
         redirectTo(res, '/passengerType');
     } catch (error) {

@@ -14,15 +14,19 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (req.body.fareType) {
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
-                errorMessage: '',
-                uuid: getUuidFromCookie(req, res),
-                fareType: req.body.fareType,
+                body: {
+                    errorMessage: '',
+                    uuid: getUuidFromCookie(req, res),
+                    fareType: req.body.fareType,
+                },
             });
             redirectTo(res, '/passengerType');
         } else {
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
-                errorMessage: 'Choose a fare type from the options',
-                uuid: getUuidFromCookie(req, res),
+                body: {
+                    errorMessage: 'Choose a fare type from the options',
+                    uuid: getUuidFromCookie(req, res),
+                },
             });
             redirectTo(res, '/fareType');
         }

@@ -1,5 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import { NextApiRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
 import {
     getUuidFromCookie,
     redirectToError,
@@ -30,18 +32,9 @@ export const config = {
     },
 };
 
-export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
-    const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(CSV_UPLOAD_ATTRIBUTE, cookieValue, req, res);
-
-    if (error) {
-        redirectTo(res, '/csvUpload');
-    }
-};
-
 export const faresTriangleDataMapper = (
     dataToMap: string,
-    req: NextApiRequest,
+    req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): UserFareStages | null => {
     const fareTriangle: FareTriangleData = {
@@ -55,7 +48,8 @@ export const faresTriangleDataMapper = (
     if (fareStageCount < 2) {
         console.warn(`At least 2 fare stages are needed, only ${fareStageCount} found`);
 
-        setUploadCookieAndRedirect(req, res, 'At least 2 fare stages are needed');
+        updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { body: 'At least 2 fare stages are needed' });
+        redirectTo(res, '/csvUpload');
         return null;
     }
 
@@ -110,14 +104,15 @@ export const faresTriangleDataMapper = (
             `Data conversion has not worked properly. Expected ${expectedNumberOfPrices}, got ${numberOfPrices}`,
         );
 
-        setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
+        updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { body: 'The selected file must use the template' });
+        redirectTo(res, '/csvUpload');
         return null;
     }
 
     return mappedFareTriangle;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -126,7 +121,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
 
         if (fileError) {
-            setUploadCookieAndRedirect(req, res, fileError);
+            updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { body: fileError });
+            redirectTo(res, '/csvUpload');
             return;
         }
 

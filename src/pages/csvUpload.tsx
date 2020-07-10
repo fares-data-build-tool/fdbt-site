@@ -1,14 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+import { getSessionAttribute } from '../utils/sessions';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_UPLOAD_ATTRIBUTE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 
 const title = 'CSV Upload - Fares Data Build Tool';
 const description = 'CSV Upload page of the Fares Data Build Tool';
@@ -37,17 +35,11 @@ const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactEle
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
-    const cookies = parseCookies(ctx);
-    const csvUploadCookie = cookies[CSV_UPLOAD_ATTRIBUTE];
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
+    const csvUpload = getSessionAttribute(ctx.req, CSV_UPLOAD_ATTRIBUTE);
 
-    let csvUpload;
-
-    if (csvUploadCookie) {
-        csvUpload = JSON.parse(csvUploadCookie);
-        if (csvUpload.error === undefined) {
-            csvUpload.error = '';
-        }
+    if (csvUpload.error === undefined) {
+        csvUpload.error = '';
     }
 
     const uploadProps = {
@@ -65,8 +57,6 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             detailSummary: "My csv won't upload",
         },
     };
-
-    deleteCookieOnServerSide(ctx, CSV_UPLOAD_ATTRIBUTE);
 
     return uploadProps;
 };
