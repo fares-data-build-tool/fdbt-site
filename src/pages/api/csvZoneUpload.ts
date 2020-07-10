@@ -1,3 +1,5 @@
+import { NextApiRequestWithSession } from 'src/interfaces';
+import { updateSessionAttribute } from './../../utils/sessions';
 import { NextApiRequest, NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
 import { getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
@@ -114,7 +116,7 @@ export const processCsv = async (
     }
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -138,8 +140,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
-            const cookieValue = JSON.stringify({ fareZoneName, uuid });
-            setCookieOnResponseObject(CSV_ZONE_UPLOAD_ATTRIBUTE, cookieValue, req, res);
+            updateSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE, { body: fareZoneName });
 
             redirectTo(res, '/howManyProducts');
         }

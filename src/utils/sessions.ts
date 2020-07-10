@@ -1,4 +1,4 @@
-import { IncomingMessageWithSession, NextApiRequestWithSession } from '../interfaces';
+import { IncomingMessageWithSession, NextApiRequestWithSession, SessionContents } from '../interfaces';
 
 // export const createSession = (req: IncomingMessageWithSession): void => {
 //     req.session = {};
@@ -7,7 +7,7 @@ import { IncomingMessageWithSession, NextApiRequestWithSession } from '../interf
 export const updateSessionAttribute = (
     req: IncomingMessageWithSession | NextApiRequestWithSession,
     attributeName: string,
-    attributeValue: any,
+    attributeValue: SessionContents,
 ): void => {
     // if (!req.session) {
     //     req.session = {};
@@ -17,12 +17,12 @@ export const updateSessionAttribute = (
 
 export const getSessionAttribute = (
     req: IncomingMessageWithSession | NextApiRequestWithSession,
-    attribute: string,
+    attributeName: string,
 ): any => {
     // if (!req.session) {
     //     return undefined;
     // }
-    return req.session[attributeName];
+    return req.session[attributeName].body;
 };
 
 // export const overwriteSession = (

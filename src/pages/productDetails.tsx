@@ -10,8 +10,9 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants';
-import { ProductInfo, CustomAppProps } from '../interfaces';
+import { ProductInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from 'src/utils/sessions';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -110,13 +111,14 @@ const ProductDetails = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
-    const productDetailsCookie = cookies[PRODUCT_DETAILS_ATTRIBUTE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
-    const zoneCookie = cookies[CSV_ZONE_UPLOAD_ATTRIBUTE];
-    const serviceListCookie = cookies[SERVICE_LIST_ATTRIBUTE];
+
+    const productDetails = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+    const passengerType = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const csvZoneName = getSessionAttribute(ctx.req, CSV_ZONE_UPLOAD_ATTRIBUTE);
+    const serviceList = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     let props = {};
 
@@ -124,23 +126,20 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
         throw new Error('Failed to retrieve operator cookie info for product details page.');
     }
 
-    if (!passengerTypeCookie) {
-        throw new Error('Failed to retrieve passenger type cookie info for product details page.');
+    if (!passengerType) {
+        throw new Error('Failed to retrieve passenger type info for product details page.');
     }
 
-    if (!zoneCookie && !serviceListCookie) {
-        throw new Error('Failed to retrieve zone or service list cookie info for product details page.');
+    if (!csvZoneName && !serviceList) {
+        throw new Error('Failed to retrieve zone or service list info for product details page.');
     }
 
     const operatorTypeInfo = JSON.parse(operatorCookie);
-    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
-    const { passengerType } = passengerTypeInfo;
     const { operator } = operatorTypeInfo;
 
-    if (zoneCookie) {
-        const { fareZoneName } = JSON.parse(zoneCookie);
+    if (csvZoneName) {
         props = {
-            hintText: fareZoneName,
+            hintText: csvZoneName,
         };
     } else if (serviceListCookie) {
         const { selectedServices } = JSON.parse(serviceListCookie);

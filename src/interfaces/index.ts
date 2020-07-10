@@ -85,3 +85,7 @@ export type DocumentContextWithSession = DocumentContext & {
 };
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
+
+export interface SessionContents {
+    body: string | {} | [];
+}

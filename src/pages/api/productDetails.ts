@@ -1,15 +1,16 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import { NextApiRequestWithSession, ProductInfo, ServicesInfo } from '../../interfaces/index';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
     redirectTo,
     redirectToError,
-    setCookieOnResponseObject,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
     getAttributeFromIdToken,
 } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { ProductInfo, ServicesInfo, PassengerDetails } from '../../interfaces';
+
 import {
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -41,15 +42,14 @@ export const checkIfInputInvalid = (productDetailsNameInput: string, productDeta
     };
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
 
+        const fareType = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
-        const { fareType } = JSON.parse(fareTypeCookie);
 
         if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {
             throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
@@ -61,29 +61,26 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
             const invalidInputs = JSON.stringify(productDetails);
-
-            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, invalidInputs, req, res);
+            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, { body: invalidInputs });
             redirectTo(res, '/productDetails');
             return;
         }
 
         if (fareType === 'period') {
             const validInputs = JSON.stringify(productDetails);
-            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, validInputs, req, res);
+            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, { body: validInputs });
             redirectTo(res, '/chooseValidity');
         } else if (fareType === 'flatFare') {
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
-            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
+            const selectedServices = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
+            const passengerType = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req, res);
 
-            if (!serviceListCookie || !passengerTypeCookie || !nocCode) {
-                throw new Error('Necessary cookies not found for productDetails API');
+            if (!selectedServices || !passengerType || !nocCode) {
+                throw new Error('Necessary info not found for productDetails API');
             }
 
             const { operator, uuid } = JSON.parse(operatorCookie);
-            const { selectedServices } = JSON.parse(serviceListCookie);
-            const passengerTypeObject: PassengerDetails = JSON.parse(passengerTypeCookie);
             const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
                 const service = selectedService.split('#');
                 return {
@@ -108,7 +105,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 type: fareType,
                 products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
                 selectedServices: formattedServiceInfo,
-                ...passengerTypeObject,
+                ...passengerType,
             };
 
             await putStringInS3(
