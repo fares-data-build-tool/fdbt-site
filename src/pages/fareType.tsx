@@ -108,16 +108,13 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
-    const cookies = parseCookies(ctx);
-
-    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const operatorCookie = parseCookies(ctx)[OPERATOR_COOKIE];
 
     if (!operatorCookie) {
         throw new Error('Necessary cookies not found to show faretype page');
     }
 
-    const operatorInfo = JSON.parse(operatorCookie);
-    const { operator } = operatorInfo;
+    const { operator } = JSON.parse(operatorCookie);
     const uuid = buildUuid(ctx);
     const cookieValue = JSON.stringify({ operator, uuid });
 
