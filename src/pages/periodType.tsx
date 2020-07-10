@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_TYPE_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Period Type - Fares Data Build Tool';
 const description = 'Period Type selection page of the Fares Data Build Tool';
@@ -88,17 +87,11 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const periodTypeInfo = getSessionAttribute(ctx.req, PERIOD_TYPE_ATTRIBUTE);
 
-    if (cookies[PERIOD_TYPE_ATTRIBUTE]) {
-        const periodTypeCookie = cookies[PERIOD_TYPE_ATTRIBUTE];
-        const parsedPeriodTypeCookie = JSON.parse(periodTypeCookie);
-
-        if (parsedPeriodTypeCookie.errorMessage) {
-            const { errorMessage } = parsedPeriodTypeCookie;
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
+    if (periodTypeInfo && periodTypeInfo.errorMessage) {
+        return { props: { errors: [{ errorMessage: periodTypeInfo.errorMessage, id: errorId }] } };
     }
 
     return { props: {} };

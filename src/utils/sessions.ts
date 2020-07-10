@@ -19,9 +19,9 @@ export const getSessionAttribute = (
     req: IncomingMessageWithSession | NextApiRequestWithSession,
     attributeName: string,
 ): any => {
-    // if (!req.session) {
-    //     return undefined;
-    // }
+    if (!req.session || !req.session[attributeName] || !req.session[attributeName].body) {
+        return undefined;
+    }
     return req.session[attributeName].body;
 };
 

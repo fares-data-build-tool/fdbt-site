@@ -1,13 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'How Many Products - Fares Data Build Tool';
 const description = 'How Many Products entry page of the Fares Data Build Tool';
@@ -59,18 +57,15 @@ const HowManyProducts = ({ inputCheck, errors, csrfToken }: HowManyProductProps 
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-    let inputCheck: InputCheck = {};
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const numberOfProductsInfo = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+
+    const inputCheck: InputCheck = {};
     let errors: ErrorInfo[] = [];
 
-    if (cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE]) {
-        const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
-        inputCheck = JSON.parse(numberOfProductsCookie);
+    if (numberOfProductsInfo && numberOfProductsInfo.inputCheck) {
         errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-products-error' }] : [];
     }
-
-    deleteCookieOnServerSide(ctx, NUMBER_OF_PRODUCTS_ATTRIBUTE);
 
     return { props: { inputCheck, errors } };
 };
