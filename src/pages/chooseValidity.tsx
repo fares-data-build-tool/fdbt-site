@@ -5,7 +5,8 @@ import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { getSessionAttribute } from 'src/utils/sessions';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';
@@ -75,13 +76,13 @@ const ChooseValidity = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const cookies = parseCookies(ctx);
-    const productCookie = cookies[PRODUCT_DETAILS_ATTRIBUTE];
+    const productDetails = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
     const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
     const validityCookie = cookies[DAYS_VALID_ATTRIBUTE];
 
-    if (!productCookie) {
+    if (!productDetails) {
         throw new Error('Failed to retrieve productCookie info for choose validity page.');
     }
 
@@ -89,7 +90,6 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         throw new Error('Failed to retrieve passengerTypeCookie info for choose validity page.');
     }
 
-    const product = JSON.parse(productCookie);
     const passengerType = JSON.parse(passengerTypeCookie);
 
     let validity;
@@ -103,8 +103,8 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     return {
         props: {
-            productName: product.productName,
-            productPrice: product.productPrice,
+            productName: productDetails.productName,
+            productPrice: productDetails.productPrice,
             passengerType: passengerType.passengerType,
             daysValid: !validityCookie ? '' : validity.daysValid,
             error: !validityCookie ? '' : validity.error,
