@@ -1,4 +1,5 @@
 import { NextApiResponse } from 'next';
+import { updateSessionAttribute } from '../../utils/sessions';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
@@ -29,7 +30,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const userInputValidity = isNumberOfProductsInvalid(req);
         if (userInputValidity.error !== '') {
             const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(NUMBER_OF_PRODUCTS_ATTRIBUTE, numberOfProductsCookieValue, req, res);
+            updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, { body: numberOfProductsCookieValue });
             redirectTo(res, '/howManyProducts');
             return;
         }
@@ -42,7 +43,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        setCookieOnResponseObject(NUMBER_OF_PRODUCTS_ATTRIBUTE, numberOfProductsCookieValue, req, res);
+        updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, { body: numberOfProductsCookieValue });
         redirectTo(res, '/multipleProducts');
     } catch (error) {
         const message = 'There was a problem inputting the number of products:';

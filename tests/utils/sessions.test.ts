@@ -12,7 +12,7 @@ describe('sessions', () => {
             const { req } = getMockRequestAndResponse();
             const attributeName = 'fdbt-session';
             const attributeValue = { 'session-active': true };
-            updateSessionAttribute(req, attributeName, attributeValue);
+            updateSessionAttribute(req, attributeName, { body: attributeValue });
             expect(req.session).toEqual({ 'fdbt-session': attributeValue });
         });
     });

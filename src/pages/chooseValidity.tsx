@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { NextPageContext } from 'next';
 import _ from 'lodash';
+import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
-import { getSessionAttribute } from 'src/utils/sessions';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';

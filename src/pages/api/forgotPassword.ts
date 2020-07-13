@@ -10,21 +10,23 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { email } = req.body;
 
         if (!email || !email.trim().length) {
-            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, { email, error: 'Enter your email address' });
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, {
+                body: { email, error: 'Enter your email address' },
+            });
             redirectTo(res, '/forgotPassword');
             return;
         }
 
         if (checkEmailValid(email)) {
             await forgotPassword(email);
-            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, { email });
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, { body: email });
             redirectTo(res, '/resetConfirmation');
         } else {
             const attributeContent = {
                 email,
                 error: 'Invalid email format - Enter a valid email address',
             };
-            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, attributeContent);
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, { body: attributeContent });
             redirectTo(res, '/forgotPassword');
         }
     } catch (error) {
