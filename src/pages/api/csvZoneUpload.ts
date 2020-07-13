@@ -1,8 +1,8 @@
-import { NextApiRequestWithSession } from 'src/interfaces';
-import { updateSessionAttribute } from './../../utils/sessions';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { NextApiRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareZone } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { CSV_ZONE_UPLOAD_ATTRIBUTE } from '../../constants';
@@ -16,9 +16,12 @@ export const config = {
     },
 };
 
-export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
-    const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(CSV_ZONE_UPLOAD_ATTRIBUTE, cookieValue, req, res);
+export const setUploadAttributeOnSessionAndRedirect = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+    error = '',
+): void => {
+    updateSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE, { body: { error } });
     redirectTo(res, '/csvZoneUpload');
 };
 
@@ -55,7 +58,7 @@ export const getAtcoCodesForStops = async (
 
 export const processCsv = async (
     fileContent: string,
-    req: NextApiRequest,
+    req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): Promise<UserFareZone[] | null> => {
     let parsedFileContent: UserFareZone[];
@@ -64,8 +67,10 @@ export const processCsv = async (
         parsedFileContent = csvParser(fileContent);
     } catch (error) {
         console.warn('Failed to parse fare zone CSV, error: ', error.stack());
-        setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
-
+        updateSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE, {
+            body: { error: 'The selected file must use the template' },
+        });
+        redirectTo(res, '/csvZoneUpload');
         return null;
     }
 
@@ -90,14 +95,19 @@ export const processCsv = async (
             })
             .filter(parsedItem => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
 
-        if (rawUserFareZones.length === 0) {
-            console.warn('The uploaded CSV contained no Naptan Codes or Atco Codes');
-            csvValid = false;
-        }
-
-        if (!csvValid) {
-            setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
-
+        if (!csvValid || rawUserFareZones.length === 0) {
+            if (rawUserFareZones.length === 0) {
+                console.warn('The uploaded CSV contained no Naptan Codes or Atco Codes');
+                updateSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE, {
+                    body: { error: 'The selected file must contain Naptan and/or Atco Codes' },
+                });
+                redirectTo(res, '/csvZoneUpload');
+                return null;
+            }
+            updateSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE, {
+                body: { error: 'The selected file must use the template' },
+            });
+            redirectTo(res, '/csvZoneUpload');
             return null;
         }
 
@@ -125,7 +135,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
 
         if (fileError) {
-            setUploadCookieAndRedirect(req, res, fileError);
+            updateSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE, { body: { error: fileError } });
+            redirectTo(res, '/csvZoneUpload');
             return;
         }
 
@@ -141,7 +152,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
             updateSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE, { body: fareZoneName });
-
             redirectTo(res, '/howManyProducts');
         }
     } catch (error) {

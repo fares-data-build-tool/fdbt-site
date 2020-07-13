@@ -1,5 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequestWithSession, ServicesInfo } from '../../interfaces/index';
+import { getSessionAttribute } from '../../utils/sessions';
 import { DecisionData } from './periodValidity';
 import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
@@ -56,7 +58,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
         const cookies = new Cookies(req, res);
         const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-        const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_ATTRIBUTE);
+        const fareZoneName = getSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE);
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
         const rawProducts: Product[] = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
@@ -68,7 +70,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             periodTypeCookie === '' ||
             !rawProducts ||
             passengerTypeCookie === '' ||
-            (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie === ''))
+            (operatorCookie === '' && (!fareZoneName || serviceListCookie === ''))
         ) {
             throw new Error('Necessary cookies not found for multiple product validity API');
         }
@@ -86,8 +88,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { periodTypeName } = JSON.parse(periodTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
-        if (fareZoneCookie) {
-            const { fareZoneName } = JSON.parse(fareZoneCookie);
+        if (fareZoneName) {
             const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
             const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 

@@ -126,11 +126,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }));
         }
         if (errors.length === 0) {
-            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType, ...filteredReqBody });
+            updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { body: { passengerType, ...filteredReqBody } });
             redirectOnFareType(req, res);
             return;
         }
-        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { errors, passengerType });
+        updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { body: { errors, passengerType } });
         redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';
