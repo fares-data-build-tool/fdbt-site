@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 
 import _ from 'lodash';
@@ -10,10 +9,11 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Multiple Product Validity - Fares Data Build Tool';
 const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
@@ -163,21 +163,20 @@ const MultipleProductValidity = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductValidityProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
     const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
-    const multipleProductCookie = cookies[MULTIPLE_PRODUCT_ATTRIBUTE];
+    const multipleProducts: Product[] = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-    if (!operatorCookie || !numberOfProductsCookie || !multipleProductCookie || !passengerTypeCookie) {
+    if (!operatorCookie || !numberOfProductsCookie || !multipleProducts || !passengerTypeCookie) {
         throw new Error('Necessary cookies not found to display the multiple product validity page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
     const { passengerType } = JSON.parse(passengerTypeCookie);
     const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
-    const multipleProducts: Product[] = JSON.parse(multipleProductCookie);
 
     const errors: ErrorInfo[] = [];
     const productWithErrors = multipleProducts.find(el => el.productValidityError);

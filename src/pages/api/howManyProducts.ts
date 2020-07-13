@@ -4,6 +4,7 @@ import { NextApiRequestWithSession } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { InputCheck } from '../howManyProducts';
+import { updateSessionAttribute } from '../../utils/sessions';
 
 export const isNumberOfProductsInvalid = (req: NextApiRequestWithSession): InputCheck => {
     const { numberOfProductsInput = '' } = req.body;
@@ -28,21 +29,21 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const userInputValidity = isNumberOfProductsInvalid(req);
         if (userInputValidity.error !== '') {
-            const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(NUMBER_OF_PRODUCTS_ATTRIBUTE, numberOfProductsCookieValue, req, res);
+            updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, {
+                body: { errorMessage: userInputValidity.error },
+            });
             redirectTo(res, '/howManyProducts');
             return;
         }
-        const numberOfProductsCookieValue = JSON.stringify({
-            numberOfProductsInput: userInputValidity.numberOfProductsInput,
-        });
 
         if (userInputValidity.numberOfProductsInput === '1') {
             redirectTo(res, '/productDetails');
             return;
         }
 
-        setCookieOnResponseObject(NUMBER_OF_PRODUCTS_ATTRIBUTE, numberOfProductsCookieValue, req, res);
+        updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, {
+            body: { numberOfProductsInput: userInputValidity.numberOfProductsInput },
+        });
         redirectTo(res, '/multipleProducts');
     } catch (error) {
         const message = 'There was a problem inputting the number of products:';

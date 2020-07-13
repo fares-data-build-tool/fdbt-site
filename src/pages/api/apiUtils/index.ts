@@ -6,6 +6,7 @@ import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, FARE_TYPE_ATTRIBUTE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
+import { getSessionAttribute } from '../../../utils/sessions';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;

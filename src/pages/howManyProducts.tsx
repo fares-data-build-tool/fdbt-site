@@ -63,8 +63,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const inputCheck: InputCheck = {};
     let errors: ErrorInfo[] = [];
 
-    if (numberOfProductsInfo && numberOfProductsInfo.inputCheck) {
-        errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-products-error' }] : [];
+    if (numberOfProductsInfo && numberOfProductsInfo.errorMessage) {
+        errors = numberOfProductsInfo.errorMessage
+            ? [{ errorMessage: numberOfProductsInfo.errorMessage, id: 'how-many-products-error' }]
+            : [];
     }
 
     return { props: { inputCheck, errors } };

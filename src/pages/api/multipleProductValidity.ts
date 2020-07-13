@@ -13,7 +13,6 @@ import {
 import { isSessionValid } from './service/validator';
 import {
     redirectToError,
-    setCookieOnResponseObject,
     redirectTo,
     unescapeAndDecodeCookie,
     getNocFromIdToken,
@@ -22,7 +21,8 @@ import {
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
-import { ServicesInfo } from '../../interfaces';
+import { ServicesInfo, NextApiRequestWithSession } from '../../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
@@ -49,7 +49,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
     };
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -58,25 +58,23 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
         const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_ATTRIBUTE);
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
+        const rawProducts: Product[] = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
-        const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_ATTRIBUTE);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
         const nocCode = getNocFromIdToken(req, res);
 
         if (
             !nocCode ||
-            multipleProductCookie === '' ||
             periodTypeCookie === '' ||
+            !rawProducts ||
             passengerTypeCookie === '' ||
             (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie === ''))
         ) {
             throw new Error('Necessary cookies not found for multiple product validity API');
         }
 
-        const rawProducts: Product[] = JSON.parse(multipleProductCookie);
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
-        const newMultipleProductCookieValue = JSON.stringify(products);
-        setCookieOnResponseObject(MULTIPLE_PRODUCT_ATTRIBUTE, newMultipleProductCookieValue, req, res);
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { body: products });
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');
