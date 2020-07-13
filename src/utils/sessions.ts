@@ -15,15 +15,8 @@ export const updateSessionAttribute = (
     req.session[attributeName] = attributeValue;
 };
 
-export const getSessionAttribute = (
-    req: IncomingMessageWithSession | NextApiRequestWithSession,
-    attributeName: string,
-): any => {
-    if (!req.session || !req.session[attributeName] || !req.session[attributeName].body) {
-        return undefined;
-    }
-    return req.session[attributeName].body;
-};
+export const getSessionAttribute = (req: IncomingMessageWithSession, attributeName: string): any =>
+    req?.session?.[attributeName]?.body;
 
 // export const overwriteSession = (
 //     req: IncomingMessageWithSession | NextApiRequestWithSession,

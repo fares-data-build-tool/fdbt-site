@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, CustomAppProps } from '../interfaces/index';
+import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
 import { getNocFromIdToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Fares Data Build Tool';
@@ -48,20 +48,19 @@ const InboundMatching = ({
     />
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceCookie = cookies[SERVICE_ATTRIBUTE];
+    const serviceObject = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
     const matchingCookie = cookies[MATCHING_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
-        throw new Error('Necessary cookies not found to show matching page');
+    if (!operatorCookie || !serviceObject || !journeyCookie || !nocCode) {
+        throw new Error('Necessary info not found to show matching page');
     }
 
     const operatorObject = JSON.parse(operatorCookie);
-    const serviceObject = JSON.parse(serviceCookie);
     const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
     const [selectedStartPoint, selectedEndPoint] = journeyObject.inboundJourney.split('#');

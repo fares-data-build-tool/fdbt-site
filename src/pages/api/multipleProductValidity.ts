@@ -22,7 +22,8 @@ import {
 import { Product } from '../multipleProductValidity';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
-import { ServicesInfo } from '../../interfaces';
+import { ServicesInfo, NextApiRequestWithSession } from '../../interfaces';
+import { getSessionAttribute } from 'src/utils/sessions';
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
@@ -49,7 +50,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
     };
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -60,17 +61,17 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_ATTRIBUTE);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
+        const passengerTypeObject - getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE)
         const nocCode = getNocFromIdToken(req, res);
 
         if (
             !nocCode ||
             multipleProductCookie === '' ||
             periodTypeCookie === '' ||
-            passengerTypeCookie === '' ||
+            !passengerTypeObject ||
             (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie === ''))
         ) {
-            throw new Error('Necessary cookies not found for multiple product validity API');
+            throw new Error('Necessary info not found for multiple product validity API');
         }
 
         const rawProducts: Product[] = JSON.parse(multipleProductCookie);
@@ -86,7 +87,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         let props = {};
         const { operator, uuid } = JSON.parse(operatorCookie);
         const { periodTypeName } = JSON.parse(periodTypeCookie);
-        const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
         if (fareZoneCookie) {
             const { fareZoneName } = JSON.parse(fareZoneCookie);

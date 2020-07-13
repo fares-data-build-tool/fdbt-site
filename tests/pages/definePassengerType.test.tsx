@@ -154,7 +154,9 @@ describe('pages', () => {
 
     describe('getServerSideProps', () => {
         it('should return props containing no errors and valid fieldsets when no errors are present', () => {
-            const ctx = getMockContext({ session: { [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' } } });
+            const ctx = getMockContext({
+                session: { [PASSENGER_TYPE_ATTRIBUTE]: { body: { passengerType: 'Adult' } } },
+            });
             const result = getServerSideProps(ctx);
             expect(result.props.combinedErrors).toEqual([]);
             expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
@@ -170,7 +172,7 @@ describe('pages', () => {
                 ],
             };
             const ctx = getMockContext({
-                session: { [PASSENGER_TYPE_ATTRIBUTE]: mockPassengerTypeAttributes },
+                session: { [PASSENGER_TYPE_ATTRIBUTE]: { body: mockPassengerTypeAttributes } },
             });
             const result = getServerSideProps(ctx);
             expect(result.props.combinedErrors).toEqual(mockCombinedErrorInfoForRadioAndInputErrors);

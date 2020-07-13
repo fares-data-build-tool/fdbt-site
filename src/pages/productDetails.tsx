@@ -115,7 +115,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
     const productDetails = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
-    const passengerType = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const csvZoneName = getSessionAttribute(ctx.req, CSV_ZONE_UPLOAD_ATTRIBUTE);
     const serviceList = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 

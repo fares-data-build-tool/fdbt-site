@@ -61,14 +61,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_ATTRIBUTE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
-            const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
+            const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req, res);
 
             if (
                 !nocCode ||
                 productDetails === '' ||
                 daysValidCookie === '' ||
-                passengerTypeCookie === '' ||
+                !passengerTypeObject ||
                 (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie))
             ) {
                 throw new Error('Necessary cookies not found for period validity API');
@@ -79,7 +79,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { daysValid } = JSON.parse(daysValidCookie);
             const { operator, uuid } = JSON.parse(operatorCookie);
             const { periodTypeName } = JSON.parse(periodTypeCookie);
-            const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
             if (fareZoneCookie) {
                 const { fareZoneName } = JSON.parse(fareZoneCookie);

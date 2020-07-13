@@ -48,7 +48,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('Session is invalid.');
         }
 
-        const fareType = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
         const cookies = new Cookies(req, res);
 
         if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {
@@ -73,10 +73,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'flatFare') {
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const selectedServices = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
-            const passengerType = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
+            const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req, res);
 
-            if (!selectedServices || !passengerType || !nocCode) {
+            if (!selectedServices || !passengerTypeObject || !nocCode) {
                 throw new Error('Necessary info not found for productDetails API');
             }
 
@@ -105,7 +105,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 type: fareType,
                 products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
                 selectedServices: formattedServiceInfo,
-                ...passengerType,
+                ...passengerTypeObject,
             };
 
             await putStringInS3(

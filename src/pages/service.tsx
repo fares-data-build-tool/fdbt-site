@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
@@ -10,6 +9,7 @@ import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
@@ -70,35 +70,29 @@ const Service = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
-    const serviceCookie = cookies[SERVICE_ATTRIBUTE];
-    const error: ErrorInfo[] = [];
-    if (serviceCookie) {
-        const serviceInfo = JSON.parse(serviceCookie);
-        if (serviceInfo.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: serviceInfo.errorMessage, id: errorId };
-            error.push(errorInfo);
-        }
-    }
-
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx);
+    const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (!operatorCookie || !passengerTypeCookie || !nocCode) {
-        throw new Error('Necessary cookies not found to show matching page');
+    if (!operatorCookie || !passengerType || !nocCode) {
+        throw new Error('Operator details not found');
     }
-
-    const operatorInfo = JSON.parse(operatorCookie);
-    const { operator } = operatorInfo;
-    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
-    const { passengerType } = passengerTypeInfo;
 
     const services = await getServicesByNocCode(nocCode);
 
     if (services.length === 0) {
         throw new Error(`No services found for NOC Code: ${nocCode}`);
+    }
+
+    const { operator } = JSON.parse(operatorCookie);
+    const serviceInfo = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+
+    const error: ErrorInfo[] = [];
+    if (serviceInfo && serviceInfo.errorMessage) {
+        const errorInfo: ErrorInfo = { errorMessage: serviceInfo.errorMessage, id: errorId };
+        error.push(errorInfo);
     }
 
     return { props: { operator: operator.operatorPublicName, passengerType, services, error } };
