@@ -1,14 +1,8 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
-import {
-    redirectTo,
-    redirectToError,
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-    getSelectedStages,
-} from './apiUtils';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError, getUuidFromCookie, unescapeAndDecodeCookie, getSelectedStages } from './apiUtils';
 import { BasicService, CognitoIdToken, PassengerDetails, NextApiRequestWithSession } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
@@ -22,7 +16,7 @@ import {
 } from '../../constants';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
-import { getSessionAttribute } from '../../utils/sessions';
+
 
 interface MatchingBaseData {
     type: string;
@@ -130,15 +124,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const selectedStagesList: {}[] = getSelectedStages(req);
 
-            setCookieOnResponseObject(
-                MATCHING_ATTRIBUTE,
-                JSON.stringify({ error: true, selectedFareStages: selectedStagesList }),
-                req,
-                res,
-            );
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, {
+                body: { error: true, selectedFareStages: selectedStagesList },
+            });
 
             redirectTo(res, '/matching');
-
             return;
         }
 
@@ -161,7 +151,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             uuid,
         );
 
-        setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ error: false }), req, res);
+        updateSessionAttribute(req, MATCHING_ATTRIBUTE, { body: { error: false } });
         await putMatchingDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');

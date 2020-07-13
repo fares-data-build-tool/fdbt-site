@@ -53,7 +53,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceObject = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
-    const matchingCookie = cookies[MATCHING_ATTRIBUTE];
+    const matchingInfo = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
     const nocCode = getNocFromIdToken(ctx);
 
     if (!operatorCookie || !serviceObject || !journeyCookie || !nocCode) {
@@ -80,8 +80,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
-    const parsedMatchingCookie = !matchingCookie ? false : JSON.parse(matchingCookie);
-
     return {
         props: {
             stops: orderedStops,
@@ -92,10 +90,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: !parsedMatchingCookie.outbound ? false : JSON.parse(matchingCookie).outbound.error,
-            selectedFareStages: !parsedMatchingCookie.outbound
-                ? []
-                : JSON.parse(matchingCookie).outbound.selectedFareStages,
+            error: !matchingInfo.outbound ? false : matchingInfo.outbound.error,
+            selectedFareStages: matchingInfo.outbound ? [] : matchingInfo.outbound.selectedFareStages,
         },
     };
 };

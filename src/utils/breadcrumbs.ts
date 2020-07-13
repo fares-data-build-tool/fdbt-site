@@ -18,8 +18,8 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
         };
     }
 
-    const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-    const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const fareType = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const passengerType = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const outboundJourney = getCookieValue(ctx, JOURNEY_ATTRIBUTE, 'outboundJourney');
     const inputMethod = getCookieValue(ctx, INPUT_METHOD_ATTRIBUTE, 'inputMethod');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_ATTRIBUTE, 'periodTypeName');

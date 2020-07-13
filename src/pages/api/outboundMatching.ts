@@ -1,11 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import {
-    redirectTo,
-    redirectToError,
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    getSelectedStages,
-} from './apiUtils';
+import { NextApiResponse } from 'next';
+import { NextApiRequestWithSession } from '../../interfaces/index';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError, getUuidFromCookie, getSelectedStages } from './apiUtils';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { MATCHING_ATTRIBUTE, USER_DATA_BUCKET_NAME } from '../../constants';
@@ -24,7 +20,7 @@ export const putOutboundMatchingDataInS3 = async (data: MatchingFareZones, uuid:
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -51,7 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             const outbound = { error: true, selectedFareStages: selectedStagesList };
 
-            setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ outbound }), req, res);
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, { body: { outbound } });
             redirectTo(res, '/outboundMatching');
             return;
         }
@@ -67,7 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         await putOutboundMatchingDataInS3(matchedFareZones, uuid);
 
-        setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ outbound: { error: false } }), req, res);
+        updateSessionAttribute(req, MATCHING_ATTRIBUTE, { body: { outbound: { error: false } } });
 
         redirectTo(res, '/inboundMatching');
     } catch (error) {

@@ -74,18 +74,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceObject = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
-    const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
-    const matchingCookie = cookies[MATCHING_ATTRIBUTE];
+    const journeyInfo = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
+    const matchingInfo = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
     const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !serviceObject || !journeyCookie || !nocCode) {
+    if (!operatorCookie || !serviceObject || !journeyInfo || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 
     const operatorObject = JSON.parse(operatorCookie);
-    const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
-    const [selectedStartPoint, selectedEndPoint] = journeyObject.directionJourneyPattern.split('#');
+    const [selectedStartPoint, selectedEndPoint] = journeyInfo.directionJourneyPattern.split('#');
     const service = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);
@@ -112,8 +111,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: !matchingCookie ? false : JSON.parse(matchingCookie).error,
-            selectedFareStages: !matchingCookie ? [] : JSON.parse(matchingCookie).selectedFareStages,
+            error: !matchingInfo ? false : matchingInfo.error,
+            selectedFareStages: !matchingInfo ? [] : matchingInfo.selectedFareStages,
         },
     };
 };

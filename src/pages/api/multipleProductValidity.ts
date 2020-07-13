@@ -1,7 +1,5 @@
 import Cookies from 'cookies';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { NextApiRequestWithSession, ServicesInfo } from '../../interfaces/index';
-import { getSessionAttribute } from '../../utils/sessions';
 import { DecisionData } from './periodValidity';
 import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
@@ -62,7 +60,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
         const rawProducts: Product[] = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
-        const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE)
+        const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         const nocCode = getNocFromIdToken(req, res);
 
         if (
