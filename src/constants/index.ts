@@ -28,13 +28,13 @@ export const CSV_UPLOAD_ATTRIBUTE = 'fdbt-csv-upload';
 
 export const CSV_ZONE_UPLOAD_ATTRIBUTE = 'fdbt-csv-zone-upload';
 
-export const PERIOD_EXPIRY_ATTRIBUTE = 'fdbt-period-expiry';
+export const PERIOD_EXPIRY_COOKIE = 'fdbt-period-expiry';
 
 export const SERVICE_LIST_ATTRIBUTE = 'fdbt-services';
 
-export const INPUT_METHOD_ATTRIBUTE = 'fdbt-input-method';
+export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 
-export const NUMBER_OF_STAGES_ATTRIBUTE = 'fdbt-number-stages';
+export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
 
 export const MATCHING_ATTRIBUTE = 'fdbt-matching';
 
@@ -42,7 +42,7 @@ export const NUMBER_OF_PRODUCTS_ATTRIBUTE = 'fdbt-number-of-products';
 
 export const MULTIPLE_PRODUCT_ATTRIBUTE = 'fdbt-multiple-product';
 
-export const USER_ATTRIBUTE = 'fdbt-user';
+export const USER_COOKIE = 'fdbt-user';
 
 export const FORGOT_PASSWORD_ATTRIBUTE = 'fdbt-reset-password';
 

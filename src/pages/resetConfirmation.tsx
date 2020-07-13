@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Reset Email Confirmation - Fares data build tool';
 const description = 'Reset Email Confirmation page of the Fares data build tool';
@@ -46,16 +45,13 @@ const ResetConfirmation = ({ email, csrfToken }: ResetConfirmationProps & Custom
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ResetConfirmationProps } => {
-    const cookies = parseCookies(ctx);
-    const forgotPasswordCookie = cookies[FORGOT_PASSWORD_ATTRIBUTE];
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ResetConfirmationProps } => {
+    const forgotPasswordInfo = getSessionAttribute(ctx.req, FORGOT_PASSWORD_ATTRIBUTE);
 
     // error in case user navigates to page manually or without cookie
-    if (!forgotPasswordCookie) {
+    if (!forgotPasswordInfo) {
         throw new Error('No forgotPasswordCookie found.');
     }
-
-    const forgotPasswordInfo = JSON.parse(forgotPasswordCookie);
 
     const { email } = forgotPasswordInfo;
 

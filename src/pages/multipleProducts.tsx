@@ -66,10 +66,10 @@ const MultipleProducts = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const { numberOfProductsToDisplay } = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+    const { numberOfProducts } = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (!operatorCookie || !numberOfProductsToDisplay || !passengerType) {
+    if (!operatorCookie || !numberOfProducts || !passengerType) {
         throw new Error(
             'Could not retrieve the necessary operator, number of products and/or passenger type info for the multiple products API',
         );
@@ -82,7 +82,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         if (errors && errors.length > 0) {
             return {
                 props: {
-                    numberOfProductsToDisplay,
+                    numberOfProductsToDisplay: numberOfProducts,
                     operator: operator.operatorPublicName,
                     passengerType,
                     errors,
@@ -94,7 +94,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     return {
         props: {
-            numberOfProductsToDisplay,
+            numberOfProductsToDisplay: numberOfProducts,
             operator: operator.operatorPublicName,
             passengerType,
             userInput: [],

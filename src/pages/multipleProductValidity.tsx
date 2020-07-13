@@ -167,15 +167,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
+    const numberOfProducts = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE).numberOfProductsInput;
     const multipleProducts: Product[] = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-    if (!operatorCookie || !numberOfProductsCookie || !multipleProducts || !passengerType) {
+    if (!operatorCookie || !numberOfProducts || !multipleProducts || !passengerType) {
         throw new Error('Could not retrieve the necessary info to display the multiple product validity page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
-    const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
 
     const errors: ErrorInfo[] = [];
     const productWithErrors = multipleProducts.find(el => el.productValidityError);

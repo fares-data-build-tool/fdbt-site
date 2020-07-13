@@ -57,7 +57,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const cookies = new Cookies(req, res);
         const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
         const fareZoneName = getSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE);
-        const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
+        const { selectedServices } = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
         const rawProducts: Product[] = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const periodTypeName = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
         const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
@@ -68,7 +68,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             !periodTypeName ||
             !rawProducts ||
             !passengerTypeObject ||
-            (operatorCookie === '' && (!fareZoneName || serviceListCookie === ''))
+            (operatorCookie === '' && (!fareZoneName || selectedServices === ''))
         ) {
             throw new Error('Necessary info not found for multiple product validity API');
         }
@@ -98,21 +98,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             };
         }
 
-        if (serviceListCookie) {
-            const { selectedServices } = JSON.parse(serviceListCookie);
-            const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
-                const service = selectedService.split('#');
-                return {
-                    lineName: service[0],
-                    serviceCode: service[1],
-                    startDate: service[2],
-                    serviceDescription: service[3],
-                };
-            });
-            props = {
-                selectedServices: formattedServiceInfo,
+        const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
+            const service = selectedService.split('#');
+            return {
+                lineName: service[0],
+                serviceCode: service[1],
+                startDate: service[2],
+                serviceDescription: service[3],
             };
-        }
+        });
+        props = {
+            selectedServices: formattedServiceInfo,
+        };
 
         const email = getAttributeFromIdToken(req, res, 'email');
 

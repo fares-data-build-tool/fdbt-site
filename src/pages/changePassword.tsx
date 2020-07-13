@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 import { TwoThirdsLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_ATTRIBUTE } from '../constants';
+import { USER_COOKIE } from '../constants';
 import { CustomAppProps, ErrorInfo } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 
@@ -123,7 +123,7 @@ const ChangePassword = ({ errors, csrfToken }: ChangePasswordProps & CustomAppPr
 
 export const getServerSideProps = (ctx: NextPageContext): { props: ChangePasswordProps } => {
     const cookies = parseCookies(ctx);
-    const userCookie = cookies[USER_ATTRIBUTE];
+    const userCookie = cookies[USER_COOKIE];
     const errors: ErrorInfo[] = [];
     if (userCookie) {
         const { inputChecks } = JSON.parse(userCookie);

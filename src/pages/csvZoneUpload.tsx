@@ -1,14 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+import { getSessionAttribute } from '../utils/sessions';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
 import { CSV_ZONE_UPLOAD_ATTRIBUTE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 
 const title = 'CSV Zone Upload - Fares Data Build Tool';
 const description = 'CSV Zone Upload page of the Fares Data Build Tool';
@@ -35,17 +33,11 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): Reac
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploadsProps } => {
-    const cookies = parseCookies(ctx);
-    const csvZoneUploadCookie = cookies[CSV_ZONE_UPLOAD_ATTRIBUTE];
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
+    const csvZoneUpload = getSessionAttribute(ctx.req, CSV_ZONE_UPLOAD_ATTRIBUTE);
 
-    let csvZoneUpload;
-
-    if (csvZoneUploadCookie) {
-        csvZoneUpload = JSON.parse(csvZoneUploadCookie);
-        if (csvZoneUpload.error === undefined) {
-            csvZoneUpload.error = '';
-        }
+    if (csvZoneUpload.error === undefined) {
+        csvZoneUpload.error = '';
     }
 
     const uploadProps = {
@@ -63,10 +55,6 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             detailSummary: "My csv won't upload",
         },
     };
-
-    if (csvZoneUpload?.error) {
-        deleteCookieOnServerSide(ctx, CSV_ZONE_UPLOAD_ATTRIBUTE);
-    }
 
     return uploadProps;
 };

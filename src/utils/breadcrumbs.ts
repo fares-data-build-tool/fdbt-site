@@ -1,7 +1,7 @@
 import {
     PASSENGER_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
+    INPUT_METHOD_COOKIE,
     JOURNEY_COOKIE,
     PERIOD_TYPE_ATTRIBUTE,
 } from '../constants/index';
@@ -21,8 +21,8 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const fareType = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const passengerType = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const outboundJourney = getCookieValue(ctx, JOURNEY_COOKIE, 'outboundJourney');
-    const inputMethod = getCookieValue(ctx, INPUT_METHOD_ATTRIBUTE, 'inputMethod');
-    const periodType = getSessionAttribute(ctx.req, PERIOD_TYPE_ATTRIBUTE);
+    const inputMethod = getCookieValue(ctx, INPUT_METHOD_COOKIE, 'inputMethod');
+    const periodType = getCookieValue(ctx, PERIOD_TYPE_ATTRIBUTE, 'periodTypeName');
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];

@@ -10,7 +10,7 @@ import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     OPERATOR_COOKIE,
     FARE_TYPE_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
+    INPUT_METHOD_COOKIE,
     SERVICE_ATTRIBUTE,
     JOURNEY_COOKIE,
     PASSENGER_TYPE_ATTRIBUTE,
@@ -21,7 +21,7 @@ import {
     PERIOD_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     ID_TOKEN_COOKIE,
-    USER_ATTRIBUTE,
+    USER_COOKIE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -140,7 +140,7 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += inputMethod
-        ? `${INPUT_METHOD_ATTRIBUTE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
+        ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
         : '';
 
     cookieString += passengerType ? `${PASSENGER_TYPE_ATTRIBUTE}=${encodeURI(JSON.stringify(passengerType))};` : '';
@@ -188,7 +188,7 @@ export const getMockRequestAndResponse = ({
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
 
-    cookieString += userCookieValue ? `${USER_ATTRIBUTE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
+    cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
 
     const req = mockRequest({
         connection: {

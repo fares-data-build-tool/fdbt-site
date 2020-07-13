@@ -7,12 +7,12 @@ import {
     getAttributeFromIdToken,
     validateNewPassword,
 } from './apiUtils';
-import { USER_ATTRIBUTE } from '../../constants';
+import { USER_COOKIE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
 
 export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
     const cookieContent = JSON.stringify({ inputChecks });
-    setCookieOnResponseObject(USER_ATTRIBUTE, cookieContent, req, res);
+    setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
     redirectTo(res, '/changePassword');
 };
 
@@ -42,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 try {
                     await updateUserPassword(newPassword, username);
                     setCookieOnResponseObject(
-                        USER_ATTRIBUTE,
+                        USER_COOKIE,
                         JSON.stringify({ redirectFrom: '/changePassword' }),
                         req,
                         res,

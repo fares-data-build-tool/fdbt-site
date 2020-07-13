@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
-import { INPUT_METHOD_ATTRIBUTE } from '../constants';
+import { INPUT_METHOD_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -89,13 +89,13 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppPro
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     const cookies = parseCookies(ctx);
 
-    if (cookies[INPUT_METHOD_ATTRIBUTE]) {
-        const inputMethodCookie = cookies[INPUT_METHOD_ATTRIBUTE];
+    if (cookies[INPUT_METHOD_COOKIE]) {
+        const inputMethodCookie = cookies[INPUT_METHOD_COOKIE];
         const parsedInputMethodCookie = JSON.parse(inputMethodCookie);
 
         if (parsedInputMethodCookie.errorMessage) {
             const { errorMessage } = parsedInputMethodCookie;
-            deleteCookieOnServerSide(ctx, INPUT_METHOD_ATTRIBUTE);
+            deleteCookieOnServerSide(ctx, INPUT_METHOD_COOKIE);
             return { props: { errors: [{ errorMessage, id: errorId }] } };
         }
     }

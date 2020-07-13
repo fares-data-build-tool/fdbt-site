@@ -4,7 +4,7 @@ import register from '../../../src/pages/api/register';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { USER_ATTRIBUTE } from '../../../src/constants';
+import { USER_COOKIE } from '../../../src/constants';
 
 jest.mock('../../../src/data/auroradb.ts');
 
@@ -169,7 +169,7 @@ describe('register', () => {
         });
 
         await register(req, res);
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_ATTRIBUTE, JSON.stringify(expectedCookieValue), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(expectedCookieValue), req, res);
     });
 
     it('should error when the service noc code is invalid', async () => {
@@ -207,7 +207,7 @@ describe('register', () => {
 
         await register(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_ATTRIBUTE, JSON.stringify(mockUserCookieValue), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 
     it('should redirect when successfully signed in', async () => {
@@ -280,7 +280,7 @@ describe('register', () => {
 
         await register(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(USER_ATTRIBUTE, JSON.stringify(mockUserCookieValue), req, res);
+        expect(setCookieSpy).toHaveBeenCalledWith(USER_COOKIE, JSON.stringify(mockUserCookieValue), req, res);
     });
 
     it('should update user attributes as contactable=yes if yes', async () => {

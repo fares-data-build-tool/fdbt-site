@@ -7,9 +7,15 @@ import {
     JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,
     PRICE_ENTRY_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
+    INPUT_METHOD_COOKIE,
 } from '../../constants/index';
-import { getUuidFromCookie, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import {
+    getUuidFromCookie,
+    redirectToError,
+    redirectTo,
+    setCookieOnResponseObject,
+    unescapeAndDecodeCookie,
+} from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
 
@@ -143,7 +149,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
         const journeyPattern = JSON.parse(journeyCookie);
 
-        updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { body: { inputMethod: 'manual' } });
+        setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'manual' }), req, res);
 
         if (journeyPattern?.outboundJourney) {
             redirectTo(res, '/outboundMatching');

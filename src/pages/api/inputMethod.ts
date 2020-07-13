@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { setCookieOnResponseObject, redirectTo, redirectToError } from './apiUtils/index';
 import { isSessionValid } from './service/validator';
-import { INPUT_METHOD_ATTRIBUTE } from '../../constants';
+import { INPUT_METHOD_COOKIE } from '../../constants';
 
 export default (req: NextApiRequest, res: NextApiResponse): void => {
     try {
@@ -25,7 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             }
         } else {
             const cookieValue = JSON.stringify({ errorMessage: 'Choose an input method from the options' });
-            setCookieOnResponseObject(INPUT_METHOD_ATTRIBUTE, cookieValue, req, res);
+            setCookieOnResponseObject(INPUT_METHOD_COOKIE, cookieValue, req, res);
             redirectTo(res, '/inputMethod');
         }
     } catch (error) {

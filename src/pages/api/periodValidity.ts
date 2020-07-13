@@ -5,7 +5,7 @@ import { getSessionAttribute } from '../../utils/sessions';
 import {
     OPERATOR_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
-    PERIOD_EXPIRY_ATTRIBUTE,
+    PERIOD_EXPIRY_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
     CSV_ZONE_UPLOAD_ATTRIBUTE,
     DAYS_VALID_COOKIE,
@@ -59,8 +59,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const fareZoneName = getSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE);
-            const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
             const periodTypeName = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
+            const { selectedServices } = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
             const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req, res);
 
@@ -69,7 +69,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 productDetails === '' ||
                 daysValidCookie === '' ||
                 !passengerTypeObject ||
-                (operatorCookie === '' && (!fareZoneName || serviceListCookie))
+                (operatorCookie === '' && (!fareZoneName || selectedServices))
             ) {
                 throw new Error('Necessary cookies not found for period validity API');
             }
@@ -93,23 +93,20 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 };
             }
 
-            if (serviceListCookie) {
-                const { selectedServices } = JSON.parse(serviceListCookie);
-                const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
-                    const service = selectedService.split('#');
-                    return {
-                        lineName: service[0],
-                        serviceCode: service[1],
-                        startDate: service[2],
-                        serviceDescription: service[3],
-                    };
-                });
-                props = {
-                    selectedServices: formattedServiceInfo,
+            const formattedServiceInfo: ServicesInfo[] = selectedServices.map((selectedService: string) => {
+                const service = selectedService.split('#');
+                return {
+                    lineName: service[0],
+                    serviceCode: service[1],
+                    startDate: service[2],
+                    serviceDescription: service[3],
                 };
-            }
+            });
+            props = {
+                selectedServices: formattedServiceInfo,
+            };
 
-            setCookieOnResponseObject(PERIOD_EXPIRY_ATTRIBUTE, JSON.stringify({ periodValid, error: false }), req, res);
+            setCookieOnResponseObject(PERIOD_EXPIRY_COOKIE, JSON.stringify({ periodValid, error: false }), req, res);
 
             const email = getAttributeFromIdToken(req, res, 'email');
 
@@ -147,7 +144,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const cookieValue = JSON.stringify({
                 errorMessage: 'Choose an option regarding your period ticket validity',
             });
-            setCookieOnResponseObject(PERIOD_EXPIRY_ATTRIBUTE, cookieValue, req, res);
+            setCookieOnResponseObject(PERIOD_EXPIRY_COOKIE, cookieValue, req, res);
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {
