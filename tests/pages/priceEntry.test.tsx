@@ -5,6 +5,7 @@ import MockRes from 'mock-res';
 import { NextPageContext } from 'next';
 import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
 import { STAGE_NAMES_ATTRIBUTE } from '../../src/constants';
+import { NextPageContextWithSession } from 'src/interfaces';
 
 const mockFareStages: string[] = [
     'Briggate',
@@ -52,7 +53,7 @@ describe('Price Entry Page', () => {
                 STAGE_NAMES_ATTRIBUTE: stageNames,
             },
         });
-        const ctx: NextPageContext = {
+        const ctx: NextPageContextWithSession = {
             res,
             req,
             pathname: '',

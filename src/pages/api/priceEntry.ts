@@ -1,21 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import _ from 'lodash';
+import { NextApiResponse } from 'next';
+import { NextApiRequestWithSession } from '../../interfaces/index';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import {
     JOURNEY_ATTRIBUTE,
     USER_DATA_BUCKET_NAME,
-    PRICE_ENTRY_INPUTS_ATTRIBUTE,
-    PRICE_ENTRY_ERRORS_ATTRIBUTE,
+    PRICE_ENTRY_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
 } from '../../constants/index';
-import {
-    getUuidFromCookie,
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-    setCookieOnResponseObject,
-    deleteCookieOnResponseObject,
-} from './apiUtils';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
 
@@ -53,7 +46,7 @@ export interface PriceEntryError {
     k: string;
 }
 
-export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
+export const inputsValidityCheck = (req: NextApiRequestWithSession): FaresInformation => {
     const priceEntries = Object.entries(req.body);
     const errors: PriceEntryError[] = [];
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
@@ -77,7 +70,7 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     };
 };
 
-export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => {
+export const faresTriangleDataMapper = (req: NextApiRequestWithSession): UserFareStages => {
     const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
     const fareTriangle: FareTriangleData = {};
 
@@ -123,7 +116,7 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
     await putStringInS3(USER_DATA_BUCKET_NAME, `${uuid}.json`, text, 'application/json; charset=utf-8');
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!req.body || _.isEmpty(req.body)) {
             throw new Error('Body of request not found.');
@@ -136,28 +129,20 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const errorCheck = inputsValidityCheck(req);
 
         if (errorCheck.errorInformation.length > 0) {
-            // two cookies as if there are too many fare stages, cookie gets too large
-            const inputCookieValue = JSON.stringify(errorCheck.inputs);
-            setCookieOnResponseObject(PRICE_ENTRY_INPUTS_ATTRIBUTE, inputCookieValue, req, res);
-            const errorCookieValue = JSON.stringify(errorCheck.errorInformation);
-            setCookieOnResponseObject(PRICE_ENTRY_ERRORS_ATTRIBUTE, errorCookieValue, req, res);
+            const inputsAndErrors = { inputs: errorCheck.inputs, errors: errorCheck.errorInformation };
+            updateSessionAttribute(req, PRICE_ENTRY_ATTRIBUTE, { body: inputsAndErrors });
             redirectTo(res, '/priceEntry');
             return;
         }
-        deleteCookieOnResponseObject(PRICE_ENTRY_INPUTS_ATTRIBUTE, req, res);
-        deleteCookieOnResponseObject(PRICE_ENTRY_ERRORS_ATTRIBUTE, req, res);
-
         const mappedData = faresTriangleDataMapper(req);
         const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));
 
-        const cookies = new Cookies(req, res);
-        const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_ATTRIBUTE);
-        const journeyObject = JSON.parse(journeyCookie);
+        const journeyPattern = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
 
-        setCookieOnResponseObject(INPUT_METHOD_ATTRIBUTE, JSON.stringify({ inputMethod: 'manual' }), req, res);
+        updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { body: { inputMethod: 'manual' } });
 
-        if (journeyObject?.outboundJourney) {
+        if (journeyPattern?.outboundJourney) {
             redirectTo(res, '/outboundMatching');
             return;
         }

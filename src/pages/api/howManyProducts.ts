@@ -5,7 +5,6 @@ import { NextApiRequestWithSession } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { InputCheck } from '../howManyProducts';
-import { updateSessionAttribute } from '../../utils/sessions';
 
 export const isNumberOfProductsInvalid = (req: NextApiRequestWithSession): InputCheck => {
     const { numberOfProductsInput = '' } = req.body;

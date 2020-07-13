@@ -1,14 +1,8 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
-import {
-    redirectTo,
-    redirectToError,
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-    getSelectedStages,
-} from './apiUtils';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { redirectTo, redirectToError, getUuidFromCookie, unescapeAndDecodeCookie, getSelectedStages } from './apiUtils';
 import { BasicService, CognitoIdToken, PassengerDetails, NextApiRequestWithSession } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { getOutboundMatchingFareStages, putStringInS3, UserFareStages } from '../../data/s3';
@@ -21,7 +15,6 @@ import {
     ID_TOKEN_COOKIE,
 } from '../../constants';
 import { Price } from '../../interfaces/matchingInterface';
-import { getSessionAttribute } from '../../utils/sessions';
 
 interface FareZones {
     name: string;
@@ -109,7 +102,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             const inbound = { error: true, selectedFareStages: selectedStagesList };
 
-            setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ inbound }), req, res);
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, { body: { inbound } });
             redirectTo(res, '/inboundMatching');
             return;
         }
@@ -141,7 +134,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         await putMatchingDataInS3(matchingJson, uuid);
 
-        setCookieOnResponseObject(MATCHING_ATTRIBUTE, JSON.stringify({ inbound: { error: false } }), req, res);
+        // maybe can delete this.
+        updateSessionAttribute(req, MATCHING_ATTRIBUTE, { body: { inbound: { error: false } } });
         redirectTo(res, '/thankyou');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON.';

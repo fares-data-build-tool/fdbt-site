@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
-import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ERRORS_ATTRIBUTE, PRICE_ENTRY_INPUTS_ATTRIBUTE } from '../constants';
+import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { FaresInformation, FaresInput, PriceEntryError } from './api/priceEntry';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
@@ -149,11 +149,10 @@ const PriceEntry = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PriceEntryProps } => {
     const cookies = parseCookies(ctx);
     const stageNamesCookie = cookies[STAGE_NAMES_ATTRIBUTE];
-    const priceEntryErrorsCookie = cookies[PRICE_ENTRY_ERRORS_ATTRIBUTE];
-    const priceEntryInputsCookie = cookies[PRICE_ENTRY_INPUTS_ATTRIBUTE];
+    const priceEntryInfo = getSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE);
 
     if (!stageNamesCookie) {
         throw new Error('Necessary stage names cookies not found to show price entry page');
@@ -165,9 +164,9 @@ export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryPro
         throw new Error('No stages in cookie data');
     }
 
-    if (priceEntryInputsCookie && priceEntryErrorsCookie) {
-        const priceEntryCookieInputContents: FaresInput[] = JSON.parse(priceEntryInputsCookie);
-        const priceEntryCookieErrorContents: PriceEntryError[] = JSON.parse(priceEntryErrorsCookie);
+    if (priceEntryInfo) {
+        const priceEntryCookieInputContents: FaresInput[] = priceEntryInfo.inputs;
+        const priceEntryCookieErrorContents: PriceEntryError[] = priceEntryInfo.errors;
 
         const errors: ErrorInfo[] = priceEntryCookieErrorContents.map(error => {
             return { errorMessage: error.v, id: errorId };
