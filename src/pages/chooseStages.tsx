@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
 import { deleteCookieOnServerSide } from '../utils';
-import { FARE_STAGES_ATTRIBUTE } from '../constants';
+import { FARE_STAGES_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
@@ -65,13 +65,13 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     let inputCheck: ChooseStagesInputCheck = {};
     let errors: ErrorInfo[] = [];
 
-    if (cookies[FARE_STAGES_ATTRIBUTE]) {
-        const numberOfFareStagesCookie = cookies[FARE_STAGES_ATTRIBUTE];
+    if (cookies[FARE_STAGES_COOKIE]) {
+        const numberOfFareStagesCookie = cookies[FARE_STAGES_COOKIE];
         inputCheck = JSON.parse(numberOfFareStagesCookie);
         errors = inputCheck.error ? [{ errorMessage: inputCheck.error, id: 'how-many-stages-error' }] : [];
     }
 
-    deleteCookieOnServerSide(ctx, FARE_STAGES_ATTRIBUTE);
+    deleteCookieOnServerSide(ctx, FARE_STAGES_COOKIE);
 
     return { props: { inputCheck, errors } };
 };

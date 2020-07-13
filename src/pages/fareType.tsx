@@ -122,12 +122,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
 
     console.info('transaction start', { uuid });
 
-    console.log( 'HERE ');
-
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-
-    console.log( 'HERE2 ');
-
 
     if (fareTypeInfo && fareTypeInfo.errorMessage) {
         return {

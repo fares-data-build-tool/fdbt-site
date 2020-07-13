@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE } from '../../../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_COOKIE } from '../../../constants';
 import { unescapeAndDecodeCookie } from '../apiUtils';
 import { getSessionAttribute } from '../../../utils/sessions';
 import { NextApiRequestWithSession } from '../../../interfaces';
@@ -19,7 +19,7 @@ export const isCookiesUUIDMatch = (req: NextApiRequestWithSession, res: NextApiR
     const cookies = new Cookies(req, res);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const serviceInfo = getSessionAttribute(req, SERVICE_ATTRIBUTE);
-    const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_ATTRIBUTE);
+    const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
     try {
         const operatorInfo = JSON.parse(operatorCookie);
         const journeyInfo = JSON.parse(journeyCookie);

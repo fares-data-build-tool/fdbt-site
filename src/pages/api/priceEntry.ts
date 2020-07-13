@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import { NextApiResponse } from 'next';
+import Cookies from 'cookies';
 import { NextApiRequestWithSession } from '../../interfaces/index';
-import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { updateSessionAttribute } from '../../utils/sessions';
 import {
-    JOURNEY_ATTRIBUTE,
+    JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,
     PRICE_ENTRY_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
 } from '../../constants/index';
-import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
+import { getUuidFromCookie, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './service/validator';
 
@@ -138,7 +139,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));
 
-        const journeyPattern = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
+        const cookies = new Cookies(req, res);
+        const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
+        const journeyPattern = JSON.parse(journeyCookie);
 
         updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { body: { inputMethod: 'manual' } });
 

@@ -59,13 +59,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareZoneName = getSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE);
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
         const rawProducts: Product[] = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
-        const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
+        const periodTypeName = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
         const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         const nocCode = getNocFromIdToken(req, res);
 
         if (
             !nocCode ||
-            periodTypeCookie === '' ||
+            !periodTypeName ||
             !rawProducts ||
             !passengerTypeObject ||
             (operatorCookie === '' && (!fareZoneName || serviceListCookie === ''))
@@ -83,7 +83,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         let props = {};
         const { operator, uuid } = JSON.parse(operatorCookie);
-        const { periodTypeName } = JSON.parse(periodTypeCookie);
 
         if (fareZoneName) {
             const atcoCodes: string[] = await getCsvZoneUploadData(uuid);

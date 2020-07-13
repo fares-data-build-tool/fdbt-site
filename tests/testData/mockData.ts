@@ -12,12 +12,12 @@ import {
     FARE_TYPE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
-    JOURNEY_ATTRIBUTE,
+    JOURNEY_COOKIE,
     PASSENGER_TYPE_ATTRIBUTE,
-    FARE_STAGES_ATTRIBUTE,
+    FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
-    DAYS_VALID_ATTRIBUTE,
+    DAYS_VALID_COOKIE,
     PERIOD_TYPE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     ID_TOKEN_COOKIE,
@@ -151,7 +151,7 @@ export const getMockRequestAndResponse = ({
 
     cookieString +=
         startPoint && endPoint
-            ? `${JOURNEY_ATTRIBUTE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22inboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22outboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
+            ? `${JOURNEY_COOKIE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22inboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22outboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
             : '';
 
     cookieString += productName
@@ -163,10 +163,10 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += daysValid
-        ? `${DAYS_VALID_ATTRIBUTE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
+        ? `${DAYS_VALID_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
         : '';
 
-    cookieString += fareStages ? `${FARE_STAGES_ATTRIBUTE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
+    cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += periodTypeName
         ? `${PERIOD_TYPE_ATTRIBUTE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`

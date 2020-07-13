@@ -6,19 +6,19 @@ export const PASSENGER_TYPE_ATTRIBUTE = 'fdbt-passenger-type';
 
 export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
-export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
+export const JOURNEY_COOKIE = 'fdbt-journey';
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 
-export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
+export const FARE_STAGES_COOKIE = 'fdbt-fare-stages';
 
-export const STAGE_NAME_VALIDATION_ATTRIBUTE = 'fdbt-stage-names-validation';
+export const STAGE_NAME_VALIDATION_COOKIE = 'fdbt-stage-names-validation';
 
 export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
 
-export const STAGE_NAMES_ATTRIBUTE = 'fdbt-stage-names';
+export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
-export const DAYS_VALID_ATTRIBUTE = 'fdbt-days-valid';
+export const DAYS_VALID_COOKIE = 'fdbt-days-valid';
 
 export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
 

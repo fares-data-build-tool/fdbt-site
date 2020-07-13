@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import _ from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -70,7 +70,7 @@ const SingleDirection = ({
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
     const cookies = parseCookies(ctx);
-    const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
+    const journeyCookie = cookies[JOURNEY_COOKIE];
     const error: ErrorInfo[] = [];
     if (journeyCookie) {
         const journeyInfo = JSON.parse(journeyCookie);

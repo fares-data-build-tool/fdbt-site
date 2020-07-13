@@ -8,7 +8,7 @@ import {
     PERIOD_EXPIRY_ATTRIBUTE,
     MATCHING_DATA_BUCKET_NAME,
     CSV_ZONE_UPLOAD_ATTRIBUTE,
-    DAYS_VALID_ATTRIBUTE,
+    DAYS_VALID_COOKIE,
     SERVICE_LIST_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
@@ -56,11 +56,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const cookies = new Cookies(req, res);
 
             const productDetails = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
-            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_ATTRIBUTE);
+            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
             const fareZoneName = getSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
-            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
+            const periodTypeName = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
             const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
             const nocCode = getNocFromIdToken(req, res);
 
@@ -78,7 +78,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { productName, productPrice } = productDetails;
             const { daysValid } = JSON.parse(daysValidCookie);
             const { operator, uuid } = JSON.parse(operatorCookie);
-            const { periodTypeName } = JSON.parse(periodTypeCookie);
 
             if (fareZoneName) {
                 const atcoCodes: string[] = await getCsvZoneUploadData(uuid);

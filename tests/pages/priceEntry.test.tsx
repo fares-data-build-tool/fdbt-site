@@ -4,7 +4,7 @@ import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { NextPageContext } from 'next';
 import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
-import { STAGE_NAMES_ATTRIBUTE } from '../../src/constants';
+import { STAGE_NAMES_COOKIE } from '../../src/constants';
 import { NextPageContextWithSession } from 'src/interfaces';
 
 const mockFareStages: string[] = [
@@ -50,7 +50,7 @@ describe('Price Entry Page', () => {
                 cookie: `othername=${mockStageNamesCookieBody}`,
             },
             cookies: {
-                STAGE_NAMES_ATTRIBUTE: stageNames,
+                STAGE_NAMES_COOKIE: stageNames,
             },
         });
         const ctx: NextPageContextWithSession = {
@@ -78,10 +78,10 @@ describe('Price Entry Page', () => {
             },
             headers: {
                 host: 'localhost:5000',
-                cookie: `${STAGE_NAMES_ATTRIBUTE}=${mockStageNamesCookieBody}`,
+                cookie: `${STAGE_NAMES_COOKIE}=${mockStageNamesCookieBody}`,
             },
             cookies: {
-                STAGE_NAMES_ATTRIBUTE: stageNames,
+                STAGE_NAMES_COOKIE: stageNames,
             },
         });
         const ctx: NextPageContext = {

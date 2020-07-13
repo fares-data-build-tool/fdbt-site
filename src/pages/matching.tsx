@@ -8,7 +8,7 @@ import {
     RawJourneyPattern,
 } from '../data/auroradb';
 import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_COOKIE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
 import { getNocFromIdToken } from '../utils';
@@ -74,17 +74,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceObject = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
-    const journeyInfo = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
+    const journeyCookie = cookies[JOURNEY_COOKIE];
     const matchingInfo = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
     const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !serviceObject || !journeyInfo || !nocCode) {
+    if (!operatorCookie || !serviceObject || !journeyCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 
     const operatorObject = JSON.parse(operatorCookie);
     const lineName = serviceObject.service.split('#')[0];
-    const [selectedStartPoint, selectedEndPoint] = journeyInfo.directionJourneyPattern.split('#');
+    const journeyObject = JSON.parse(journeyCookie);
+    const [selectedStartPoint, selectedEndPoint] = journeyObject.directionJourneyPattern.split('#');
     const service = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const userFareStages = await getUserFareStages(operatorObject.uuid);
     const relevantJourneys = getJourneysByStartAndEndPoint(service, selectedStartPoint, selectedEndPoint);

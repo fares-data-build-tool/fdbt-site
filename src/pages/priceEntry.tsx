@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
-import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
+import { STAGE_NAMES_COOKIE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { FaresInformation, FaresInput, PriceEntryError } from './api/priceEntry';
@@ -151,7 +151,7 @@ const PriceEntry = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PriceEntryProps } => {
     const cookies = parseCookies(ctx);
-    const stageNamesCookie = cookies[STAGE_NAMES_ATTRIBUTE];
+    const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
     const priceEntryInfo = getSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE);
 
     if (!stageNamesCookie) {

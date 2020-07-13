@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants';
+import { SERVICE_ATTRIBUTE, JOURNEY_COOKIE, FARE_TYPE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -88,7 +88,7 @@ const ReturnDirection = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
     const cookies = parseCookies(ctx);
     const serviceInfo = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
-    const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
+    const journeyCookie = cookies[JOURNEY_COOKIE];
     const nocCode = getNocFromIdToken(ctx);
 
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
@@ -117,7 +117,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             const uuid = getUuidFromCookies(ctx);
             const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;
             const cookieValue = JSON.stringify({ directionJourneyPattern: journeyPatternCookie, uuid });
-            setCookieOnServerSide(ctx, JOURNEY_ATTRIBUTE, cookieValue);
+            setCookieOnServerSide(ctx, JOURNEY_COOKIE, cookieValue);
             redirectTo(ctx.res, '/inputMethod');
         }
     }

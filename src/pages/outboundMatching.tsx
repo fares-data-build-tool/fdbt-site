@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_COOKIE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
@@ -52,7 +52,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceObject = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
-    const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
+    const journeyCookie = cookies[JOURNEY_COOKIE];
     const matchingInfo = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
     const nocCode = getNocFromIdToken(ctx);
 
