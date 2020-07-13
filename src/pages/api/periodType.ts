@@ -1,21 +1,22 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getUuidFromCookie, redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { NextApiResponse } from 'next';
+import { NextApiRequestWithSession } from '../../interfaces';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { PERIOD_TYPE_ATTRIBUTE } from '../../constants';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
 
         if (req.body.periodType) {
-            const { periodType } = req.body;
-            const uuid = getUuidFromCookie(req, res);
-            const periodTypeObject = { periodTypeName: periodType, uuid };
-            setCookieOnResponseObject(PERIOD_TYPE_ATTRIBUTE, JSON.stringify(periodTypeObject), req, res);
+            updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, {
+                body: { errorMessage: '', periodType: req.body.periodType },
+            });
 
-            switch (periodType) {
+            switch (req.body.periodType) {
                 case 'periodGeoZone':
                     redirectTo(res, '/csvZoneUpload');
                     return;
@@ -28,10 +29,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
                     throw new Error('Type of period we expect was not received.');
             }
         } else {
-            const cookieValue = JSON.stringify({
-                errorMessage: 'Choose an option regarding your period ticket type',
+            updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, {
+                body: { errorMessage: 'Choose an option regarding your period ticket type' },
             });
-            setCookieOnResponseObject(PERIOD_TYPE_ATTRIBUTE, cookieValue, req, res);
             redirectTo(res, '/periodType');
         }
     } catch (error) {

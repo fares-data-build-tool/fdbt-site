@@ -66,22 +66,19 @@ const MultipleProducts = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
+    const { numberOfProductsToDisplay } = getSessionAttribute(ctx.req, [NUMBER_OF_PRODUCTS_ATTRIBUTE]);
     const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (!operatorCookie || !numberOfProductsCookie || !passengerType) {
+    if (!operatorCookie || !numberOfProductsToDisplay || !passengerType) {
         throw new Error(
-            'Could not retrieve the necessary operator, number of products and/or passenger type information for the multiple products API',
+            'Could not retrieve the necessary operator, number of products and/or passenger type info for the multiple products API',
         );
     }
 
-    const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const { operator } = JSON.parse(operatorCookie);
+    const { userInput, errors } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-    if (cookies[MULTIPLE_PRODUCT_ATTRIBUTE]) {
-        const multipleProductCookie = cookies[MULTIPLE_PRODUCT_ATTRIBUTE];
-        const parsedMultipleProductCookie = JSON.parse(multipleProductCookie);
-        const { errors } = parsedMultipleProductCookie;
+    if (userInput) {
 
         if (errors && errors.length > 0) {
             return {
@@ -89,8 +86,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
                     numberOfProductsToDisplay,
                     operator: operator.operatorPublicName,
                     passengerType,
-                    errors: parsedMultipleProductCookie.errors,
-                    userInput: parsedMultipleProductCookie.userInput,
+                    errors,
+                    userInput,
                 },
             };
         }

@@ -1,10 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
+import { updateSessionAttribute } from '../../utils/sessions';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
-import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils';
+import { NextApiRequestWithSession } from '../../interfaces';
+import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { InputCheck } from '../howManyProducts';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-export const isNumberOfProductsInvalid = (req: NextApiRequest): InputCheck => {
+export const isNumberOfProductsInvalid = (req: NextApiRequestWithSession): InputCheck => {
     const { numberOfProductsInput = '' } = req.body;
     const inputAsNumber = Number(numberOfProductsInput);
     let error;
@@ -19,7 +22,7 @@ export const isNumberOfProductsInvalid = (req: NextApiRequest): InputCheck => {
     return inputCheck;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -27,21 +30,21 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const userInputValidity = isNumberOfProductsInvalid(req);
         if (userInputValidity.error !== '') {
-            const numberOfProductsCookieValue = JSON.stringify(userInputValidity);
-            setCookieOnResponseObject(NUMBER_OF_PRODUCTS_ATTRIBUTE, numberOfProductsCookieValue, req, res);
+            updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, {
+                body: { errorMessage: userInputValidity.error },
+            });
             redirectTo(res, '/howManyProducts');
             return;
         }
-        const numberOfProductsCookieValue = JSON.stringify({
-            numberOfProductsInput: userInputValidity.numberOfProductsInput,
-        });
 
         if (userInputValidity.numberOfProductsInput === '1') {
             redirectTo(res, '/productDetails');
             return;
         }
 
-        setCookieOnResponseObject(NUMBER_OF_PRODUCTS_ATTRIBUTE, numberOfProductsCookieValue, req, res);
+        updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, {
+            body: { numberOfProductsInput: userInputValidity.numberOfProductsInput },
+        });
         redirectTo(res, '/multipleProducts');
     } catch (error) {
         const message = 'There was a problem inputting the number of products:';

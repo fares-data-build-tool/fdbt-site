@@ -58,7 +58,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const productDetails = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
             const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_ATTRIBUTE);
             const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-            const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_ATTRIBUTE);
+            const fareZoneName = getSessionAttribute(req, CSV_ZONE_UPLOAD_ATTRIBUTE);
             const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
             const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
@@ -69,7 +69,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 productDetails === '' ||
                 daysValidCookie === '' ||
                 !passengerTypeObject ||
-                (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie))
+                (operatorCookie === '' && (!fareZoneName || serviceListCookie))
             ) {
                 throw new Error('Necessary cookies not found for period validity API');
             }
@@ -80,8 +80,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { operator, uuid } = JSON.parse(operatorCookie);
             const { periodTypeName } = JSON.parse(periodTypeCookie);
 
-            if (fareZoneCookie) {
-                const { fareZoneName } = JSON.parse(fareZoneCookie);
+            if (fareZoneName) {
                 const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
                 const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
