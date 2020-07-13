@@ -110,8 +110,8 @@ describe('definePassengerType', () => {
         const mockPassengerTypeAttributes = { passengerType: 'Adult', ...mockPassengerTypeDetails };
         const { req, res } = getMockRequestAndResponse({
             session: {
-                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
-                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+                [FARE_TYPE_ATTRIBUTE]: { body: { fareType: 'single' } },
+                [PASSENGER_TYPE_ATTRIBUTE]: { body: { passengerType: 'Adult' } },
             },
             body: mockPassengerTypeDetails,
             uuid: {},
@@ -180,8 +180,8 @@ describe('definePassengerType', () => {
             };
             const { req, res } = getMockRequestAndResponse({
                 session: {
-                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
-                    [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+                    [FARE_TYPE_ATTRIBUTE]: { body: { fareType: 'single' } },
+                    [PASSENGER_TYPE_ATTRIBUTE]: { body: { passengerType: 'Adult' } },
                 },
                 body: mockUserInput,
                 uuid: {},

@@ -166,16 +166,15 @@ const MultipleProductValidity = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
+    const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_ATTRIBUTE];
     const multipleProducts: Product[] = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-    if (!operatorCookie || !numberOfProductsCookie || !multipleProducts || !passengerTypeCookie) {
-        throw new Error('Necessary cookies not found to display the multiple product validity page');
+    if (!operatorCookie || !numberOfProductsCookie || !multipleProducts || !passengerType) {
+        throw new Error('Could not retrieve the necessary info to display the multiple product validity page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
-    const { passengerType } = JSON.parse(passengerTypeCookie);
     const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
 
     const errors: ErrorInfo[] = [];

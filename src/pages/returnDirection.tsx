@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
 import { SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants';
@@ -7,11 +6,12 @@ import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/aur
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getUuidFromCookies, setCookieOnServerSide, getNocFromIdToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Return Direction - Fares Data Build Tool';
 const description = 'Return Direction selection page of the Fares Data Build Tool';
@@ -85,19 +85,19 @@ const ReturnDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
     const cookies = parseCookies(ctx);
-    const serviceCookie = cookies[SERVICE_ATTRIBUTE];
+    const serviceInfo = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
-    const fareTypeCookie = cookies[FARE_TYPE_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx);
 
-    if (!serviceCookie || !fareTypeCookie || !nocCode) {
-        throw new Error('Necessary cookies not found to show direction page');
-    }
+    const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
-    const serviceInfo = JSON.parse(serviceCookie);
-    const fareTypeInfo = JSON.parse(fareTypeCookie);
+    if (!serviceInfo || !fareTypeInfo || !nocCode) {
+        throw new Error(
+            'Could not gather the required service, fare type and/or noc code to display the return direction page.',
+        );
+    }
 
     const lineName = serviceInfo.service.split('#')[0];
 

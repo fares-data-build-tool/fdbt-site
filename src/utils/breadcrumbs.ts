@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next';
 import {
     PASSENGER_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -6,10 +5,11 @@ import {
     JOURNEY_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
 } from '../constants/index';
-import { Breadcrumb } from '../interfaces';
+import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
+import { getSessionAttribute } from './sessions';
 
-export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
+export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
 
     if (!url || url === '/') {
@@ -18,11 +18,11 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
         };
     }
 
-    const fareType = getCookieValue(ctx, FARE_TYPE_ATTRIBUTE, 'fareType');
+    const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const outboundJourney = getCookieValue(ctx, JOURNEY_ATTRIBUTE, 'outboundJourney');
     const inputMethod = getCookieValue(ctx, INPUT_METHOD_ATTRIBUTE, 'inputMethod');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_ATTRIBUTE, 'periodTypeName');
-    const passengerType = getCookieValue(ctx, PASSENGER_TYPE_ATTRIBUTE, 'passengerType');
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];

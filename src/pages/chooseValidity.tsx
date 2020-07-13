@@ -78,18 +78,16 @@ const ChooseValidity = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const cookies = parseCookies(ctx);
     const productDetails = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_ATTRIBUTE];
+    const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const validityCookie = cookies[DAYS_VALID_ATTRIBUTE];
 
     if (!productDetails) {
-        throw new Error('Failed to retrieve productCookie info for choose validity page.');
+        throw new Error('Failed to retrieve product details info for choose validity page.');
     }
 
-    if (!passengerTypeCookie) {
-        throw new Error('Failed to retrieve passengerTypeCookie info for choose validity page.');
+    if (!passengerType) {
+        throw new Error('Failed to retrieve passenger type info for choose validity page.');
     }
-
-    const passengerType = JSON.parse(passengerTypeCookie);
 
     let validity;
 
@@ -104,7 +102,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
         props: {
             productName: productDetails.productName,
             productPrice: productDetails.productPrice,
-            passengerType: passengerType.passengerType,
+            passengerType,
             daysValid: !validityCookie ? '' : validity.daysValid,
             error: !validityCookie ? '' : validity.error,
         },

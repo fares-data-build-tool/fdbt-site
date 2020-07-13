@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
 import {
@@ -9,7 +9,7 @@ import {
     unescapeAndDecodeCookie,
     getSelectedStages,
 } from './apiUtils';
-import { BasicService, CognitoIdToken, PassengerDetails } from '../../interfaces';
+import { BasicService, CognitoIdToken, PassengerDetails, NextApiRequestWithSession } from '../../interfaces';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
@@ -22,6 +22,7 @@ import {
 } from '../../constants';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
+import { getSessionAttribute } from '../../utils/sessions';
 
 interface MatchingBaseData {
     type: string;
@@ -107,7 +108,7 @@ const getMatchingJson = (
 const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -144,10 +145,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const uuid = getUuidFromCookie(req, res);
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
-        const passengerTypeObject = JSON.parse(passengerTypeCookie);
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
 
         const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
         const decodedIdToken = decode(idToken) as CognitoIdToken;
@@ -156,7 +155,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             service,
             userFareStages,
             matchingFareZones,
-            fareTypeObject.fareType,
+            fareType,
             passengerTypeObject,
             decodedIdToken.email,
             uuid,

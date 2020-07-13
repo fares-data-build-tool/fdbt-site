@@ -19,7 +19,11 @@ const setServiceListAttribute = (
     const serviceListObject: ServiceList = { error: false, selectedServices: [] };
 
     updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, {
-        body: { ...serviceListObject, selectedServices: checkedServiceList, error: !!error },
+        body: {
+            ...serviceListObject,
+            selectedServices: checkedServiceList,
+            error: !!error,
+        },
     });
 };
 
@@ -33,6 +37,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
         if (!fareType) {
             throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for serviceList API');
         }
@@ -51,7 +56,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
             updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, {
-                body: { errorMessage: 'Choose at least one service from the options' },
+                body: {
+                    errorMessage: 'Choose at least one service from the options',
+                },
             });
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;

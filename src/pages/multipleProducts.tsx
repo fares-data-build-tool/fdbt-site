@@ -65,37 +65,39 @@ const MultipleProducts = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const { numberOfProductsToDisplay } = getSessionAttribute(ctx.req, [NUMBER_OF_PRODUCTS_ATTRIBUTE]);
+    const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (!cookies[OPERATOR_COOKIE]) {
-        throw new Error('Necessary operator cookie not found to show multiple products page');
+    if (!operatorCookie || !numberOfProductsToDisplay || !passengerType) {
+        throw new Error(
+            'Could not retrieve the necessary operator, number of products and/or passenger type info for the multiple products API',
+        );
     }
 
-    const operatorCookie = cookies[OPERATOR_COOKIE];
     const { operator } = JSON.parse(operatorCookie);
+    const { userInput, errors } = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-    const numberOfProductsInfo = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
-    const numberOfProductsToDisplay = numberOfProductsInfo.numberOfProductsInput;
-    const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const multipleProductInfo = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    if (userInput) {
 
-    if (multipleProductInfo && multipleProductInfo.errors) {
-        console.log(multipleProductInfo.errors);
-        return {
-            props: {
-                numberOfProductsToDisplay,
-                operator: operator.operatorPublicName,
-                passengerType: passengerTypeInfo.passengerType,
-                errors: multipleProductInfo.errors,
-                userInput: multipleProductInfo.userInput,
-            },
-        };
+        if (errors && errors.length > 0) {
+            return {
+                props: {
+                    numberOfProductsToDisplay,
+                    operator: operator.operatorPublicName,
+                    passengerType,
+                    errors,
+                    userInput,
+                },
+            };
+        }
     }
 
     return {
         props: {
             numberOfProductsToDisplay,
             operator: operator.operatorPublicName,
-            passengerType: passengerTypeInfo.passengerType,
+            passengerType,
             userInput: [],
         },
     };

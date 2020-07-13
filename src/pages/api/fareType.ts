@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { redirectToError, redirectTo, getUuidFromCookie } from './apiUtils/index';
+import { redirectToError, redirectTo } from './apiUtils/index';
 import { FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 
 import { isSessionValid } from './service/validator';

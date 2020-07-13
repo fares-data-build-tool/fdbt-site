@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import {
     getServiceByNocCodeAndLineName,
@@ -8,11 +7,12 @@ import {
     RawService,
     RawJourneyPattern,
 } from '../data/auroradb';
-import { BasicService, CustomAppProps } from '../interfaces/index';
+import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
 import { getNocFromIdToken } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Matching - Fares Data Build Tool';
 const description = 'Matching page of the Fares Data Build Tool';
@@ -70,20 +70,19 @@ const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => [
     ...new Set(journeys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef))),
 ];
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: MatchingProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceCookie = cookies[SERVICE_ATTRIBUTE];
+    const serviceObject = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const journeyCookie = cookies[JOURNEY_ATTRIBUTE];
     const matchingCookie = cookies[MATCHING_ATTRIBUTE];
     const nocCode = getNocFromIdToken(ctx);
 
-    if (!operatorCookie || !serviceCookie || !journeyCookie || !nocCode) {
+    if (!operatorCookie || !serviceObject || !journeyCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 
     const operatorObject = JSON.parse(operatorCookie);
-    const serviceObject = JSON.parse(serviceCookie);
     const journeyObject = JSON.parse(journeyCookie);
     const lineName = serviceObject.service.split('#')[0];
     const [selectedStartPoint, selectedEndPoint] = journeyObject.directionJourneyPattern.split('#');

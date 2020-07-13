@@ -1,16 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import {
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-} from './apiUtils/index';
+import { NextApiResponse } from 'next';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils/index';
 import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './service/validator';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -18,8 +13,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const { service } = req.body;
 
         if (!service) {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose a service from the options' });
-            setCookieOnResponseObject(SERVICE_ATTRIBUTE, cookieValue, req, res);
+            updateSessionAttribute(req, SERVICE_ATTRIBUTE, {
+                body: { errorMessage: 'Choose a service from the options' },
+            });
             redirectTo(res, '/service');
             return;
         }
@@ -30,14 +26,13 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('No UUID found');
         }
 
-        const cookieValue = JSON.stringify({ service, uuid });
-        setCookieOnResponseObject(SERVICE_ATTRIBUTE, cookieValue, req, res);
+        updateSessionAttribute(req, SERVICE_ATTRIBUTE, {
+            body: { service, uuid },
+        });
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_ATTRIBUTE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (fareTypeObject && fareTypeObject.fareType === 'return') {
+        if (fareType && fareType === 'return') {
             redirectTo(res, '/returnDirection');
             return;
         }

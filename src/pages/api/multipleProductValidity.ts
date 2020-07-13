@@ -62,17 +62,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_ATTRIBUTE);
         const rawProducts: Product[] = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_ATTRIBUTE);
-        const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_ATTRIBUTE);
+        const passengerTypeObject = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE)
         const nocCode = getNocFromIdToken(req, res);
 
         if (
             !nocCode ||
             periodTypeCookie === '' ||
             !rawProducts ||
-            passengerTypeCookie === '' ||
+            !passengerTypeObject ||
             (operatorCookie === '' && (!fareZoneName || serviceListCookie === ''))
         ) {
-            throw new Error('Necessary cookies not found for multiple product validity API');
+            throw new Error('Necessary info not found for multiple product validity API');
         }
 
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
@@ -86,7 +86,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         let props = {};
         const { operator, uuid } = JSON.parse(operatorCookie);
         const { periodTypeName } = JSON.parse(periodTypeCookie);
-        const passengerTypeObject = JSON.parse(passengerTypeCookie);
 
         if (fareZoneName) {
             const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
