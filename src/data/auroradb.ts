@@ -250,7 +250,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
         LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
         WHERE os.nocCode = ? AND os.lineName = ?
-        ORDER BY pl.orderInSequence, pl.journeyPatternId ASC
+        ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
     let queryResult: QueryData[];
