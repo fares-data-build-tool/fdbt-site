@@ -25,10 +25,10 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
     }
     const cellName = `${rowStage}-${columnStage}`;
     const defaultInput = fareInformation.inputs.find(input => {
-        return input.k === cellName;
+        return input.id === cellName;
     });
 
-    return defaultInput?.v || '';
+    return defaultInput?.id || '';
 };
 
 export const createClassName = (
@@ -49,7 +49,7 @@ export const createClassName = (
 
     const name = `${rowStage}-${columnStage}`;
 
-    if (inputs.errorInformation.some(el => el.k === name)) {
+    if (inputs.errorInformation.some(el => el.id === name)) {
         errorClass = ' govuk-input--error';
     }
 
@@ -62,7 +62,7 @@ export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
     errors.forEach(error => {
         if (!filteredErrors.some(el => el.errorMessage === errorText)) {
             let updatedErrorMessage = '';
-            if (error.errorMessage === 'A') {
+            if (error.errorMessage === 'yes') {
                 updatedErrorMessage = errorText;
             }
             filteredErrors.push({ errorMessage: updatedErrorMessage, id: error.id });
@@ -169,7 +169,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         const priceEntryCookieErrorContents: PriceEntryError[] = priceEntryInfo.errors;
 
         const errors: ErrorInfo[] = priceEntryCookieErrorContents.map(error => {
-            return { errorMessage: error.v, id: errorId };
+            return { errorMessage: error.error, id: errorId };
         });
         const filteredErrors = filterErrors(errors);
         return {

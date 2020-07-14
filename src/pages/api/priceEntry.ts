@@ -44,13 +44,13 @@ export interface FaresInformation {
 }
 
 export interface FaresInput {
-    v: string;
-    k: string;
+    input: string;
+    id: string;
 }
 
 export interface PriceEntryError {
-    v: string;
-    k: string;
+    error: string;
+    id: string;
 }
 
 export const inputsValidityCheck = (req: NextApiRequestWithSession): FaresInformation => {
@@ -59,16 +59,15 @@ export const inputsValidityCheck = (req: NextApiRequestWithSession): FaresInform
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
         if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
             if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
-                // k and v used to keep cookie size small - key and value
                 errors.push({
-                    v: 'A',
-                    k: priceEntry[0],
+                    error: 'yes',
+                    id: priceEntry[0],
                 });
             }
         }
         return {
-            v: priceEntry[1] as string,
-            k: priceEntry[0],
+            input: priceEntry[1] as string,
+            id: priceEntry[0],
         };
     });
     return {
