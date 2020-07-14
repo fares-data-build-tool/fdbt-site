@@ -77,7 +77,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (!operatorCookie || !passengerType || !nocCode) {
-        throw new Error('Operator details not found');
+        throw new Error('Operator details or passenger type not found');
     }
 
     const services = await getServicesByNocCode(nocCode);

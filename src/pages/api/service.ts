@@ -19,7 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/service');
             return;
         }
-
+        console.log('*****HERE*******');
         const uuid = getUuidFromCookie(req, res);
 
         if (!uuid) {

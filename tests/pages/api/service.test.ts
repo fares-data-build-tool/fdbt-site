@@ -2,6 +2,7 @@ import service from '../../../src/pages/api/service';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { isSessionValid } from '../../../src/pages/api/service/validator';
 import { getUuidFromCookie } from '../../../src/pages/api/apiUtils';
+import { FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 afterEach(() => {
     jest.resetAllMocks();
@@ -32,6 +33,7 @@ describe('service', () => {
             body: { service: 'test' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: { [FARE_TYPE_ATTRIBUTE]: { body: 'single' } },
         });
         service(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {

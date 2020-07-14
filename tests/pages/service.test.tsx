@@ -5,6 +5,7 @@ import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
 import { getServicesByNocCode, ServiceType } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants';
 
 jest.mock('../../src/data/auroradb');
 
@@ -79,8 +80,10 @@ describe('pages', () => {
             expect(operatorServices.at(2).text()).toBe('Infinity Line - Start date 07/02/2020');
         });
 
-        it.only('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
-            const ctx = getMockContext();
+        it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
+            const ctx = getMockContext({
+                session: { [PASSENGER_TYPE_ATTRIBUTE]: { body: { passengerType: 'Adult' } } },
+            });
             const result = await getServerSideProps(ctx);
             expect(result).toEqual({
                 props: {
@@ -118,11 +121,12 @@ describe('pages', () => {
             const mockEndFn = jest.fn();
 
             const ctx = getMockContext({
-                cookies: { passengerType: 'Adult' },
+                cookies: {},
                 body: null,
                 uuid: {},
                 mockWriteHeadFn,
                 mockEndFn,
+                session: { [PASSENGER_TYPE_ATTRIBUTE]: { body: { passengerType: 'Adult' } } },
             });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('No services found for NOC Code: TEST');
@@ -138,24 +142,26 @@ describe('pages', () => {
                 uuid: {},
                 mockWriteHeadFn,
                 mockEndFn,
+                session: { [PASSENGER_TYPE_ATTRIBUTE]: { body: { passengerType: 'Adult' } } },
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Operator details or passenger type not found');
         });
 
-        it('throws error if passengerType cookie does not exist', async () => {
+        it('throws error if passengerType attribute does not exist', async () => {
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
 
             const ctx = getMockContext({
-                cookies: { passengerType: null },
+                cookies: {},
                 body: null,
                 uuid: {},
                 mockWriteHeadFn,
                 mockEndFn,
+                session: { [PASSENGER_TYPE_ATTRIBUTE]: { body: { passengerType: null } } },
             });
 
-            await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show matching page');
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Operator details or passenger type not found');
         });
     });
 });
