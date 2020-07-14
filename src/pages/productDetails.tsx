@@ -117,7 +117,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const productDetails = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
     const { passengerType } = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const csvZoneName = getSessionAttribute(ctx.req, CSV_ZONE_UPLOAD_ATTRIBUTE);
-    const serviceList = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
+    const { selectedServices } = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     let props = {};
 
@@ -129,7 +129,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         throw new Error('Failed to retrieve passenger type info for product details page.');
     }
 
-    if (!csvZoneName || !serviceList) {
+    if (!csvZoneName || selectedServices.length === 0) {
         throw new Error('Failed to retrieve zone or service list info for product details page.');
     }
 
@@ -140,9 +140,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         props = {
             hintText: csvZoneName,
         };
-    } else if (serviceList) {
+    } else if (selectedServices.length > 0) {
         props = {
-            hintText: serviceList.length > 1 ? 'Multiple Services' : serviceList[0].split('#')[0],
+            hintText: selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0],
         };
     }
 

@@ -36,7 +36,7 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): Reac
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
     const csvZoneUpload = getSessionAttribute(ctx.req, CSV_ZONE_UPLOAD_ATTRIBUTE);
 
-    if (csvZoneUpload.error === undefined) {
+    if (csvZoneUpload && csvZoneUpload.error === undefined) {
         csvZoneUpload.error = '';
     }
 

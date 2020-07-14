@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { NextPageContext } from 'next';
+import { NextPageContextWithSession } from '../../src/interfaces';
 import PriceEntry, { getServerSideProps } from '../../src/pages/priceEntry';
 import { STAGE_NAMES_COOKIE } from '../../src/constants';
-import { NextPageContextWithSession } from 'src/interfaces';
 
 const mockFareStages: string[] = [
     'Briggate',
@@ -50,7 +50,7 @@ describe('Price Entry Page', () => {
                 cookie: `othername=${mockStageNamesCookieBody}`,
             },
             cookies: {
-                STAGE_NAMES_COOKIE: stageNames,
+                [STAGE_NAMES_COOKIE]: stageNames,
             },
         });
         const ctx: NextPageContextWithSession = {
@@ -81,7 +81,7 @@ describe('Price Entry Page', () => {
                 cookie: `${STAGE_NAMES_COOKIE}=${mockStageNamesCookieBody}`,
             },
             cookies: {
-                STAGE_NAMES_COOKIE: stageNames,
+                [STAGE_NAMES_COOKIE]: stageNames,
             },
         });
         const ctx: NextPageContext = {
