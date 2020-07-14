@@ -1,7 +1,7 @@
 import passengerType from '../../../src/pages/api/passengerType';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as utils from '../../../src/pages/api/apiUtils';
-import { FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 describe('passengerType', () => {
     const writeHeadMock = jest.fn();
@@ -24,7 +24,7 @@ describe('passengerType', () => {
         });
     });
 
-    it.only('should return 302 redirect to /passengerType when no passenger type is selected', () => {
+    it('should return 302 redirect to /passengerType when no passenger type is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -45,6 +45,10 @@ describe('passengerType', () => {
             body: { passengerType: 'Adult' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { body: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+            },
         });
 
         passengerType(req, res);
@@ -60,6 +64,10 @@ describe('passengerType', () => {
             body: { passengerType: 'Child' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { body: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Child' },
+            },
         });
 
         passengerType(req, res);
@@ -75,6 +83,10 @@ describe('passengerType', () => {
             body: { passengerType: 'Infant' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { body: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Infant' },
+            },
         });
 
         passengerType(req, res);
@@ -90,6 +102,10 @@ describe('passengerType', () => {
             body: { passengerType: 'Senior' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { body: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Senior' },
+            },
         });
 
         passengerType(req, res);
@@ -105,6 +121,10 @@ describe('passengerType', () => {
             body: { passengerType: 'Student' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { body: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Student' },
+            },
         });
 
         passengerType(req, res);
@@ -120,6 +140,10 @@ describe('passengerType', () => {
             body: { passengerType: 'Young Person' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { body: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Young Person' },
+            },
         });
 
         passengerType(req, res);
@@ -135,6 +159,10 @@ describe('passengerType', () => {
             body: { passengerType: 'anyone' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { body: 'single' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
+            },
         });
         const redirectOnFareType = jest.spyOn(utils, 'redirectOnFareType');
 

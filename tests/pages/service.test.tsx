@@ -79,7 +79,7 @@ describe('pages', () => {
             expect(operatorServices.at(2).text()).toBe('Infinity Line - Start date 07/02/2020');
         });
 
-        it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
+        it.only('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             const ctx = getMockContext();
             const result = await getServerSideProps(ctx);
             expect(result).toEqual({

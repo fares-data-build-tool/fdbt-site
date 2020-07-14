@@ -80,6 +80,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
+    const error = !matchingInfo ? false : matchingInfo.outbound.error;
+    const selectedFareStages = !matchingInfo ? [] : matchingInfo.selectedFareStages;
+
     return {
         props: {
             stops: orderedStops,
@@ -90,8 +93,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: !matchingInfo.outbound ? false : matchingInfo.outbound.error,
-            selectedFareStages: matchingInfo.outbound ? [] : matchingInfo.outbound.selectedFareStages,
+            error,
+            selectedFareStages,
         },
     };
 };
