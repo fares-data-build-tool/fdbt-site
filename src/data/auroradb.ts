@@ -120,6 +120,14 @@ export const convertDateFormat = (startDate: string): string => {
     return dateFormat(startDate, 'dd/mm/yyyy');
 };
 
+export const replaceIWBusCoNocCode = (nocCode: string): string => {
+    if (nocCode === 'IWBusCo') {
+        return 'WBTR';
+    }
+
+    return nocCode;
+};
+
 let connectionPool: Pool;
 
 const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
@@ -131,6 +139,7 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
 };
 
 export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType[]> => {
+    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
     console.info('retrieving services for given noc', { noc: nocCode });
 
     try {
@@ -140,7 +149,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCode]);
+        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter]);
 
         return (
             queryResults.map(item => ({
@@ -156,8 +165,9 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
-    console.info('retrieving operator name for given noc', { noc: nocCode });
+    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
 
+    console.info('retrieving operator name for given noc', { noc: nocCode });
     const queryInput = `
     SELECT operatorPublicName
     FROM nocTable
@@ -167,7 +177,7 @@ export const getOperatorNameByNocCode = async (nocCode: string): Promise<Operato
     let queryResult: OperatorNameType[];
 
     try {
-        queryResult = await executeQuery<OperatorNameType[]>(queryInput, [nocCode]);
+        queryResult = await executeQuery<OperatorNameType[]>(queryInput, [nocCodeParameter]);
     } catch (error) {
         throw new Error(`Could not retrieve operator name from AuroraDB: ${error.stack}`);
     }
@@ -228,6 +238,8 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
 };
 
 export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: string): Promise<RawService> => {
+    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
+
     console.info('retrieving service info for given noc and line name', { noc: nocCode, lineName });
 
     const serviceQuery = `
@@ -238,13 +250,13 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
         LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
         WHERE os.nocCode = ? AND os.lineName = ?
-        ORDER BY pl.orderInSequence, pl.journeyPatternId ASC
+        ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
     let queryResult: QueryData[];
 
     try {
-        queryResult = await executeQuery(serviceQuery, [nocCode, lineName]);
+        queryResult = await executeQuery(serviceQuery, [nocCodeParameter, lineName]);
     } catch (error) {
         throw new Error(`Could not get journey patterns from Aurora DB: ${error.stack}`);
     }
@@ -276,7 +288,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
     });
 
     if (!service || rawPatternService.length === 0) {
-        throw new Error(`No journey patterns found for nocCode: ${nocCode}, lineName: ${lineName}`);
+        throw new Error(`No journey patterns found for nocCode: ${nocCodeParameter}, lineName: ${lineName}`);
     }
 
     return {
