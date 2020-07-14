@@ -51,7 +51,6 @@ interface GetMockRequestAndResponse {
 }
 
 export const getMockRequestAndResponse = ({
-    session = {},
     cookieValues = {},
     body = null,
     uuid = {},
@@ -60,6 +59,7 @@ export const getMockRequestAndResponse = ({
     requestHeaders = {},
     isLoggedin = true,
     url = null,
+    session = {},
 }: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -72,7 +72,7 @@ export const getMockRequestAndResponse = ({
         },
         fareType = 'single',
         inputMethod = 'csv',
-        passengerType = { passengerType: 'Adult' },
+        // passengerType = { passengerType: 'Adult' },
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -143,7 +143,7 @@ export const getMockRequestAndResponse = ({
         ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
         : '';
 
-    cookieString += passengerType ? `${PASSENGER_TYPE_ATTRIBUTE}=${encodeURI(JSON.stringify(passengerType))};` : '';
+    // cookieString += passengerType ? `${PASSENGER_TYPE_ATTRIBUTE}=${encodeURI(JSON.stringify(passengerType))};` : '';
 
     cookieString += serviceLineName
         ? `${SERVICE_ATTRIBUTE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`

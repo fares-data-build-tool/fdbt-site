@@ -14,7 +14,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!fareType) {
             throw new Error('Necessary fare type info not found for passenger type page');
         }
-
         if (req.body.passengerType) {
             updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
                 body: {
@@ -30,7 +29,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/definePassengerType');
             return;
         }
-
         updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
             body: {
                 errorMessage: 'Choose a passenger type from the options',
