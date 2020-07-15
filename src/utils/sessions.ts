@@ -5,9 +5,6 @@ export const updateSessionAttribute = (
     attributeName: string,
     attributeValue: SessionContents,
 ): void => {
-    // if (!req.session) {
-    //     req.session = {};
-    // }
     req.session[attributeName] = attributeValue;
 };
 
