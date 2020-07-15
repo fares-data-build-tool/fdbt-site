@@ -1,7 +1,7 @@
 import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
-import { SalesOfferPackageInfo } from '../interfaces';
+import { SalesOfferPackage } from '../interfaces';
 
 export interface ServiceType {
     lineName: string;
@@ -165,7 +165,7 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     }
 };
 
-export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackageInfo[]> => {
+export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
     console.info('retrieving sales offer packages for given noc', { noc: nocCode });
 
@@ -176,15 +176,15 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<SalesOfferPackageType[]>(queryInput, [nocCodeParameter]);
+        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCodeParameter]);
 
         return (
             queryResults.map(item => ({
                 name: item.name,
-                description: item.description,
-                purchaseLocation: item.purchaseLocation,
-                paymentMethod: item.paymentMethod,
-                ticketFormat: item.ticketFormat,
+                packageDescription: item.packageDescription,
+                purchaseLocations: item.purchaseLocations,
+                paymentMethods: item.paymentMethods,
+                ticketFormats: item.ticketFormats,
             })) || []
         );
     } catch (error) {

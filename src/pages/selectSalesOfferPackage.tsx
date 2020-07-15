@@ -6,7 +6,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { SALES_OFFER_PACKAGE_COOKIE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { SalesOfferPackageInfo, CustomAppProps, ErrorInfo } from '../interfaces';
+import { SalesOfferPackage, CustomAppProps, ErrorInfo } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { redirectTo } from './api/apiUtils';
@@ -16,7 +16,7 @@ const description = 'Sales Offer Package selection page of the Fares Data Build 
 const errorId = 'sales-offer-package-error';
 
 export interface SelectSalesOfferPackageProps {
-    salesOfferPackagesList: SalesOfferPackageInfo[];
+    salesOfferPackagesList: SalesOfferPackage[];
     error: ErrorInfo[];
 }
 
@@ -97,13 +97,16 @@ const SelectSalesOfferPackage = ({
                     </fieldset>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-                <input
-                    type="submit"
-                    name="selectAll"
-                    value="Create New"
-                    id="select-all-button"
+                <a
+                    href="/salesOfferPackage"
+                    role="button"
+                    draggable="false"
                     className="govuk-button govuk-button--secondary"
-                />
+                    data-module="govuk-button"
+                    id="create-new-button"
+                >
+                    Create New
+                </a>
             </>
         </CsrfForm>
     </FullColumnLayout>

@@ -67,10 +67,10 @@ export interface Breadcrumb {
     show: boolean;
 }
 
-export interface SalesOfferPackageInfo {
+export interface SalesOfferPackage {
     name: string;
     packageDescription: string;
-    purchaseLocation: string;
-    paymentMethod: string;
-    ticketFormat: string;
+    purchaseLocations: string[];
+    paymentMethods: string[];
+    ticketFormats: string[];
 }
