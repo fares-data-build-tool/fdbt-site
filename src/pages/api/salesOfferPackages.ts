@@ -68,6 +68,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
+        updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
+            body: { errors: [], ticketsPurchasedFrom, ticketPayments, ticketFormats },
+        });
+
         redirectTo(res, '/describeSalesOfferPackage');
     } catch (err) {
         const message = 'There was a problem in the sales offer package API.';
