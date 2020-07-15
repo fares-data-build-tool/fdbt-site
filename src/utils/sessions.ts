@@ -11,5 +11,6 @@ export const updateSessionAttribute = (
     req.session[attributeName] = attributeValue;
 };
 
-export const getSessionAttribute = (req: IncomingMessageWithSession, attributeName: string): any =>
-    req?.session?.[attributeName]?.body;
+export const getSessionAttribute = (req: IncomingMessageWithSession, attributeName: string): any => {
+    return req?.session?.[attributeName]?.body;
+};
