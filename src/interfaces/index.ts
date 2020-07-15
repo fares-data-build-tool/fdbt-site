@@ -1,4 +1,7 @@
 import { AppInitialProps } from 'next/app';
+import { NextApiRequest, NextPageContext } from 'next';
+import { DocumentContext } from 'next/document';
+import { IncomingMessage } from 'http';
 
 export interface ProductInfo {
     productName: string;
@@ -32,6 +35,7 @@ export interface PassengerDetails {
 export interface ErrorInfo {
     errorMessage: string;
     id: string;
+    userInput?: string;
 }
 
 export interface InputCheck {
@@ -66,3 +70,19 @@ export interface Breadcrumb {
     link: string;
     show: boolean;
 }
+
+export interface Session {
+    session: Express.Session;
+}
+
+export type NextApiRequestWithSession = NextApiRequest & Session;
+
+export type NextPageContextWithSession = NextPageContext & {
+    req: Session;
+};
+
+export type DocumentContextWithSession = DocumentContext & {
+    req: Session;
+};
+
+export type IncomingMessageWithSession = IncomingMessage & Session;
