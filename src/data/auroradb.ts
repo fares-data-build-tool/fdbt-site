@@ -1,6 +1,7 @@
 import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
+import { SalesOfferPackageInfo } from '../interfaces';
 
 export interface ServiceType {
     lineName: string;
@@ -157,6 +158,33 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
                 serviceCode: item.serviceCode,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackageInfo[]> => {
+    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
+    console.info('retrieving sales offer packages for given noc', { noc: nocCode });
+
+    try {
+        const queryInput = `
+            SELECT name, description, purchaseLocation, paymentMethod, ticketFormat
+            FROM salesOfferPackage
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<SalesOfferPackageType[]>(queryInput, [nocCodeParameter]);
+
+        return (
+            queryResults.map(item => ({
+                name: item.name,
+                description: item.description,
+                purchaseLocation: item.purchaseLocation,
+                paymentMethod: item.paymentMethod,
+                ticketFormat: item.ticketFormat,
             })) || []
         );
     } catch (error) {

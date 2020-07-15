@@ -66,3 +66,11 @@ export interface Breadcrumb {
     link: string;
     show: boolean;
 }
+
+export interface SalesOfferPackageInfo {
+    name: string;
+    packageDescription: string;
+    purchaseLocation: string;
+    paymentMethod: string;
+    ticketFormat: string;
+}
