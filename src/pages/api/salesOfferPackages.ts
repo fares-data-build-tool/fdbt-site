@@ -69,7 +69,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
-            body: { errors: [], ticketsPurchasedFrom, ticketPayments, ticketFormats },
+            body: { ticketsPurchasedFrom, ticketPayments, ticketFormats },
         });
 
         redirectTo(res, '/describeSalesOfferPackage');

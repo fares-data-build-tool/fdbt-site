@@ -122,7 +122,6 @@ describe('salesOfferPackages', () => {
         salesOfferPackages(req, res);
 
         const updateSessionAttributeCall = updateSessionAttribute.mock.calls[0][2];
-        expect(updateSessionAttributeCall.body.errors.length).toBe(0);
         expect(updateSessionAttributeCall.body.ticketsPurchasedFrom.length).toBe(2);
         expect(updateSessionAttributeCall.body.ticketsPurchasedFrom).toEqual(['OnBoard', 'Online Account']);
         expect(updateSessionAttributeCall.body.ticketFormats.length).toBe(2);
