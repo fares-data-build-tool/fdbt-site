@@ -1,17 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
-import {
-    redirectTo,
-    redirectToError,
-    setCookieOnResponseObject,
-    getUuidFromCookie,
-    unescapeAndDecodeCookie,
-    getNocFromIdToken,
-} from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie, unescapeAndDecodeCookie, getNocFromIdToken } from './apiUtils';
 import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
 import {
-    SALES_OFFER_PACKAGE_COOKIE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
     MATCHING_DATA_BUCKET_NAME,
     FARE_TYPE_COOKIE,
     PASSENGER_TYPE_COOKIE,
@@ -22,9 +15,17 @@ import {
 } from '../../constants';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
-import { BasicService, CognitoIdToken, PassengerDetails, ServicesInfo, SalesOfferPackage } from '../../interfaces';
+import {
+    BasicService,
+    CognitoIdToken,
+    PassengerDetails,
+    ServicesInfo,
+    SalesOfferPackage,
+    NextApiRequestWithSession,
+} from '../../interfaces';
 import { getFareZones } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
+import { updateSessionAttribute } from '../../utils/sessions';
 
 interface MatchingBaseData {
     type: string;
@@ -157,7 +158,7 @@ const getMatchingJson = (
     return {};
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -166,8 +167,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Cookie UUIDs do not match');
         }
         if (!req.body || Object.keys(req.body).length === 0) {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose at least one service from the options' });
-            setCookieOnResponseObject(SALES_OFFER_PACKAGE_COOKIE, cookieValue, req, res);
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
+                body: { errorMessage: 'Choose at least one service from the options' },
+            });
             redirectTo(res, `/selectSalesOfferPackage`);
             return;
         }

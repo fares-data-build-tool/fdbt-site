@@ -84,3 +84,11 @@ export type IncomingMessageWithSession = IncomingMessage & Session;
 export interface SessionContents {
     body: any;
 }
+
+export interface SalesOfferPackage {
+    name: string;
+    packageDescription: string;
+    purchaseLocations: string;
+    paymentMethods: string;
+    ticketFormats: string;
+}

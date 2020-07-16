@@ -1,15 +1,14 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SALES_OFFER_PACKAGE_COOKIE } from '../constants';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { SalesOfferPackage, CustomAppProps, ErrorInfo } from '../interfaces';
+import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { redirectTo } from './api/apiUtils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Select Sales Offer Package - Fares Data Build Tool';
 const description = 'Sales Offer Package selection page of the Fares Data Build Tool';
@@ -118,9 +117,9 @@ const SelectSalesOfferPackage = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: SelectSalesOfferPackageProps }> => {
-    const cookies = parseCookies(ctx);
-    const salesOfferPackageCookie = cookies[SALES_OFFER_PACKAGE_COOKIE];
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: SelectSalesOfferPackageProps }> => {
     const nocCode = getNocFromIdToken(ctx);
 
     if (!nocCode) {
@@ -135,20 +134,19 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         }
     }
 
+    const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+
     const error: ErrorInfo[] = [];
 
-    if (salesOfferPackageCookie) {
-        const cookieContent = JSON.parse(salesOfferPackageCookie);
-        if (cookieContent.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: cookieContent.errorMessage, id: errorId };
-            error.push(errorInfo);
-            return {
-                props: {
-                    salesOfferPackagesList,
-                    error,
-                },
-            };
-        }
+    if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
+        const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
+        error.push(errorInfo);
+        return {
+            props: {
+                salesOfferPackagesList,
+                error,
+            },
+        };
     }
 
     return {
