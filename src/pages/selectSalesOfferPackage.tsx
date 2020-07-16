@@ -10,8 +10,8 @@ import CsrfForm from '../components/CsrfForm';
 import { redirectTo } from './api/apiUtils';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'Select Sales Offer Package - Fares Data Build Tool';
-const description = 'Sales Offer Package selection page of the Fares Data Build Tool';
+const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
+const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
 const errorId = 'sales-offer-package-error';
 
 export interface SelectSalesOfferPackageProps {
@@ -24,7 +24,7 @@ const SelectSalesOfferPackage = ({
     csrfToken,
     error,
 }: SelectSalesOfferPackageProps & CustomAppProps): ReactElement => (
-    <FullColumnLayout title={title} description={description}>
+    <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={error} />
@@ -65,15 +65,9 @@ const SelectSalesOfferPackage = ({
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
                                 {salesOfferPackagesList.map((offer, index) => {
-                                    const {
-                                        name,
-                                        packageDescription,
-                                        purchaseLocations,
-                                        paymentMethods,
-                                        ticketFormats,
-                                    } = offer;
+                                    const { name, description } = offer;
 
-                                    let checkboxTitles = `${name} - ${packageDescription}`;
+                                    let checkboxTitles = `${name} - ${description}`;
 
                                     if (checkboxTitles.length > 110) {
                                         checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
@@ -86,7 +80,7 @@ const SelectSalesOfferPackage = ({
                                                 id={`checkbox-${index}`}
                                                 name={`${name}`}
                                                 type="checkbox"
-                                                value={`${name}#${packageDescription}#${purchaseLocations}#${paymentMethods}#${ticketFormats}`}
+                                                value={JSON.stringify(offer)}
                                             />
                                             <label
                                                 className="govuk-label govuk-checkboxes__label"

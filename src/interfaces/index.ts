@@ -87,8 +87,8 @@ export interface SessionContents {
 
 export interface SalesOfferPackage {
     name: string;
-    packageDescription: string;
-    purchaseLocations: string;
-    paymentMethods: string;
-    ticketFormats: string;
+    description: string;
+    purchaseLocation: string;
+    paymentMethod: string;
+    ticketFormat: string;
 }

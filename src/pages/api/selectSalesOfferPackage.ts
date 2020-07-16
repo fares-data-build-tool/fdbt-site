@@ -186,7 +186,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     const salesPackage = selectedPackage.split('#');
                     return {
                         name: salesPackage[0],
-                        packageDescription: salesPackage[1],
+                        description: salesPackage[1],
                         purchaseLocations: salesPackage[2],
                         paymentMethods: salesPackage[3],
                         ticketFormats: salesPackage[4],

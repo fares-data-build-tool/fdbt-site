@@ -181,10 +181,10 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
         return (
             queryResults.map(item => ({
                 name: item.name,
-                packageDescription: item.packageDescription,
-                purchaseLocations: item.purchaseLocations,
-                paymentMethods: item.paymentMethods,
-                ticketFormats: item.ticketFormats,
+                description: item.description,
+                purchaseLocation: item.purchaseLocation,
+                paymentMethod: item.paymentMethod,
+                ticketFormat: item.ticketFormat,
             })) || []
         );
     } catch (error) {
