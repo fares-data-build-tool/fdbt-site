@@ -1,0 +1,1101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages salesOfferPackage should render an error when errors are passed through 1`] = `
+<Component
+  description="Sales Offer Packages page for the Fares Data Build Tool"
+  title="Sales Offer Packages - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/salesOfferPackages"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "error",
+            "id": "",
+          },
+        ]
+      }
+    />
+    <h1
+      className="govuk-heading-xl"
+    >
+      How are the tickets sold - Sales offer package
+    </h1>
+    <span
+      className="govuk-hint"
+      id="service-list-hint"
+    >
+      Please select all that apply from the lists below:
+    </span>
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="purchaseLocation"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "error",
+                "id": "",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <fieldset
+              aria-describedby="sales-offer-package-ticket-purchased"
+              className="govuk-fieldset"
+            >
+              <p
+                className="govuk-body"
+              >
+                Where can tickets be purchased?
+              </p>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-OnBoard"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-OnBoard"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="OnBoard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-OnBoard"
+                >
+                  OnBoard
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Online"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-Online"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Online"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-Online"
+                >
+                  Online
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Online Account"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-Online Account"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Online Account"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-Online Account"
+                >
+                  Online Account
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Telephone"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-Telephone"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Telephone"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-Telephone"
+                >
+                  Telephone
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Electronic Pass"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-Electronic Pass"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Electronic Pass"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-Electronic Pass"
+                >
+                  Electronic Pass
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Mobile Device"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-5-Mobile Device"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Mobile Device"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-5-Mobile Device"
+                >
+                  Mobile Device
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Agency"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-6-Agency"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Agency"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-6-Agency"
+                >
+                  Agency
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Tour Operator"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-7-Tour Operator"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Tour Operator"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-7-Tour Operator"
+                >
+                  Tour Operator
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </FormElementWrapper>
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="paymentMethod"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "error",
+                "id": "",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <fieldset
+              aria-describedby="sales-offer-package-ticket-payment"
+              className="govuk-fieldset"
+            >
+              <p
+                className="govuk-body"
+              >
+                How can tickets be paid for?
+              </p>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Cash"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-Cash"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Cash"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-Cash"
+                >
+                  Cash
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Debit/Credit card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-Debit/Credit card"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Debit/Credit card"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-Debit/Credit card"
+                >
+                  Debit/Credit card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Contactless card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-Contactless card"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Contactless card"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-Contactless card"
+                >
+                  Contactless card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Mobile Payment"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-Mobile Payment"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Mobile Payment"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-Mobile Payment"
+                >
+                  Mobile Payment
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-SMS"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-SMS"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="SMS"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-SMS"
+                >
+                  SMS
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Cheque"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-5-Cheque"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Cheque"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-5-Cheque"
+                >
+                  Cheque
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Direct transfer"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-6-Direct transfer"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Direct transfer"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-6-Direct transfer"
+                >
+                  Direct transfer
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Standing Order"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-7-Standing Order"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Standing Order"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-7-Standing Order"
+                >
+                  Standing Order
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Warrant"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-8-Warrant"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Warrant"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-8-Warrant"
+                >
+                  Warrant
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Gift Voucher"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-9-Gift Voucher"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Gift Voucher"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-9-Gift Voucher"
+                >
+                  Gift Voucher
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </FormElementWrapper>
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="ticketFormat"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "error",
+                "id": "",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <fieldset
+              aria-describedby="sales-offer-package-ticket-format"
+              className="govuk-fieldset"
+            >
+              <p
+                className="govuk-body"
+              >
+                What format do the tickets come in?
+              </p>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Paper Ticket"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-Paper Ticket"
+                  name="ticketFormat"
+                  type="checkbox"
+                  value="Paper Ticket"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-Paper Ticket"
+                >
+                  Paper Ticket
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Mobile App"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-Mobile App"
+                  name="ticketFormat"
+                  type="checkbox"
+                  value="Mobile App"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-Mobile App"
+                >
+                  Mobile App
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Smart Card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-Smart Card"
+                  name="ticketFormat"
+                  type="checkbox"
+                  value="Smart Card"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-Smart Card"
+                >
+                  Smart Card
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </FormElementWrapper>
+      </div>
+      <div
+        className="govuk-grid-column-one-third"
+      >
+        <h1
+          className="govuk-heading-s"
+        >
+          What is a Sales Offer Package?
+        </h1>
+        <p
+          className="govuk-body"
+        >
+          To create a NeTEx for your fares it needs to contain the following:
+        </p>
+        <ol
+          className="govuk-body"
+        >
+          <li>
+            Where the ticket can be bought
+          </li>
+          <li>
+            What payment methods can be used to buy the ticket
+          </li>
+          <li>
+            In what format the ticket will be used by passengers
+          </li>
+        </ol>
+        <p
+          className="govuk-body"
+        >
+          This combination of information is called a 
+          <strong>
+            sales offer package
+          </strong>
+        </p>
+      </div>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages salesOfferPackage should render correctly 1`] = `
+<Component
+  description="Sales Offer Packages page for the Fares Data Build Tool"
+  title="Sales Offer Packages - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/salesOfferPackages"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-xl"
+    >
+      How are the tickets sold - Sales offer package
+    </h1>
+    <span
+      className="govuk-hint"
+      id="service-list-hint"
+    >
+      Please select all that apply from the lists below:
+    </span>
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-two-thirds"
+      >
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="purchaseLocation"
+          errors={Array []}
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <fieldset
+              aria-describedby="sales-offer-package-ticket-purchased"
+              className="govuk-fieldset"
+            >
+              <p
+                className="govuk-body"
+              >
+                Where can tickets be purchased?
+              </p>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-OnBoard"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-OnBoard"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="OnBoard"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-OnBoard"
+                >
+                  OnBoard
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Online"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-Online"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Online"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-Online"
+                >
+                  Online
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Online Account"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-Online Account"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Online Account"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-Online Account"
+                >
+                  Online Account
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Telephone"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-Telephone"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Telephone"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-Telephone"
+                >
+                  Telephone
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Electronic Pass"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-Electronic Pass"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Electronic Pass"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-Electronic Pass"
+                >
+                  Electronic Pass
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Mobile Device"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-5-Mobile Device"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Mobile Device"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-5-Mobile Device"
+                >
+                  Mobile Device
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Agency"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-6-Agency"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Agency"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-6-Agency"
+                >
+                  Agency
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Tour Operator"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-7-Tour Operator"
+                  name="purchaseLocation"
+                  type="checkbox"
+                  value="Tour Operator"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-7-Tour Operator"
+                >
+                  Tour Operator
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </FormElementWrapper>
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="paymentMethod"
+          errors={Array []}
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <fieldset
+              aria-describedby="sales-offer-package-ticket-payment"
+              className="govuk-fieldset"
+            >
+              <p
+                className="govuk-body"
+              >
+                How can tickets be paid for?
+              </p>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Cash"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-Cash"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Cash"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-Cash"
+                >
+                  Cash
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Debit/Credit card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-Debit/Credit card"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Debit/Credit card"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-Debit/Credit card"
+                >
+                  Debit/Credit card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Contactless card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-Contactless card"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Contactless card"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-Contactless card"
+                >
+                  Contactless card
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Mobile Payment"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-3-Mobile Payment"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Mobile Payment"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-3-Mobile Payment"
+                >
+                  Mobile Payment
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-SMS"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-4-SMS"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="SMS"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-4-SMS"
+                >
+                  SMS
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Cheque"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-5-Cheque"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Cheque"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-5-Cheque"
+                >
+                  Cheque
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Direct transfer"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-6-Direct transfer"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Direct transfer"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-6-Direct transfer"
+                >
+                  Direct transfer
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Standing Order"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-7-Standing Order"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Standing Order"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-7-Standing Order"
+                >
+                  Standing Order
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Warrant"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-8-Warrant"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Warrant"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-8-Warrant"
+                >
+                  Warrant
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Gift Voucher"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-9-Gift Voucher"
+                  name="paymentMethod"
+                  type="checkbox"
+                  value="Gift Voucher"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-9-Gift Voucher"
+                >
+                  Gift Voucher
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </FormElementWrapper>
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="ticketFormat"
+          errors={Array []}
+        >
+          <div
+            className="govuk-form-group"
+          >
+            <fieldset
+              aria-describedby="sales-offer-package-ticket-format"
+              className="govuk-fieldset"
+            >
+              <p
+                className="govuk-body"
+              >
+                What format do the tickets come in?
+              </p>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Paper Ticket"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-0-Paper Ticket"
+                  name="ticketFormat"
+                  type="checkbox"
+                  value="Paper Ticket"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-0-Paper Ticket"
+                >
+                  Paper Ticket
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Mobile App"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-1-Mobile App"
+                  name="ticketFormat"
+                  type="checkbox"
+                  value="Mobile App"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-1-Mobile App"
+                >
+                  Mobile App
+                </label>
+              </div>
+              <div
+                className="govuk-checkboxes__item"
+                key="checkbox-item-Smart Card"
+              >
+                <input
+                  className="govuk-checkboxes__input"
+                  defaultChecked={false}
+                  id="checkbox-2-Smart Card"
+                  name="ticketFormat"
+                  type="checkbox"
+                  value="Smart Card"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="checkbox-2-Smart Card"
+                >
+                  Smart Card
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </FormElementWrapper>
+      </div>
+      <div
+        className="govuk-grid-column-one-third"
+      >
+        <h1
+          className="govuk-heading-s"
+        >
+          What is a Sales Offer Package?
+        </h1>
+        <p
+          className="govuk-body"
+        >
+          To create a NeTEx for your fares it needs to contain the following:
+        </p>
+        <ol
+          className="govuk-body"
+        >
+          <li>
+            Where the ticket can be bought
+          </li>
+          <li>
+            What payment methods can be used to buy the ticket
+          </li>
+          <li>
+            In what format the ticket will be used by passengers
+          </li>
+        </ol>
+        <p
+          className="govuk-body"
+        >
+          This combination of information is called a 
+          <strong>
+            sales offer package
+          </strong>
+        </p>
+      </div>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

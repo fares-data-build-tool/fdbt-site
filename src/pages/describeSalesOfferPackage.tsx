@@ -24,8 +24,7 @@ interface DescribeSOPProps {
 export const isSalesOfferPackageWithErrors = (
     salesOfferPackage: SalesOfferPackage | SalesOfferPackageInfo | SalesOfferPackageWithErrors,
 ): salesOfferPackage is SalesOfferPackageWithErrors =>
-    (salesOfferPackage as SalesOfferPackageWithErrors).errors !== undefined &&
-    (salesOfferPackage as SalesOfferPackageWithErrors).errors.length > 0;
+    (salesOfferPackage as SalesOfferPackageWithErrors).errors?.length > 0;
 
 const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSOPProps & CustomAppProps): ReactElement => {
     const sopNameError = isSalesOfferPackageWithErrors(sopInfo)

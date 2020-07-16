@@ -8,28 +8,44 @@ import { IncomingMessageWithSession } from '../interfaces';
 // By nesting type lookups, these sessions methods will be able to accurately infer the correct types for the type that it is called with.
 // The only other cautious aspect of these type assertions is to make sure that both the site pages/APIs and these sessions funtions read from the same types/interfaces.
 
-import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
-import { SalesOfferPackageInfo } from '../pages/describeSalesOfferPackage';
-import { SOP_ATTRIBUTE } from '../constants';
+// 'Matching Data' needs to be a dictionary of every page name and what types each page cares about.
+// Should only be three types for each page/API combination [i] type built up from previous pages in journey [ii] end type that the API formats ready for later pages in the journey [iii] same type as in (ii) but with 'errors: ErrorInfo[]' attached
 
-type MatchingData = {
+import { SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
+import { SalesOfferPackageInfo } from '../pages/describeSalesOfferPackage';
+import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
+import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
+
+// Look at type narrowing
+
+type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackage | SalesOfferPackageWithErrors;
+    [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
 };
 
-type GetSalesOfferPackageSessionAttribute = <Key extends keyof MatchingData>(
+type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
     req: IncomingMessageWithSession,
     attributeName: Key,
-) => MatchingData[Key];
+) => GetSessionAttributeTypes[Key];
 
-export const getSessionAttribute: GetSalesOfferPackageSessionAttribute = (
+export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWithSession, attributeName) =>
+    req?.session?.[attributeName];
+
+type UpdateSessionAttributeTypes = {
+    [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors;
+    [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
+};
+
+type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
+    req: IncomingMessageWithSession,
+    attributeName: Key,
+    attributeValue: UpdateSessionAttributeTypes[Key],
+) => void;
+
+export const updateSessionAttribute: UpdateSessionAttribute = (
     req: IncomingMessageWithSession,
     attributeName,
-) => req?.session?.[attributeName];
-
-export const updateSessionAttribute = (
-    req: IncomingMessageWithSession,
-    attributeName: string,
-    attributeValue: string | {} | [],
+    attributeValue,
 ): void => {
     req.session[attributeName] = attributeValue;
 };

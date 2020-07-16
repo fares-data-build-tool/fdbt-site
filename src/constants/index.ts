@@ -60,6 +60,8 @@ export const PRICE_ENTRY_ERRORS_COOKIE = 'fdbt-price-entry-errors';
 
 export const SOP_ATTRIBUTE = 'fdbt-sales-offer-package';
 
+export const SOP_INFO_ATTRIBUTE = 'fdbt-sales-offer-package-info';
+
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
     'text/x-csv',
