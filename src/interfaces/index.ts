@@ -35,6 +35,7 @@ export interface PassengerDetails {
 export interface ErrorInfo {
     errorMessage: string;
     id: string;
+    userInput?: string;
 }
 
 export interface InputCheck {
