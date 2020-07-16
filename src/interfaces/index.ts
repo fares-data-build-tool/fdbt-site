@@ -70,7 +70,7 @@ export interface Breadcrumb {
 export interface SalesOfferPackage {
     name: string;
     packageDescription: string;
-    purchaseLocations: string[];
-    paymentMethods: string[];
-    ticketFormats: string[];
+    purchaseLocations: string;
+    paymentMethods: string;
+    ticketFormats: string;
 }

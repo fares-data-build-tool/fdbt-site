@@ -66,7 +66,13 @@ const SelectSalesOfferPackage = ({
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
                                 {salesOfferPackagesList.map((offer, index) => {
-                                    const { name, packageDescription } = offer;
+                                    const {
+                                        name,
+                                        packageDescription,
+                                        purchaseLocations,
+                                        paymentMethods,
+                                        ticketFormats,
+                                    } = offer;
 
                                     let checkboxTitles = `${name} - ${packageDescription}`;
 
@@ -81,7 +87,7 @@ const SelectSalesOfferPackage = ({
                                                 id={`checkbox-${index}`}
                                                 name={`${name}`}
                                                 type="checkbox"
-                                                value={`${packageDescription}`}
+                                                value={`${name}#${packageDescription}#${purchaseLocations}#${paymentMethods}#${ticketFormats}`}
                                             />
                                             <label
                                                 className="govuk-label govuk-checkboxes__label"

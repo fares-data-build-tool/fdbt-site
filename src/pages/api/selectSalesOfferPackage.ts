@@ -22,7 +22,7 @@ import {
 } from '../../constants';
 import { Stop } from '../../data/auroradb';
 import { putStringInS3, UserFareStages } from '../../data/s3';
-import { BasicService, CognitoIdToken, PassengerDetails, ServicesInfo } from '../../interfaces';
+import { BasicService, CognitoIdToken, PassengerDetails, ServicesInfo, SalesOfferPackage } from '../../interfaces';
 import { getFareZones } from './apiUtils/matching';
 import { Price } from '../../interfaces/matchingInterface';
 
@@ -172,17 +172,31 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             return;
         }
 
-        const checkedSalesOfferPackageList: string[] = [];
+        const checkedPackageList: string[] = [];
 
-        const requestBody: { [key: string]: string | string[] } = req.body;
+        const requestBody: { [key: string]: string } = req.body;
 
         Object.entries(requestBody).forEach(entry => {
-            const name = entry[0];
-            const packageDescription = entry[1];
-            const data = `${name}#${packageDescription}`;
-            checkedSalesOfferPackageList.push(data);
+            const namePackageDescriptionPurchaseLocationsPaymentMethodsTicketFormats = entry[1];
+            checkedPackageList.push(namePackageDescriptionPurchaseLocationsPaymentMethodsTicketFormats);
+            const formattedSalesOfferPackageInfo: SalesOfferPackage[] = checkedPackageList.map(
+                (selectedPackage: string) => {
+                    const salesPackage = selectedPackage.split('#');
+                    return {
+                        name: salesPackage[0],
+                        packageDescription: salesPackage[1],
+                        purchaseLocations: salesPackage[2],
+                        paymentMethods: salesPackage[3],
+                        ticketFormats: salesPackage[4],
+                    };
+                },
+            );
+            props = {
+                selectedServices: formattedSalesOfferPackageInfo,
+            };
         });
 
+        const nocCode = getNocFromIdToken(req, res);
         const uuid = getUuidFromCookie(req, res);
 
         const cookies = new Cookies(req, res);
@@ -191,14 +205,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
         const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_COOKIE);
         const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
-        const nocCode = getNocFromIdToken(req, res);
+        const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+
         const operatorObject = JSON.parse(operatorCookie);
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
         const { productName, productPrice } = JSON.parse(productDetailsCookie);
         const { daysValid } = JSON.parse(daysValidCookie);
-
-        const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
         const decodedIdToken = decode(idToken) as CognitoIdToken;
 
         const products: Product[] = [
