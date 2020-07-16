@@ -1,4 +1,7 @@
 import { AppInitialProps } from 'next/app';
+import { NextApiRequest, NextPageContext } from 'next';
+import { DocumentContext } from 'next/document';
+import { IncomingMessage } from 'http';
 
 export interface ProductInfo {
     productName: string;
@@ -67,10 +70,17 @@ export interface Breadcrumb {
     show: boolean;
 }
 
-export interface SalesOfferPackage {
-    name: string;
-    packageDescription: string;
-    purchaseLocations: string;
-    paymentMethods: string;
-    ticketFormats: string;
+export interface Session {
+    session: Express.Session;
+}
+export type NextApiRequestWithSession = NextApiRequest & Session;
+export type NextPageContextWithSession = NextPageContext & {
+    req: Session;
+};
+export type DocumentContextWithSession = DocumentContext & {
+    req: Session;
+};
+export type IncomingMessageWithSession = IncomingMessage & Session;
+export interface SessionContents {
+    body: any;
 }

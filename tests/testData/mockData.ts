@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { NextPageContext } from 'next';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
@@ -26,9 +25,10 @@ import {
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo, Breadcrumb } from '../../src/interfaces';
+import { ErrorInfo, Breadcrumb, NextPageContextWithSession } from '../../src/interfaces';
 
 interface GetMockContextInput {
+    session?: any;
     cookies?: any;
     body?: any;
     url?: any;
@@ -39,6 +39,7 @@ interface GetMockContextInput {
 }
 
 interface GetMockRequestAndResponse {
+    session?: any;
     cookieValues?: any;
     body?: any;
     uuid?: any;
@@ -58,6 +59,7 @@ export const getMockRequestAndResponse = ({
     requestHeaders = {},
     isLoggedin = true,
     url = null,
+    session = {},
 }: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -200,6 +202,7 @@ export const getMockRequestAndResponse = ({
             ...requestHeaders,
         },
         cookies: cookieValues,
+        session,
     });
 
     if (body) {
@@ -210,6 +213,7 @@ export const getMockRequestAndResponse = ({
 };
 
 export const getMockContext = ({
+    session = {},
     cookies = {},
     body = null,
     uuid = {},
@@ -217,8 +221,9 @@ export const getMockContext = ({
     mockEndFn = jest.fn(),
     isLoggedin = true,
     url = null,
-}: GetMockContextInput = {}): NextPageContext => {
+}: GetMockContextInput = {}): NextPageContextWithSession => {
     const { req, res } = getMockRequestAndResponse({
+        session,
         cookieValues: cookies,
         body,
         uuid,
@@ -229,7 +234,7 @@ export const getMockContext = ({
         url,
     });
 
-    const ctx: NextPageContext = {
+    const ctx: NextPageContextWithSession = {
         res,
         req,
         pathname: '',

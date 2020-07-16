@@ -58,7 +58,7 @@ export const PRICE_ENTRY_INPUTS_COOKIE = 'fdbt-price-entry-inputs';
 
 export const PRICE_ENTRY_ERRORS_COOKIE = 'fdbt-price-entry-errors';
 
-export const SALES_OFFER_PACKAGE_COOKIE = 'fdbt-sales-offer-package';
+export const SALES_OFFER_PACKAGES_ATTRIBUTE = 'fdbt-sales-offer-packages';
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
