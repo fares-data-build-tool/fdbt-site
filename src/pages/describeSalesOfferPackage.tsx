@@ -1,28 +1,40 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { SOP_ATTRIBUTE } from '../constants';
-import { SalesOfferPackageInfo } from './api/describeSalesOfferPackage';
+import { SalesOfferPackage, SalesOfferPackageWithErrors } from './api/describeSalesOfferPackage';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Sales Offer Package Description - Fares Data Build Tool';
 const description = 'Sales Offer Package Description page of the Fares Data Build Tool';
 
-export interface SalesOfferPackageParams {
+export interface SalesOfferPackageInfo {
     purchaseLocation: string[];
     paymentMethod: string[];
     ticketFormat: string[];
 }
 
 interface DescribeSOPProps {
-    errors: ErrorInfo[];
+    sopInfo: SalesOfferPackageInfo | SalesOfferPackageWithErrors;
 }
 
-const DescribeSOP = ({ errors, csrfToken }: DescribeSOPProps & CustomAppProps): ReactElement => {
-    const sopNameError = errors.find(error => error.id === 'sop-name');
-    const sopDescriptionError = errors.find(error => error.id === 'sop-description');
+export const isSalesOfferPackageWithErrors = (
+    salesOfferPackage: SalesOfferPackage | SalesOfferPackageInfo | SalesOfferPackageWithErrors,
+): salesOfferPackage is SalesOfferPackageWithErrors =>
+    (salesOfferPackage as SalesOfferPackageWithErrors).errors !== undefined &&
+    (salesOfferPackage as SalesOfferPackageWithErrors).errors.length > 0;
+
+const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSOPProps & CustomAppProps): ReactElement => {
+    const sopNameError = isSalesOfferPackageWithErrors(sopInfo)
+        ? sopInfo.errors.find(error => error.id === 'sop-name')
+        : undefined;
+    const sopDescriptionError = isSalesOfferPackageWithErrors(sopInfo)
+        ? sopInfo.errors.find(error => error.id === 'sop-description')
+        : undefined;
+    const errors = isSalesOfferPackageWithErrors(sopInfo) ? sopInfo.errors : [];
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
@@ -56,7 +68,9 @@ const DescribeSOP = ({ errors, csrfToken }: DescribeSOPProps & CustomAppProps): 
                                                 id="sop-name"
                                                 name="salesOfferPackageName"
                                                 type="text"
-                                                defaultValue={sopNameError ? sopNameError.userInput : ''}
+                                                defaultValue={
+                                                    isSalesOfferPackageWithErrors(sopInfo) ? sopInfo.name : ''
+                                                }
                                                 aria-describedby={sopNameError ? `${sopNameError.id}-error` : ''}
                                             />
                                         </FormElementWrapper>
@@ -107,14 +121,8 @@ const DescribeSOP = ({ errors, csrfToken }: DescribeSOPProps & CustomAppProps): 
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
-    const salesOfferPackageParams: SalesOfferPackageParams | SalesOfferPackageInfo = ctx.req?.session?.[SOP_ATTRIBUTE];
-
-    const errors: ErrorInfo[] = [];
-    console.log(typeof salesOfferPackageParams);
-
-    // const errors: ErrorInfo[] = salesOfferPackageParams?.errors || [];
-
-    return { props: { errors } };
+    const salesOfferPackageInfo = getSessionAttribute(ctx.req, SOP_ATTRIBUTE);
+    return { props: { sopInfo: salesOfferPackageInfo } };
 };
 
 export default DescribeSOP;
