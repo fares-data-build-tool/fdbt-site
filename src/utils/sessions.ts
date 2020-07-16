@@ -10,10 +10,10 @@ import { IncomingMessageWithSession } from '../interfaces';
 
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { SalesOfferPackageInfo } from '../pages/describeSalesOfferPackage';
-import { SOP_ATTRIBUTE } from '../constants';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
 
 type MatchingData = {
-    [SOP_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackage | SalesOfferPackageWithErrors;
+    [SALES_OFFER_PACKAGES_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackage | SalesOfferPackageWithErrors;
 };
 
 type GetSalesOfferPackageSessionAttribute = <Key extends keyof MatchingData>(

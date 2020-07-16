@@ -4,7 +4,7 @@ import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
-import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
+import { CognitoIdToken, ErrorInfo, SalesOfferPackage } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 
 type Req = NextApiRequest | Request;
@@ -142,4 +142,23 @@ export const validateNewPassword = (
         inputChecks.push({ id: 'new-password', errorMessage: 'Passwords do not match' });
     }
     return inputChecks;
+};
+
+export const getSalesOfferPackagesFromRequestBody = (reqBody: { [key: string]: string }): SalesOfferPackage[] => {
+    const salesOfferPackageList: SalesOfferPackage[] = [];
+    Object.values(reqBody).forEach(entry => {
+        const offerPackageObject = JSON.parse(entry);
+        const purchaseLocationList = offerPackageObject.purchaseLocation.split(',');
+        const paymentMethodList = offerPackageObject.paymentMethod.split(',');
+        const ticketFormatList = offerPackageObject.ticketFormat.split(',');
+        const formattedPackageObject = {
+            name: offerPackageObject.name,
+            description: offerPackageObject.description,
+            purchaseLocation: purchaseLocationList,
+            paymentMethod: paymentMethodList,
+            ticketFormat: ticketFormatList,
+        };
+        salesOfferPackageList.push(formattedPackageObject);
+    });
+    return salesOfferPackageList;
 };

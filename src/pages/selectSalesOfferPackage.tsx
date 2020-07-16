@@ -66,7 +66,6 @@ const SelectSalesOfferPackage = ({
                             <div className="govuk-checkboxes">
                                 {salesOfferPackagesList.map((offer, index) => {
                                     const { name, description } = offer;
-
                                     let checkboxTitles = `${name} - ${description}`;
 
                                     if (checkboxTitles.length > 110) {
@@ -78,7 +77,7 @@ const SelectSalesOfferPackage = ({
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
-                                                name={`${name}`}
+                                                name={name}
                                                 type="checkbox"
                                                 value={JSON.stringify(offer)}
                                             />
@@ -119,19 +118,14 @@ export const getServerSideProps = async (
     if (!nocCode) {
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
-
     const salesOfferPackagesList = await getSalesOfferPackagesByNocCode(nocCode);
-
     if (salesOfferPackagesList.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/salesOfferPackage');
         }
     }
-
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-
     const error: ErrorInfo[] = [];
-
     if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
         const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
         error.push(errorInfo);

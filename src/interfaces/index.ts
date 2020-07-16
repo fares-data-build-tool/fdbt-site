@@ -74,14 +74,19 @@ export interface Breadcrumb {
 export interface Session {
     session: Express.Session;
 }
+
 export type NextApiRequestWithSession = NextApiRequest & Session;
+
 export type NextPageContextWithSession = NextPageContext & {
     req: Session;
 };
+
 export type DocumentContextWithSession = DocumentContext & {
     req: Session;
 };
+
 export type IncomingMessageWithSession = IncomingMessage & Session;
+
 export interface SessionContents {
     body: any;
 }
@@ -89,7 +94,7 @@ export interface SessionContents {
 export interface SalesOfferPackage {
     name: string;
     description: string;
-    purchaseLocation: string;
-    paymentMethod: string;
-    ticketFormat: string;
+    purchaseLocation: string[];
+    paymentMethod: string[];
+    ticketFormat: string[];
 }

@@ -1,7 +1,13 @@
 import { NextApiRequest } from 'next';
-import { UserFareStages } from '../../../data/s3';
+import { MATCHING_DATA_BUCKET_NAME } from '../../../constants';
+import { UserFareStages, putStringInS3 } from '../../../data/s3';
 import { Stop } from '../../../data/auroradb';
-import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
+import {
+    MatchingFareZones,
+    MatchingFareZonesData,
+    MatchingData,
+    MatchingReturnData,
+} from '../../../interfaces/matchingInterface';
 
 export const getFareZones = (
     userFareStages: UserFareStages,
@@ -48,4 +54,13 @@ export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZ
     }
 
     return matchingFareZones;
+};
+
+export const putMatchingDataInS3 = async (data: MatchingData | MatchingReturnData, uuid: string): Promise<void> => {
+    await putStringInS3(
+        MATCHING_DATA_BUCKET_NAME,
+        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
+        JSON.stringify(data),
+        'application/json; charset=utf-8',
+    );
 };

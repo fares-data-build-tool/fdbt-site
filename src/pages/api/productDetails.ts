@@ -22,6 +22,13 @@ import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } fr
 import { putStringInS3 } from '../../data/s3';
 import { DecisionData } from './periodValidity';
 
+export interface Product {
+    productName: string;
+    productPrice: string;
+    productDuration?: string;
+    productValidity?: string;
+}
+
 export const checkIfInputInvalid = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     let productNameError = '';
     let productPriceError = '';

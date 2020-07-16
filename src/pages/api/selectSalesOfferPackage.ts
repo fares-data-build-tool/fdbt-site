@@ -1,11 +1,17 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { decode } from 'jsonwebtoken';
-import { redirectTo, redirectToError, getUuidFromCookie, unescapeAndDecodeCookie, getNocFromIdToken } from './apiUtils';
+import {
+    redirectTo,
+    redirectToError,
+    getUuidFromCookie,
+    unescapeAndDecodeCookie,
+    getNocFromIdToken,
+    getSalesOfferPackagesFromRequestBody,
+} from './apiUtils';
 import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
-    MATCHING_DATA_BUCKET_NAME,
     FARE_TYPE_COOKIE,
     PASSENGER_TYPE_COOKIE,
     ID_TOKEN_COOKIE,
@@ -14,94 +20,22 @@ import {
     DAYS_VALID_COOKIE,
 } from '../../constants';
 import { Stop } from '../../data/auroradb';
-import { putStringInS3, UserFareStages } from '../../data/s3';
+import { UserFareStages } from '../../data/s3';
 import {
     BasicService,
     CognitoIdToken,
     PassengerDetails,
     ServicesInfo,
-    SalesOfferPackage,
     NextApiRequestWithSession,
 } from '../../interfaces';
-import { getFareZones } from './apiUtils/matching';
-import { Price } from '../../interfaces/matchingInterface';
+import { getFareZones, putMatchingDataInS3 } from './apiUtils/matching';
+import {
+    MatchingFareZones,
+    MatchingData,
+    MatchingReturnData,
+    MatchingPeriodData,
+} from '../../interfaces/matchingInterface';
 import { updateSessionAttribute } from '../../utils/sessions';
-
-interface MatchingBaseData {
-    type: string;
-    lineName: string;
-    nocCode: string;
-    operatorShortName: string;
-    serviceDescription: string;
-    email: string;
-    uuid: string;
-}
-
-interface MatchingData extends MatchingBaseData {
-    fareZones: {
-        name: string;
-        stops: Stop[];
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
-
-interface MatchingReturnData extends MatchingBaseData {
-    outboundFareZones: {
-        name: string;
-        stops: Stop[];
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-    inboundFareZones: {
-        name: string;
-        stops: Stop[];
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
-
-interface MatchingFareZones {
-    [key: string]: {
-        name: string;
-        stops: Stop[];
-        prices: Price[];
-    };
-}
-
-interface Product {
-    productName: string;
-    productPrice: string;
-    productDuration?: string;
-    productValidity?: string;
-}
-
-interface MatchingPeriodData extends PassengerDetails {
-    operatorName: string;
-    type: string;
-    nocCode: string;
-    products: Product[];
-    selectedServices?: ServicesInfo[];
-    zoneName?: string;
-    stops?: Stop[];
-    email: string;
-    uuid: string;
-}
-
-export const putMatchingDataInS3 = async (data: MatchingData | MatchingReturnData, uuid: string): Promise<void> => {
-    await putStringInS3(
-        MATCHING_DATA_BUCKET_NAME,
-        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
-        JSON.stringify(data),
-        'application/json; charset=utf-8',
-    );
-};
 
 const getMatchingJson = (
     service: BasicService,
@@ -163,9 +97,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
         }
+
         if (!isCookiesUUIDMatch(req, res)) {
             throw new Error('Cookie UUIDs do not match');
         }
+
         if (!req.body || Object.keys(req.body).length === 0) {
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
                 body: { errorMessage: 'Choose at least one service from the options' },
@@ -174,34 +110,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const checkedPackageList: string[] = [];
-
         const requestBody: { [key: string]: string } = req.body;
-
-        Object.entries(requestBody).forEach(entry => {
-            const namePackageDescriptionPurchaseLocationsPaymentMethodsTicketFormats = entry[1];
-            checkedPackageList.push(namePackageDescriptionPurchaseLocationsPaymentMethodsTicketFormats);
-            const formattedSalesOfferPackageInfo: SalesOfferPackage[] = checkedPackageList.map(
-                (selectedPackage: string) => {
-                    const salesPackage = selectedPackage.split('#');
-                    return {
-                        name: salesPackage[0],
-                        description: salesPackage[1],
-                        purchaseLocations: salesPackage[2],
-                        paymentMethods: salesPackage[3],
-                        ticketFormats: salesPackage[4],
-                    };
-                },
-            );
-            props = {
-                selectedServices: formattedSalesOfferPackageInfo,
-            };
-        });
+        const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
 
         const nocCode = getNocFromIdToken(req, res);
         const uuid = getUuidFromCookie(req, res);
 
         const cookies = new Cookies(req, res);
+
         const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
