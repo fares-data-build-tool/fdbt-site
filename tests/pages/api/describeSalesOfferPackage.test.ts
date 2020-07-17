@@ -18,14 +18,14 @@ describe('describeSalesOfferPackage', () => {
     const mockError: ErrorInfo = expect.objectContaining({ errorMessage: expect.any(String), id: expect.any(String) });
 
     const mockSopInfoAttribute: SalesOfferPackageInfo = {
-        purchaseLocation: ['OnBus', 'Shop', 'Mobile'],
-        paymentMethod: ['Card', 'Cash'],
-        ticketFormat: ['Paper', 'Mobile'],
+        purchaseLocations: ['OnBus', 'Shop', 'Mobile'],
+        paymentMethods: ['Card', 'Cash'],
+        ticketFormats: ['Paper', 'Mobile'],
     };
     // const mockSopInfoAttributeWithErrors: SalesOfferPackageInfoWithErrors = {
-    //     purchaseLocation: [],
-    //     paymentMethod: ['Card', 'Cash'],
-    //     ticketFormat: [],
+    //     purchaseLocations: [],
+    //     paymentMethods: ['Card', 'Cash'],
+    //     ticketFormats: [],
     //     errors: [mockError, mockError],
     // };
     const mockSopAttribute: SalesOfferPackage = {

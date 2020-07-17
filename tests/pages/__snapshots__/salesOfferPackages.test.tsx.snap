@@ -39,7 +39,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
       >
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="purchaseLocation"
+          errorId="purchaseLocations"
           errors={
             Array [
               Object {
@@ -69,7 +69,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-0-OnBoard"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="OnBoard"
                 />
@@ -88,7 +88,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-1-Online"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Online"
                 />
@@ -107,7 +107,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-2-Online Account"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Online Account"
                 />
@@ -126,7 +126,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-3-Telephone"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Telephone"
                 />
@@ -145,7 +145,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-4-Electronic Pass"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Electronic Pass"
                 />
@@ -164,7 +164,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-5-Mobile Device"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Mobile Device"
                 />
@@ -183,7 +183,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-6-Agency"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Agency"
                 />
@@ -202,7 +202,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-7-Tour Operator"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Tour Operator"
                 />
@@ -218,7 +218,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="paymentMethod"
+          errorId="paymentMethods"
           errors={
             Array [
               Object {
@@ -248,7 +248,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-0-Cash"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Cash"
                 />
@@ -267,7 +267,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-1-Debit/Credit card"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Debit/Credit card"
                 />
@@ -286,7 +286,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-2-Contactless card"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Contactless card"
                 />
@@ -305,7 +305,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-3-Mobile Payment"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Mobile Payment"
                 />
@@ -324,7 +324,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-4-SMS"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="SMS"
                 />
@@ -343,7 +343,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-5-Cheque"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Cheque"
                 />
@@ -362,7 +362,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-6-Direct transfer"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Direct transfer"
                 />
@@ -381,7 +381,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-7-Standing Order"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Standing Order"
                 />
@@ -400,7 +400,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-8-Warrant"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Warrant"
                 />
@@ -419,7 +419,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-9-Gift Voucher"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Gift Voucher"
                 />
@@ -435,7 +435,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="ticketFormat"
+          errorId="ticketFormats"
           errors={
             Array [
               Object {
@@ -465,7 +465,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-0-Paper Ticket"
-                  name="ticketFormat"
+                  name="ticketFormats"
                   type="checkbox"
                   value="Paper Ticket"
                 />
@@ -484,7 +484,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-1-Mobile App"
-                  name="ticketFormat"
+                  name="ticketFormats"
                   type="checkbox"
                   value="Mobile App"
                 />
@@ -503,7 +503,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-2-Smart Card"
-                  name="ticketFormat"
+                  name="ticketFormats"
                   type="checkbox"
                   value="Smart Card"
                 />
@@ -597,7 +597,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
       >
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="purchaseLocation"
+          errorId="purchaseLocations"
           errors={Array []}
         >
           <div
@@ -620,7 +620,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-0-OnBoard"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="OnBoard"
                 />
@@ -639,7 +639,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-1-Online"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Online"
                 />
@@ -658,7 +658,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-2-Online Account"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Online Account"
                 />
@@ -677,7 +677,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-3-Telephone"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Telephone"
                 />
@@ -696,7 +696,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-4-Electronic Pass"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Electronic Pass"
                 />
@@ -715,7 +715,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-5-Mobile Device"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Mobile Device"
                 />
@@ -734,7 +734,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-6-Agency"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Agency"
                 />
@@ -753,7 +753,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-7-Tour Operator"
-                  name="purchaseLocation"
+                  name="purchaseLocations"
                   type="checkbox"
                   value="Tour Operator"
                 />
@@ -769,7 +769,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="paymentMethod"
+          errorId="paymentMethods"
           errors={Array []}
         >
           <div
@@ -792,7 +792,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-0-Cash"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Cash"
                 />
@@ -811,7 +811,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-1-Debit/Credit card"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Debit/Credit card"
                 />
@@ -830,7 +830,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-2-Contactless card"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Contactless card"
                 />
@@ -849,7 +849,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-3-Mobile Payment"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Mobile Payment"
                 />
@@ -868,7 +868,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-4-SMS"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="SMS"
                 />
@@ -887,7 +887,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-5-Cheque"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Cheque"
                 />
@@ -906,7 +906,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-6-Direct transfer"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Direct transfer"
                 />
@@ -925,7 +925,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-7-Standing Order"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Standing Order"
                 />
@@ -944,7 +944,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-8-Warrant"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Warrant"
                 />
@@ -963,7 +963,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-9-Gift Voucher"
-                  name="paymentMethod"
+                  name="paymentMethods"
                   type="checkbox"
                   value="Gift Voucher"
                 />
@@ -979,7 +979,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="ticketFormat"
+          errorId="ticketFormats"
           errors={Array []}
         >
           <div
@@ -1002,7 +1002,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-0-Paper Ticket"
-                  name="ticketFormat"
+                  name="ticketFormats"
                   type="checkbox"
                   value="Paper Ticket"
                 />
@@ -1021,7 +1021,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-1-Mobile App"
-                  name="ticketFormat"
+                  name="ticketFormats"
                   type="checkbox"
                   value="Mobile App"
                 />
@@ -1040,7 +1040,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
                   className="govuk-checkboxes__input"
                   defaultChecked={false}
                   id="checkbox-2-Smart Card"
-                  name="ticketFormat"
+                  name="ticketFormats"
                   type="checkbox"
                   value="Smart Card"
                 />

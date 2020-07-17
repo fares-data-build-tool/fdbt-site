@@ -14,7 +14,7 @@ const title = 'Sales Offer Packages - Fares Data Build Tool';
 const description = 'Sales Offer Packages page for the Fares Data Build Tool';
 
 export const ticketsPurchasedList = {
-    id: 'purchaseLocation',
+    id: 'purchaseLocations',
     method: [
         'OnBoard',
         'Online',
@@ -28,8 +28,8 @@ export const ticketsPurchasedList = {
 };
 
 export const ticketPaymentMethodsList = {
-    id: 'paymentMethod',
-    paymentMethod: [
+    id: 'paymentMethods',
+    paymentMethods: [
         'Cash',
         'Debit/Credit card',
         'Contactless card',
@@ -44,8 +44,8 @@ export const ticketPaymentMethodsList = {
 };
 
 export const ticketFormatsList = {
-    id: 'ticketFormat',
-    ticketFormat: ['Paper Ticket', 'Mobile App', 'Smart Card'],
+    id: 'ticketFormats',
+    ticketFormats: ['Paper Ticket', 'Mobile App', 'Smart Card'],
 };
 
 export interface SalesOfferPackagesProps {
@@ -93,10 +93,10 @@ const SalesOfferPackages = ({
                                                     <input
                                                         className="govuk-checkboxes__input"
                                                         id={`checkbox-${index}-${purchaseFrom}`}
-                                                        name="purchaseLocation"
+                                                        name="purchaseLocations"
                                                         type="checkbox"
                                                         value={purchaseFrom}
-                                                        defaultChecked={salesOfferPackage.purchaseLocation.includes(
+                                                        defaultChecked={salesOfferPackage.purchaseLocations.includes(
                                                             purchaseFrom,
                                                         )}
                                                     />
@@ -123,7 +123,7 @@ const SalesOfferPackages = ({
                                         aria-describedby="sales-offer-package-ticket-payment"
                                     >
                                         <p className="govuk-body">How can tickets be paid for?</p>
-                                        {ticketPaymentMethodsList.paymentMethod.map((payment, index) => {
+                                        {ticketPaymentMethodsList.paymentMethods.map((payment, index) => {
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
@@ -132,10 +132,10 @@ const SalesOfferPackages = ({
                                                     <input
                                                         className="govuk-checkboxes__input"
                                                         id={`checkbox-${index}-${payment}`}
-                                                        name="paymentMethod"
+                                                        name="paymentMethods"
                                                         type="checkbox"
                                                         value={payment}
-                                                        defaultChecked={salesOfferPackage.paymentMethod.includes(
+                                                        defaultChecked={salesOfferPackage.paymentMethods.includes(
                                                             payment,
                                                         )}
                                                     />
@@ -162,16 +162,18 @@ const SalesOfferPackages = ({
                                         aria-describedby="sales-offer-package-ticket-format"
                                     >
                                         <p className="govuk-body">What format do the tickets come in?</p>
-                                        {ticketFormatsList.ticketFormat.map((ticket, index) => {
+                                        {ticketFormatsList.ticketFormats.map((ticket, index) => {
                                             return (
                                                 <div className="govuk-checkboxes__item" key={`checkbox-item-${ticket}`}>
                                                     <input
                                                         className="govuk-checkboxes__input"
                                                         id={`checkbox-${index}-${ticket}`}
-                                                        name="ticketFormat"
+                                                        name="ticketFormats"
                                                         type="checkbox"
                                                         value={ticket}
-                                                        defaultChecked={salesOfferPackage.ticketFormat.includes(ticket)}
+                                                        defaultChecked={salesOfferPackage.ticketFormats.includes(
+                                                            ticket,
+                                                        )}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
@@ -201,9 +203,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     console.log({ rawSalesOfferPackage });
 
     const defaultSOP: SalesOfferPackageInfo = {
-        purchaseLocation: [],
-        paymentMethod: [],
-        ticketFormat: [],
+        purchaseLocations: [],
+        paymentMethods: [],
+        ticketFormats: [],
     };
 
     return {

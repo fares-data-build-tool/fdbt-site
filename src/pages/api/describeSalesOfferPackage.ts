@@ -1,12 +1,13 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/index';
-import { redirectToError, redirectTo } from './apiUtils';
+import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 import { SalesOfferPackageInfo, isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isSalesOfferPackageInfoWithErrors } from '../salesOfferPackages';
+// import { insertSalesOfferPackage } from '../../data/auroradb';
 
 export interface SalesOfferPackage extends SalesOfferPackageInfo {
     name: string;
@@ -62,17 +63,22 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const salesOfferPackageParams = getSessionAttribute(req, SOP_INFO_ATTRIBUTE);
-
         if (!salesOfferPackageParams || isSalesOfferPackageInfoWithErrors(salesOfferPackageParams)) {
             throw new Error('SOP_INFO_ATTRIBUTE is missing or in the wrong format');
         }
+
+        const nocCode = getNocFromIdToken(req, res);
+        if (!nocCode) {
+            throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
+        }
+
         const { salesOfferPackageName, salesOfferPackageDescription } = req.body;
         let salesOfferPackageInfo: SalesOfferPackage = {
             name: salesOfferPackageName || '',
             description: salesOfferPackageDescription || '',
-            purchaseLocation: salesOfferPackageParams.purchaseLocation,
-            paymentMethod: salesOfferPackageParams.paymentMethod,
-            ticketFormat: salesOfferPackageParams.ticketFormat,
+            purchaseLocations: salesOfferPackageParams.purchaseLocations,
+            paymentMethods: salesOfferPackageParams.paymentMethods,
+            ticketFormats: salesOfferPackageParams.ticketFormats,
         };
 
         salesOfferPackageInfo = await checkUserInput(salesOfferPackageInfo);
@@ -82,7 +88,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/describeSalesOfferPackage');
             return;
         }
+        // await insertSalesOfferPackage(nocCode, salesOfferPackageInfo);
+
+        // Do we need the below setting of a SOP_ATTRIBUTE? Do we instead want to clear SOP_ATTRIBUTE and SOP_INFO_ATTRIBUTE?
         updateSessionAttribute(req, SOP_ATTRIBUTE, salesOfferPackageInfo);
+
         redirectTo(res, '/describeSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem on the describe sales offer package API.';

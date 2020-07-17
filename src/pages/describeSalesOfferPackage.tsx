@@ -13,9 +13,9 @@ const title = 'Sales Offer Package Description - Fares Data Build Tool';
 const description = 'Sales Offer Package Description page of the Fares Data Build Tool';
 
 export interface SalesOfferPackageInfo {
-    purchaseLocation: string[];
-    paymentMethod: string[];
-    ticketFormat: string[];
+    purchaseLocations: string[];
+    paymentMethods: string[];
+    ticketFormats: string[];
 }
 
 interface DescribeSOPProps {
