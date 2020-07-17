@@ -1,11 +1,12 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
-import { SOP_ATTRIBUTE } from '../../constants/index';
+import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 import { SalesOfferPackageInfo, isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
-import { getSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isSalesOfferPackageInfoWithErrors } from '../salesOfferPackages';
 
 export interface SalesOfferPackage extends SalesOfferPackageInfo {
     name: string;
@@ -20,7 +21,7 @@ const noInputError = (input: string): string => `Enter a ${input} for your sales
 const inputTooLongError = (input: string, max: number): string =>
     `Your sales offer package ${input} must be ${max} characters or fewer`;
 
-const sopInfoSchema = yup.object({
+export const sopInfoSchema = yup.object({
     name: yup
         .string()
         .min(0, noInputError('name'))
@@ -33,7 +34,9 @@ const sopInfoSchema = yup.object({
         .required(noInputError('description')),
 });
 
-const checkUserInput = async (sopInfo: SalesOfferPackage): Promise<SalesOfferPackage | SalesOfferPackageWithErrors> => {
+export const checkUserInput = async (
+    sopInfo: SalesOfferPackage,
+): Promise<SalesOfferPackage | SalesOfferPackageWithErrors> => {
     let errors: ErrorInfo[] = [];
     try {
         await sopInfoSchema.validate(sopInfo, { abortEarly: false });
@@ -58,11 +61,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('Session is invalid.');
         }
 
-        const salesOfferPackageParams = getSessionAttribute(req, SOP_ATTRIBUTE);
+        const salesOfferPackageParams = getSessionAttribute(req, SOP_INFO_ATTRIBUTE);
+
+        if (!salesOfferPackageParams || isSalesOfferPackageInfoWithErrors(salesOfferPackageParams)) {
+            throw new Error('SOP_INFO_ATTRIBUTE is missing or in the wrong format');
+        }
         const { salesOfferPackageName, salesOfferPackageDescription } = req.body;
         let salesOfferPackageInfo: SalesOfferPackage = {
-            name: salesOfferPackageName,
-            description: salesOfferPackageDescription,
+            name: salesOfferPackageName || '',
+            description: salesOfferPackageDescription || '',
             purchaseLocation: salesOfferPackageParams.purchaseLocation,
             paymentMethod: salesOfferPackageParams.paymentMethod,
             ticketFormat: salesOfferPackageParams.ticketFormat,
@@ -71,11 +78,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         salesOfferPackageInfo = await checkUserInput(salesOfferPackageInfo);
 
         if (isSalesOfferPackageWithErrors(salesOfferPackageInfo)) {
-            req.session[SOP_ATTRIBUTE] = salesOfferPackageInfo;
+            updateSessionAttribute(req, SOP_ATTRIBUTE, salesOfferPackageInfo);
             redirectTo(res, '/describeSalesOfferPackage');
             return;
         }
-        req.session[SOP_ATTRIBUTE] = salesOfferPackageInfo;
+        updateSessionAttribute(req, SOP_ATTRIBUTE, salesOfferPackageInfo);
         redirectTo(res, '/describeSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem on the describe sales offer package API.';

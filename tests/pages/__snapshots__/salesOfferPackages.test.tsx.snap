@@ -547,10 +547,11 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
         <p
           className="govuk-body"
         >
-          This combination of information is called a 
-          <strong>
+          This combination of information is known as a 
+          <b>
             sales offer package
-          </strong>
+          </b>
+          .
         </p>
       </div>
     </div>
@@ -1083,10 +1084,11 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
         <p
           className="govuk-body"
         >
-          This combination of information is called a 
-          <strong>
+          This combination of information is known as a 
+          <b>
             sales offer package
-          </strong>
+          </b>
+          .
         </p>
       </div>
     </div>

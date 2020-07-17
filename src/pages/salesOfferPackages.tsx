@@ -8,6 +8,7 @@ import { SOP_INFO_ATTRIBUTE } from '../constants';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { SalesOfferPackageInfo } from './describeSalesOfferPackage';
 import { SalesOfferPackageInfoWithErrors } from './api/salesOfferPackages';
+import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 
 const title = 'Sales Offer Packages - Fares Data Build Tool';
 const description = 'Sales Offer Packages page for the Fares Data Build Tool';
@@ -55,21 +56,6 @@ export const isSalesOfferPackageInfoWithErrors = (
     salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors,
 ): salesOfferPackage is SalesOfferPackageInfoWithErrors =>
     (salesOfferPackage as SalesOfferPackageInfoWithErrors).errors?.length > 0;
-
-export const SalesOfferPackagesInfo = (): ReactElement => (
-    <>
-        <h1 className="govuk-heading-s">What is a Sales Offer Package?</h1>
-        <p className="govuk-body">To create a NeTEx for your fares it needs to contain the following:</p>
-        <ol className="govuk-body">
-            <li>Where the ticket can be bought</li>
-            <li>What payment methods can be used to buy the ticket</li>
-            <li>In what format the ticket will be used by passengers</li>
-        </ol>
-        <p className="govuk-body">
-            This combination of information is called a <strong>sales offer package</strong>
-        </p>
-    </>
-);
 
 const SalesOfferPackages = ({
     salesOfferPackage,
@@ -200,7 +186,7 @@ const SalesOfferPackages = ({
                                 </div>
                             </FormElementWrapper>
                         </div>
-                        <div className="govuk-grid-column-one-third">{SalesOfferPackagesInfo()}</div>
+                        <div className="govuk-grid-column-one-third">{SalesOfferPackageExplanation()}</div>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
@@ -211,6 +197,8 @@ const SalesOfferPackages = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SalesOfferPackagesProps } => {
     const rawSalesOfferPackage = getSessionAttribute(ctx.req, SOP_INFO_ATTRIBUTE);
+
+    console.log({ rawSalesOfferPackage });
 
     const defaultSOP: SalesOfferPackageInfo = {
         purchaseLocation: [],

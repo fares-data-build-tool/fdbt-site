@@ -15,32 +15,25 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];
 
     try {
-        if (Object.keys(req.body).length === 0) {
-            errors.push({
-                id: '',
-                errorMessage: 'Select at least one item for each section',
-            });
-        }
-
         let { purchaseLocation, paymentMethod, ticketFormat } = req.body;
 
         if (!purchaseLocation) {
             errors.push({
-                errorMessage: 'Select at least one option for ticket purchase',
+                errorMessage: 'Select at least one ticket purchase location',
                 id: ticketsPurchasedList.id,
             });
         }
 
         if (!paymentMethod) {
             errors.push({
-                errorMessage: 'Select at least one ticket payment',
+                errorMessage: 'Select at least one ticket payment method',
                 id: ticketPaymentMethodsList.id,
             });
         }
 
         if (!ticketFormat) {
             errors.push({
-                errorMessage: 'Select at least one ticket format',
+                errorMessage: 'Select at least one ticket media format',
                 id: ticketFormatsList.id,
             });
         }

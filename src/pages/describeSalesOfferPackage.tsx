@@ -4,9 +4,10 @@ import ErrorSummary from '../components/ErrorSummary';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { SOP_ATTRIBUTE } from '../constants';
+import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from './api/describeSalesOfferPackage';
 import { getSessionAttribute } from '../utils/sessions';
+import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 
 const title = 'Sales Offer Package Description - Fares Data Build Tool';
 const description = 'Sales Offer Package Description page of the Fares Data Build Tool';
@@ -24,7 +25,7 @@ interface DescribeSOPProps {
 export const isSalesOfferPackageWithErrors = (
     salesOfferPackage: SalesOfferPackage | SalesOfferPackageInfo | SalesOfferPackageWithErrors,
 ): salesOfferPackage is SalesOfferPackageWithErrors =>
-    (salesOfferPackage as SalesOfferPackageWithErrors).errors?.length > 0;
+    (salesOfferPackage as SalesOfferPackageWithErrors)?.errors?.length > 0;
 
 const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSOPProps & CustomAppProps): ReactElement => {
     const sopNameError = isSalesOfferPackageWithErrors(sopInfo)
@@ -100,28 +101,20 @@ const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSOPProps & CustomAppProps):
                         </>
                     </CsrfForm>
                 </div>
-                <div className="govuk-grid-column-one-third">
-                    <h1 className="govuk-heading-s">What is a Sales Offer Package?</h1>
-                    <div className="govuk-body">
-                        <p>To create NeTEx for a certain ticket type, you must provide the following detail:</p>
-                        <ol>
-                            <li>Where the ticket can be bought</li>
-                            <li>What payment methods can be used to buy the ticket</li>
-                            <li>In what format the ticket will be used by passengers</li>
-                        </ol>
-                        <p>
-                            This combination of information is known as a <b>sales offer package</b>.
-                        </p>
-                    </div>
-                </div>
+                <div className="govuk-grid-column-one-third">{SalesOfferPackageExplanation()}</div>
             </div>
         </BaseLayout>
     );
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
-    const salesOfferPackageInfo = getSessionAttribute(ctx.req, SOP_ATTRIBUTE);
-    return { props: { sopInfo: salesOfferPackageInfo } };
+    const salesOfferPackageInfo = getSessionAttribute(ctx.req, SOP_INFO_ATTRIBUTE);
+    const salesOfferPackage = getSessionAttribute(ctx.req, SOP_ATTRIBUTE);
+    return {
+        props: {
+            sopInfo: isSalesOfferPackageWithErrors(salesOfferPackage) ? salesOfferPackage : salesOfferPackageInfo,
+        },
+    };
 };
 
 export default DescribeSOP;

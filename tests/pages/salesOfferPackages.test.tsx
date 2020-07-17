@@ -17,7 +17,6 @@ describe('pages', () => {
             purchaseLocation: [],
             paymentMethod: [],
             ticketFormat: [],
-            errors: [],
         },
     };
 
