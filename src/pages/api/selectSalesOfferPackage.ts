@@ -16,81 +16,17 @@ import {
     PASSENGER_TYPE_COOKIE,
     ID_TOKEN_COOKIE,
     OPERATOR_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
     DAYS_VALID_COOKIE,
+    MATCHING_ATTRIBUTE,
+    CSV_ZONE_UPLOAD_COOKIE,
+    SERVICE_LIST_COOKIE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
 } from '../../constants';
-import { Stop } from '../../data/auroradb';
-import { UserFareStages } from '../../data/s3';
-import {
-    BasicService,
-    CognitoIdToken,
-    PassengerDetails,
-    ServicesInfo,
-    NextApiRequestWithSession,
-} from '../../interfaces';
-import { getFareZones, putMatchingDataInS3 } from './apiUtils/matching';
-import {
-    MatchingFareZones,
-    MatchingData,
-    MatchingReturnData,
-    MatchingPeriodData,
-} from '../../interfaces/matchingInterface';
-import { updateSessionAttribute } from '../../utils/sessions';
-
-const getMatchingJson = (
-    service: BasicService,
-    userFareStages: UserFareStages,
-    inboundUserFareStages: UserFareStages,
-    matchingFareZones: MatchingFareZones,
-    inboundMatchingFareZones: MatchingFareZones,
-    fareType: string,
-    passengerTypeObject: PassengerDetails,
-    email: string,
-    uuid: string,
-    operatorName: string,
-    nocCode: string | null,
-    products: Product[],
-    selectedServices?: ServicesInfo[],
-    zoneName?: string,
-    stops?: Stop[],
-): MatchingData | MatchingReturnData | MatchingPeriodData | {} => {
-    if (fareType === 'return') {
-        return {
-            ...service,
-            type: 'return',
-            outboundFareZones: getFareZones(userFareStages, matchingFareZones),
-            inboundFareZones: getFareZones(inboundUserFareStages, inboundMatchingFareZones),
-            ...passengerTypeObject,
-            email,
-            uuid,
-        };
-    }
-    if (fareType === 'single') {
-        return {
-            ...service,
-            type: 'single',
-            fareZones: getFareZones(userFareStages, matchingFareZones),
-            ...passengerTypeObject,
-            email,
-            uuid,
-        };
-    }
-    if (fareType === 'period') {
-        return {
-            operatorName,
-            type: 'period',
-            nocCode,
-            email,
-            uuid,
-            products,
-            ...passengerTypeObject,
-            ...selectedServices,
-            zoneName,
-            ...stops,
-        };
-    }
-    return {};
-};
+import { CognitoIdToken, NextApiRequestWithSession } from '../../interfaces';
+import { putMatchingDataInS3, getMatchingJson } from './apiUtils/matching';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -111,35 +47,29 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const requestBody: { [key: string]: string } = req.body;
-        const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
-
-        const nocCode = getNocFromIdToken(req, res);
-        const uuid = getUuidFromCookie(req, res);
 
         const cookies = new Cookies(req, res);
-
         const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
+        const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
-        const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_COOKIE);
-        const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
         const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
         const operatorObject = JSON.parse(operatorCookie);
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const passengerTypeObject = JSON.parse(passengerTypeCookie);
-        const { productName, productPrice } = JSON.parse(productDetailsCookie);
-        const { daysValid } = JSON.parse(daysValidCookie);
         const decodedIdToken = decode(idToken) as CognitoIdToken;
-
-        const products: Product[] = [
-            {
-                productName,
-                productPrice,
-                productDuration: daysValid,
-                productValidity: periodValid,
-            },
-        ];
+        const { service, userFareStages, matchingFareZones } = getSessionAttribute(req, MATCHING_ATTRIBUTE);
+        const { inboundUserFareStages, inboundMatchingFareZones } = getSessionAttribute(
+            req,
+            INBOUND_MATCHING_ATTRIBUTE,
+        );
+        const { products } = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+        const { productDetails } = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+        const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
+        const nocCode = getNocFromIdToken(req, res);
+        const uuid = getUuidFromCookie(req, res);
 
         const matchingJson = getMatchingJson(
             service,
@@ -154,6 +84,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             operatorObject.operatorName,
             nocCode,
             products,
+            salesOfferPackages,
             selectedServices,
             zoneName,
             stops,

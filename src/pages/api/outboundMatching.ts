@@ -1,30 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import {
-    redirectTo,
-    redirectToError,
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    getSelectedStages,
-} from './apiUtils';
-import { putStringInS3, UserFareStages } from '../../data/s3';
+import { NextApiResponse } from 'next';
+import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
+import { UserFareStages } from '../../data/s3';
 import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
-import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
+import { MATCHING_ATTRIBUTE } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
-import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
+import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession } from '../../interfaces';
 
-export const putOutboundMatchingDataInS3 = async (data: MatchingFareZones, uuid: string): Promise<void> => {
-    await putStringInS3(
-        USER_DATA_BUCKET_NAME,
-        `return/outbound/${uuid}.json`,
-        JSON.stringify(data),
-        'application/json; charset=utf-8',
-    );
-};
-
-const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
-    userFareStages.fareStages.some(stage => !matchingFareZones[stage.stageName]);
-
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -49,14 +33,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const selectedStagesList: {}[] = getSelectedStages(req);
 
-            const outbound = { error: true, selectedFareStages: selectedStagesList };
-
-            setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound }), req, res);
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, { error: true, selectedFareStages: selectedStagesList });
             redirectTo(res, '/outboundMatching');
             return;
         }
-
-        const uuid = getUuidFromCookie(req, res);
 
         const formatMatchingFareZones = getFareZones(userFareStages, matchingFareZones);
 
@@ -65,11 +45,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             matchedFareZones[fareStage.name] = fareStage;
         });
 
-        await putOutboundMatchingDataInS3(matchedFareZones, uuid);
+        updateSessionAttribute(req, MATCHING_ATTRIBUTE, { matchedFareZones });
 
-        setCookieOnResponseObject(MATCHING_COOKIE, JSON.stringify({ outbound: { error: false } }), req, res);
-
-        redirectTo(res, '/inboundMatching');
+        redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';
         redirectToError(res, message, error);

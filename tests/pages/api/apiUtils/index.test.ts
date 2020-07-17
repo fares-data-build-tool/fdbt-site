@@ -6,6 +6,7 @@ import {
     checkEmailValid,
     getAttributeFromIdToken,
     validateNewPassword,
+    getSelectedStages,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
@@ -193,6 +194,14 @@ describe('apiUtils', () => {
             const inputChecks: ErrorInfo[] = [];
             const res = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
             expect(res).toEqual(expectedResult);
+        });
+    });
+
+    describe('getSelectedStages', () => {
+        it.only('should return a string array', () => {
+            const { req } = getMockRequestAndResponse({});
+            const result = getSelectedStages(req);
+            expect(result).toEqual([]);
         });
     });
 });

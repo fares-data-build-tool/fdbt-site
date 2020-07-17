@@ -1,5 +1,5 @@
 import productDetails from '../../../src/pages/api/productDetails';
-import { PRODUCT_DETAILS_COOKIE } from '../../../src/constants';
+import { PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
 import * as s3 from '../../../src/data/s3';
 import * as validator from '../../../src/pages/api/service/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
@@ -19,7 +19,7 @@ describe('productDetails', () => {
             .mockReturnValue(true);
     });
 
-    it('should set PRODUCT_DETAILS_COOKIE with errors when the user input is invalid', () => {
+    it('should set PRODUCT_DETAILS_ATTRIBUTE with errors when the user input is invalid', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse({
@@ -37,14 +37,14 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_COOKIE,
+            PRODUCT_DETAILS_ATTRIBUTE,
             JSON.stringify(mockProductDetailsCookies),
             req,
             res,
         );
     });
 
-    it('should create PRODUCT_DETAILS_COOKIE when the user input is valid', () => {
+    it('should create PRODUCT_DETAILS_ATTRIBUTE when the user input is valid', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse({
@@ -66,7 +66,7 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_COOKIE,
+            PRODUCT_DETAILS_ATTRIBUTE,
             JSON.stringify(mockProductDetailsCookies),
             req,
             res,
@@ -95,7 +95,7 @@ describe('productDetails', () => {
         productDetails(req, res);
 
         expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_COOKIE,
+            PRODUCT_DETAILS_ATTRIBUTE,
             JSON.stringify(mockProductDetailsCookies),
             req,
             res,

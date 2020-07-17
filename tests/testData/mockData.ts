@@ -15,7 +15,7 @@ import {
     PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
     SERVICE_LIST_COOKIE,
@@ -155,7 +155,7 @@ export const getMockRequestAndResponse = ({
             : '';
 
     cookieString += productName
-        ? `${PRODUCT_DETAILS_COOKIE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
+        ? `${PRODUCT_DETAILS_ATTRIBUTE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
         : '';
 
     cookieString += fareZoneName

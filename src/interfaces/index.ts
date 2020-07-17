@@ -98,3 +98,18 @@ export interface SalesOfferPackage {
     paymentMethod: string[];
     ticketFormat: string[];
 }
+
+export interface Product {
+    productName: string;
+    productPrice: string;
+    productDuration?: string;
+    productValidity?: string;
+}
+
+export interface ProductData {
+    products: Product[];
+}
+
+export interface PeriodExpiryWithErrors {
+    errorMessage: string;
+}

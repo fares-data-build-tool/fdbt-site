@@ -1,12 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PERIOD_EXPIRY_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Period Validity - Fares Data Build Tool';
 const description = 'Period Validity selection page of the Fares Data Build Tool';
@@ -91,19 +90,13 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & Custom
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (cookies[PERIOD_EXPIRY_COOKIE]) {
-        const periodValidityCookie = cookies[PERIOD_EXPIRY_COOKIE];
-        const parsedPeriodValidityCookie = JSON.parse(periodValidityCookie);
-
-        if (parsedPeriodValidityCookie.errorMessage) {
-            const { errorMessage } = parsedPeriodValidityCookie;
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
+    if (periodExpiryAttribute.errorMessage) {
+        const { errorMessage } = periodExpiryAttribute;
+        return { props: { errors: [{ errorMessage, id: errorId }] } };
     }
-
     return { props: {} };
 };
 
