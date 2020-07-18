@@ -113,3 +113,95 @@ export interface ProductData {
 export interface PeriodExpiryWithErrors {
     errorMessage: string;
 }
+
+export interface BaseTicket {
+    nocCode: string;
+    type: string;
+    passengerType: string;
+    ageRange?: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string;
+    proofDocuments?: string[];
+    email: string;
+    uuid: string;
+    salesOfferPackages: SalesOfferPackage[];
+}
+
+export type PointToPointTicket = SingleTicket | ReturnTicket;
+
+export interface BasePointToPointTicket extends BaseTicket {
+    operatorShortName: string;
+    lineName: string;
+    serviceDescription: string;
+}
+
+export interface SingleTicket extends BasePointToPointTicket {
+    fareZones: FareZone[];
+}
+
+export interface ReturnTicket extends BasePointToPointTicket {
+    inboundFareZones: FareZone[];
+    outboundFareZones: FareZone[];
+}
+
+export interface FareZone {
+    name: string;
+    stops: Stop[];
+    prices: FareZonePrices[];
+}
+
+export interface FareZonePrices {
+    price: string;
+    fareZones: string[];
+}
+
+export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
+
+export interface BasePeriodTicket extends BaseTicket {
+    operatorName: string;
+    products: ProductDetails[];
+}
+
+export interface PeriodGeoZoneTicket extends BasePeriodTicket {
+    zoneName: string;
+    stops: Stop[];
+}
+
+export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
+    selectedServices: SelectedService[];
+}
+
+export interface FlatFareTicket extends BaseTicket {
+    operatorName: string;
+    products: {
+        productName: string;
+        productPrice: string;
+    }[];
+    selectedServices: SelectedService[];
+}
+
+export interface SelectedService {
+    lineName: string;
+    serviceCode: string;
+    startDate: string;
+    serviceDescription: string;
+}
+
+export interface ProductDetails {
+    productName: string;
+    productPrice: string;
+    productDuration?: string;
+    productValidity?: string;
+}
+export interface Stop {
+    stopName: string;
+    naptanCode: string;
+    atcoCode: string;
+    localityCode: string;
+    localityName: string;
+    parentLocalityName: string;
+    qualifierName?: string;
+    indicator?: string;
+    street?: string;
+}

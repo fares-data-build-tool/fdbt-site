@@ -3,9 +3,39 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
-import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
-import { CognitoIdToken, ErrorInfo, SalesOfferPackage } from '../../../interfaces';
+import { putStringInS3, getCsvZoneUploadData } from '../../../data/s3';
+import {
+    OPERATOR_COOKIE,
+    FARE_TYPE_COOKIE,
+    ID_TOKEN_COOKIE,
+    REFRESH_TOKEN_COOKIE,
+    MATCHING_DATA_BUCKET_NAME,
+    PASSENGER_TYPE_COOKIE,
+    MATCHING_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
+    CSV_ZONE_UPLOAD_COOKIE,
+    SERVICE_LIST_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+} from '../../../constants';
+import {
+    CognitoIdToken,
+    ErrorInfo,
+    SalesOfferPackage,
+    NextApiRequestWithSession,
+    SingleTicket,
+    ReturnTicket,
+    PeriodGeoZoneTicket,
+    PeriodMultipleServicesTicket,
+    FlatFareTicket,
+    Stop,
+    SelectedService,
+} from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
+import { MatchingData, MatchingReturnData, MatchingFareZones } from '../../../interfaces/matchingInterface';
+import { getSessionAttribute } from '../../../utils/sessions';
+import { getFareZones } from './matching';
+import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -161,4 +191,219 @@ export const getSalesOfferPackagesFromRequestBody = (reqBody: { [key: string]: s
         salesOfferPackageList.push(formattedPackageObject);
     });
     return salesOfferPackageList;
+};
+
+export const putUserDataInS3 = async (
+    data: MatchingData | MatchingReturnData | MatchingFareZones,
+    uuid: string,
+): Promise<void> => {
+    await putStringInS3(
+        MATCHING_DATA_BUCKET_NAME,
+        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
+        JSON.stringify(data),
+        'application/json; charset=utf-8',
+    );
+};
+
+export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): SingleTicket => {
+    const cookies = new Cookies(req, res);
+
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+    const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+    const { service, userFareStages, matchingFareZones } = getSessionAttribute(req, MATCHING_ATTRIBUTE);
+
+    if (!fareTypeCookie || !passengerTypeCookie || !idToken) {
+        throw new Error('Necessary session object or cookie not found to create user data json');
+    }
+    const fareTypeObject = JSON.parse(fareTypeCookie);
+    const passengerTypeObject = JSON.parse(passengerTypeCookie);
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+    const uuid = getUuidFromCookie(req, res);
+
+    const requestBody: { [key: string]: string } = req.body;
+    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
+
+    return {
+        ...service,
+        type: fareTypeObject.fareType,
+        ...passengerTypeObject,
+        fareZones: getFareZones(userFareStages, matchingFareZones),
+        email: decodedIdToken.email,
+        uuid,
+        salesOfferPackages,
+    };
+};
+
+export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): ReturnTicket => {
+    const cookies = new Cookies(req, res);
+
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+    const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+    const { service, userFareStages, matchingFareZones } = getSessionAttribute(req, MATCHING_ATTRIBUTE);
+    const { inboundUserFareStages, inboundMatchingFareZones } = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
+
+    if (!fareTypeCookie || !passengerTypeCookie || !idToken) {
+        throw new Error('Necessary session object or cookie not found to create user data json');
+    }
+    const fareTypeObject = JSON.parse(fareTypeCookie);
+    const passengerTypeObject = JSON.parse(passengerTypeCookie);
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+    const uuid = getUuidFromCookie(req, res);
+
+    const requestBody: { [key: string]: string } = req.body;
+    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
+
+    return {
+        ...service,
+        type: fareTypeObject.fareType,
+        ...passengerTypeObject,
+        outboundFareZones: getFareZones(userFareStages, matchingFareZones),
+        inboundFareZones: getFareZones(inboundUserFareStages, inboundMatchingFareZones),
+        email: decodedIdToken.email,
+        uuid,
+        salesOfferPackages,
+    };
+};
+
+export const getPeriodGeoZoneTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<PeriodGeoZoneTicket> => {
+    const cookies = new Cookies(req, res);
+
+    const nocCode = getNocFromIdToken(req, res);
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+    const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
+    const { products } = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+
+    if (!nocCode || !fareTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !fareZoneCookie) {
+        throw new Error('Necessary session object or cookie not found to create user data json');
+    }
+    const fareTypeObject = JSON.parse(fareTypeCookie);
+    const passengerTypeObject = JSON.parse(passengerTypeCookie);
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+    const uuid = getUuidFromCookie(req, res);
+    const requestBody: { [key: string]: string } = req.body;
+    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
+    const operatorObject = JSON.parse(operatorCookie);
+    const { fareZoneName } = JSON.parse(fareZoneCookie);
+    const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
+    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+
+    if (zoneStops.length === 0) {
+        throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
+    }
+
+    return {
+        nocCode,
+        type: fareTypeObject.fareType,
+        ...passengerTypeObject,
+        email: decodedIdToken.email,
+        uuid,
+        salesOfferPackages,
+        operatorName: operatorObject.operatorName,
+        products,
+        zoneName: fareZoneName,
+        stops: zoneStops,
+    };
+};
+
+export const getPeriodMultipleServicesTicketJson = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): PeriodMultipleServicesTicket => {
+    const cookies = new Cookies(req, res);
+
+    const nocCode = getNocFromIdToken(req, res);
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
+    const { products } = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
+
+    if (!nocCode || !fareTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
+        throw new Error('Necessary session object or cookie not found to create user data json');
+    }
+    const fareTypeObject = JSON.parse(fareTypeCookie);
+    const passengerTypeObject = JSON.parse(passengerTypeCookie);
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+    const uuid = getUuidFromCookie(req, res);
+
+    const requestBody: { [key: string]: string } = req.body;
+    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
+    const operatorObject = JSON.parse(operatorCookie);
+    const { selectedServices } = JSON.parse(serviceListCookie);
+    const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
+        const service = selectedService.split('#');
+        return {
+            lineName: service[0],
+            serviceCode: service[1],
+            startDate: service[2],
+            serviceDescription: service[3],
+        };
+    });
+
+    return {
+        nocCode,
+        type: fareTypeObject.fareType,
+        ...passengerTypeObject,
+        email: decodedIdToken.email,
+        uuid,
+        salesOfferPackages,
+        operatorName: operatorObject.operatorName,
+        products,
+        selectedServices: formattedServiceInfo,
+    };
+};
+
+export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): FlatFareTicket => {
+    const cookies = new Cookies(req, res);
+
+    const nocCode = getNocFromIdToken(req, res);
+    const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+    const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
+    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
+    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
+    const { products } = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+
+    if (!nocCode || !fareTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
+        throw new Error('Necessary session object or cookie not found to create user data json');
+    }
+    const fareTypeObject = JSON.parse(fareTypeCookie);
+    const passengerTypeObject = JSON.parse(passengerTypeCookie);
+    const decodedIdToken = decode(idToken) as CognitoIdToken;
+    const uuid = getUuidFromCookie(req, res);
+
+    const requestBody: { [key: string]: string } = req.body;
+    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
+    const operatorObject = JSON.parse(operatorCookie);
+    const { selectedServices } = JSON.parse(serviceListCookie);
+    const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
+        const service = selectedService.split('#');
+        return {
+            lineName: service[0],
+            serviceCode: service[1],
+            startDate: service[2],
+            serviceDescription: service[3],
+        };
+    });
+
+    return {
+        nocCode,
+        type: fareTypeObject.fareType,
+        ...passengerTypeObject,
+        email: decodedIdToken.email,
+        uuid,
+        salesOfferPackages,
+        operatorName: operatorObject.operatorName,
+        ...products,
+        selectedServices: formattedServiceInfo,
+    };
 };
