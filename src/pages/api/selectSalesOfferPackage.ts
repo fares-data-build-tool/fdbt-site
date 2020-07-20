@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, putUserDataInS3 } from './apiUtils';
+import { redirectTo, redirectToError, putUserDataInS3, getUuidFromCookie } from './apiUtils';
 import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../constants';
 import { NextApiRequestWithSession, SelectSalesOfferPackageWithError } from '../../interfaces';
@@ -24,6 +24,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
+        const uuid = getUuidFromCookie(req, res);
 
 
 

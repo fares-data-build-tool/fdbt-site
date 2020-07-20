@@ -34,6 +34,7 @@ export const setDisableAuthCookies = (server: Express): void => {
         const isDevelopment = process.env.NODE_ENV === 'development';
 
         if ((isDevelopment || process.env.ALLOW_DISABLE_AUTH === '1') && req.query.disableAuth === 'true') {
+<<<<<<< Updated upstream
             const cookies = new Cookies(req, res);
             const disableAuthCookie = cookies.get(DISABLE_AUTH_COOKIE);
 
@@ -48,6 +49,17 @@ export const setDisableAuthCookies = (server: Express): void => {
                 cookies.set(DISABLE_AUTH_COOKIE, 'true', cookieOptions);
                 cookies.set(
                     ID_TOKEN_COOKIE,
+=======
+            const { disableAuth } = getSessionAttributes(req as IncomingMessageWithSession, [DISABLE_AUTH_ATTRIBUTE]);
+
+            if (!disableAuth || disableAuth === 'false') {
+                updateSessionAttribute(req as IncomingMessageWithSession, DISABLE_AUTH_ATTRIBUTE, {
+                    disableAuth: 'true',
+                });
+                updateSessionAttribute(
+                    req as IncomingMessageWithSession,
+                    ID_TOKEN_ATTRIBUTE,
+>>>>>>> Stashed changes
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQkxBQyIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSJ9.iQTTEOSf0HZNQsNep3P4npgDp1gyJi8uJHpcGKH7PIM',
                     cookieOptions,
                 );
