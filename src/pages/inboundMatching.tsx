@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, MATCHING_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, INBOUND_MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
 import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
 import { getNocFromIdToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { isMatchingWithErrors } from './matching';
+import { InboundMatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Fares Data Build Tool';
@@ -48,6 +48,9 @@ const InboundMatching = ({
         csrfToken={csrfToken}
     />
 );
+const isMatchingWithErrors = (
+    matchingAttribute: InboundMatchingInfo | MatchingWithErrors,
+): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.error;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
@@ -81,7 +84,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         .map(atco => naptanInfo.find(s => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
-    const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
+    const matchingAttribute = getSessionAttribute(ctx.req, INBOUND_MATCHING_ATTRIBUTE);
 
     return {
         props: {
