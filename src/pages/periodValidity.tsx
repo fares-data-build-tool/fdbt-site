@@ -1,7 +1,13 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import {
+    ErrorInfo,
+    CustomAppProps,
+    NextPageContextWithSession,
+    ProductData,
+    PeriodExpiryWithErrors,
+} from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -15,6 +21,11 @@ const errorId = 'period-validity-error';
 type PeriodValidityProps = {
     errors: ErrorInfo[];
 };
+
+const isPeriodExpiryWithErrors = (
+    periodExpiryAttribute: ProductData | PeriodExpiryWithErrors,
+): periodExpiryAttribute is PeriodExpiryWithErrors =>
+    (periodExpiryAttribute as PeriodExpiryWithErrors)?.errorMessage !== null;
 
 const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & CustomAppProps): ReactElement => {
     return (
@@ -93,7 +104,7 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & Custom
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (periodExpiryAttribute.errorMessage) {
+    if (isPeriodExpiryWithErrors(periodExpiryAttribute)) {
         const { errorMessage } = periodExpiryAttribute;
         return { props: { errors: [{ errorMessage, id: errorId }] } };
     }

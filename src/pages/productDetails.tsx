@@ -9,7 +9,7 @@ import {
     SERVICE_LIST_COOKIE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
-import { ProductInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ProductInfo, CustomAppProps, NextPageContextWithSession, ProductData } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 
@@ -17,11 +17,15 @@ const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
 
 type ProductDetailsProps = {
-    product: ProductInfo;
+    product?: ProductInfo;
     operator: string;
     passengerType: string;
     hintText?: string;
 };
+
+export const isProductInfo = (
+    productDetailsAttribute: ProductInfo | ProductData,
+): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productNameError !== null;
 
 const ProductDetails = ({
     product,
@@ -150,9 +154,18 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
 
     const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
+    if (isProductInfo(productDetailsAttribute)) {
+        return {
+            props: {
+                product: productDetailsAttribute,
+                operator: operator.operatorPublicName,
+                passengerType,
+                ...props,
+            },
+        };
+    }
     return {
         props: {
-            product: !productDetailsAttribute ? {} : productDetailsAttribute,
             operator: operator.operatorPublicName,
             passengerType,
             ...props,

@@ -8,6 +8,7 @@ import MatchingBase from '../components/MatchingBase';
 import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
 import { getNocFromIdToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
+import { isMatchingWithErrors } from './matching';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Fares Data Build Tool';
@@ -92,8 +93,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: !matchingAttribute.inbound ? false : matchingAttribute.inbound.error,
-            selectedFareStages: !matchingAttribute.inbound ? [] : matchingAttribute.inbound.selectedFareStages,
+            error: isMatchingWithErrors(matchingAttribute),
+            selectedFareStages: isMatchingWithErrors(matchingAttribute) ? matchingAttribute.selectedFareStages : [],
         },
     };
 };

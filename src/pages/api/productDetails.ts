@@ -33,7 +33,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
 
-        const productDetails = checkIfInputInvalid(productDetailsNameInput, productDetailsPriceInput);
+        const productDetails: ProductInfo = checkIfInputInvalid(productDetailsNameInput, productDetailsPriceInput);
 
         if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
             updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, productDetails);

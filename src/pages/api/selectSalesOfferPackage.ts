@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, putUserDataInS3 } from './apiUtils';
 import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../constants';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, SelectSalesOfferPackageWithError } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -16,13 +16,21 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (!req.body || Object.keys(req.body).length === 0) {
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
-                body: { errorMessage: 'Choose at least one service from the options' },
-            });
+            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
+                errorMessage: 'Choose at least one service from the options',
+            };
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
             redirectTo(res, `/selectSalesOfferPackage`);
             return;
         }
 
+
+
+
+
+
+
+        
         await putUserDataInS3(matchingJson, uuid);
 
         redirectTo(res, '/thankyou');

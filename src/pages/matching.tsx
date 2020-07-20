@@ -8,6 +8,7 @@ import MatchingBase from '../components/MatchingBase';
 import { getNocFromIdToken } from '../utils';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import { getSessionAttribute } from '../utils/sessions';
+import { MatchingWithErrors, MatchingInfo } from '../interfaces/matchingInterface';
 
 const title = 'Matching - Fares Data Build Tool';
 const description = 'Matching page of the Fares Data Build Tool';
@@ -47,6 +48,10 @@ const Matching = ({
         csrfToken={csrfToken}
     />
 );
+
+export const isMatchingWithErrors = (
+    matchingAttribute: MatchingInfo | MatchingWithErrors,
+): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.error;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
@@ -92,8 +97,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 operatorShortName: service.operatorShortName,
                 serviceDescription: service.serviceDescription,
             },
-            error: !matchingAttribute ? false : matchingAttribute.error,
-            selectedFareStages: !matchingAttribute ? [] : matchingAttribute.selectedFareStages,
+            error: isMatchingWithErrors(matchingAttribute),
+            selectedFareStages: isMatchingWithErrors(matchingAttribute) ? matchingAttribute.selectedFareStages : [],
         },
     };
 };

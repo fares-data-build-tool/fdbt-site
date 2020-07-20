@@ -6,7 +6,7 @@ import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../../constants';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { MatchingWithErrors, InboundMatching } from '../../interfaces/matchingInterface';
+import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -37,7 +37,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/inboundMatching');
             return;
         }
-        const matchingAttributeValue: InboundMatching = { inboundUserFareStages, inboundMatchingFareZones };
+        const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones };
         updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeValue);
         redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {

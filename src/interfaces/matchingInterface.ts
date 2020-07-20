@@ -1,6 +1,5 @@
-import { Product } from '../pages/api/productDetails';
 import { Stop } from '../data/auroradb';
-import { PassengerDetails, ServicesInfo, BasicService } from '.';
+import { PassengerDetails, ServicesInfo, BasicService, Product } from '.';
 import { UserFareStages } from '../data/s3';
 
 export interface Price {
@@ -8,13 +7,13 @@ export interface Price {
     fareZones: string[];
 }
 
-export interface Matching {
+export interface MatchingInfo {
     service: BasicService;
     userFareStages: UserFareStages;
     matchingFareZones: MatchingFareZones;
 }
 
-export interface InboundMatching {
+export interface InboundMatchingInfo {
     inboundUserFareStages: UserFareStages;
     inboundMatchingFareZones: MatchingFareZones;
 }

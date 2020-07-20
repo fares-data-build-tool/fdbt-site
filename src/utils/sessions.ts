@@ -1,4 +1,10 @@
-import { IncomingMessageWithSession, ProductInfo, ProductData, PeriodExpiryWithErrors } from '../interfaces';
+import {
+    IncomingMessageWithSession,
+    ProductInfo,
+    ProductData,
+    PeriodExpiryWithErrors,
+    SelectSalesOfferPackageWithError,
+} from '../interfaces';
 
 // Below is an example of how we could implement sessions. We are able to apply types to the actual functions, which in turn use type lookups to return a 'return type' to the function.
 // This way we are allowing Typescript to infer the return type on the session functions from the objects we pass them.
@@ -10,9 +16,10 @@ import { IncomingMessageWithSession, ProductInfo, ProductData, PeriodExpiryWithE
 
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { SalesOfferPackageInfo } from '../pages/describeSalesOfferPackage';
-import { Matching, MatchingWithErrors, InboundMatching } from '../interfaces/matchingInterface';
+import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
+    SOP_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
@@ -20,11 +27,12 @@ import {
 } from '../constants';
 
 type MatchingData = {
-    [SALES_OFFER_PACKAGES_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackage | SalesOfferPackageWithErrors;
-    [MATCHING_ATTRIBUTE]: MatchingWithErrors | Matching;
-    [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatching;
+    [SOP_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackage | SalesOfferPackageWithErrors;
+    [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
+    [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiryWithErrors | ProductData;
     [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
+    [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
 };
 
 type GetSalesOfferPackageSessionAttribute = <Key extends keyof MatchingData>(

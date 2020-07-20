@@ -32,6 +32,10 @@ export interface PassengerDetails {
     proof?: string[];
 }
 
+export interface SelectSalesOfferPackageWithError {
+    errorMessage: string;
+}
+
 export interface ErrorInfo {
     errorMessage: string;
     id: string;
