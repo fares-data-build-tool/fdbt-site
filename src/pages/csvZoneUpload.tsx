@@ -60,7 +60,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: UserDataUploa
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
             csvTemplateSize: '600B',
             errors: !csvZoneUpload?.error ? [] : [{ errorMessage: csvZoneUpload.error, id: errorId }],
-            detailSummary: "My csv won't upload",
+            detailSummary: "My CSV won't upload",
         },
     };
 
