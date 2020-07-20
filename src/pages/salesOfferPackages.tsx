@@ -67,9 +67,9 @@ const SalesOfferPackages = ({
             <CsrfForm action="/api/salesOfferPackages" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <h1 className="govuk-heading-xl">How are the tickets sold - Sales offer package</h1>
+                    <h1 className="govuk-heading-xl">How are the tickets sold - sales offer package</h1>
                     <span id="service-list-hint" className="govuk-hint">
-                        Please select all that apply from the lists below:
+                        Select all that apply from the lists below
                     </span>
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-two-thirds">
@@ -200,8 +200,6 @@ const SalesOfferPackages = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SalesOfferPackagesProps } => {
     const rawSalesOfferPackage = getSessionAttribute(ctx.req, SOP_INFO_ATTRIBUTE);
 
-    console.log({ rawSalesOfferPackage });
-
     const defaultSOP: SalesOfferPackageInfo = {
         purchaseLocations: [],
         paymentMethods: [],
@@ -209,7 +207,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     };
 
     return {
-        props: { salesOfferPackage: rawSalesOfferPackage || defaultSOP },
+        props: {
+            salesOfferPackage:
+                rawSalesOfferPackage && isSalesOfferPackageInfoWithErrors(rawSalesOfferPackage)
+                    ? rawSalesOfferPackage
+                    : defaultSOP,
+        },
     };
 };
 

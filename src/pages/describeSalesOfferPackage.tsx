@@ -112,7 +112,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const salesOfferPackage = getSessionAttribute(ctx.req, SOP_ATTRIBUTE);
     return {
         props: {
-            sopInfo: isSalesOfferPackageWithErrors(salesOfferPackage) ? salesOfferPackage : salesOfferPackageInfo,
+            sopInfo:
+                salesOfferPackage && isSalesOfferPackageWithErrors(salesOfferPackage)
+                    ? salesOfferPackage
+                    : salesOfferPackageInfo,
         },
     };
 };

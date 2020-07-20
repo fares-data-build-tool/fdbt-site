@@ -7,7 +7,7 @@ import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 import { SalesOfferPackageInfo, isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isSalesOfferPackageInfoWithErrors } from '../salesOfferPackages';
-// import { insertSalesOfferPackage } from '../../data/auroradb';
+import { insertSalesOfferPackage } from '../../data/auroradb';
 
 export interface SalesOfferPackage extends SalesOfferPackageInfo {
     name: string;
@@ -19,8 +19,7 @@ export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
 }
 
 const noInputError = (input: string): string => `Enter a ${input} for your sales offer package`;
-const inputTooLongError = (input: string, max: number): string =>
-    `Your sales offer package ${input} must be ${max} characters or fewer`;
+const inputTooLongError = (input: string, max: number): string => `Enter a ${input} that is ${max} characters or fewer`;
 
 export const sopInfoSchema = yup.object({
     name: yup
@@ -88,12 +87,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/describeSalesOfferPackage');
             return;
         }
-        // await insertSalesOfferPackage(nocCode, salesOfferPackageInfo);
 
-        // Do we need the below setting of a SOP_ATTRIBUTE? Do we instead want to clear SOP_ATTRIBUTE and SOP_INFO_ATTRIBUTE?
-        updateSessionAttribute(req, SOP_ATTRIBUTE, salesOfferPackageInfo);
+        await insertSalesOfferPackage(nocCode, salesOfferPackageInfo);
 
-        redirectTo(res, '/describeSalesOfferPackage');
+        updateSessionAttribute(req, SOP_INFO_ATTRIBUTE, undefined);
+        updateSessionAttribute(req, SOP_ATTRIBUTE, undefined);
+        redirectTo(res, '/selectSalesOfferPackages');
     } catch (error) {
         const message = 'There was a problem on the describe sales offer package API.';
         redirectToError(res, message, error);

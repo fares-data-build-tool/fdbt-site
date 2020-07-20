@@ -8,12 +8,16 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import { SalesOfferPackageInfo } from '../../../src/pages/describeSalesOfferPackage';
 import { ErrorInfo } from '../../../src/interfaces';
 import * as sessionUtils from '../../../src/utils/sessions';
+import * as aurora from '../../../src/data/auroradb';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../../src/constants';
-// import { SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
+import { SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
 
 describe('describeSalesOfferPackage', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
+    const insertSalesOfferPackageSpy = jest
+        .spyOn(aurora, 'insertSalesOfferPackage')
+        .mockImplementation(() => Promise.resolve());
 
     const mockError: ErrorInfo = expect.objectContaining({ errorMessage: expect.any(String), id: expect.any(String) });
 
@@ -22,12 +26,12 @@ describe('describeSalesOfferPackage', () => {
         paymentMethods: ['Card', 'Cash'],
         ticketFormats: ['Paper', 'Mobile'],
     };
-    // const mockSopInfoAttributeWithErrors: SalesOfferPackageInfoWithErrors = {
-    //     purchaseLocations: [],
-    //     paymentMethods: ['Card', 'Cash'],
-    //     ticketFormats: [],
-    //     errors: [mockError, mockError],
-    // };
+    const mockSopInfoAttributeWithErrors: SalesOfferPackageInfoWithErrors = {
+        purchaseLocations: [],
+        paymentMethods: ['Card', 'Cash'],
+        ticketFormats: [],
+        errors: [mockError, mockError],
+    };
     const mockSopAttribute: SalesOfferPackage = {
         name: 'Sales Offer Package',
         description: 'This is a sales offer package',
@@ -93,35 +97,36 @@ describe('describeSalesOfferPackage', () => {
         });
     });
 
-    // it('should throw an error if SOP_INFO_ATTRIBUTE is missing', async () => {
-    //     const { req, res } = getMockRequestAndResponse({
-    //         body: {
-    //             salesOfferPackageName: 'Sales Offer Package',
-    //             salesOfferPackageDescription: 'This is a sales offer package',
-    //         },
-    //         mockWriteHeadFn: writeHeadMock,
-    //     });
-    //     await expect(() => describeSalesOfferPackage(req, res)).toThrow();
-    //     expect(writeHeadMock).toBeCalledWith(302, {
-    //         Location: '/error',
-    //     });
-    // });
+    it('should throw an error if SOP_INFO_ATTRIBUTE is missing', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                salesOfferPackageName: 'Sales Offer Package',
+                salesOfferPackageDescription: 'This is a sales offer package',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await describeSalesOfferPackage(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
+        });
+    });
 
-    // it('should throw an error if SOP_INFO_ATTRIBUTE contains errors', async () => {
-    //     const { req, res } = getMockRequestAndResponse({
-    //         session: {
-    //             [SOP_INFO_ATTRIBUTE]: mockSopInfoAttributeWithErrors,
-    //         },
-    //         body: {
-    //             salesOfferPackageName: 'Sales Offer Package',
-    //             salesOfferPackageDescription: 'This is a sales offer package',
-    //         },
-    //     });
-    //     await expect(() => describeSalesOfferPackage(req, res)).toThrow();
-    //     expect(writeHeadMock).toBeCalledWith(302, {
-    //         Location: '/error',
-    //     });
-    // });
+    it.only('should throw an error if SOP_INFO_ATTRIBUTE contains errors', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            session: {
+                [SOP_INFO_ATTRIBUTE]: mockSopInfoAttributeWithErrors,
+            },
+            body: {
+                salesOfferPackageName: 'Sales Offer Package',
+                salesOfferPackageDescription: 'This is a sales offer package',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await describeSalesOfferPackage(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
+        });
+    });
 
     it('should update the SOP_ATTRIBUTE and redirect to itself (i.e. /describeSalesOfferPackage) when validation results in errors', async () => {
         const { req, res } = getMockRequestAndResponse({
@@ -137,7 +142,8 @@ describe('describeSalesOfferPackage', () => {
             Location: '/describeSalesOfferPackage',
         });
     });
-    it('should update the SOP_ATTRIBUTE and redirect to /describeSalesOfferPackage when there are no errors', async () => {
+
+    it('should reset the SOP_ATTRIBUTE and SOP_INFO_ATTRIBUTE, insert into aurora and redirect to /selectSalesOfferPackages when there are no errors', async () => {
         const { req, res } = getMockRequestAndResponse({
             session: {
                 [SOP_INFO_ATTRIBUTE]: mockSopInfoAttribute,
@@ -149,9 +155,11 @@ describe('describeSalesOfferPackage', () => {
             mockWriteHeadFn: writeHeadMock,
         });
         await describeSalesOfferPackage(req, res);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, mockSopAttribute);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, undefined);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, undefined);
+        expect(insertSalesOfferPackageSpy).toHaveBeenCalledWith('TEST', mockSopAttribute);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/describeSalesOfferPackage',
+            Location: '/selectSalesOfferPackages',
         });
     });
 });

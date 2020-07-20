@@ -300,7 +300,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 };
 
 export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
-    console.info('inserting sales offer package into salesOfferPackage table');
+    console.info('inserting sales offer package into salesOfferPackage table for given noc', { noc: nocCode });
 
     const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
     const paymentMethods = salesOfferPackage.paymentMethods.toString();
@@ -308,7 +308,7 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
 
     const insertQuery = `INSERT INTO salesOfferPackage 
     (nocCode, name, description, purchaseLocation, paymentMethod, ticketFormat) 
-    VALUES ?`;
+    VALUES (?, ?, ?, ?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [
             nocCode,

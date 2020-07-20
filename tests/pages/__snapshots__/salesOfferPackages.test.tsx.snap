@@ -23,13 +23,13 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
     <h1
       className="govuk-heading-xl"
     >
-      How are the tickets sold - Sales offer package
+      How are the tickets sold - sales offer package
     </h1>
     <span
       className="govuk-hint"
       id="service-list-hint"
     >
-      Please select all that apply from the lists below:
+      Select all that apply from the lists below
     </span>
     <div
       className="govuk-grid-row"
@@ -581,13 +581,13 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
     <h1
       className="govuk-heading-xl"
     >
-      How are the tickets sold - Sales offer package
+      How are the tickets sold - sales offer package
     </h1>
     <span
       className="govuk-hint"
       id="service-list-hint"
     >
-      Please select all that apply from the lists below:
+      Select all that apply from the lists below
     </span>
     <div
       className="govuk-grid-row"
