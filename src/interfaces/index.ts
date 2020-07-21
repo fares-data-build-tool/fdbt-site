@@ -129,7 +129,7 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    salesOfferPackages: SalesOfferPackage[];
+    products: BaseProduct[];
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
@@ -178,10 +178,7 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
 
 export interface FlatFareTicket extends BaseTicket {
     operatorName: string;
-    products: {
-        productName: string;
-        productPrice: string;
-    }[];
+    products: FlatFareProductDetails[];
     selectedServices: SelectedService[];
 }
 
@@ -192,11 +189,20 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
-export interface ProductDetails {
+export interface BaseProduct {
+    salesOfferPackages: SalesOfferPackage[];
+}
+
+interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
-    productDuration?: string;
-    productValidity?: string;
+}
+
+export interface ProductDetails extends BaseProduct {
+    productName: string;
+    productPrice: string;
+    productDuration: string;
+    productValidity: string;
 }
 export interface Stop {
     stopName: string;
