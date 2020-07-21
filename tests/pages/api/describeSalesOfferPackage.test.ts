@@ -111,7 +111,7 @@ describe('describeSalesOfferPackage', () => {
         });
     });
 
-    it.only('should throw an error if SOP_INFO_ATTRIBUTE contains errors', async () => {
+    it('should throw an error if SOP_INFO_ATTRIBUTE contains errors', async () => {
         const { req, res } = getMockRequestAndResponse({
             session: {
                 [SOP_INFO_ATTRIBUTE]: mockSopInfoAttributeWithErrors,
