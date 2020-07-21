@@ -94,9 +94,14 @@ const SelectSalesOfferPackage = ({
                         </FormElementWrapper>
                     </fieldset>
                 </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                <input
+                    type="submit"
+                    value="Continue"
+                    id="continue-button"
+                    className="govuk-button govuk-!-margin-right-8"
+                />
                 <a
-                    href="/salesOfferPackage"
+                    href="/salesOfferPackages"
                     role="button"
                     draggable="false"
                     className="govuk-button govuk-button--secondary"

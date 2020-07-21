@@ -102,7 +102,7 @@ describe('productDetails', () => {
         );
     });
 
-    it('should redirect to /productDetails when the user input is invalid', async () => {
+    it('should redirect to /productDetails when the user input is invalid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'flatFare' },
             body: { productDetailsNameInput: '  ', productDetailsPriceInput: '1.4.2.4' },
@@ -110,14 +110,14 @@ describe('productDetails', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await productDetails(req, res);
+        productDetails(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/productDetails',
         });
     });
 
-    it('should redirect to /chooseValidity when the user input is valid and the user is entering details for a period ticket', async () => {
+    it('should redirect to /chooseValidity when the user input is valid and the user is entering details for a period ticket', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'period' },
             body: { productDetailsNameInput: 'Weekly Ride', productDetailsPriceInput: '7' },
@@ -125,14 +125,14 @@ describe('productDetails', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await productDetails(req, res);
+        productDetails(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/chooseValidity',
         });
     });
 
-    it('should redirect to /thankyou when the user input is valid and the user is entering details for a flat fare ticket', async () => {
+    it('should redirect to /thankyou when the user input is valid and the user is entering details for a flat fare ticket', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'flatFare' },
             body: { productDetailsNameInput: 'Day Rider', productDetailsPriceInput: '5' },
@@ -140,14 +140,14 @@ describe('productDetails', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await productDetails(req, res);
+        productDetails(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/thankyou',
         });
     });
 
-    it('correctly generates JSON for a flat fare product and uploads to S3', async () => {
+    it('correctly generates JSON for a flat fare product and uploads to S3', () => {
         const mockDate = Date.now();
 
         jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
@@ -158,7 +158,7 @@ describe('productDetails', () => {
             uuid: '',
             mockWriteHeadFn: writeHeadMock,
         });
-        await productDetails(req, res);
+        productDetails(req, res);
 
         const actualFlatFareProduct = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(

@@ -40,7 +40,7 @@ describe('Matching API', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates matching JSON for a single ticket and uploads to S3', async () => {
+    it('correctly generates matching JSON for a single ticket and uploads to S3', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -51,7 +51,7 @@ describe('Matching API', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        await matching(req, res);
+        matching(req, res);
 
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
 
@@ -64,7 +64,7 @@ describe('Matching API', () => {
         expect(expectedMatchingJsonSingle).toEqual(actualMatchingData);
     });
 
-    it('correctly generates matching JSON for a return circular ticket and uploads to S3', async () => {
+    it('correctly generates matching JSON for a return circular ticket and uploads to S3', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'return' },
             body: {
@@ -75,7 +75,7 @@ describe('Matching API', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        await matching(req, res);
+        matching(req, res);
 
         const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
 
@@ -88,7 +88,7 @@ describe('Matching API', () => {
         expect(expectedMatchingJsonReturnCircular).toEqual(actualMatchingData);
     });
 
-    it('correctly redirects to matching page when there are fare stages that have not been assigned to stops', async () => {
+    it('correctly redirects to matching page when there are fare stages that have not been assigned to stops', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -99,14 +99,14 @@ describe('Matching API', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
-        await matching(req, res);
+        matching(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/matching',
         });
     });
 
-    it('redirects to matching page if no stops are allocated to fare stages', async () => {
+    it('redirects to matching page if no stops are allocated to fare stages', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -119,14 +119,14 @@ describe('Matching API', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await matching(req, res);
+        matching(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/matching',
         });
     });
 
-    it('redirects to thankyou page if all valid', async () => {
+    it('redirects to thankyou page if all valid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -138,11 +138,11 @@ describe('Matching API', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await matching(req, res);
+        matching(req, res);
         expect(writeHeadMock).toBeCalled();
     });
 
-    it('redirects back to matching page if no user data in body', async () => {
+    it('redirects back to matching page if no user data in body', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { ...selections, service: JSON.stringify(service), userfarestages: '' },
@@ -150,13 +150,13 @@ describe('Matching API', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await matching(req, res);
+        matching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
     });
 
-    it('redirects back to matching page if no service info in body', async () => {
+    it('redirects back to matching page if no service info in body', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -168,13 +168,13 @@ describe('Matching API', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await matching(req, res);
+        matching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
     });
 
-    it('should redirect to the error page if the cookie UUIDs to do not match', async () => {
+    it('should redirect to the error page if the cookie UUIDs to do not match', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -182,7 +182,7 @@ describe('Matching API', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await matching(req, res);
+        matching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });

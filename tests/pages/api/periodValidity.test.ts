@@ -32,14 +32,14 @@ describe('periodValidity', () => {
             .mockImplementation(() => Promise.resolve(naptanStopInfo));
     });
 
-    it('correctly generates JSON for period data and uploads to S3 when a user uploads a csv', async () => {
+    it('correctly generates JSON for period data and uploads to S3 when a user uploads a csv', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { selectedServices: null },
             body: { periodValid: '24hr' },
             uuid: '',
             mockWriteHeadFn: writeHeadMock,
         });
-        await periodValidity(req, res);
+        periodValidity(req, res);
 
         const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
@@ -51,14 +51,14 @@ describe('periodValidity', () => {
         expect(actualProductData).toEqual(expectedSingleProductUploadJsonWithZoneUpload);
     });
 
-    it('correctly generates JSON for period data and uploads to S3 when a user selects a list of services', async () => {
+    it('correctly generates JSON for period data and uploads to S3 when a user selects a list of services', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
             body: { periodValid: '24hr' },
             uuid: '',
             mockWriteHeadFn: writeHeadMock,
         });
-        await periodValidity(req, res);
+        periodValidity(req, res);
 
         const actualProductData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
         expect(putStringInS3Spy).toBeCalledWith(
@@ -70,7 +70,7 @@ describe('periodValidity', () => {
         expect(actualProductData).toEqual(expectedSingleProductUploadJsonWithSelectedServices);
     });
 
-    it('redirects back to period validity page if there is no body', async () => {
+    it('redirects back to period validity page if there is no body', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {},
@@ -78,28 +78,28 @@ describe('periodValidity', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        await periodValidity(req, res);
+        periodValidity(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });
     });
 
-    it('redirects to thankyou page if all valid', async () => {
+    it('redirects to thankyou page if all valid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
             body: { periodValid: '24hr' },
             uuid: '',
             mockWriteHeadFn: writeHeadMock,
         });
-        await periodValidity(req, res);
+        periodValidity(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/thankyou',
         });
     });
 
-    it('throws an error if no stops are returned from query', async () => {
+    it('throws an error if no stops are returned from query', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: '',
             body: { periodValid: '24hr' },
@@ -108,7 +108,7 @@ describe('periodValidity', () => {
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
 
-        await periodValidity(req, res);
+        periodValidity(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',

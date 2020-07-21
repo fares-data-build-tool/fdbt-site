@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages serviceList should render an error when the error flag is set to true 1`] = `
+<Component
+  description="Service List selection page of the Fares Data Build Tool"
+  title="Service List - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/serviceList"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "Choose at least one service from the list",
+            "id": "id",
+          },
+        ]
+      }
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="service-list-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="service-list-page-heading"
+          >
+            Which service(s) is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-error-message"
+          id="radio-error"
+        >
+          <span
+            className=""
+          >
+            Choose at least one service from the list
+          </span>
+        </span>
+      </fieldset>
+      <fieldset
+        aria-describedby="service-list-hint"
+        className="govuk-fieldset"
+      >
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select all services that apply
+        </span>
+        <input
+          className="govuk-button govuk-button--secondary"
+          id="select-all-button"
+          name="selectAll"
+          type="submit"
+          value="Select All"
+        />
+        <span
+          className="govuk-hint"
+          id="traveline-hint"
+        >
+          This data is taken from the Traveline National Dataset.
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="service-list-error"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Choose at least one service from the list",
+                "id": "id",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-checkboxes"
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
+
+exports[`pages serviceList should render correctly 1`] = `
+<Component
+  description="Service List selection page of the Fares Data Build Tool"
+  title="Service List - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/serviceList"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="service-list-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="service-list-page-heading"
+          >
+            Which service(s) is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-error-message"
+          id="radio-error"
+        >
+          <span
+            className="govuk-visually-hidden"
+          />
+        </span>
+      </fieldset>
+      <fieldset
+        aria-describedby="service-list-hint"
+        className="govuk-fieldset"
+      >
+        <span
+          className="govuk-hint"
+          id="service-list-hint"
+        >
+          Select all services that apply
+        </span>
+        <input
+          className="govuk-button govuk-button--secondary"
+          id="select-all-button"
+          name="selectAll"
+          type="submit"
+          value="Select All"
+        />
+        <span
+          className="govuk-hint"
+          id="traveline-hint"
+        >
+          This data is taken from the Traveline National Dataset.
+        </span>
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="service-list-error"
+          errors={Array []}
+        >
+          <div
+            className="govuk-checkboxes"
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;
