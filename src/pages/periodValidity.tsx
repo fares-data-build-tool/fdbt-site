@@ -25,7 +25,7 @@ type PeriodValidityProps = {
 const isPeriodExpiryWithErrors = (
     periodExpiryAttribute: ProductData | PeriodExpiryWithErrors,
 ): periodExpiryAttribute is PeriodExpiryWithErrors =>
-    (periodExpiryAttribute as PeriodExpiryWithErrors)?.errorMessage !== null;
+    (periodExpiryAttribute as PeriodExpiryWithErrors)?.errorMessage !== undefined;
 
 const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & CustomAppProps): ReactElement => {
     return (

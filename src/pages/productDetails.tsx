@@ -25,7 +25,7 @@ type ProductDetailsProps = {
 
 export const isProductInfo = (
     productDetailsAttribute: ProductInfo | ProductData,
-): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productNameError !== null;
+): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productNameError !== undefined;
 
 const ProductDetails = ({
     product,
