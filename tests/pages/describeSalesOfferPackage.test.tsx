@@ -36,6 +36,11 @@ describe('describeSalesOfferPackage', () => {
         expect(tree).toMatchSnapshot();
     });
 
+    it('should be able to handle being passed undefined props', () => {
+        const tree = shallow(<DescribeSalesOfferPackage sopInfo={undefined} csrfToken="" pageProps={[]} />);
+        expect(tree).toMatchSnapshot();
+    });
+
     describe('getServerSideProps', () => {
         it('should return props with no errors when only SOP_INFO_ATTRIBUTE is present', () => {
             const ctx = getMockContext({

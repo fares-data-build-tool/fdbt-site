@@ -13,7 +13,6 @@ import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../../src/constants';
 import { SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
 
 describe('describeSalesOfferPackage', () => {
-    const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
     const insertSalesOfferPackageSpy = jest
         .spyOn(aurora, 'insertSalesOfferPackage')
@@ -103,10 +102,9 @@ describe('describeSalesOfferPackage', () => {
                 salesOfferPackageName: 'Sales Offer Package',
                 salesOfferPackageDescription: 'This is a sales offer package',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         await describeSalesOfferPackage(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/error',
         });
     });
@@ -120,10 +118,9 @@ describe('describeSalesOfferPackage', () => {
                 salesOfferPackageName: 'Sales Offer Package',
                 salesOfferPackageDescription: 'This is a sales offer package',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         await describeSalesOfferPackage(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/error',
         });
     });
@@ -134,11 +131,10 @@ describe('describeSalesOfferPackage', () => {
                 [SOP_INFO_ATTRIBUTE]: mockSopInfoAttribute,
             },
             body: { salesOfferPackageName: '', salesOfferPackageDescription: '' },
-            mockWriteHeadFn: writeHeadMock,
         });
         await describeSalesOfferPackage(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, mockSopAttributeWithErrors);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/describeSalesOfferPackage',
         });
     });
@@ -152,13 +148,12 @@ describe('describeSalesOfferPackage', () => {
                 salesOfferPackageName: 'Sales Offer Package',
                 salesOfferPackageDescription: 'This is a sales offer package',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         await describeSalesOfferPackage(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, undefined);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, undefined);
         expect(insertSalesOfferPackageSpy).toHaveBeenCalledWith('TEST', mockSopAttribute);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/selectSalesOfferPackages',
         });
     });

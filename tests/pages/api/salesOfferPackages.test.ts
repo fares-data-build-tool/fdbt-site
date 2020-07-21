@@ -9,7 +9,6 @@ jest.mock('../../../src/utils/sessions.ts');
 
 describe('salesOfferPackages', () => {
     const mockErrorObject: ErrorInfo = { errorMessage: expect.any(String), id: expect.any(String) };
-    const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 
     afterEach(() => {
@@ -19,12 +18,11 @@ describe('salesOfferPackages', () => {
     it('redirects back to /salesOfferPackages if there are no options selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
-            mockWriteHeadFn: writeHeadMock,
         });
 
         salesOfferPackages(req, res);
 
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
@@ -34,7 +32,6 @@ describe('salesOfferPackages', () => {
             body: {
                 purchaseLocations: 'OnBoard',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
             purchaseLocations: ['OnBoard'],
@@ -46,7 +43,7 @@ describe('salesOfferPackages', () => {
         salesOfferPackages(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
@@ -56,7 +53,6 @@ describe('salesOfferPackages', () => {
             body: {
                 paymentMethods: 'Cash',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
             purchaseLocations: [],
@@ -68,7 +64,7 @@ describe('salesOfferPackages', () => {
         salesOfferPackages(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
@@ -78,7 +74,6 @@ describe('salesOfferPackages', () => {
             body: {
                 ticketFormats: 'Paper Ticket',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
             purchaseLocations: [],
@@ -90,7 +85,7 @@ describe('salesOfferPackages', () => {
         salesOfferPackages(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
@@ -101,7 +96,6 @@ describe('salesOfferPackages', () => {
                 purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
             purchaseLocations: ['OnBoard', 'Online Account'],
@@ -113,7 +107,7 @@ describe('salesOfferPackages', () => {
         salesOfferPackages(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
@@ -125,7 +119,6 @@ describe('salesOfferPackages', () => {
                 paymentMethods: ['Cash'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             },
-            mockWriteHeadFn: writeHeadMock,
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfo = {
             purchaseLocations: ['OnBoard', 'Online Account'],
@@ -136,7 +129,7 @@ describe('salesOfferPackages', () => {
         salesOfferPackages(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/describeSalesOfferPackage',
         });
     });

@@ -65,7 +65,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, SOP_INFO_ATTRIBUTE, salesOfferPackageInfo);
-        console.log(req.session[SOP_INFO_ATTRIBUTE]);
 
         redirectTo(res, '/describeSalesOfferPackage');
     } catch (err) {

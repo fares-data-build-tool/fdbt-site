@@ -18,8 +18,8 @@ export interface SalesOfferPackageInfo {
     ticketFormats: string[];
 }
 
-interface DescribeSOPProps {
-    sopInfo: SalesOfferPackageInfo | SalesOfferPackageWithErrors;
+interface DescribeSopProps {
+    sopInfo: SalesOfferPackageInfo | SalesOfferPackageWithErrors | undefined;
 }
 
 export const isSalesOfferPackageWithErrors = (
@@ -27,14 +27,16 @@ export const isSalesOfferPackageWithErrors = (
 ): salesOfferPackage is SalesOfferPackageWithErrors =>
     (salesOfferPackage as SalesOfferPackageWithErrors)?.errors?.length > 0;
 
-const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSOPProps & CustomAppProps): ReactElement => {
-    const sopNameError = isSalesOfferPackageWithErrors(sopInfo)
-        ? sopInfo.errors.find(error => error.id === 'sop-name')
-        : undefined;
-    const sopDescriptionError = isSalesOfferPackageWithErrors(sopInfo)
-        ? sopInfo.errors.find(error => error.id === 'sop-description')
-        : undefined;
-    const errors = isSalesOfferPackageWithErrors(sopInfo) ? sopInfo.errors : [];
+const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps & CustomAppProps): ReactElement => {
+    const sopNameError =
+        sopInfo && isSalesOfferPackageWithErrors(sopInfo)
+            ? sopInfo.errors.find(error => error.id === 'sop-name')
+            : undefined;
+    const sopDescriptionError =
+        sopInfo && isSalesOfferPackageWithErrors(sopInfo)
+            ? sopInfo.errors.find(error => error.id === 'sop-description')
+            : undefined;
+    const errors = sopInfo && isSalesOfferPackageWithErrors(sopInfo) ? sopInfo.errors : [];
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
@@ -69,7 +71,9 @@ const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSOPProps & CustomAppProps):
                                                 name="salesOfferPackageName"
                                                 type="text"
                                                 defaultValue={
-                                                    isSalesOfferPackageWithErrors(sopInfo) ? sopInfo.name : ''
+                                                    sopInfo && isSalesOfferPackageWithErrors(sopInfo)
+                                                        ? sopInfo.name
+                                                        : ''
                                                 }
                                                 aria-describedby={sopNameError ? `${sopNameError.id}-error` : ''}
                                             />
@@ -107,7 +111,7 @@ const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSOPProps & CustomAppProps):
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DescribeSopProps } => {
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SOP_INFO_ATTRIBUTE);
     const salesOfferPackage = getSessionAttribute(ctx.req, SOP_ATTRIBUTE);
     return {
