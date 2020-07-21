@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { NextPageContext } from 'next';
-import _ from 'lodash';
+import { upperFirst } from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_COOKIE, DAYS_VALID_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
@@ -43,7 +43,7 @@ const ChooseValidity = ({
                                     What duration is your product valid for?
                                 </h1>
                                 <p className="govuk-hint">
-                                    Product: {productName} - £{productPrice} - {_.upperFirst(passengerType)}
+                                    Product: {productName} - £{productPrice} - {upperFirst(passengerType)}
                                 </p>
                             </legend>
                             <div className={`govuk-form-group ${isError ? 'govuk-form-group--error' : ''}`}>

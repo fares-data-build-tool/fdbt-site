@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import _ from 'lodash';
+import { startCase, kebabCase, upperCase } from 'lodash';
 import { BaseLayout } from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -85,7 +85,7 @@ const SalesOfferPackages = ({
                                             Where can tickets be purchased?
                                         </p>
                                         {purchaseLocationsList.method.map((purchaseLocation, index) => {
-                                            const purchaseLocationId = _.kebabCase(purchaseLocation);
+                                            const purchaseLocationId = kebabCase(purchaseLocation);
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
@@ -105,7 +105,7 @@ const SalesOfferPackages = ({
                                                         className="govuk-label govuk-checkboxes__label"
                                                         htmlFor={`checkbox-${index}-${purchaseLocationId}`}
                                                     >
-                                                        {_.startCase(purchaseLocation)}
+                                                        {startCase(purchaseLocation)}
                                                     </label>
                                                 </div>
                                             );
@@ -124,7 +124,7 @@ const SalesOfferPackages = ({
                                             How can tickets be paid for?
                                         </p>
                                         {paymentMethodsList.paymentMethods.map((paymentMethod, index) => {
-                                            const paymentMethodId = _.kebabCase(paymentMethod);
+                                            const paymentMethodId = kebabCase(paymentMethod);
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
@@ -145,8 +145,8 @@ const SalesOfferPackages = ({
                                                         htmlFor={`checkbox-${index}-${paymentMethodId}`}
                                                     >
                                                         {paymentMethod === 'sms'
-                                                            ? _.upperCase(paymentMethod)
-                                                            : _.startCase(paymentMethod)}
+                                                            ? upperCase(paymentMethod)
+                                                            : startCase(paymentMethod)}
                                                     </label>
                                                 </div>
                                             );
@@ -166,7 +166,7 @@ const SalesOfferPackages = ({
                                     >
                                         <p className="govuk-body">What format do the tickets come in?</p>
                                         {ticketFormatsList.ticketFormats.map((ticketFormat, index) => {
-                                            const ticketFormatId = _.kebabCase(ticketFormat);
+                                            const ticketFormatId = kebabCase(ticketFormat);
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
@@ -186,7 +186,7 @@ const SalesOfferPackages = ({
                                                         className="govuk-label govuk-checkboxes__label"
                                                         htmlFor={`checkbox-${index}-${ticketFormatId}`}
                                                     >
-                                                        {_.startCase(ticketFormat)}
+                                                        {startCase(ticketFormat)}
                                                     </label>
                                                 </div>
                                             );
@@ -195,7 +195,9 @@ const SalesOfferPackages = ({
                                 </div>
                             </FormElementWrapper>
                         </div>
-                        <div className="govuk-grid-column-one-third">{SalesOfferPackageExplanation()}</div>
+                        <div className="govuk-grid-column-one-third">
+                            <SalesOfferPackageExplanation />
+                        </div>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>

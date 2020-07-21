@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import _ from 'lodash';
+import { upperFirst } from 'lodash';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
@@ -47,7 +47,7 @@ const ProductDetails = ({
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="service-operator-hint">
-                                {operator} - {hintText} - {_.upperFirst(passengerType)}
+                                {operator} - {hintText} - {upperFirst(passengerType)}
                             </span>
                         </fieldset>
                         <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>

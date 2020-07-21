@@ -105,7 +105,9 @@ const DescribeSOP = ({ sopInfo, csrfToken }: DescribeSopProps & CustomAppProps):
                         </>
                     </CsrfForm>
                 </div>
-                <div className="govuk-grid-column-one-third">{SalesOfferPackageExplanation()}</div>
+                <div className="govuk-grid-column-one-third">
+                    <SalesOfferPackageExplanation />
+                </div>
             </div>
         </BaseLayout>
     );
