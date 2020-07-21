@@ -531,19 +531,19 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
         <p
           className="govuk-body"
         >
-          To create a NeTEx for your fares it needs to contain the following:
+          To create NeTEx for your fares, you need to provide the following:
         </p>
         <ol
           className="govuk-body"
         >
           <li>
-            Where the ticket can be bought
+            Where a ticket can be bought
           </li>
           <li>
-            What payment methods can be used to buy the ticket
+            What payment methods can be used to buy a ticket
           </li>
           <li>
-            In what format the ticket will be used by passengers
+            In what format a ticket will be used by passengers
           </li>
         </ol>
         <p
@@ -1070,19 +1070,19 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
         <p
           className="govuk-body"
         >
-          To create a NeTEx for your fares it needs to contain the following:
+          To create NeTEx for your fares, you need to provide the following:
         </p>
         <ol
           className="govuk-body"
         >
           <li>
-            Where the ticket can be bought
+            Where a ticket can be bought
           </li>
           <li>
-            What payment methods can be used to buy the ticket
+            What payment methods can be used to buy a ticket
           </li>
           <li>
-            In what format the ticket will be used by passengers
+            In what format a ticket will be used by passengers
           </li>
         </ol>
         <p
