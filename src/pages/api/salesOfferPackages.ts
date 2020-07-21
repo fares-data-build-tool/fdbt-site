@@ -4,7 +4,7 @@ import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../constants';
-import { ticketsPurchasedList, ticketPaymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
+import { purchaseLocationsList, paymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
 import { SalesOfferPackageInfo } from '../describeSalesOfferPackage';
 
 export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
@@ -20,14 +20,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!purchaseLocations) {
             errors.push({
                 errorMessage: 'Select at least one ticket purchase location',
-                id: ticketsPurchasedList.id,
+                id: purchaseLocationsList.id,
             });
         }
 
         if (!paymentMethods) {
             errors.push({
                 errorMessage: 'Select at least one ticket payment method',
-                id: ticketPaymentMethodsList.id,
+                id: paymentMethodsList.id,
             });
         }
 
@@ -65,6 +65,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, SOP_INFO_ATTRIBUTE, salesOfferPackageInfo);
+        console.log(req.session[SOP_INFO_ATTRIBUTE]);
 
         redirectTo(res, '/describeSalesOfferPackage');
     } catch (err) {

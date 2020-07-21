@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import _ from 'lodash';
 import { BaseLayout } from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -13,39 +14,39 @@ import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplana
 const title = 'Sales Offer Packages - Fares Data Build Tool';
 const description = 'Sales Offer Packages page for the Fares Data Build Tool';
 
-export const ticketsPurchasedList = {
+export const purchaseLocationsList = {
     id: 'purchaseLocations',
     method: [
-        'OnBoard',
-        'Online',
-        'Online Account',
-        'Telephone',
-        'Electronic Pass',
-        'Mobile Device',
-        'Agency',
-        'Tour Operator',
+        'onBoard',
+        'online',
+        'onlineAccount',
+        'telephone',
+        'electronicPass',
+        'mobileDevice',
+        'agency',
+        'tourOperator',
     ],
 };
 
-export const ticketPaymentMethodsList = {
+export const paymentMethodsList = {
     id: 'paymentMethods',
     paymentMethods: [
-        'Cash',
-        'Debit/Credit card',
-        'Contactless card',
-        'Mobile Payment',
-        'SMS',
-        'Cheque',
-        'Direct transfer',
-        'Standing Order',
-        'Warrant',
-        'Gift Voucher',
+        'cash',
+        'debitCard',
+        'creditCard',
+        'contactlessPaymentCard',
+        'mobilePhone',
+        'sms',
+        'cheque',
+        'bankTransfer',
+        'warrant',
+        'voucher',
     ],
 };
 
 export const ticketFormatsList = {
     id: 'ticketFormats',
-    ticketFormats: ['Paper Ticket', 'Mobile App', 'Smart Card'],
+    ticketFormats: ['paperTicket', 'mobileApp', 'smartCard'],
 };
 
 export interface SalesOfferPackagesProps {
@@ -75,36 +76,36 @@ const SalesOfferPackages = ({
                         <div className="govuk-grid-column-two-thirds">
                             <FormElementWrapper
                                 errors={errors}
-                                errorId={ticketsPurchasedList.id}
+                                errorId={purchaseLocationsList.id}
                                 errorClass="govuk-form-group--error"
                             >
                                 <div className="govuk-form-group">
-                                    <fieldset
-                                        className="govuk-fieldset"
-                                        aria-describedby="sales-offer-package-ticket-purchased"
-                                    >
-                                        <p className="govuk-body">Where can tickets be purchased?</p>
-                                        {ticketsPurchasedList.method.map((purchaseFrom, index) => {
+                                    <fieldset className="govuk-fieldset" aria-describedby="sop-purchase-locations">
+                                        <p className="govuk-body" id="sop-purchase-locations">
+                                            Where can tickets be purchased?
+                                        </p>
+                                        {purchaseLocationsList.method.map((purchaseLocation, index) => {
+                                            const purchaseLocationId = _.kebabCase(purchaseLocation);
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
-                                                    key={`checkbox-item-${purchaseFrom}`}
+                                                    key={`checkbox-item-${purchaseLocationId}`}
                                                 >
                                                     <input
                                                         className="govuk-checkboxes__input"
-                                                        id={`checkbox-${index}-${purchaseFrom}`}
+                                                        id={`checkbox-${index}-${purchaseLocationId}`}
                                                         name="purchaseLocations"
                                                         type="checkbox"
-                                                        value={purchaseFrom}
+                                                        value={purchaseLocation}
                                                         defaultChecked={salesOfferPackage.purchaseLocations.includes(
-                                                            purchaseFrom,
+                                                            purchaseLocation,
                                                         )}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
-                                                        htmlFor={`checkbox-${index}-${purchaseFrom}`}
+                                                        htmlFor={`checkbox-${index}-${purchaseLocationId}`}
                                                     >
-                                                        {purchaseFrom}
+                                                        {_.startCase(purchaseLocation)}
                                                     </label>
                                                 </div>
                                             );
@@ -114,36 +115,38 @@ const SalesOfferPackages = ({
                             </FormElementWrapper>
                             <FormElementWrapper
                                 errors={errors}
-                                errorId={ticketPaymentMethodsList.id}
+                                errorId={paymentMethodsList.id}
                                 errorClass="govuk-form-group--error"
                             >
                                 <div className="govuk-form-group">
-                                    <fieldset
-                                        className="govuk-fieldset"
-                                        aria-describedby="sales-offer-package-ticket-payment"
-                                    >
-                                        <p className="govuk-body">How can tickets be paid for?</p>
-                                        {ticketPaymentMethodsList.paymentMethods.map((payment, index) => {
+                                    <fieldset className="govuk-fieldset" aria-describedby="sop-payment-methods">
+                                        <p className="govuk-body" id="sop-payment-methods">
+                                            How can tickets be paid for?
+                                        </p>
+                                        {paymentMethodsList.paymentMethods.map((paymentMethod, index) => {
+                                            const paymentMethodId = _.kebabCase(paymentMethod);
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
-                                                    key={`checkbox-item-${payment}`}
+                                                    key={`checkbox-item-${paymentMethodId}`}
                                                 >
                                                     <input
                                                         className="govuk-checkboxes__input"
-                                                        id={`checkbox-${index}-${payment}`}
+                                                        id={`checkbox-${index}-${paymentMethodId}`}
                                                         name="paymentMethods"
                                                         type="checkbox"
-                                                        value={payment}
+                                                        value={paymentMethod}
                                                         defaultChecked={salesOfferPackage.paymentMethods.includes(
-                                                            payment,
+                                                            paymentMethod,
                                                         )}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
-                                                        htmlFor={`checkbox-${index}-${payment}`}
+                                                        htmlFor={`checkbox-${index}-${paymentMethodId}`}
                                                     >
-                                                        {payment}
+                                                        {paymentMethod === 'sms'
+                                                            ? _.upperCase(paymentMethod)
+                                                            : _.startCase(paymentMethod)}
                                                     </label>
                                                 </div>
                                             );
@@ -162,24 +165,28 @@ const SalesOfferPackages = ({
                                         aria-describedby="sales-offer-package-ticket-format"
                                     >
                                         <p className="govuk-body">What format do the tickets come in?</p>
-                                        {ticketFormatsList.ticketFormats.map((ticket, index) => {
+                                        {ticketFormatsList.ticketFormats.map((ticketFormat, index) => {
+                                            const ticketFormatId = _.kebabCase(ticketFormat);
                                             return (
-                                                <div className="govuk-checkboxes__item" key={`checkbox-item-${ticket}`}>
+                                                <div
+                                                    className="govuk-checkboxes__item"
+                                                    key={`checkbox-item-${ticketFormatId}`}
+                                                >
                                                     <input
                                                         className="govuk-checkboxes__input"
-                                                        id={`checkbox-${index}-${ticket}`}
+                                                        id={`checkbox-${index}-${ticketFormatId}`}
                                                         name="ticketFormats"
                                                         type="checkbox"
-                                                        value={ticket}
+                                                        value={ticketFormat}
                                                         defaultChecked={salesOfferPackage.ticketFormats.includes(
-                                                            ticket,
+                                                            ticketFormat,
                                                         )}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
-                                                        htmlFor={`checkbox-${index}-${ticket}`}
+                                                        htmlFor={`checkbox-${index}-${ticketFormatId}`}
                                                     >
-                                                        {ticket}
+                                                        {_.startCase(ticketFormat)}
                                                     </label>
                                                 </div>
                                             );
