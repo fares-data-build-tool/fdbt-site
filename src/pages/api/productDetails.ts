@@ -1,8 +1,9 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError } from './apiUtils';
+import Cookies from 'cookies';
+import { redirectTo, redirectToError, unescapeAndDecodeCookie, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { ProductInfo, NextApiRequestWithSession, ProductData } from '../../interfaces';
-import { PRODUCT_DETAILS_ATTRIBUTE } from '../../constants';
+import { ProductInfo, NextApiRequestWithSession, ProductData, Product } from '../../interfaces';
+import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_COOKIE } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -31,6 +32,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('Session is invalid.');
         }
 
+        const cookies = new Cookies(req, res);
+        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const { fareType } = JSON.parse(fareTypeCookie);
+
+        if (!fareType || (fareType !== 'period' && fareType !== 'flatFare')) {
+            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for productDetails API');
+        }
+
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
 
         const productDetails: ProductInfo = checkIfInputInvalid(productDetailsNameInput, productDetailsPriceInput);
@@ -39,6 +48,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, productDetails);
             redirectTo(res, '/productDetails');
             return;
+        }
+
+        if (fareType === 'period') {
+            const periodProduct: Product = {
+                productName: productDetails.productName,
+                productPrice: productDetails.productPrice,
+            };
+            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, JSON.stringify(periodProduct), req, res);
+            redirectTo(res, '/chooseValidity');
         }
 
         const flatFareProduct: ProductData = {
