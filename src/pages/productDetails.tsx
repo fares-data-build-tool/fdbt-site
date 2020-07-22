@@ -154,7 +154,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
 
     const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
-    if (isProductInfo(productDetailsAttribute)) {
+    if (productDetailsAttribute && isProductInfo(productDetailsAttribute)) {
         return {
             props: {
                 product: productDetailsAttribute,

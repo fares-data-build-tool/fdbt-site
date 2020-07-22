@@ -178,15 +178,16 @@ export const validateNewPassword = (
     return inputChecks;
 };
 
-export const getSalesOfferPackagesFromRequestBody = (req: NextApiRequestWithSession): SalesOfferPackage[] => {
+export const getSalesOfferPackagesFromRequestBody = (reqBody: { [key: string]: string }): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
-    Object.values(req.body).forEach(entry => {
-        const purchaseLocationList = entry.purchaseLocation.split(',');
-        const paymentMethodList = entry.paymentMethod.split(',');
-        const ticketFormatList = entry.ticketFormat.split(',');
+    Object.values(reqBody).forEach(entry => {
+        const parsedEntry = JSON.parse(entry);
+        const purchaseLocationList = parsedEntry.purchaseLocation.split(',');
+        const paymentMethodList = parsedEntry.paymentMethod.split(',');
+        const ticketFormatList = parsedEntry.ticketFormat.split(',');
         const formattedPackageObject = {
-            name: entry.name,
-            description: entry.description,
+            name: parsedEntry.name,
+            description: parsedEntry.description,
             purchaseLocation: purchaseLocationList,
             paymentMethod: paymentMethodList,
             ticketFormat: ticketFormatList,
@@ -228,10 +229,10 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
 
-    // const requestBody: { [key: string]: string } = req.body;
-    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(req);
+    const requestBody: { [key: string]: string } = req.body;
+    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
 
-    if (!isMatchingInfo(matchingAttributeInfo)) {
+    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');
     }
 
@@ -276,13 +277,13 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const requestBody: { [key: string]: string } = req.body;
     const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
 
-    if (!isMatchingInfo(matchingAttributeInfo)) {
+    if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');
     }
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
-    if (!isInboundMatchingInfo(inboundMatchingAttributeInfo)) {
+    if (!inboundMatchingAttributeInfo || !isInboundMatchingInfo(inboundMatchingAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');
     }
 
@@ -336,7 +337,7 @@ export const getPeriodGeoZoneTicketJson = async (
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
 
-    if (!isProductData(periodExpiryAttributeInfo)) {
+    if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');
     }
 
@@ -395,7 +396,7 @@ export const getPeriodMultipleServicesTicketJson = (
         };
     });
 
-    if (!isProductData(periodExpiryAttributeInfo)) {
+    if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');
     }
 
@@ -450,7 +451,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         };
     });
 
-    if (!isProductData(productDetailsAttributeInfo)) {
+    if (!productDetailsAttributeInfo || !isProductData(productDetailsAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');
     }
 

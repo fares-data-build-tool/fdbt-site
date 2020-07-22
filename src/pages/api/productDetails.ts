@@ -62,7 +62,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const flatFareProduct: ProductData = {
             products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
         };
-        updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, { flatFareProduct });
+        updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, flatFareProduct);
         redirectTo(res, '/selectSalesOfferPackage');
         return;
     } catch (error) {

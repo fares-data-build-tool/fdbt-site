@@ -329,9 +329,9 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
     console.info('inserting sales offer package into salesOfferPackage table for given noc', { noc: nocCode });
 
-    const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
-    const paymentMethods = salesOfferPackage.paymentMethods.toString();
-    const ticketFormats = salesOfferPackage.ticketFormats.toString();
+    const purchaseLocation = salesOfferPackage.purchaseLocation.toString();
+    const paymentMethod = salesOfferPackage.paymentMethod.toString();
+    const ticketFormat = salesOfferPackage.ticketFormat.toString();
 
     const insertQuery = `INSERT INTO salesOfferPackage 
     (nocCode, name, description, purchaseLocation, paymentMethod, ticketFormat) 
@@ -341,9 +341,9 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
             nocCode,
             salesOfferPackage.name,
             salesOfferPackage.description,
-            purchaseLocations,
-            paymentMethods,
-            ticketFormats,
+            purchaseLocation,
+            paymentMethod,
+            ticketFormat,
         ]);
     } catch (error) {
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);

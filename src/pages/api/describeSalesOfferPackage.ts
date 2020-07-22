@@ -76,9 +76,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         let salesOfferPackageInfo: SalesOfferPackage = {
             name: salesOfferPackageName || '',
             description: salesOfferPackageDescription || '',
-            purchaseLocations: salesOfferPackageParams.purchaseLocations,
-            paymentMethods: salesOfferPackageParams.paymentMethods,
-            ticketFormats: salesOfferPackageParams.ticketFormats,
+            purchaseLocation: salesOfferPackageParams.purchaseLocation,
+            paymentMethod: salesOfferPackageParams.paymentMethod,
+            ticketFormat: salesOfferPackageParams.ticketFormat,
         };
 
         salesOfferPackageInfo = await checkUserInput(salesOfferPackageInfo);
@@ -93,7 +93,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, SOP_INFO_ATTRIBUTE, undefined);
         updateSessionAttribute(req, SOP_ATTRIBUTE, undefined);
-        redirectTo(res, '/selectSalesOfferPackages');
+        redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem on the describe sales offer package API.';
         redirectToError(res, message, error);

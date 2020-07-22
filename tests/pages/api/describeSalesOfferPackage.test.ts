@@ -20,14 +20,14 @@ describe('describeSalesOfferPackage', () => {
     const mockError: ErrorInfo = expect.objectContaining({ errorMessage: expect.any(String), id: expect.any(String) });
 
     const mockSopInfoAttribute: SalesOfferPackageInfo = {
-        purchaseLocations: ['OnBus', 'Shop', 'Mobile'],
-        paymentMethods: ['Card', 'Cash'],
-        ticketFormats: ['Paper', 'Mobile'],
+        purchaseLocation: ['OnBus', 'Shop', 'Mobile'],
+        paymentMethod: ['Card', 'Cash'],
+        ticketFormat: ['Paper', 'Mobile'],
     };
     const mockSopInfoAttributeWithErrors: SalesOfferPackageInfoWithErrors = {
-        purchaseLocations: [],
-        paymentMethods: ['Card', 'Cash'],
-        ticketFormats: [],
+        purchaseLocation: [],
+        paymentMethod: ['Card', 'Cash'],
+        ticketFormat: [],
         errors: [mockError, mockError],
     };
     const mockSopAttribute: SalesOfferPackage = {
@@ -153,7 +153,7 @@ describe('describeSalesOfferPackage', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, undefined);
         expect(insertSalesOfferPackageSpy).toHaveBeenCalledWith('TEST', mockSopAttribute);
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackages',
+            Location: '/selectSalesOfferPackage',
         });
     });
 });

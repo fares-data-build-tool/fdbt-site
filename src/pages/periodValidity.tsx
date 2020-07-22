@@ -104,7 +104,7 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & Custom
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (isPeriodExpiryWithErrors(periodExpiryAttribute)) {
+    if (periodExpiryAttribute && isPeriodExpiryWithErrors(periodExpiryAttribute)) {
         const { errorMessage } = periodExpiryAttribute;
         return { props: { errors: [{ errorMessage, id: errorId }] } };
     }

@@ -7,9 +7,9 @@ import { SOP_INFO_ATTRIBUTE } from '../../constants';
 import { purchaseLocationsList, paymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
 
 export interface SalesOfferPackageInfo {
-    purchaseLocations: string[];
-    paymentMethods: string[];
-    ticketFormats: string[];
+    purchaseLocation: string[];
+    paymentMethod: string[];
+    ticketFormat: string[];
 }
 
 export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
@@ -20,45 +20,45 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];
 
     try {
-        let { purchaseLocations, paymentMethods, ticketFormats } = req.body;
+        let { purchaseLocation, paymentMethod, ticketFormat } = req.body;
 
-        if (!purchaseLocations) {
+        if (!purchaseLocation) {
             errors.push({
                 errorMessage: 'Select at least one ticket purchase location',
                 id: purchaseLocationsList.id,
             });
         }
 
-        if (!paymentMethods) {
+        if (!paymentMethod) {
             errors.push({
                 errorMessage: 'Select at least one ticket payment method',
                 id: paymentMethodsList.id,
             });
         }
 
-        if (!ticketFormats) {
+        if (!ticketFormat) {
             errors.push({
                 errorMessage: 'Select at least one ticket media format',
                 id: ticketFormatsList.id,
             });
         }
 
-        if (purchaseLocations && !isArray(purchaseLocations)) {
-            purchaseLocations = purchaseLocations.split();
+        if (purchaseLocation && !isArray(purchaseLocation)) {
+            purchaseLocation = purchaseLocation.split();
         }
 
-        if (paymentMethods && !isArray(paymentMethods)) {
-            paymentMethods = paymentMethods.split();
+        if (paymentMethod && !isArray(paymentMethod)) {
+            paymentMethod = paymentMethod.split();
         }
 
-        if (ticketFormats && !isArray(ticketFormats)) {
-            ticketFormats = ticketFormats.split();
+        if (ticketFormat && !isArray(ticketFormat)) {
+            ticketFormat = ticketFormat.split();
         }
 
         const salesOfferPackageInfo: SalesOfferPackageInfo = {
-            purchaseLocations: purchaseLocations || [],
-            paymentMethods: paymentMethods || [],
-            ticketFormats: ticketFormats || [],
+            purchaseLocation: purchaseLocation || [],
+            paymentMethod: paymentMethod || [],
+            ticketFormat: ticketFormat || [],
         };
 
         if (errors.length > 0) {

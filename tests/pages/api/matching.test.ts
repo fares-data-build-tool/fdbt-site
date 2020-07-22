@@ -5,10 +5,11 @@ import {
     service,
     mockMatchingUserFareStagesWithUnassignedStages,
     mockMatchingUserFareStagesWithAllStagesAssigned,
-    expectedMatchingJsonSingle,
-    // expectedMatchingJsonReturnCircular,
+    mockBasicServiceSingleTicketJson,
 } from '../../testData/mockData';
-import * as s3 from '../../../src/data/s3';
+import * as sessions from '../../../src/utils/sessions';
+import { MatchingInfo } from '../../../src/interfaces/matchingInterface';
+import { MATCHING_ATTRIBUTE } from '../../../src/constants';
 
 jest.mock('../../../src/data/s3.ts');
 
@@ -26,8 +27,7 @@ const selections = {
 };
 
 describe('Matching API', () => {
-    const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
-    putStringInS3Spy.mockImplementation(() => Promise.resolve());
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
 
     const mockDate = Date.now();
@@ -40,12 +40,17 @@ describe('Matching API', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates matching JSON for a single ticket and uploads to S3', () => {
+    it('correctly generates matching info and updates the MATCHING_ATTRIBUTE', () => {
+        const mockMatchingInfo: MatchingInfo = {
+            service: expect.any(Object),
+            userFareStages: expect.any(Object),
+            matchingFareZones: expect.any(Object),
+        };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
                 ...selections,
-                service: JSON.stringify(service),
+                service: JSON.stringify(mockBasicServiceSingleTicketJson),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
             uuid: {},
@@ -53,15 +58,7 @@ describe('Matching API', () => {
         });
         matching(req, res);
 
-        const actualMatchingData = JSON.parse((putStringInS3Spy as jest.Mock).mock.calls[0][2]);
-
-        expect(putStringInS3Spy).toBeCalledWith(
-            'fdbt-matching-data-dev',
-            `DCCL/single/1e0459b3-082e-4e70-89db-96e8ae173e10_${mockDate}.json`,
-            expect.any(String),
-            'application/json; charset=utf-8',
-        );
-        expect(expectedMatchingJsonSingle).toEqual(actualMatchingData);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MATCHING_ATTRIBUTE, mockMatchingInfo);
     });
 
     // it('correctly generates matching JSON for a return circular ticket and uploads to S3', () => {

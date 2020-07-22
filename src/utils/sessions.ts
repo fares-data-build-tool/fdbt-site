@@ -21,11 +21,11 @@ import {
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
-    [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
-    [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
-    [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiryWithErrors | ProductData;
-    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
-    [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
+    [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
+    [INBOUND_MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | InboundMatchingInfo;
+    [PERIOD_EXPIRY_ATTRIBUTE]: undefined | PeriodExpiryWithErrors | ProductData;
+    [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData;
+    [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -39,6 +39,11 @@ export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWit
 type UpdateSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
+    [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
+    [MATCHING_ATTRIBUTE]: MatchingInfo | MatchingWithErrors;
+    [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | PeriodExpiryWithErrors;
+    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
+    [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

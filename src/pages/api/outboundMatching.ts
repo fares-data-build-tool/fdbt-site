@@ -6,7 +6,7 @@ import { MATCHING_ATTRIBUTE } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
 import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, BasicService } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -22,8 +22,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('No service or userfarestages info found');
         }
 
+        const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
-
         const matchingFareZones = getMatchingFareZonesFromForm(req);
 
         // Deleting these keys from the object in order to faciliate looping through the fare stage values in the body
@@ -31,23 +31,23 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         delete req.body.userfarestages;
 
         if (isFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
-            const selectedStagesList: {}[] = getSelectedStages(req);
-
+            const selectedStagesList: string[] = getSelectedStages(req);
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, { error: true, selectedFareStages: selectedStagesList });
             redirectTo(res, '/outboundMatching');
             return;
         }
-
         const formatMatchingFareZones = getFareZones(userFareStages, matchingFareZones);
 
         const matchedFareZones: MatchingFareZones = {};
         formatMatchingFareZones.forEach(fareStage => {
             matchedFareZones[fareStage.name] = fareStage;
         });
-
-        updateSessionAttribute(req, MATCHING_ATTRIBUTE, { matchedFareZones });
-
-        redirectTo(res, '/selectSalesOfferPackage');
+        updateSessionAttribute(req, MATCHING_ATTRIBUTE, {
+            service,
+            userFareStages,
+            matchingFareZones: matchedFareZones,
+        });
+        redirectTo(res, '/inboundMatching');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';
         redirectToError(res, message, error);

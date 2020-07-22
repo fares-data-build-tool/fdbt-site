@@ -29,11 +29,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const cookies = new Cookies(req, res);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
-        const periodTypeObject = JSON.parse(periodTypeCookie);
         const { fareType } = fareTypeObject;
-        const { periodType } = periodTypeObject;
 
         if (!req.body || Object.keys(req.body).length === 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
@@ -61,6 +58,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
         if (fareType === 'period') {
+            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
+            const periodTypeObject = JSON.parse(periodTypeCookie);
+            const { periodType } = periodTypeObject;
+
             if (periodType === 'periodGeoZone') {
                 userDataJson = getPeriodGeoZoneTicketJson(req, res);
                 await putUserDataInS3(await userDataJson, uuid);

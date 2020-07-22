@@ -32,13 +32,13 @@ describe('salesOfferPackages', () => {
     it('redirects back to /salesOfferPackages if only one purchaseLocation is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                purchaseLocations: 'OnBoard',
+                purchaseLocation: 'OnBoard',
             },
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
-            purchaseLocations: ['OnBoard'],
-            ticketFormats: [],
-            paymentMethods: [],
+            purchaseLocation: ['OnBoard'],
+            ticketFormat: [],
+            paymentMethod: [],
             errors: [mockErrorObject, mockErrorObject],
         };
 
@@ -53,13 +53,13 @@ describe('salesOfferPackages', () => {
     it('redirects back to /salesOfferPackages if only one paymentMethod is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                paymentMethods: 'Cash',
+                paymentMethod: 'Cash',
             },
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
-            purchaseLocations: [],
-            ticketFormats: [],
-            paymentMethods: ['Cash'],
+            purchaseLocation: [],
+            ticketFormat: [],
+            paymentMethod: ['Cash'],
             errors: [mockErrorObject, mockErrorObject],
         };
 
@@ -74,13 +74,13 @@ describe('salesOfferPackages', () => {
     it('redirects back to /salesOfferPackages if only one ticketFormat is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ticketFormats: 'Paper Ticket',
+                ticketFormat: 'Paper Ticket',
             },
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
-            purchaseLocations: [],
-            ticketFormats: ['Paper Ticket'],
-            paymentMethods: [],
+            purchaseLocation: [],
+            ticketFormat: ['Paper Ticket'],
+            paymentMethod: [],
             errors: [mockErrorObject, mockErrorObject],
         };
 
@@ -95,14 +95,14 @@ describe('salesOfferPackages', () => {
     it('redirects back to /salesOfferPackages if one selection is missing', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                purchaseLocations: ['OnBoard', 'Online Account'],
-                ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+                purchaseLocation: ['OnBoard', 'Online Account'],
+                ticketFormat: ['Paper Ticket', 'Debit/Credit card'],
             },
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
-            purchaseLocations: ['OnBoard', 'Online Account'],
-            ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
-            paymentMethods: [],
+            purchaseLocation: ['OnBoard', 'Online Account'],
+            ticketFormat: ['Paper Ticket', 'Debit/Credit card'],
+            paymentMethod: [],
             errors: [mockErrorObject],
         };
 
@@ -117,15 +117,15 @@ describe('salesOfferPackages', () => {
     it('redirects to /describeSalesOfferPackage when at least one option has been selected from each section', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                purchaseLocations: ['OnBoard', 'Online Account'],
-                paymentMethods: ['Cash'],
-                ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+                purchaseLocation: ['OnBoard', 'Online Account'],
+                paymentMethod: ['Cash'],
+                ticketFormat: ['Paper Ticket', 'Debit/Credit card'],
             },
         });
         const expectedSessionAttributeCall: SalesOfferPackageInfo = {
-            purchaseLocations: ['OnBoard', 'Online Account'],
-            ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
-            paymentMethods: ['Cash'],
+            purchaseLocation: ['OnBoard', 'Online Account'],
+            ticketFormat: ['Paper Ticket', 'Debit/Credit card'],
+            paymentMethod: ['Cash'],
         };
 
         salesOfferPackages(req, res);

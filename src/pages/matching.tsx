@@ -98,7 +98,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceDescription: service.serviceDescription,
             },
             error: matchingAttribute ? isMatchingWithErrors(matchingAttribute) : false,
-            selectedFareStages: isMatchingWithErrors(matchingAttribute) ? matchingAttribute.selectedFareStages : [],
+            selectedFareStages:
+                matchingAttribute && isMatchingWithErrors(matchingAttribute)
+                    ? matchingAttribute.selectedFareStages
+                    : [],
         },
     };
 };
