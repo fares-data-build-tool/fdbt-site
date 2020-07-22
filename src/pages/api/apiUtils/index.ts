@@ -178,16 +178,15 @@ export const validateNewPassword = (
     return inputChecks;
 };
 
-export const getSalesOfferPackagesFromRequestBody = (reqBody: { [key: string]: string }): SalesOfferPackage[] => {
+export const getSalesOfferPackagesFromRequestBody = (req: NextApiRequestWithSession): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
-    Object.values(reqBody).forEach(entry => {
-        const offerPackageObject = JSON.parse(entry);
-        const purchaseLocationList = offerPackageObject.purchaseLocation.split(',');
-        const paymentMethodList = offerPackageObject.paymentMethod.split(',');
-        const ticketFormatList = offerPackageObject.ticketFormat.split(',');
+    Object.values(req.body).forEach(entry => {
+        const purchaseLocationList = entry.purchaseLocation.split(',');
+        const paymentMethodList = entry.paymentMethod.split(',');
+        const ticketFormatList = entry.ticketFormat.split(',');
         const formattedPackageObject = {
-            name: offerPackageObject.name,
-            description: offerPackageObject.description,
+            name: entry.name,
+            description: entry.description,
             purchaseLocation: purchaseLocationList,
             paymentMethod: paymentMethodList,
             ticketFormat: ticketFormatList,
@@ -229,8 +228,8 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
 
-    const requestBody: { [key: string]: string } = req.body;
-    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
+    // const requestBody: { [key: string]: string } = req.body;
+    const salesOfferPackages = getSalesOfferPackagesFromRequestBody(req);
 
     if (!isMatchingInfo(matchingAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');

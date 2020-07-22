@@ -8,11 +8,24 @@ import {
     validateNewPassword,
     getSelectedStages,
     getSingleTicketJson,
-    getReturnTicketJson
+    getReturnTicketJson,
+    getPeriodGeoZoneTicketJson,
+    getPeriodMultipleServicesTicketJson,
+    getFlatFareTicketJson,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
-import { getMockRequestAndResponse, expectedMatchingJsonSingle } from '../../../testData/mockData';
+import {
+    getMockRequestAndResponse,
+    expectedMatchingJsonSingle,
+    expectedSingleProductUploadJsonWithZoneUpload,
+    expectedSingleProductUploadJsonWithSelectedServices,
+    expectedFlatFareProductUploadJson,
+    userFareStages,
+    mockBasicServiceSingleTicketJson,
+    mockMatchingFaresZones,
+} from '../../../testData/mockData';
 import { ErrorInfo } from '../../../../src/interfaces';
+import { MATCHING_ATTRIBUTE } from '../../../../src/constants';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
@@ -210,10 +223,22 @@ describe('apiUtils', () => {
     describe('getSingleTicketJson', () => {
         it.only('should return a SingleTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
-                cookieValues: {},
-                body: {},
-                uuid: {},
-                mockWriteHeadFn: writeHeadMock,
+                body: {
+                    Onboard: {
+                        name: 'Onboard',
+                        description: 'Cash, Card',
+                        purchaseLocation: 'onBoard',
+                        paymentMethod: 'cash,debitCard,creditCard,contactlessPaymentCard,mobilePhone',
+                        ticketFormat: 'paperTicket',
+                    },
+                },
+                session: {
+                    [MATCHING_ATTRIBUTE]: {
+                        service: mockBasicServiceSingleTicketJson,
+                        userFareStages,
+                        matchingFareZones: mockMatchingFaresZones,
+                    },
+                },
             });
             const result = getSingleTicketJson(req, res);
             expect(result).toEqual(expectedMatchingJsonSingle);
@@ -221,7 +246,7 @@ describe('apiUtils', () => {
     });
 
     describe('getReturnTicketJson', () => {
-        it.only('should return a ReturnTicket object', () => {
+        it('should return a ReturnTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: {},
@@ -234,42 +259,36 @@ describe('apiUtils', () => {
     });
 
     describe('getPeriodGeoZoneTicketJson', () => {
-        it.only('should return a PeriodGeoZoneTicket object', () => {
-            const { req, res } = getMockRequestAndResponse({
-                cookieValues: {},
-                body: {},
-                uuid: {},
-                mockWriteHeadFn: writeHeadMock,
-            });
-            const result = getSingleTicketJson(req, res);
-            expect(result).toEqual(expectedMatchingJsonSingle);
+        it('should return a PeriodGeoZoneTicket object', () => {
+            const { req, res } = getMockRequestAndResponse({});
+            const result = getPeriodGeoZoneTicketJson(req, res);
+            expect(result).toEqual(expectedSingleProductUploadJsonWithZoneUpload);
         });
     });
 
-    describe('getSingleTicketJson', () => {
-        it.only('should return a string a SingleTicket object', () => {
+    describe('getPeriodMulipleServicesTicketJson', () => {
+        it('should return a string PeriodMultipleServicesTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
             });
-            const result = getSingleTicketJson(req, res);
-            expect(result).toEqual(expectedMatchingJsonSingle);
+            const result = getPeriodMultipleServicesTicketJson(req, res);
+            expect(result).toEqual(expectedSingleProductUploadJsonWithSelectedServices);
         });
     });
 
-    describe('getReturnTicketJson', () => {
-        it.only('should return a string a ReturnTicket object', () => {
+    describe('getFlatFareTicketJson', () => {
+        it('should return a string a FlatFareTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
             });
-            const result = getReturnTicketJson(req, res);
-            expect(result).toEqual(expectedMatchingJsonReturn);
+            const result = getFlatFareTicketJson(req, res);
+            expect(result).toEqual(expectedFlatFareProductUploadJson);
         });
     });
->>>>>>> Stashed changes
 });

@@ -64,7 +64,7 @@ const SelectSalesOfferPackage = ({
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
-                                {salesOfferPackagesList.map((offer, index) => {
+                                {salesOfferPackagesList.map((offer: SalesOfferPackage, index) => {
                                     const { name, description } = offer;
                                     let checkboxTitles = `${name} - ${description}`;
 

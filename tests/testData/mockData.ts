@@ -25,7 +25,8 @@ import {
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import { ErrorInfo, Breadcrumb, NextPageContextWithSession } from '../../src/interfaces';
+import { ErrorInfo, Breadcrumb, NextPageContextWithSession, BasicService } from '../../src/interfaces';
+import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 
 interface GetMockContextInput {
     session?: any;
@@ -245,31 +246,126 @@ export const getMockContext = ({
     return ctx;
 };
 
-export const mockSingleService: RawService = {
+export const mockBasicServiceSingleTicketJson: BasicService = {
     serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
     operatorShortName: 'HCTY',
-    journeyPatterns: [
-        {
-            orderedStopPoints: [
-                {
-                    stopPointRef: '13003921A',
-                    commonName: 'Estate (Hail and Ride) N/B',
-                },
-                {
-                    stopPointRef: '13003612D',
-                    commonName: 'New Strangford Road SE/B',
-                },
-                {
-                    stopPointRef: '13003611B',
-                    commonName: 'New Tempest Road (York House) NE/B',
-                },
-                {
-                    stopPointRef: '13003655B',
-                    commonName: 'Interchange Stand B',
-                },
-            ],
-        },
-    ],
+    lineName: '12C',
+    nocCode: 'IWBusCo',
+};
+
+export const mockMatchingFaresZones: MatchingFareZones = {
+    'Acomb Green Lane': {
+        name: 'Acomb Green Lane',
+        stops: [
+            {
+                stopName: 'Yoden Way - Chapel Hill Road',
+                naptanCode: 'duratdmj',
+                atcoCode: '13003521G',
+                localityCode: 'E0045956',
+                parentLocalityName: '',
+                localityName: 'Peterlee',
+                indicator: 'W-bound',
+                street: 'Yodan Way',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Mattison Way': {
+        name: 'Mattison Way',
+        stops: [
+            {
+                stopName: 'Yoden Way',
+                naptanCode: 'duratdmt',
+                atcoCode: '13003522F',
+                localityCode: 'E0010183',
+                parentLocalityName: '',
+                localityName: 'Horden',
+                indicator: 'SW-bound',
+                street: 'Yoden Way',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Nursery Drive', 'Holl Bank/Beech Ave'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Holl Bank/Beech Ave': {
+        name: 'Holl Bank/Beech Ave',
+        stops: [
+            {
+                stopName: 'Surtees Rd-Edenhill Rd',
+                naptanCode: 'durapgdw',
+                atcoCode: '13003219H',
+                localityCode: 'E0045956',
+                parentLocalityName: '',
+                localityName: 'Peterlee',
+                indicator: 'NW-bound',
+                street: 'Surtees Road',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Blossom Street': {
+        name: 'Blossom Street',
+        stops: [
+            {
+                stopName: 'Bus Station',
+                naptanCode: 'duratdma',
+                atcoCode: '13003519H',
+                localityCode: 'E0045956',
+                parentLocalityName: '',
+                localityName: 'Peterlee',
+                indicator: 'H',
+                street: 'Bede Way',
+            },
+        ],
+        prices: [
+            {
+                price: '1.00',
+                fareZones: ['Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
+    },
+    'Piccadilly (York)': {
+        name: 'Piccadilly (York)',
+        stops: [
+            {
+                stopName: 'Kell Road',
+                naptanCode: 'duraptwp',
+                atcoCode: '13003345D',
+                localityCode: 'E0010183',
+                parentLocalityName: '',
+                localityName: 'Horden',
+                indicator: 'SE-bound',
+                street: 'Kell Road',
+            },
+        ],
+        prices: [{ price: '1.00', fareZones: ['Piccadilly (York)'] }],
+    },
 };
 
 export const mockRawService: RawService = {
@@ -1019,22 +1115,22 @@ export const mockMatchingUserFareStagesWithAllStagesAssigned = {
 
 export const expectedMatchingJsonSingle = {
     type: 'single',
-    lineName: '215',
-    nocCode: 'DCCL',
+    lineName: '12C',
+    nocCode: 'IWBusCo',
     passengerType: 'Adult',
-    operatorShortName: 'DCC',
-    serviceDescription: 'Worthing - Seaham - Crawley',
+    operatorShortName: 'HCTY',
+    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
-            salesOfferPacakge: [
+            salesOfferPackage: [
                 {
-                    name: '',
-                    description: '',
-                    purchaseLocation: ['', ''],
-                    paymentMethod: ['', ''],
-                    ticketFormat: ['', ''],
+                    name: 'Onboard',
+                    description: 'Cash, Card',
+                    purchaseLocation: ['onBoard'],
+                    paymentMethod: ['cash', 'debitcard', 'creditCard', 'contactlessPaymentCard', 'mobilePhone'],
+                    ticketFormat: ['paperTicket'],
                 },
             ],
         },
@@ -1049,6 +1145,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003521G',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
+                    parentLocalityName: '',
                     indicator: 'W-bound',
                     street: 'Yodan Way',
                     qualifierName: '',
@@ -1076,6 +1173,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003522F',
                     localityCode: 'E0010183',
                     localityName: 'Horden',
+                    parentLocalityName: '',
                     indicator: 'SW-bound',
                     street: 'Yoden Way',
                     qualifierName: '',
@@ -1103,6 +1201,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003219H',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
+                    parentLocalityName: '',
                     indicator: 'NW-bound',
                     street: 'Surtees Road',
                     qualifierName: '',
@@ -1122,6 +1221,7 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003519H',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
+                    parentLocalityName: '',
                     indicator: 'H',
                     street: 'Bede Way',
                     qualifierName: '',
@@ -1138,12 +1238,13 @@ export const expectedMatchingJsonSingle = {
                     atcoCode: '13003345D',
                     localityCode: 'E0010183',
                     localityName: 'Horden',
+                    parentLocalityName: '',
                     indicator: 'SE-bound',
                     street: 'Kell Road',
                     qualifierName: '',
                 },
             ],
-            prices: {},
+            prices: [],
         },
     ],
 };
