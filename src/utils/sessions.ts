@@ -5,29 +5,22 @@ import {
     PeriodExpiryWithErrors,
     SelectSalesOfferPackageWithError,
 } from '../interfaces';
-
-// Below is an example of how we could implement sessions. We are able to apply types to the actual functions, which in turn use type lookups to return a 'return type' to the function.
-// This way we are allowing Typescript to infer the return type on the session functions from the objects we pass them.
-// The only extra work that is required to make this work for the site is to create types for each and every 'constant' that we have.
-// The types should be the same/similar for each of the get and set functionality.
-// An easier way to do this work would be to have a high level type for each 'MatchingData'.
-// By nesting type lookups, these sessions methods will be able to accurately infer the correct types for the type that it is called with.
-// The only other cautious aspect of these type assertions is to make sure that both the site pages/APIs and these sessions funtions read from the same types/interfaces.
-
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
-import { SalesOfferPackageInfo } from '../pages/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
+    SOP_INFO_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
 } from '../constants';
 
-type MatchingData = {
-    [SOP_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackage | SalesOfferPackageWithErrors;
+type GetSessionAttributeTypes = {
+    [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
+    [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
     [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiryWithErrors | ProductData;
@@ -35,20 +28,29 @@ type MatchingData = {
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
 };
 
-type GetSalesOfferPackageSessionAttribute = <Key extends keyof MatchingData>(
+type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
     req: IncomingMessageWithSession,
     attributeName: Key,
-) => MatchingData[Key];
+) => GetSessionAttributeTypes[Key];
 
-export const getSessionAttribute: GetSalesOfferPackageSessionAttribute = (
+export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWithSession, attributeName) =>
+    req?.session?.[attributeName];
+
+type UpdateSessionAttributeTypes = {
+    [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
+    [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
+};
+
+type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
+    req: IncomingMessageWithSession,
+    attributeName: Key,
+    attributeValue: UpdateSessionAttributeTypes[Key],
+) => void;
+
+export const updateSessionAttribute: UpdateSessionAttribute = (
     req: IncomingMessageWithSession,
     attributeName,
-) => req?.session?.[attributeName];
-
-export const updateSessionAttribute = (
-    req: IncomingMessageWithSession,
-    attributeName: string,
-    attributeValue: string | {} | [],
+    attributeValue,
 ): void => {
     req.session[attributeName] = attributeValue;
 };

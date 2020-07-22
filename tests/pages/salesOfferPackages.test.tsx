@@ -2,8 +2,9 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import SalesOfferPackages, { getServerSideProps, SalesOfferPackagesProps } from '../../src/pages/salesOfferPackages';
 import { getMockContext } from '../testData/mockData';
-// import { ErrorInfo } from '../../src/interfaces';
-// import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../src/constants';
+import { ErrorInfo } from '../../src/interfaces';
+import { SOP_INFO_ATTRIBUTE } from '../../src/constants';
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../src/pages/api/salesOfferPackages';
 
 describe('pages', () => {
     afterEach(() => {
@@ -11,17 +12,20 @@ describe('pages', () => {
     });
 
     const salesOfferPackagesNoError: SalesOfferPackagesProps = {
-        ticketsPurchasedFrom: { selected: [] },
-        ticketPayments: { selected: [] },
-        ticketFormats: { selected: [] },
-        errors: [],
+        salesOfferPackage: {
+            purchaseLocations: [],
+            paymentMethods: [],
+            ticketFormats: [],
+        },
     };
 
     const salesOfferPackageWithError: SalesOfferPackagesProps = {
-        ticketsPurchasedFrom: { selected: [] },
-        ticketPayments: { selected: [] },
-        ticketFormats: { selected: [] },
-        errors: [{ errorMessage: 'error', id: '' }],
+        salesOfferPackage: {
+            purchaseLocations: [],
+            paymentMethods: [],
+            ticketFormats: [],
+            errors: [{ errorMessage: 'error', id: '' }],
+        },
     };
 
     describe('salesOfferPackage', () => {
@@ -41,40 +45,42 @@ describe('pages', () => {
     describe('getServerSideProps', () => {
         it('should show the page correctly when there is no salesPackageOffer session', () => {
             const ctx = getMockContext();
+            const expectedProps: SalesOfferPackageInfo = {
+                purchaseLocations: [],
+                paymentMethods: [],
+                ticketFormats: [],
+            };
 
-            const result = getServerSideProps(ctx);
-
-            expect(result.props.ticketsPurchasedFrom.selected.length).toBe(0);
-            expect(result.props.ticketPayments.selected.length).toBe(0);
-            expect(result.props.ticketPayments.selected.length).toBe(0);
-            expect(result.props.errors.length).toBe(0);
+            const result = getServerSideProps(ctx).props.salesOfferPackage;
+            expect(result).toEqual(expectedProps);
         });
 
-        // it('should set the select ticketsPurchasedFrom if item has been selected and populate errors if two other sections not selected', () => {
-        //     const errors: ErrorInfo[] = [];
+        it('should set the select purchaseLocations if item has been selected and populate errors if two other sections not selected', () => {
+            const errors: ErrorInfo[] = [
+                { errorMessage: 'Select ticket Payments', id: 'paymentMethods' },
+                { errorMessage: 'Select ticket formats', id: 'ticketFormats' },
+            ];
 
-        //     errors.push({ errorMessage: 'Select ticket Payments', id: 'ticketPayments' });
-        //     errors.push({ errorMessage: 'Select ticket formats', id: 'ticketFormats' });
+            const ctx = getMockContext({
+                session: {
+                    [SOP_INFO_ATTRIBUTE]: {
+                        purchaseLocations: ['OnBoard'],
+                        paymentMethods: [],
+                        ticketFormats: [],
+                        errors,
+                    },
+                },
+            });
 
-        //     const ctx = getMockContext({
-        //         session: {
-        //             [SALES_OFFER_PACKAGES_ATTRIBUTE]: {
-        //                 body: {
-        //                     ticketsPurchasedFrom: ['OnBoard'],
-        //                     ticketPayments: [],
-        //                     ticketFormats: [],
-        //                     errors,
-        //                 },
-        //             },
-        //         },
-        //     });
+            const expectedProps: SalesOfferPackageInfoWithErrors = {
+                purchaseLocations: ['OnBoard'],
+                paymentMethods: [],
+                ticketFormats: [],
+                errors,
+            };
 
-        //     const result = getServerSideProps(ctx);
-
-        //     expect(result.props.ticketsPurchasedFrom.selected.length).toBe(1);
-        //     expect(result.props.ticketPayments.selected.length).toBe(0);
-        //     expect(result.props.ticketFormats.selected.length).toBe(0);
-        //     expect(result.props.errors.length).toBe(2);
-        // });
+            const result = getServerSideProps(ctx).props.salesOfferPackage;
+            expect(result).toEqual(expectedProps);
+        });
     });
 });

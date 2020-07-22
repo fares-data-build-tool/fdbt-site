@@ -60,7 +60,9 @@ export const PRICE_ENTRY_INPUTS_COOKIE = 'fdbt-price-entry-inputs';
 
 export const PRICE_ENTRY_ERRORS_COOKIE = 'fdbt-price-entry-errors';
 
-export const SOP_ATTRIBUTE = 'fdbt-sales-offer-packages';
+export const SOP_ATTRIBUTE = 'fdbt-sales-offer-package';
+
+export const SOP_INFO_ATTRIBUTE = 'fdbt-sales-offer-package-info';
 
 export const SALES_OFFER_PACKAGES_ATTRIBUTE = 'fdbt-select-sales-offer-packages';
 
