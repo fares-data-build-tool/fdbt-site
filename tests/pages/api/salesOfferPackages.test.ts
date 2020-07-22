@@ -1,13 +1,17 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import salesOfferPackages from '../../../src/pages/api/salesOfferPackages';
-
+import salesOfferPackages, {
+    SalesOfferPackageInfoWithErrors,
+    SalesOfferPackageInfo,
+} from '../../../src/pages/api/salesOfferPackages';
 import * as session from '../../../src/utils/sessions';
+import { SOP_INFO_ATTRIBUTE } from '../../../src/constants';
+import { ErrorInfo } from '../../../src/interfaces';
 
 jest.mock('../../../src/utils/sessions.ts');
 
 describe('salesOfferPackages', () => {
-    const writeHeadMock = jest.fn();
-    const updateSessionAttribute = jest.spyOn(session, 'updateSessionAttribute');
+    const mockErrorObject: ErrorInfo = { errorMessage: expect.any(String), id: expect.any(String) };
+    const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -16,120 +20,118 @@ describe('salesOfferPackages', () => {
     it('redirects back to /salesOfferPackages if there are no options selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
-            mockWriteHeadFn: writeHeadMock,
         });
 
         salesOfferPackages(req, res);
 
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
 
-    it('redirects back to /salesOfferPackages if only one ticket purchased from option is selected', () => {
+    it('redirects back to /salesOfferPackages if only one purchaseLocation is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ticketsPurchasedFrom: 'OnBoard',
+                purchaseLocations: 'OnBoard',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
+        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+            purchaseLocations: ['OnBoard'],
+            ticketFormats: [],
+            paymentMethods: [],
+            errors: [mockErrorObject, mockErrorObject],
+        };
 
         salesOfferPackages(req, res);
 
-        const updateSessionAttributeCall = updateSessionAttribute.mock.calls[0][2];
-        expect(updateSessionAttributeCall.body.errors.length).toBe(2);
-        expect(updateSessionAttributeCall.body.ticketsPurchasedFrom.length).toBe(1);
-        expect(updateSessionAttributeCall.body.ticketsPurchasedFrom[0]).toEqual('OnBoard');
-        expect(updateSessionAttribute).toHaveBeenCalled();
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
 
-    it('redirects back to /salesOfferPackages if only one option in ticket payments is selected', () => {
+    it('redirects back to /salesOfferPackages if only one paymentMethod is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ticketPayments: 'Cash',
+                paymentMethods: 'Cash',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
+        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+            purchaseLocations: [],
+            ticketFormats: [],
+            paymentMethods: ['Cash'],
+            errors: [mockErrorObject, mockErrorObject],
+        };
 
         salesOfferPackages(req, res);
 
-        const updateSessionAttributeCall = updateSessionAttribute.mock.calls[0][2];
-        expect(updateSessionAttributeCall.body.errors.length).toBe(2);
-        expect(updateSessionAttributeCall.body.ticketPayments.length).toBe(1);
-        expect(updateSessionAttributeCall.body.ticketPayments[0]).toEqual('Cash');
-        expect(updateSessionAttribute).toHaveBeenCalled();
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
 
-    it('redirects back to /salesOfferPackages if only one option in ticket formats is selected', () => {
+    it('redirects back to /salesOfferPackages if only one ticketFormat is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ticketFormats: 'Paper Ticket',
             },
-            mockWriteHeadFn: writeHeadMock,
         });
+        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+            purchaseLocations: [],
+            ticketFormats: ['Paper Ticket'],
+            paymentMethods: [],
+            errors: [mockErrorObject, mockErrorObject],
+        };
 
         salesOfferPackages(req, res);
 
-        const updateSessionAttributeCall = updateSessionAttribute.mock.calls[0][2];
-        expect(updateSessionAttributeCall.body.errors.length).toBe(2);
-        expect(updateSessionAttributeCall.body.ticketFormats.length).toBe(1);
-        expect(updateSessionAttributeCall.body.ticketFormats[0]).toEqual('Paper Ticket');
-        expect(updateSessionAttribute).toHaveBeenCalled();
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
 
-    it('redirects back to /salesOfferPackages if multiple options selected from each section apart from one', () => {
+    it('redirects back to /salesOfferPackages if one selection is missing', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ticketsPurchasedFrom: ['OnBoard', 'Online Account'],
+                purchaseLocations: ['OnBoard', 'Online Account'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             },
-            mockWriteHeadFn: writeHeadMock,
         });
+        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+            purchaseLocations: ['OnBoard', 'Online Account'],
+            ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+            paymentMethods: [],
+            errors: [mockErrorObject],
+        };
 
         salesOfferPackages(req, res);
 
-        const updateSessionAttributeCall = updateSessionAttribute.mock.calls[0][2];
-        expect(updateSessionAttributeCall.body.errors.length).toBe(1);
-        expect(updateSessionAttributeCall.body.ticketsPurchasedFrom.length).toBe(2);
-        expect(updateSessionAttributeCall.body.ticketsPurchasedFrom).toEqual(['OnBoard', 'Online Account']);
-        expect(updateSessionAttributeCall.body.ticketFormats.length).toBe(2);
-        expect(updateSessionAttributeCall.body.ticketFormats).toEqual(['Paper Ticket', 'Debit/Credit card']);
-        expect(updateSessionAttribute).toHaveBeenCalled();
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/salesOfferPackages',
         });
     });
 
-    it('redirects back to /describeSalesOfferPackage when at least one option has been selected from each section', () => {
+    it('redirects to /describeSalesOfferPackage when at least one option has been selected from each section', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                ticketsPurchasedFrom: ['OnBoard', 'Online Account'],
-                ticketPayments: ['Cash'],
+                purchaseLocations: ['OnBoard', 'Online Account'],
+                paymentMethods: ['Cash'],
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             },
-            mockWriteHeadFn: writeHeadMock,
         });
+        const expectedSessionAttributeCall: SalesOfferPackageInfo = {
+            purchaseLocations: ['OnBoard', 'Online Account'],
+            ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
+            paymentMethods: ['Cash'],
+        };
 
         salesOfferPackages(req, res);
 
-        const updateSessionAttributeCall = updateSessionAttribute.mock.calls[0][2];
-        expect(updateSessionAttributeCall.body.ticketsPurchasedFrom.length).toBe(2);
-        expect(updateSessionAttributeCall.body.ticketsPurchasedFrom).toEqual(['OnBoard', 'Online Account']);
-        expect(updateSessionAttributeCall.body.ticketFormats.length).toBe(2);
-        expect(updateSessionAttributeCall.body.ticketFormats).toEqual(['Paper Ticket', 'Debit/Credit card']);
-        expect(updateSessionAttributeCall.body.ticketPayments.length).toBe(1);
-        expect(updateSessionAttributeCall.body.ticketPayments).toEqual(['Cash']);
-        expect(updateSessionAttribute).toHaveBeenCalled();
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_INFO_ATTRIBUTE, expectedSessionAttributeCall);
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/describeSalesOfferPackage',
         });
     });

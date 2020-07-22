@@ -1,13 +1,44 @@
-import { IncomingMessageWithSession, NextApiRequestWithSession, SessionContents } from '../interfaces';
+import { IncomingMessageWithSession } from '../interfaces';
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
+import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
+import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
 
-export const updateSessionAttribute = (
-    req: IncomingMessageWithSession | NextApiRequestWithSession,
-    attributeName: string,
-    attributeValue: SessionContents,
+type GetSessionAttributeTypes = {
+    [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
+    [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
+};
+
+type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
+    req: IncomingMessageWithSession,
+    attributeName: Key,
+) => GetSessionAttributeTypes[Key];
+
+export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWithSession, attributeName) =>
+    req?.session?.[attributeName];
+
+type UpdateSessionAttributeTypes = {
+    [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
+    [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
+};
+
+type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
+    req: IncomingMessageWithSession,
+    attributeName: Key,
+    attributeValue: UpdateSessionAttributeTypes[Key],
+) => void;
+
+export const updateSessionAttribute: UpdateSessionAttribute = (
+    req: IncomingMessageWithSession,
+    attributeName,
+    attributeValue,
 ): void => {
     req.session[attributeName] = attributeValue;
 };
 
-export const getSessionAttribute = (req: IncomingMessageWithSession, attributeName: string): any => {
-    return req?.session?.[attributeName]?.body;
+export const destroySession = (req: IncomingMessageWithSession): void => {
+    req.session.destroy(err => {
+        if (err) {
+            throw new Error('Could not destroy session');
+        }
+    });
 };

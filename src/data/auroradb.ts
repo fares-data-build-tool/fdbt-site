@@ -1,6 +1,7 @@
 import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
+import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
 
 export interface ServiceType {
     lineName: string;
@@ -296,4 +297,28 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         operatorShortName: service.operatorShortName,
         journeyPatterns: rawPatternService,
     };
+};
+
+export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
+    console.info('inserting sales offer package into salesOfferPackage table for given noc', { noc: nocCode });
+
+    const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
+    const paymentMethods = salesOfferPackage.paymentMethods.toString();
+    const ticketFormats = salesOfferPackage.ticketFormats.toString();
+
+    const insertQuery = `INSERT INTO salesOfferPackage 
+    (nocCode, name, description, purchaseLocation, paymentMethod, ticketFormat) 
+    VALUES (?, ?, ?, ?, ?, ?)`;
+    try {
+        await executeQuery(insertQuery, [
+            nocCode,
+            salesOfferPackage.name,
+            salesOfferPackage.description,
+            purchaseLocations,
+            paymentMethods,
+            ticketFormats,
+        ]);
+    } catch (error) {
+        throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
+    }
 };

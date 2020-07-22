@@ -3,74 +3,73 @@ import { isArray } from 'lodash';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../../constants';
-import { ticketsPurchasedList, ticketPaymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
+import { SOP_INFO_ATTRIBUTE } from '../../constants';
+import { purchaseLocationsList, paymentMethodsList, ticketFormatsList } from '../salesOfferPackages';
+
+export interface SalesOfferPackageInfo {
+    purchaseLocations: string[];
+    paymentMethods: string[];
+    ticketFormats: string[];
+}
+
+export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
+    errors: ErrorInfo[];
+}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];
 
     try {
-        if (Object.keys(req.body).length === 0) {
+        let { purchaseLocations, paymentMethods, ticketFormats } = req.body;
+
+        if (!purchaseLocations) {
             errors.push({
-                id: '',
-                errorMessage: 'Select at least one item for each section',
-            });
-
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
-                body: { errors },
-            });
-
-            redirectTo(res, '/salesOfferPackages');
-            return;
-        }
-
-        let { ticketsPurchasedFrom, ticketPayments, ticketFormats } = req.body;
-
-        if (!ticketsPurchasedFrom) {
-            errors.push({
-                errorMessage: 'Select at least one option for ticket purchase',
-                id: ticketsPurchasedList.id,
+                errorMessage: 'Select at least one ticket purchase location',
+                id: purchaseLocationsList.id,
             });
         }
 
-        if (!ticketPayments) {
+        if (!paymentMethods) {
             errors.push({
-                errorMessage: 'Select at least one ticket payment',
-                id: ticketPaymentMethodsList.id,
+                errorMessage: 'Select at least one ticket payment method',
+                id: paymentMethodsList.id,
             });
         }
 
         if (!ticketFormats) {
             errors.push({
-                errorMessage: 'Select at least one ticket format',
+                errorMessage: 'Select at least one ticket media format',
                 id: ticketFormatsList.id,
             });
         }
 
-        if (ticketsPurchasedFrom && !isArray(ticketsPurchasedFrom)) {
-            ticketsPurchasedFrom = ticketsPurchasedFrom.split();
+        if (purchaseLocations && !isArray(purchaseLocations)) {
+            purchaseLocations = purchaseLocations.split();
         }
 
-        if (ticketPayments && !isArray(ticketPayments)) {
-            ticketPayments = ticketPayments.split();
+        if (paymentMethods && !isArray(paymentMethods)) {
+            paymentMethods = paymentMethods.split();
         }
 
         if (ticketFormats && !isArray(ticketFormats)) {
             ticketFormats = ticketFormats.split();
         }
 
+        const salesOfferPackageInfo: SalesOfferPackageInfo = {
+            purchaseLocations: purchaseLocations || [],
+            paymentMethods: paymentMethods || [],
+            ticketFormats: ticketFormats || [],
+        };
+
         if (errors.length > 0) {
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
-                body: { errors, ticketsPurchasedFrom, ticketPayments, ticketFormats },
-            });
+            (salesOfferPackageInfo as SalesOfferPackageInfoWithErrors).errors = errors;
+            updateSessionAttribute(req, SOP_INFO_ATTRIBUTE, salesOfferPackageInfo);
 
             redirectTo(res, '/salesOfferPackages');
             return;
         }
 
-        updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, {
-            body: { ticketsPurchasedFrom, ticketPayments, ticketFormats },
-        });
+        updateSessionAttribute(req, SOP_INFO_ATTRIBUTE, salesOfferPackageInfo);
 
         redirectTo(res, '/describeSalesOfferPackage');
     } catch (err) {

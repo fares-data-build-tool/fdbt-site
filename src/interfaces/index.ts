@@ -35,6 +35,7 @@ export interface PassengerDetails {
 export interface ErrorInfo {
     errorMessage: string;
     id: string;
+    userInput?: string;
 }
 
 export interface InputCheck {
@@ -73,14 +74,15 @@ export interface Breadcrumb {
 export interface Session {
     session: Express.Session;
 }
+
 export type NextApiRequestWithSession = NextApiRequest & Session;
+
 export type NextPageContextWithSession = NextPageContext & {
     req: Session;
 };
+
 export type DocumentContextWithSession = DocumentContext & {
     req: Session;
 };
+
 export type IncomingMessageWithSession = IncomingMessage & Session;
-export interface SessionContents {
-    body: any;
-}
