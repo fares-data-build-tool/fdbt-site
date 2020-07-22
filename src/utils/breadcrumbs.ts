@@ -114,8 +114,8 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
             show: isReturn && !isCircular,
         },
         {
-            name: 'How are the tickets sold',
-            link: '/describeSalesOfferPackages',
+            name: 'Describe sales offer package',
+            link: '/describeSalesOfferPackage',
             show: isReturn && !isCircular,
         },
     ];
@@ -172,8 +172,8 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
             show: isFlatFare || isSingleProduct || isMultiProduct,
         },
         {
-            name: 'How are the tickets sold',
-            link: '/describeSalesOfferPackages',
+            name: 'Describe sales offer package',
+            link: '/describeSalesOfferPackage',
             show: isFlatFare || isSingleProduct || isMultiProduct,
         },
     ];
