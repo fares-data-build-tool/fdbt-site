@@ -1,89 +1,97 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import ServiceList, { ServiceListProps, getServerSideProps } from '../../src/pages/serviceList';
+import SelectSalesOfferPackage, {
+    SelectSalesOfferPackageProps,
+    getServerSideProps,
+} from '../../src/pages/selectSalesOfferPackage';
 import { getMockContext } from '../testData/mockData';
-import { getServicesByNocCode, ServiceType } from '../../src/data/auroradb';
-import { ServicesInfo } from '../../src/interfaces';
+import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
+import { SalesOfferPackage } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
-    const serviceInfoNoError: ServiceListProps = {
-        service: {
-            selectedServices: [],
-        },
-        buttonText: 'Select All',
+    const selectSalesOfferPackagePropsInfoNoError: SelectSalesOfferPackageProps = {
+        salesOfferPackagesList: [],
         error: [],
     };
 
-    const serviceInfoWithError: ServiceListProps = {
-        service: {
-            selectedServices: [],
-        },
-        buttonText: 'Select All',
-        error: [
-            {
-                errorMessage: 'Choose at least one service from the list',
-                id: 'id',
-            },
-        ],
+    const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
+        salesOfferPackagesList: [],
+        error: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
     };
-
-    const mockServices: ServiceType[] = [
-        {
-            lineName: '123',
-            startDate: '05/02/2020',
-            description: 'IW Bus Service 123',
-            serviceCode: 'NW_05_BLAC_123_1',
-        },
-        {
-            lineName: 'X1',
-            startDate: '06/02/2020',
-            description: 'Big Blue Bus Service X1',
-            serviceCode: 'NW_05_BLAC_X1_1',
-        },
-        {
-            lineName: 'Infinity Line',
-            startDate: '07/02/2020',
-            description: 'This is some kind of bus service',
-            serviceCode: 'WY_13_IWBT_07_1',
-        },
-    ];
-
-    beforeEach(() => {
-        (getServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
-    });
 
     describe('serviceList', () => {
         it('should render correctly', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<ServiceList {...serviceInfoNoError} csrfToken="" pageProps={[]} />);
+            const tree = shallow(
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                <SelectSalesOfferPackage {...selectSalesOfferPackagePropsInfoNoError} csrfToken="" pageProps={[]} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
-        it('should render an error when the error flag is set to true', () => {
+        it('should render an error when an error message is passed through to props', () => {
             // eslint-disable-next-line react/jsx-props-no-spreading
-            const tree = shallow(<ServiceList {...serviceInfoWithError} csrfToken="" pageProps={[]} />);
+            const tree = shallow(
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                <SelectSalesOfferPackage {...selectSalesOfferPackagePropsInfoWithError} csrfToken="" pageProps={[]} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         describe('getServerSideProps', () => {
-            it('should return expected props to the page when the page is first visited by the user', async () => {
-                const ctx = getMockContext({ cookies: { selectedServices: null } });
+            it('should return expected props to the page when the page is visited by a user with stored sales offer packages', async () => {
+                const mockSalesOfferPackages: SalesOfferPackage[] = [
+                    {
+                        name: 'IW Bus Co - Package 1',
+                        description: 'On bus - Cash - Paper Ticket',
+                        purchaseLocation: ['On bus'],
+                        paymentMethod: ['Cash'],
+                        ticketFormat: ['Paper ticket'],
+                    },
+                    {
+                        name: 'IW Bus Co - Package 2',
+                        description: 'Online App - Card via App - eTicket',
+                        purchaseLocation: ['Online App'],
+                        paymentMethod: ['Card via App'],
+                        ticketFormat: ['eTicket'],
+                    },
+                    {
+                        name: 'IW Bus Co - Package 3',
+                        description: 'Ticket Machine - Card - Pass',
+                        purchaseLocation: ['Ticket Machine'],
+                        paymentMethod: ['Card'],
+                        ticketFormat: ['Pass'],
+                    },
+                ];
+                (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
+                const ctx = getMockContext();
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map(mockService => {
-                    return {
-                        ...mockService,
-                        serviceDescription: mockService.description,
-                        checked: false,
-                    };
-                });
+                const expectedSalesOfferPackageList: SalesOfferPackage[] = mockSalesOfferPackages.map(
+                    mockSalesOfferPackage => {
+                        return {
+                            ...mockSalesOfferPackage,
+                        };
+                    },
+                );
                 expect(result.props.error.length).toBe(0);
-                expect(result.props.service.selectedServices).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All');
+                expect(result.props.salesOfferPackagesList).toEqual(expectedSalesOfferPackageList);
             });
 
-            it('should throw an error when necessary cookies missing', async () => {
+            it('should redirect to /salesOfferPackage when the user has no stored sales offer packageses', async () => {
+                const writeHeadMock = jest.fn();
+
+                const mockSalesOfferPackages: SalesOfferPackage[] = [];
+                (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
+                const ctx = getMockContext({ mockWriteHeadFn: writeHeadMock });
+                await getServerSideProps(ctx);
+                expect(writeHeadMock).toBeCalledWith(302, {
+                    Location: '/salesOfferPackage',
+                });
+            });
+
+            it('should throw an error when necessary nocCode is missing', async () => {
                 const ctx = getMockContext({
                     cookies: { operator: null },
                     body: null,
@@ -93,7 +101,7 @@ describe('pages', () => {
                     isLoggedin: false,
                 });
                 await expect(getServerSideProps(ctx)).rejects.toThrow(
-                    'Necessary cookies not found to show serviceList page',
+                    'Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page',
                 );
             });
         });

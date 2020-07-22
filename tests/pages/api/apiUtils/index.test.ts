@@ -7,6 +7,7 @@ import {
     getAttributeFromIdToken,
     validateNewPassword,
     getSelectedStages,
+    getSingleTicketJson
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../../testData/mockData';
@@ -201,6 +202,14 @@ describe('apiUtils', () => {
         it.only('should return a string array', () => {
             const { req } = getMockRequestAndResponse({});
             const result = getSelectedStages(req);
+            expect(result).toEqual([]);
+        });
+    });
+
+    describe('getSingleTicketJson', () => {
+        it.only('should return a string a SingleTicket object', () => {
+            const { req, res } = getMockRequestAndResponse({});
+            const result = getSingleTicketJson(req, res);
             expect(result).toEqual([]);
         });
     });

@@ -26,7 +26,7 @@ describe('salesOfferPackages', () => {
         });
     });
 
-    it('redirects back to /salesOfferPackages if only one ticket purchased from option is selected', () => {
+    it.only('redirects back to /salesOfferPackages if only one ticket purchased from option is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ticketsPurchasedFrom: 'OnBoard',

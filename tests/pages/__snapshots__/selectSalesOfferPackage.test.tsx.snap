@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages serviceList should render an error when the error flag is set to true 1`] = `
+exports[`pages serviceList should render an error when an error message is passed through to props 1`] = `
 <Component
-  description="Service List selection page of the Fares Data Build Tool"
-  title="Service List - Fares Data Build Tool"
+  description="Sales Offer Package selection page of the Fares Data Build Tool"
+  title="Select Sales Offer Package - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/serviceList"
+    action="/api/selectSalesOfferPackage"
     csrfToken=""
     method="post"
   >
@@ -14,8 +14,8 @@ exports[`pages serviceList should render an error when the error flag is set to 
       errors={
         Array [
           Object {
-            "errorMessage": "Choose at least one service from the list",
-            "id": "id",
+            "errorMessage": "Choose at least one service from the options",
+            "id": "sales-offer-package-error",
           },
         ]
       }
@@ -24,7 +24,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
       className="govuk-form-group"
     >
       <fieldset
-        aria-describedby="service-list-page-heading"
+        aria-describedby="select-sales-offer-package-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -32,9 +32,9 @@ exports[`pages serviceList should render an error when the error flag is set to 
         >
           <h1
             className="govuk-fieldset__heading"
-            id="service-list-page-heading"
+            id="select-sales-offer-package-page-heading"
           >
-            Which service(s) is the ticket valid for?
+            How are the tickets sold?
           </h1>
         </legend>
         <span
@@ -44,41 +44,61 @@ exports[`pages serviceList should render an error when the error flag is set to 
           <span
             className=""
           >
-            Choose at least one service from the list
+            Choose at least one service from the options
           </span>
         </span>
+        <div>
+          <p
+            className="govuk-body"
+          >
+            To create NeTEx for your fare it needs to contain the following:
+          </p>
+          <ol
+            className="govuk-list govuk-list--number"
+          >
+            <li>
+              Where a ticket can be bought
+            </li>
+            <li>
+              What payment method it can be bought with
+            </li>
+            <li>
+              What format the ticket is provided to the passenger in
+            </li>
+          </ol>
+          <p
+            className="govuk-body"
+          >
+            This combination of information is called a 
+            <strong>
+              sales offer package
+            </strong>
+            . You can choose from one you have already setup or create a new one for these products.
+          </p>
+          <p
+            className="govuk-body"
+          >
+            Choose from your previously used sales offer packages or create a new one:
+          </p>
+          <p
+            className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+          >
+            Your sales offer packages
+          </p>
+        </div>
       </fieldset>
       <fieldset
         aria-describedby="service-list-hint"
         className="govuk-fieldset"
       >
-        <span
-          className="govuk-hint"
-          id="service-list-hint"
-        >
-          Select all services that apply
-        </span>
-        <input
-          className="govuk-button govuk-button--secondary"
-          id="select-all-button"
-          name="selectAll"
-          type="submit"
-          value="Select All"
-        />
-        <span
-          className="govuk-hint"
-          id="traveline-hint"
-        >
-          This data is taken from the Traveline National Dataset.
-        </span>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="service-list-error"
+          errorId="sales-offer-package-error"
           errors={
             Array [
               Object {
-                "errorMessage": "Choose at least one service from the list",
-                "id": "id",
+                "errorMessage": "Choose at least one service from the options",
+                "id": "sales-offer-package-error",
               },
             ]
           }
@@ -90,22 +110,32 @@ exports[`pages serviceList should render an error when the error flag is set to 
       </fieldset>
     </div>
     <input
-      className="govuk-button"
+      className="govuk-button govuk-!-margin-right-8"
       id="continue-button"
       type="submit"
       value="Continue"
     />
+    <a
+      className="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      draggable="false"
+      href="/salesOfferPackages"
+      id="create-new-button"
+      role="button"
+    >
+      Create New
+    </a>
   </CsrfForm>
 </Component>
 `;
 
 exports[`pages serviceList should render correctly 1`] = `
 <Component
-  description="Service List selection page of the Fares Data Build Tool"
-  title="Service List - Fares Data Build Tool"
+  description="Sales Offer Package selection page of the Fares Data Build Tool"
+  title="Select Sales Offer Package - Fares Data Build Tool"
 >
   <CsrfForm
-    action="/api/serviceList"
+    action="/api/selectSalesOfferPackage"
     csrfToken=""
     method="post"
   >
@@ -116,7 +146,7 @@ exports[`pages serviceList should render correctly 1`] = `
       className="govuk-form-group"
     >
       <fieldset
-        aria-describedby="service-list-page-heading"
+        aria-describedby="select-sales-offer-package-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -124,9 +154,9 @@ exports[`pages serviceList should render correctly 1`] = `
         >
           <h1
             className="govuk-fieldset__heading"
-            id="service-list-page-heading"
+            id="select-sales-offer-package-page-heading"
           >
-            Which service(s) is the ticket valid for?
+            How are the tickets sold?
           </h1>
         </legend>
         <span
@@ -137,33 +167,53 @@ exports[`pages serviceList should render correctly 1`] = `
             className="govuk-visually-hidden"
           />
         </span>
+        <div>
+          <p
+            className="govuk-body"
+          >
+            To create NeTEx for your fare it needs to contain the following:
+          </p>
+          <ol
+            className="govuk-list govuk-list--number"
+          >
+            <li>
+              Where a ticket can be bought
+            </li>
+            <li>
+              What payment method it can be bought with
+            </li>
+            <li>
+              What format the ticket is provided to the passenger in
+            </li>
+          </ol>
+          <p
+            className="govuk-body"
+          >
+            This combination of information is called a 
+            <strong>
+              sales offer package
+            </strong>
+            . You can choose from one you have already setup or create a new one for these products.
+          </p>
+          <p
+            className="govuk-body"
+          >
+            Choose from your previously used sales offer packages or create a new one:
+          </p>
+          <p
+            className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+          >
+            Your sales offer packages
+          </p>
+        </div>
       </fieldset>
       <fieldset
         aria-describedby="service-list-hint"
         className="govuk-fieldset"
       >
-        <span
-          className="govuk-hint"
-          id="service-list-hint"
-        >
-          Select all services that apply
-        </span>
-        <input
-          className="govuk-button govuk-button--secondary"
-          id="select-all-button"
-          name="selectAll"
-          type="submit"
-          value="Select All"
-        />
-        <span
-          className="govuk-hint"
-          id="traveline-hint"
-        >
-          This data is taken from the Traveline National Dataset.
-        </span>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="service-list-error"
+          errorId="sales-offer-package-error"
           errors={Array []}
         >
           <div
@@ -173,11 +223,21 @@ exports[`pages serviceList should render correctly 1`] = `
       </fieldset>
     </div>
     <input
-      className="govuk-button"
+      className="govuk-button govuk-!-margin-right-8"
       id="continue-button"
       type="submit"
       value="Continue"
     />
+    <a
+      className="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      draggable="false"
+      href="/salesOfferPackages"
+      id="create-new-button"
+      role="button"
+    >
+      Create New
+    </a>
   </CsrfForm>
 </Component>
 `;

@@ -4,8 +4,10 @@ import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interf
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
+import { SOP_ATTRIBUTE } from '../constants';
 import FormElementWrapper from '../components/FormElementWrapper';
+import { SalesOfferPackageWithErrors } from './api/describeSalesOfferPackage';
+import { SalesOfferPackageInfo } from './describeSalesOfferPackage';
 
 const title = 'Sales Offer Packages - Fares Data Build Tool';
 const description = 'Sales Offer Packages page for the Fares Data Build Tool';
@@ -209,8 +211,12 @@ const SalesOfferPackages = ({
     );
 };
 
+export const isSalesOfferPackageWithErrors = (
+    sopAttribute: SalesOfferPackageInfo | SalesOfferPackage | SalesOfferPackageWithErrors,
+): sopAttribute is SalesOfferPackageWithErrors => (sopAttribute as SalesOfferPackageWithErrors)?.errors.length > 0;
+
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SalesOfferPackagesProps } => {
-    const salesPackageOffer = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
+    const salesPackageOffer = getSessionAttribute(ctx.req, SOP_ATTRIBUTE);
 
     if (!salesPackageOffer) {
         return {
@@ -223,14 +229,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
         };
     }
 
-    const { ticketsPurchasedFrom, ticketPayments, ticketFormats } = salesPackageOffer;
+    const { purchaseLocation, paymentMethod, ticketFormat } = salesPackageOffer;
 
     return {
         props: {
-            ticketsPurchasedFrom: { selected: ticketsPurchasedFrom || [] },
-            ticketPayments: { selected: ticketPayments || [] },
-            ticketFormats: { selected: ticketFormats || [] },
-            errors: salesPackageOffer.errors,
+            ticketsPurchasedFrom: { selected: purchaseLocation || [] },
+            ticketPayments: { selected: paymentMethod || [] },
+            ticketFormats: { selected: ticketFormat || [] },
+            errors: isSalesOfferPackageWithErrors(salesPackageOffer) ? salesPackageOffer.errors : [],
         },
     };
 };
