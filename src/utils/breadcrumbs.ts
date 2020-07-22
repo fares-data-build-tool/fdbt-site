@@ -113,6 +113,11 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
             link: '/salesOfferPackages',
             show: isReturn && !isCircular,
         },
+        {
+            name: 'How are the tickets sold',
+            link: '/describeSalesOfferPackages',
+            show: isReturn && !isCircular,
+        },
     ];
 
     const getPeriodAndFlatFareBreadcrumbs = (): Breadcrumb[] => [
@@ -164,6 +169,11 @@ export default (ctx: NextPageContext): { generate: () => Breadcrumb[] } => {
         {
             name: 'How are the tickets sold',
             link: '/salesOfferPackages',
+            show: isFlatFare || isSingleProduct || isMultiProduct,
+        },
+        {
+            name: 'How are the tickets sold',
+            link: '/describeSalesOfferPackages',
             show: isFlatFare || isSingleProduct || isMultiProduct,
         },
     ];
