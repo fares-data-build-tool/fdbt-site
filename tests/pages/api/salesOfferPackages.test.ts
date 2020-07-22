@@ -1,7 +1,9 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import salesOfferPackages, { SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
+import salesOfferPackages, {
+    SalesOfferPackageInfoWithErrors,
+    SalesOfferPackageInfo,
+} from '../../../src/pages/api/salesOfferPackages';
 import * as session from '../../../src/utils/sessions';
-import { SalesOfferPackageInfo } from '../../../src/pages/describeSalesOfferPackage';
 import { SOP_INFO_ATTRIBUTE } from '../../../src/constants';
 import { ErrorInfo } from '../../../src/interfaces';
 

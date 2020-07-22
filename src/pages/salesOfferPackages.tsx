@@ -7,8 +7,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { SOP_INFO_ATTRIBUTE } from '../constants';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { SalesOfferPackageInfo } from './describeSalesOfferPackage';
-import { SalesOfferPackageInfoWithErrors } from './api/salesOfferPackages';
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from './api/salesOfferPackages';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
 
 const title = 'Sales Offer Packages - Fares Data Build Tool';

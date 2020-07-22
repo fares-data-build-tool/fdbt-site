@@ -4,10 +4,11 @@ import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo, getNocFromIdToken } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
-import { SalesOfferPackageInfo, isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
+import { isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isSalesOfferPackageInfoWithErrors } from '../salesOfferPackages';
 import { insertSalesOfferPackage } from '../../data/auroradb';
+import { SalesOfferPackageInfo } from './salesOfferPackages';
 
 export interface SalesOfferPackage extends SalesOfferPackageInfo {
     name: string;

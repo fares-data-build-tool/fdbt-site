@@ -5,12 +5,11 @@ import describeSalesOfferPackage, {
     SalesOfferPackageWithErrors,
 } from '../../../src/pages/api/describeSalesOfferPackage';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { SalesOfferPackageInfo } from '../../../src/pages/describeSalesOfferPackage';
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
 import { ErrorInfo } from '../../../src/interfaces';
 import * as sessionUtils from '../../../src/utils/sessions';
 import * as aurora from '../../../src/data/auroradb';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../../src/constants';
-import { SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
 
 describe('describeSalesOfferPackage', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');

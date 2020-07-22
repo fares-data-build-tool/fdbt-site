@@ -1,6 +1,5 @@
 import { IncomingMessageWithSession } from '../interfaces';
-import { SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
-import { SalesOfferPackageInfo } from '../pages/describeSalesOfferPackage';
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
 

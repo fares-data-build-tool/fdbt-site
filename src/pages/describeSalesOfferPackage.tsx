@@ -8,15 +8,10 @@ import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from './api/describeSalesOfferPackage';
 import { getSessionAttribute } from '../utils/sessions';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
+import { SalesOfferPackageInfo } from './api/salesOfferPackages';
 
 const title = 'Sales Offer Package Description - Fares Data Build Tool';
 const description = 'Sales Offer Package Description page of the Fares Data Build Tool';
-
-export interface SalesOfferPackageInfo {
-    purchaseLocations: string[];
-    paymentMethods: string[];
-    ticketFormats: string[];
-}
 
 interface DescribeSopProps {
     sopInfo: SalesOfferPackageInfo | SalesOfferPackageWithErrors | undefined;

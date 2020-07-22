@@ -4,8 +4,7 @@ import SalesOfferPackages, { getServerSideProps, SalesOfferPackagesProps } from 
 import { getMockContext } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../src/constants';
-import { SalesOfferPackageInfoWithErrors } from '../../src/pages/api/salesOfferPackages';
-import { SalesOfferPackageInfo } from '../../src/pages/describeSalesOfferPackage';
+import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../src/pages/api/salesOfferPackages';
 
 describe('pages', () => {
     afterEach(() => {

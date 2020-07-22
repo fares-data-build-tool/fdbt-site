@@ -1,9 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import DescribeSalesOfferPackage, {
-    getServerSideProps,
-    SalesOfferPackageInfo,
-} from '../../src/pages/describeSalesOfferPackage';
+import DescribeSalesOfferPackage, { getServerSideProps } from '../../src/pages/describeSalesOfferPackage';
+import { SalesOfferPackageInfo } from '../../src/pages/api/salesOfferPackages';
 import { getMockContext } from '../testData/mockData';
 import { SOP_INFO_ATTRIBUTE, SOP_ATTRIBUTE } from '../../src/constants';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../../src/pages/api/describeSalesOfferPackage';
