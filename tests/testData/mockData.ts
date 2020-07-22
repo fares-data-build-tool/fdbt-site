@@ -1026,6 +1026,19 @@ export const expectedMatchingJsonSingle = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    products: [
+        {
+            salesOfferPacakge: [
+                {
+                    name: '',
+                    description: '',
+                    purchaseLocation: ['', ''],
+                    paymentMethod: ['', ''],
+                    ticketFormat: ['', ''],
+                },
+            ],
+        },
+    ],
     fareZones: [
         {
             name: 'Acomb Green Lane',
