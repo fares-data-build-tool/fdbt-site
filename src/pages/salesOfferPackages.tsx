@@ -15,32 +15,12 @@ const description = 'Sales Offer Packages page for the Fares Data Build Tool';
 
 export const purchaseLocationsList = {
     id: 'purchaseLocations',
-    method: [
-        'onBoard',
-        'online',
-        'onlineAccount',
-        'telephone',
-        'electronicPass',
-        'mobileDevice',
-        'agency',
-        'tourOperator',
-    ],
+    method: ['onBoard', 'online', 'mobileDevice'],
 };
 
 export const paymentMethodsList = {
     id: 'paymentMethods',
-    paymentMethods: [
-        'cash',
-        'debitCard',
-        'creditCard',
-        'contactlessPaymentCard',
-        'mobilePhone',
-        'sms',
-        'cheque',
-        'bankTransfer',
-        'warrant',
-        'voucher',
-    ],
+    paymentMethods: ['cash', 'debitCard', 'creditCard', 'mobilePhone'],
 };
 
 export const ticketFormatsList = {
