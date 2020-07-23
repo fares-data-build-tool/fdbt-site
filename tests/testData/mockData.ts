@@ -1128,9 +1128,9 @@ export const expectedMatchingJsonSingle = {
                 {
                     name: 'Onboard',
                     description: 'Cash, Card',
-                    purchaseLocation: ['onBoard'],
-                    paymentMethod: ['cash', 'debitcard', 'creditCard', 'contactlessPaymentCard', 'mobilePhone'],
-                    ticketFormat: ['paperTicket'],
+                    purchaseLocations: ['onBoard'],
+                    paymentMethods: ['cash', 'debitcard', 'creditCard', 'contactlessPaymentCard', 'mobilePhone'],
+                    ticketFormats: ['paperTicket'],
                 },
             ],
         },

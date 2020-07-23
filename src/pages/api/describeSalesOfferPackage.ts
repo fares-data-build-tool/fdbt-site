@@ -76,9 +76,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         let salesOfferPackageInfo: SalesOfferPackage = {
             name: salesOfferPackageName || '',
             description: salesOfferPackageDescription || '',
-            purchaseLocation: salesOfferPackageParams.purchaseLocation,
-            paymentMethod: salesOfferPackageParams.paymentMethod,
-            ticketFormat: salesOfferPackageParams.ticketFormat,
+            purchaseLocations: salesOfferPackageParams.purchaseLocations,
+            paymentMethods: salesOfferPackageParams.paymentMethods,
+            ticketFormats: salesOfferPackageParams.ticketFormats,
         };
 
         salesOfferPackageInfo = await checkUserInput(salesOfferPackageInfo);

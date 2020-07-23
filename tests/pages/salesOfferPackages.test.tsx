@@ -13,17 +13,17 @@ describe('pages', () => {
 
     const salesOfferPackagesNoError: SalesOfferPackagesProps = {
         salesOfferPackage: {
-            purchaseLocation: [],
-            paymentMethod: [],
-            ticketFormat: [],
+            purchaseLocations: [],
+            paymentMethods: [],
+            ticketFormats: [],
         },
     };
 
     const salesOfferPackageWithError: SalesOfferPackagesProps = {
         salesOfferPackage: {
-            purchaseLocation: [],
-            paymentMethod: [],
-            ticketFormat: [],
+            purchaseLocations: [],
+            paymentMethods: [],
+            ticketFormats: [],
             errors: [{ errorMessage: 'error', id: '' }],
         },
     };
@@ -46,36 +46,36 @@ describe('pages', () => {
         it('should show the page correctly when there is no salesPackageOffer session', () => {
             const ctx = getMockContext();
             const expectedProps: SalesOfferPackageInfo = {
-                purchaseLocation: [],
-                paymentMethod: [],
-                ticketFormat: [],
+                purchaseLocations: [],
+                paymentMethods: [],
+                ticketFormats: [],
             };
 
             const result = getServerSideProps(ctx).props.salesOfferPackage;
             expect(result).toEqual(expectedProps);
         });
 
-        it('should set the select purchaseLocation if item has been selected and populate errors if two other sections not selected', () => {
+        it('should set the select purchaseLocations if item has been selected and populate errors if two other sections not selected', () => {
             const errors: ErrorInfo[] = [
-                { errorMessage: 'Select ticket Payments', id: 'paymentMethod' },
-                { errorMessage: 'Select ticket formats', id: 'ticketFormat' },
+                { errorMessage: 'Select ticket Payments', id: 'paymentMethods' },
+                { errorMessage: 'Select ticket formats', id: 'ticketFormats' },
             ];
 
             const ctx = getMockContext({
                 session: {
                     [SOP_INFO_ATTRIBUTE]: {
-                        purchaseLocation: ['OnBoard'],
-                        paymentMethod: [],
-                        ticketFormat: [],
+                        purchaseLocations: ['OnBoard'],
+                        paymentMethods: [],
+                        ticketFormats: [],
                         errors,
                     },
                 },
             });
 
             const expectedProps: SalesOfferPackageInfoWithErrors = {
-                purchaseLocation: ['OnBoard'],
-                paymentMethod: [],
-                ticketFormat: [],
+                purchaseLocations: ['OnBoard'],
+                paymentMethods: [],
+                ticketFormats: [],
                 errors,
             };
 

@@ -185,15 +185,15 @@ export const getSalesOfferPackagesFromRequestBody = (reqBody: { [key: string]: s
     const salesOfferPackageList: SalesOfferPackage[] = [];
     Object.values(reqBody).forEach(entry => {
         const parsedEntry = JSON.parse(entry);
-        const purchaseLocationList = parsedEntry.purchaseLocation.split(',');
-        const paymentMethodList = parsedEntry.paymentMethod.split(',');
-        const ticketFormatList = parsedEntry.ticketFormat.split(',');
+        const purchaseLocationList = parsedEntry.purchaseLocations.split(',');
+        const paymentMethodList = parsedEntry.paymentMethods.split(',');
+        const ticketFormatList = parsedEntry.ticketFormats.split(',');
         const formattedPackageObject = {
             name: parsedEntry.name,
             description: parsedEntry.description,
-            purchaseLocation: purchaseLocationList,
-            paymentMethod: paymentMethodList,
-            ticketFormat: ticketFormatList,
+            purchaseLocations: purchaseLocationList,
+            paymentMethods: paymentMethodList,
+            ticketFormats: ticketFormatList,
         };
         salesOfferPackageList.push(formattedPackageObject);
     });
@@ -248,7 +248,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         fareZones: getFareZones(userFareStages, matchingFareZones),
         email: decodedIdToken.email,
         uuid,
-        products: [salesOfferPackages],
+        products: [{ salesOfferPackages }],
     };
 };
 
@@ -300,7 +300,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         inboundFareZones: getFareZones(inboundUserFareStages, inboundMatchingFareZones),
         email: decodedIdToken.email,
         uuid,
-        products: [salesOfferPackages],
+        products: [{ salesOfferPackages }],
     };
 };
 

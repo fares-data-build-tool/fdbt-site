@@ -98,9 +98,9 @@ export interface SessionContents {
 export interface SalesOfferPackage {
     name: string;
     description: string;
-    purchaseLocation: string[];
-    paymentMethod: string[];
-    ticketFormat: string[];
+    purchaseLocations: string[];
+    paymentMethods: string[];
+    ticketFormats: string[];
 }
 
 export interface Product {

@@ -171,7 +171,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
 
     try {
         const queryInput = `
-            SELECT name, description, purchaseLocation, paymentMethod, ticketFormat
+            SELECT name, description, purchaseLocations, paymentMethods, ticketFormats
             FROM salesOfferPackage
             WHERE nocCode = ?
         `;
@@ -182,9 +182,9 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
             queryResults.map(item => ({
                 name: item.name,
                 description: item.description,
-                purchaseLocation: item.purchaseLocation,
-                paymentMethod: item.paymentMethod,
-                ticketFormat: item.ticketFormat,
+                purchaseLocations: item.purchaseLocations,
+                paymentMethods: item.paymentMethods,
+                ticketFormats: item.ticketFormats,
             })) || []
         );
     } catch (error) {
@@ -329,21 +329,21 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage: SalesOfferPackage): Promise<void> => {
     console.info('inserting sales offer package into salesOfferPackage table for given noc', { noc: nocCode });
 
-    const purchaseLocation = salesOfferPackage.purchaseLocation.toString();
-    const paymentMethod = salesOfferPackage.paymentMethod.toString();
-    const ticketFormat = salesOfferPackage.ticketFormat.toString();
+    const purchaseLocations = salesOfferPackage.purchaseLocations.toString();
+    const paymentMethods = salesOfferPackage.paymentMethods.toString();
+    const ticketFormats = salesOfferPackage.ticketFormats.toString();
 
     const insertQuery = `INSERT INTO salesOfferPackage 
-    (nocCode, name, description, purchaseLocation, paymentMethod, ticketFormat) 
+    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats) 
     VALUES (?, ?, ?, ?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [
             nocCode,
             salesOfferPackage.name,
             salesOfferPackage.description,
-            purchaseLocation,
-            paymentMethod,
-            ticketFormat,
+            purchaseLocations,
+            paymentMethods,
+            ticketFormats,
         ]);
     } catch (error) {
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
