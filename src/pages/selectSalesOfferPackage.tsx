@@ -1,25 +1,62 @@
 import React, { ReactElement } from 'react';
+import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_COOKIE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { redirectTo } from './api/apiUtils';
 import { getSessionAttribute } from '../utils/sessions';
+import { MultiProduct } from "./api/multipleProducts";
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
 const errorId = 'sales-offer-package-error';
 
 export interface SelectSalesOfferPackageProps {
+    productNames: string[];
     salesOfferPackagesList: SalesOfferPackage[];
     error: ErrorInfo[];
 }
 
+const createSalesOffer = (salesOfferPackagesList: SalesOfferPackage[], productNames: string[]) => {
+
+    const salesOfferPackages = salesOfferPackagesList.map((offer, index) => {
+        const { name, description } = offer;
+        let checkboxTitles = `${name} - ${description}`;
+
+        if (checkboxTitles.length > 110) {
+            checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
+        }
+
+        return (
+                <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
+                    <input
+                        className="govuk-checkboxes__input"
+                        id={`checkbox-${index}`}
+                        name={name}
+                        type="checkbox"
+                        value={JSON.stringify(offer)}
+                    />
+                    <label className="govuk-label govuk-checkboxes__label" htmlFor={`checkbox-${index}`}>
+                        {checkboxTitles}
+                    </label>
+                </div>
+        );
+    });
+
+    console.log(salesOfferPackages);
+    return productNames.map(productName => {
+        console.log('prod', productName);
+        return salesOfferPackages;
+    });
+};
+
 const SelectSalesOfferPackage = ({
+    productNames,
     salesOfferPackagesList,
     csrfToken,
     error,
@@ -64,32 +101,33 @@ const SelectSalesOfferPackage = ({
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
-                                {salesOfferPackagesList.map((offer: SalesOfferPackage, index) => {
-                                    const { name, description } = offer;
-                                    let checkboxTitles = `${name} - ${description}`;
+                                {createSalesOffer(salesOfferPackagesList, productNames)}
+                                {/*{salesOfferPackagesList.map((offer, index) => {*/}
+                                {/*    const { name, description } = offer;*/}
+                                {/*    let checkboxTitles = `${name} - ${description}`;*/}
 
-                                    if (checkboxTitles.length > 110) {
-                                        checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
-                                    }
+                                {/*    if (checkboxTitles.length > 110) {*/}
+                                {/*        checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;*/}
+                                {/*    }*/}
 
-                                    return (
-                                        <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
-                                            <input
-                                                className="govuk-checkboxes__input"
-                                                id={`checkbox-${index}`}
-                                                name={name}
-                                                type="checkbox"
-                                                value={JSON.stringify(offer)}
-                                            />
-                                            <label
-                                                className="govuk-label govuk-checkboxes__label"
-                                                htmlFor={`checkbox-${index}`}
-                                            >
-                                                {checkboxTitles}
-                                            </label>
-                                        </div>
-                                    );
-                                })}
+                                {/*    return (*/}
+                                {/*        <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>*/}
+                                {/*            <input*/}
+                                {/*                className="govuk-checkboxes__input"*/}
+                                {/*                id={`checkbox-${index}`}*/}
+                                {/*                name={name}*/}
+                                {/*                type="checkbox"*/}
+                                {/*                value={JSON.stringify(offer)}*/}
+                                {/*            />*/}
+                                {/*            <label*/}
+                                {/*                className="govuk-label govuk-checkboxes__label"*/}
+                                {/*                htmlFor={`checkbox-${index}`}*/}
+                                {/*            >*/}
+                                {/*                {checkboxTitles}*/}
+                                {/*            </label>*/}
+                                {/*        </div>*/}
+                                {/*    );*/}
+                                {/*})}*/}
                             </div>
                         </FormElementWrapper>
                     </fieldset>
@@ -123,6 +161,9 @@ export const getServerSideProps = async (
     if (!nocCode) {
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
+
+    const cookies = parseCookies(ctx);
+    const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
     const salesOfferPackagesList = await getSalesOfferPackagesByNocCode(nocCode);
     if (salesOfferPackagesList.length === 0) {
         if (ctx.res) {
@@ -131,11 +172,20 @@ export const getServerSideProps = async (
     }
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const error: ErrorInfo[] = [];
+
+    let productNames: string[] = [];
+
+    if (multipleProductCookie) {
+        const parsedProductCookie = JSON.parse(multipleProductCookie);
+        productNames = parsedProductCookie.map((product: MultiProduct) => product.productName);
+    }
+
     if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
         const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
         error.push(errorInfo);
         return {
             props: {
+                productNames,
                 salesOfferPackagesList,
                 error,
             },
@@ -144,6 +194,7 @@ export const getServerSideProps = async (
 
     return {
         props: {
+            productNames,
             salesOfferPackagesList,
             error: [],
         },
