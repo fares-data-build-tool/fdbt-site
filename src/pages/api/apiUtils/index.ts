@@ -32,12 +32,12 @@ import {
     Stop,
     SelectedService,
     ProductData,
-    PeriodExpiryWithErrors,
     ProductInfo,
     ProductDetails,
     Product,
     FlatFareProductDetails,
 } from '../../../interfaces';
+import { PeriodExpiryWithErrors } from '../periodValidity';
 import { globalSignOut } from '../../../data/cognito';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';

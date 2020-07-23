@@ -51,30 +51,30 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (fareType === 'single') {
             userDataJson = getSingleTicketJson(req, res);
-        }
-        if (fareType === 'return') {
+        } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
-        }
-        if (fareType === 'period') {
+        } else if (fareType === 'period') {
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
             const periodTypeObject = JSON.parse(periodTypeCookie);
             const { periodTypeName } = periodTypeObject;
+
             if (periodTypeName !== 'periodGeoZone' || periodTypeName !== 'periodMultipleServices') {
                 throw new Error('No fare type found to generate user data json.');
             }
+
             if (periodTypeName === 'periodGeoZone') {
                 userDataJson = await getPeriodGeoZoneTicketJson(req, res);
-            }
-            if (periodTypeName === 'periodMultipleServices') {
+            } else if (periodTypeName === 'periodMultipleServices') {
                 userDataJson = getPeriodMultipleServicesTicketJson(req, res);
             }
-        }
-        if (fareType === 'flatFare') {
+        } else if (fareType === 'flatFare') {
             userDataJson = getFlatFareTicketJson(req, res);
         }
 
-        await putUserDataInS3(userDataJson, uuid);
-        redirectTo(res, '/thankyou');
+        if (userDataJson) {
+            await putUserDataInS3(userDataJson, uuid);
+            redirectTo(res, '/thankyou');
+        }
         return;
     } catch (error) {
         const message =
