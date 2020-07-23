@@ -221,15 +221,15 @@ describe('apiUtils', () => {
     });
 
     // describe('getSingleTicketJson', () => {
-    //     it('should return a SingleTicket object', () => {
+    //     it.only('should return a SingleTicket object', () => {
     //         const { req, res } = getMockRequestAndResponse({
     //             body: {
     //                 Onboard: {
     //                     name: 'Onboard',
     //                     description: 'Cash, Card',
-    //                     purchaseLocation: 'onBoard',
-    //                     paymentMethod: 'cash,debitCard,creditCard,contactlessPaymentCard,mobilePhone',
-    //                     ticketFormat: 'paperTicket',
+    //                     purchaseLocations: 'onBoard',
+    //                     paymentMethods: 'cash,debitCard,creditCard,contactlessPaymentCard,mobilePhone',
+    //                     ticketFormats: 'paperTicket',
     //                 },
     //             },
     //             session: {

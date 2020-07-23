@@ -98,9 +98,9 @@ export interface SessionContents {
 export interface SalesOfferPackage {
     name: string;
     description: string;
-    purchaseLocation: string[];
-    paymentMethod: string[];
-    ticketFormat: string[];
+    purchaseLocations: string[];
+    paymentMethods: string[];
+    ticketFormats: string[];
 }
 
 export interface Product {
@@ -108,6 +108,14 @@ export interface Product {
     productPrice: string;
     productDuration?: string;
     productValidity?: string;
+}
+
+export interface PeriodProductData {
+    products: ProductDetails[];
+}
+
+export interface FlatFareProductData {
+    products: FlatFareProductDetails[];
 }
 
 export interface ProductData {
@@ -129,7 +137,6 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    products: BaseProduct[];
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
@@ -138,6 +145,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     operatorShortName: string;
     lineName: string;
     serviceDescription: string;
+    products: BaseProduct[];
 }
 
 export interface SingleTicket extends BasePointToPointTicket {
@@ -193,7 +201,7 @@ export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
 
-interface FlatFareProductDetails extends BaseProduct {
+export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
 }

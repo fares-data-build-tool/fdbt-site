@@ -46,23 +46,23 @@ describe('pages', () => {
                     {
                         name: 'IW Bus Co - Package 1',
                         description: 'On bus - Cash - Paper Ticket',
-                        purchaseLocation: ['On bus'],
-                        paymentMethod: ['Cash'],
-                        ticketFormat: ['Paper ticket'],
+                        purchaseLocations: ['On bus'],
+                        paymentMethods: ['Cash'],
+                        ticketFormats: ['Paper ticket'],
                     },
                     {
                         name: 'IW Bus Co - Package 2',
                         description: 'Online App - Card via App - eTicket',
-                        purchaseLocation: ['Online App'],
-                        paymentMethod: ['Card via App'],
-                        ticketFormat: ['eTicket'],
+                        purchaseLocations: ['Online App'],
+                        paymentMethods: ['Card via App'],
+                        ticketFormats: ['eTicket'],
                     },
                     {
                         name: 'IW Bus Co - Package 3',
                         description: 'Ticket Machine - Card - Pass',
-                        purchaseLocation: ['Ticket Machine'],
-                        paymentMethod: ['Card'],
-                        ticketFormat: ['Pass'],
+                        purchaseLocations: ['Ticket Machine'],
+                        paymentMethods: ['Card'],
+                        ticketFormats: ['Pass'],
                     },
                 ];
                 (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
