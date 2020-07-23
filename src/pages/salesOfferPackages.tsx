@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react';
-import { startCase, kebabCase, upperCase } from 'lodash';
+import startCase from 'lodash/startCase';
+import kebabCase from 'lodash/kebabCase';
+import upperCase from 'lodash/upperCase';
 import { BaseLayout } from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';

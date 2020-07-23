@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
