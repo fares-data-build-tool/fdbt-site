@@ -110,6 +110,14 @@ export interface Product {
     productValidity?: string;
 }
 
+export interface PeriodProductData {
+    products: ProductDetails[];
+}
+
+export interface FlatFareProductData {
+    products: FlatFareProductDetails[];
+}
+
 export interface ProductData {
     products: Product[];
 }
@@ -129,7 +137,6 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    products: BaseProduct[];
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
@@ -138,6 +145,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     operatorShortName: string;
     lineName: string;
     serviceDescription: string;
+    products: BaseProduct[];
 }
 
 export interface SingleTicket extends BasePointToPointTicket {
@@ -193,7 +201,7 @@ export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
 
-interface FlatFareProductDetails extends BaseProduct {
+export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
 }

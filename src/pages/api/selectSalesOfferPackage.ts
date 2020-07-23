@@ -12,7 +12,7 @@ import {
     getFlatFareTicketJson,
     unescapeAndDecodeCookie,
 } from './apiUtils';
-import { isSessionValid, isCookiesUUIDMatch } from './service/validator';
+import { isSessionValid } from './service/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_COOKIE, PERIOD_TYPE_COOKIE } from '../../constants';
 import { NextApiRequestWithSession, SelectSalesOfferPackageWithError } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -21,10 +21,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
-        }
-
-        if (!isCookiesUUIDMatch(req, res)) {
-            throw new Error('Cookie UUIDs do not match');
         }
 
         const cookies = new Cookies(req, res);
@@ -60,15 +56,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (fareType === 'period') {
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
             const periodTypeObject = JSON.parse(periodTypeCookie);
-            const { periodType } = periodTypeObject;
+            const { periodTypeName } = periodTypeObject;
 
-            if (periodType === 'periodGeoZone') {
+            if (periodTypeName === 'periodGeoZone') {
                 userDataJson = getPeriodGeoZoneTicketJson(req, res);
                 await putUserDataInS3(await userDataJson, uuid);
                 redirectTo(res, '/thankyou');
                 return;
             }
-            if (periodType === 'periodMultipleServices') {
+            if (periodTypeName === 'periodMultipleServices') {
                 userDataJson = getPeriodMultipleServicesTicketJson(req, res);
                 await putUserDataInS3(userDataJson, uuid);
                 redirectTo(res, '/thankyou');

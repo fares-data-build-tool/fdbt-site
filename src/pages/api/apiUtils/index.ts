@@ -34,6 +34,9 @@ import {
     ProductData,
     PeriodExpiryWithErrors,
     ProductInfo,
+    ProductDetails,
+    Product,
+    FlatFareProductDetails,
 } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../../../interfaces/matchingInterface';
@@ -301,6 +304,10 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     };
 };
 
+const isPeriodProductDetails = (product: Product): product is ProductDetails =>
+    (product as ProductDetails)?.productDuration !== undefined &&
+    (product as ProductDetails)?.productValidity !== undefined;
+
 export const getPeriodGeoZoneTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
@@ -343,6 +350,14 @@ export const getPeriodGeoZoneTicketJson = async (
 
     const { products } = periodExpiryAttributeInfo;
 
+    const productDetailsList: ProductDetails[] = products.map(product => ({
+        productName: product.productName,
+        productPrice: product.productPrice,
+        productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
+        productValidity: isPeriodProductDetails(product) ? product.productValidity : '',
+        salesOfferPackages,
+    }));
+
     return {
         nocCode,
         type: periodTypeName,
@@ -350,9 +365,8 @@ export const getPeriodGeoZoneTicketJson = async (
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject.operatorName,
-        products: salesOfferPackages,
-        ...products,
         zoneName: fareZoneName,
+        products: productDetailsList,
         stops: zoneStops,
     };
 };
@@ -402,6 +416,14 @@ export const getPeriodMultipleServicesTicketJson = (
 
     const { products } = periodExpiryAttributeInfo;
 
+    const productDetailsList: ProductDetails[] = products.map(product => ({
+        productName: product.productName,
+        productPrice: product.productPrice,
+        productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
+        productValidity: isPeriodProductDetails(product) ? product.productValidity : '',
+        salesOfferPackages,
+    }));
+
     return {
         nocCode,
         type: periodTypeName,
@@ -409,8 +431,7 @@ export const getPeriodMultipleServicesTicketJson = (
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject.operatorName,
-        products: salesOfferPackages,
-        ...products,
+        products: productDetailsList,
         selectedServices: formattedServiceInfo,
     };
 };
@@ -457,6 +478,12 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     const { products } = productDetailsAttributeInfo;
 
+    const productDetailsList: FlatFareProductDetails[] = products.map(product => ({
+        productName: product.productName,
+        productPrice: product.productPrice,
+        salesOfferPackages,
+    }));
+
     return {
         nocCode,
         type: fareTypeObject.fareType,
@@ -464,8 +491,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject.operatorName,
-        products: salesOfferPackages,
-        ...products,
+        products: productDetailsList,
         selectedServices: formattedServiceInfo,
     };
 };

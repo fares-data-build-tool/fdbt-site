@@ -7,7 +7,7 @@ import {
     getAttributeFromIdToken,
     validateNewPassword,
     getSelectedStages,
-    // getSingleTicketJson,
+    getSingleTicketJson,
     // getReturnTicketJson,
     // getPeriodGeoZoneTicketJson,
     // getPeriodMultipleServicesTicketJson,
@@ -16,16 +16,16 @@ import {
 import * as s3 from '../../../../src/data/s3';
 import {
     getMockRequestAndResponse,
-    // expectedMatchingJsonSingle,
+    expectedMatchingJsonSingle,
     // expectedSingleProductUploadJsonWithZoneUpload,
     // expectedSingleProductUploadJsonWithSelectedServices,
     // expectedFlatFareProductUploadJson,
-    // userFareStages,
-    // mockBasicServiceSingleTicketJson,
-    // mockMatchingFaresZones,
+    userFareStages,
+    mockBasicServiceSingleTicketJson,
+    mockMatchingFaresZones,
 } from '../../../testData/mockData';
 import { ErrorInfo } from '../../../../src/interfaces';
-// import { MATCHING_ATTRIBUTE } from '../../../../src/constants';
+import { MATCHING_ATTRIBUTE } from '../../../../src/constants';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
@@ -220,30 +220,30 @@ describe('apiUtils', () => {
         });
     });
 
-    // describe('getSingleTicketJson', () => {
-    //     it('should return a SingleTicket object', () => {
-    //         const { req, res } = getMockRequestAndResponse({
-    //             body: {
-    //                 Onboard: {
-    //                     name: 'Onboard',
-    //                     description: 'Cash, Card',
-    //                     purchaseLocation: 'onBoard',
-    //                     paymentMethod: 'cash,debitCard,creditCard,contactlessPaymentCard,mobilePhone',
-    //                     ticketFormat: 'paperTicket',
-    //                 },
-    //             },
-    //             session: {
-    //                 [MATCHING_ATTRIBUTE]: {
-    //                     service: mockBasicServiceSingleTicketJson,
-    //                     userFareStages,
-    //                     matchingFareZones: mockMatchingFaresZones,
-    //                 },
-    //             },
-    //         });
-    //         const result = getSingleTicketJson(req, res);
-    //         expect(result).toEqual(expectedMatchingJsonSingle);
-    //     });
-    // });
+    describe('getSingleTicketJson', () => {
+        it.only('should return a SingleTicket object', () => {
+            const { req, res } = getMockRequestAndResponse({
+                body: {
+                    Onboard: {
+                        name: 'Onboard',
+                        description: 'Cash, Card',
+                        purchaseLocation: 'onBoard',
+                        paymentMethod: 'cash,debitCard,creditCard,contactlessPaymentCard,mobilePhone',
+                        ticketFormat: 'paperTicket',
+                    },
+                },
+                session: {
+                    [MATCHING_ATTRIBUTE]: {
+                        service: mockBasicServiceSingleTicketJson,
+                        userFareStages,
+                        matchingFareZones: mockMatchingFaresZones,
+                    },
+                },
+            });
+            const result = getSingleTicketJson(req, res);
+            expect(result).toEqual(expectedMatchingJsonSingle);
+        });
+    });
 
     // describe('getReturnTicketJson', () => {
     //     it('should return a ReturnTicket object', () => {
