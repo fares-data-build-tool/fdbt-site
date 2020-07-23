@@ -21,7 +21,7 @@ import {
 } from './apiUtils';
 import { batchGetStopsByAtcoCode, Stop } from '../../data/auroradb';
 import { getCsvZoneUploadData, putStringInS3 } from '../../data/s3';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { ServicesInfo, PassengerDetails } from '../../interfaces';
 
 interface Product {
@@ -46,7 +46,7 @@ export interface DecisionData extends PassengerDetails {
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         if (req.body.periodValid) {
@@ -154,6 +154,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem selecting the period validity:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.periodValidity', error);
     }
 };

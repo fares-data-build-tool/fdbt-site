@@ -1,7 +1,7 @@
 import productDetails from '../../../src/pages/api/productDetails';
 import { PRODUCT_DETAILS_COOKIE } from '../../../src/constants';
 import * as s3 from '../../../src/data/s3';
-import * as validator from '../../../src/pages/api/service/validator';
+import * as validator from '../../../src/pages/api/apiUtils/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse, expectedFlatFareProductUploadJson } from '../../testData/mockData';
 

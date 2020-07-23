@@ -7,7 +7,7 @@ import {
     getSelectedStages,
 } from './apiUtils';
 import { putStringInS3, UserFareStages } from '../../data/s3';
-import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import { MATCHING_COOKIE, USER_DATA_BUCKET_NAME } from '../../constants';
 import { MatchingFareZones } from '../../interfaces/matchingInterface';
 import { getFareZones, getMatchingFareZonesFromForm } from './apiUtils/matching';
@@ -27,11 +27,7 @@ const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
-        }
-
-        if (!isCookiesUUIDMatch(req, res)) {
-            throw new Error('Cookie UUIDs do not match');
+            throw new Error('session is invalid.');
         }
 
         if (!req.body.service || !req.body.userfarestages) {
@@ -72,6 +68,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         redirectTo(res, '/inboundMatching');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.outboundMatching', error);
     }
 };

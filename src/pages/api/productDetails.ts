@@ -8,7 +8,6 @@ import {
     getNocFromIdToken,
     getAttributeFromIdToken,
 } from './apiUtils';
-import { isSessionValid } from './service/validator';
 import { ProductInfo, ServicesInfo, PassengerDetails, ErrorInfo } from '../../interfaces';
 import {
     PRODUCT_DETAILS_COOKIE,
@@ -18,7 +17,12 @@ import {
     MATCHING_DATA_BUCKET_NAME,
     PASSENGER_TYPE_COOKIE,
 } from '../../constants';
-import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
+import {
+    isSessionValid,
+    removeExcessWhiteSpace,
+    checkPriceIsValid,
+    checkProductNameIsValid,
+} from './apiUtils/validator';
 import { putStringInS3 } from '../../data/s3';
 import { DecisionData } from './periodValidity';
 
@@ -37,7 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
     try {
         if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
+            throw new Error('session is invalid.');
         }
 
         const cookies = new Cookies(req, res);
@@ -134,6 +138,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
     } catch (error) {
         const message = 'There was a problem processing the product details.';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.productDetails', error);
     }
 };
