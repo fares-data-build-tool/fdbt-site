@@ -73,7 +73,10 @@ export default (req: Request, res: Response, next: NextFunction): void => {
         signOutUser(username, req, res)
             .then(() => res.redirect('/login'))
             .catch(error => {
-                logger.error(error);
+                logger.error(error, {
+                    context: 'server.middleware.authentication',
+                    message: 'failed to sign out user',
+                });
                 res.redirect('/login');
             });
     };
