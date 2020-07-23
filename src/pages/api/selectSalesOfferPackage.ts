@@ -14,8 +14,12 @@ import {
 } from './apiUtils';
 import { isSessionValid } from './service/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_COOKIE, PERIOD_TYPE_COOKIE } from '../../constants';
-import { NextApiRequestWithSession, SelectSalesOfferPackageWithError } from '../../interfaces';
+import { NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
+
+export interface SelectSalesOfferPackageWithError {
+    errorMessage: string;
+}
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -27,6 +31,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const { fareType } = fareTypeObject;
+
+        if (fareType !== 'single' || fareType !== 'return' || fareType !== 'period' || fareType !== 'flatFare') {
+            throw new Error('No fare type found to generate user data json.');
+        }
 
         if (!req.body || Object.keys(req.body).length === 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
@@ -43,42 +51,31 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (fareType === 'single') {
             userDataJson = getSingleTicketJson(req, res);
-            await putUserDataInS3(userDataJson, uuid);
-            redirectTo(res, '/thankyou');
-            return;
         }
         if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
-            await putUserDataInS3(userDataJson, uuid);
-            redirectTo(res, '/thankyou');
-            return;
         }
         if (fareType === 'period') {
             const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
             const periodTypeObject = JSON.parse(periodTypeCookie);
             const { periodTypeName } = periodTypeObject;
-
+            if (periodTypeName !== 'periodGeoZone' || periodTypeName !== 'periodMultipleServices') {
+                throw new Error('No fare type found to generate user data json.');
+            }
             if (periodTypeName === 'periodGeoZone') {
-                userDataJson = getPeriodGeoZoneTicketJson(req, res);
-                await putUserDataInS3(await userDataJson, uuid);
-                redirectTo(res, '/thankyou');
-                return;
+                userDataJson = await getPeriodGeoZoneTicketJson(req, res);
             }
             if (periodTypeName === 'periodMultipleServices') {
                 userDataJson = getPeriodMultipleServicesTicketJson(req, res);
-                await putUserDataInS3(userDataJson, uuid);
-                redirectTo(res, '/thankyou');
-                return;
             }
         }
         if (fareType === 'flatFare') {
             userDataJson = getFlatFareTicketJson(req, res);
-            await putUserDataInS3(userDataJson, uuid);
-            redirectTo(res, '/thankyou');
-            return;
         }
 
-        throw new Error('No fare/period type found to generate user data json.');
+        await putUserDataInS3(userDataJson, uuid);
+        redirectTo(res, '/thankyou');
+        return;
     } catch (error) {
         const message =
             'There was a problem processing the selected sales offer packages from the salesOfferPackage page:';

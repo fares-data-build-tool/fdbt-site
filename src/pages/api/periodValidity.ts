@@ -3,8 +3,12 @@ import Cookies from 'cookies';
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_COOKIE } from '../../constants';
 import { redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { NextApiRequestWithSession, ProductData, PeriodExpiryWithErrors } from '../../interfaces';
+import { NextApiRequestWithSession, ProductData } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
+
+export interface PeriodExpiryWithErrors {
+    errorMessage: string;
+}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

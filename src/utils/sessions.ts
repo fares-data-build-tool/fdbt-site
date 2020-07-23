@@ -1,10 +1,4 @@
-import {
-    IncomingMessageWithSession,
-    ProductInfo,
-    ProductData,
-    PeriodExpiryWithErrors,
-    SelectSalesOfferPackageWithError,
-} from '../interfaces';
+import { IncomingMessageWithSession, ProductInfo, ProductData } from '../interfaces';
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
@@ -17,6 +11,9 @@ import {
     PERIOD_EXPIRY_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
 } from '../constants';
+import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
+import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
+import { MatchingValues } from '../pages/api/outboundMatching';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
@@ -40,7 +37,7 @@ type UpdateSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
     [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
-    [MATCHING_ATTRIBUTE]: MatchingInfo | MatchingWithErrors;
+    [MATCHING_ATTRIBUTE]: MatchingInfo | MatchingWithErrors | MatchingValues;
     [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | PeriodExpiryWithErrors;
     [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;

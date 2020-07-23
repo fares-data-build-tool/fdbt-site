@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { UserFareStages } from '../../data/s3';
-import { isCookiesUUIDMatch, isSessionValid } from './service/validator';
+import { isSessionValid } from './service/validator';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../../constants';
 import { updateSessionAttribute } from '../../utils/sessions';
@@ -12,10 +12,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
-        }
-
-        if (!isCookiesUUIDMatch(req, res)) {
-            throw new Error('Cookie UUIDs do not match');
         }
 
         if (!req.body.service || !req.body.userfarestages) {

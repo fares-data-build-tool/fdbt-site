@@ -1,17 +1,12 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
-import {
-    ErrorInfo,
-    CustomAppProps,
-    NextPageContextWithSession,
-    ProductData,
-    PeriodExpiryWithErrors,
-} from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, ProductData } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
+import { PeriodExpiryWithErrors } from './api/periodValidity';
 
 const title = 'Period Validity - Fares Data Build Tool';
 const description = 'Period Validity selection page of the Fares Data Build Tool';

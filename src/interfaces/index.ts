@@ -32,10 +32,6 @@ export interface PassengerDetails {
     proof?: string[];
 }
 
-export interface SelectSalesOfferPackageWithError {
-    errorMessage: string;
-}
-
 export interface ErrorInfo {
     errorMessage: string;
     id: string;
@@ -91,10 +87,6 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
-export interface SessionContents {
-    body: any;
-}
-
 export interface SalesOfferPackage {
     name: string;
     description: string;
@@ -110,20 +102,8 @@ export interface Product {
     productValidity?: string;
 }
 
-export interface PeriodProductData {
-    products: ProductDetails[];
-}
-
-export interface FlatFareProductData {
-    products: FlatFareProductDetails[];
-}
-
 export interface ProductData {
     products: Product[];
-}
-
-export interface PeriodExpiryWithErrors {
-    errorMessage: string;
 }
 
 export interface BaseTicket {

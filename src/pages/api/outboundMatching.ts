@@ -8,6 +8,12 @@ import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } fro
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, BasicService } from '../../interfaces';
 
+export interface MatchingValues {
+    service: BasicService;
+    userFareStages: UserFareStages;
+    matchingFareZones: MatchingFareZones;
+}
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
@@ -42,11 +48,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         formatMatchingFareZones.forEach(fareStage => {
             matchedFareZones[fareStage.name] = fareStage;
         });
-        updateSessionAttribute(req, MATCHING_ATTRIBUTE, {
+
+        const matchingValues: MatchingValues = {
             service,
             userFareStages,
             matchingFareZones: matchedFareZones,
-        });
+        };
+
+        updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingValues);
         redirectTo(res, '/inboundMatching');
     } catch (error) {
         const message = 'There was a problem generating the matching JSON:';
