@@ -1,7 +1,7 @@
 import Cookies from 'cookies';
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import { getCsvZoneUploadData } from '../../../data/s3';
+import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
     OPERATOR_COOKIE,
     FARE_TYPE_COOKIE,
@@ -14,6 +14,7 @@ import {
     SERVICE_LIST_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
     PERIOD_TYPE_COOKIE,
+    MATCHING_DATA_BUCKET_NAME,
 } from '../../../constants';
 import {
     CognitoIdToken,
@@ -30,13 +31,45 @@ import {
     ProductDetails,
     Product,
     FlatFareProductDetails,
+    SalesOfferPackage,
 } from '../../../interfaces';
 import { PeriodExpiryWithErrors } from '../periodValidity';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { unescapeAndDecodeCookie, getUuidFromCookie, getSalesOfferPackagesFromRequestBody, getNocFromIdToken } from '.';
+import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.';
+
+export const getSalesOfferPackagesFromRequestBody = (reqBody: { [key: string]: string }): SalesOfferPackage[] => {
+    const salesOfferPackageList: SalesOfferPackage[] = [];
+    Object.values(reqBody).forEach(entry => {
+        const parsedEntry = JSON.parse(entry);
+        const purchaseLocationList = parsedEntry.purchaseLocations.split(',');
+        const paymentMethodList = parsedEntry.paymentMethods.split(',');
+        const ticketFormatList = parsedEntry.ticketFormats.split(',');
+        const formattedPackageObject = {
+            name: parsedEntry.name,
+            description: parsedEntry.description,
+            purchaseLocations: purchaseLocationList,
+            paymentMethods: paymentMethodList,
+            ticketFormats: ticketFormatList,
+        };
+        salesOfferPackageList.push(formattedPackageObject);
+    });
+    return salesOfferPackageList;
+};
+
+export const putUserDataInS3 = async (
+    data: SingleTicket | ReturnTicket | PeriodGeoZoneTicket | PeriodMultipleServicesTicket | FlatFareTicket,
+    uuid: string,
+): Promise<void> => {
+    await putStringInS3(
+        MATCHING_DATA_BUCKET_NAME,
+        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
+        JSON.stringify(data),
+        'application/json; charset=utf-8',
+    );
+};
 
 export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): SingleTicket => {
     const isMatchingInfo = (

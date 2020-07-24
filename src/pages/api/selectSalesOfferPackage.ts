@@ -1,12 +1,13 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { redirectTo, redirectToError, putUserDataInS3, getUuidFromCookie, unescapeAndDecodeCookie } from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie, unescapeAndDecodeCookie } from './apiUtils';
 import {
     getSingleTicketJson,
     getReturnTicketJson,
     getPeriodGeoZoneTicketJson,
     getPeriodMultipleServicesTicketJson,
     getFlatFareTicketJson,
+    putUserDataInS3,
 } from './apiUtils/userData';
 import { isSessionValid } from './service/validator';
 import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_COOKIE, PERIOD_TYPE_COOKIE } from '../../constants';

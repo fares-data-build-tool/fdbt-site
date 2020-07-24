@@ -3,24 +3,8 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { Request, Response } from 'express';
 import { decode } from 'jsonwebtoken';
-import { putStringInS3 } from '../../../data/s3';
-import {
-    OPERATOR_COOKIE,
-    FARE_TYPE_COOKIE,
-    ID_TOKEN_COOKIE,
-    REFRESH_TOKEN_COOKIE,
-    MATCHING_DATA_BUCKET_NAME,
-} from '../../../constants';
-import {
-    CognitoIdToken,
-    ErrorInfo,
-    SalesOfferPackage,
-    SingleTicket,
-    ReturnTicket,
-    PeriodGeoZoneTicket,
-    PeriodMultipleServicesTicket,
-    FlatFareTicket,
-} from '../../../interfaces';
+import { OPERATOR_COOKIE, FARE_TYPE_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../../constants';
+import { CognitoIdToken, ErrorInfo } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 
 type Req = NextApiRequest | Request;
@@ -158,35 +142,4 @@ export const validateNewPassword = (
         inputChecks.push({ id: 'new-password', errorMessage: 'Passwords do not match' });
     }
     return inputChecks;
-};
-
-export const getSalesOfferPackagesFromRequestBody = (reqBody: { [key: string]: string }): SalesOfferPackage[] => {
-    const salesOfferPackageList: SalesOfferPackage[] = [];
-    Object.values(reqBody).forEach(entry => {
-        const parsedEntry = JSON.parse(entry);
-        const purchaseLocationList = parsedEntry.purchaseLocations.split(',');
-        const paymentMethodList = parsedEntry.paymentMethods.split(',');
-        const ticketFormatList = parsedEntry.ticketFormats.split(',');
-        const formattedPackageObject = {
-            name: parsedEntry.name,
-            description: parsedEntry.description,
-            purchaseLocations: purchaseLocationList,
-            paymentMethods: paymentMethodList,
-            ticketFormats: ticketFormatList,
-        };
-        salesOfferPackageList.push(formattedPackageObject);
-    });
-    return salesOfferPackageList;
-};
-
-export const putUserDataInS3 = async (
-    data: SingleTicket | ReturnTicket | PeriodGeoZoneTicket | PeriodMultipleServicesTicket | FlatFareTicket,
-    uuid: string,
-): Promise<void> => {
-    await putStringInS3(
-        MATCHING_DATA_BUCKET_NAME,
-        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
-        JSON.stringify(data),
-        'application/json; charset=utf-8',
-    );
 };
