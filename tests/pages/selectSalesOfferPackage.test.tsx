@@ -87,7 +87,7 @@ describe('pages', () => {
                 const ctx = getMockContext({ mockWriteHeadFn: writeHeadMock });
                 await getServerSideProps(ctx);
                 expect(writeHeadMock).toBeCalledWith(302, {
-                    Location: '/salesOfferPackage',
+                    Location: '/salesOfferPackages',
                 });
             });
 
