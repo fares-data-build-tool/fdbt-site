@@ -223,7 +223,7 @@ export const getPeriodGeoZoneTicketJson = async (
         ...passengerTypeObject,
         email: decodedIdToken.email,
         uuid,
-        operatorName: operatorObject.operatorName,
+        operatorName: operatorObject?.operator?.operatorPublicName,
         zoneName: fareZoneName,
         products: productDetailsList,
         stops: zoneStops,
@@ -289,7 +289,7 @@ export const getPeriodMultipleServicesTicketJson = (
         ...passengerTypeObject,
         email: decodedIdToken.email,
         uuid,
-        operatorName: operatorObject.operatorName,
+        operatorName: operatorObject?.operator?.operatorPublicName,
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
     };
@@ -349,7 +349,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         ...passengerTypeObject,
         email: decodedIdToken.email,
         uuid,
-        operatorName: operatorObject.operatorName,
+        operatorName: operatorObject?.operator?.operatorPublicName,
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
     };
