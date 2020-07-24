@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react';
-import { startCase, kebabCase, upperCase } from 'lodash';
+import startCase from 'lodash/startCase';
+import kebabCase from 'lodash/kebabCase';
+import upperCase from 'lodash/upperCase';
 import { BaseLayout } from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -15,32 +17,12 @@ const description = 'Sales Offer Packages page for the Fares Data Build Tool';
 
 export const purchaseLocationsList = {
     id: 'purchaseLocations',
-    method: [
-        'onBoard',
-        'online',
-        'onlineAccount',
-        'telephone',
-        'electronicPass',
-        'mobileDevice',
-        'agency',
-        'tourOperator',
-    ],
+    method: ['onBoard', 'online', 'mobileDevice'],
 };
 
 export const paymentMethodsList = {
     id: 'paymentMethods',
-    paymentMethods: [
-        'cash',
-        'debitCard',
-        'creditCard',
-        'contactlessPaymentCard',
-        'mobilePhone',
-        'sms',
-        'cheque',
-        'bankTransfer',
-        'warrant',
-        'voucher',
-    ],
+    paymentMethods: ['cash', 'debitCard', 'creditCard', 'mobilePhone'],
 };
 
 export const ticketFormatsList = {

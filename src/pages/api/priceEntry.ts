@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import {
     JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,

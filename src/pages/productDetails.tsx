@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { upperFirst } from 'lodash';
+import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
