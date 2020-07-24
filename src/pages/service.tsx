@@ -43,7 +43,7 @@ const Service = ({
                         <span className="govuk-hint" id="service-operator-passenger-type-hint">
                             {operator} - {upperFirst(passengerType)}
                         </span>
-                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
+                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
                             <select className="govuk-select" id="service" name="service" defaultValue="">
                                 <option value="" disabled>
                                     Select One

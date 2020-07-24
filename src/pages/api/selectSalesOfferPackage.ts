@@ -55,7 +55,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const periodTypeObject = JSON.parse(periodTypeCookie);
             const { periodTypeName } = periodTypeObject;
 
-            if (periodTypeName !== 'periodGeoZone' || periodTypeName !== 'periodMultipleServices') {
+            if (periodTypeName !== 'periodGeoZone' && periodTypeName !== 'periodMultipleServices') {
                 throw new Error('No fare type found to generate user data json.');
             }
 

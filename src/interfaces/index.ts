@@ -6,8 +6,10 @@ import { IncomingMessage } from 'http';
 export interface ProductInfo {
     productName: string;
     productPrice: string;
-    productNameError: string;
-    productPriceError: string;
+}
+
+export interface ProductInfoWithErrors extends ProductInfo {
+    errors: ErrorInfo[];
 }
 
 export interface ServicesInfo {

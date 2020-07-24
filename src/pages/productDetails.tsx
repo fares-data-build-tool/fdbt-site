@@ -9,23 +9,38 @@ import {
     SERVICE_LIST_COOKIE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
-import { ProductInfo, CustomAppProps, NextPageContextWithSession, ProductData } from '../interfaces';
+import {
+    ProductInfo,
+    CustomAppProps,
+    NextPageContextWithSession,
+    ProductData,
+    ProductInfoWithErrors,
+    ErrorInfo,
+} from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
+import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
+import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
 
 type ProductDetailsProps = {
-    product?: ProductInfo;
+    product: ProductInfo | null;
     operator: string;
     passengerType: string;
     hintText?: string;
+    errors: ErrorInfo[];
 };
 
+export const isProductInfoWithErrors = (
+    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
+): productDetailsAttribute is ProductInfoWithErrors =>
+    (productDetailsAttribute as ProductInfoWithErrors)?.errors !== undefined;
+
 export const isProductInfo = (
-    productDetailsAttribute: ProductInfo | ProductData,
-): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productNameError !== undefined;
+    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
+): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;
 
 const ProductDetails = ({
     product,
@@ -33,16 +48,16 @@ const ProductDetails = ({
     passengerType,
     hintText,
     csrfToken,
+    errors,
 }: ProductDetailsProps & CustomAppProps): ReactElement => {
     const productName = product && product.productName;
     const productPrice = product && product.productPrice;
-    const productNameError = product && product.productNameError;
-    const productPriceError = product && product.productPriceError;
 
     return (
         <TwoThirdsLayout title={title} description={description}>
             <CsrfForm action="/api/productDetails" method="post" csrfToken={csrfToken}>
                 <>
+                    <ErrorSummary errors={errors} />
                     <div className="govuk-form-group">
                         <fieldset className="govuk-fieldset" aria-describedby="product-details-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -54,58 +69,60 @@ const ProductDetails = ({
                                 {operator} - {hintText} - {upperFirst(passengerType)}
                             </span>
                         </fieldset>
-                        <div className={`govuk-form-group ${productNameError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="product-details-name">
-                                Product Name
-                            </label>
-                            <span className="govuk-hint" id="product-name-hint">
-                                Enter the name of your product
-                            </span>
-                            <span id="product-name-error" className="govuk-error-message">
-                                <span className={productNameError ? '' : 'govuk-visually-hidden'}>
-                                    {productNameError}
+                        <FormGroupWrapper errors={errors} errorId="product-name-error">
+                            <>
+                                <label className="govuk-label" htmlFor="product-details-name">
+                                    Product Name
+                                </label>
+                                <span className="govuk-hint" id="product-name-hint">
+                                    Enter the name of your product
                                 </span>
-                            </span>
-                            <input
-                                className={`govuk-input govuk-input--width-30 govuk-product-name-input__inner__input ${
-                                    productNameError ? 'govuk-input--error' : ''
-                                } `}
-                                id="product-details-name"
-                                name="productDetailsNameInput"
-                                type="text"
-                                maxLength={50}
-                                defaultValue={productName}
-                            />
-                        </div>
-                        <div className={`govuk-form-group ${productPriceError ? 'govuk-form-group--error' : ''}`}>
-                            <label className="govuk-label" htmlFor="product-details-price">
-                                Product Price
-                            </label>
-                            <span className="govuk-hint" id="product-price-hint">
-                                For example, £2.99
-                            </span>
-                            <span id="product-price-error" className="govuk-error-message">
-                                <span className={productPriceError ? '' : 'govuk-visually-hidden'}>
-                                    {productPriceError}
-                                </span>
-                            </span>
-                            <div className="govuk-currency-input">
-                                <div className="govuk-currency-input__inner">
-                                    <span className="govuk-currency-input__inner__unit">£</span>
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId="product-name-error"
+                                    errorClass="govuk-input--error"
+                                >
                                     <input
-                                        className={`govuk-input govuk-input--width-10 govuk-currency-input__inner__input ${
-                                            productPriceError ? 'govuk-input--error' : ''
-                                        }`}
-                                        aria-label="Enter amount in pounds"
-                                        name="productDetailsPriceInput"
-                                        data-non-numeric
+                                        className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                        id="product-details-name"
+                                        name="productDetailsNameInput"
                                         type="text"
-                                        id="product-details-price"
-                                        defaultValue={productPrice}
+                                        maxLength={50}
+                                        defaultValue={productName || ''}
                                     />
+                                </FormElementWrapper>
+                            </>
+                        </FormGroupWrapper>
+                        <FormGroupWrapper errors={errors} errorId="product-price-error">
+                            <>
+                                <label className="govuk-label" htmlFor="product-details-price">
+                                    Product Price
+                                </label>
+                                <span className="govuk-hint" id="product-price-hint">
+                                    For example, £2.99
+                                </span>
+                                <div className="govuk-currency-input">
+                                    <div className="govuk-currency-input__inner">
+                                        <span className="govuk-currency-input__inner__unit">£</span>
+                                        <FormElementWrapper
+                                            errors={errors}
+                                            errorId="product-price-error"
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
+                                                aria-label="Enter amount in pounds"
+                                                name="productDetailsPriceInput"
+                                                data-non-numeric
+                                                type="text"
+                                                id="product-details-price"
+                                                defaultValue={productPrice || ''}
+                                            />
+                                        </FormElementWrapper>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </>
+                        </FormGroupWrapper>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
@@ -154,20 +171,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
 
     const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
-    if (productDetailsAttribute && isProductInfo(productDetailsAttribute)) {
-        return {
-            props: {
-                product: productDetailsAttribute,
-                operator: operator.operatorPublicName,
-                passengerType,
-                ...props,
-            },
-        };
-    }
     return {
         props: {
+            product: productDetailsAttribute && isProductInfo(productDetailsAttribute) ? productDetailsAttribute : null,
             operator: operator.operatorPublicName,
             passengerType,
+            errors:
+                productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)
+                    ? productDetailsAttribute.errors
+                    : [],
             ...props,
         },
     };

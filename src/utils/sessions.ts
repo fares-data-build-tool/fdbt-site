@@ -1,4 +1,4 @@
-import { IncomingMessageWithSession, ProductInfo, ProductData } from '../interfaces';
+import { IncomingMessageWithSession, ProductInfo, ProductData, ProductInfoWithErrors } from '../interfaces';
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
@@ -21,7 +21,7 @@ type GetSessionAttributeTypes = {
     [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
     [INBOUND_MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: undefined | PeriodExpiryWithErrors | ProductData;
-    [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData;
+    [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData | ProductInfoWithErrors;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
 };
 

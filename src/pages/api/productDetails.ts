@@ -2,31 +2,24 @@ import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import { redirectTo, redirectToError, unescapeAndDecodeCookie, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './service/validator';
-import { ProductInfo, NextApiRequestWithSession, ProductData, Product } from '../../interfaces';
+import { ProductInfo, NextApiRequestWithSession, ProductData, Product, ErrorInfo } from '../../interfaces';
 import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_COOKIE } from '../../constants';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './service/inputValidator';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export const checkIfInputInvalid = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
-    let productNameError = '';
-    let productPriceError = '';
-
+const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
     const cleanedPriceInput = removeExcessWhiteSpace(productDetailsPriceInput);
-
-    productNameError = checkProductNameIsValid(cleanedNameInput);
-
-    productPriceError = checkPriceIsValid(cleanedPriceInput);
 
     return {
         productName: cleanedNameInput,
         productPrice: cleanedPriceInput,
-        productNameError,
-        productPriceError,
     };
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+    const errors: ErrorInfo[] = [];
+
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -42,10 +35,30 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
 
-        const productDetails: ProductInfo = checkIfInputInvalid(productDetailsNameInput, productDetailsPriceInput);
+        const productDetails = getProductDetails(productDetailsNameInput, productDetailsPriceInput);
 
-        if (productDetails.productNameError !== '' || productDetails.productPriceError !== '') {
-            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, productDetails);
+        const productNameError = checkProductNameIsValid(productDetails.productName);
+
+        if (productNameError) {
+            errors.push({
+                errorMessage: productNameError,
+                id: 'product-name-error',
+            });
+        }
+
+        const productPriceError = checkPriceIsValid(productDetails.productPrice);
+
+        if (productPriceError) {
+            errors.push({
+                errorMessage: productPriceError,
+                id: 'product-price-error',
+            });
+        }
+
+        if (errors.length) {
+            const invalidInputs = { ...productDetails, errors };
+
+            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, invalidInputs);
             redirectTo(res, '/productDetails');
             return;
         }

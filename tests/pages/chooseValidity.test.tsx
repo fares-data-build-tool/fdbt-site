@@ -10,7 +10,7 @@ describe('Choose Validity Page', () => {
                 productPrice="£3.00"
                 passengerType="Adult"
                 daysValid=""
-                error=""
+                errors={[]}
                 csrfToken=""
                 pageProps={[]}
             />,

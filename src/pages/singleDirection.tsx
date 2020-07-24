@@ -50,7 +50,7 @@ const SingleDirection = ({
                         <span className="govuk-hint" id="direction-journey-description-hint">
                             {`Journey: ${service.serviceDescription}`}
                         </span>
-                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-radios--error">
+                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
                             <DirectionDropdown
                                 selectName="directionJourneyPattern"
                                 selectNameID="direction-journey-pattern"

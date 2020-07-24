@@ -27,16 +27,24 @@ describe('productDetails', () => {
             body: { productDetailsNameInput: '', productDetailsPriceInput: '' },
         });
 
-        const mockProductDetailsCookies = {
+        const expectedProductDetails = {
             productName: '',
             productPrice: '',
-            productNameError: 'Product name cannot have less than 2 characters',
-            productPriceError: 'This field cannot be empty',
+            errors: [
+                {
+                    errorMessage: 'Product name cannot have less than 2 characters',
+                    id: 'product-name-error',
+                },
+                {
+                    errorMessage: 'This field cannot be empty',
+                    id: 'product-price-error',
+                },
+            ],
         };
 
         productDetails(req, res);
 
-        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, mockProductDetailsCookies);
+        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, expectedProductDetails);
     });
 
     it('should create PRODUCT_DETAILS_ATTRIBUTE when the user input is valid for a period ticket', () => {
