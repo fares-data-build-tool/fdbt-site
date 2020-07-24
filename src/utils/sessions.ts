@@ -1,11 +1,28 @@
-import { IncomingMessageWithSession } from '../interfaces';
+import { IncomingMessageWithSession, ProductInfo, ProductData } from '../interfaces';
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
-import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../constants';
+import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
+import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    SOP_ATTRIBUTE,
+    SOP_INFO_ATTRIBUTE,
+    MATCHING_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+} from '../constants';
+import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
+import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
+import { MatchingValues } from '../pages/api/outboundMatching';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
+    [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
+    [INBOUND_MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | InboundMatchingInfo;
+    [PERIOD_EXPIRY_ATTRIBUTE]: undefined | PeriodExpiryWithErrors | ProductData;
+    [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData;
+    [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -19,6 +36,11 @@ export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWit
 type UpdateSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
+    [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
+    [MATCHING_ATTRIBUTE]: MatchingInfo | MatchingWithErrors | MatchingValues;
+    [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | PeriodExpiryWithErrors;
+    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
+    [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

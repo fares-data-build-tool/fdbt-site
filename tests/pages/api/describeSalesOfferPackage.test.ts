@@ -153,7 +153,7 @@ describe('describeSalesOfferPackage', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SOP_ATTRIBUTE, undefined);
         expect(insertSalesOfferPackageSpy).toHaveBeenCalledWith('TEST', mockSopAttribute);
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackages',
+            Location: '/selectSalesOfferPackage',
         });
     });
 });

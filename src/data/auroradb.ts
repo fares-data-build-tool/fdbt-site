@@ -165,6 +165,30 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
     }
 };
 
+export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
+    try {
+        const queryInput = `
+            SELECT name, description, purchaseLocations, paymentMethods, ticketFormats
+            FROM salesOfferPackage
+            WHERE nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCode]);
+
+        return (
+            queryResults.map(item => ({
+                name: item.name,
+                description: item.description,
+                purchaseLocations: item.purchaseLocations,
+                paymentMethods: item.paymentMethods,
+                ticketFormats: item.ticketFormats,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getOperatorNameByNocCode = async (nocCode: string): Promise<OperatorNameType> => {
     const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
 
@@ -307,7 +331,7 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
     const ticketFormats = salesOfferPackage.ticketFormats.toString();
 
     const insertQuery = `INSERT INTO salesOfferPackage 
-    (nocCode, name, description, purchaseLocation, paymentMethod, ticketFormat) 
+    (nocCode, name, description, purchaseLocations, paymentMethods, ticketFormats) 
     VALUES (?, ?, ?, ?, ?, ?)`;
     try {
         await executeQuery(insertQuery, [

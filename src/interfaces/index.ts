@@ -86,3 +86,120 @@ export type DocumentContextWithSession = DocumentContext & {
 };
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
+
+export interface SalesOfferPackage {
+    name: string;
+    description: string;
+    purchaseLocations: string[];
+    paymentMethods: string[];
+    ticketFormats: string[];
+}
+
+export interface Product {
+    productName: string;
+    productPrice: string;
+    productDuration?: string;
+    productValidity?: string;
+}
+
+export interface ProductData {
+    products: Product[];
+}
+
+export interface BaseTicket {
+    nocCode: string;
+    type: string;
+    passengerType: string;
+    ageRange?: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string;
+    proofDocuments?: string[];
+    email: string;
+    uuid: string;
+}
+
+export type PointToPointTicket = SingleTicket | ReturnTicket;
+
+export interface BasePointToPointTicket extends BaseTicket {
+    operatorShortName: string;
+    lineName: string;
+    serviceDescription: string;
+    products: BaseProduct[];
+}
+
+export interface SingleTicket extends BasePointToPointTicket {
+    fareZones: FareZone[];
+}
+
+export interface ReturnTicket extends BasePointToPointTicket {
+    inboundFareZones: FareZone[];
+    outboundFareZones: FareZone[];
+}
+
+export interface FareZone {
+    name: string;
+    stops: Stop[];
+    prices: FareZonePrices[];
+}
+
+export interface FareZonePrices {
+    price: string;
+    fareZones: string[];
+}
+
+export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
+
+export interface BasePeriodTicket extends BaseTicket {
+    operatorName: string;
+    products: ProductDetails[];
+}
+
+export interface PeriodGeoZoneTicket extends BasePeriodTicket {
+    zoneName: string;
+    stops: Stop[];
+}
+
+export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
+    selectedServices: SelectedService[];
+}
+
+export interface FlatFareTicket extends BaseTicket {
+    operatorName: string;
+    products: FlatFareProductDetails[];
+    selectedServices: SelectedService[];
+}
+
+export interface SelectedService {
+    lineName: string;
+    serviceCode: string;
+    startDate: string;
+    serviceDescription: string;
+}
+
+export interface BaseProduct {
+    salesOfferPackages: SalesOfferPackage[];
+}
+
+export interface FlatFareProductDetails extends BaseProduct {
+    productName: string;
+    productPrice: string;
+}
+
+export interface ProductDetails extends BaseProduct {
+    productName: string;
+    productPrice: string;
+    productDuration: string;
+    productValidity: string;
+}
+export interface Stop {
+    stopName: string;
+    naptanCode: string;
+    atcoCode: string;
+    localityCode: string;
+    localityName: string;
+    parentLocalityName: string;
+    qualifierName?: string;
+    indicator?: string;
+    street?: string;
+}

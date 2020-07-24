@@ -93,7 +93,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, SOP_INFO_ATTRIBUTE, undefined);
         updateSessionAttribute(req, SOP_ATTRIBUTE, undefined);
-        redirectTo(res, '/selectSalesOfferPackages');
+        redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem on the describe sales offer package API.';
         redirectToError(res, message, error);

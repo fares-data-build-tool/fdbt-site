@@ -29,7 +29,7 @@ describe('salesOfferPackages', () => {
         });
     });
 
-    it('redirects back to /salesOfferPackages if only one purchaseLocation is selected', () => {
+    it('redirects back to /salesOfferPackages if only one purchaseLocations is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 purchaseLocations: 'OnBoard',
@@ -50,7 +50,7 @@ describe('salesOfferPackages', () => {
         });
     });
 
-    it('redirects back to /salesOfferPackages if only one paymentMethod is selected', () => {
+    it('redirects back to /salesOfferPackages if only one paymentMethods is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 paymentMethods: 'Cash',
@@ -71,7 +71,7 @@ describe('salesOfferPackages', () => {
         });
     });
 
-    it('redirects back to /salesOfferPackages if only one ticketFormat is selected', () => {
+    it('redirects back to /salesOfferPackages if only one ticketFormats is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ticketFormats: 'Paper Ticket',

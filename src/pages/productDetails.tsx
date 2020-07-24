@@ -1,27 +1,31 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
-    PRODUCT_DETAILS_COOKIE,
+    PRODUCT_DETAILS_ATTRIBUTE,
     CSV_ZONE_UPLOAD_COOKIE,
     SERVICE_LIST_COOKIE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
-import { ProductInfo, CustomAppProps } from '../interfaces';
+import { ProductInfo, CustomAppProps, NextPageContextWithSession, ProductData } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
 
 type ProductDetailsProps = {
-    product: ProductInfo;
+    product?: ProductInfo;
     operator: string;
     passengerType: string;
     hintText?: string;
 };
+
+export const isProductInfo = (
+    productDetailsAttribute: ProductInfo | ProductData,
+): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productNameError !== undefined;
 
 const ProductDetails = ({
     product,
@@ -110,9 +114,8 @@ const ProductDetails = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetailsProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
-    const productDetailsCookie = cookies[PRODUCT_DETAILS_COOKIE];
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
@@ -149,9 +152,20 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ProductDetail
         };
     }
 
+    const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+
+    if (productDetailsAttribute && isProductInfo(productDetailsAttribute)) {
+        return {
+            props: {
+                product: productDetailsAttribute,
+                operator: operator.operatorPublicName,
+                passengerType,
+                ...props,
+            },
+        };
+    }
     return {
         props: {
-            product: !productDetailsCookie ? {} : JSON.parse(productDetailsCookie),
             operator: operator.operatorPublicName,
             passengerType,
             ...props,
