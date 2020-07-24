@@ -29,7 +29,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const { fareType } = fareTypeObject;
 
-        if (fareType !== 'single' || fareType !== 'return' || fareType !== 'period' || fareType !== 'flatFare') {
+        if (fareType !== 'single' && fareType !== 'return' && fareType !== 'period' && fareType !== 'flatFare') {
             throw new Error('No fare type found to generate user data json.');
         }
 

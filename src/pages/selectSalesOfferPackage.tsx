@@ -126,7 +126,7 @@ export const getServerSideProps = async (
     const salesOfferPackagesList = await getSalesOfferPackagesByNocCode(nocCode);
     if (salesOfferPackagesList.length === 0) {
         if (ctx.res) {
-            redirectTo(ctx.res, '/salesOfferPackage');
+            redirectTo(ctx.res, '/salesOfferPackages');
         }
     }
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
