@@ -166,9 +166,6 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 };
 
 export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
-    const nocCodeParameter = replaceIWBusCoNocCode(nocCode);
-    console.info('retrieving sales offer packages for given noc', { noc: nocCode });
-
     try {
         const queryInput = `
             SELECT name, description, purchaseLocations, paymentMethods, ticketFormats
@@ -176,7 +173,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCodeParameter]);
+        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCode]);
 
         return (
             queryResults.map(item => ({
