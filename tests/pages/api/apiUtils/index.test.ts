@@ -220,7 +220,7 @@ describe('apiUtils', () => {
     });
 
     // describe('getSingleTicketJson', () => {
-    //     it.only('should return a SingleTicket object', () => {
+    //     it('should return a SingleTicket object', () => {
     //         const { req, res } = getMockRequestAndResponse({
     //             body: {
     //                 Onboard: {

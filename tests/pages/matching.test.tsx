@@ -8,7 +8,6 @@ import {
     userFareStages,
     naptanStopInfo,
     service,
-    error,
     getMockContext,
     mockRawServiceWithDuplicates,
     selectedFareStages,
