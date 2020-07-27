@@ -12,11 +12,13 @@ jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
     const selectSalesOfferPackagePropsInfoNoError: SelectSalesOfferPackageProps = {
+        productNamesList: [],
         salesOfferPackagesList: [],
         error: [],
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
+        productNamesList: [],
         salesOfferPackagesList: [],
         error: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
     };

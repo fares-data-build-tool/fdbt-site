@@ -194,6 +194,7 @@ export interface ProductDetails extends BaseProduct {
     productDuration: string;
     productValidity: string;
 }
+
 export interface Stop {
     stopName: string;
     naptanCode: string;

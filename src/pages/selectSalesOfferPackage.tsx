@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react';
+import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
+import { MULTIPLE_PRODUCT_COOKIE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { redirectTo } from './api/apiUtils';
@@ -15,11 +16,54 @@ const pageDescription = 'Sales Offer Package selection page of the Fares Data Bu
 const errorId = 'sales-offer-package-error';
 
 export interface SelectSalesOfferPackageProps {
+    productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
     error: ErrorInfo[];
 }
 
+const createSalesOffer = (salesOfferPackagesList: SalesOfferPackage[], productNames: string[]) => {
+    const salesOfferPackages = (productName?: string): {} => {
+        return salesOfferPackagesList.map((offer, index) => {
+            const { name, description } = offer;
+            let checkboxTitles = `${name} - ${description}`;
+
+            if (checkboxTitles.length > 110) {
+                checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
+            }
+
+            return (
+                <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
+                    <input
+                        className="govuk-checkboxes__input"
+                        id={`checkbox-${index}`}
+                        name={productName || name}
+                        type="checkbox"
+                        value={JSON.stringify(offer)}
+                    />
+                    <label className="govuk-label govuk-checkboxes__label" htmlFor={`checkbox-${index}`}>
+                        {checkboxTitles}
+                    </label>
+                </div>
+            );
+        });
+    };
+
+    if (productNames && productNames.length > 0) {
+        return productNames.map(productName => {
+            return (
+                <>
+                    <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">{productName}</p>
+                    {salesOfferPackages(productName)}
+                </>
+            );
+        });
+    }
+
+    return { salesOfferPackages };
+};
+
 const SelectSalesOfferPackage = ({
+    productNamesList,
     salesOfferPackagesList,
     csrfToken,
     error,
@@ -64,32 +108,7 @@ const SelectSalesOfferPackage = ({
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
-                                {salesOfferPackagesList.map((offer: SalesOfferPackage, index) => {
-                                    const { name, description } = offer;
-                                    let checkboxTitles = `${name} - ${description}`;
-
-                                    if (checkboxTitles.length > 110) {
-                                        checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
-                                    }
-
-                                    return (
-                                        <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
-                                            <input
-                                                className="govuk-checkboxes__input"
-                                                id={`checkbox-${index}`}
-                                                name={name}
-                                                type="checkbox"
-                                                value={JSON.stringify(offer)}
-                                            />
-                                            <label
-                                                className="govuk-label govuk-checkboxes__label"
-                                                htmlFor={`checkbox-${index}`}
-                                            >
-                                                {checkboxTitles}
-                                            </label>
-                                        </div>
-                                    );
-                                })}
+                                {createSalesOffer(salesOfferPackagesList, productNamesList)}
                             </div>
                         </FormElementWrapper>
                     </fieldset>
@@ -129,6 +148,17 @@ export const getServerSideProps = async (
             redirectTo(ctx.res, '/salesOfferPackages');
         }
     }
+
+    const cookies = parseCookies(ctx);
+    const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
+
+    let productNames: string[] = [];
+
+    if (multipleProductCookie) {
+        const parsedProductCookie = JSON.parse(multipleProductCookie);
+        productNames = parsedProductCookie.map((product: ProductInfo) => product.productName);
+    }
+
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const error: ErrorInfo[] = [];
     if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
@@ -136,6 +166,7 @@ export const getServerSideProps = async (
         error.push(errorInfo);
         return {
             props: {
+                productNamesList: productNames,
                 salesOfferPackagesList,
                 error,
             },
@@ -144,6 +175,7 @@ export const getServerSideProps = async (
 
     return {
         props: {
+            productNamesList: productNames,
             salesOfferPackagesList,
             error: [],
         },
