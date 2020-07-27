@@ -108,7 +108,7 @@ const SelectSalesOfferPackage = ({
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
                         <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
                             <div className="govuk-checkboxes">
-                                {createSalesOffer(salesOfferPackagesList, productNamesList)}
+                                <>{createSalesOffer(salesOfferPackagesList, productNamesList)}</>
                             </div>
                         </FormElementWrapper>
                     </fieldset>
