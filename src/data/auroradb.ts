@@ -90,6 +90,14 @@ export interface RawService {
     journeyPatterns: RawJourneyPattern[];
 }
 
+interface RawSalesOfferPackage {
+    name: string;
+    description: string;
+    purchaseLocations: string;
+    paymentMethods: string;
+    ticketFormats: string;
+}
+
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
 
@@ -317,14 +325,6 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         journeyPatterns: rawPatternService,
     };
 };
-
-interface RawSalesOfferPackage {
-    name: string;
-    description: string;
-    purchaseLocations: string;
-    paymentMethods: string;
-    ticketFormats: string;
-}
 
 export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
     logger.info({
