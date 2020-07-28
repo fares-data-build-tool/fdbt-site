@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import matching from '../../../src/pages/api/matching';
 import {
     getMockRequestAndResponse,
@@ -29,12 +28,6 @@ const selections = {
 describe('Matching API', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
-
-    const mockDate = Date.now();
-
-    beforeEach(() => {
-        jest.spyOn(global.Date, 'now').mockImplementation(() => mockDate);
-    });
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -105,7 +98,7 @@ describe('Matching API', () => {
         });
     });
 
-    it('redirects back to matching page if no userfarestages data in body', () => {
+    it('redirects to error page if no userfarestages data in body', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { ...selections, service: JSON.stringify(service), userfarestages: '' },
@@ -119,7 +112,7 @@ describe('Matching API', () => {
         });
     });
 
-    it('redirects back to matching page if no service info in body', () => {
+    it('redirects back to error page if no service info in body', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
