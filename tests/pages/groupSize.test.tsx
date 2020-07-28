@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import GroupSize from '../../src/pages/groupSize';
+import GroupSize, { getServerSideProps, GroupSizeProps } from '../../src/pages/groupSize';
+import { getMockContext } from '../testData/mockData';
+import { GroupTicketAttributeWithErrors } from '../../src/pages/api/groupSize';
+import { GROUP_TICKET_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('groupSize', () => {
@@ -27,6 +30,46 @@ describe('pages', () => {
                 />,
             );
             expect(tree).toMatchSnapshot();
+        });
+    });
+
+    describe('getServerSideProps', () => {
+        it('should return default props when there is no GROUP_TICKET_ATTRIBUTE', () => {
+            const ctx = getMockContext();
+            const expectedProps: { props: GroupSizeProps } = {
+                props: {
+                    groupTicketInfo: {
+                        maxGroupSize: '',
+                    },
+                },
+            };
+            const props = getServerSideProps(ctx);
+            expect(props).toEqual(expectedProps);
+        });
+
+        it('should return props containing errors when the GROUP_TICKET_ATTRIBUTE contains errors', () => {
+            const groupTicketInfoWithErrors: GroupTicketAttributeWithErrors = {
+                maxGroupSize: 'wrong input',
+                errors: [
+                    {
+                        errorMessage: 'Enter a whole number between 1 and 30',
+                        id: 'max-group-size',
+                        userInput: 'wrong input',
+                    },
+                ],
+            };
+            const ctx = getMockContext({
+                session: {
+                    [GROUP_TICKET_ATTRIBUTE]: groupTicketInfoWithErrors,
+                },
+            });
+            const expectedProps: { props: GroupSizeProps } = {
+                props: {
+                    groupTicketInfo: groupTicketInfoWithErrors,
+                },
+            };
+            const props = getServerSideProps(ctx);
+            expect(props).toEqual(expectedProps);
         });
     });
 });

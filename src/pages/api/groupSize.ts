@@ -46,7 +46,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return {
                     id: 'max-group-size',
                     errorMessage: error.message,
-                    userInput: error.value,
+                    userInput: attributeValue.maxGroupSize,
                 };
             });
         }
@@ -59,7 +59,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/groupSize');
         }
         updateSessionAttribute(req, GROUP_TICKET_ATTRIBUTE, attributeValue);
-        redirectTo(res, '/groupSize');
+        redirectTo(res, '/groupPassengerTypes');
     } catch (error) {
         const message = 'There was a problem setting the total group size:';
         redirectToError(res, message, 'api.groupSize', error);

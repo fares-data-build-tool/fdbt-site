@@ -11,7 +11,7 @@ import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from './api/grou
 const title = 'Group Size - Fares Data Build Tool';
 const description = 'Group Size entry page of the Fares Data Build Tool';
 
-interface GroupSizeProps {
+export interface GroupSizeProps {
     groupTicketInfo: GroupTicketAttribute | GroupTicketAttributeWithErrors;
 }
 
