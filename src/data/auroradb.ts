@@ -318,6 +318,14 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
     };
 };
 
+interface RawSalesOfferPackage {
+    name: string;
+    description: string;
+    purchaseLocations: string;
+    paymentMethods: string;
+    ticketFormats: string;
+}
+
 export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<SalesOfferPackage[]> => {
     logger.info({
         context: 'data.auroradb',
@@ -332,15 +340,15 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<SalesOfferPackage[]>(queryInput, [nocCode]);
+        const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode]);
 
         return (
             queryResults.map(item => ({
                 name: item.name,
                 description: item.description,
-                purchaseLocations: item.purchaseLocations,
-                paymentMethods: item.paymentMethods,
-                ticketFormats: item.ticketFormats,
+                purchaseLocations: item.purchaseLocations.split(','),
+                paymentMethods: item.paymentMethods.split(','),
+                ticketFormats: item.ticketFormats.split(','),
             })) || []
         );
     } catch (error) {
