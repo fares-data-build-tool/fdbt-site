@@ -10,7 +10,12 @@ import {
     putUserDataInS3,
 } from './apiUtils/userData';
 import { isSessionValid } from './service/validator';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_COOKIE, PERIOD_TYPE_COOKIE } from '../../constants';
+import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    FARE_TYPE_COOKIE,
+    PERIOD_TYPE_COOKIE,
+    MULTIPLE_PRODUCT_COOKIE,
+} from '../../constants';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -29,13 +34,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const { fareType } = fareTypeObject;
 
+        const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
+
+        const parsedCookie = JSON.parse(multipleProductCookie);
+
         if (fareType !== 'single' && fareType !== 'return' && fareType !== 'period' && fareType !== 'flatFare') {
             throw new Error('No fare type found to generate user data json.');
         }
 
         if (!req.body || Object.keys(req.body).length === 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
-                errorMessage: 'Choose at least one service from the options',
+                errorMessage: 'Choose at least one sales offer package from the options',
+            };
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
+            redirectTo(res, `/selectSalesOfferPackage`);
+            return;
+        }
+
+        if (Object.keys(req.body).length < parsedCookie.length) {
+            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
+                errorMessage: 'Choose at least one sales offer package for each product',
             };
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
             redirectTo(res, `/selectSalesOfferPackage`);

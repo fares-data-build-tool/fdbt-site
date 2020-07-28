@@ -188,12 +188,14 @@ export interface FlatFareProductDetails extends BaseProduct {
     productPrice: string;
 }
 
-export interface ProductDetails extends BaseProduct {
+export interface ProductDetail {
     productName: string;
     productPrice: string;
     productDuration: string;
     productValidity: string;
 }
+
+export interface ProductDetails extends ProductDetail, BaseProduct {}
 
 export interface Stop {
     stopName: string;

@@ -33,6 +33,7 @@ import {
     ProductDetails,
     Product,
     SalesOfferPackage,
+    ProductDetail,
 } from '../../../interfaces';
 import { PeriodExpiryWithErrors } from '../periodValidity';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../../../interfaces/matchingInterface';
@@ -41,12 +42,6 @@ import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.';
 
-interface ProductDetail {
-    productName: string;
-    productPrice: string;
-    productDuration: string;
-    productValidity: string;
-}
 const generateSalesOfferPackages = (entry: string[]) => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
 
