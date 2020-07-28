@@ -105,9 +105,7 @@ exports[`pages serviceList should render an error when an error message is passe
         >
           <div
             className="govuk-checkboxes"
-          >
-            <Component />
-          </div>
+          />
         </FormElementWrapper>
       </fieldset>
     </div>
@@ -220,9 +218,7 @@ exports[`pages serviceList should render correctly 1`] = `
         >
           <div
             className="govuk-checkboxes"
-          >
-            <Component />
-          </div>
+          />
         </FormElementWrapper>
       </fieldset>
     </div>

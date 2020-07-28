@@ -59,7 +59,7 @@ const createSalesOffer = (salesOfferPackagesList: SalesOfferPackage[], productNa
         });
     }
 
-    return { salesOfferPackages };
+    return <>{salesOfferPackages()}</>;
 };
 
 const SelectSalesOfferPackage = ({
