@@ -247,7 +247,7 @@ export const getMockContext = ({
 };
 
 export const mockBasicServiceSingleTicketJson: BasicService = {
-    serviceDescription: '\n\t\t\t\tInterchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea\n\t\t\t',
+    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
     operatorShortName: 'HCTY',
     lineName: '12C',
     nocCode: 'IWBusCo',
@@ -1124,13 +1124,14 @@ export const expectedMatchingJsonSingle = {
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
         {
-            salesOfferPackage: [
+            salesOfferPackages: [
                 {
-                    name: 'Onboard',
-                    description: 'Cash, Card',
-                    purchaseLocations: ['onBoard'],
-                    paymentMethods: ['cash', 'debitcard', 'creditCard', 'contactlessPaymentCard', 'mobilePhone'],
-                    ticketFormats: ['paperTicket'],
+                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
                 },
             ],
         },

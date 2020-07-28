@@ -90,8 +90,8 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const passengerTypeObject = JSON.parse(passengerTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
-
     const requestBody: { [key: string]: string } = req.body;
+
     const salesOfferPackages = getSalesOfferPackagesFromRequestBody(requestBody);
 
     if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
