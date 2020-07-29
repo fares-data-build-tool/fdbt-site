@@ -14,7 +14,6 @@ export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
     errors: ErrorInfo[];
 }
 
-const noInputError = 'The max group size must be greater than or equal to 1';
 const wrongInputError = 'Enter a whole number between 1 and 30';
 
 export const groupSizeSchema = yup
@@ -22,8 +21,7 @@ export const groupSizeSchema = yup
     .typeError(wrongInputError)
     .integer(wrongInputError)
     .min(1, wrongInputError)
-    .max(30, wrongInputError)
-    .required(noInputError);
+    .max(30, wrongInputError);
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

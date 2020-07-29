@@ -31,30 +31,24 @@ exports[`pages groupSize should render correctly 1`] = `
           </h1>
           <p
             className="govuk-hint"
-            id="group-size-page-hint"
+            id="group-size-page-example"
           >
-            We need to know the size of the group of passengers that can use this ticket at one time. You will be able to specify the exact number of passengers for each passenger type in the next step.
+            We need to know the size of the group of passengers that can use this ticket at one time. Example: Up to 5 passengers at a time.
           </p>
           <p
             className="govuk-hint"
-            id="group-size-page-example"
+            id="group-size-page-hint"
           >
-            Example: A group ticket for 5 people could have a maximum of 5 passengers using the ticket at once.
+            You will be able to specify the exact number of passengers for each passenger type in the next step.
           </p>
         </legend>
-        <label
-          className="govuk-label"
-          htmlFor="max-group-size"
-        >
-          Maximum group size
-        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId=""
           errors={Array []}
         >
           <input
-            className="govuk-input govuk-!-width-one-third"
+            className="govuk-input govuk-input--width-2"
             defaultValue=""
             id="max-group-size"
             name="maxGroupSize"
@@ -112,23 +106,17 @@ exports[`pages groupSize should render error messaging when errors are passed 1`
           </h1>
           <p
             className="govuk-hint"
-            id="group-size-page-hint"
+            id="group-size-page-example"
           >
-            We need to know the size of the group of passengers that can use this ticket at one time. You will be able to specify the exact number of passengers for each passenger type in the next step.
+            We need to know the size of the group of passengers that can use this ticket at one time. Example: Up to 5 passengers at a time.
           </p>
           <p
             className="govuk-hint"
-            id="group-size-page-example"
+            id="group-size-page-hint"
           >
-            Example: A group ticket for 5 people could have a maximum of 5 passengers using the ticket at once.
+            You will be able to specify the exact number of passengers for each passenger type in the next step.
           </p>
         </legend>
-        <label
-          className="govuk-label"
-          htmlFor="max-group-size"
-        >
-          Maximum group size
-        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="max-group-size"
@@ -143,7 +131,7 @@ exports[`pages groupSize should render error messaging when errors are passed 1`
           }
         >
           <input
-            className="govuk-input govuk-!-width-one-third"
+            className="govuk-input govuk-input--width-2"
             defaultValue="not a number"
             id="max-group-size"
             name="maxGroupSize"

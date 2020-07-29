@@ -33,26 +33,22 @@ const GroupSize = ({ groupTicketInfo, csrfToken }: GroupSizeProps & CustomAppPro
                                 <h1 className="govuk-fieldset__heading" id="group-size-page-heading">
                                     How many passengers can use this ticket at one time?
                                 </h1>
-                                <p className="govuk-hint" id="group-size-page-hint">
-                                    We need to know the size of the group of passengers that can use this ticket at one
-                                    time. You will be able to specify the exact number of passengers for each passenger
-                                    type in the next step.
-                                </p>
                                 <p className="govuk-hint" id="group-size-page-example">
-                                    Example: A group ticket for 5 people could have a maximum of 5 passengers using the
-                                    ticket at once.
+                                    We need to know the size of the group of passengers that can use this ticket at one
+                                    time. Example: Up to 5 passengers at a time.
+                                </p>
+                                <p className="govuk-hint" id="group-size-page-hint">
+                                    You will be able to specify the exact number of passengers for each passenger type
+                                    in the next step.
                                 </p>
                             </legend>
-                            <label className="govuk-label" htmlFor="max-group-size">
-                                Maximum group size
-                            </label>
                             <FormElementWrapper
                                 errors={errors}
                                 errorId={errors.length > 0 ? errors[0].id : ''}
                                 errorClass="govuk-input--error"
                             >
                                 <input
-                                    className="govuk-input govuk-!-width-one-third"
+                                    className="govuk-input govuk-input--width-2"
                                     id="max-group-size"
                                     name="maxGroupSize"
                                     type="text"
