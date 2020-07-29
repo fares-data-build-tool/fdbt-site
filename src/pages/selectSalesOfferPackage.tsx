@@ -9,21 +9,59 @@ import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { redirectTo } from './api/apiUtils';
 import { getSessionAttribute } from '../utils/sessions';
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
 const errorId = 'sales-offer-package-error';
 
+export const defaultSalesOfferPackageOne: SalesOfferPackage = {
+    name: 'Onboard (cash)',
+    description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+    purchaseLocations: ['onBoard'],
+    paymentMethods: ['cash'],
+    ticketFormats: ['paperTicket'],
+};
+
+export const defaultSalesOfferPackageTwo: SalesOfferPackage = {
+    name: 'Onboard (contactless)',
+    description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
+    purchaseLocations: ['onBoard'],
+    paymentMethods: ['contactlessPaymentCard'],
+    ticketFormats: ['paperTicket'],
+};
+
+export const defaultSalesOfferPackageThree: SalesOfferPackage = {
+    name: 'Online (smart card)',
+    description:
+        'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
+    purchaseLocations: ['online'],
+    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+    ticketFormats: ['smartCard'],
+};
+
+export const defaultSalesOfferPackageFour: SalesOfferPackage = {
+    name: 'Mobile App',
+    description:
+        'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
+    purchaseLocations: ['mobileDevice'],
+    paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
+    ticketFormats: ['mobileApp'],
+};
+
 export interface SelectSalesOfferPackageProps {
     selected?: string;
     productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
-    error: ErrorInfo[];
+    errors: ErrorInfo[];
 }
 
-const generateCheckbox = (salesOfferPackagesList: SalesOfferPackage[], productName?: string, selected?: {}): {} => {
+const generateCheckbox = (
+    salesOfferPackagesList: SalesOfferPackage[],
+    productName?: string,
+    productIndex?: number,
+    selected?: {},
+): {} => {
     return salesOfferPackagesList.map((offer, index) => {
         const { name, description } = offer;
         let checkboxTitles = `${name} - ${description}`;
@@ -52,7 +90,7 @@ const generateCheckbox = (salesOfferPackagesList: SalesOfferPackage[], productNa
             <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
                 <input
                     className="govuk-checkboxes__input"
-                    id={`checkbox-${index}`}
+                    id={`product-${productIndex}-checkbox-${index}`}
                     name={productName || name}
                     type="checkbox"
                     value={JSON.stringify(offer)}
@@ -68,11 +106,11 @@ const generateCheckbox = (salesOfferPackagesList: SalesOfferPackage[], productNa
 
 const createSalesOffer = (salesOfferPackagesList: SalesOfferPackage[], productNames: string[], selected?: {}): {} => {
     if (productNames && productNames.length > 0) {
-        return productNames.map(productName => {
+        return productNames.map((productName, index) => {
             return (
                 <>
                     <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">{productName}</p>
-                    {generateCheckbox(salesOfferPackagesList, productName, selected)}
+                    {generateCheckbox(salesOfferPackagesList, productName, index, selected)}
                 </>
             );
         });
@@ -86,13 +124,13 @@ const SelectSalesOfferPackage = ({
     productNamesList,
     salesOfferPackagesList,
     csrfToken,
-    error,
+    errors,
 }: SelectSalesOfferPackageProps & CustomAppProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
                 <>
-                    <ErrorSummary errors={error} />
+                    <ErrorSummary errors={errors} />
                     <div className="govuk-form-group">
                         <fieldset className="govuk-fieldset" aria-describedby="select-sales-offer-package-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -101,8 +139,8 @@ const SelectSalesOfferPackage = ({
                                 </h1>
                             </legend>
                             <span id="radio-error" className="govuk-error-message">
-                                <span className={error.length > 0 ? '' : 'govuk-visually-hidden'}>
-                                    {error[0] ? error[0].errorMessage : ''}
+                                <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
+                                    {errors[0] ? errors[0].errorMessage : ''}
                                 </span>
                             </span>
                             <div>
@@ -128,7 +166,7 @@ const SelectSalesOfferPackage = ({
                             </div>
                         </fieldset>
                         <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
-                            <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-form-group--error">
+                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-form-group--error">
                                 <div className="govuk-checkboxes">
                                     <>{createSalesOffer(salesOfferPackagesList, productNamesList, selected)}</>
                                 </div>
@@ -165,12 +203,14 @@ export const getServerSideProps = async (
     if (!nocCode) {
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
+
     const salesOfferPackagesList = await getSalesOfferPackagesByNocCode(nocCode);
-    if (salesOfferPackagesList.length === 0) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/salesOfferPackages');
-        }
-    }
+    salesOfferPackagesList.unshift(
+        defaultSalesOfferPackageOne,
+        defaultSalesOfferPackageTwo,
+        defaultSalesOfferPackageThree,
+        defaultSalesOfferPackageFour,
+    );
 
     const cookies = parseCookies(ctx);
     const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
@@ -183,17 +223,17 @@ export const getServerSideProps = async (
     }
 
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-    const error: ErrorInfo[] = [];
+    const errors: ErrorInfo[] = [];
 
     if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
         const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
-        error.push(errorInfo);
+        errors.push(errorInfo);
         return {
             props: {
                 selected: salesOfferPackageAttribute.selected,
                 productNamesList: productNames,
                 salesOfferPackagesList,
-                error,
+                errors,
             },
         };
     }
@@ -202,7 +242,7 @@ export const getServerSideProps = async (
         props: {
             productNamesList: productNames,
             salesOfferPackagesList,
-            error: [],
+            errors: [],
         },
     };
 };

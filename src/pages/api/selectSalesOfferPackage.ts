@@ -9,7 +9,7 @@ import {
     getFlatFareTicketJson,
     putUserDataInS3,
 } from './apiUtils/userData';
-import { isSessionValid } from './service/validator';
+import { isSessionValid } from './apiUtils/validator';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     FARE_TYPE_COOKIE,
@@ -32,6 +32,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const cookies = new Cookies(req, res);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        if (!fareTypeCookie) {
+            throw new Error('No fare type cookie found.');
+        }
         const fareTypeObject = JSON.parse(fareTypeCookie);
         const { fareType } = fareTypeObject;
 
@@ -96,6 +99,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     } catch (error) {
         const message =
             'There was a problem processing the selected sales offer packages from the salesOfferPackage page:';
-        redirectToError(res, message, error);
+        redirectToError(res, message, 'api.selectSalesOfferPackage', error);
     }
 };

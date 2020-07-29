@@ -47,15 +47,12 @@ const generateSalesOfferPackages = (entry: string[]) => {
 
     entry.forEach(sop => {
         const parsedEntry = JSON.parse(sop);
-        const purchaseLocationList = parsedEntry.purchaseLocations.split(',');
-        const paymentMethodList = parsedEntry.paymentMethods.split(',');
-        const ticketFormatList = parsedEntry.ticketFormats.split(',');
         const formattedPackageObject = {
             name: parsedEntry.name,
             description: parsedEntry.description,
-            purchaseLocations: purchaseLocationList,
-            paymentMethods: paymentMethodList,
-            ticketFormats: ticketFormatList,
+            purchaseLocations: parsedEntry.purchaseLocations,
+            paymentMethods: parsedEntry.paymentMethods,
+            ticketFormats: parsedEntry.ticketFormats,
         };
         salesOfferPackageList.push(formattedPackageObject);
     });
