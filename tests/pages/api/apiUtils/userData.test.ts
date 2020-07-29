@@ -4,6 +4,7 @@ import {
     getPeriodGeoZoneTicketJson,
     getPeriodMultipleServicesTicketJson,
     getFlatFareTicketJson,
+    getSalesOfferPackagesFromRequestBody,
 } from '../../../../src/pages/api/apiUtils/userData';
 import {
     getMockRequestAndResponse,
@@ -17,6 +18,7 @@ import {
     zoneStops,
     expectedSingleProductUploadJsonWithSelectedServices,
     expectedFlatFareProductUploadJson,
+    expectedSalesOfferPackageArray,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
@@ -26,6 +28,19 @@ import {
     PERIOD_EXPIRY_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
 } from '../../../../src/constants';
+
+describe('getSalesOfferPackagesFromRequestBody', () => {
+    it('should return an array of SalesOfferPackage objects', () => {
+        const reqBody = {
+            'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
+                '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":"OnBus,TicketMachine,Shop","paymentMethods":"Cash,Card","ticketFormats":"Paper,Mobile"}',
+            'Mobile Rider':
+                '{"name":"Mobile Rider","description":"A ticket that can be purchased via a mobile.","purchaseLocations":"mobileDevice","paymentMethods":"debitCard","ticketFormats":"mobileApp"}',
+        };
+        const result = getSalesOfferPackagesFromRequestBody(reqBody);
+        expect(result).toEqual(expectedSalesOfferPackageArray);
+    });
+});
 
 describe('getSingleTicketJson', () => {
     it('should return a SingleTicket object', () => {

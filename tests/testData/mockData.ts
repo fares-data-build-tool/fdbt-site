@@ -1141,6 +1141,24 @@ export const mockMatchingUserFareStagesWithAllStagesAssigned = {
     ],
 };
 
+export const expectedSalesOfferPackageArray = [
+    {
+        name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+        description:
+            'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+        purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+        paymentMethods: ['Cash', 'Card'],
+        ticketFormats: ['Paper', 'Mobile'],
+    },
+    {
+        name: 'Mobile Rider',
+        description: 'A ticket that can be purchased via a mobile.',
+        purchaseLocations: ['mobileDevice'],
+        paymentMethods: ['debitCard'],
+        ticketFormats: ['mobileApp'],
+    },
+];
+
 export const expectedMatchingJsonSingle = {
     type: 'single',
     lineName: '12C',
