@@ -24,7 +24,7 @@ const defaultSalesOfferPackageOne: SalesOfferPackage = {
 const defaultSalesOfferPackageTwo: SalesOfferPackage = {
     name: 'Onboard (contactless)',
     description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
-    purchaseLocations: ['onBoard,'],
+    purchaseLocations: ['onBoard'],
     paymentMethods: ['contactlessPaymentCard'],
     ticketFormats: ['paperTicket'],
 };
@@ -33,7 +33,7 @@ const defaultSalesOfferPackageThree: SalesOfferPackage = {
     name: 'Online (smart card)',
     description:
         'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
-    purchaseLocations: ['online,'],
+    purchaseLocations: ['online'],
     paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
     ticketFormats: ['smartCard'],
 };
@@ -42,7 +42,7 @@ const defaultSalesOfferPackageFour: SalesOfferPackage = {
     name: 'Mobile App',
     description:
         'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
-    purchaseLocations: ['mobileDevice,'],
+    purchaseLocations: ['mobileDevice'],
     paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
     ticketFormats: ['mobileApp'],
 };
