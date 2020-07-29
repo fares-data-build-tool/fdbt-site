@@ -21,6 +21,7 @@ import { updateSessionAttribute } from '../../utils/sessions';
 
 export interface SelectSalesOfferPackageWithError {
     errorMessage: string;
+    selected: string;
 }
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -35,8 +36,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { fareType } = fareTypeObject;
 
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-
-        const parsedCookie = JSON.parse(multipleProductCookie);
+        const parsedCookie = multipleProductCookie && JSON.parse(multipleProductCookie);
 
         if (fareType !== 'single' && fareType !== 'return' && fareType !== 'period' && fareType !== 'flatFare') {
             throw new Error('No fare type found to generate user data json.');
@@ -45,6 +45,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (!req.body || Object.keys(req.body).length === 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
                 errorMessage: 'Choose at least one sales offer package from the options',
+                selected: req.body,
             };
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
             redirectTo(res, `/selectSalesOfferPackage`);
@@ -54,6 +55,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (Object.keys(req.body).length < parsedCookie.length) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
                 errorMessage: 'Choose at least one sales offer package for each product',
+                selected: req.body,
             };
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
             redirectTo(res, `/selectSalesOfferPackage`);
