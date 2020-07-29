@@ -4,7 +4,7 @@ import {
     service,
     mockMatchingUserFareStagesWithUnassignedStages,
     mockMatchingUserFareStagesWithAllStagesAssigned,
-    mockBasicServiceSingleTicketJson,
+    mockBasicServiceJson,
 } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
@@ -43,7 +43,7 @@ describe('Matching API', () => {
             cookieValues: {},
             body: {
                 ...selections,
-                service: JSON.stringify(mockBasicServiceSingleTicketJson),
+                service: JSON.stringify(mockBasicServiceJson),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
             uuid: {},

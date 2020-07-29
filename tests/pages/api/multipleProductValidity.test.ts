@@ -2,7 +2,7 @@ import * as s3 from '../../../src/data/s3';
 import * as dynamodb from '../../../src/data/auroradb';
 import {
     getMockRequestAndResponse,
-    naptanStopInfo,
+    zoneStops,
     expectedMultiProductUploadJsonWithZoneUpload,
     expectedMultiProductUploadJsonWithSelectedServices,
 } from '../../testData/mockData';
@@ -30,7 +30,7 @@ describe('multipleProductValidity', () => {
 
         batchGetStopsByAtcoCodeSpy = jest
             .spyOn(dynamodb, 'batchGetStopsByAtcoCode')
-            .mockImplementation(() => Promise.resolve(naptanStopInfo));
+            .mockImplementation(() => Promise.resolve(zoneStops));
     });
 
     describe('addErrorsIfInvalid', () => {

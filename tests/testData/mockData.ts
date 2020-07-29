@@ -246,7 +246,7 @@ export const getMockContext = ({
     return ctx;
 };
 
-export const mockBasicServiceSingleTicketJson: BasicService = {
+export const mockBasicServiceJson: BasicService = {
     serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
     operatorShortName: 'HCTY',
     lineName: '12C',
@@ -365,6 +365,34 @@ export const mockMatchingFaresZones: MatchingFareZones = {
             },
         ],
         prices: [{ price: '1.00', fareZones: ['Piccadilly (York)'] }],
+    },
+};
+
+export const mockOutBoundMatchingFaresZones: MatchingFareZones = {
+    'Acomb Green Lane': {
+        name: 'Acomb Green Lane',
+        stops: [
+            {
+                stopName: 'Yoden Way - Chapel Hill Road',
+                naptanCode: 'duratdmj',
+                atcoCode: '13003521G',
+                localityCode: 'E0045956',
+                parentLocalityName: '',
+                localityName: 'Peterlee',
+                indicator: 'W-bound',
+                street: 'Yodan Way',
+            },
+        ],
+        prices: [
+            {
+                price: '1.10',
+                fareZones: ['Mattison Way', 'Nursery Drive', 'Holl Bank/Beech Ave'],
+            },
+            {
+                price: '1.70',
+                fareZones: ['Cambridge Street (York)', 'Blossom Street', 'Rail Station (York)', 'Piccadilly (York)'],
+            },
+        ],
     },
 };
 
@@ -735,7 +763,7 @@ export const userFareStages: UserFareStages = {
     ],
 };
 
-export const naptanStopInfo = [
+export const zoneStops = [
     {
         stopName: 'Westlea shops',
         naptanCode: 'durapmja',
@@ -1253,12 +1281,26 @@ export const expectedMatchingJsonSingle = {
 export const expectedMatchingJsonReturnNonCircular = {
     type: 'return',
     passengerType: 'Adult',
-    lineName: '215',
-    nocCode: 'DCCL',
-    operatorShortName: 'DCC',
-    serviceDescription: 'Worthing - Seaham - Crawley',
+    lineName: '12C',
+    nocCode: 'IWBusCo',
+    operatorShortName: 'HCTY',
+    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    products: [
+        {
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
+        },
+    ],
     inboundFareZones: [
         {
             name: 'Acomb Green Lane',
@@ -1268,6 +1310,7 @@ export const expectedMatchingJsonReturnNonCircular = {
                     naptanCode: 'duratdmj',
                     atcoCode: '13003521G',
                     localityCode: 'E0045956',
+                    parentLocalityName: '',
                     localityName: 'Peterlee',
                     indicator: 'W-bound',
                     street: 'Yodan Way',
@@ -1295,6 +1338,7 @@ export const expectedMatchingJsonReturnNonCircular = {
                     naptanCode: 'duratdmt',
                     atcoCode: '13003522F',
                     localityCode: 'E0010183',
+                    parentLocalityName: '',
                     localityName: 'Horden',
                     indicator: 'SW-bound',
                     street: 'Yoden Way',
@@ -1322,6 +1366,7 @@ export const expectedMatchingJsonReturnNonCircular = {
                     naptanCode: 'durapgdw',
                     atcoCode: '13003219H',
                     localityCode: 'E0045956',
+                    parentLocalityName: '',
                     localityName: 'Peterlee',
                     indicator: 'NW-bound',
                     street: 'Surtees Road',
@@ -1341,6 +1386,7 @@ export const expectedMatchingJsonReturnNonCircular = {
                     naptanCode: 'duratdma',
                     atcoCode: '13003519H',
                     localityCode: 'E0045956',
+                    parentLocalityName: '',
                     localityName: 'Peterlee',
                     indicator: 'H',
                     street: 'Bede Way',
@@ -1357,13 +1403,14 @@ export const expectedMatchingJsonReturnNonCircular = {
                     naptanCode: 'duraptwp',
                     atcoCode: '13003345D',
                     localityCode: 'E0010183',
+                    parentLocalityName: '',
                     localityName: 'Horden',
                     indicator: 'SE-bound',
                     street: 'Kell Road',
                     qualifierName: '',
                 },
             ],
-            prices: {},
+            prices: [],
         },
     ],
     outboundFareZones: [
@@ -1375,11 +1422,11 @@ export const expectedMatchingJsonReturnNonCircular = {
                     atcoCode: '13003521G',
                     localityCode: 'E0045956',
                     naptanCode: 'duratdmj',
+                    parentLocalityName: '',
                     localityName: 'Peterlee',
                     indicator: 'W-bound',
                     street: 'Yodan Way',
                     qualifierName: '',
-                    parentLocalityName: 'IW Test',
                 },
             ],
             prices: [
@@ -1416,6 +1463,7 @@ export const expectedMatchingJsonReturnCircular = {
                     stopName: 'Yoden Way - Chapel Hill Road',
                     naptanCode: 'duratdmj',
                     atcoCode: '13003521G',
+                    parentLocalityName: '',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
                     indicator: 'W-bound',
@@ -1444,6 +1492,7 @@ export const expectedMatchingJsonReturnCircular = {
                     naptanCode: 'duratdmt',
                     atcoCode: '13003522F',
                     localityCode: 'E0010183',
+                    parentLocalityName: '',
                     localityName: 'Horden',
                     indicator: 'SW-bound',
                     street: 'Yoden Way',
@@ -1472,6 +1521,7 @@ export const expectedMatchingJsonReturnCircular = {
                     atcoCode: '13003219H',
                     localityCode: 'E0045956',
                     localityName: 'Peterlee',
+                    parentLocalityName: '',
                     indicator: 'NW-bound',
                     street: 'Surtees Road',
                     qualifierName: '',
@@ -1490,6 +1540,7 @@ export const expectedMatchingJsonReturnCircular = {
                     naptanCode: 'duratdma',
                     atcoCode: '13003519H',
                     localityCode: 'E0045956',
+                    parentLocalityName: '',
                     localityName: 'Peterlee',
                     indicator: 'H',
                     street: 'Bede Way',
@@ -1506,6 +1557,7 @@ export const expectedMatchingJsonReturnCircular = {
                     naptanCode: 'duraptwp',
                     atcoCode: '13003345D',
                     localityCode: 'E0010183',
+                    parentLocalityName: '',
                     localityName: 'Horden',
                     indicator: 'SE-bound',
                     street: 'Kell Road',
@@ -1635,10 +1687,20 @@ export const expectedSingleProductUploadJsonWithZoneUpload = {
             productPrice: '1234',
             productDuration: '2',
             productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
         },
     ],
     zoneName: 'fare zone 1',
-    stops: naptanStopInfo,
+    stops: zoneStops,
     passengerType: 'Adult',
 };
 
@@ -1654,6 +1716,16 @@ export const expectedSingleProductUploadJsonWithSelectedServices = {
             productPrice: '1234',
             productDuration: '2',
             productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
         },
     ],
     selectedServices: [
@@ -1706,7 +1778,7 @@ export const expectedMultiProductUploadJsonWithZoneUpload = {
         },
     ],
     zoneName: 'fare zone 1',
-    stops: naptanStopInfo,
+    stops: zoneStops,
     passengerType: 'Adult',
 };
 
@@ -1770,6 +1842,16 @@ export const expectedFlatFareProductUploadJson = {
         {
             productName: 'Weekly Rider',
             productPrice: '7',
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
         },
     ],
     selectedServices: [
