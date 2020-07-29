@@ -19,6 +19,7 @@ import {
     expectedSingleProductUploadJsonWithSelectedServices,
     expectedFlatFareProductUploadJson,
     expectedSalesOfferPackageArray,
+    expectedMatchingJsonReturnCircular,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
@@ -33,9 +34,9 @@ describe('getSalesOfferPackagesFromRequestBody', () => {
     it('should return an array of SalesOfferPackage objects', () => {
         const reqBody = {
             'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":"OnBus,TicketMachine,Shop","paymentMethods":"Cash,Card","ticketFormats":"Paper,Mobile"}',
+                '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             'Mobile Rider':
-                '{"name":"Mobile Rider","description":"A ticket that can be purchased via a mobile.","purchaseLocations":"mobileDevice","paymentMethods":"debitCard","ticketFormats":"mobileApp"}',
+                '{"name":"Mobile Rider","description":"A ticket that can be purchased via a mobile.","purchaseLocations":["mobileDevice"],"paymentMethods":["debitCard"],"ticketFormats":["mobileApp"]}',
         };
         const result = getSalesOfferPackagesFromRequestBody(reqBody);
         expect(result).toEqual(expectedSalesOfferPackageArray);
@@ -47,7 +48,7 @@ describe('getSingleTicketJson', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":"OnBus,TicketMachine,Shop","paymentMethods":"Cash,Card","ticketFormats":"Paper,Mobile"}',
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
             session: {
                 [MATCHING_ATTRIBUTE]: {
@@ -63,12 +64,12 @@ describe('getSingleTicketJson', () => {
 });
 
 describe('getReturnTicketJson', () => {
-    it('should return a ReturnTicket object', () => {
+    it('should return a ReturnTicket object for a non circular return journet', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'return' },
             body: {
                 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":"OnBus,TicketMachine,Shop","paymentMethods":"Cash,Card","ticketFormats":"Paper,Mobile"}',
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
             session: {
                 [MATCHING_ATTRIBUTE]: {
@@ -84,6 +85,24 @@ describe('getReturnTicketJson', () => {
         });
         const result = getReturnTicketJson(req, res);
         expect(result).toEqual(expectedMatchingJsonReturnNonCircular);
+    });
+    it('should return a ReturnTicket object for a circular journey', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: 'return' },
+            body: {
+                'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
+            },
+            session: {
+                [MATCHING_ATTRIBUTE]: {
+                    service: mockBasicServiceJson,
+                    userFareStages,
+                    matchingFareZones: mockMatchingFaresZones,
+                },
+            },
+        });
+        const result = getReturnTicketJson(req, res);
+        expect(result).toEqual(expectedMatchingJsonReturnCircular);
     });
 });
 
@@ -106,7 +125,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
             cookieValues: { fareType: 'period' },
             body: {
                 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":"OnBus,TicketMachine,Shop","paymentMethods":"Cash,Card","ticketFormats":"Paper,Mobile"}',
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
             session: {
                 [PERIOD_EXPIRY_ATTRIBUTE]: {
@@ -133,7 +152,7 @@ describe('getPeriodMulipleServicesTicketJson', () => {
             cookieValues: { fareType: 'period' },
             body: {
                 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":"OnBus,TicketMachine,Shop","paymentMethods":"Cash,Card","ticketFormats":"Paper,Mobile"}',
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
             session: {
                 [PERIOD_EXPIRY_ATTRIBUTE]: {
@@ -159,7 +178,7 @@ describe('getFlatFareTicketJson', () => {
             cookieValues: { fareType: 'flatFare' },
             body: {
                 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":"OnBus,TicketMachine,Shop","paymentMethods":"Cash,Card","ticketFormats":"Paper,Mobile"}',
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
             session: {
                 [PRODUCT_DETAILS_ATTRIBUTE]: {

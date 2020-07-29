@@ -364,7 +364,7 @@ export const mockMatchingFaresZones: MatchingFareZones = {
                 street: 'Kell Road',
             },
         ],
-        prices: [{ price: '1.00', fareZones: ['Piccadilly (York)'] }],
+        prices: [],
     },
 };
 
@@ -1465,13 +1465,27 @@ export const expectedMatchingJsonReturnNonCircular = {
 
 export const expectedMatchingJsonReturnCircular = {
     type: 'return',
-    lineName: '215',
+    lineName: '12C',
     passengerType: 'Adult',
-    nocCode: 'DCCL',
-    operatorShortName: 'DCC',
-    serviceDescription: 'Worthing - Seaham - Crawley',
+    nocCode: 'IWBusCo',
+    operatorShortName: 'HCTY',
+    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    products: [
+        {
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
+        },
+    ],
     inboundFareZones: [],
     outboundFareZones: [
         {
@@ -1582,7 +1596,7 @@ export const expectedMatchingJsonReturnCircular = {
                     qualifierName: '',
                 },
             ],
-            prices: {},
+            prices: [],
         },
     ],
 };
