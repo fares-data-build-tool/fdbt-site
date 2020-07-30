@@ -58,8 +58,8 @@ export interface SelectSalesOfferPackageProps {
 
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
-    productName?: string,
     productIndex?: number,
+    productName?: string,
     selected?: { [key: string]: string },
 ): ReactElement[] => {
     return salesOfferPackagesList.map((offer, index) => {
@@ -114,13 +114,13 @@ const createSalesOffer = (
             return (
                 <>
                     <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">{productName}</p>
-                    {generateCheckbox(salesOfferPackagesList, productName, index, selected)}
+                    {generateCheckbox(salesOfferPackagesList, index, productName, selected)}
                 </>
             );
         });
     }
 
-    return generateCheckbox(salesOfferPackagesList);
+    return generateCheckbox(salesOfferPackagesList, 0);
 };
 
 const SelectSalesOfferPackage = ({
