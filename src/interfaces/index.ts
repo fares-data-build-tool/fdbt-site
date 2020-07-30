@@ -108,6 +108,26 @@ export interface ProductData {
     products: Product[];
 }
 
+export interface GroupDefinition {
+    maxGroupSize: number;
+    companions: {
+        passengerType: string;
+        minNumber: number;
+        maxNumber: number;
+        minAge: number;
+        maxAge: number;
+        proofDocuments: string[];
+    }[];
+}
+
+export interface BaseGroupTicket {
+    nocCode: string;
+    type: string;
+    groupDefinition: GroupDefinition;
+    email: string;
+    uuid: string;
+}
+
 export interface BaseTicket {
     nocCode: string;
     type: string;

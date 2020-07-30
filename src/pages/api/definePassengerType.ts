@@ -13,11 +13,6 @@ import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo } from '../../interfaces';
 
-export interface ExtractedValidationError {
-    input: string;
-    message: string;
-}
-
 const radioButtonError = 'Choose one of the options below';
 const ageRangeValidityError = 'Enter a whole number between 0-150';
 const ageRangeInputError = 'Enter a minimum or maximum age';
