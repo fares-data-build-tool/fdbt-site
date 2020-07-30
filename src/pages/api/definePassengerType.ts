@@ -11,6 +11,7 @@ import {
 } from './apiUtils/index';
 import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
+import { ErrorInfo } from '../../interfaces';
 
 export interface ExtractedValidationError {
     input: string;
@@ -101,6 +102,23 @@ export const formatRequestBody = (req: NextApiRequest): {} => {
     return filteredReqBody;
 };
 
+export const getErrorIdFromValidityError = (errorPath: string): string => {
+    switch (errorPath) {
+        case 'ageRange':
+            return 'define-passenger-age-range';
+        case 'proof':
+            return 'define-passenger-proof';
+        case 'ageRangeMin':
+            return 'age-range-min';
+        case 'ageRangeMax':
+            return 'age-range-max';
+        case 'proofDocuments':
+            return 'proof-required';
+        default:
+            throw new Error('Could not match the following error with an expected input.');
+    }
+};
+
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
@@ -120,7 +138,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Could not extract the relevant data from the request.');
         }
 
-        let errors: ExtractedValidationError[] = [];
+        let errors: ErrorInfo[] = [];
 
         const filteredReqBody = formatRequestBody(req);
 
@@ -129,8 +147,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
             errors = validityErrors.inner.map(error => ({
-                input: error.path,
-                message: error.message,
+                id: getErrorIdFromValidityError(error.path),
+                errorMessage: error.message,
+                userInput: error.path,
             }));
         }
         if (errors.length === 0) {

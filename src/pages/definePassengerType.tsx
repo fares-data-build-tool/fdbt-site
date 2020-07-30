@@ -5,7 +5,6 @@ import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPE_COOKIE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ExtractedValidationError } from './api/definePassengerType';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 
@@ -21,11 +20,21 @@ export interface ErrorCollection {
 }
 
 export interface DefinePassengerTypeProps {
-    combinedErrors: ErrorInfo[];
+    errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
 }
 
-export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditionalInputFieldset[] => {
+export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
+    const compactErrors: ErrorInfo[] = [];
+    errors.forEach(error => {
+        if (ids.includes(error.id)) {
+            compactErrors.push(error);
+        }
+    });
+    return compactErrors;
+};
+
+export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
     const fieldsets = [];
 
     const ageRangeFieldset: RadioConditionalInputFieldset = {
@@ -57,7 +66,7 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
                         label: 'Maximum Age (if applicable)',
                     },
                 ],
-                inputErrors: collectedErrors.ageRangeInputErrors,
+                inputErrors: getErrorsByIds(['age-range-min', 'age-range-max'], errors),
             },
             {
                 id: 'age-range-not-required',
@@ -66,7 +75,7 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
                 label: 'No',
             },
         ],
-        radioError: collectedErrors.ageRangeRadioError,
+        radioError: getErrorsByIds(['define-passenger-age-range'], errors),
     };
 
     const proofRequiredFieldset: RadioConditionalInputFieldset = {
@@ -103,7 +112,7 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
                         label: 'Identity Document',
                     },
                 ],
-                inputErrors: collectedErrors.proofSelectInputError,
+                inputErrors: getErrorsByIds(['proof-required'], errors),
             },
             {
                 id: 'proof-not-required',
@@ -112,58 +121,21 @@ export const getFieldsets = (collectedErrors: ErrorCollection): RadioConditional
                 label: 'No',
             },
         ],
-        radioError: collectedErrors.proofSelectRadioError,
+        radioError: getErrorsByIds(['define-passenger-proof'], errors),
     };
     fieldsets.push(ageRangeFieldset, proofRequiredFieldset);
     return fieldsets;
 };
 
-export const collectErrors = (error: ExtractedValidationError, collectedErrors: ErrorCollection): void => {
-    switch (error.input) {
-        case 'ageRange':
-            collectedErrors.ageRangeRadioError.push({
-                errorMessage: error.message,
-                id: 'define-passenger-age-range',
-            });
-            break;
-        case 'proof':
-            collectedErrors.proofSelectRadioError.push({
-                errorMessage: error.message,
-                id: 'define-passenger-proof',
-            });
-            break;
-        case 'ageRangeMin':
-            collectedErrors.ageRangeInputErrors.push({
-                errorMessage: error.message,
-                id: 'age-range-min',
-            });
-            break;
-        case 'ageRangeMax':
-            collectedErrors.ageRangeInputErrors.push({
-                errorMessage: error.message,
-                id: 'age-range-max',
-            });
-            break;
-        case 'proofDocuments':
-            collectedErrors.proofSelectInputError.push({
-                errorMessage: error.message,
-                id: 'define-passenger-proof',
-            });
-            break;
-        default:
-            throw new Error('Could not match the following error with an expected input.');
-    }
-};
-
 const DefinePassengerType = ({
-    combinedErrors = [],
+    errors = [],
     fieldsets,
     csrfToken,
 }: DefinePassengerTypeProps & CustomAppProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description} errors={combinedErrors}>
+    <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
             <>
-                <ErrorSummary errors={combinedErrors} />
+                <ErrorSummary errors={errors} />
                 <div>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
@@ -193,28 +165,15 @@ export const getServerSideProps = (ctx: NextPageContext): { props: DefinePasseng
         throw new Error('Failed to retrieve PASSENGER_TYPE_COOKIE for the define passenger type page');
     }
 
-    const collectedErrors: ErrorCollection = {
-        combinedErrors: [],
-        ageRangeRadioError: [],
-        proofSelectRadioError: [],
-        ageRangeInputErrors: [],
-        proofSelectInputError: [],
-    };
+    let errors: ErrorInfo[] = [];
 
     const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
     if (parsedPassengerTypeCookie.errors) {
-        parsedPassengerTypeCookie.errors.forEach((error: ExtractedValidationError) =>
-            collectErrors(error, collectedErrors),
-        );
-        collectedErrors.combinedErrors = collectedErrors.ageRangeRadioError.concat(
-            collectedErrors.proofSelectRadioError,
-            collectedErrors.ageRangeInputErrors,
-            collectedErrors.proofSelectInputError,
-        );
+        errors = parsedPassengerTypeCookie.errors;
     }
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(collectedErrors);
+    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
 
-    return { props: { combinedErrors: collectedErrors.combinedErrors, fieldsets } };
+    return { props: { errors, fieldsets } };
 };
 
 export default DefinePassengerType;
