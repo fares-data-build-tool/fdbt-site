@@ -64,7 +64,7 @@ describe('getSingleTicketJson', () => {
 });
 
 describe('getReturnTicketJson', () => {
-    it('should return a ReturnTicket object for a non circular return journet', () => {
+    it('should return a ReturnTicket object for a non circular return journey', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'return' },
             body: {
