@@ -21,7 +21,7 @@ import { updateSessionAttribute } from '../../utils/sessions';
 
 export interface SelectSalesOfferPackageWithError {
     errorMessage: string;
-    selected: string;
+    selected: { [key: string]: string };
 }
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

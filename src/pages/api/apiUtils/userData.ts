@@ -1,7 +1,7 @@
 import Cookies from 'cookies';
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
 import {
     OPERATOR_COOKIE,
@@ -33,7 +33,6 @@ import {
     ProductDetails,
     Product,
     SalesOfferPackage,
-    ProductDetail,
 } from '../../../interfaces';
 import { PeriodExpiryWithErrors } from '../periodValidity';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../../../interfaces/matchingInterface';
@@ -60,46 +59,37 @@ const generateSalesOfferPackages = (entry: string[]) => {
     return salesOfferPackageList;
 };
 
-export const getProducts = (
+export const getProductsAndSalesOfferPackages = (
     reqBody: {
         [key: string]: string;
     },
-    multipleProductCookie?: string,
-): SalesOfferPackage[] | ProductDetails[] => {
-    let salesOfferPackageList: SalesOfferPackage[] = [];
-    const productDetailsList: ProductDetails[] = [];
+    multipleProductCookie: string,
+): ProductDetails[] => {
+    const productSOPList: ProductDetails[] = [];
 
-    if (multipleProductCookie) {
-        Object.entries(reqBody).forEach(entry => {
-            const salesOfferPackageValue = !isArray(entry[1]) ? [entry[1]] : (entry[1] as string[]);
+    Object.entries(reqBody).forEach(entry => {
+        const salesOfferPackageValue = !isArray(entry[1]) ? [entry[1]] : (entry[1] as string[]);
 
-            salesOfferPackageList = generateSalesOfferPackages(salesOfferPackageValue);
+        const salesOfferPackageList = generateSalesOfferPackages(salesOfferPackageValue);
 
-            const parsedMultipleCookie = JSON.parse(multipleProductCookie);
-            const productName = entry[0];
+        const parsedMultipleCookie = JSON.parse(multipleProductCookie);
 
-            const productDetails = parsedMultipleCookie.find((product: ProductDetail) => {
-                return product.productName === productName;
-            });
-
-            const productDetailsItem = {
-                productName: productDetails.productName,
-                productPrice: productDetails.productPrice,
-                productDuration: productDetails.productDuration || '',
-                productValidity: productDetails.productValidity || '',
-                salesOfferPackages: salesOfferPackageList,
-            };
-
-            productDetailsList.push(productDetailsItem);
+        const productDetail = parsedMultipleCookie.find((product: Product) => {
+            return product.productName === entry[0];
         });
 
-        return productDetailsList;
-    }
+        const productDetailsItem = {
+            productName: productDetail.productName,
+            productPrice: productDetail.productPrice,
+            productDuration: productDetail.productDuration || '',
+            productValidity: productDetail.productValidity || '',
+            salesOfferPackages: salesOfferPackageList,
+        };
 
-    const salesPackageValue = Object.values(reqBody);
-    salesOfferPackageList = generateSalesOfferPackages(salesPackageValue);
+        productSOPList.push(productDetailsItem);
+    });
 
-    return salesOfferPackageList;
+    return productSOPList;
 };
 
 export const putUserDataInS3 = async (
@@ -135,7 +125,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const uuid = getUuidFromCookie(req, res);
 
     const requestBody: { [key: string]: string } = req.body;
-    const salesOfferPackages = getProducts(requestBody);
+    const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
     if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
         throw new Error('Required session object does not exist to create single ticket json');
@@ -180,7 +170,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const uuid = getUuidFromCookie(req, res);
 
     const requestBody: { [key: string]: string } = req.body;
-    const salesOfferPackages = getProducts(requestBody);
+    const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
     if (!matchingAttributeInfo || !isMatchingInfo(matchingAttributeInfo)) {
         throw new Error('Required session object does not exist to create return ticket json');
@@ -247,18 +237,16 @@ export const getPeriodGeoZoneTicketJson = async (
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
 
-    let productDetailsList;
+    let productDetailsList: ProductDetails[] = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
 
-    const salesOfferPackages = getProducts(requestBody, multipleProductCookie);
-
-    const isMultipleProducts = multipleProductCookie;
-
-    if (!isMultipleProducts) {
+    if (!multipleProductCookie) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
             throw new Error('Required session object does not exist to create period ticket json');
         }
 
         const { products } = periodExpiryAttributeInfo;
+
+        const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
         productDetailsList = products.map(product => ({
             productName: product.productName,
@@ -277,7 +265,7 @@ export const getPeriodGeoZoneTicketJson = async (
         uuid,
         operatorName: operatorObject?.operator?.operatorPublicName,
         zoneName: fareZoneName,
-        products: productDetailsList || salesOfferPackages,
+        products: productDetailsList,
         stops: zoneStops,
     };
 };
@@ -311,7 +299,6 @@ export const getPeriodMultipleServicesTicketJson = (
     const isMultiProducts = multipleProductCookie;
 
     const requestBody: { [key: string]: string } = req.body;
-    const salesOfferPackages = getProducts(requestBody, multipleProductCookie);
     const operatorObject = JSON.parse(operatorCookie);
     const { selectedServices } = JSON.parse(serviceListCookie);
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
@@ -324,7 +311,7 @@ export const getPeriodMultipleServicesTicketJson = (
         };
     });
 
-    let productDetailsList;
+    let productDetailsList: ProductDetails[] = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
 
     if (!isMultiProducts) {
         if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
@@ -332,6 +319,8 @@ export const getPeriodMultipleServicesTicketJson = (
         }
 
         const { products } = periodExpiryAttributeInfo;
+
+        const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
         productDetailsList = products.map(product => {
             return {
@@ -351,7 +340,7 @@ export const getPeriodMultipleServicesTicketJson = (
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject?.operator?.operatorPublicName,
-        products: productDetailsList || salesOfferPackages,
+        products: productDetailsList,
         selectedServices: formattedServiceInfo,
     };
 };
@@ -379,7 +368,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const uuid = getUuidFromCookie(req, res);
 
     const requestBody: { [key: string]: string } = req.body;
-    const salesOfferPackages = getProducts(requestBody);
+    const salesOfferPackages = Object.values(requestBody);
     const operatorObject = JSON.parse(operatorCookie);
     const { selectedServices } = JSON.parse(serviceListCookie);
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {

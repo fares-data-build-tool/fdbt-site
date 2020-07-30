@@ -50,7 +50,7 @@ export const defaultSalesOfferPackageFour: SalesOfferPackage = {
 };
 
 export interface SelectSalesOfferPackageProps {
-    selected?: string;
+    selected?: { [key: string]: string };
     productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
     errors: ErrorInfo[];
@@ -60,8 +60,8 @@ const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
     productName?: string,
     productIndex?: number,
-    selected?: {},
-): {} => {
+    selected?: { [key: string]: string },
+): ReactElement[] => {
     return salesOfferPackagesList.map((offer, index) => {
         const { name, description } = offer;
         let checkboxTitles = `${name} - ${description}`;
@@ -104,7 +104,11 @@ const generateCheckbox = (
     });
 };
 
-const createSalesOffer = (salesOfferPackagesList: SalesOfferPackage[], productNames: string[], selected?: {}): {} => {
+const createSalesOffer = (
+    salesOfferPackagesList: SalesOfferPackage[],
+    productNames: string[],
+    selected?: { [key: string]: string },
+): ReactElement[] => {
     if (productNames && productNames.length > 0) {
         return productNames.map((productName, index) => {
             return (
@@ -116,7 +120,7 @@ const createSalesOffer = (salesOfferPackagesList: SalesOfferPackage[], productNa
         });
     }
 
-    return <>{generateCheckbox(salesOfferPackagesList)}</>;
+    return generateCheckbox(salesOfferPackagesList);
 };
 
 const SelectSalesOfferPackage = ({
