@@ -58,7 +58,7 @@ export interface SelectSalesOfferPackageProps {
 
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
-    productIndex?: number,
+    productIndex: number,
     productName?: string,
     selected?: { [key: string]: string },
 ): ReactElement[] => {
