@@ -4,42 +4,55 @@ import {
     getPeriodGeoZoneTicketJson,
     getPeriodMultipleServicesTicketJson,
     getFlatFareTicketJson,
-    getSalesOfferPackagesFromRequestBody,
+    generateSalesOfferPackages,
+    getProductsAndSalesOfferPackages,
 } from '../../../../src/pages/api/apiUtils/userData';
 import {
     getMockRequestAndResponse,
     expectedMatchingJsonSingle,
     userFareStages,
-    mockBasicServiceJson,
+    service,
     mockMatchingFaresZones,
     expectedMatchingJsonReturnNonCircular,
     mockOutBoundMatchingFaresZones,
     expectedSingleProductUploadJsonWithZoneUpload,
     zoneStops,
-    expectedSingleProductUploadJsonWithSelectedServices,
     expectedFlatFareProductUploadJson,
     expectedSalesOfferPackageArray,
     expectedMatchingJsonReturnCircular,
+    expectedProductDetailsArray,
+    expectedMultiProductUploadJsonWithSelectedServices,
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
-import {
-    MATCHING_ATTRIBUTE,
-    INBOUND_MATCHING_ATTRIBUTE,
-    PERIOD_EXPIRY_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-} from '../../../../src/constants';
+import { MATCHING_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../../../src/constants';
 
-describe('getSalesOfferPackagesFromRequestBody', () => {
+describe('generateSalesOfferPackages', () => {
     it('should return an array of SalesOfferPackage objects', () => {
-        const reqBody = {
-            'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
-            'Mobile Rider':
-                '{"name":"Mobile Rider","description":"A ticket that can be purchased via a mobile.","purchaseLocations":["mobileDevice"],"paymentMethods":["debitCard"],"ticketFormats":["mobileApp"]}',
-        };
-        const result = getSalesOfferPackagesFromRequestBody(reqBody);
+        const entry = [
+            '{"name":"Onboard (cash)","description":"Purchasable on board the bus, with cash, as a paper ticket.","purchaseLocations":["onBoard"],"paymentMethods":["cash"],"ticketFormats":["paperTicket"]}',
+            '{"name":"Onboard (contactless)","description":"Purchasable on board the bus, with a contactless card or device, as a paper ticket.","purchaseLocations":["onBoard"],"paymentMethods":["contactlessPaymentCard"],"ticketFormats":["paperTicket"]}',
+        ];
+        const result = generateSalesOfferPackages(entry);
         expect(result).toEqual(expectedSalesOfferPackageArray);
+    });
+});
+
+describe('getProductsAndSalesOfferPackages', () => {
+    it('should return an array of ProductDetails objects', () => {
+        const { req } = getMockRequestAndResponse({
+            body: {
+                DayRider:
+                    '{"name":"CashRider - Cash - Ticket Machine","description":"A Day Rider ticket for an adult that can bought using cash at a ticket machine","purchaseLocations":["TicketMachine"],"paymentMethods":["Cash"],"ticketFormats":["Paper"]}',
+                WeekRider:
+                    '{"name":"CashCardRider - Cash & Card - Bus, Ticket Machine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
+            },
+        });
+        const requestBody: { [key: string]: string } = req.body;
+        const multipleProductCookie =
+            '[{"productName":"DayRider","productPrice":"2.99","productDuration":"1","productValidity":"24hr"},{"productName":"WeekRider","productPrice":"7.99","productDuration":"7","productValidity":"24hr"}]';
+        const result = getProductsAndSalesOfferPackages(requestBody, multipleProductCookie);
+        expect(result).toEqual(expectedProductDetailsArray);
     });
 });
 
@@ -52,7 +65,7 @@ describe('getSingleTicketJson', () => {
             },
             session: {
                 [MATCHING_ATTRIBUTE]: {
-                    service: mockBasicServiceJson,
+                    service,
                     userFareStages,
                     matchingFareZones: mockMatchingFaresZones,
                 },
@@ -73,7 +86,7 @@ describe('getReturnTicketJson', () => {
             },
             session: {
                 [MATCHING_ATTRIBUTE]: {
-                    service: mockBasicServiceJson,
+                    service,
                     userFareStages,
                     matchingFareZones: mockOutBoundMatchingFaresZones,
                 },
@@ -95,7 +108,7 @@ describe('getReturnTicketJson', () => {
             },
             session: {
                 [MATCHING_ATTRIBUTE]: {
-                    service: mockBasicServiceJson,
+                    service,
                     userFareStages,
                     matchingFareZones: mockMatchingFaresZones,
                 },
@@ -122,22 +135,20 @@ describe('getPeriodGeoZoneTicketJson', () => {
 
     it('should return a PeriodGeoZoneTicket object', async () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
-            body: {
-                'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
+            cookieValues: {
+                fareType: 'period',
+                multipleProducts: [
+                    {
+                        productName: 'Product A',
+                        productPrice: '1234',
+                        productDuration: '2',
+                        productValidity: '24hr',
+                    },
+                ],
             },
-            session: {
-                [PERIOD_EXPIRY_ATTRIBUTE]: {
-                    products: [
-                        {
-                            productName: 'Product A',
-                            productPrice: '1234',
-                            productDuration: '2',
-                            productValidity: '24hr',
-                        },
-                    ],
-                },
+            body: {
+                'Product A':
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
@@ -147,28 +158,42 @@ describe('getPeriodGeoZoneTicketJson', () => {
 });
 
 describe('getPeriodMulipleServicesTicketJson', () => {
-    it('should return a string PeriodMultipleServicesTicket object', () => {
+    it('should return a PeriodMultipleServicesTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
-            body: {
-                'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
-                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
+            cookieValues: {
+                fareType: 'period',
+                multipleProducts: [
+                    {
+                        productName: 'Weekly Ticket',
+                        productPrice: '50',
+                        productDuration: '5',
+                        productValidity: '24hr',
+                    },
+                    {
+                        productName: 'Day Ticket',
+                        productPrice: '2.50',
+                        productDuration: '1',
+                        productValidity: '24hr',
+                    },
+                    {
+                        productName: 'Monthly Ticket',
+                        productPrice: '200',
+                        productDuration: '28',
+                        productValidity: 'endOfCalendarDay',
+                    },
+                ],
             },
-            session: {
-                [PERIOD_EXPIRY_ATTRIBUTE]: {
-                    products: [
-                        {
-                            productName: 'Product A',
-                            productPrice: '1234',
-                            productDuration: '2',
-                            productValidity: '24hr',
-                        },
-                    ],
-                },
+            body: {
+                'Weekly Ticket':
+                    '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
+                'Day Ticket':
+                    '{"name":"Adult - Day Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Day Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
+                'Monthly Ticket':
+                    '{"name":"Adult - Monthly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Monthly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
         });
         const result = getPeriodMultipleServicesTicketJson(req, res);
-        expect(result).toEqual(expectedSingleProductUploadJsonWithSelectedServices);
+        expect(result).toEqual(expectedMultiProductUploadJsonWithSelectedServices);
     });
 });
 
@@ -177,7 +202,7 @@ describe('getFlatFareTicketJson', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'flatFare' },
             body: {
-                'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
+                'Weekly Rider':
                     '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
             },
             session: {

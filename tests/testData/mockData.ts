@@ -37,6 +37,7 @@ import {
     PeriodMultipleServicesTicket,
     FlatFareTicket,
     SalesOfferPackage,
+    ProductDetails,
 } from '../../src/interfaces';
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 
@@ -256,13 +257,6 @@ export const getMockContext = ({
     };
 
     return ctx;
-};
-
-export const mockBasicServiceJson: BasicService = {
-    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
-    operatorShortName: 'HCTY',
-    lineName: '12C',
-    nocCode: 'IWBusCo',
 };
 
 export const mockMatchingFaresZones: MatchingFareZones = {
@@ -1154,29 +1148,62 @@ export const mockMatchingUserFareStagesWithAllStagesAssigned: UserFareStages = {
 
 export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
     {
-        name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-        description:
-            'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-        purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-        paymentMethods: ['Cash', 'Card'],
-        ticketFormats: ['Paper', 'Mobile'],
+        name: 'Onboard (cash)',
+        description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+        purchaseLocations: ['onBoard'],
+        paymentMethods: ['cash'],
+        ticketFormats: ['paperTicket'],
     },
     {
-        name: 'Mobile Rider',
-        description: 'A ticket that can be purchased via a mobile.',
-        purchaseLocations: ['mobileDevice'],
-        paymentMethods: ['debitCard'],
-        ticketFormats: ['mobileApp'],
+        name: 'Onboard (contactless)',
+        description: 'Purchasable on board the bus, with a contactless card or device, as a paper ticket.',
+        purchaseLocations: ['onBoard'],
+        paymentMethods: ['contactlessPaymentCard'],
+        ticketFormats: ['paperTicket'],
+    },
+];
+
+export const expectedProductDetailsArray: ProductDetails[] = [
+    {
+        productName: 'DayRider',
+        productPrice: '2.99',
+        productDuration: '1',
+        productValidity: '24hr',
+        salesOfferPackages: [
+            {
+                name: 'CashRider - Cash - Ticket Machine',
+                description: 'A Day Rider ticket for an adult that can bought using cash at a ticket machine',
+                purchaseLocations: ['TicketMachine'],
+                paymentMethods: ['Cash'],
+                ticketFormats: ['Paper'],
+            },
+        ],
+    },
+    {
+        productName: 'WeekRider',
+        productPrice: '7.99',
+        productDuration: '7',
+        productValidity: '24hr',
+        salesOfferPackages: [
+            {
+                name: 'CashCardRider - Cash & Card - Bus, Ticket Machine, Shop',
+                description:
+                    'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                paymentMethods: ['Cash', 'Card'],
+                ticketFormats: ['Paper', 'Mobile'],
+            },
+        ],
     },
 ];
 
 export const expectedMatchingJsonSingle: SingleTicket = {
     type: 'single',
-    lineName: '12C',
-    nocCode: 'IWBusCo',
+    lineName: '215',
+    nocCode: 'DCCL',
     passengerType: 'Adult',
-    operatorShortName: 'HCTY',
-    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
+    operatorShortName: 'DCC',
+    serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
@@ -1310,10 +1337,10 @@ export const expectedMatchingJsonSingle: SingleTicket = {
 export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     type: 'return',
     passengerType: 'Adult',
-    lineName: '12C',
-    nocCode: 'IWBusCo',
-    operatorShortName: 'HCTY',
-    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
+    lineName: '215',
+    nocCode: 'DCCL',
+    operatorShortName: 'DCC',
+    serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     products: [
@@ -1476,11 +1503,11 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
 
 export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     type: 'return',
-    lineName: '12C',
+    lineName: '215',
     passengerType: 'Adult',
-    nocCode: 'IWBusCo',
-    operatorShortName: 'HCTY',
-    serviceDescription: 'Interchange Stand B,Seaham - Estate (Hail and Ride) N/B,Westlea',
+    nocCode: 'DCCL',
+    operatorShortName: 'DCC',
+    serviceDescription: 'Worthing - Seaham - Crawley',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     products: [
@@ -1749,7 +1776,7 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
     passengerType: 'Adult',
 };
 
-export const expectedMultiProductUploadJsonWithSelectedServices = {
+export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
     operatorName: 'test',
     type: 'period',
     nocCode: 'TEST',
@@ -1761,18 +1788,48 @@ export const expectedMultiProductUploadJsonWithSelectedServices = {
             productPrice: '50',
             productDuration: '5',
             productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1',
             productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Day Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Day Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28',
             productValidity: 'endOfCalendarDay',
+            salesOfferPackages: [
+                {
+                    name: 'Adult - Monthly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                    description:
+                        'A Monthly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
+                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
+                    paymentMethods: ['Cash', 'Card'],
+                    ticketFormats: ['Paper', 'Mobile'],
+                },
+            ],
         },
     ],
     selectedServices: [

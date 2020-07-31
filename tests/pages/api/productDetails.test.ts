@@ -1,24 +1,16 @@
 import productDetails from '../../../src/pages/api/productDetails';
 import { PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
-import * as s3 from '../../../src/data/s3';
-import * as validator from '../../../src/pages/api/apiUtils/validator';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('productDetails', () => {
     const updateAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
-    const putStringInS3Spy = jest.spyOn(s3, 'putStringInS3');
-    putStringInS3Spy.mockImplementation(() => Promise.resolve());
 
     const writeHeadMock = jest.fn();
 
     beforeEach(() => {
         jest.resetAllMocks();
-
-        jest.spyOn(validator, 'isSessionValid')
-            .mockImplementation()
-            .mockReturnValue(true);
     });
 
     it('should set PRODUCT_DETAILS_ATTRIBUTE with errors and redirect to productDetails when the user input is invalid', () => {

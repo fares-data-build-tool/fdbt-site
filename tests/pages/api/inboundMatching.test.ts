@@ -6,11 +6,8 @@ import {
     mockMatchingUserFareStagesWithAllStagesAssigned,
 } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-
 import { InboundMatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../../../src/constants';
-
-jest.mock('../../../src/data/s3.ts');
 
 const selectedOptions = {
     option0:
@@ -39,13 +36,11 @@ describe('Inbound Matching API', () => {
             inboundMatchingFareZones: expect.any(Object),
         };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
         inboundMatching(req, res);
@@ -60,13 +55,11 @@ describe('Inbound Matching API', () => {
             selectedFareStages: expect.any(Object),
         };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 ...selectedOptions,
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithUnassignedStages),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
         inboundMatching(req, res);
@@ -79,14 +72,12 @@ describe('Inbound Matching API', () => {
 
     it('redirects to inboundMatching page if no stops are allocated to fare stages', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 option0: '',
                 option1: '',
                 service: JSON.stringify(service),
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -99,9 +90,7 @@ describe('Inbound Matching API', () => {
 
     it('redirects back to error page if no user data in body', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: { ...selectedOptions, service: JSON.stringify(service), userfarestages: '' },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -113,13 +102,11 @@ describe('Inbound Matching API', () => {
 
     it('redirects back to error page if no service info in body', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 ...selectedOptions,
                 service: '',
                 userfarestages: JSON.stringify(mockMatchingUserFareStagesWithAllStagesAssigned),
             },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 

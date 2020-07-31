@@ -27,7 +27,6 @@ describe('periodValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { selectedServices: null },
             body: { periodValid: '24hr' },
-            uuid: '',
             mockWriteHeadFn: writeHeadMock,
         });
         periodValidity(req, res);
@@ -44,7 +43,6 @@ describe('periodValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
             body: {},
-            uuid: '',
             mockWriteHeadFn: writeHeadMock,
         });
         periodValidity(req, res);

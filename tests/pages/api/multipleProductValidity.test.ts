@@ -8,7 +8,6 @@ describe('multipleProductValidity', () => {
     describe('addErrorsIfInvalid', () => {
         it('adds errors to incorrect data if there are invalid inputs', () => {
             const { req } = getMockRequestAndResponse({
-                cookieValues: '',
                 body: {
                     'validity-row0': '',
                     'validity-row1': '',
@@ -32,7 +31,6 @@ describe('multipleProductValidity', () => {
 
         it('does not add errors to correct data', () => {
             const { req } = getMockRequestAndResponse({
-                cookieValues: '',
                 body: {
                     'validity-row0': 'endOfCalendarDay',
                     'validity-row1': '24hr',
@@ -57,9 +55,7 @@ describe('multipleProductValidity', () => {
 
     it('redirects back to the multipleProductValidity page if there is no body', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {},
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
@@ -74,7 +70,6 @@ describe('multipleProductValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
             body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
-            uuid: '',
             mockWriteHeadFn: writeHeadMock,
         });
         multipleProductValidity(req, res);
@@ -88,7 +83,6 @@ describe('multipleProductValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { operator: null },
             body: { 'validity-row0': 'endOfCalendarDay' },
-            uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
 
