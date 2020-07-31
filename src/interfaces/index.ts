@@ -3,6 +3,12 @@ import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
 import { IncomingMessage } from 'http';
 
+export interface BaseReactElement {
+    id: string;
+    name: string;
+    label: string;
+}
+
 export interface ProductInfo {
     productName: string;
     productPrice: string;

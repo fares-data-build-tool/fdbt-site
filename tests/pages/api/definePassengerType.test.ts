@@ -1,6 +1,7 @@
 import definePassengerType, {
     passengerTypeDetailsSchema,
     formatRequestBody,
+    getErrorIdFromValidityError,
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -72,6 +73,23 @@ describe('definePassengerType', () => {
         });
     });
 
+    describe('getErrorIdFromValidityError', () => {
+        it.each([
+            ['define-passenger-age-range', 'ageRange'],
+            ['define-passenger-proof', 'proof'],
+            ['age-range-min', 'ageRangeMin'],
+            ['age-range-max', 'ageRangeMax'],
+            ['proof-required', 'proofDocuments'],
+        ])('should return the id as %s when the error path is %s', (expectedId, errorPath) => {
+            const actualId = getErrorIdFromValidityError(errorPath);
+            expect(actualId).toEqual(expectedId);
+        });
+
+        it('should throw an error when the error path does not match a valid input field', () => {
+            expect(() => getErrorIdFromValidityError('notValid')).toThrow();
+        });
+    });
+
     it('should throw an error and redirect to the error page when the session is invalid', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { operator: null },
@@ -137,16 +155,17 @@ describe('definePassengerType', () => {
             },
             [
                 {
-                    input: 'ageRangeMax',
-                    message: 'Enter a minimum or maximum age',
+                    id: 'age-range-max',
+                    errorMessage: 'Enter a minimum or maximum age',
                 },
                 {
-                    input: 'ageRangeMin',
-                    message: 'Enter a minimum or maximum age',
+                    id: 'age-range-min',
+                    errorMessage: 'Enter a minimum or maximum age',
                 },
                 {
-                    input: 'proofDocuments',
-                    message: 'Select at least one proof document',
+                    id: 'proof-required',
+                    errorMessage: 'Select at least one proof document',
+                    userInput: '',
                 },
             ],
         ],
@@ -159,12 +178,14 @@ describe('definePassengerType', () => {
             },
             [
                 {
-                    input: 'ageRangeMax',
-                    message: 'Maximum age cannot be less than minimum age',
+                    id: 'age-range-max',
+                    errorMessage: 'Maximum age cannot be less than minimum age',
+                    userInput: 12,
                 },
                 {
-                    input: 'ageRangeMin',
-                    message: 'Minimum age cannot be greater than maximum age',
+                    id: 'age-range-min',
+                    errorMessage: 'Minimum age cannot be greater than maximum age',
+                    userInput: 25,
                 },
             ],
         ],

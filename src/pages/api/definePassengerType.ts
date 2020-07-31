@@ -144,7 +144,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             errors = validityErrors.inner.map(error => ({
                 id: getErrorIdFromValidityError(error.path),
                 errorMessage: error.message,
-                userInput: error.path,
+                userInput: error.value,
             }));
         }
         if (errors.length === 0) {

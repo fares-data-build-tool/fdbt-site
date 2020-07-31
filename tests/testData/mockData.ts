@@ -27,6 +27,7 @@ import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
 import { ErrorInfo, Breadcrumb, NextPageContextWithSession, BasicService } from '../../src/interfaces';
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
+import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
 interface GetMockContextInput {
     session?: any;
@@ -1952,7 +1953,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
     {
         heading: {
             id: 'define-passenger-age-range',
-            content: 'Does the passenger type have an age range?',
+            content: expect.any(String),
         },
         radios: [
             {
@@ -1992,7 +1993,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
     {
         heading: {
             id: 'define-passenger-proof',
-            content: 'Does the passenger type require a proof document?',
+            content: expect.any(String),
         },
         radios: [
             {
@@ -2168,11 +2169,11 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputErrors: [
                     {
                         errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
+                        id: 'age-range-min',
                     },
                     {
                         errorMessage: 'Enter a minimum or maximum age',
-                        id: 'define-passenger-age-range',
+                        id: 'age-range-max',
                     },
                 ],
             },
@@ -2222,7 +2223,8 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputErrors: [
                     {
                         errorMessage: 'Select at least one proof document',
-                        id: 'define-passenger-proof',
+                        id: 'proof-required',
+                        userInput: '',
                     },
                 ],
             },
@@ -2251,7 +2253,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
     {
         heading: {
             id: 'define-passenger-age-range',
-            content: 'Does the passenger type have an age range?',
+            content: expect.any(String),
         },
         radios: [
             {
@@ -2300,7 +2302,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
     {
         heading: {
             id: 'define-passenger-proof',
-            content: 'Does the passenger type require a proof document?',
+            content: expect.any(String),
         },
         radios: [
             {
@@ -2346,18 +2348,70 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
 
 export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
     {
+        userInput: '',
         errorMessage: 'Choose one of the options below',
         id: 'define-passenger-proof',
     },
     {
+        userInput: '',
         errorMessage: 'Enter a minimum or maximum age',
         id: 'age-range-min',
     },
     {
+        userInput: '',
         errorMessage: 'Enter a minimum or maximum age',
         id: 'age-range-max',
     },
 ];
+
+export const mockNumberOfPassengerTypeFieldset: TextInputFieldset = {
+    heading: {
+        id: 'number-of-passenger-type-heading',
+        content: 'How many child passengers can be in the group?',
+    },
+    inputs: [
+        {
+            id: 'min-number-of-passengers',
+            name: 'minNumber',
+            label: 'Minimum',
+        },
+        {
+            id: 'max-number-of-passengers',
+            name: 'maxNumber',
+            label: 'Maximum',
+        },
+    ],
+    inputErrors: [],
+};
+
+export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
+    heading: {
+        id: 'number-of-passenger-type-heading',
+        content: 'How many child passengers can be in the group?',
+    },
+    inputs: [
+        {
+            id: 'min-number-of-passengers',
+            name: 'minNumber',
+            label: 'Minimum',
+        },
+        {
+            id: 'max-number-of-passengers',
+            name: 'maxNumber',
+            label: 'Maximum',
+        },
+    ],
+    inputErrors: [
+        {
+            id: 'min-number-of-passengers',
+            errorMessage: 'Enter a number between 1 and 30',
+        },
+        {
+            id: 'max-number-of-passengers',
+            errorMessage: 'Enter a number between 1 and 30',
+        },
+    ],
+};
 
 export const mockBreadCrumbList: Breadcrumb[] = [
     { name: 'Home', link: '/', show: true },
