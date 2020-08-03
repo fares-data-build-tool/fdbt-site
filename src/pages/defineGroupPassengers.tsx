@@ -1,16 +1,15 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
+import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, passengerTypesList } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { passengerTypesList, GROUP_PASSENGER_TYPES } from '../constants';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { GroupPassengerTypesWithErrors } from './api/defineGroupPassengers';
 
-const title = 'Passenger Type - Fares Data Build Tool';
-const description = 'Passenger Type selection page of the Fares Data Build Tool';
+const title = 'Define Group Passengers - Fares Data Build Tool';
+const description = 'Group Passengers selection page of the Fares Data Build Tool';
 
 const errorId = 'passenger-type-error';
 
@@ -24,9 +23,9 @@ type PassengerTypeProps = {
     errors?: ErrorInfo[];
 };
 
-const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAppProps): ReactElement => (
+const DefineGroupPassengers = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
-        <CsrfForm action="/api/passengerType" method="post" csrfToken={csrfToken}>
+        <CsrfForm action="/api/defineGroupPassengers" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
@@ -39,22 +38,26 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                         <span className="govuk-hint" id="passenger-type-hint">
                             Relate the ticket(s) to a passenger type
                         </span>
-                        <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                            <div className="govuk-radios">
+                        <FormElementWrapper
+                            errors={errors.length ? [{ errorMessage: errors[0].errorMessage || '', id: errorId }] : []}
+                            errorId={errorId}
+                            errorClass="govuk-checkboxes--error"
+                        >
+                            <div className="govuk-checkboxes">
                                 {passengerTypesList.map(
                                     (passenger, index): ReactElement => (
-                                        <div className="govuk-radios__item" key={passenger.passengerTypeValue}>
+                                        <div className="govuk-checkboxes__item" key={passenger.passengerTypeValue}>
                                             <input
-                                                className="govuk-radios__input"
+                                                className="govuk-checkboxes__input"
                                                 id={`passenger-type-${index}`}
                                                 name="passengerType"
-                                                type="radio"
+                                                type="checkbox"
                                                 value={passenger.passengerTypeValue}
                                                 disabled={passenger.greyedOut}
                                                 aria-disabled={passenger.greyedOut}
                                             />
                                             <label
-                                                className="govuk-label govuk-radios__label"
+                                                className="govuk-label govuk-checkboxes__label"
                                                 htmlFor={`passenger-type-${index}`}
                                             >
                                                 {`${passenger.passengerTypeDisplay}`}
@@ -72,21 +75,23 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
-
-    if (cookies[PASSENGER_TYPE_COOKIE]) {
-        const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-        const parsedPassengerTypeCookie = JSON.parse(passengerTypeCookie);
-
-        if (parsedPassengerTypeCookie.errorMessage) {
-            const { errorMessage } = parsedPassengerTypeCookie;
-            deleteCookieOnServerSide(ctx, PASSENGER_TYPE_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PassengerTypeProps } => {
+    const defineGroupPassengersAttribute = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES);
+    if (defineGroupPassengersAttribute as GroupPassengerTypesWithErrors) {
+        if ((defineGroupPassengersAttribute as GroupPassengerTypesWithErrors).errors) {
+            return {
+                props: {},
+            };
         }
+        return {
+            props: {
+                errors: (defineGroupPassengersAttribute as GroupPassengerTypesWithErrors).errors,
+            },
+        };
     }
-
-    return { props: {} };
+    return {
+        props: {},
+    };
 };
 
-export default PassengerType;
+export default DefineGroupPassengers;

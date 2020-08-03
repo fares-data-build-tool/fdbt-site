@@ -1,3 +1,5 @@
+import { PassengerAttributes } from '../pages/passengerType';
+
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
 export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
@@ -66,7 +68,11 @@ export const SOP_INFO_ATTRIBUTE = 'fdbt-sales-offer-package-info';
 
 export const SALES_OFFER_PACKAGES_ATTRIBUTE = 'fdbt-select-sales-offer-packages';
 
-export const GROUP_TICKET_ATTRIBUTE = 'fdbt-group-tickets';
+export const GROUP_SIZE = 'fdbt-group-size';
+
+export const GROUP_PASSENGER_TYPES = 'fdbt-group-passenger-types';
+
+export const GROUP_DEFINITION = 'fdbt-group-definition';
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
@@ -86,3 +92,21 @@ export const STAGE = process.env.STAGE || 'dev';
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
+
+export const passengerTypesList: PassengerAttributes[] = [
+    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone', greyedOut: false },
+    { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult', greyedOut: false },
+    { passengerTypeDisplay: 'Child', passengerTypeValue: 'child', greyedOut: false },
+    { passengerTypeDisplay: 'Infant', passengerTypeValue: 'infant', greyedOut: false },
+    { passengerTypeDisplay: 'Senior', passengerTypeValue: 'senior', greyedOut: false },
+    { passengerTypeDisplay: 'Student', passengerTypeValue: 'student', greyedOut: false },
+    { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson', greyedOut: false },
+    { passengerTypeDisplay: 'School Pupil', passengerTypeValue: 'schoolPupil', greyedOut: true },
+    { passengerTypeDisplay: 'Disabled', passengerTypeValue: 'disabled', greyedOut: true },
+    { passengerTypeDisplay: 'Disabled Companion', passengerTypeValue: 'disabledCompanion', greyedOut: true },
+    { passengerTypeDisplay: 'Employee', passengerTypeValue: 'employee', greyedOut: true },
+    { passengerTypeDisplay: 'Military', passengerTypeValue: 'military', greyedOut: true },
+    { passengerTypeDisplay: 'Job Seeker', passengerTypeValue: 'jobSeeker', greyedOut: true },
+    { passengerTypeDisplay: 'Guide Dog', passengerTypeValue: 'guideDog', greyedOut: true },
+    { passengerTypeDisplay: 'Animal', passengerTypeValue: 'animal', greyedOut: true },
+];
