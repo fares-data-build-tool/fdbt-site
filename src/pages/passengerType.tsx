@@ -8,16 +8,17 @@ import ErrorSummary from '../components/ErrorSummary';
 import { deleteCookieOnServerSide } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import InsetText from '../components/InsetText';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';
 
 const errorId = 'passenger-type-error';
+const insetText = 'More passenger types will become available soon';
 
 export type PassengerAttributes = {
     passengerTypeDisplay: string;
     passengerTypeValue: string;
-    greyedOut: boolean;
 };
 
 type PassengerTypeProps = {
@@ -50,8 +51,6 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                                                 name="passengerType"
                                                 type="radio"
                                                 value={passenger.passengerTypeValue}
-                                                disabled={passenger.greyedOut}
-                                                aria-disabled={passenger.greyedOut}
                                             />
                                             <label
                                                 className="govuk-label govuk-radios__label"
@@ -66,6 +65,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                         </FormElementWrapper>
                     </fieldset>
                 </div>
+                <InsetText text={insetText} />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>

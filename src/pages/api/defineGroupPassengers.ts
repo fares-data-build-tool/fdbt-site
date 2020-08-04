@@ -14,7 +14,7 @@ export interface GroupPassengerTypesWithErrors {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        const chosenPassengerTypes = req.body.passengerType;
+        const chosenPassengerTypes = req.body.passengerTypes;
         if (chosenPassengerTypes) {
             if (isArray(chosenPassengerTypes) && chosenPassengerTypes.length > 2) {
                 const passengerTypeErrorMessage: GroupPassengerTypesWithErrors = {
@@ -42,7 +42,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, GROUP_PASSENGER_TYPES, passengerTypeErrorMessage);
         redirectTo(res, '/defineGroupPassengers');
     } catch (error) {
-        const message = 'There was a problem selecting the passenger type:';
+        const message = 'There was a problem selecting the passenger types:';
         redirectToError(res, message, 'api.passengerType', error);
     }
 };

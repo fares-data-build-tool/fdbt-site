@@ -94,19 +94,11 @@ export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
 
 export const passengerTypesList: PassengerAttributes[] = [
-    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone', greyedOut: false },
-    { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult', greyedOut: false },
-    { passengerTypeDisplay: 'Child', passengerTypeValue: 'child', greyedOut: false },
-    { passengerTypeDisplay: 'Infant', passengerTypeValue: 'infant', greyedOut: false },
-    { passengerTypeDisplay: 'Senior', passengerTypeValue: 'senior', greyedOut: false },
-    { passengerTypeDisplay: 'Student', passengerTypeValue: 'student', greyedOut: false },
-    { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson', greyedOut: false },
-    { passengerTypeDisplay: 'School Pupil', passengerTypeValue: 'schoolPupil', greyedOut: true },
-    { passengerTypeDisplay: 'Disabled', passengerTypeValue: 'disabled', greyedOut: true },
-    { passengerTypeDisplay: 'Disabled Companion', passengerTypeValue: 'disabledCompanion', greyedOut: true },
-    { passengerTypeDisplay: 'Employee', passengerTypeValue: 'employee', greyedOut: true },
-    { passengerTypeDisplay: 'Military', passengerTypeValue: 'military', greyedOut: true },
-    { passengerTypeDisplay: 'Job Seeker', passengerTypeValue: 'jobSeeker', greyedOut: true },
-    { passengerTypeDisplay: 'Guide Dog', passengerTypeValue: 'guideDog', greyedOut: true },
-    { passengerTypeDisplay: 'Animal', passengerTypeValue: 'animal', greyedOut: true },
+    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone' },
+    { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult' },
+    { passengerTypeDisplay: 'Child', passengerTypeValue: 'child' },
+    { passengerTypeDisplay: 'Infant', passengerTypeValue: 'infant' },
+    { passengerTypeDisplay: 'Senior', passengerTypeValue: 'senior' },
+    { passengerTypeDisplay: 'Student', passengerTypeValue: 'student' },
+    { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson' },
 ];
