@@ -16,11 +16,6 @@ const description = 'Passenger Type selection page of the Fares Data Build Tool'
 const errorId = 'passenger-type-error';
 const insetText = 'More passenger types will become available soon';
 
-export type PassengerAttributes = {
-    passengerTypeDisplay: string;
-    passengerTypeValue: string;
-};
-
 type PassengerTypeProps = {
     errors?: ErrorInfo[];
 };

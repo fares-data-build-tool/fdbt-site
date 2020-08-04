@@ -1,4 +1,4 @@
-import { PassengerAttributes } from '../pages/passengerType';
+import { PassengerAttributes } from '../interfaces/index';
 
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
