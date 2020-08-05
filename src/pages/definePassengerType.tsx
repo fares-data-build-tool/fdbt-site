@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES, GROUP_DEFINITION } from '../constants';
+import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE, GROUP_DEFINITION_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
@@ -267,8 +267,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     const cookies = parseCookies(ctx);
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
-    const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES);
-    const groupDefinition = getSessionAttribute(ctx.req, GROUP_DEFINITION);
+    const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+    const groupDefinition = getSessionAttribute(ctx.req, GROUP_DEFINITION_ATTRIBUTE);
 
     if (!passengerTypeCookie && !groupPassengerTypes) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');

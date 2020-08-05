@@ -18,7 +18,7 @@ import {
     mockNumberOfPassengerTypeFieldsetWithErrors,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
-import { GROUP_PASSENGER_TYPES, GROUP_DEFINITION } from '../../src/constants';
+import { GROUP_PASSENGER_TYPES_ATTRIBUTE, GROUP_DEFINITION_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('getFieldsets', () => {
@@ -102,7 +102,7 @@ describe('pages', () => {
             jest.resetAllMocks();
         });
 
-        it('should throw an error if there is no PASSENGER_TYPE_COOKIE and no GROUP_PASSENGER_TYPES attribute', () => {
+        it('should throw an error if there is no PASSENGER_TYPE_COOKIE and no GROUP_PASSENGER_TYPES_ATTRIBUTE attribute', () => {
             const ctx = getMockContext({ cookies: { passengerType: null } });
             expect(() => getServerSideProps(ctx)).toThrow(
                 'Failed to retrieve passenger type details for the define passenger type page',
@@ -116,7 +116,7 @@ describe('pages', () => {
                 {
                     cookies: { passengerType: null },
                     session: {
-                        [GROUP_PASSENGER_TYPES]: ['adult', 'child'],
+                        [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
                     },
                 },
                 { group: true, numberOfPassengerTypeFieldset: mockNumberOfPassengerTypeFieldset },
@@ -169,8 +169,8 @@ describe('pages', () => {
             const ctx = getMockContext({
                 cookies: { passengerType: null },
                 session: {
-                    [GROUP_PASSENGER_TYPES]: ['adult', 'child'],
-                    [GROUP_DEFINITION]: {
+                    [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
+                    [GROUP_DEFINITION_ATTRIBUTE]: {
                         maxGroupSize: 2,
                         companions: {
                             passengerType: 'child',
