@@ -21,7 +21,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     errors: [
                         {
                             errorMessage: 'Choose one or two passenger types - you cannot exceed this limit',
-                            id: '',
+                            id: 'passenger-types-error',
                         },
                     ],
                 };
@@ -36,13 +36,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         const passengerTypeErrorMessage: GroupPassengerTypesWithErrors = {
-            errors: [{ errorMessage: 'Choose one or two passenger types from the options', id: '' }],
+            errors: [
+                { errorMessage: 'Choose one or two passenger types from the options', id: 'passenger-types-error' },
+            ],
         };
 
         updateSessionAttribute(req, GROUP_PASSENGER_TYPES, passengerTypeErrorMessage);
         redirectTo(res, '/defineGroupPassengers');
     } catch (error) {
         const message = 'There was a problem selecting the passenger types:';
-        redirectToError(res, message, 'api.passengerType', error);
+        redirectToError(res, message, 'api.defineGroupPassengers', error);
     }
 };

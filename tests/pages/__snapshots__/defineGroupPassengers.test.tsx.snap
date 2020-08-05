@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages operator should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
+exports[`pages defineGroupPassengers should render correctly with GroupPassengerTypes and errors (GroupPassengerTypesWithErrors) 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={
@@ -53,12 +53,12 @@ exports[`pages operator should render correctly with GroupPassengerTypes and err
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
-          errorId="passenger-type-error"
+          errorId=""
           errors={
             Array [
               Object {
                 "errorMessage": "Choose one or two passenger types - you cannot exceed this limit",
-                "id": "passenger-type-error",
+                "id": "",
               },
             ]
           }
@@ -209,7 +209,7 @@ exports[`pages operator should render correctly with GroupPassengerTypes and err
 </Component>
 `;
 
-exports[`pages operator should render correctly with group info and no errors 1`] = `
+exports[`pages defineGroupPassengers should render correctly with group info and no errors 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={Array []}
@@ -248,7 +248,7 @@ exports[`pages operator should render correctly with group info and no errors 1`
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
-          errorId="passenger-type-error"
+          errorId=""
           errors={Array []}
         >
           <div
@@ -397,7 +397,7 @@ exports[`pages operator should render correctly with group info and no errors 1`
 </Component>
 `;
 
-exports[`pages operator should render correctly with no GroupPassengerTypes 1`] = `
+exports[`pages defineGroupPassengers should render correctly with no GroupPassengerTypes 1`] = `
 <Component
   description="Group Passengers selection page of the Fares Data Build Tool"
   errors={Array []}
@@ -436,7 +436,7 @@ exports[`pages operator should render correctly with no GroupPassengerTypes 1`] 
         </span>
         <FormElementWrapper
           errorClass="govuk-checkboxes--error"
-          errorId="passenger-type-error"
+          errorId=""
           errors={Array []}
         >
           <div

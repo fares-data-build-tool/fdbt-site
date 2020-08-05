@@ -3,7 +3,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessionUtils from '../../../src/utils/sessions';
 import { GROUP_PASSENGER_TYPES } from '../../../src/constants';
 
-describe('passengerType', () => {
+describe('defineGroupPassengers', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
 
@@ -23,7 +23,9 @@ describe('passengerType', () => {
             Location: '/defineGroupPassengers',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_TYPES, {
-            errors: [{ errorMessage: 'Choose one or two passenger types from the options', id: '' }],
+            errors: [
+                { errorMessage: 'Choose one or two passenger types from the options', id: 'passenger-types-error' },
+            ],
         });
     });
 
@@ -44,7 +46,7 @@ describe('passengerType', () => {
             errors: [
                 {
                     errorMessage: 'Choose one or two passenger types - you cannot exceed this limit',
-                    id: '',
+                    id: 'passenger-types-error',
                 },
             ],
         });

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
-import { passengerTypesList, GROUP_PASSENGER_TYPES } from '../constants';
+import { PASSENGER_TYPES_LIST, GROUP_PASSENGER_TYPES } from '../constants';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -11,8 +11,6 @@ import { GroupPassengerTypesWithErrors, GroupPassengerTypes } from './api/define
 
 const title = 'Define Group Passengers - Fares Data Build Tool';
 const description = 'Group Passengers selection page of the Fares Data Build Tool';
-
-const errorId = 'passenger-type-error';
 
 export type PassengerAttributes = {
     passengerTypeDisplay: string;
@@ -52,14 +50,12 @@ const DefineGroupPassengers = ({
                                 Relate the ticket(s) to a passenger type
                             </span>
                             <FormElementWrapper
-                                errors={
-                                    errors.length ? [{ errorMessage: errors[0].errorMessage || '', id: errorId }] : []
-                                }
-                                errorId={errorId}
+                                errors={errors}
+                                errorId={errors[0] ? errors[0].id : ''}
                                 errorClass="govuk-checkboxes--error"
                             >
                                 <div className="govuk-checkboxes">
-                                    {passengerTypesList.map(
+                                    {PASSENGER_TYPES_LIST.map(
                                         (passenger, index): ReactElement => (
                                             <div className="govuk-checkboxes__item" key={passenger.passengerTypeValue}>
                                                 <input

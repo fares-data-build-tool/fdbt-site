@@ -93,7 +93,7 @@ export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
 
-export const passengerTypesList: PassengerAttributes[] = [
+export const PASSENGER_TYPES_LIST: PassengerAttributes[] = [
     { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone' },
     { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult' },
     { passengerTypeDisplay: 'Child', passengerTypeValue: 'child' },

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import DefineGroupPassengers from '../../src/pages/defineGroupPassengers';
 
 describe('pages', () => {
-    describe('operator', () => {
+    describe('defineGroupPassengers', () => {
         it('should render correctly with no GroupPassengerTypes', () => {
             const tree = shallow(
                 <DefineGroupPassengers
