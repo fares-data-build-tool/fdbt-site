@@ -116,6 +116,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
+        console.log(req.body);
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
@@ -147,6 +148,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 userInput: error.value,
             }));
         }
+
+
+        
         if (errors.length === 0) {
             const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
             setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);

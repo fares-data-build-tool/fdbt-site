@@ -1,3 +1,5 @@
+import { PassengerAttributes } from '../interfaces/index';
+
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
 export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
@@ -90,3 +92,13 @@ export const STAGE = process.env.STAGE || 'dev';
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
+
+export const PASSENGER_TYPES_LIST: PassengerAttributes[] = [
+    { passengerTypeDisplay: 'Anyone', passengerTypeValue: 'anyone' },
+    { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult' },
+    { passengerTypeDisplay: 'Child', passengerTypeValue: 'child' },
+    { passengerTypeDisplay: 'Infant', passengerTypeValue: 'infant' },
+    { passengerTypeDisplay: 'Senior', passengerTypeValue: 'senior' },
+    { passengerTypeDisplay: 'Student', passengerTypeValue: 'student' },
+    { passengerTypeDisplay: 'Young Person', passengerTypeValue: 'youngPerson' },
+];

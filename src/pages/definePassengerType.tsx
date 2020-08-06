@@ -21,16 +21,6 @@ import FormElementWrapper from '../components/FormElementWrapper';
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
 
-// TODO - Types of GroupPassengerTypes and ...WithErrors to be moved into /groupPassengerTypes when it exists.
-export interface GroupPassengerTypes {
-    passengerTypes: string[];
-}
-
-export interface GroupPassengerTypesWithErrors extends GroupPassengerTypes {
-    errors: ErrorInfo[];
-}
-//
-
 export interface GroupDefinitionWithErrors extends GroupDefinition {
     errors: ErrorInfo[];
 }
@@ -204,7 +194,7 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                                 errorClass="govuk-input--error"
                             >
                                 <input
-                                    className="govuk-input govuk-!-width-one-third"
+                                    className="govuk-input govuk-input--width-2"
                                     id={input.id}
                                     name={input.name}
                                     type="text"
@@ -278,8 +268,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
-    // TODO - Get passengerType from query string parameter
-    const passengerType = 'child';
+    const passengerType = ctx.query.passengerType as string;
 
     const group = !passengerTypeCookie && !!groupPassengerTypes;
 

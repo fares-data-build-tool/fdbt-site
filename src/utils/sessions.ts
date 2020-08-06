@@ -24,11 +24,8 @@ import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import { MatchingValues } from '../pages/api/outboundMatching';
 import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
-import {
-    GroupPassengerTypes,
-    GroupPassengerTypesWithErrors,
-    GroupDefinitionWithErrors,
-} from '../pages/definePassengerType';
+import { GroupPassengerTypes, GroupPassengerTypesWithErrors } from '../pages/api/defineGroupPassengers';
+import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;

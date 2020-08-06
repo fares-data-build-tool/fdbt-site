@@ -18,6 +18,11 @@ export interface ProductInfoWithErrors extends ProductInfo {
     errors: ErrorInfo[];
 }
 
+export type PassengerAttributes = {
+    passengerTypeDisplay: string;
+    passengerTypeValue: string;
+};
+
 export interface ServicesInfo {
     lineName: string;
     startDate: string;
