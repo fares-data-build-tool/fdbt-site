@@ -212,6 +212,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             );
         }
 
+        const { groupPassengerTypeName } = req.body;
+
         if (errors.length === 0) {
             let passengerTypeCookieValue = '';
 
@@ -222,7 +224,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 passengerTypeCookieValue = JSON.stringify({ errors: [], passengerType });
                 setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
                 const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-                const submittedPassengerType = req.headers.referer.split('=')[1];
+                const submittedPassengerType = groupPassengerTypeName;
 
                 if (selectedPassengerTypes) {
                     const index = (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.findIndex(
@@ -264,7 +266,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
         setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         if (group) {
-            redirectTo(res, `/definePassengerType?groupPassengerType=${req.headers.referer?.split('=')[1]}`);
+            redirectTo(res, `/definePassengerType?groupPassengerType=${groupPassengerTypeName}`);
             return;
         }
         redirectTo(res, '/definePassengerType');

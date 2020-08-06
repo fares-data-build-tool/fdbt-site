@@ -39,6 +39,7 @@ export interface DefinePassengerTypeProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
     numberOfPassengerTypeFieldset?: TextInputFieldset;
+    groupPassengerType: string;
 }
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
@@ -231,6 +232,7 @@ const DefinePassengerType = ({
     fieldsets,
     numberOfPassengerTypeFieldset,
     csrfToken,
+    groupPassengerType,
 }: DefinePassengerTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
@@ -258,6 +260,7 @@ const DefinePassengerType = ({
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                 </div>
+                {group === true && <input value={groupPassengerType} type="hidden" name="groupPassengerTypeName" />}
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
@@ -283,13 +286,13 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
-    const passengerType = ctx.query.groupPassengerType as string;
+    const groupPassengerType = ctx.query.groupPassengerType as string;
 
     const group = !!groupPassengerTypes;
 
     if (group) {
-        fieldsets = getFieldsets(errors, passengerType);
-        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
+        fieldsets = getFieldsets(errors, groupPassengerType);
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, groupPassengerType);
 
         return {
             props: {
@@ -297,6 +300,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
                 errors,
                 fieldsets,
                 numberOfPassengerTypeFieldset,
+                groupPassengerType,
             },
         };
     }
