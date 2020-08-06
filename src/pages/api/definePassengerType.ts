@@ -2,7 +2,6 @@ import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
-import { getSessionAttribute } from '../../utils/sessions';
 import {
     redirectToError,
     redirectTo,
@@ -10,9 +9,16 @@ import {
     redirectOnFareType,
     setCookieOnResponseObject,
 } from './apiUtils/index';
-import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../../constants/index';
+import {
+    FARE_TYPE_COOKIE,
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
+    PASSENGER_TYPE_COOKIE,
+} from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { GroupPassengerTypes } from './defineGroupPassengers';
 
 const radioButtonError = 'Choose one of the options below';
 const ageRangeValidityError = 'Enter a whole number between 0-150';
@@ -135,7 +141,6 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        console.log(req.body);
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
@@ -143,10 +148,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const cookies = new Cookies(req, res);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        let passengerType;
-        if (passengerTypeCookie) {
+
+        let passengerType = '';
+
+        const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+        const group = !!groupPassengerTypes;
+
+        if (!group) {
             passengerType = JSON.parse(passengerTypeCookie).passengerType;
         }
+
         const { fareType } = JSON.parse(fareTypeCookie);
 
         if (!fareType) {
@@ -159,10 +170,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const errors: ErrorInfo[] = [];
 
         const filteredReqBody = formatRequestBody(req);
-
-        const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-
-        const group = !!groupPassengerTypes;
 
         if (group && !req.body.maxNumber) {
             errors.push({
@@ -206,8 +213,51 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length === 0) {
-            const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
-            setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+            let passengerTypeCookieValue = '';
+
+            if (!group) {
+                passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
+                setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+            } else {
+                passengerTypeCookieValue = JSON.stringify({ errors: [], passengerType });
+                setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
+                const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+                const submittedPassengerType = req.headers.referer.split('=')[1];
+
+                if (selectedPassengerTypes) {
+                    const index = (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.findIndex(
+                        type => type === submittedPassengerType,
+                    );
+
+                    (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.splice(index, 1);
+
+                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, ageRange, proof } = req.body;
+
+                    updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, {
+                        minNumber,
+                        maxNumber,
+                        minAge: ageRangeMin,
+                        maxAge: ageRangeMax,
+                        ageRange,
+                        proofDocuments: proof,
+                        passengerType: submittedPassengerType,
+                        proof,
+                    });
+
+                    if ((selectedPassengerTypes as GroupPassengerTypes).passengerTypes.length > 0) {
+                        redirectTo(
+                            res,
+                            `/definePassengerType?groupPassengerType=${
+                                (selectedPassengerTypes as GroupPassengerTypes).passengerTypes[0]
+                            }`,
+                        );
+                    } else {
+                        redirectOnFareType(req, res);
+                    }
+                    return;
+                }
+            }
+
             redirectOnFareType(req, res);
             return;
         }

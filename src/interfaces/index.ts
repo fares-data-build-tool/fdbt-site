@@ -119,16 +119,23 @@ export interface ProductData {
     products: Product[];
 }
 
+export interface GroupPassengerInfo extends CompanionInfo {
+    ageRange: string;
+    proof: string;
+}
+
+export interface CompanionInfo {
+    passengerType: string;
+    minNumber: number;
+    maxNumber: number;
+    minAge: number;
+    maxAge: number;
+    proofDocuments: string[];
+}
+
 export interface GroupDefinition {
     maxGroupSize: number;
-    companions: {
-        passengerType: string;
-        minNumber: number;
-        maxNumber: number;
-        minAge: number;
-        maxAge: number;
-        proofDocuments: string[];
-    }[];
+    companions: CompanionInfo[];
 }
 
 export interface BaseGroupTicket {

@@ -72,6 +72,8 @@ export const GROUP_SIZE_ATTRIBUTE = 'fdbt-group-size';
 
 export const GROUP_PASSENGER_TYPES_ATTRIBUTE = 'fdbt-group-passenger-types';
 
+export const GROUP_PASSENGER_INFO_ATTRIBUTE = 'fdbt-group-passenger-info';
+
 export const GROUP_DEFINITION_ATTRIBUTE = 'fdbt-group-definition';
 
 export const ALLOWED_CSV_FILE_TYPES = [
