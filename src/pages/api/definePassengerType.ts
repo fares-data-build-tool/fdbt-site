@@ -76,6 +76,24 @@ export const passengerTypeDetailsSchema = yup
     })
     .required();
 
+const groupSizeError = 'Enter a whole number between 0-100';
+export const minNumberGroupSizeSchema = yup.object({
+    minNumber: yup
+        .number()
+        .typeError(groupSizeError)
+        .integer(groupSizeError)
+        .min(0, groupSizeError)
+        .max(100, groupSizeError),
+});
+export const maxNumberGroupSizeSchema = yup.object({
+    maxNumber: yup
+        .number()
+        .typeError(groupSizeError)
+        .integer(groupSizeError)
+        .min(0, groupSizeError)
+        .max(100, groupSizeError),
+});
+
 export const formatRequestBody = (req: NextApiRequest): {} => {
     const filteredReqBody: { [key: string]: string | string[] } = {};
     Object.entries(req.body).forEach(entry => {
@@ -124,11 +142,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const cookies = new Cookies(req, res);
         const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
         const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const { passengerType } = JSON.parse(passengerTypeCookie);
+        let passengerType;
+        if (passengerTypeCookie) {
+            passengerType = JSON.parse(passengerTypeCookie).passengerType;
+        }
         const { fareType } = JSON.parse(fareTypeCookie);
 
-        if (!passengerType || !fareType) {
-            throw new Error('Failed to retrieve the necessary cookies for the definePassengerType API');
+        if (!fareType) {
+            throw new Error('Failed to retrieve the fareType cookie for the definePassengerType API');
         }
         if (!req.body) {
             throw new Error('Could not extract the relevant data from the request.');
@@ -140,6 +161,12 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         try {
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
+            if (req.body.minNumber) {
+                minNumberGroupSizeSchema.validate(filteredReqBody);
+            }
+            if (req.body.maxNumber) {
+                maxNumberGroupSizeSchema.validate(filteredReqBody);
+            }
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
             errors = validityErrors.inner.map(error => ({
@@ -149,8 +176,21 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }));
         }
 
+        if (req.body.minNumber && req.body.maxNumber && Number(req.body.maxNumber) < Number(req.body.minNumber)) {
+            errors.push(
+                {
+                    errorMessage: 'Minimum number of passengers must be less than the maximum number.',
+                    id: 'min-number-of-passengers',
+                    userInput: req.body.minNumber,
+                },
+                {
+                    errorMessage: 'Maximum number of passengers must be greater than the minumum number.',
+                    id: 'max-number-of-passengers',
+                    userInput: req.body.maxNumber,
+                },
+            );
+        }
 
-        
         if (errors.length === 0) {
             const passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
             setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
@@ -159,7 +199,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
         setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
-        redirectTo(res, '/definePassengerType');
+        redirectTo(res, `/definePassengerType?groupPassengerType=${req.headers.referer?.split('=')[1]}`);
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';
         redirectToError(res, message, 'api.definePassengerType', error);
