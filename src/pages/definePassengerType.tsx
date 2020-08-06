@@ -268,7 +268,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
-    const passengerType = ctx.query.passengerType as string;
+    const passengerType = ctx.query.groupPassengerType as string;
 
     const group = !passengerTypeCookie && !!groupPassengerTypes;
 

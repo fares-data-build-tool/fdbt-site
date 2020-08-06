@@ -40,7 +40,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 });
             }
             updateSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, { passengerTypes });
-            redirectTo(res, `/definePassengerType?passengerType=${passengerTypes[0]}`);
+            redirectTo(res, `/definePassengerType?groupPassengerType=${passengerTypes[0]}`);
             return;
         }
 
