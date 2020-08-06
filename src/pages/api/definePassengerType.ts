@@ -1,7 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import * as yup from 'yup';
 import isArray from 'lodash/isArray';
+import { getSessionAttribute } from '../../utils/sessions';
 import {
     redirectToError,
     redirectTo,
@@ -9,9 +10,9 @@ import {
     redirectOnFareType,
     setCookieOnResponseObject,
 } from './apiUtils/index';
-import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE } from '../../constants/index';
+import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { ErrorInfo } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
 
 const radioButtonError = 'Choose one of the options below';
 const ageRangeValidityError = 'Enter a whole number between 0-150';
@@ -94,7 +95,7 @@ export const maxNumberGroupSizeSchema = yup.object({
         .max(100, groupSizeError),
 });
 
-export const formatRequestBody = (req: NextApiRequest): {} => {
+export const formatRequestBody = (req: NextApiRequestWithSession): {} => {
     const filteredReqBody: { [key: string]: string | string[] } = {};
     Object.entries(req.body).forEach(entry => {
         if (entry[0] === 'ageRangeMin' || entry[0] === 'ageRangeMax') {
@@ -132,7 +133,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
     }
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         console.log(req.body);
         if (!isSessionValid(req, res)) {
@@ -155,9 +156,20 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             throw new Error('Could not extract the relevant data from the request.');
         }
 
-        let errors: ErrorInfo[] = [];
+        const errors: ErrorInfo[] = [];
 
         const filteredReqBody = formatRequestBody(req);
+
+        const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+
+        const group = !!groupPassengerTypes;
+
+        if (group && !req.body.maxNumber) {
+            errors.push({
+                errorMessage: groupSizeError,
+                id: 'max-number-of-passengers',
+            });
+        }
 
         try {
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
@@ -169,11 +181,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
-            errors = validityErrors.inner.map(error => ({
-                id: getErrorIdFromValidityError(error.path),
-                errorMessage: error.message,
-                userInput: error.value,
-            }));
+            validityErrors.inner.forEach(error =>
+                errors.push({
+                    id: getErrorIdFromValidityError(error.path),
+                    errorMessage: error.message,
+                    userInput: error.value,
+                }),
+            );
         }
 
         if (req.body.minNumber && req.body.maxNumber && Number(req.body.maxNumber) < Number(req.body.minNumber)) {
@@ -199,7 +213,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
         setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
-        redirectTo(res, `/definePassengerType?groupPassengerType=${req.headers.referer?.split('=')[1]}`);
+        if (group) {
+            redirectTo(res, `/definePassengerType?groupPassengerType=${req.headers.referer?.split('=')[1]}`);
+            return;
+        }
+        redirectTo(res, '/definePassengerType');
     } catch (error) {
         const message = 'There was a problem in the definePassengerType API.';
         redirectToError(res, message, 'api.definePassengerType', error);

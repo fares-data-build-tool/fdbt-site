@@ -178,7 +178,7 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                         {fieldset.heading.content}
                     </h2>
                 </legend>
-                {fieldset.inputs.map(input => {
+                {fieldset.inputs.map((input, index) => {
                     const errorId = createErrorId(input, fieldset.inputErrors);
                     return (
                         <div
@@ -188,6 +188,18 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                             <label className="govuk-label" htmlFor={input.id}>
                                 {input.label}
                             </label>
+                            <span
+                                className={`govuk-hint ${index === 1 ? 'govuk-visually-hidden' : ''}`}
+                                id="define-passenger-type-hint"
+                            >
+                                Optional
+                            </span>
+                            <span
+                                className={`govuk-hint ${index === 0 ? 'govuk-visually-hidden' : ''}`}
+                                id="define-passenger-type-hint"
+                            >
+                                Required
+                            </span>
                             <FormElementWrapper
                                 errors={fieldset.inputErrors}
                                 errorId={errorId}
@@ -198,6 +210,9 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                                     id={input.id}
                                     name={input.name}
                                     type="text"
+                                    defaultValue={
+                                        fieldset.inputErrors[index] ? fieldset.inputErrors[index].userInput : ''
+                                    }
                                 />
                             </FormElementWrapper>
                         </div>
