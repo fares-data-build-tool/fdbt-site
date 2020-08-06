@@ -55,7 +55,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             };
             updateSessionAttribute(req, GROUP_SIZE_ATTRIBUTE, attributeValueWithErrors);
             redirectTo(res, '/groupSize');
+            return;
         }
+
         updateSessionAttribute(req, GROUP_SIZE_ATTRIBUTE, attributeValue);
         redirectTo(res, '/groupPassengerTypes');
     } catch (error) {

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE, GROUP_DEFINITION_ATTRIBUTE } from '../constants';
+import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
@@ -258,43 +258,36 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
 
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-    const groupDefinition = getSessionAttribute(ctx.req, GROUP_DEFINITION_ATTRIBUTE);
 
     if (!passengerTypeCookie && !groupPassengerTypes) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
-    let errors: ErrorInfo[] = [];
+    const errors: ErrorInfo[] =
+        passengerTypeCookie && JSON.parse(passengerTypeCookie).errors ? JSON.parse(passengerTypeCookie).errors : [];
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
     const passengerType = ctx.query.groupPassengerType as string;
 
-    const group = !passengerTypeCookie && !!groupPassengerTypes;
+    const group = !!groupPassengerTypes;
 
-    switch (group) {
-        case true:
-            errors = groupDefinition && isGroupDefinitionWithErrors(groupDefinition) ? groupDefinition.errors : [];
-            fieldsets = getFieldsets(errors, passengerType);
-            numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
-            return {
-                props: {
-                    group,
-                    errors,
-                    fieldsets,
-                    numberOfPassengerTypeFieldset,
-                },
-            };
-        case false:
-            errors =
-                passengerTypeCookie && JSON.parse(passengerTypeCookie).errors
-                    ? JSON.parse(passengerTypeCookie).errors
-                    : [];
-            fieldsets = getFieldsets(errors);
-            return { props: { group, errors, fieldsets } };
-        default:
-            throw new Error('Invalid PASSENGER_TYPE_COOKIE and group ticket attributes combination.');
+    if (group) {
+        fieldsets = getFieldsets(errors, passengerType);
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
+
+        return {
+            props: {
+                group,
+                errors,
+                fieldsets,
+                numberOfPassengerTypeFieldset,
+            },
+        };
     }
+    fieldsets = getFieldsets(errors);
+
+    return { props: { group, errors, fieldsets } };
 };
 
 export default DefinePassengerType;
