@@ -52,20 +52,20 @@ describe('defineGroupPassengers', () => {
         });
     });
 
-    it('should return 302 redirect to /defineGroupPassengers with error on session if passengerType array size is greater than 2', () => {
+    it('should return 302 redirect to /definePassengerType?groupPassengerType=adult', () => {
         const input = ['adult', 'child'];
         const { req, res } = getMockRequestAndResponse({
-            body: {
-                passengerTypes: input,
-            },
+            body: { passengerTypes: input },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
         defineGroupPassengers(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/definePassengerType',
+            Location: '/definePassengerType?groupPassengerType=adult',
         });
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, input);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, {
+            passengerTypes: input,
+        });
     });
 });

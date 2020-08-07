@@ -39,7 +39,7 @@ export interface DefinePassengerTypeProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
     numberOfPassengerTypeFieldset?: TextInputFieldset;
-    groupPassengerType: string;
+    groupPassengerType?: string;
 }
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
@@ -306,7 +306,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     }
     fieldsets = getFieldsets(errors);
 
-    return { props: { group, errors, fieldsets } };
+    return { props: { group, errors, fieldsets, groupPassengerType } };
 };
 
 export default DefinePassengerType;

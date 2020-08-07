@@ -51,6 +51,7 @@ interface GetMockContextInput {
     mockWriteHeadFn?: jest.Mock<any, any>;
     mockEndFn?: jest.Mock<any, any>;
     isLoggedin?: boolean;
+    query?: any;
 }
 
 interface GetMockRequestAndResponse {
@@ -236,6 +237,7 @@ export const getMockContext = ({
     mockEndFn = jest.fn(),
     isLoggedin = true,
     url = null,
+    query = '',
 }: GetMockContextInput = {}): NextPageContextWithSession => {
     const { req, res } = getMockRequestAndResponse({
         session,
@@ -253,7 +255,7 @@ export const getMockContext = ({
         res,
         req,
         pathname: '',
-        query: {},
+        query,
         AppTree: () => React.createElement('div'),
     };
 
@@ -2494,7 +2496,7 @@ export const mockNumberOfPassengerTypeFieldset: TextInputFieldset = {
 export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
     heading: {
         id: 'number-of-passenger-type-heading',
-        content: 'How many child passengers can be in the group?',
+        content: 'How many adult passengers can be in the group?',
     },
     inputs: [
         {

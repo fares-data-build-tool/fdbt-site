@@ -91,7 +91,7 @@ describe('pages', () => {
                     errorMessage: 'Enter a number between 1 and 30',
                 },
             ];
-            const passengerType = 'child';
+            const passengerType = 'adult';
             const fieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
             expect(fieldset).toEqual(mockNumberOfPassengerTypeFieldsetWithErrors);
         });
@@ -118,6 +118,9 @@ describe('pages', () => {
                     session: {
                         [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
                     },
+                    query: {
+                        groupPassengerType: 'child',
+                    },
                 },
                 { group: true, numberOfPassengerTypeFieldset: mockNumberOfPassengerTypeFieldset },
             ],
@@ -125,6 +128,7 @@ describe('pages', () => {
             'should return props containing no errors and valid fieldsets when no errors are present on a %s ticket user journey',
             (_journey, ctxParams, propsParams) => {
                 const ctx = getMockContext(ctxParams);
+
                 const result = getServerSideProps(ctx);
                 expect(result.props.errors).toEqual([]);
                 expect(result.props.fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
@@ -141,7 +145,7 @@ describe('pages', () => {
             const ctx = getMockContext({
                 cookies: {
                     passengerType: {
-                        passengerType: 'Adult',
+                        passengerType: 'adult',
                         errors,
                     },
                 },
@@ -167,7 +171,13 @@ describe('pages', () => {
                 },
             ];
             const ctx = getMockContext({
-                cookies: { passengerType: null },
+                url: '/definePassengerType?groupPassengerType=adult',
+                cookies: {
+                    passengerType: {
+                        passengerType: 'adult',
+                        errors,
+                    },
+                },
                 session: {
                     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
                     [GROUP_DEFINITION_ATTRIBUTE]: {
@@ -182,6 +192,9 @@ describe('pages', () => {
                         },
                         errors,
                     },
+                },
+                query: {
+                    groupPassengerType: 'adult',
                 },
             });
             const result = getServerSideProps(ctx);

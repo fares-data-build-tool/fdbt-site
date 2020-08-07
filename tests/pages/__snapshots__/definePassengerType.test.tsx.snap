@@ -54,13 +54,26 @@ exports[`pages definePassengerType should render correctly when on the group tic
             >
               Minimum
             </label>
+            <span
+              className="govuk-hint "
+              id="define-passenger-type-hint"
+            >
+              Optional
+            </span>
+            <span
+              className="govuk-hint govuk-visually-hidden"
+              id="define-passenger-type-hint"
+            >
+              Required
+            </span>
             <FormElementWrapper
               errorClass="govuk-input--error"
               errorId=""
               errors={Array []}
             >
               <input
-                className="govuk-input govuk-!-width-one-third"
+                className="govuk-input govuk-input--width-2"
+                defaultValue=""
                 id="min-number-of-passengers"
                 name="minNumber"
                 type="text"
@@ -77,13 +90,26 @@ exports[`pages definePassengerType should render correctly when on the group tic
             >
               Maximum
             </label>
+            <span
+              className="govuk-hint govuk-visually-hidden"
+              id="define-passenger-type-hint"
+            >
+              Optional
+            </span>
+            <span
+              className="govuk-hint "
+              id="define-passenger-type-hint"
+            >
+              Required
+            </span>
             <FormElementWrapper
               errorClass="govuk-input--error"
               errorId=""
               errors={Array []}
             >
               <input
-                className="govuk-input govuk-!-width-one-third"
+                className="govuk-input govuk-input--width-2"
+                defaultValue=""
                 id="max-number-of-passengers"
                 name="maxNumber"
                 type="text"
@@ -190,6 +216,10 @@ exports[`pages definePassengerType should render correctly when on the group tic
         key="define-passenger-proof"
       />
     </div>
+    <input
+      name="groupPassengerTypeName"
+      type="hidden"
+    />
     <input
       className="govuk-button"
       id="continue-button"
