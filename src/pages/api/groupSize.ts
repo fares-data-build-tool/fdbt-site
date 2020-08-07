@@ -57,7 +57,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/groupSize');
         }
         updateSessionAttribute(req, GROUP_SIZE, attributeValue);
-        redirectTo(res, '/groupPassengerTypes');
+        redirectTo(res, '/defineGroupPassengers');
     } catch (error) {
         const message = 'There was a problem setting the total group size:';
         redirectToError(res, message, 'api.groupSize', error);

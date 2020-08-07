@@ -49,13 +49,13 @@ describe('groupSize', () => {
         expect(res.writeHead).toBeCalledWith(302, { Location: '/groupSize' });
     });
 
-    it('should update the GROUP_SIZE and redirect to /groupPassengerTypes when there are validation errors', async () => {
+    it('should update the GROUP_SIZE and redirect to /defineGroupPassengers when there are validation errors', async () => {
         const { req, res } = getMockRequestAndResponse({ body: { maxGroupSize: '5' } });
         const groupTicketInfo: GroupTicketAttribute = {
             maxGroupSize: '5',
         };
         await groupSize(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, GROUP_SIZE, groupTicketInfo);
-        expect(res.writeHead).toBeCalledWith(302, { Location: '/groupPassengerTypes' });
+        expect(res.writeHead).toBeCalledWith(302, { Location: '/defineGroupPassengers' });
     });
 });
