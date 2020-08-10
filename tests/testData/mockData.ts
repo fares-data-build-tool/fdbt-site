@@ -2496,7 +2496,7 @@ export const mockNumberOfPassengerTypeFieldset: TextInputFieldset = {
 export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
     heading: {
         id: 'number-of-passenger-type-heading',
-        content: 'How many adult passengers can be in the group?',
+        content: 'How many senior passengers can be in the group?',
     },
     inputs: [
         {

@@ -64,11 +64,27 @@ describe('pages', () => {
         });
 
         it('should alter the heading content when a passenger type is provided', () => {
+            const passengerType = 'child';
+            const emptyErrors: ErrorInfo[] = [];
+            const fieldsets = getFieldsets(emptyErrors, passengerType);
+            expect(fieldsets[0].heading.content).toEqual('Do child passengers have an age range?');
+            expect(fieldsets[1].heading.content).toEqual('Do child passengers require a proof document?');
+        });
+
+        it('should not show the proof of documents if passenger types is infant', () => {
+            const passengerType = 'infant';
+            const emptyErrors: ErrorInfo[] = [];
+            const fieldsets = getFieldsets(emptyErrors, passengerType);
+
+            expect(fieldsets.length).toEqual(1);
+        });
+
+        it('should not show the proof of documents if passenger types is adult', () => {
             const passengerType = 'adult';
             const emptyErrors: ErrorInfo[] = [];
             const fieldsets = getFieldsets(emptyErrors, passengerType);
-            expect(fieldsets[0].heading.content).toEqual('Do adult passengers have an age range?');
-            expect(fieldsets[1].heading.content).toEqual('Do adult passengers require a proof document?');
+
+            expect(fieldsets.length).toEqual(1);
         });
     });
 
@@ -91,7 +107,7 @@ describe('pages', () => {
                     errorMessage: 'Enter a number between 1 and 30',
                 },
             ];
-            const passengerType = 'adult';
+            const passengerType = 'senior';
             const fieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
             expect(fieldset).toEqual(mockNumberOfPassengerTypeFieldsetWithErrors);
         });
@@ -174,12 +190,12 @@ describe('pages', () => {
                 url: '/definePassengerType?groupPassengerType=adult',
                 cookies: {
                     passengerType: {
-                        passengerType: 'adult',
+                        passengerType: 'senior',
                         errors,
                     },
                 },
                 session: {
-                    [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
+                    [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['senior', 'child'],
                     [GROUP_DEFINITION_ATTRIBUTE]: {
                         maxGroupSize: 2,
                         companions: {
@@ -194,7 +210,7 @@ describe('pages', () => {
                     },
                 },
                 query: {
-                    groupPassengerType: 'adult',
+                    groupPassengerType: 'senior',
                 },
             });
             const result = getServerSideProps(ctx);
