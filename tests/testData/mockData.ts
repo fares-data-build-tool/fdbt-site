@@ -2482,12 +2482,12 @@ export const mockNumberOfPassengerTypeFieldset: TextInputFieldset = {
         {
             id: 'min-number-of-passengers',
             name: 'minNumber',
-            label: 'Minimum',
+            label: 'Minimum (optional)',
         },
         {
             id: 'max-number-of-passengers',
             name: 'maxNumber',
-            label: 'Maximum',
+            label: 'Maximum (required)',
         },
     ],
     inputErrors: [],
@@ -2502,12 +2502,12 @@ export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
         {
             id: 'min-number-of-passengers',
             name: 'minNumber',
-            label: 'Minimum',
+            label: 'Minimum (optional)',
         },
         {
             id: 'max-number-of-passengers',
             name: 'maxNumber',
-            label: 'Maximum',
+            label: 'Maximum (required)',
         },
     ],
     inputErrors: [

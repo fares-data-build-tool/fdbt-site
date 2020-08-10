@@ -26,7 +26,7 @@ import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import { MatchingValues } from '../pages/api/outboundMatching';
 import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
-import { GroupPassengerTypes, GroupPassengerTypesWithErrors } from '../pages/api/defineGroupPassengers';
+import { GroupPassengerTypes, GroupPassengerTypesWithErrors } from '../pages/api/groupPassengerTypes';
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 
 type GetSessionAttributeTypes = {

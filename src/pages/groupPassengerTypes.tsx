@@ -7,7 +7,7 @@ import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interf
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { GroupPassengerTypesWithErrors, GroupPassengerTypes } from './api/defineGroupPassengers';
+import { GroupPassengerTypesWithErrors, GroupPassengerTypes } from './api/groupPassengerTypes';
 
 const title = 'Define Group Passengers - Fares Data Build Tool';
 const description = 'Group Passengers selection page of the Fares Data Build Tool';
@@ -36,7 +36,7 @@ const DefineGroupPassengers = ({
     const errors: ErrorInfo[] = isGroupPassengerWithErrors(groupPassengerInfo) ? groupPassengerInfo.errors : [];
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
-            <CsrfForm action="/api/defineGroupPassengers" method="post" csrfToken={csrfToken}>
+            <CsrfForm action="/api/groupPassengerTypes" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>

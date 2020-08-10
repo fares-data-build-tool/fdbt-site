@@ -158,12 +158,12 @@ export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerT
         {
             id: 'min-number-of-passengers',
             name: 'minNumber',
-            label: 'Minimum',
+            label: 'Minimum (optional)',
         },
         {
             id: 'max-number-of-passengers',
             name: 'maxNumber',
-            label: 'Maximum',
+            label: 'Maximum (required)',
         },
     ],
     inputErrors: getErrorsByIds(['min-number-of-passengers', 'max-number-of-passengers'], errors),
@@ -189,18 +189,6 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                             <label className="govuk-label" htmlFor={input.id}>
                                 {input.label}
                             </label>
-                            <span
-                                className={`govuk-hint ${index === 1 ? 'govuk-visually-hidden' : ''}`}
-                                id="define-passenger-type-hint"
-                            >
-                                Optional
-                            </span>
-                            <span
-                                className={`govuk-hint ${index === 0 ? 'govuk-visually-hidden' : ''}`}
-                                id="define-passenger-type-hint"
-                            >
-                                Required
-                            </span>
                             <FormElementWrapper
                                 errors={fieldset.inputErrors}
                                 errorId={errorId}
@@ -260,7 +248,7 @@ const DefinePassengerType = ({
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                 </div>
-                {group === true && <input value={groupPassengerType} type="hidden" name="groupPassengerTypeName" />}
+                {group === true && <input value={groupPassengerType} type="hidden" name="groupPassengerType" />}
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
@@ -286,11 +274,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
-    const groupPassengerType = ctx.query.groupPassengerType as string;
-
     const group = !!groupPassengerTypes;
 
     if (group) {
+        const groupPassengerType = ctx.query.groupPassengerType as string;
         fieldsets = getFieldsets(errors, groupPassengerType);
         numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, groupPassengerType);
 
@@ -306,7 +293,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     }
     fieldsets = getFieldsets(errors);
 
-    return { props: { group, errors, fieldsets, groupPassengerType } };
+    return { props: { group, errors, fieldsets } };
 };
 
 export default DefinePassengerType;

@@ -18,29 +18,56 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { GroupPassengerTypes } from './defineGroupPassengers';
+import { GroupPassengerTypes } from './groupPassengerTypes';
 
 const radioButtonError = 'Choose one of the options below';
-const ageRangeValidityError = 'Enter a whole number between 0-150';
+const numberError = 'Enter a whole number between 0-150';
 const ageRangeInputError = 'Enter a minimum or maximum age';
 const proofSelectionError = 'Select at least one proof document';
-const maxAgeLessThanMinError = 'Maximum age cannot be less than minimum age';
-const minAgeGreaterThanMaxError = 'Minimum age cannot be greater than maximum age';
+const maxLessThanMinError = (inputType: string): string =>
+    `Maximum ${inputType} cannot be less than minimum ${inputType}`;
+const minGreaterThanMaxError = (inputType: string): string =>
+    `Minimum ${inputType} cannot be greater than maximum ${inputType}`;
 
-const primaryAgeRangeMaxInputSchema = yup
+const wholeNumberSchema = yup
     .number()
-    .typeError(ageRangeValidityError)
-    .integer(ageRangeValidityError)
-    .max(150, ageRangeValidityError);
-
-const primaryAgeRangeMinInputSchema = yup
-    .number()
-    .typeError(ageRangeValidityError)
-    .integer(ageRangeValidityError)
-    .min(0, ageRangeValidityError);
+    .typeError(numberError)
+    .integer(numberError);
+const maxNumberInputSchema = wholeNumberSchema.max(150, numberError);
+const minNumberInputSchema = wholeNumberSchema.min(0, numberError);
 
 export const passengerTypeDetailsSchema = yup
     .object({
+        minNumber: yup.number().when('groupPassengerType', {
+            is: groupPassengerTypeValue => !!groupPassengerTypeValue,
+            then: yup
+                .number()
+                .when('maxNumber', {
+                    is: maxNumberValue => !!maxNumberValue,
+                    then: minNumberInputSchema
+                        .max(yup.ref('maxNumber'), minGreaterThanMaxError('number of passengers'))
+                        .notRequired(),
+                })
+                .when('maxNumber', {
+                    is: maxNumberValue => !maxNumberValue,
+                    then: minNumberInputSchema.max(150, numberError).notRequired(),
+                }),
+        }),
+        maxNumber: yup.number().when('groupPassengerType', {
+            is: groupPassengerTypeValue => !!groupPassengerTypeValue,
+            then: yup
+                .number()
+                .when('minNumber', {
+                    is: minNumberValue => !!minNumberValue,
+                    then: maxNumberInputSchema
+                        .min(yup.ref('minNumber'), maxLessThanMinError('number of passengers'))
+                        .required(numberError),
+                })
+                .when('minNumber', {
+                    is: minNumberValue => !minNumberValue,
+                    then: maxNumberInputSchema.min(0, numberError).required(numberError),
+                }),
+        }),
         ageRange: yup
             .string()
             .oneOf(['Yes', 'No'])
@@ -55,13 +82,11 @@ export const passengerTypeDetailsSchema = yup
                 .number()
                 .when('ageRangeMax', {
                     is: ageRangeMaxValue => !!ageRangeMaxValue,
-                    then: primaryAgeRangeMinInputSchema
-                        .max(yup.ref('ageRangeMax'), minAgeGreaterThanMaxError)
-                        .notRequired(),
+                    then: minNumberInputSchema.max(yup.ref('ageRangeMax'), minGreaterThanMaxError('age')).notRequired(),
                 })
                 .when('ageRangeMax', {
                     is: ageRangeMaxValue => !ageRangeMaxValue,
-                    then: primaryAgeRangeMinInputSchema.max(150, ageRangeValidityError).required(ageRangeInputError),
+                    then: minNumberInputSchema.max(150, numberError).required(ageRangeInputError),
                 }),
         }),
         ageRangeMax: yup.number().when('ageRange', {
@@ -70,41 +95,26 @@ export const passengerTypeDetailsSchema = yup
                 .number()
                 .when('ageRangeMin', {
                     is: ageRangeMinValue => !!ageRangeMinValue,
-                    then: primaryAgeRangeMaxInputSchema
-                        .min(yup.ref('ageRangeMin'), maxAgeLessThanMinError)
-                        .notRequired(),
+                    then: maxNumberInputSchema.min(yup.ref('ageRangeMin'), maxLessThanMinError('age')).notRequired(),
                 })
                 .when('ageRangeMin', {
                     is: ageRangeMinValue => !ageRangeMinValue,
-                    then: primaryAgeRangeMaxInputSchema.min(0, ageRangeValidityError).required(ageRangeInputError),
+                    then: maxNumberInputSchema.min(0, numberError).required(ageRangeInputError),
                 }),
         }),
         proofDocuments: yup.string().when('proof', { is: 'Yes', then: yup.string().required(proofSelectionError) }),
     })
     .required();
 
-const groupSizeError = 'Enter a whole number between 0-100';
-export const minNumberGroupSizeSchema = yup.object({
-    minNumber: yup
-        .number()
-        .typeError(groupSizeError)
-        .integer(groupSizeError)
-        .min(0, groupSizeError)
-        .max(100, groupSizeError),
-});
-export const maxNumberGroupSizeSchema = yup.object({
-    maxNumber: yup
-        .number()
-        .typeError(groupSizeError)
-        .integer(groupSizeError)
-        .min(0, groupSizeError)
-        .max(100, groupSizeError),
-});
-
 export const formatRequestBody = (req: NextApiRequestWithSession): {} => {
     const filteredReqBody: { [key: string]: string | string[] } = {};
     Object.entries(req.body).forEach(entry => {
-        if (entry[0] === 'ageRangeMin' || entry[0] === 'ageRangeMax') {
+        if (
+            entry[0] === 'ageRangeMin' ||
+            entry[0] === 'ageRangeMax' ||
+            entry[0] === 'minNumber' ||
+            entry[0] === 'maxNumber'
+        ) {
             const input = entry[1] as string;
             const strippedInput = input.replace(/\s+/g, '');
             if (strippedInput === '') {
@@ -134,6 +144,10 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
             return 'age-range-max';
         case 'proofDocuments':
             return 'proof-required';
+        case 'minNumber':
+            return 'min-number-of-passengers';
+        case 'maxNumber':
+            return 'max-number-of-passengers';
         default:
             throw new Error('Could not match the following error with an expected input.');
     }
@@ -167,52 +181,22 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('Could not extract the relevant data from the request.');
         }
 
-        const errors: ErrorInfo[] = [];
+        let errors: ErrorInfo[] = [];
 
         const filteredReqBody = formatRequestBody(req);
 
-        if (group && !req.body.maxNumber) {
-            errors.push({
-                errorMessage: groupSizeError,
-                id: 'max-number-of-passengers',
-            });
-        }
-
         try {
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
-            if (req.body.minNumber) {
-                minNumberGroupSizeSchema.validate(filteredReqBody);
-            }
-            if (req.body.maxNumber) {
-                maxNumberGroupSizeSchema.validate(filteredReqBody);
-            }
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
-            validityErrors.inner.forEach(error =>
-                errors.push({
-                    id: getErrorIdFromValidityError(error.path),
-                    errorMessage: error.message,
-                    userInput: error.value,
-                }),
-            );
+            errors = validityErrors.inner.map(error => ({
+                id: getErrorIdFromValidityError(error.path),
+                errorMessage: error.message,
+                userInput: error.value,
+            }));
         }
 
-        if (req.body.minNumber && req.body.maxNumber && Number(req.body.maxNumber) < Number(req.body.minNumber)) {
-            errors.push(
-                {
-                    errorMessage: 'Minimum number of passengers must be less than the maximum number.',
-                    id: 'min-number-of-passengers',
-                    userInput: req.body.minNumber,
-                },
-                {
-                    errorMessage: 'Maximum number of passengers must be greater than the minumum number.',
-                    id: 'max-number-of-passengers',
-                    userInput: req.body.maxNumber,
-                },
-            );
-        }
-
-        const { groupPassengerTypeName } = req.body;
+        const { groupPassengerType } = req.body;
 
         if (errors.length === 0) {
             let passengerTypeCookieValue = '';
@@ -224,7 +208,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 passengerTypeCookieValue = JSON.stringify({ errors: [], passengerType });
                 setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
                 const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-                const submittedPassengerType = groupPassengerTypeName;
+                const submittedPassengerType = groupPassengerType;
 
                 if (selectedPassengerTypes) {
                     const index = (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.findIndex(
@@ -266,7 +250,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const passengerTypeCookieValue = JSON.stringify({ errors, passengerType });
         setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
         if (group) {
-            redirectTo(res, `/definePassengerType?groupPassengerType=${groupPassengerTypeName}`);
+            redirectTo(res, `/definePassengerType?groupPassengerType=${groupPassengerType}`);
             return;
         }
         redirectTo(res, '/definePassengerType');

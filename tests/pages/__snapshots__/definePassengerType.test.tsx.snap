@@ -52,20 +52,8 @@ exports[`pages definePassengerType should render correctly when on the group tic
               className="govuk-label"
               htmlFor="min-number-of-passengers"
             >
-              Minimum
+              Minimum (optional)
             </label>
-            <span
-              className="govuk-hint "
-              id="define-passenger-type-hint"
-            >
-              Optional
-            </span>
-            <span
-              className="govuk-hint govuk-visually-hidden"
-              id="define-passenger-type-hint"
-            >
-              Required
-            </span>
             <FormElementWrapper
               errorClass="govuk-input--error"
               errorId=""
@@ -88,20 +76,8 @@ exports[`pages definePassengerType should render correctly when on the group tic
               className="govuk-label"
               htmlFor="max-number-of-passengers"
             >
-              Maximum
+              Maximum (required)
             </label>
-            <span
-              className="govuk-hint govuk-visually-hidden"
-              id="define-passenger-type-hint"
-            >
-              Optional
-            </span>
-            <span
-              className="govuk-hint "
-              id="define-passenger-type-hint"
-            >
-              Required
-            </span>
             <FormElementWrapper
               errorClass="govuk-input--error"
               errorId=""
@@ -217,7 +193,7 @@ exports[`pages definePassengerType should render correctly when on the group tic
       />
     </div>
     <input
-      name="groupPassengerTypeName"
+      name="groupPassengerType"
       type="hidden"
     />
     <input
