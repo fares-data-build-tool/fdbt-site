@@ -39,16 +39,21 @@ const primaryAgeRangeMinInputSchema = yup
     .integer(ageRangeValidityError)
     .min(0, ageRangeValidityError);
 
+export const noProofRequired = ['infant', 'adult'];
+
 export const passengerTypeDetailsSchema = yup
     .object({
         ageRange: yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
-        proof: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
+        proof: yup.string().when('groupPassengerTypeName', {
+            is: groupPassengerTypeNameValue => !noProofRequired.includes(groupPassengerTypeNameValue),
+            then: yup
+                .string()
+                .oneOf(['Yes', 'No'])
+                .required(radioButtonError),
+        }),
         ageRangeMin: yup.number().when('ageRange', {
             is: 'Yes',
             then: yup
@@ -179,6 +184,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         try {
+            console.log('filter', filteredReqBody);
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
             if (req.body.minNumber) {
                 minNumberGroupSizeSchema.validate(filteredReqBody);
