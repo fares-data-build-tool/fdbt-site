@@ -42,7 +42,7 @@ const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAp
                                         <div className="govuk-radios__item" key={passenger.passengerTypeValue}>
                                             <input
                                                 className="govuk-radios__input"
-                                                id={`passenger-type-${index}`}
+                                                id={`passenger-type-${passenger.passengerTypeValue}`}
                                                 name="passengerType"
                                                 type="radio"
                                                 value={passenger.passengerTypeValue}
