@@ -179,7 +179,7 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                         {fieldset.heading.content}
                     </h2>
                 </legend>
-                {fieldset.inputs.map((input, index) => {
+                {fieldset.inputs.map(input => {
                     const errorId = createErrorId(input, fieldset.inputErrors);
                     return (
                         <div
@@ -200,7 +200,10 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                                     name={input.name}
                                     type="text"
                                     defaultValue={
-                                        fieldset.inputErrors[index] ? fieldset.inputErrors[index].userInput : ''
+                                        fieldset.inputErrors.find(inputError => inputError.id === input.id)
+                                            ? fieldset.inputErrors.find(inputError => inputError.id === input.id)
+                                                  ?.userInput
+                                            : ''
                                     }
                                 />
                             </FormElementWrapper>
