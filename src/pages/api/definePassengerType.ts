@@ -180,7 +180,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
         case 'maxNumber':
             return 'max-number-of-passengers';
         default:
-            throw new Error('Could not match the following error with an expected input.');
+            throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
 };
 

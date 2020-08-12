@@ -21,6 +21,7 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_DEFINITION_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
 } from '../constants';
 import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
@@ -28,6 +29,7 @@ import { MatchingValues } from '../pages/api/outboundMatching';
 import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
 import { GroupPassengerTypes, GroupPassengerTypesWithErrors } from '../pages/api/groupPassengerTypes';
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
+import { TimeRestrictionsDefinition, TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
@@ -41,6 +43,10 @@ type GetSessionAttributeTypes = {
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: undefined | GroupPassengerTypes | GroupPassengerTypesWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
+    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]:
+        | undefined
+        | TimeRestrictionsDefinition
+        | TimeRestrictionsDefinitionWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -63,6 +69,7 @@ type UpdateSessionAttributeTypes = {
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypes | GroupPassengerTypesWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
+    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestrictionsDefinition | TimeRestrictionsDefinitionWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
