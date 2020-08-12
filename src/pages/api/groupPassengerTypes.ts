@@ -26,7 +26,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     ],
                 };
                 updateSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, passengerTypeErrorMessage);
-                redirectTo(res, '/defineGroupPassengers');
+                redirectTo(res, '/groupPassengerTypes');
                 return;
             }
 
@@ -51,9 +51,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         };
 
         updateSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, passengerTypeErrorMessage);
-        redirectTo(res, '/defineGroupPassengers');
+        redirectTo(res, '/groupPassengerTypes');
     } catch (error) {
         const message = 'There was a problem selecting the passenger types:';
-        redirectToError(res, message, 'api.defineGroupPassengers', error);
+        redirectToError(res, message, 'api.groupPassengerTypes', error);
     }
 };
