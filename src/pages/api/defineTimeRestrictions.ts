@@ -36,7 +36,7 @@ const startTimeInputSchema = yup
     .integer(timeRestrictionValidityError)
     .min(0, timeRestrictionValidityError);
 
-export const timeRestrictionInputSchema = yup.object({
+export const timeRestrictionConditionalInputSchema = yup.object({
     startTime: yup.number().when('timeRestriction', {
         is: 'Yes',
         then: yup
@@ -71,7 +71,7 @@ export const defineTimeRestrictionsSchema = yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
-        validDays: yup
+        validDaysSelected: yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
@@ -83,7 +83,9 @@ export const defineTimeRestrictionsSchema = yup
             is: 'Yes',
             then: yup.string().length(4, timeRestrictionInputError),
         }),
-        days: yup.string().when('validDays', { is: 'Yes', then: yup.string().required(daySelectionError) }),
+        validDays: yup
+            .string()
+            .when('validDaysSelected', { is: 'Yes', then: yup.string().required(daySelectionError) }),
     })
     .required();
 
@@ -112,17 +114,32 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
     switch (errorPath) {
         case 'timeRestriction':
             return 'define-time-restrictions';
-        case 'validDays':
+        case 'validDaysSelected':
             return 'define-valid-days';
         case 'startTime':
             return 'start-time';
         case 'endTime':
             return 'end-time';
-        case 'days':
+        case 'validDays':
             return 'valid-days-required';
         default:
             throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
+};
+
+export const collectUniqueErrors = (initialErrors: ErrorInfo[], currentSchemaErrors: ErrorInfo[]): ErrorInfo[] => {
+    let errorCollection: ErrorInfo[] = initialErrors;
+    if (initialErrors.length === 0) {
+        errorCollection = currentSchemaErrors;
+    } else if (initialErrors.length > 0) {
+        currentSchemaErrors.forEach(error => {
+            if (initialErrors.find(initialError => initialError.id === error.id)) {
+                return;
+            }
+            errorCollection.push(error);
+        });
+    }
+    return errorCollection;
 };
 
 export const runValidationSchema = async (
@@ -131,6 +148,7 @@ export const runValidationSchema = async (
     initialErrors: ErrorInfo[] = [],
 ): Promise<ErrorInfo[]> => {
     let errors: ErrorInfo[] = [];
+
     try {
         await schema.validate(reqBody, { abortEarly: false });
     } catch (validationErrors) {
@@ -141,12 +159,8 @@ export const runValidationSchema = async (
             userInput: error.value,
         }));
     }
-    if (initialErrors.length === 0) {
-        errors = errors.concat(initialErrors);
-    } else if (initialErrors.length > 0) {
-        // TODO - Add functionality to check the intialErrors array for errors with the same ID as those in the new errors array. If the initialErrors array already contains an error with the same ID as one of the new errors, the new error should be ignored.
-    }
-    return errors;
+    const errorCollection = collectUniqueErrors(initialErrors, errors);
+    return errorCollection;
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -159,14 +173,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const { startTime, endTime, validDays } = filteredReqBody;
 
-        const firstSchemaErrors = await runValidationSchema(defineTimeRestrictionsSchema, filteredReqBody);
-        const secondSchemaErrors = await runValidationSchema(
-            timeRestrictionInputSchema,
+        const initialErrors = await runValidationSchema(defineTimeRestrictionsSchema, filteredReqBody);
+        const combinedErrors = await runValidationSchema(
+            timeRestrictionConditionalInputSchema,
             filteredReqBody,
-            firstSchemaErrors,
+            initialErrors,
         );
-
-        console.log({ secondSchemaErrors });
 
         const timeRestrictionsDefinition: TimeRestrictionsDefinition = {
             startTime,
@@ -174,10 +186,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             validDays,
         };
 
-        if (secondSchemaErrors.length > 0) {
+        if (combinedErrors.length > 0) {
             const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
                 ...timeRestrictionsDefinition,
-                errors: secondSchemaErrors,
+                errors: combinedErrors,
             };
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
             redirectTo(res, '/defineTimeRestrictions');

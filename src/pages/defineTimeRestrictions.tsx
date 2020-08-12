@@ -67,7 +67,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         radios: [
             {
                 id: 'valid-days-required',
-                name: 'validDays',
+                name: 'validDaysSelected',
                 value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
                 label: 'Yes',
@@ -79,37 +79,37 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 inputs: [
                     {
                         id: 'monday',
-                        name: 'days',
+                        name: 'validDays',
                         label: 'Monday',
                     },
                     {
                         id: 'tuesday',
-                        name: 'days',
+                        name: 'validDays',
                         label: 'Tuesday',
                     },
                     {
                         id: 'wednesday',
-                        name: 'days',
+                        name: 'validDays',
                         label: 'Wednesday',
                     },
                     {
                         id: 'thursday',
-                        name: 'days',
+                        name: 'validDays',
                         label: 'Thursday',
                     },
                     {
                         id: 'friday',
-                        name: 'days',
+                        name: 'validDays',
                         label: 'Friday',
                     },
                     {
                         id: 'saturday',
-                        name: 'days',
+                        name: 'validDays',
                         label: 'Saturday',
                     },
                     {
                         id: 'sunday',
-                        name: 'days',
+                        name: 'validDays',
                         label: 'Sunday',
                     },
                 ],
