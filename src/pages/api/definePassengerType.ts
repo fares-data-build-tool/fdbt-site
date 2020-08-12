@@ -32,6 +32,7 @@ interface FilteredRequestBody {
     proofDocuments?: string[];
 }
 
+export const noProofRequired = ['infant', 'adult'];
 const radioButtonError = 'Choose one of the options below';
 const ageRangeNumberError = 'Enter a whole number between 0-150';
 const numberOfPassengersError = 'Enter a whole number between 0 and your max group size';
@@ -103,10 +104,13 @@ export const passengerTypeDetailsSchema = yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
-        proof: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
+        proof: yup.string().when('groupPassengerTypeName', {
+            is: groupPassengerTypeNameValue => !noProofRequired.includes(groupPassengerTypeNameValue),
+            then: yup
+                .string()
+                .oneOf(['Yes', 'No'])
+                .required(radioButtonError),
+        }),
         ageRangeMin: yup.number().when('ageRange', {
             is: 'Yes',
             then: yup

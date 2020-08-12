@@ -64,11 +64,11 @@ describe('pages', () => {
         });
 
         it('should alter the heading content when a passenger type is provided', () => {
-            const passengerType = 'adult';
+            const passengerType = 'child';
             const emptyErrors: ErrorInfo[] = [];
             const fieldsets = getFieldsets(emptyErrors, passengerType);
-            expect(fieldsets[0].heading.content).toEqual('Do adult passengers have an age range?');
-            expect(fieldsets[1].heading.content).toEqual('Do adult passengers require a proof document?');
+            expect(fieldsets[0].heading.content).toEqual('Do child passengers have an age range?');
+            expect(fieldsets[1].heading.content).toEqual('Do child passengers require a proof document?');
         });
     });
 
@@ -91,7 +91,7 @@ describe('pages', () => {
                     errorMessage: 'Enter a number between 1 and 30',
                 },
             ];
-            const passengerType = 'adult';
+            const passengerType = 'child';
             const fieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
             expect(fieldset).toEqual(mockNumberOfPassengerTypeFieldsetWithErrors);
         });
@@ -174,7 +174,7 @@ describe('pages', () => {
                 url: '/definePassengerType?groupPassengerType=adult',
                 cookies: {
                     passengerType: {
-                        passengerType: 'adult',
+                        passengerType: 'child',
                         errors,
                     },
                 },
@@ -194,7 +194,7 @@ describe('pages', () => {
                     },
                 },
                 query: {
-                    groupPassengerType: 'adult',
+                    groupPassengerType: 'child',
                 },
             });
             const result = getServerSideProps(ctx);

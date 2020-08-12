@@ -145,7 +145,13 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
         ],
         radioError: getErrorsByIds(['define-passenger-proof'], errors),
     };
-    fieldsets.push(ageRangeFieldset, proofRequiredFieldset);
+
+    fieldsets.push(ageRangeFieldset);
+
+    if (passengerType !== 'adult' && passengerType !== 'infant') {
+        fieldsets.push(proofRequiredFieldset);
+    }
+
     return fieldsets;
 };
 
