@@ -128,8 +128,8 @@ export interface CompanionInfo {
     passengerType: string;
     minNumber: number;
     maxNumber: number;
-    minAge: number;
-    maxAge: number;
+    ageRangeMin: number;
+    ageRangeMax: number;
     proofDocuments: string[];
 }
 

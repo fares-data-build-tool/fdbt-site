@@ -17,7 +17,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { GroupPassengerTypes } from './groupPassengerTypes';
 
@@ -253,18 +253,28 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                     (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.splice(index, 1);
 
-                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, ageRange, proof } = req.body;
+                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proof } = req.body;
 
-                    updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, {
+                    const sessionGroup: CompanionInfo[] = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+
+                    const companions: CompanionInfo[] = [];
+
+                    if (sessionGroup) {
+                        sessionGroup.forEach(companion => {
+                            companions.push(companion);
+                        });
+                    }
+
+                    companions.push({
                         minNumber,
                         maxNumber,
-                        minAge: ageRangeMin,
-                        maxAge: ageRangeMax,
-                        ageRange,
+                        ageRangeMin,
+                        ageRangeMax,
                         proofDocuments: proof,
                         passengerType: submittedPassengerType,
-                        proof,
                     });
+
+                    updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
                     if ((selectedPassengerTypes as GroupPassengerTypes).passengerTypes.length > 0) {
                         redirectTo(

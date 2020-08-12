@@ -4,7 +4,7 @@ import {
     ProductData,
     ProductInfoWithErrors,
     GroupDefinition,
-    GroupPassengerInfo,
+    CompanionInfo,
 } from '../interfaces';
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -39,7 +39,7 @@ type GetSessionAttributeTypes = {
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: undefined | GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: undefined | GroupPassengerTypes | GroupPassengerTypesWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
 };
 
@@ -61,7 +61,7 @@ type UpdateSessionAttributeTypes = {
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypes | GroupPassengerTypesWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
 };
 
