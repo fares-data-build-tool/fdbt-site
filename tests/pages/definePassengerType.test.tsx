@@ -70,6 +70,22 @@ describe('pages', () => {
             expect(fieldsets[0].heading.content).toEqual('Do child passengers have an age range?');
             expect(fieldsets[1].heading.content).toEqual('Do child passengers require a proof document?');
         });
+
+        it('should not show the proof of documents if passenger types is infant', () => {
+            const passengerType = 'infant';
+            const emptyErrors: ErrorInfo[] = [];
+            const fieldsets = getFieldsets(emptyErrors, passengerType);
+
+            expect(fieldsets.length).toEqual(1);
+        });
+
+        it('should not show the proof of documents if passenger types is adult', () => {
+            const passengerType = 'adult';
+            const emptyErrors: ErrorInfo[] = [];
+            const fieldsets = getFieldsets(emptyErrors, passengerType);
+
+            expect(fieldsets.length).toEqual(1);
+        });
     });
 
     describe('getNumberOfPassengerTypeFieldset', () => {
