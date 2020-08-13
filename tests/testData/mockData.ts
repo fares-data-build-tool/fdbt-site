@@ -2522,6 +2522,364 @@ export const mockNumberOfPassengerTypeFieldsetWithErrors: TextInputFieldset = {
     ],
 };
 
+export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (if applicable)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (if applicable)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDays',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (if applicable)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (if applicable)',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                id: 'define-time-restrictions',
+                errorMessage: 'Choose one of the options below',
+            },
+        ],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDays',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                id: 'define-valid-days',
+                errorMessage: 'Choose one of the options below',
+            },
+        ],
+    },
+];
+
+export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (if applicable)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (if applicable)',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        id: 'start-time',
+                        errorMessage: 'Enter a start or end time in 24 hour format',
+                    },
+                    {
+                        id: 'end-time',
+                        errorMessage: 'Enter a start or end time in 24 hour format',
+                    },
+                ],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [
+                    {
+                        id: 'valid-days-required',
+                        errorMessage: 'Select at least one day',
+                    },
+                ],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDays',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'define-time-restrictions',
+            content: 'Is there a start time or an end time to this ticket?',
+        },
+        radios: [
+            {
+                id: 'time-restriction-required',
+                name: 'timeRestriction',
+                value: 'Yes',
+                dataAriaControls: 'time-restriction-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-time-restriction-hint',
+                    content: 'Enter a time in 24 hour format. Example 0900 or 2300',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'start-time',
+                        name: 'startTime',
+                        label: 'Start Time (if applicable)',
+                    },
+                    {
+                        id: 'end-time',
+                        name: 'endTime',
+                        label: 'End Time (if applicable)',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        id: 'start-time',
+                        errorMessage: 'Enter a start or end time in 24 hour format',
+                    },
+                    {
+                        id: 'end-time',
+                        errorMessage: 'Enter a start or end time in 24 hour format',
+                    },
+                ],
+            },
+            {
+                id: 'time-restriction-not-required',
+                name: 'timeRestriction',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+    {
+        heading: {
+            id: 'define-valid-days',
+            content: 'Is this ticket only valid on certain days?',
+        },
+        radios: [
+            {
+                id: 'valid-days-required',
+                name: 'validDaysSelected',
+                value: 'Yes',
+                dataAriaControls: 'valid-days-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'define-valid-days-hint',
+                    content: 'Select the days of the week the ticket is valid for',
+                },
+                inputType: 'checkbox',
+                inputs: [
+                    { id: 'monday', name: 'validDays', label: 'Monday' },
+                    { id: 'tuesday', name: 'validDays', label: 'Tuesday' },
+                    { id: 'wednesday', name: 'validDays', label: 'Wednesday' },
+                    { id: 'thursday', name: 'validDays', label: 'Thursday' },
+                    { id: 'friday', name: 'validDays', label: 'Friday' },
+                    { id: 'saturday', name: 'validDays', label: 'Saturday' },
+                    { id: 'sunday', name: 'validDays', label: 'Sunday' },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'valid-days-not-required',
+                name: 'validDays',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                id: 'define-valid-days',
+                errorMessage: 'Choose one of the options below',
+            },
+        ],
+    },
+];
+
 export const mockBreadCrumbList: Breadcrumb[] = [
     { name: 'Home', link: '/', show: true },
     { name: 'Select Fare Type', link: '/fareType', show: true },

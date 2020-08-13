@@ -56,7 +56,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['define-passenger-age-range'], errors),
+        radioError: getErrorsByIds(['define-time-restrictions'], errors),
     };
 
     const validDaysFieldset: RadioConditionalInputFieldset = {
