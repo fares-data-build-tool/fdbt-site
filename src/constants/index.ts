@@ -109,3 +109,5 @@ export const PASSENGER_TYPES_WITH_GROUP: PassengerAttributes[] = [
     { passengerTypeDisplay: 'Group (more than one passenger)', passengerTypeValue: 'group' },
     ...PASSENGER_TYPES_LIST,
 ];
+
+export const NO_PROOF_REQUIRED = ['infant', 'adult'];

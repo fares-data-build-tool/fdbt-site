@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
+import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE, NO_PROOF_REQUIRED } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
@@ -52,7 +52,11 @@ export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] 
     return compactErrors;
 };
 
-export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): RadioConditionalInputFieldset[] => {
+export const getFieldsets = (
+    errors: ErrorInfo[],
+    passengerType?: string,
+    group?: false,
+): RadioConditionalInputFieldset[] => {
     const fieldsets = [];
 
     const ageRangeFieldset: RadioConditionalInputFieldset = {
@@ -148,7 +152,11 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): Radio
 
     fieldsets.push(ageRangeFieldset);
 
-    if (passengerType !== 'adult' && passengerType !== 'infant') {
+    console.log('group', group);
+    console.log('passengerType', passengerType);
+    console.log('!NO_PROOF_REQUIRED.includes(passengerType))', !NO_PROOF_REQUIRED.includes(passengerType));
+    if (!group || (group && passengerType && !NO_PROOF_REQUIRED.includes(passengerType))) {
+
         fieldsets.push(proofRequiredFieldset);
     }
 
@@ -286,8 +294,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     const group = !!groupPassengerTypes;
 
     if (group) {
+        console.log('group', group);
         const groupPassengerType = ctx.query.groupPassengerType as string;
-        fieldsets = getFieldsets(errors, groupPassengerType);
+        fieldsets = getFieldsets(errors, groupPassengerType, group);
         numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, groupPassengerType);
 
         return {

@@ -15,6 +15,7 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
     GROUP_SIZE_ATTRIBUTE,
+    NO_PROOF_REQUIRED,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
@@ -32,7 +33,6 @@ interface FilteredRequestBody {
     proofDocuments?: string[];
 }
 
-export const noProofRequired = ['infant', 'adult'];
 const radioButtonError = 'Choose one of the options below';
 const ageRangeNumberError = 'Enter a whole number between 0-150';
 const numberOfPassengersError = 'Enter a whole number between 0 and your max group size';
@@ -104,8 +104,8 @@ export const passengerTypeDetailsSchema = yup
             .string()
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
-        proof: yup.string().when('groupPassengerTypeName', {
-            is: groupPassengerTypeNameValue => !noProofRequired.includes(groupPassengerTypeNameValue),
+        proof: yup.string().when('groupPassengerType', {
+            is: groupPassengerTypeNameValue => !NO_PROOF_REQUIRED.includes(groupPassengerTypeNameValue),
             then: yup
                 .string()
                 .oneOf(['Yes', 'No'])

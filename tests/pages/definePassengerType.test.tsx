@@ -20,11 +20,13 @@ import {
 import { ErrorInfo } from '../../src/interfaces';
 import { GROUP_PASSENGER_TYPES_ATTRIBUTE, GROUP_DEFINITION_ATTRIBUTE } from '../../src/constants';
 
+const defaultPassengerType = 'child';
+
 describe('pages', () => {
     describe('getFieldsets', () => {
         it('should return fieldsets with no errors when no errors are passed', () => {
             const emptyErrors: ErrorInfo[] = [];
-            const fieldsets = getFieldsets(emptyErrors);
+            const fieldsets = getFieldsets(emptyErrors, defaultPassengerType);
             expect(fieldsets).toEqual(mockDefinePassengerTypeFieldsets);
         });
 
@@ -64,18 +66,18 @@ describe('pages', () => {
         });
 
         it('should alter the heading content when a passenger type is provided', () => {
-            const passengerType = 'child';
             const emptyErrors: ErrorInfo[] = [];
-            const fieldsets = getFieldsets(emptyErrors, passengerType);
+            const fieldsets = getFieldsets(emptyErrors, defaultPassengerType);
             expect(fieldsets[0].heading.content).toEqual('Do child passengers have an age range?');
             expect(fieldsets[1].heading.content).toEqual('Do child passengers require a proof document?');
         });
 
-        it('should not show the proof of documents if passenger types is infant', () => {
+        it.only('should not show the proof of documents if passenger types is infant', () => {
             const passengerType = 'infant';
             const emptyErrors: ErrorInfo[] = [];
             const fieldsets = getFieldsets(emptyErrors, passengerType);
 
+            console.log('fields', fieldsets);
             expect(fieldsets.length).toEqual(1);
         });
 
@@ -91,8 +93,7 @@ describe('pages', () => {
     describe('getNumberOfPassengerTypeFieldset', () => {
         it('should return a fieldset containing two text inputs with no errors when no errors are passed', () => {
             const errors: ErrorInfo[] = [];
-            const passengerType = 'child';
-            const fieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
+            const fieldset = getNumberOfPassengerTypeFieldset(errors, defaultPassengerType);
             expect(fieldset).toEqual(mockNumberOfPassengerTypeFieldset);
         });
 
@@ -107,8 +108,7 @@ describe('pages', () => {
                     errorMessage: 'Enter a number between 1 and 30',
                 },
             ];
-            const passengerType = 'child';
-            const fieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
+            const fieldset = getNumberOfPassengerTypeFieldset(errors, defaultPassengerType);
             expect(fieldset).toEqual(mockNumberOfPassengerTypeFieldsetWithErrors);
         });
     });
