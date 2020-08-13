@@ -144,18 +144,18 @@ describe('defineTimeRestrictions', () => {
         });
     });
 
-    // it('should throw an error and redirect to the error page when the FARE_TYPE_COOKIE is missing', async () => {
-    //     const { req, res } = getMockRequestAndResponse({
-    //         cookieValues: { fareType: null },
-    //         body: {},
-    //         uuid: {},
-    //         mockWriteHeadFn: writeHeadMock,
-    //     });
-    //     await definePassengerType(req, res);
-    //     expect(writeHeadMock).toBeCalledWith(302, {
-    //         Location: '/error',
-    //     });
-    // });
+    it('should throw an error and redirect to the error page when the FARE_TYPE_COOKIE is missing', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: { fareType: null },
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await defineTimeRestrictions(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/error',
+        });
+    });
 
     it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect depending on fare type when no errors are found', async () => {
         const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -183,9 +183,9 @@ describe('defineTimeRestrictions', () => {
             TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
             mockAttributeValue,
         );
-        // expect(writeHeadMock).toBeCalledWith(302, {
-        //     Location: '/service',
-        // });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/service',
+        });
     });
 
     it.each([
