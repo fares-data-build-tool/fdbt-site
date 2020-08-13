@@ -7,6 +7,9 @@ import {
     mockDefineTimeRestrictionsFieldsetsWithRadioErrors,
     mockDefineTimeRestrictionsFieldsetsWithInputErrors,
     mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors,
+    mockTimeRestrictionsRadioErrors,
+    mockTimeRestrictionsInputErrors,
+    mockTimeRestrictionsRadioAndInputErrors,
     getMockContext,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
@@ -15,45 +18,6 @@ import { TimeRestrictionsDefinitionWithErrors } from '../../src/pages/api/define
 
 describe('pages', () => {
     describe('defineTimeRestrictions', () => {
-        const mockRadioErrors: ErrorInfo[] = [
-            {
-                id: 'define-time-restrictions',
-                errorMessage: 'Choose one of the options below',
-            },
-            {
-                id: 'define-valid-days',
-                errorMessage: 'Choose one of the options below',
-            },
-        ];
-        const mockInputErrors: ErrorInfo[] = [
-            {
-                id: 'start-time',
-                errorMessage: 'Enter a start or end time in 24 hour format',
-            },
-            {
-                id: 'end-time',
-                errorMessage: 'Enter a start or end time in 24 hour format',
-            },
-            {
-                id: 'valid-days-required',
-                errorMessage: 'Select at least one day',
-            },
-        ];
-        const mockRadioAndInputErrors: ErrorInfo[] = [
-            {
-                id: 'start-time',
-                errorMessage: 'Enter a start or end time in 24 hour format',
-            },
-            {
-                id: 'end-time',
-                errorMessage: 'Enter a start or end time in 24 hour format',
-            },
-            {
-                id: 'define-valid-days',
-                errorMessage: 'Choose one of the options below',
-            },
-        ];
-
         it('should render correctly when no errors are passed', () => {
             const wrapper = shallow(
                 <DefineTimeRestrictions
@@ -69,7 +33,7 @@ describe('pages', () => {
         it('should render errors correctly when radio errors are passed to the page', () => {
             const wrapper = shallow(
                 <DefineTimeRestrictions
-                    errors={mockRadioErrors}
+                    errors={mockTimeRestrictionsRadioErrors}
                     fieldsets={mockDefineTimeRestrictionsFieldsetsWithRadioErrors}
                     csrfToken=""
                     pageProps={[]}
@@ -81,7 +45,7 @@ describe('pages', () => {
         it('should render errors correctly when input errors are passed to the page', () => {
             const wrapper = shallow(
                 <DefineTimeRestrictions
-                    errors={mockInputErrors}
+                    errors={mockTimeRestrictionsInputErrors}
                     fieldsets={mockDefineTimeRestrictionsFieldsetsWithInputErrors}
                     csrfToken=""
                     pageProps={[]}
@@ -93,7 +57,7 @@ describe('pages', () => {
         it('should render errors correctly when both radio and input errors are passed to the page', () => {
             const wrapper = shallow(
                 <DefineTimeRestrictions
-                    errors={mockRadioAndInputErrors}
+                    errors={mockTimeRestrictionsRadioAndInputErrors}
                     fieldsets={mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors}
                     csrfToken=""
                     pageProps={[]}
@@ -110,17 +74,17 @@ describe('pages', () => {
             });
 
             it('should return fieldsets with radio errors when radio errors are passed', () => {
-                const fieldsets = getFieldsets(mockRadioErrors);
+                const fieldsets = getFieldsets(mockTimeRestrictionsRadioErrors);
                 expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithRadioErrors);
             });
 
             it('should return fieldsets with input errors when input errors are passed', () => {
-                const fieldsets = getFieldsets(mockInputErrors);
+                const fieldsets = getFieldsets(mockTimeRestrictionsInputErrors);
                 expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithInputErrors);
             });
 
             it('should return fieldsets with radio and input errors when both radio and input errors are passed', () => {
-                const fieldsets = getFieldsets(mockRadioAndInputErrors);
+                const fieldsets = getFieldsets(mockTimeRestrictionsRadioAndInputErrors);
                 expect(fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors);
             });
         });
@@ -139,7 +103,7 @@ describe('pages', () => {
             it('should return props containing errors and valid fieldsets when errors are present', () => {
                 const timeRestrictionsDefinition: TimeRestrictionsDefinitionWithErrors = {
                     validDays: ['monday', 'tuesday'],
-                    errors: mockInputErrors,
+                    errors: mockTimeRestrictionsInputErrors,
                 };
                 const ctx = getMockContext({
                     session: {
@@ -147,7 +111,7 @@ describe('pages', () => {
                     },
                 });
                 const result = getServerSideProps(ctx);
-                expect(result.props.errors).toEqual(mockInputErrors);
+                expect(result.props.errors).toEqual(mockTimeRestrictionsInputErrors);
                 expect(result.props.fieldsets).toEqual(mockDefineTimeRestrictionsFieldsetsWithInputErrors);
             });
         });

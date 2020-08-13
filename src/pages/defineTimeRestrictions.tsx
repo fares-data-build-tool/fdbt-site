@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, TimeRestriction } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
-import { TimeRestrictionsDefinitionWithErrors, TimeRestrictionsDefinition } from './api/defineTimeRestrictions';
+import { TimeRestrictionsDefinitionWithErrors } from './api/defineTimeRestrictions';
 import { getErrorsByIds } from '../utils';
 
 const title = 'Define Time Restrictions - Fares Data Build Tool';
@@ -117,7 +117,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
             },
             {
                 id: 'valid-days-not-required',
-                name: 'validDays',
+                name: 'validDaysSelected',
                 value: 'No',
                 label: 'No',
             },
@@ -128,7 +128,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
 };
 
 export const isTimeRestrictionsDefinitionWithErrors = (
-    timeRestrictionsDefinition: TimeRestrictionsDefinition | TimeRestrictionsDefinitionWithErrors,
+    timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
 ): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
     (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors.length > 0;
 

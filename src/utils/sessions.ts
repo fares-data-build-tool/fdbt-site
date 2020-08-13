@@ -5,6 +5,7 @@ import {
     ProductInfoWithErrors,
     GroupDefinition,
     GroupPassengerInfo,
+    TimeRestriction,
 } from '../interfaces';
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -29,7 +30,7 @@ import { MatchingValues } from '../pages/api/outboundMatching';
 import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
 import { GroupPassengerTypes, GroupPassengerTypesWithErrors } from '../pages/api/groupPassengerTypes';
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
-import { TimeRestrictionsDefinition, TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
+import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
@@ -43,10 +44,7 @@ type GetSessionAttributeTypes = {
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: undefined | GroupPassengerTypes | GroupPassengerTypesWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
-    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]:
-        | undefined
-        | TimeRestrictionsDefinition
-        | TimeRestrictionsDefinitionWithErrors;
+    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -69,7 +67,7 @@ type UpdateSessionAttributeTypes = {
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypes | GroupPassengerTypesWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: undefined | GroupPassengerInfo;
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
-    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestrictionsDefinition | TimeRestrictionsDefinitionWithErrors;
+    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

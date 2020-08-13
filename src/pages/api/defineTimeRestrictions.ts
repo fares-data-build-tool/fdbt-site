@@ -4,13 +4,12 @@ import isArray from 'lodash/isArray';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, TimeRestriction } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export interface TimeRestrictionsDefinition {
-    startTime?: string;
-    endTime?: string;
-    validDays?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
+interface TimeRestrictionsDefinition extends TimeRestriction {
+    timeRestriction?: string;
+    validDaysSelected?: string;
 }
 
 export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {
@@ -35,6 +34,30 @@ const startTimeInputSchema = yup
     .typeError(timeRestrictionValidityError)
     .integer(timeRestrictionValidityError)
     .min(0, timeRestrictionValidityError);
+
+export const defineTimeRestrictionsSchema = yup
+    .object({
+        timeRestriction: yup
+            .string()
+            .oneOf(['Yes', 'No'])
+            .required(radioButtonError),
+        validDaysSelected: yup
+            .string()
+            .oneOf(['Yes', 'No'])
+            .required(radioButtonError),
+        startTime: yup.string().when('timeRestriction', {
+            is: 'Yes',
+            then: yup.string().length(4, timeRestrictionInputError),
+        }),
+        endTime: yup.string().when('timeRestriction', {
+            is: 'Yes',
+            then: yup.string().length(4, timeRestrictionInputError),
+        }),
+        validDays: yup
+            .string()
+            .when('validDaysSelected', { is: 'Yes', then: yup.string().required(daySelectionError) }),
+    })
+    .required();
 
 export const timeRestrictionConditionalInputSchema = yup.object({
     startTime: yup.number().when('timeRestriction', {
@@ -65,30 +88,6 @@ export const timeRestrictionConditionalInputSchema = yup.object({
     }),
 });
 
-export const defineTimeRestrictionsSchema = yup
-    .object({
-        timeRestriction: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
-        validDaysSelected: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
-        startTime: yup.string().when('timeRestriction', {
-            is: 'Yes',
-            then: yup.string().length(4, timeRestrictionInputError),
-        }),
-        endTime: yup.string().when('timeRestriction', {
-            is: 'Yes',
-            then: yup.string().length(4, timeRestrictionInputError),
-        }),
-        validDays: yup
-            .string()
-            .when('validDaysSelected', { is: 'Yes', then: yup.string().required(daySelectionError) }),
-    })
-    .required();
-
 export const formatRequestBody = (req: NextApiRequestWithSession): TimeRestrictionsDefinition => {
     const filteredReqBody: { [key: string]: string | string[] } = {};
     Object.entries(req.body).forEach(entry => {
@@ -101,7 +100,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): TimeRestricti
             filteredReqBody[entry[0]] = strippedInput;
             return;
         }
-        if (entry[0] === 'days') {
+        if (entry[0] === 'validDays') {
             filteredReqBody[entry[0]] = !isArray(entry[1]) ? [entry[1] as string] : (entry[1] as string[]);
             return;
         }
@@ -144,7 +143,7 @@ export const collectUniqueErrors = (initialErrors: ErrorInfo[], currentSchemaErr
 
 export const runValidationSchema = async (
     schema: yup.ObjectSchema,
-    reqBody: TimeRestrictionsDefinition,
+    reqBody: TimeRestriction,
     initialErrors: ErrorInfo[] = [],
 ): Promise<ErrorInfo[]> => {
     let errors: ErrorInfo[] = [];
@@ -156,7 +155,7 @@ export const runValidationSchema = async (
         errors = validityErrors.inner.map(error => ({
             id: getErrorIdFromValidityError(error.path),
             errorMessage: error.message,
-            userInput: error.value,
+            userInput: error.value ? String(error.value) : undefined,
         }));
     }
     const errorCollection = collectUniqueErrors(initialErrors, errors);
@@ -168,10 +167,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-
         const filteredReqBody = formatRequestBody(req);
 
-        const { startTime, endTime, validDays } = filteredReqBody;
+        const { timeRestriction, startTime, endTime, validDaysSelected, validDays } = filteredReqBody;
 
         const initialErrors = await runValidationSchema(defineTimeRestrictionsSchema, filteredReqBody);
         const combinedErrors = await runValidationSchema(
@@ -180,7 +178,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             initialErrors,
         );
 
-        const timeRestrictionsDefinition: TimeRestrictionsDefinition = {
+        const timeRestrictionsDefinition: TimeRestriction = {
             startTime,
             endTime,
             validDays,
@@ -189,6 +187,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (combinedErrors.length > 0) {
             const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
                 ...timeRestrictionsDefinition,
+                timeRestriction,
+                validDaysSelected,
                 errors: combinedErrors,
             };
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);

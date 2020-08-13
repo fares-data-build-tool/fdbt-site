@@ -2343,7 +2343,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
     },
 ];
 
-export const mockCombinedErrorInfoForInputErrors: ErrorInfo[] = [
+export const mockPassengerTypeInputErrors: ErrorInfo[] = [
     {
         errorMessage: 'Enter a minimum or maximum age',
         id: 'define-passenger-age-range',
@@ -2455,7 +2455,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
     },
 ];
 
-export const mockCombinedErrorInfoForRadioAndInputErrors: ErrorInfo[] = [
+export const mockPassengerTypeRadioAndInputErrors: ErrorInfo[] = [
     {
         userInput: '',
         errorMessage: 'Choose one of the options below',
@@ -2593,7 +2593,7 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
             },
             {
                 id: 'valid-days-not-required',
-                name: 'validDays',
+                name: 'validDaysSelected',
                 value: 'No',
                 label: 'No',
             },
@@ -2678,7 +2678,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
             },
             {
                 id: 'valid-days-not-required',
-                name: 'validDays',
+                name: 'validDaysSelected',
                 value: 'No',
                 label: 'No',
             },
@@ -2689,6 +2689,17 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
                 errorMessage: 'Choose one of the options below',
             },
         ],
+    },
+];
+
+export const mockTimeRestrictionsRadioErrors: ErrorInfo[] = [
+    {
+        id: 'define-time-restrictions',
+        errorMessage: 'Choose one of the options below',
+    },
+    {
+        id: 'define-valid-days',
+        errorMessage: 'Choose one of the options below',
     },
 ];
 
@@ -2777,12 +2788,30 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
             },
             {
                 id: 'valid-days-not-required',
-                name: 'validDays',
+                name: 'validDaysSelected',
                 value: 'No',
                 label: 'No',
             },
         ],
         radioError: [],
+    },
+];
+
+export const mockTimeRestrictionsInputErrors: ErrorInfo[] = [
+    {
+        id: 'valid-days-required',
+        errorMessage: 'Select at least one day',
+        userInput: undefined,
+    },
+    {
+        id: 'start-time',
+        errorMessage: 'Enter a start or end time in 24 hour format',
+        userInput: undefined,
+    },
+    {
+        id: 'end-time',
+        errorMessage: 'Enter a start or end time in 24 hour format',
+        userInput: undefined,
     },
 ];
 
@@ -2866,7 +2895,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
             },
             {
                 id: 'valid-days-not-required',
-                name: 'validDays',
+                name: 'validDaysSelected',
                 value: 'No',
                 label: 'No',
             },
@@ -2877,6 +2906,24 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
                 errorMessage: 'Choose one of the options below',
             },
         ],
+    },
+];
+
+export const mockTimeRestrictionsRadioAndInputErrors: ErrorInfo[] = [
+    {
+        id: 'define-valid-days',
+        errorMessage: 'Choose one of the options below',
+        userInput: undefined,
+    },
+    {
+        id: 'start-time',
+        errorMessage: 'Enter a start or end time in 24 hour format',
+        userInput: undefined,
+    },
+    {
+        id: 'end-time',
+        errorMessage: 'Enter a start or end time in 24 hour format',
+        userInput: undefined,
     },
 ];
 
