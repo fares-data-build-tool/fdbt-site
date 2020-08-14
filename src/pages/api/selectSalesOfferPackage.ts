@@ -15,7 +15,6 @@ import {
     FARE_TYPE_COOKIE,
     PERIOD_TYPE_COOKIE,
     MULTIPLE_PRODUCT_COOKIE,
-    GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../../constants';
@@ -95,17 +94,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
-            const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+            const sessionGroup: CompanionInfo[] = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
             const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
-            const group = !!groupPassengerTypes && !!groupSize;
+            const group = !!sessionGroup && !!groupSize;
 
+            console.log('groupSize', groupSize);
             if (group) {
-                const sessionGroup: CompanionInfo[] = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
-
+                console.log('sessionGroup', sessionGroup);
                 const userDataWithGroupJson = {
                     ...userDataJson,
                     groupDefinition: {
-                        maxPeople: groupSize,
+                        maxPeople: groupSize?.maxGroupSize,
                         companions: sessionGroup,
                     },
                 };

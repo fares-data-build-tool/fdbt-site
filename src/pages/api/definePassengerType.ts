@@ -236,7 +236,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (errors.length === 0) {
             let passengerTypeCookieValue = '';
-
             if (!group) {
                 passengerTypeCookieValue = JSON.stringify({ passengerType, ...filteredReqBody });
                 setCookieOnResponseObject(PASSENGER_TYPE_COOKIE, passengerTypeCookieValue, req, res);
@@ -253,7 +252,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                     (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.splice(index, 1);
 
-                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proof } = req.body;
+                    const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proofDocuments } = req.body;
 
                     const sessionGroup: CompanionInfo[] = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
 
@@ -270,7 +269,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         maxNumber,
                         ageRangeMin,
                         ageRangeMax,
-                        proofDocuments: proof,
+                        proofDocuments,
                         passengerType: submittedPassengerType,
                     });
 
