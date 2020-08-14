@@ -5,7 +5,7 @@ import {
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
-    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    TIME_RESTRICTIONS_ATTRIBUTE,
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
@@ -27,7 +27,7 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
     const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
 
-    const timeRestriction = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];
@@ -185,7 +185,7 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
 
     const getFullBreadcrumbList = (): Breadcrumb[] => {
         const isNotAnyonePassengerType = passengerType !== 'anyone';
-        const isTimeRestrictionDefined = !!timeRestriction;
+        const isTimeRestrictionDefined = timeRestrictionsAttribute?.timeRestrictions || false;
 
         const breadcrumbList: Breadcrumb[] = [
             {

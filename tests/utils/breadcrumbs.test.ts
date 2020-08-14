@@ -8,10 +8,9 @@ import {
     mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs,
     mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs,
     mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs,
-    mockTimeRestriction,
 } from '../testData/mockData';
 import { NextPageContextWithSession } from '../../src/interfaces';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants';
+import { TIME_RESTRICTIONS_ATTRIBUTE } from '../../src/constants';
 
 describe('breadcrumbs', () => {
     let ctx: NextPageContextWithSession;
@@ -88,7 +87,7 @@ describe('breadcrumbs', () => {
                 numberOfProducts: '1',
             },
             session: {
-                [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [TIME_RESTRICTIONS_ATTRIBUTE]: { timeRestrictions: true },
             },
         });
         const result = breadcrumb(ctx).generate();

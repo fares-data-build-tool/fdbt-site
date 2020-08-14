@@ -130,7 +130,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
 export const isTimeRestrictionsDefinitionWithErrors = (
     timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
 ): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
-    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors.length > 0;
+    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
 
 const DefineTimeRestrictions = ({
     errors = [],
