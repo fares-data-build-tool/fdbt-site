@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next';
 import breadcrumb from '../../src/utils/breadcrumbs';
 import {
     getMockContext,
@@ -9,10 +8,13 @@ import {
     mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs,
     mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs,
     mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs,
+    mockTimeRestriction,
 } from '../testData/mockData';
+import { NextPageContextWithSession } from '../../src/interfaces';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants';
 
 describe('breadcrumbs', () => {
-    let ctx: NextPageContext;
+    let ctx: NextPageContextWithSession;
 
     it('creates the correct array of Breadcrumbs if user is on home page', () => {
         ctx = getMockContext({ url: '/' });
@@ -84,6 +86,9 @@ describe('breadcrumbs', () => {
                 periodTypeName: 'periodMultipleServices',
                 passengerType: { passengerType: 'anyone' },
                 numberOfProducts: '1',
+            },
+            session: {
+                [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
             },
         });
         const result = breadcrumb(ctx).generate();
