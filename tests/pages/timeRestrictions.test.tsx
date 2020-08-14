@@ -4,9 +4,27 @@ import TimeRestrictions from '../../src/pages/timeRestrictions';
 
 describe('pages', () => {
     describe('timeRestrictions', () => {
-        it('should render correctly', () => {
+        it('should render correctly with no errors', () => {
             const tree = shallow(
-                <TimeRestrictions timeRestrictionsInfo={{ timeRestrictions: false }} csrfToken="" pageProps={[]} />,
+                <TimeRestrictions timeRestrictionsInfo={{ errors: [] }} csrfToken="" pageProps={[]} />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly with errors', () => {
+            const tree = shallow(
+                <TimeRestrictions
+                    timeRestrictionsInfo={{
+                        errors: [
+                            {
+                                errorMessage: 'Error',
+                                id: 'id',
+                            },
+                        ],
+                    }}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });

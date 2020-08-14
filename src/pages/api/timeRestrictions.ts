@@ -7,11 +7,7 @@ import { redirectToError, redirectOnFareType, redirectTo, unescapeAndDecodeCooki
 import { isSessionValid } from './apiUtils/validator';
 import { timeRestrictionsErrorId } from '../timeRestrictions';
 
-export interface TimeRestrictionsAttribute {
-    timeRestrictions: boolean;
-}
-
-export interface TimeRestrictionsAttributeWithErrors extends TimeRestrictionsAttribute {
+export interface TimeRestrictionsAttributeWithErrors {
     errors: ErrorInfo[];
 }
 
@@ -39,7 +35,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, TIME_RESTRICTIONS_ATTRIBUTE, {
-            timeRestrictions: false,
             errors: [{ errorMessage: 'Choose either yes or no', id: timeRestrictionsErrorId }],
         });
         redirectTo(res, '/timeRestrictions');

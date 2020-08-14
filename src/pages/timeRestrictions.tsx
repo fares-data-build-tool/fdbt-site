@@ -6,7 +6,7 @@ import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interf
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { TimeRestrictionsAttribute, TimeRestrictionsAttributeWithErrors } from './api/timeRestrictions';
+import { TimeRestrictionsAttributeWithErrors } from './api/timeRestrictions';
 
 const title = 'Time Restrictions - Fares Data Build Tool';
 const description = 'Time Restrictions selection page of the Fares Data Build Tool';
@@ -14,13 +14,12 @@ const description = 'Time Restrictions selection page of the Fares Data Build To
 export const timeRestrictionsErrorId = 'time-restrictions-error';
 
 type TimeRestrictionsProps = {
-    timeRestrictionsInfo: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
+    timeRestrictionsInfo: TimeRestrictionsAttributeWithErrors;
 };
 
 const isTimeRestrictionsInfoWithErrors = (
-    timeRestrictionsInfo: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors,
-): timeRestrictionsInfo is TimeRestrictionsAttributeWithErrors =>
-    (timeRestrictionsInfo as TimeRestrictionsAttributeWithErrors).errors !== undefined;
+    timeRestrictionsInfo: TimeRestrictionsAttributeWithErrors,
+): timeRestrictionsInfo is TimeRestrictionsAttributeWithErrors => timeRestrictionsInfo.errors !== undefined;
 
 const TimeRestrictions = ({
     timeRestrictionsInfo,
@@ -99,8 +98,8 @@ const TimeRestrictions = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TimeRestrictionsProps } => {
     const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
-    const defaultTimeRestrictionsInfo: TimeRestrictionsAttribute = {
-        timeRestrictions: false,
+    const defaultTimeRestrictionsInfo: TimeRestrictionsAttributeWithErrors = {
+        errors: [],
     };
 
     return { props: { timeRestrictionsInfo: timeRestrictionsInfo || defaultTimeRestrictionsInfo } };

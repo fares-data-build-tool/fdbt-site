@@ -54,7 +54,7 @@ describe('passengerType', () => {
         },
     );
 
-    it('should call redirectOnFareType when the user selects Anyone', () => {
+    it('should redirect to timeRestrictions when the user selects Anyone', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { passengerType: 'anyone' },
