@@ -28,7 +28,7 @@ describe('timeRestrictions', () => {
             });
         });
 
-        it.only('should 302 redirect to /timeRestrictions and add errors to cookie, when there is no body in the request', () => {
+        it('should 302 redirect to /timeRestrictions and add errors to cookie, when there is no body in the request', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 body: {},
