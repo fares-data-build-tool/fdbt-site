@@ -11,7 +11,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
 } from '../../../src/constants';
-import { GroupPassengerTypes } from '../../../src/pages/api/groupPassengerTypes';
+import { GroupPassengerTypesCollection } from '../../../src/pages/api/groupPassengerTypes';
 import * as sessions from '../../../src/utils/sessions';
 import { CompanionInfo } from '../../../src/interfaces';
 import { GroupTicketAttribute } from '../../../src/pages/api/groupSize';
@@ -310,7 +310,7 @@ describe('definePassengerType', () => {
             proofDocuments: ['Membership Card', 'Student Card'],
         };
 
-        const groupPassengerTypesAttribute: GroupPassengerTypes = { passengerTypes: ['adult', 'child'] };
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'single' },
@@ -354,7 +354,7 @@ describe('definePassengerType', () => {
             proofDocuments: ['Membership Card', 'Student Card'],
         };
 
-        const groupPassengerTypesAttribute: GroupPassengerTypes = { passengerTypes: ['child'] };
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const groupPassengerInfoAttribute: CompanionInfo[] = [
             {

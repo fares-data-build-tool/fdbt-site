@@ -19,7 +19,7 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { GroupPassengerTypes } from './groupPassengerTypes';
+import { GroupPassengerTypesCollection } from './groupPassengerTypes';
 
 interface FilteredRequestBody {
     minNumber?: string;
@@ -246,11 +246,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 const submittedPassengerType = groupPassengerType;
 
                 if (selectedPassengerTypes) {
-                    const index = (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.findIndex(
+                    const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
                         type => type === submittedPassengerType,
                     );
 
-                    (selectedPassengerTypes as GroupPassengerTypes).passengerTypes.splice(index, 1);
+                    (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.splice(index, 1);
 
                     const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proofDocuments } = req.body;
 
@@ -275,11 +275,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                     updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
-                    if ((selectedPassengerTypes as GroupPassengerTypes).passengerTypes.length > 0) {
+                    if ((selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length > 0) {
                         redirectTo(
                             res,
                             `/definePassengerType?groupPassengerType=${
-                                (selectedPassengerTypes as GroupPassengerTypes).passengerTypes[0]
+                                (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[0]
                             }`,
                         );
                     } else {
