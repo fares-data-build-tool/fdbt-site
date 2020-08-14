@@ -153,7 +153,7 @@ export interface TimeRestriction {
 }
 
 export interface BaseTicket {
-    // timeRestriction: TimeRestriction;
+    timeRestriction: TimeRestriction;
     nocCode: string;
     type: string;
     passengerType: string;

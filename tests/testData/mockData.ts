@@ -38,6 +38,7 @@ import {
     FlatFareTicket,
     SalesOfferPackage,
     ProductDetails,
+    TimeRestriction,
 } from '../../src/interfaces';
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -1200,6 +1201,12 @@ export const expectedProductDetailsArray: ProductDetails[] = [
     },
 ];
 
+export const mockTimeRestriction: TimeRestriction = {
+    startTime: '0900',
+    endTime: '1500',
+    validDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+};
+
 export const expectedMatchingJsonSingle: SingleTicket = {
     type: 'single',
     lineName: '215',
@@ -1209,6 +1216,7 @@ export const expectedMatchingJsonSingle: SingleTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             salesOfferPackages: [
@@ -1346,6 +1354,7 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             salesOfferPackages: [
@@ -1513,6 +1522,7 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     serviceDescription: 'Worthing - Seaham - Crawley',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             salesOfferPackages: [
@@ -1648,6 +1658,10 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    zoneName: 'fare zone 1',
+    stops: zoneStops,
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Product A',
@@ -1666,9 +1680,6 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
             ],
         },
     ],
-    zoneName: 'fare zone 1',
-    stops: zoneStops,
-    passengerType: 'Adult',
 };
 
 export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
@@ -1677,6 +1688,8 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Product A',
@@ -1715,7 +1728,6 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
-    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket = {
@@ -1724,6 +1736,10 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    zoneName: 'fare zone 1',
+    stops: zoneStops,
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1774,9 +1790,6 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
             ],
         },
     ],
-    zoneName: 'fare zone 1',
-    stops: zoneStops,
-    passengerType: 'Adult',
 };
 
 export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
@@ -1785,6 +1798,8 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1855,7 +1870,6 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
-    passengerType: 'Adult',
 };
 
 export const expectedFlatFareProductUploadJson: FlatFareTicket = {
@@ -1865,6 +1879,7 @@ export const expectedFlatFareProductUploadJson: FlatFareTicket = {
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Weekly Rider',
