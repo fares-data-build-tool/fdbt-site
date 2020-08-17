@@ -198,7 +198,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set the PASSENGER_TYPE_COOKIE and redirect depending on fare type when no errors are found', async () => {
+    it('should set the PASSENGER_TYPE_COOKIE and redirect to timeRestrictions when no errors are found', async () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         const mockPassengerTypeDetails = {
             ageRange: 'Yes',
@@ -222,7 +222,7 @@ describe('definePassengerType', () => {
             res,
         );
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/service',
+            Location: '/timeRestrictions',
         });
     });
 
@@ -401,7 +401,7 @@ describe('definePassengerType', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, mockPassengerCompanions);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/service',
+            Location: '/timeRestrictions',
         });
     });
 });
