@@ -254,7 +254,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                     const { minNumber, maxNumber, ageRangeMin, ageRangeMax, proofDocuments } = req.body;
 
-                    const sessionGroup: CompanionInfo[] = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+                    const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
 
                     const companions: CompanionInfo[] = [];
 

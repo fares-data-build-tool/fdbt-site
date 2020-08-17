@@ -128,9 +128,9 @@ export interface CompanionInfo {
     passengerType: string;
     minNumber: string;
     maxNumber: string;
-    ageRangeMin: string;
-    ageRangeMax: string;
-    proofDocuments: string[];
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proofDocuments?: string[];
 }
 
 export interface GroupDefinition {

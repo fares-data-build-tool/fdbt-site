@@ -18,7 +18,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../../constants';
-import { CompanionInfo, NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export interface SelectSalesOfferPackageWithError {
@@ -94,13 +94,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
-            const sessionGroup: CompanionInfo[] = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+            const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
             const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
             const group = !!sessionGroup && !!groupSize;
 
-            console.log('groupSize', groupSize);
             if (group) {
-                console.log('sessionGroup', sessionGroup);
                 const userDataWithGroupJson = {
                     ...userDataJson,
                     groupDefinition: {

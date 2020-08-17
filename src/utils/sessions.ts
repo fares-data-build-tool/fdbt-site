@@ -45,7 +45,7 @@ type GetSessionAttributeTypes = {
         | undefined
         | GroupPassengerTypesCollection
         | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
 };
 
@@ -67,7 +67,7 @@ type UpdateSessionAttributeTypes = {
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
 };
 
