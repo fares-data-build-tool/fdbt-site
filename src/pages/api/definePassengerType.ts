@@ -15,7 +15,6 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
     GROUP_SIZE_ATTRIBUTE,
-    NO_PROOF_REQUIRED,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
@@ -105,7 +104,7 @@ export const passengerTypeDetailsSchema = yup
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
         proof: yup.string().when('groupPassengerType', {
-            is: groupPassengerTypeNameValue => !NO_PROOF_REQUIRED.includes(groupPassengerTypeNameValue),
+            is: groupPassengerTypeNameValue => groupPassengerTypeNameValue !== 'adult',
             then: yup
                 .string()
                 .oneOf(['Yes', 'No'])

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE, NO_PROOF_REQUIRED } from '../constants';
+import { PASSENGER_TYPE_COOKIE, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
@@ -52,11 +52,7 @@ export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] 
     return compactErrors;
 };
 
-export const getFieldsets = (
-    errors: ErrorInfo[],
-    passengerType?: string,
-    group?: false,
-): RadioConditionalInputFieldset[] => {
+export const getFieldsets = (errors: ErrorInfo[], passengerType?: string): RadioConditionalInputFieldset[] => {
     const fieldsets = [];
 
     const ageRangeFieldset: RadioConditionalInputFieldset = {
@@ -152,11 +148,7 @@ export const getFieldsets = (
 
     fieldsets.push(ageRangeFieldset);
 
-    console.log('group', group);
-    console.log('passengerType', passengerType);
-    console.log('!NO_PROOF_REQUIRED.includes(passengerType))', !NO_PROOF_REQUIRED.includes(passengerType));
-    if (!group || (group && passengerType && !NO_PROOF_REQUIRED.includes(passengerType))) {
-
+    if (!passengerType || (passengerType && passengerType !== 'adult')) {
         fieldsets.push(proofRequiredFieldset);
     }
 
@@ -286,32 +278,33 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
-    const errors: ErrorInfo[] =
-        passengerTypeCookie && JSON.parse(passengerTypeCookie).errors ? JSON.parse(passengerTypeCookie).errors : [];
+    const { errors, passengerType } = JSON.parse(passengerTypeCookie);
+
+    const passengerTypeErrors: ErrorInfo[] = passengerTypeCookie && errors ? errors : [];
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
     const group = !!groupPassengerTypes;
 
     if (group) {
-        console.log('group', group);
         const groupPassengerType = ctx.query.groupPassengerType as string;
-        fieldsets = getFieldsets(errors, groupPassengerType, group);
-        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, groupPassengerType);
+        fieldsets = getFieldsets(passengerTypeErrors, groupPassengerType);
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(passengerTypeErrors, groupPassengerType);
 
         return {
             props: {
                 group,
-                errors,
+                errors: passengerTypeErrors,
                 fieldsets,
                 numberOfPassengerTypeFieldset,
                 groupPassengerType,
             },
         };
     }
-    fieldsets = getFieldsets(errors);
 
-    return { props: { group, errors, fieldsets } };
+    fieldsets = getFieldsets(passengerTypeErrors, passengerType);
+
+    return { props: { group, errors: passengerTypeErrors, fieldsets } };
 };
 
 export default DefinePassengerType;

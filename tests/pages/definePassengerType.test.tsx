@@ -72,15 +72,6 @@ describe('pages', () => {
             expect(fieldsets[1].heading.content).toEqual('Do child passengers require a proof document?');
         });
 
-        it.only('should not show the proof of documents if passenger types is infant', () => {
-            const passengerType = 'infant';
-            const emptyErrors: ErrorInfo[] = [];
-            const fieldsets = getFieldsets(emptyErrors, passengerType);
-
-            console.log('fields', fieldsets);
-            expect(fieldsets.length).toEqual(1);
-        });
-
         it('should not show the proof of documents if passenger types is adult', () => {
             const passengerType = 'adult';
             const emptyErrors: ErrorInfo[] = [];
@@ -88,6 +79,14 @@ describe('pages', () => {
 
             expect(fieldsets.length).toEqual(1);
         });
+
+        // it('should show the proof field if passenger type is any apart from adult', () => {
+        //     const passengerType = 'child';
+        //     const emptyErrors: ErrorInfo[] = [];
+        //     const fieldsets = getFieldsets(emptyErrors, passengerType);
+        //
+        //     expect(fieldsets.length).toEqual(2);
+        // });
     });
 
     describe('getNumberOfPassengerTypeFieldset', () => {
@@ -130,7 +129,7 @@ describe('pages', () => {
             [
                 'group',
                 {
-                    cookies: { passengerType: null },
+                    cookies: { passengerType: 'child' },
                     session: {
                         [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
                     },
@@ -161,7 +160,7 @@ describe('pages', () => {
             const ctx = getMockContext({
                 cookies: {
                     passengerType: {
-                        passengerType: 'adult',
+                        passengerType: 'child',
                         errors,
                     },
                 },
