@@ -66,12 +66,7 @@ describe('Matching Page', () => {
             />,
         );
 
-        expect(
-            mountedWrapper
-                .find('.farestage-select')
-                .first()
-                .find('option'),
-        ).toHaveLength(9);
+        expect(mountedWrapper.find('.farestage-select').first().find('option')).toHaveLength(9);
     });
 
     describe('getServerSideProps', () => {

@@ -110,7 +110,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     if (inputChecks.length > 0) {
         const errors: ErrorInfo[] = [];
-        inputChecks.forEach(inputCheck => {
+        inputChecks.forEach((inputCheck) => {
             if (inputCheck.error !== '') {
                 errors.push({ errorMessage: inputCheck.error, id: inputCheck.id });
             }

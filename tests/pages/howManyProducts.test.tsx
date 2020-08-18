@@ -23,7 +23,7 @@ describe('pages', () => {
 
         test.each(errorCases)(
             'should render correctly when a user is redirected to the page from itself when incorrect data is entered',
-            mockInputCheck => {
+            (mockInputCheck) => {
                 const mockErrors: ErrorInfo[] = [{ errorMessage: mockInputCheck.error || '', id: 'page-heading' }];
                 const tree = shallow(
                     <HowManyProducts inputCheck={mockInputCheck} errors={mockErrors} csrfToken="" pageProps={[]} />,

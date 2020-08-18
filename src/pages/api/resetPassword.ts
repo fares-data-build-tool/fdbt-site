@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         inputChecks = validateNewPassword(password, confirmPassword, inputChecks);
 
-        if (inputChecks.some(el => el.errorMessage !== '')) {
+        if (inputChecks.some((el) => el.errorMessage !== '')) {
             setErrorsCookie(inputChecks, regKey, username, expiry);
             return;
         }

@@ -34,12 +34,10 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: '',
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: '',
+        });
 
         await csvUpload.default(req, res);
 
@@ -67,12 +65,10 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.testCsv,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.testCsv,
+        });
 
         await csvUpload.default(req, res);
 
@@ -100,12 +96,10 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.testCsv,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.testCsv,
+        });
 
         await csvUpload.default(req, res);
 
@@ -137,12 +131,10 @@ describe('csvUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData')
-                .mockImplementation()
-                .mockResolvedValue({
-                    files: file,
-                    fileContents: csv,
-                });
+            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+                files: file,
+                fileContents: csv,
+            });
 
             await csvUpload.default(req, res);
 
@@ -175,12 +167,10 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.testCsv,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.testCsv,
+        });
 
         await csvUpload.default(req, res);
 
@@ -202,12 +192,10 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.nonNumericPricesTestCsv,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.nonNumericPricesTestCsv,
+        });
 
         await csvUpload.default(req, res);
 
@@ -229,12 +217,10 @@ describe('csvUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                files: file,
-                fileContents: csvData.missingPricesTestCsv,
-            });
+        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.missingPricesTestCsv,
+        });
 
         await csvUpload.default(req, res);
 

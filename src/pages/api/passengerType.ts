@@ -17,7 +17,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('Necessary fare type cookie not found for passenger type page');
         }
 
-        const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map(type => type.passengerTypeValue);
+        const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map((type) => type.passengerTypeValue);
 
         if (req.body.passengerType && passengerTypeValues.includes(req.body.passengerType)) {
             const { passengerType } = req.body;

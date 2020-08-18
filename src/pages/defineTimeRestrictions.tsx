@@ -153,7 +153,7 @@ const DefineTimeRestrictions = ({
                     </span>
                     <br />
                     <br />
-                    {fieldsets.map(fieldset => {
+                    {fieldsets.map((fieldset) => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                 </div>

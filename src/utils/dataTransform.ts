@@ -6,7 +6,7 @@ export const enrichJourneyPatternsWithNaptanInfo = async (
     Promise.all(
         journeyPatterns.map(
             async (item: RawJourneyPattern): Promise<JourneyPattern> => {
-                const stopList = item.orderedStopPoints.flatMap(stopPoint => stopPoint.stopPointRef);
+                const stopList = item.orderedStopPoints.flatMap((stopPoint) => stopPoint.stopPointRef);
 
                 const startPoint = item.orderedStopPoints[0];
                 const [startPointStopLocality] = await batchGetStopsByAtcoCode([startPoint.stopPointRef]);
@@ -40,7 +40,7 @@ export const getJourneysByStartAndEndPoint = (
     selectedEndPoint: string,
 ): RawJourneyPattern[] =>
     service.journeyPatterns.filter(
-        item =>
+        (item) =>
             item.orderedStopPoints[0].stopPointRef === selectedStartPoint &&
             item.orderedStopPoints.slice(-1)[0].stopPointRef === selectedEndPoint,
     );
@@ -51,5 +51,7 @@ export const getMasterStopList = (journeys: RawJourneyPattern[]): string[] => {
         return b.orderedStopPoints.length - a.orderedStopPoints.length;
     });
 
-    return [...new Set(sortedJourneys.flatMap(journey => journey.orderedStopPoints.map(item => item.stopPointRef)))];
+    return [
+        ...new Set(sortedJourneys.flatMap((journey) => journey.orderedStopPoints.map((item) => item.stopPointRef))),
+    ];
 };

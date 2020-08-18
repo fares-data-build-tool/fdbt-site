@@ -235,8 +235,8 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
 
     const generate = (): Breadcrumb[] => {
         const fullBreadcrumbList = getFullBreadcrumbList();
-        const index = fullBreadcrumbList.findIndex(item => item.link === url.split('?')[0] && item.show);
-        const breadcrumbsToShow = fullBreadcrumbList.slice(0, index + 1).filter(item => item.show);
+        const index = fullBreadcrumbList.findIndex((item) => item.link === url.split('?')[0] && item.show);
+        const breadcrumbsToShow = fullBreadcrumbList.slice(0, index + 1).filter((item) => item.show);
 
         return breadcrumbsToShow;
     };

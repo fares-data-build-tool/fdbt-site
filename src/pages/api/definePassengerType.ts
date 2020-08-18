@@ -63,53 +63,47 @@ const maxAgeRangeSchema = yup
 export const passengerTypeDetailsSchema = yup
     .object({
         minNumber: yup.number().when('groupPassengerType', {
-            is: groupPassengerTypeValue => !!groupPassengerTypeValue,
+            is: (groupPassengerTypeValue) => !!groupPassengerTypeValue,
             then: yup
                 .number()
                 .when('maxNumber', {
-                    is: maxNumberValue => !!maxNumberValue,
+                    is: (maxNumberValue) => !!maxNumberValue,
                     then: minNumberOfPassengersSchema
                         .max(yup.ref('maxNumber'), minGreaterThanMaxError('number of passengers'))
                         .notRequired(),
                 })
                 .when('maxNumber', {
-                    is: maxNumberValue => !maxNumberValue,
+                    is: (maxNumberValue) => !maxNumberValue,
                     then: minNumberOfPassengersSchema.max(150, numberOfPassengersError).notRequired(),
                 }),
         }),
         maxNumber: yup.number().when('groupPassengerType', {
-            is: groupPassengerTypeValue => !!groupPassengerTypeValue,
+            is: (groupPassengerTypeValue) => !!groupPassengerTypeValue,
             then: yup
                 .number()
                 .when('minNumber', {
-                    is: minNumberValue => !!minNumberValue,
+                    is: (minNumberValue) => !!minNumberValue,
                     then: maxNumberOfPassengersSchema
                         .min(yup.ref('minNumber'), maxLessThanMinError('number of passengers'))
                         .required(numberOfPassengersError),
                 })
                 .when('minNumber', {
-                    is: minNumberValue => !minNumberValue,
+                    is: (minNumberValue) => !minNumberValue,
                     then: maxNumberOfPassengersSchema.min(0, numberOfPassengersError).required(numberOfPassengersError),
                 }),
         }),
-        ageRange: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
-        proof: yup
-            .string()
-            .oneOf(['Yes', 'No'])
-            .required(radioButtonError),
+        ageRange: yup.string().oneOf(['Yes', 'No']).required(radioButtonError),
+        proof: yup.string().oneOf(['Yes', 'No']).required(radioButtonError),
         ageRangeMin: yup.number().when('ageRange', {
             is: 'Yes',
             then: yup
                 .number()
                 .when('ageRangeMax', {
-                    is: ageRangeMaxValue => !!ageRangeMaxValue,
+                    is: (ageRangeMaxValue) => !!ageRangeMaxValue,
                     then: minAgeRangeSchema.max(yup.ref('ageRangeMax'), minGreaterThanMaxError('age')).notRequired(),
                 })
                 .when('ageRangeMax', {
-                    is: ageRangeMaxValue => !ageRangeMaxValue,
+                    is: (ageRangeMaxValue) => !ageRangeMaxValue,
                     then: minAgeRangeSchema.max(150, ageRangeNumberError).required(ageRangeInputError),
                 }),
         }),
@@ -118,11 +112,11 @@ export const passengerTypeDetailsSchema = yup
             then: yup
                 .number()
                 .when('ageRangeMin', {
-                    is: ageRangeMinValue => !!ageRangeMinValue,
+                    is: (ageRangeMinValue) => !!ageRangeMinValue,
                     then: maxAgeRangeSchema.min(yup.ref('ageRangeMin'), maxLessThanMinError('age')).notRequired(),
                 })
                 .when('ageRangeMin', {
-                    is: ageRangeMinValue => !ageRangeMinValue,
+                    is: (ageRangeMinValue) => !ageRangeMinValue,
                     then: maxAgeRangeSchema.min(0, ageRangeNumberError).required(ageRangeInputError),
                 }),
         }),
@@ -132,7 +126,7 @@ export const passengerTypeDetailsSchema = yup
 
 export const formatRequestBody = (req: NextApiRequestWithSession): FilteredRequestBody => {
     const filteredReqBody: { [key: string]: string | string[] } = {};
-    Object.entries(req.body).forEach(entry => {
+    Object.entries(req.body).forEach((entry) => {
         if (
             entry[0] === 'ageRangeMin' ||
             entry[0] === 'ageRangeMax' ||
@@ -208,7 +202,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await passengerTypeDetailsSchema.validate(filteredReqBody, { abortEarly: false });
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
-            errors = validityErrors.inner.map(error => ({
+            errors = validityErrors.inner.map((error) => ({
                 id: getErrorIdFromValidityError(error.path),
                 errorMessage: error.message,
                 userInput: error.value,
@@ -230,7 +224,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 if (selectedPassengerTypes) {
                     const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
-                        type => type === submittedPassengerType,
+                        (type) => type === submittedPassengerType,
                     );
 
                     (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.splice(index, 1);
@@ -242,7 +236,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     const companions: CompanionInfo[] = [];
 
                     if (sessionGroup) {
-                        sessionGroup.forEach(companion => {
+                        sessionGroup.forEach((companion) => {
                             companions.push(companion);
                         });
                     }

@@ -179,7 +179,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
     const multipleProducts: Product[] = JSON.parse(multipleProductCookie);
 
     const errors: ErrorInfo[] = [];
-    const productWithErrors = multipleProducts.find(el => el.productValidityError);
+    const productWithErrors = multipleProducts.find((el) => el.productValidityError);
     if (productWithErrors) {
         const errorHref = 'multiple-product-validity-radios-error';
         const error: ErrorInfo = {

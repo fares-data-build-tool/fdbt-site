@@ -67,10 +67,10 @@ export const faresTriangleDataMapper = (
 
     for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
         const items = dataAsLines[rowNum].split(',');
-        const trimmedItems = items.map(item => item.trim());
+        const trimmedItems = items.map((item) => item.trim());
         const stageName = trimmedItems[rowNum + 1];
 
-        if (trimmedItems.every(item => item === '' || item === null)) {
+        if (trimmedItems.every((item) => item === '' || item === null)) {
             break;
         } else {
             expectedNumberOfPrices += rowNum;
@@ -99,14 +99,14 @@ export const faresTriangleDataMapper = (
     }
 
     const mappedFareTriangle: UserFareStages = {
-        fareStages: fareTriangle.fareStages.map(item => ({
+        fareStages: fareTriangle.fareStages.map((item) => ({
             ...item,
             prices: Object.values(item.prices),
         })),
     };
 
-    const numberOfPrices = mappedFareTriangle.fareStages.flatMap(stage =>
-        stage.prices.flatMap(price => price.fareZones),
+    const numberOfPrices = mappedFareTriangle.fareStages.flatMap((stage) =>
+        stage.prices.flatMap((price) => price.fareZones),
     ).length;
 
     if (numberOfPrices !== expectedNumberOfPrices) {

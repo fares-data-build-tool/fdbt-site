@@ -24,7 +24,7 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
         return '';
     }
     const cellName = `${rowStage}-${columnStage}`;
-    const defaultInput = fareInformation.inputs.find(input => {
+    const defaultInput = fareInformation.inputs.find((input) => {
         return input.k === cellName;
     });
 
@@ -49,7 +49,7 @@ export const createClassName = (
 
     const name = `${rowStage}-${columnStage}`;
 
-    if (inputs.errorInformation.some(el => el.k === name)) {
+    if (inputs.errorInformation.some((el) => el.k === name)) {
         errorClass = ' govuk-input--error';
     }
 
@@ -59,8 +59,8 @@ export const createClassName = (
 export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
     const errorText = 'Enter a valid price for each stage';
     const filteredErrors: ErrorInfo[] = [];
-    errors.forEach(error => {
-        if (!filteredErrors.some(el => el.errorMessage === errorText)) {
+    errors.forEach((error) => {
+        if (!filteredErrors.some((el) => el.errorMessage === errorText)) {
             let updatedErrorMessage = '';
             if (error.errorMessage === 'A') {
                 updatedErrorMessage = errorText;
@@ -169,7 +169,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryPro
         const priceEntryCookieInputContents: FaresInput[] = JSON.parse(priceEntryInputsCookie);
         const priceEntryCookieErrorContents: PriceEntryError[] = JSON.parse(priceEntryErrorsCookie);
 
-        const errors: ErrorInfo[] = priceEntryCookieErrorContents.map(error => {
+        const errors: ErrorInfo[] = priceEntryCookieErrorContents.map((error) => {
             return { errorMessage: error.v, id: errorId };
         });
         const filteredErrors = filterErrors(errors);

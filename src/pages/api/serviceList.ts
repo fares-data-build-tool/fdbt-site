@@ -66,7 +66,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         const requestBody: { [key: string]: string | string[] } = req.body;
 
-        Object.entries(requestBody).forEach(entry => {
+        Object.entries(requestBody).forEach((entry) => {
             const lineNameServiceCodeStartDate = entry[0];
             const description = entry[1];
             let serviceDescription: string;

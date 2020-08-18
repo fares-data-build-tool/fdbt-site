@@ -45,7 +45,7 @@ import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
 
-    entry.forEach(sop => {
+    entry.forEach((sop) => {
         const parsedEntry = JSON.parse(sop);
         const formattedPackageObject = {
             name: parsedEntry.name,
@@ -68,7 +68,7 @@ export const getProductsAndSalesOfferPackages = (
 ): ProductDetails[] => {
     const productSOPList: ProductDetails[] = [];
 
-    Object.entries(reqBody).forEach(entry => {
+    Object.entries(reqBody).forEach((entry) => {
         const salesOfferPackageValue = !isArray(entry[1]) ? [entry[1]] : (entry[1] as string[]);
         const salesOfferPackageList = generateSalesOfferPackages(salesOfferPackageValue);
         const parsedMultipleCookie = JSON.parse(multipleProductCookie);
@@ -270,7 +270,7 @@ export const getPeriodGeoZoneTicketJson = async (
 
         const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
-        productDetailsList = products.map(product => ({
+        productDetailsList = products.map((product) => ({
             productName: product.productName,
             productPrice: product.productPrice,
             productDuration: isPeriodProductDetails(product) ? product.productDuration : '',
@@ -364,7 +364,7 @@ export const getPeriodMultipleServicesTicketJson = (
 
         const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
 
-        productDetailsList = products.map(product => {
+        productDetailsList = products.map((product) => {
             return {
                 productName: product.productName,
                 productPrice: product.productPrice,
@@ -441,7 +441,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     const { products } = productDetailsAttributeInfo;
 
-    const productDetailsList = products.map(product => ({
+    const productDetailsList = products.map((product) => ({
         productName: product.productName,
         productPrice: product.productPrice,
         salesOfferPackages,

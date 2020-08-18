@@ -16,7 +16,7 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
         userFareStages.fareStages.map((stage: FareStage) => {
             const currentValue = JSON.stringify({ stop, stage: stage.stageName });
 
-            const isSelected = selectedFareStages.some(selectedObject => {
+            const isSelected = selectedFareStages.some((selectedObject) => {
                 return selectedObject === currentValue;
             });
 

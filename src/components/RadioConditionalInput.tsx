@@ -52,7 +52,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
             <span className="govuk-hint" id={radio.hint.id}>
                 {radio.hint.content}
             </span>
-            {radio.inputs.map(input => {
+            {radio.inputs.map((input) => {
                 const errorId = createErrorId(input, radio.inputErrors);
                 return (
                     <div
@@ -100,7 +100,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
                         errorClass=""
                     >
                         <div className="govuk-checkboxes">
-                            {radio.inputs.map(input => {
+                            {radio.inputs.map((input) => {
                                 return (
                                     <div key={input.id} className="govuk-checkboxes__item">
                                         <input
@@ -200,7 +200,7 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => renderRadioButtonSet(radio))}
+                        {fieldset.radios.map((radio) => renderRadioButtonSet(radio))}
                     </div>
                 </FormElementWrapper>
             </fieldset>

@@ -8,7 +8,7 @@ interface BreadcrumbsProps {
 const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps): ReactElement => (
     <div className="govuk-breadcrumbs">
         <ol className="govuk-breadcrumbs__list">
-            {breadcrumbs.map(breadcrumb => (
+            {breadcrumbs.map((breadcrumb) => (
                 <li key={breadcrumb.name} className="govuk-breadcrumbs__list-item">
                     <a className="govuk-breadcrumbs__link" href={breadcrumb.link}>
                         {breadcrumb.name}
