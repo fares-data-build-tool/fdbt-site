@@ -117,7 +117,7 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
 
     const buttonText = selectAll === 'true' ? 'Unselect All' : 'Select All';
 
-    const checkedServiceList: ServicesInfo[] = servicesList.map(service => {
+    const checkedServiceList: ServicesInfo[] = servicesList.map((service) => {
         return {
             ...service,
             serviceDescription: service.description,

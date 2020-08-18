@@ -158,15 +158,15 @@ export const getServicesByNocCode = async (nocCode: string): Promise<ServiceType
 
     try {
         const queryInput = `
-            SELECT lineName, startDate, description, serviceCode
-            FROM tndsService
+            SELECT lineName, startDate, serviceDescription AS description, serviceCode
+            FROM tndsOperatorService
             WHERE nocCode = ?
         `;
 
         const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter]);
 
         return (
-            queryResults.map(item => ({
+            queryResults.map((item) => ({
                 lineName: item.lineName,
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
@@ -219,7 +219,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
 
         const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
 
-        return queryResults.map(item => ({
+        return queryResults.map((item) => ({
             stopName: item.commonName,
             naptanCode: item.naptanCode,
             atcoCode: item.atcoCode,
@@ -251,7 +251,7 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     try {
         const queryResults = await executeQuery<NaptanAtcoCodes[]>(atcoCodesByNaptanCodeQuery, naptanCodes);
 
-        return queryResults.map(item => ({ atcoCode: item.atcoCode, naptanCode: item.naptanCode }));
+        return queryResults.map((item) => ({ atcoCode: item.atcoCode, naptanCode: item.naptanCode }));
     } catch (error) {
         throw new Error(
             `Error performing queries for ATCO Codes using Naptan Codes '${JSON.stringify(naptanCodes)}': ${
@@ -293,11 +293,11 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
 
     // allows to get the unique journey's for the operator e.g. [1,2,3]
     const uniqueJourneyPatterns = queryResult
-        .map(item => item.journeyPatternId)
+        .map((item) => item.journeyPatternId)
         .filter((value, index, self) => self.indexOf(value) === index);
 
-    const rawPatternService = uniqueJourneyPatterns.map(journey => {
-        const filteredJourney = queryResult.filter(item => {
+    const rawPatternService = uniqueJourneyPatterns.map((journey) => {
+        const filteredJourney = queryResult.filter((item) => {
             return item.journeyPatternId === journey;
         });
 
@@ -343,7 +343,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
         const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode]);
 
         return (
-            queryResults.map(item => ({
+            queryResults.map((item) => ({
                 name: item.name,
                 description: item.description,
                 purchaseLocations: item.purchaseLocations.split(','),
