@@ -18,23 +18,25 @@ export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDe
 }
 
 const radioButtonError = 'Choose one of the options below';
-const timeRestrictionValidityError = 'Enter a time between 0000 - 2400';
-const timeRestrictionInputError = 'Enter a start or end time in 24 hour format';
+const startTimeRestrictionValidityError = 'Enter a start time in a valid 24 hour format between 0000 - 2300';
+const entTimeRestrictionValidityError = 'Enter an end time in a valid 24 hour format between 0000 - 2300';
 const daySelectionError = 'Select at least one day';
 const endTimeEarlierThanStartTimeError = 'The end time cannot be earlier than the start time';
 const startTimeLaterThanEndTimeError = 'The start time cannot be later than the end time';
 
+const timeFormatRegex = new RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$');
+
 const endTimeInputSchema = yup
     .number()
-    .typeError(timeRestrictionValidityError)
-    .integer(timeRestrictionValidityError)
-    .max(2400, timeRestrictionValidityError);
+    .typeError(entTimeRestrictionValidityError)
+    .integer(entTimeRestrictionValidityError)
+    .max(2400, entTimeRestrictionValidityError);
 
 const startTimeInputSchema = yup
     .number()
-    .typeError(timeRestrictionValidityError)
-    .integer(timeRestrictionValidityError)
-    .min(0, timeRestrictionValidityError);
+    .typeError(startTimeRestrictionValidityError)
+    .integer(startTimeRestrictionValidityError)
+    .min(0, startTimeRestrictionValidityError);
 
 export const defineTimeRestrictionsSchema = yup
     .object({
@@ -48,11 +50,17 @@ export const defineTimeRestrictionsSchema = yup
             .required(radioButtonError),
         startTime: yup.string().when('timeRestriction', {
             is: 'Yes',
-            then: yup.string().length(4, timeRestrictionInputError),
+            then: yup
+                .string()
+                .matches(timeFormatRegex, startTimeRestrictionValidityError)
+                .required(startTimeRestrictionValidityError),
         }),
         endTime: yup.string().when('timeRestriction', {
             is: 'Yes',
-            then: yup.string().length(4, timeRestrictionInputError),
+            then: yup
+                .string()
+                .matches(timeFormatRegex, entTimeRestrictionValidityError)
+                .required(entTimeRestrictionValidityError),
         }),
         validDays: yup
             .string()
@@ -67,12 +75,13 @@ export const timeRestrictionConditionalInputSchema = yup.object({
             .number()
             .when('endTime', {
                 is: endTimeValue => !!endTimeValue,
-                then: startTimeInputSchema.max(yup.ref('endTime'), startTimeLaterThanEndTimeError).notRequired(),
+                then: startTimeInputSchema.max(yup.ref('endTime'), startTimeLaterThanEndTimeError),
             })
             .when('endTime', {
                 is: endTimeValue => !endTimeValue,
-                then: startTimeInputSchema.max(2400, timeRestrictionValidityError).required(timeRestrictionInputError),
-            }),
+                then: startTimeInputSchema.max(2400, startTimeRestrictionValidityError),
+            })
+            .required(startTimeRestrictionValidityError),
     }),
     endTime: yup.number().when('timeRestriction', {
         is: 'Yes',
@@ -80,12 +89,13 @@ export const timeRestrictionConditionalInputSchema = yup.object({
             .number()
             .when('startTime', {
                 is: startTimeValue => !!startTimeValue,
-                then: endTimeInputSchema.min(yup.ref('startTime'), endTimeEarlierThanStartTimeError).notRequired(),
+                then: endTimeInputSchema.min(yup.ref('startTime'), endTimeEarlierThanStartTimeError),
             })
             .when('startTime', {
                 is: startTimeValue => !startTimeValue,
-                then: endTimeInputSchema.min(0, timeRestrictionValidityError).required(timeRestrictionInputError),
-            }),
+                then: endTimeInputSchema.min(0, entTimeRestrictionValidityError),
+            })
+            .required(entTimeRestrictionValidityError),
     }),
 });
 

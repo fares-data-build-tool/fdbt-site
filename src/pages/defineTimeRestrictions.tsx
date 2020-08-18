@@ -39,12 +39,12 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (if applicable)',
+                        label: 'Start Time (required)',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (if applicable)',
+                        label: 'End Time (required)',
                     },
                 ],
                 inputErrors: getErrorsByIds(['start-time', 'end-time'], errors),

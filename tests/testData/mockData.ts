@@ -2559,12 +2559,12 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (if applicable)',
+                        label: 'Start Time (required)',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (if applicable)',
+                        label: 'End Time (required)',
                     },
                 ],
                 inputErrors: [],
@@ -2639,12 +2639,12 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (if applicable)',
+                        label: 'Start Time (required)',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (if applicable)',
+                        label: 'End Time (required)',
                     },
                 ],
                 inputErrors: [],
@@ -2740,22 +2740,22 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (if applicable)',
+                        label: 'Start Time (required)',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (if applicable)',
+                        label: 'End Time (required)',
                     },
                 ],
                 inputErrors: [
                     {
                         id: 'start-time',
-                        errorMessage: 'Enter a start or end time in 24 hour format',
+                        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
                     },
                     {
                         id: 'end-time',
-                        errorMessage: 'Enter a start or end time in 24 hour format',
+                        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
                     },
                 ],
             },
@@ -2814,18 +2814,18 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
 
 export const mockTimeRestrictionsInputErrors: ErrorInfo[] = [
     {
-        id: 'valid-days-required',
-        errorMessage: 'Select at least one day',
-        userInput: undefined,
-    },
-    {
         id: 'start-time',
-        errorMessage: 'Enter a start or end time in 24 hour format',
+        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
         userInput: undefined,
     },
     {
         id: 'end-time',
-        errorMessage: 'Enter a start or end time in 24 hour format',
+        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
+        userInput: undefined,
+    },
+    {
+        id: 'valid-days-required',
+        errorMessage: 'Select at least one day',
         userInput: undefined,
     },
 ];
@@ -2852,22 +2852,22 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
                     {
                         id: 'start-time',
                         name: 'startTime',
-                        label: 'Start Time (if applicable)',
+                        label: 'Start Time (required)',
                     },
                     {
                         id: 'end-time',
                         name: 'endTime',
-                        label: 'End Time (if applicable)',
+                        label: 'End Time (required)',
                     },
                 ],
                 inputErrors: [
                     {
                         id: 'start-time',
-                        errorMessage: 'Enter a start or end time in 24 hour format',
+                        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
                     },
                     {
                         id: 'end-time',
-                        errorMessage: 'Enter a start or end time in 24 hour format',
+                        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
                     },
                 ],
             },
@@ -2932,12 +2932,12 @@ export const mockTimeRestrictionsRadioAndInputErrors: ErrorInfo[] = [
     },
     {
         id: 'start-time',
-        errorMessage: 'Enter a start or end time in 24 hour format',
+        errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
         userInput: undefined,
     },
     {
         id: 'end-time',
-        errorMessage: 'Enter a start or end time in 24 hour format',
+        errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
         userInput: undefined,
     },
 ];
