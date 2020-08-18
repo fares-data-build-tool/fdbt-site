@@ -93,7 +93,7 @@ describe('pages', () => {
                 const ctx = getMockContext();
                 const result = await getServerSideProps(ctx);
                 const expectedSalesOfferPackageList: SalesOfferPackage[] = mockSalesOfferPackages.map(
-                    (mockSalesOfferPackage) => {
+                    mockSalesOfferPackage => {
                         return {
                             ...mockSalesOfferPackage,
                         };

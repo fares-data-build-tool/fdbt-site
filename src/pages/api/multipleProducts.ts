@@ -28,7 +28,7 @@ export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorSumma
         errors: [],
     };
 
-    validationResult.forEach((product) => {
+    validationResult.forEach(product => {
         if (product.productDurationError) {
             errorsForCookie.errors.push({
                 errorMessage: product.productDurationError,
@@ -54,12 +54,12 @@ export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorSumma
 
 export const containsErrors = (products: MultiProduct[]): boolean => {
     return products.some(
-        (product) => product.productNameError || product.productPriceError || product.productDurationError,
+        product => product.productNameError || product.productPriceError || product.productDurationError,
     );
 };
 
 export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiProduct[] => {
-    const productsWithErrors: MultiProduct[] = products.map((product) => {
+    const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productDuration } = product;
         const trimmedDuration = removeExcessWhiteSpace(productDuration);
         const productDurationError = checkDurationIsValid(trimmedDuration);
@@ -78,7 +78,7 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
 };
 
 export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProduct[] => {
-    const productsWithErrors: MultiProduct[] = products.map((product) => {
+    const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productPrice } = product;
         const trimmedPrice = removeExcessWhiteSpace(productPrice);
         const productPriceError = checkPriceIsValid(trimmedPrice);
@@ -97,7 +97,7 @@ export const checkProductPricesAreValid = (products: MultiProduct[]): MultiProdu
 };
 
 export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduct[] => {
-    const productsWithErrors: MultiProduct[] = products.map((product) => {
+    const productsWithErrors: MultiProduct[] = products.map(product => {
         const { productName } = product;
         const trimmedProductName = removeExcessWhiteSpace(productName);
         const productNameError = checkProductNameIsValid(trimmedProductName);

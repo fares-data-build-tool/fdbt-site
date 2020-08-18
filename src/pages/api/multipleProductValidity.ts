@@ -72,7 +72,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const newMultipleProductCookieValue = JSON.stringify(products);
         setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
 
-        if (products.some((el) => el.productValidityError)) {
+        if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');
             return;
         }

@@ -47,7 +47,7 @@ export const deleteAllCookiesOnServerSide = (ctx: NextPageContext): void => {
     const cookies = parseCookies(ctx);
     const cookieWhitelist = [OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE];
 
-    Object.keys(cookies).forEach((cookie) => {
+    Object.keys(cookies).forEach(cookie => {
         if (!cookieWhitelist.includes(cookie)) {
             destroyCookie(ctx, cookie);
         }
@@ -123,7 +123,7 @@ export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAtt
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];
-    errors.forEach((error) => {
+    errors.forEach(error => {
         if (ids.includes(error.id)) {
             compactErrors.push(error);
         }

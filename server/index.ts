@@ -74,14 +74,14 @@ const setStaticRoutes = (server: Express): void => {
         setupCsrfProtection(server);
         setupSessions(server);
 
-        unauthenticatedGetRoutes.forEach((route) => {
+        unauthenticatedGetRoutes.forEach(route => {
             server.get(route, (req: Request, res: Response) => {
                 res.locals.csrfToken = req.csrfToken();
                 return handle(req, res);
             });
         });
 
-        unauthenticatedPostRoutes.forEach((route) => {
+        unauthenticatedPostRoutes.forEach(route => {
             server.post(route, (req: Request, res: Response) => {
                 return handle(req, res);
             });

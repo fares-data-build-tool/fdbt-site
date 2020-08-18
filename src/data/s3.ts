@@ -81,7 +81,7 @@ export const getCsvZoneUploadData = async (uuid: string): Promise<string[]> => {
 
         const parsedData: UserFareZone[] = JSON.parse(dataAsString);
 
-        const atcoCodes: string[] = parsedData.map((data) => data.AtcoCodes);
+        const atcoCodes: string[] = parsedData.map(data => data.AtcoCodes);
 
         return atcoCodes;
     } catch (error) {

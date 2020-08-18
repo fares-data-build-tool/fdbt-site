@@ -43,7 +43,7 @@ export const checkUserInput = async (
         await sopInfoSchema.validate(sopInfo, { abortEarly: false });
     } catch (validationErrors) {
         const validityErrors: yup.ValidationError = validationErrors;
-        errors = validityErrors.inner.map((error) => {
+        errors = validityErrors.inner.map(error => {
             return { errorMessage: error.message, id: `sop-${error.path}`, userInput: error.value };
         });
     }

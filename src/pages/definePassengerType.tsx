@@ -167,7 +167,7 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                         {fieldset.heading.content}
                     </h2>
                 </legend>
-                {fieldset.inputs.map((input) => {
+                {fieldset.inputs.map(input => {
                     const errorId = createErrorId(input, fieldset.inputErrors);
                     return (
                         <div
@@ -188,8 +188,8 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                                     name={input.name}
                                     type="text"
                                     defaultValue={
-                                        fieldset.inputErrors.find((inputError) => inputError.id === input.id)
-                                            ? fieldset.inputErrors.find((inputError) => inputError.id === input.id)
+                                        fieldset.inputErrors.find(inputError => inputError.id === input.id)
+                                            ? fieldset.inputErrors.find(inputError => inputError.id === input.id)
                                                   ?.userInput
                                             : ''
                                     }
@@ -235,7 +235,7 @@ const DefinePassengerType = ({
                     {group === true && numberOfPassengerTypeFieldset
                         ? numberOfPassengerTypeQuestion(numberOfPassengerTypeFieldset)
                         : ''}
-                    {fieldsets.map((fieldset) => {
+                    {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
                 </div>

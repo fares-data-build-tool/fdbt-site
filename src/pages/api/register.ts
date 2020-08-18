@@ -74,7 +74,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             }
         }
 
-        if (inputChecks.some((el) => el.error !== '')) {
+        if (inputChecks.some(el => el.error !== '')) {
             setErrorsCookie(inputChecks, regKey);
             return;
         }

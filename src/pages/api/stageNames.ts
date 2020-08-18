@@ -6,7 +6,7 @@ import { InputCheck } from '../stageNames';
 
 export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
     let counter = 0;
-    stageNames.forEach((stage) => {
+    stageNames.forEach(stage => {
         if (stage === stageName) {
             counter += 1;
         }
@@ -47,7 +47,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('No stage name input received from Stage Names page.');
         }
         const userInputValidity = isStageNameValid(req);
-        if (!userInputValidity.some((el) => el.error !== '')) {
+        if (!userInputValidity.some(el => el.error !== '')) {
             const stageNameCookieValue = JSON.stringify(req.body.stageNameInput);
             setCookieOnResponseObject(STAGE_NAMES_COOKIE, stageNameCookieValue, req, res);
             redirectTo(res, '/priceEntry');

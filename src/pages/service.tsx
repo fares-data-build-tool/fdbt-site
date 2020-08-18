@@ -48,7 +48,7 @@ const Service = ({
                                 <option value="" disabled>
                                     Select One
                                 </option>
-                                {services.map((service) => (
+                                {services.map(service => (
                                     <option
                                         key={`${service.lineName}#${service.startDate}`}
                                         value={`${service.lineName}#${service.startDate}`}

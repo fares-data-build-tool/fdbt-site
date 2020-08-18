@@ -96,7 +96,7 @@ export const updateSessionAttribute: UpdateSessionAttribute = (
 };
 
 export const destroySession = (req: IncomingMessageWithSession): void => {
-    req.session.destroy((err) => {
+    req.session.destroy(err => {
         if (err) {
             throw new Error('Could not destroy session');
         }

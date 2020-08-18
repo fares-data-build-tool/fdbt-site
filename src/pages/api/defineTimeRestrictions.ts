@@ -40,8 +40,14 @@ const startTimeInputSchema = yup
 
 export const defineTimeRestrictionsSchema = yup
     .object({
-        timeRestriction: yup.string().oneOf(['Yes', 'No']).required(radioButtonError),
-        validDaysSelected: yup.string().oneOf(['Yes', 'No']).required(radioButtonError),
+        timeRestriction: yup
+            .string()
+            .oneOf(['Yes', 'No'])
+            .required(radioButtonError),
+        validDaysSelected: yup
+            .string()
+            .oneOf(['Yes', 'No'])
+            .required(radioButtonError),
         startTime: yup.string().when('timeRestriction', {
             is: 'Yes',
             then: yup
@@ -68,11 +74,11 @@ export const timeRestrictionConditionalInputSchema = yup.object({
         then: yup
             .number()
             .when('endTime', {
-                is: (endTimeValue) => !!endTimeValue,
+                is: endTimeValue => !!endTimeValue,
                 then: startTimeInputSchema.max(yup.ref('endTime'), startTimeLaterThanEndTimeError),
             })
             .when('endTime', {
-                is: (endTimeValue) => !endTimeValue,
+                is: endTimeValue => !endTimeValue,
                 then: startTimeInputSchema.max(2400, startTimeRestrictionValidityError),
             })
             .required(startTimeRestrictionValidityError),
@@ -82,11 +88,11 @@ export const timeRestrictionConditionalInputSchema = yup.object({
         then: yup
             .number()
             .when('startTime', {
-                is: (startTimeValue) => !!startTimeValue,
+                is: startTimeValue => !!startTimeValue,
                 then: endTimeInputSchema.min(yup.ref('startTime'), endTimeEarlierThanStartTimeError),
             })
             .when('startTime', {
-                is: (startTimeValue) => !startTimeValue,
+                is: startTimeValue => !startTimeValue,
                 then: endTimeInputSchema.min(0, entTimeRestrictionValidityError),
             })
             .required(entTimeRestrictionValidityError),
@@ -95,7 +101,7 @@ export const timeRestrictionConditionalInputSchema = yup.object({
 
 export const formatRequestBody = (req: NextApiRequestWithSession): TimeRestrictionsDefinition => {
     const filteredReqBody: { [key: string]: string | string[] } = {};
-    Object.entries(req.body).forEach((entry) => {
+    Object.entries(req.body).forEach(entry => {
         if (entry[0] === 'startTime' || entry[0] === 'endTime') {
             const input = entry[1] as string;
             const strippedInput = input.replace(/\s+/g, '');
@@ -136,8 +142,8 @@ export const collectUniqueErrors = (initialErrors: ErrorInfo[], currentSchemaErr
     if (initialErrors.length === 0) {
         errorCollection = currentSchemaErrors;
     } else if (initialErrors.length > 0) {
-        currentSchemaErrors.forEach((error) => {
-            if (initialErrors.find((initialError) => initialError.id === error.id)) {
+        currentSchemaErrors.forEach(error => {
+            if (initialErrors.find(initialError => initialError.id === error.id)) {
                 return;
             }
             errorCollection.push(error);
@@ -157,7 +163,7 @@ export const runValidationSchema = async (
         await schema.validate(reqBody, { abortEarly: false });
     } catch (validationErrors) {
         const validityErrors: yup.ValidationError = validationErrors;
-        errors = validityErrors.inner.map((error) => ({
+        errors = validityErrors.inner.map(error => ({
             id: getErrorIdFromValidityError(error.path),
             errorMessage: error.message,
             userInput: error.value ? String(error.value) : undefined,

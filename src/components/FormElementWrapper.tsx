@@ -23,7 +23,7 @@ const addErrorClasses = (child: ReactElement, errorClass: string, errorId: strin
     });
 
 export const FormGroupWrapper = ({ errors, errorId, children }: FormGroupWrapperProps): ReactElement => {
-    const errorForElement = errors.find((err) => err.id === errorId);
+    const errorForElement = errors.find(err => err.id === errorId);
 
     return <div className={`govuk-form-group ${errorForElement && 'govuk-form-group--error'}`}>{children}</div>;
 };
@@ -36,7 +36,7 @@ const FormElementWrapper = ({
     addFormGroupError,
     hideText,
 }: FormElementWrapperProps): ReactElement => {
-    const errorForElement = errors.find((err) => err.id === errorId);
+    const errorForElement = errors.find(err => err.id === errorId);
 
     return (
         <div className={addFormGroupError && errorForElement ? 'govuk-form-group--error' : ''}>

@@ -56,7 +56,7 @@ export interface PriceEntryError {
 export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
     const priceEntries = Object.entries(req.body);
     const errors: PriceEntryError[] = [];
-    const sortedInputs: FaresInput[] = priceEntries.map((priceEntry) => {
+    const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
         if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
             if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
                 // k and v used to keep cookie size small - key and value
@@ -107,7 +107,7 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
 
     const originStages = Object.entries(fareTriangle);
     const mappedFareTriangle: UserFareStages = {
-        fareStages: originStages.map((kv) => {
+        fareStages: originStages.map(kv => {
             const pricesToDestinationStages = Object.values(kv[1]);
             return {
                 stageName: kv[0],

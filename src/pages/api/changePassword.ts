@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             return;
         }
         inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
-        if (inputChecks.some((el) => el.errorMessage !== '')) {
+        if (inputChecks.some(el => el.errorMessage !== '')) {
             setCookieAndRedirect(req, res, inputChecks);
             return;
         }

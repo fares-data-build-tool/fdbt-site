@@ -73,11 +73,11 @@ const generateCheckbox = (
         let isSelectedOffer = false;
 
         if (selected) {
-            Object.entries(selected).forEach((entry) => {
+            Object.entries(selected).forEach(entry => {
                 if (entry[0] === productName) {
                     const entrySelected = !isArray(entry[1]) ? [entry[1]] : (entry[1] as string[]);
 
-                    entrySelected.forEach((selectedEntry) => {
+                    entrySelected.forEach(selectedEntry => {
                         if (selectedEntry === JSON.stringify(offer)) {
                             isSelectedOffer = true;
                         }
