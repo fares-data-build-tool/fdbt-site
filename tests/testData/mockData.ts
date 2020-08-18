@@ -1879,7 +1879,6 @@ export const expectedFlatFareProductUploadJson: FlatFareTicket = {
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    timeRestriction: mockTimeRestriction,
     products: [
         {
             productName: 'Weekly Rider',
