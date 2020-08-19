@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
+import uniq from 'lodash/uniq';
 import {
     getUuidFromCookie,
     redirectToError,
@@ -38,6 +39,10 @@ export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResp
     if (error) {
         redirectTo(res, '/csvUpload');
     }
+};
+
+export const containsDuplicateFareStages = (fareStageNames: string[]): boolean => {
+    return uniq(fareStageNames).length !== fareStageNames.length;
 };
 
 export const faresTriangleDataMapper = (
@@ -104,6 +109,20 @@ export const faresTriangleDataMapper = (
             prices: Object.values(item.prices),
         })),
     };
+
+    const fareStageNames: string[] = mappedFareTriangle.fareStages.map(fareStage => {
+        return fareStage.stageName;
+    });
+
+    if (containsDuplicateFareStages(fareStageNames)) {
+        logger.warn('', {
+            context: 'api.csvUpload',
+            message: `Duplicate fare stage names found, fare stage names: ${fareStageNames}`,
+        });
+
+        setUploadCookieAndRedirect(req, res, 'Fare stage names cannot be the same');
+        return null;
+    }
 
     const numberOfPrices = mappedFareTriangle.fareStages.flatMap(stage =>
         stage.prices.flatMap(price => price.fareZones),
