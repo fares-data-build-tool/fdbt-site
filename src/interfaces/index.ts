@@ -126,7 +126,7 @@ export interface GroupPassengerInfo extends CompanionInfo {
 
 export interface CompanionInfo {
     passengerType: string;
-    minNumber: string;
+    minNumber?: string;
     maxNumber: string;
     ageRangeMin?: string;
     ageRangeMax?: string;
