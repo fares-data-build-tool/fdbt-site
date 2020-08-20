@@ -41,9 +41,8 @@ export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResp
     }
 };
 
-export const containsDuplicateFareStages = (fareStageNames: string[]): boolean => {
-    return uniq(fareStageNames).length !== fareStageNames.length;
-};
+export const containsDuplicateFareStages = (fareStageNames: string[]): boolean =>
+    uniq(fareStageNames).length !== fareStageNames.length;
 
 export const faresTriangleDataMapper = (
     dataToMap: string,
@@ -110,9 +109,7 @@ export const faresTriangleDataMapper = (
         })),
     };
 
-    const fareStageNames: string[] = mappedFareTriangle.fareStages.map(fareStage => {
-        return fareStage.stageName;
-    });
+    const fareStageNames: string[] = mappedFareTriangle.fareStages.map(fareStage => fareStage.stageName);
 
     if (containsDuplicateFareStages(fareStageNames)) {
         logger.warn('', {
