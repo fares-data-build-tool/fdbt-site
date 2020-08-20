@@ -39,12 +39,13 @@ exports[`Choose Validity Page should render correctly 1`] = `
              - 
             Adult
           </p>
-          <p
+          <label
             className="govuk-hint"
+            htmlFor="validity"
             id="choose-validity-page-hint"
           >
             Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
-          </p>
+          </label>
         </legend>
         <FormElementWrapper
           errorClass="govuk-input--error"

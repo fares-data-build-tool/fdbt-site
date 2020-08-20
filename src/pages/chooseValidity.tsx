@@ -41,9 +41,9 @@ const ChooseValidity = ({
                             <p className="govuk-hint">
                                 Product: {productName} - £{productPrice} - {upperFirst(passengerType)}
                             </p>
-                            <p className="govuk-hint" id="choose-validity-page-hint">
+                            <label className="govuk-hint" id="choose-validity-page-hint" htmlFor="validity">
                                 Enter a whole number. For example: a day ticket would be 1 and two weeks would be 14
-                            </p>
+                            </label>
                         </legend>
                         <FormElementWrapper errors={errors} errorId="validity-error" errorClass="govuk-input--error">
                             <input
