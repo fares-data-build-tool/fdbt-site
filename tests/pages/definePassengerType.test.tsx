@@ -176,7 +176,7 @@ describe('pages', () => {
                 jest.resetAllMocks();
             });
 
-            it('should throw an error if there is no PASSENGER_TYPE_COOKIE and no GROUP_PASSENGER_TYPES_ATTRIBUTE attribute', () => {
+            it('should throw an error if there is no PASSENGER_TYPE_ERRORS_COOKIE and no GROUP_PASSENGER_TYPES_ATTRIBUTE attribute', () => {
                 const ctx = getMockContext({ cookies: { passengerType: null } });
                 expect(() => getServerSideProps(ctx)).toThrow(
                     'Failed to retrieve passenger type details for the define passenger type page',
@@ -222,8 +222,8 @@ describe('pages', () => {
                     cookies: {
                         passengerType: {
                             passengerType: 'group',
-                            errors,
                         },
+                        passengerTypeErrors: { errors },
                     },
                 });
                 const result = getServerSideProps(ctx);
@@ -251,8 +251,8 @@ describe('pages', () => {
                     cookies: {
                         passengerType: {
                             passengerType: 'child',
-                            errors,
                         },
+                        passengerTypeErrors: { errors },
                     },
                     session: {
                         [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
@@ -266,7 +266,6 @@ describe('pages', () => {
                                 maxAge: 150,
                                 proofDocuments: [],
                             },
-                            errors,
                         },
                     },
                     query: {
