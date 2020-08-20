@@ -198,7 +198,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         let errors: ErrorInfo[] = [];
 
-        console.log(req.body);
         const filteredReqBody = formatRequestBody(req);
 
         if (groupPassengerTypes && groupSize) {
