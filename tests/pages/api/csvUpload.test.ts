@@ -242,9 +242,13 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/outboundMatching',
         });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
     });
 
     it('should throw an error if the fares triangle data has non-numerical prices', async () => {
+        const mockError: ErrorInfo[] = [
+            { id: 'csv-upload-error', errorMessage: 'The selected file must use the template' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -272,6 +276,7 @@ describe('csvUpload', () => {
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
     });
 
     it('should return 302 redirect to /csvUpload with an error message if the fares triangle data has missing prices', async () => {

@@ -175,12 +175,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const journeyObject = JSON.parse(journeyCookie);
 
             setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'csv' }), req, res);
+            updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
 
             if (journeyObject?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');
                 return;
             }
-
             redirectTo(res, '/matching');
         }
     } catch (error) {
