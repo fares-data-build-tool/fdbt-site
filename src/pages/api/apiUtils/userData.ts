@@ -11,7 +11,7 @@ import {
     MATCHING_ATTRIBUTE,
     INBOUND_MATCHING_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    CSV_ZONE_UPLOAD_COOKIE,
+    FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
     PERIOD_TYPE_COOKIE,
@@ -41,6 +41,7 @@ import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.';
+import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -221,13 +222,21 @@ export const getPeriodGeoZoneTicketJson = async (
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
-    const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
+    const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
 
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !fareZoneCookie) {
+    if (
+        !nocCode ||
+        !periodTypeCookie ||
+        !passengerTypeCookie ||
+        !operatorCookie ||
+        !idToken ||
+        !fareZoneAttribute ||
+        isFareZoneAttributeWithErrors(fareZoneAttribute)
+    ) {
         throw new Error(
             'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
         );
@@ -239,7 +248,6 @@ export const getPeriodGeoZoneTicketJson = async (
     const requestBody: { [key: string]: string } = req.body;
 
     const operatorObject = JSON.parse(operatorCookie);
-    const { fareZoneName } = JSON.parse(fareZoneCookie);
     const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
@@ -279,7 +287,7 @@ export const getPeriodGeoZoneTicketJson = async (
         email: decodedIdToken.email,
         uuid,
         operatorName: operatorObject?.operator?.operatorPublicName,
-        zoneName: fareZoneName,
+        zoneName: fareZoneAttribute.fareZoneName,
         products: productDetailsList,
         stops: zoneStops,
     };
