@@ -13,7 +13,7 @@ const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse
     ChallengeParameters: {
         USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
         userAttributes: JSON.stringify({
-            'custom:noc': 'DCCL',
+            'custom:noc': 'DCCL|TEST',
         }),
     },
     Session: 'session',
@@ -368,6 +368,38 @@ describe('register', () => {
     });
 
     it('should update user attributes as contactable=no if empty', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                email: 'test@test.com',
+                password: 'abcdefghi',
+                confirmPassword: 'abcdefghi',
+                nocCode: 'DCCL',
+                regKey: 'abcdefg',
+                contactable: '',
+            },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await register(req, res);
+
+        expect(authUpdateAttributesSpy).toHaveBeenCalledWith('test@test.com', [
+            { Name: 'custom:contactable', Value: 'no' },
+        ]);
+        expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
+        expect(authCompletePasswordSpy).toHaveBeenCalledWith(
+            'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
+            'abcdefghi',
+            'session',
+        );
+        expect(authSignOutSpy).toHaveBeenCalled();
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/confirmRegistration',
+        });
+    });
+
+    it('should split NOCs into seperate ones if seperated by a pipe, and check if the users matches any', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {

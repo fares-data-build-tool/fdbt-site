@@ -85,7 +85,11 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters?.userAttributes && Session) {
                 const parameters = JSON.parse(ChallengeParameters.userAttributes);
 
-                if (!parameters['custom:noc'] || parameters['custom:noc'] !== nocCode) {
+                const cognitoNocs: string[] = parameters['custom:noc'].split('|');
+
+                const valid: boolean = cognitoNocs.includes(nocCode);
+
+                if (cognitoNocs.length === 0 || !valid) {
                     logger.warn('', {
                         context: 'api.register',
                         message: 'NOC does not match',
