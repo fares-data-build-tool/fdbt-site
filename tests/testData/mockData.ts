@@ -14,7 +14,6 @@ import {
     JOURNEY_COOKIE,
     PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
-    CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
@@ -97,7 +96,6 @@ export const getMockRequestAndResponse = ({
         fareStages = 6,
         productName = 'Product A',
         productPrice = '1234',
-        fareZoneName = 'fare zone 1',
         daysValid = '2',
         periodTypeName = 'period',
         numberOfProducts = '2',
@@ -142,7 +140,6 @@ export const getMockRequestAndResponse = ({
         inputMethodUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
-        csvUploadZoneUuid = defaultUuid,
         daysValidUuid = defaultUuid,
     } = uuid;
 
@@ -179,10 +176,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += productName
         ? `${PRODUCT_DETAILS_ATTRIBUTE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`
-        : '';
-
-    cookieString += fareZoneName
-        ? `${CSV_ZONE_UPLOAD_COOKIE}=%7B%22fareZoneName%22%3A%22${fareZoneName}%22%2C%22uuid%22%3A%22${csvUploadZoneUuid}%22%7D;`
         : '';
 
     cookieString += daysValid
@@ -1664,7 +1657,7 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
-    zoneName: 'fare zone 1',
+    zoneName: 'Green Lane Shops',
     stops: zoneStops,
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,

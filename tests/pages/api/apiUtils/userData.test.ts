@@ -31,7 +31,9 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    FARE_ZONE_ATTRIBUTE,
 } from '../../../../src/constants';
+import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
 
 describe('generateSalesOfferPackages', () => {
     it('should return an array of SalesOfferPackage objects', () => {
@@ -143,6 +145,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
     });
 
     it('should return a PeriodGeoZoneTicket object', async () => {
+        const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
                 fareType: 'period',
@@ -161,6 +164,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
             },
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_ZONE_ATTRIBUTE]: mockFareZoneAttribute,
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));

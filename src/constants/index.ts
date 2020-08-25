@@ -28,9 +28,9 @@ export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
 
 export const PERIOD_TYPE_COOKIE = 'fdbt-period-type';
 
-export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
+export const CSV_UPLOAD_ATTRIBUTE = 'fdbt-csv-upload';
 
-export const CSV_ZONE_UPLOAD_COOKIE = 'fdbt-csv-zone-upload';
+export const FARE_ZONE_ATTRIBUTE = 'fdbt-csv-zone-upload';
 
 export const PERIOD_EXPIRY_ATTRIBUTE = 'fdbt-period-expiry';
 
