@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
 import { InputCheck } from '../../interfaces';
@@ -86,7 +86,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             if (ChallengeName === 'NEW_PASSWORD_REQUIRED' && ChallengeParameters?.userAttributes && Session) {
                 const parameters = JSON.parse(ChallengeParameters.userAttributes);
 
-                const cognitoNocs: string[] = parameters['custom:noc'].split('|');
+                const cognitoNocs: string[] | string = parameters['custom:noc'].split('|');
 
                 let valid = false;
 
