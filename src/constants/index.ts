@@ -34,7 +34,7 @@ export const FARE_ZONE_ATTRIBUTE = 'fdbt-csv-zone-upload';
 
 export const PERIOD_EXPIRY_ATTRIBUTE = 'fdbt-period-expiry';
 
-export const SERVICE_LIST_COOKIE = 'fdbt-services';
+export const SERVICE_LIST_ATTRIBUTE = 'fdbt-services';
 
 export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 

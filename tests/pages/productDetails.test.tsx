@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import ProductDetails, { getServerSideProps } from '../../src/pages/productDetails';
 import { ProductInfo } from '../../src/interfaces';
 import { getMockContext } from '../testData/mockData';
-import { FARE_ZONE_ATTRIBUTE } from '../../src/constants';
+import { FARE_ZONE_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants';
 
 const mockproductDetails: ProductInfo = {
     productPrice: '',
@@ -37,9 +37,12 @@ describe('pages', () => {
                 expect(result.props.hintText).toBe('Multiple Services');
             });
 
-            it('should throw an error when the FARE_ZONE_ATTRIBUTE and SERVICE_LIST_COOKIE are missing', () => {
+            it('should throw an error when the FARE_ZONE_ATTRIBUTE and SERVICE_LIST_ATTRIBUTE are missing', () => {
                 const ctx = getMockContext({
-                    cookies: { selectedServices: null, passengerType: 'Adult' },
+                    cookies: { passengerType: 'Adult' },
+                    session: {
+                        [SERVICE_LIST_ATTRIBUTE]: null,
+                    },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
                     'Failed to retrieve the necessary cookies and/or session objects.',
@@ -51,6 +54,7 @@ describe('pages', () => {
                     cookies: { operator: null, selectedServices: null },
                     session: {
                         [FARE_ZONE_ATTRIBUTE]: 'Green Park Shops',
+                        [SERVICE_LIST_ATTRIBUTE]: '',
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
