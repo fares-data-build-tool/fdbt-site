@@ -51,10 +51,9 @@ describe('pages', () => {
 
             it('should throw an error when the OPERATOR_COOKIE is missing', () => {
                 const ctx = getMockContext({
-                    cookies: { operator: null, selectedServices: null },
+                    cookies: { operator: null },
                     session: {
                         [FARE_ZONE_ATTRIBUTE]: 'Green Park Shops',
-                        [SERVICE_LIST_ATTRIBUTE]: '',
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
