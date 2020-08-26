@@ -10,7 +10,7 @@ import {
     mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs,
 } from '../testData/mockData';
 import { NextPageContextWithSession } from '../../src/interfaces';
-import { TIME_RESTRICTIONS_ATTRIBUTE } from '../../src/constants';
+import { TIME_RESTRICTIONS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../src/constants';
 
 describe('breadcrumbs', () => {
     let ctx: NextPageContextWithSession;
@@ -32,7 +32,8 @@ describe('breadcrumbs', () => {
     it('creates the correct array of Breadcrumbs if user is on outbound matching page having selected return, anyone and manual upload', () => {
         ctx = getMockContext({
             url: '/outboundMatching',
-            cookies: { fareType: 'return', inputMethod: 'manual', passengerType: { passengerType: 'anyone' } },
+            cookies: { inputMethod: 'manual', passengerType: { passengerType: 'anyone' } },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' } },
         });
         const result = breadcrumb(ctx).generate();
 
@@ -43,10 +44,10 @@ describe('breadcrumbs', () => {
         ctx = getMockContext({
             url: '/csvZoneUpload',
             cookies: {
-                fareType: 'period',
                 periodTypeName: 'periodGeoZone',
                 passengerType: { passengerType: 'Senior' },
             },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
         const result = breadcrumb(ctx).generate();
 
@@ -56,7 +57,8 @@ describe('breadcrumbs', () => {
     it('creates the correct array of Breadcrumbs if user is on define passenger type page having selected flat fare and student', () => {
         ctx = getMockContext({
             url: '/definePassengerType',
-            cookies: { fareType: 'flatFare', passengerType: { passengerType: 'Student' } },
+            cookies: { passengerType: { passengerType: 'Student' } },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
         });
         const result = breadcrumb(ctx).generate();
 
@@ -67,10 +69,10 @@ describe('breadcrumbs', () => {
         ctx = getMockContext({
             url: '/multipleProductValidity',
             cookies: {
-                fareType: 'period',
                 periodTypeName: 'periodMultipleServices',
                 passengerType: { passengerType: 'anyone' },
             },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
         const result = breadcrumb(ctx).generate();
 
@@ -81,13 +83,13 @@ describe('breadcrumbs', () => {
         ctx = getMockContext({
             url: '/periodValidity',
             cookies: {
-                fareType: 'period',
                 periodTypeName: 'periodMultipleServices',
                 passengerType: { passengerType: 'anyone' },
                 numberOfProducts: '1',
             },
             session: {
                 [TIME_RESTRICTIONS_ATTRIBUTE]: { timeRestrictions: true },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
             },
         });
         const result = breadcrumb(ctx).generate();

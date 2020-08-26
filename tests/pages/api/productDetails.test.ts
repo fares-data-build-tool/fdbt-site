@@ -1,5 +1,5 @@
 import productDetails from '../../../src/pages/api/productDetails';
-import { PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -15,9 +15,9 @@ describe('productDetails', () => {
 
     it('should set PRODUCT_DETAILS_ATTRIBUTE with errors and redirect to productDetails when the user input is invalid', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
             body: { productDetailsNameInput: '', productDetailsPriceInput: '' },
             mockWriteHeadFn: writeHeadMock,
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
 
         const expectedProductDetails = {
@@ -47,13 +47,13 @@ describe('productDetails', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
             body: {
                 productDetailsNameInput: 'ProductA',
                 productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
             mockWriteHeadFn: writeHeadMock,
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
         });
 
         const mockPeriodProductDetails = {
@@ -85,6 +85,7 @@ describe('productDetails', () => {
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
             mockWriteHeadFn: writeHeadMock,
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
 
         const mockPeriodProductDetails = {
@@ -103,12 +104,12 @@ describe('productDetails', () => {
         const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'period' },
             body: {
                 productDetailsNameInput: '     ProductBA',
                 productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
         });
 
         const mockProductDetails = {

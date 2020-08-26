@@ -1,9 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import { isArray } from 'util';
-import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { SERVICE_LIST_COOKIE, FARE_TYPE_COOKIE } from '../../constants';
+import { SERVICE_LIST_COOKIE, FARE_TYPE_ATTRIBUTE } from '../../constants';
+import { getSessionAttribute } from '../../utils/sessions';
+import { isFareType } from './apiUtils/typeChecking';
+import { NextApiRequestWithSession } from '../../interfaces';
 
 interface ServiceList {
     selectedServices: string[];
@@ -26,7 +28,7 @@ const setServiceListCookie = (
     );
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';
     const selectAllText = 'Select All';
 
@@ -35,12 +37,10 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (!fareTypeObject || !fareTypeObject.fareType) {
-            throw new Error('Failed to retrieve FARE_TYPE_COOKIE info for serviceList API');
+        if (isFareType(fareTypeAttribute) && !fareTypeAttribute.fareType) {
+            throw new Error('Failed to retrieve fare type attribute info for serviceList API');
         }
 
         const refererUrl = req?.headers?.referer;
@@ -81,7 +81,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
         setServiceListCookie(req, res, false, checkedServiceList);
 
-        if (fareTypeObject.fareType === 'flatFare') {
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare') {
             redirectTo(res, '/productDetails');
             return;
         }
