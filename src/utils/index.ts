@@ -3,7 +3,6 @@ import { NextPageContext } from 'next';
 import { IncomingMessage } from 'http';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
-import isArray from 'lodash/isArray';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { ErrorInfo, CognitoIdToken, NextPageContextWithSession } from '../interfaces';
@@ -133,17 +132,13 @@ export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] 
 };
 
 export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boolean => {
-    // const databaseNocs = getNocFromIdToken(ctx);
-    // let nocs;
-    // if (databaseNocs) {
-    //     nocs = databaseNocs.split('|');
-    // }
-    // if (isArray(nocs)) {
-    //     return true;
-    // }
-    // return false;
-    if (ctx) {
+    const databaseNocs = getNocFromIdToken(ctx);
+    let nocs = [];
+    if (databaseNocs) {
+        nocs = databaseNocs.split('|');
+    }
+    if (nocs?.length > 1) {
         return true;
     }
-    return true;
+    return false;
 };

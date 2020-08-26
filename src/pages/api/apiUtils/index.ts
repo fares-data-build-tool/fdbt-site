@@ -147,3 +147,15 @@ export const validateNewPassword = (
     }
     return inputChecks;
 };
+
+export const checkIfMultipleOperators = (req: NextApiRequest, res: NextApiResponse): boolean => {
+    const databaseNocs = getNocFromIdToken(req, res);
+    let nocs = [];
+    if (databaseNocs) {
+        nocs = databaseNocs.split('|');
+    }
+    if (nocs.length > 1) {
+        return true;
+    }
+    return false;
+};

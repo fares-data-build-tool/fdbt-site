@@ -115,7 +115,6 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     if (!operatorCookie) {
         throw new Error('Necessary cookies not found to show faretype page');
     }
-
     const operatorInfo = JSON.parse(operatorCookie);
     const { operator } = operatorInfo;
     const uuid = buildUuid(ctx);
