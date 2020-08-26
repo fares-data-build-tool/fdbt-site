@@ -38,7 +38,7 @@ export const SERVICE_LIST_ATTRIBUTE = 'fdbt-services';
 
 export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
 
-export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
+export const NUMBER_OF_STAGES_ATTRIBUTE = 'fdbt-number-stages';
 
 export const MATCHING_ATTRIBUTE = 'fdbt-matching';
 
