@@ -44,7 +44,7 @@ import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
 interface GetMockContextInput {
-    session?: any;
+    session?: { [key: string]: any };
     cookies?: any;
     body?: any;
     url?: any;
@@ -56,7 +56,7 @@ interface GetMockContextInput {
 }
 
 interface GetMockRequestAndResponse {
-    session?: any;
+    session?: { [key: string]: { [key: string]: any } | null };
     cookieValues?: any;
     body?: any;
     uuid?: any;
