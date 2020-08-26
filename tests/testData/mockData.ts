@@ -8,7 +8,6 @@ import {
     MULTIPLE_PRODUCT_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
-    FARE_TYPE_COOKIE,
     INPUT_METHOD_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
@@ -22,6 +21,7 @@ import {
     ID_TOKEN_COOKIE,
     USER_COOKIE,
     PASSENGER_TYPE_ERRORS_COOKIE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -68,6 +68,10 @@ interface GetMockRequestAndResponse {
     url?: any;
 }
 
+export const defaultSessionAttributes = {
+    [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+};
+
 export const getMockRequestAndResponse = ({
     cookieValues = {},
     body = null,
@@ -88,7 +92,6 @@ export const getMockRequestAndResponse = ({
         operator = {
             operatorPublicName: 'test',
         },
-        fareType = 'single',
         inputMethod = 'csv',
         passengerType = { passengerType: 'Adult' },
         passengerTypeErrors = null,
@@ -138,7 +141,6 @@ export const getMockRequestAndResponse = ({
 
     const {
         operatorUuid = defaultUuid,
-        fareTypeUuid = defaultUuid,
         inputMethodUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
@@ -152,10 +154,6 @@ export const getMockRequestAndResponse = ({
         ? `${OPERATOR_COOKIE}=%7B%22operator%22%3A${encodeURI(
               JSON.stringify(operator),
           )}%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
-        : '';
-
-    cookieString += fareType
-        ? `${FARE_TYPE_COOKIE}=%7B%22fareType%22%3A%22${fareType}%22%2C%22uuid%22%3A%22${fareTypeUuid}%22%7D;`
         : '';
 
     cookieString += inputMethod

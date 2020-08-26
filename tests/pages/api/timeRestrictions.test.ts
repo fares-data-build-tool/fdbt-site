@@ -1,7 +1,7 @@
 import { timeRestrictionsErrorId } from '../../../src/pages/timeRestrictions';
 import * as utils from '../../../src/pages/api/apiUtils/index';
 import timeRestrictions from '../../../src/pages/api/timeRestrictions';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import { defaultSessionAttributes, getMockRequestAndResponse } from '../../testData/mockData';
 import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';
 import * as sessionUtils from '../../../src/utils/sessions';
 import { TIME_RESTRICTIONS_ATTRIBUTE } from '../../../src/constants';
@@ -33,6 +33,7 @@ describe('timeRestrictions', () => {
                 cookieValues: {},
                 body: {},
                 uuid: {},
+                session: defaultSessionAttributes,
             });
             timeRestrictions(req, res);
             expect(res.writeHead).toBeCalledWith(302, {
@@ -65,6 +66,7 @@ describe('timeRestrictions', () => {
                     timeRestrictions: 'no',
                 },
                 uuid: {},
+                session: defaultSessionAttributes,
             });
             timeRestrictions(req, res);
             expect(redirectOnFareType).toBeCalled();
@@ -77,6 +79,7 @@ describe('timeRestrictions', () => {
                     timeRestrictions: 'yes',
                 },
                 uuid: {},
+                session: defaultSessionAttributes,
             });
             timeRestrictions(req, res);
             expect(res.writeHead).toBeCalledWith(302, {

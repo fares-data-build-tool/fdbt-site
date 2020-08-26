@@ -1,16 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import {
-    getUuidFromCookie,
-    setCookieOnResponseObject,
-    redirectToError,
-    redirectTo,
-    unescapeAndDecodeCookie,
-} from './apiUtils/index';
-import { FARE_TYPE_COOKIE, SERVICE_COOKIE } from '../../constants/index';
+import { NextApiResponse } from 'next';
+import { getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils/index';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_COOKIE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
+import { getSessionAttribute } from '../../utils/sessions';
+import { isFareType } from './apiUtils/typeChecking';
+import { NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -33,11 +29,9 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
         const cookieValue = JSON.stringify({ service, uuid });
         setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        const fareTypeObject = JSON.parse(fareTypeCookie);
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (fareTypeObject && fareTypeObject.fareType === 'return') {
+        if (fareTypeAttribute && isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return') {
             redirectTo(res, '/returnDirection');
             return;
         }

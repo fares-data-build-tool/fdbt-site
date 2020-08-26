@@ -1,17 +1,18 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_COOKIE } from '../constants';
+import { SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getUuidFromCookies, setCookieOnServerSide, getNocFromIdToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
+import { isFareType } from './api/apiUtils/typeChecking';
 
 const title = 'Return Direction - Fares Data Build Tool';
 const description = 'Return Direction selection page of the Fares Data Build Tool';
@@ -85,19 +86,20 @@ const ReturnDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
     const cookies = parseCookies(ctx);
     const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
-    const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
+
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+
     const nocCode = getNocFromIdToken(ctx);
 
-    if (!serviceCookie || !fareTypeCookie || !nocCode) {
+    if (!serviceCookie || !fareTypeAttribute || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
     const serviceInfo = JSON.parse(serviceCookie);
-    const fareTypeInfo = JSON.parse(fareTypeCookie);
 
     const lineName = serviceInfo.service.split('#')[0];
 
@@ -112,7 +114,11 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{}> => {
     }
 
     // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
-    if (service.journeyPatterns.length === 1 && fareTypeInfo.fareType === 'return') {
+    if (
+        service.journeyPatterns.length === 1 &&
+        isFareType(fareTypeAttribute) &&
+        fareTypeAttribute.fareType === 'return'
+    ) {
         if (ctx.res) {
             const uuid = getUuidFromCookies(ctx);
             const journeyPatternCookie = `${service.journeyPatterns[0].startPoint.Id}#${service.journeyPatterns[0].endPoint.Id}`;

@@ -1,15 +1,16 @@
 import {
     PASSENGER_TYPE_COOKIE,
-    FARE_TYPE_COOKIE,
     INPUT_METHOD_COOKIE,
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     TIME_RESTRICTIONS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
 import { getSessionAttribute } from './sessions';
+import { isFareType } from '../pages/api/apiUtils/typeChecking';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
@@ -20,13 +21,13 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
         };
     }
 
-    const fareType = getCookieValue(ctx, FARE_TYPE_COOKIE, 'fareType');
     const outboundJourney = getCookieValue(ctx, JOURNEY_COOKIE, 'outboundJourney');
     const inputMethod = getCookieValue(ctx, INPUT_METHOD_COOKIE, 'inputMethod');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
     const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
     const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
 
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
@@ -35,10 +36,10 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const multiProductUrls = ['/multipleProducts', '/multipleProductValidity'];
     const salesOfferPackagesUrls = ['/selectSalesOfferPackage', '/salesOfferPackages', '/describeSalesOfferPackage'];
 
-    const isSingle = fareType === 'single';
-    const isReturn = fareType === 'return';
-    const isPeriod = fareType === 'period';
-    const isFlatFare = fareType === 'flatFare';
+    const isSingle = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'single';
+    const isReturn = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return';
+    const isPeriod = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period';
+    const isFlatFare = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare';
     const isMultiService = periodType === 'periodMultipleServices';
     const isGeoZone = periodType === 'periodGeoZone';
     const isCircular = isReturn && !outboundJourney;

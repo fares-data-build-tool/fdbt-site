@@ -1,5 +1,5 @@
 import passengerType from '../../../src/pages/api/passengerType';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import { defaultSessionAttributes, getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('passengerType', () => {
     const writeHeadMock = jest.fn();
@@ -8,7 +8,7 @@ describe('passengerType', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /error if faretype cookie is missing', () => {
+    it('should return 302 redirect to /error if faretype attribute is missing', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: null },
             body: null,
@@ -28,6 +28,7 @@ describe('passengerType', () => {
             body: null,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: defaultSessionAttributes,
         });
         passengerType(req, res);
 
@@ -44,6 +45,7 @@ describe('passengerType', () => {
                 body: { passengerType: userType },
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: defaultSessionAttributes,
             });
 
             passengerType(req, res);
@@ -60,6 +62,7 @@ describe('passengerType', () => {
             body: { passengerType: 'anyone' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: defaultSessionAttributes,
         });
 
         passengerType(req, res);
@@ -75,6 +78,7 @@ describe('passengerType', () => {
             body: { passengerType: 'group' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: defaultSessionAttributes,
         });
 
         passengerType(req, res);

@@ -3,7 +3,13 @@ import { mount, shallow } from 'enzyme';
 
 import SingleDirection, { getServerSideProps } from '../../src/pages/singleDirection';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
-import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
+import {
+    mockRawService,
+    mockService,
+    mockRawServiceWithDuplicates,
+    getMockContext,
+    defaultSessionAttributes,
+} from '../testData/mockData';
 
 jest.mock('../../src/data/auroradb.ts');
 
@@ -69,7 +75,7 @@ describe('pages', () => {
         it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
             (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
 
-            const ctx = getMockContext();
+            const ctx = getMockContext({ session: defaultSessionAttributes });
 
             const result = await getServerSideProps(ctx);
 
@@ -81,7 +87,7 @@ describe('pages', () => {
                 () => mockRawServiceWithDuplicates,
             ));
 
-            const ctx = getMockContext();
+            const ctx = getMockContext({ session: defaultSessionAttributes });
 
             const result = await getServerSideProps(ctx);
             expect(result.props.service).toEqual(mockService);
@@ -95,7 +101,10 @@ describe('pages', () => {
         });
 
         it('throws an error if the operator or service cookies do not exist', async () => {
-            const ctx = getMockContext({ cookies: { operator: null, serviceLineName: null } });
+            const ctx = getMockContext({
+                cookies: { operator: null, serviceLineName: null },
+                session: defaultSessionAttributes,
+            });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');
         });

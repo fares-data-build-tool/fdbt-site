@@ -9,8 +9,9 @@ import {
     getSelectedStages,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
-import { getMockRequestAndResponse } from '../../../testData/mockData';
+import { defaultSessionAttributes, getMockRequestAndResponse } from '../../../testData/mockData';
 import { ErrorInfo } from '../../../../src/interfaces';
+import { FARE_TYPE_ATTRIBUTE } from '../../../../src/constants';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
@@ -76,10 +77,10 @@ describe('apiUtils', () => {
     describe('redirectOnFareType', () => {
         it('should return 302 redirect to /service when the single ticket option is selected', () => {
             const { req, res } = getMockRequestAndResponse({
-                cookieValues: { fareType: 'single' },
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: defaultSessionAttributes,
             });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -93,6 +94,7 @@ describe('apiUtils', () => {
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' } },
             });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -102,10 +104,10 @@ describe('apiUtils', () => {
 
         it('should return 302 redirect to /periodType when the period ticket option is selected', () => {
             const { req, res } = getMockRequestAndResponse({
-                cookieValues: { fareType: 'period' },
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
             });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -115,10 +117,10 @@ describe('apiUtils', () => {
 
         it('should return 302 redirect to /serviceList when the flat fare ticket option is selected', () => {
             const { req, res } = getMockRequestAndResponse({
-                cookieValues: { fareType: 'flatFare' },
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
             });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {
@@ -128,10 +130,10 @@ describe('apiUtils', () => {
 
         it('should throw error if unexpected fare type is selected', () => {
             const { req, res } = getMockRequestAndResponse({
-                cookieValues: { fareType: 'roundabout' },
                 body: null,
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'roundabout' } },
             });
 
             expect(() => {

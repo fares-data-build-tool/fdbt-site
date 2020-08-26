@@ -3,13 +3,15 @@ import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
+import { setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import logger from '../utils/logger';
+import { getSessionAttribute } from '../utils/sessions';
+import { FareTypeWithErrors, FareType } from './api/fareType';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
@@ -27,7 +29,7 @@ export const buildUuid = (ctx: NextPageContext): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAppProps): ReactElement => {
+const FareTypePage = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAppProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -107,7 +109,11 @@ const FareType = ({ operator, errors = [], csrfToken }: FareTypeProps & CustomAp
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const isFareTypeAttributeWithErrors = (
+    fareTypeAttribute: FareType | FareTypeWithErrors,
+): fareTypeAttribute is FareTypeWithErrors => (fareTypeAttribute as FareTypeWithErrors).errors !== undefined;
+
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const cookies = parseCookies(ctx);
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
@@ -128,18 +134,12 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         message: 'transaction start',
     });
 
-    if (cookies[FARE_TYPE_COOKIE]) {
-        const fareTypeCookie = cookies[FARE_TYPE_COOKIE];
-        const parsedFareTypeCookie = JSON.parse(fareTypeCookie);
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
-        if (parsedFareTypeCookie.errorMessage) {
-            const { errorMessage } = parsedFareTypeCookie;
-            deleteCookieOnServerSide(ctx, FARE_TYPE_COOKIE);
-            return { props: { operator: operator.operatorPublicName, errors: [{ errorMessage, id: errorId }] } };
-        }
-    }
+    const errors: ErrorInfo[] =
+        fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operator: operator.operatorPublicName } };
+    return { props: { operator: operator.operatorPublicName, errors } };
 };
 
-export default FareType;
+export default FareTypePage;

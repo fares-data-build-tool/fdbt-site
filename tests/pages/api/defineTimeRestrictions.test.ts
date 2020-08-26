@@ -10,6 +10,7 @@ import {
     getMockRequestAndResponse,
     mockTimeRestrictionsInputErrors,
     mockTimeRestrictionsRadioAndInputErrors,
+    defaultSessionAttributes,
 } from '../../testData/mockData';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
 import { ErrorInfo, TimeRestriction } from '../../../src/interfaces';
@@ -176,6 +177,7 @@ describe('defineTimeRestrictions', () => {
             body: mockReqBody,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: defaultSessionAttributes,
         });
         await defineTimeRestrictions(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
@@ -229,6 +231,7 @@ describe('defineTimeRestrictions', () => {
                 body: mockUserInput,
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
+                session: defaultSessionAttributes,
             });
             await defineTimeRestrictions(req, res);
             expect(updateSessionAttributeSpy).toHaveBeenCalledWith(

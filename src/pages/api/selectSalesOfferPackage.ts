@@ -12,14 +12,15 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
-    FARE_TYPE_COOKIE,
     PERIOD_TYPE_COOKIE,
     MULTIPLE_PRODUCT_COOKIE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../constants';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isFareType } from './apiUtils/typeChecking';
 
 export interface SelectSalesOfferPackageWithError {
     errorMessage: string;
@@ -33,17 +34,22 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
-        if (!fareTypeCookie) {
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+
+        if (!fareTypeAttribute) {
             throw new Error('No fare type cookie found.');
         }
-        const fareTypeObject = JSON.parse(fareTypeCookie);
-        const { fareType } = fareTypeObject;
 
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
         const parsedCookie = multipleProductCookie && JSON.parse(multipleProductCookie);
 
-        if (fareType !== 'single' && fareType !== 'return' && fareType !== 'period' && fareType !== 'flatFare') {
+        if (
+            isFareType(fareTypeAttribute) &&
+            fareTypeAttribute.fareType !== 'single' &&
+            fareTypeAttribute.fareType !== 'return' &&
+            fareTypeAttribute.fareType !== 'period' &&
+            fareTypeAttribute.fareType !== 'flatFare'
+        ) {
             throw new Error('No fare type found to generate user data json.');
         }
 
@@ -70,6 +76,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const uuid = getUuidFromCookie(req, res);
 
         let userDataJson;
+
+        const fareType = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType;
 
         if (fareType === 'single') {
             userDataJson = getSingleTicketJson(req, res);

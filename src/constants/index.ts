@@ -2,7 +2,7 @@ import { PassengerAttributes } from '../interfaces/index';
 
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
-export const FARE_TYPE_COOKIE = 'fdbt-fare-type';
+export const FARE_TYPE_ATTRIBUTE = 'fdbt-fare-type';
 
 export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
 

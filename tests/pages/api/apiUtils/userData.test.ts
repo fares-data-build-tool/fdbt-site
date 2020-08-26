@@ -31,6 +31,7 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../../../../src/constants';
 
 describe('generateSalesOfferPackages', () => {
@@ -76,6 +77,7 @@ describe('getSingleTicketJson', () => {
                     matchingFareZones: mockMatchingFaresZones,
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
             },
         });
         const result = getSingleTicketJson(req, res);
@@ -86,7 +88,6 @@ describe('getSingleTicketJson', () => {
 describe('getReturnTicketJson', () => {
     it('should return a ReturnTicket object for a non circular return journey', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'return' },
             body: {
                 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop':
                     '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
@@ -102,6 +103,7 @@ describe('getReturnTicketJson', () => {
                     inboundMatchingFareZones: mockMatchingFaresZones,
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
             },
         });
         const result = getReturnTicketJson(req, res);
@@ -121,6 +123,7 @@ describe('getReturnTicketJson', () => {
                     matchingFareZones: mockMatchingFaresZones,
                 },
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
             },
         });
         const result = getReturnTicketJson(req, res);
@@ -145,7 +148,6 @@ describe('getPeriodGeoZoneTicketJson', () => {
     it('should return a PeriodGeoZoneTicket object', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
-                fareType: 'period',
                 multipleProducts: [
                     {
                         productName: 'Product A',
@@ -161,6 +163,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
             },
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
@@ -173,7 +176,6 @@ describe('getPeriodMulipleServicesTicketJson', () => {
     it('should return a PeriodMultipleServicesTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
-                fareType: 'period',
                 multipleProducts: [
                     {
                         productName: 'Weekly Ticket',
@@ -205,6 +207,7 @@ describe('getPeriodMulipleServicesTicketJson', () => {
             },
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
             },
         });
         const result = getPeriodMultipleServicesTicketJson(req, res);
@@ -215,7 +218,6 @@ describe('getPeriodMulipleServicesTicketJson', () => {
 describe('getFlatFareTicketJson', () => {
     it('should return a string a FlatFareTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'flatFare' },
             body: {
                 'Weekly Rider':
                     '{"name":"Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop","description":"A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop","purchaseLocations":["OnBus","TicketMachine","Shop"],"paymentMethods":["Cash","Card"],"ticketFormats":["Paper","Mobile"]}',
@@ -229,6 +231,7 @@ describe('getFlatFareTicketJson', () => {
                         },
                     ],
                 },
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
             },
         });
         const result = getFlatFareTicketJson(req, res);

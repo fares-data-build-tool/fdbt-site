@@ -1,20 +1,20 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { setCookieOnResponseObject, redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils/index';
-import { PASSENGER_TYPE_COOKIE, FARE_TYPE_COOKIE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
+import { NextApiResponse } from 'next';
+import { setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils/index';
+import { PASSENGER_TYPE_COOKIE, PASSENGER_TYPES_WITH_GROUP, FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
+import { getSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession } from '../../interfaces';
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
-        const fareTypeCookie = unescapeAndDecodeCookie(cookies, FARE_TYPE_COOKIE);
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (fareTypeCookie === '') {
-            throw new Error('Necessary fare type cookie not found for passenger type page');
+        if (!fareTypeAttribute) {
+            throw new Error('Necessary fare type attribute not found for passenger type page');
         }
 
         const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map(type => type.passengerTypeValue);
