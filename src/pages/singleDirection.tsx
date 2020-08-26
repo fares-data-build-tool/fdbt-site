@@ -2,13 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import {
-    OPERATOR_COOKIE,
-    SERVICE_COOKIE,
-    JOURNEY_COOKIE,
-    PASSENGER_TYPE_COOKIE,
-    FARE_TYPE_ATTRIBUTE,
-} from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -17,7 +11,6 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Fares Data Build Tool';
 const description = 'Single Direction selection page of the Fares Data Build Tool';
@@ -91,9 +84,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const nocCode = getNocFromIdToken(ctx);
 
-    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-
-    if (!operatorCookie || !serviceCookie || !fareTypeAttribute || !passengerTypeCookie || !nocCode) {
+    if (!operatorCookie || !serviceCookie || !passengerTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 

@@ -68,10 +68,6 @@ interface GetMockRequestAndResponse {
     url?: any;
 }
 
-export const defaultSessionAttributes = {
-    [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
-};
-
 export const getMockRequestAndResponse = ({
     cookieValues = {},
     body = null,
@@ -81,7 +77,7 @@ export const getMockRequestAndResponse = ({
     requestHeaders = {},
     isLoggedin = true,
     url = null,
-    session = {},
+    session,
 }: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -138,6 +134,11 @@ export const getMockRequestAndResponse = ({
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
     } = cookieValues;
+
+    const defaultSession = {
+        [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+        ...session,
+    };
 
     const {
         operatorUuid = defaultUuid,
@@ -223,7 +224,7 @@ export const getMockRequestAndResponse = ({
             ...requestHeaders,
         },
         cookies: cookieValues,
-        session,
+        session: { ...defaultSession },
     });
 
     if (body) {

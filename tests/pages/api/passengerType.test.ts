@@ -1,5 +1,6 @@
 import passengerType from '../../../src/pages/api/passengerType';
-import { defaultSessionAttributes, getMockRequestAndResponse } from '../../testData/mockData';
+import { getMockRequestAndResponse } from '../../testData/mockData';
+import { FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
 
 describe('passengerType', () => {
     const writeHeadMock = jest.fn();
@@ -14,6 +15,7 @@ describe('passengerType', () => {
             body: null,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: { [FARE_TYPE_ATTRIBUTE]: null },
         });
         passengerType(req, res);
 
@@ -28,7 +30,6 @@ describe('passengerType', () => {
             body: null,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
-            session: defaultSessionAttributes,
         });
         passengerType(req, res);
 
@@ -45,7 +46,6 @@ describe('passengerType', () => {
                 body: { passengerType: userType },
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
-                session: defaultSessionAttributes,
             });
 
             passengerType(req, res);
@@ -62,7 +62,6 @@ describe('passengerType', () => {
             body: { passengerType: 'anyone' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
-            session: defaultSessionAttributes,
         });
 
         passengerType(req, res);
@@ -78,7 +77,6 @@ describe('passengerType', () => {
             body: { passengerType: 'group' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
-            session: defaultSessionAttributes,
         });
 
         passengerType(req, res);

@@ -4,7 +4,7 @@ import definePassengerType, {
     getErrorIdFromValidityError,
 } from '../../../src/pages/api/definePassengerType';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { getMockRequestAndResponse, defaultSessionAttributes } from '../../testData/mockData';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
@@ -306,7 +306,6 @@ describe('definePassengerType', () => {
             session: {
                 [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
                 [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
-                ...defaultSessionAttributes,
             },
         });
 
@@ -363,7 +362,6 @@ describe('definePassengerType', () => {
                 [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
                 [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
                 [GROUP_PASSENGER_INFO_ATTRIBUTE]: mockPreviousPassengerTypeDetails,
-                ...defaultSessionAttributes,
             },
         });
 

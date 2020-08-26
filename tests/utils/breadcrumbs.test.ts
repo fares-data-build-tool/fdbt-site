@@ -8,7 +8,6 @@ import {
     mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs,
     mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs,
     mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs,
-    defaultSessionAttributes,
 } from '../testData/mockData';
 import { NextPageContextWithSession } from '../../src/interfaces';
 import { TIME_RESTRICTIONS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../src/constants';
@@ -24,7 +23,7 @@ describe('breadcrumbs', () => {
     });
 
     it('creates the correct array of Breadcrumbs if user is on matching page having selected single, adult and csv upload', () => {
-        ctx = getMockContext({ url: '/matching', session: defaultSessionAttributes });
+        ctx = getMockContext({ url: '/matching' });
         const result = breadcrumb(ctx).generate();
 
         expect(result).toEqual(mockSingleAdultCsvUploadFromMatchingBreadcrumbs);

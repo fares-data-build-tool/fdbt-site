@@ -117,7 +117,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
     if (
-        !fareTypeAttribute ||
+        !isFareType(fareTypeAttribute) ||
         !passengerTypeCookie ||
         !idToken ||
         !matchingAttributeInfo ||
@@ -137,7 +137,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     return {
         ...(timeRestriction && { timeRestriction }),
         ...service,
-        type: fareTypeAttribute && isFareType(fareTypeAttribute) && fareTypeAttribute.fareType,
+        type: fareTypeAttribute.fareType,
         ...passengerTypeObject,
         fareZones: getFareZones(userFareStages, matchingFareZones),
         email: decodedIdToken.email,
@@ -165,7 +165,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
     if (
-        !fareTypeAttribute ||
+        !isFareType(fareTypeAttribute) ||
         !passengerTypeCookie ||
         !idToken ||
         !matchingAttributeInfo ||
@@ -185,7 +185,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     return {
         ...(timeRestriction && { timeRestriction }),
         ...service,
-        type: isFareType(fareTypeAttribute) && fareTypeAttribute.fareType,
+        type: fareTypeAttribute.fareType,
         ...passengerTypeObject,
         outboundFareZones: getFareZones(userFareStages, matchingFareZones),
         inboundFareZones:
@@ -390,7 +390,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     if (
         !nocCode ||
-        !fareTypeAttribute ||
+        !isFareType(fareTypeAttribute) ||
         !passengerTypeCookie ||
         !operatorCookie ||
         !idToken ||
@@ -430,7 +430,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: isFareType(fareTypeAttribute) && fareTypeAttribute.fareType,
+        type: fareTypeAttribute.fareType,
         ...passengerTypeObject,
         email: decodedIdToken.email,
         uuid,

@@ -2,13 +2,7 @@ import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
-import {
-    defaultSessionAttributes,
-    getMockContext,
-    mockRawService,
-    mockRawServiceWithDuplicates,
-    mockService,
-} from '../testData/mockData';
+import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
 import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';
 
 jest.mock('../../src/data/auroradb.ts');
@@ -60,7 +54,6 @@ describe('pages', () => {
 
             const ctx = getMockContext({
                 cookies: { operator, serviceLineName: lineName },
-                session: defaultSessionAttributes,
             });
 
             const result = await getServerSideProps(ctx);
@@ -82,7 +75,6 @@ describe('pages', () => {
 
             const ctx = getMockContext({
                 cookies: { operator, serviceLineName: lineName },
-                session: defaultSessionAttributes,
             });
 
             const result = await getServerSideProps(ctx);
@@ -105,7 +97,6 @@ describe('pages', () => {
         it('throws an error if the operator or service cookies do not exist', async () => {
             const ctx = getMockContext({
                 cookies: { operator: null, serviceLineName: null },
-                session: defaultSessionAttributes,
             });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow('Necessary cookies not found to show direction page');

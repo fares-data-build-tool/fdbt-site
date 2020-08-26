@@ -57,7 +57,7 @@ type GetSessionAttributeTypes = {
     [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
-    [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors | undefined;
+    [FARE_TYPE_ATTRIBUTE]: undefined | FareType | FareTypeWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -82,7 +82,7 @@ type UpdateSessionAttributeTypes = {
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
-    [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors | undefined;
+    [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

@@ -11,7 +11,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import logger from '../utils/logger';
 import { getSessionAttribute } from '../utils/sessions';
-import { FareTypeWithErrors, FareType } from './api/fareType';
+import { isFareTypeAttributeWithErrors } from './api/apiUtils/typeChecking';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
@@ -108,10 +108,6 @@ const FareTypePage = ({ operator, errors = [], csrfToken }: FareTypeProps & Cust
         </TwoThirdsLayout>
     );
 };
-
-export const isFareTypeAttributeWithErrors = (
-    fareTypeAttribute: FareType | FareTypeWithErrors,
-): fareTypeAttribute is FareTypeWithErrors => (fareTypeAttribute as FareTypeWithErrors).errors !== undefined;
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const cookies = parseCookies(ctx);

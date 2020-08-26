@@ -5,5 +5,5 @@ export const isFareTypeAttributeWithErrors = (
 ): fareTypeAttribute is FareTypeWithErrors => (fareTypeAttribute as FareTypeWithErrors).errors !== undefined;
 
 export const isFareType = (fareType: FareType | FareTypeWithErrors | undefined): fareType is FareType => {
-    return (fareType as FareType).fareType !== undefined;
+    return fareType !== undefined && (fareType as FareType).fareType !== undefined;
 };

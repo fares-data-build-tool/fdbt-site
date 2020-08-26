@@ -9,7 +9,7 @@ import {
     getSelectedStages,
 } from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
-import { defaultSessionAttributes, getMockRequestAndResponse } from '../../../testData/mockData';
+import { getMockRequestAndResponse } from '../../../testData/mockData';
 import { ErrorInfo } from '../../../../src/interfaces';
 import { FARE_TYPE_ATTRIBUTE } from '../../../../src/constants';
 
@@ -80,7 +80,6 @@ describe('apiUtils', () => {
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
-                session: defaultSessionAttributes,
             });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {

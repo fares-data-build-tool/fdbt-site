@@ -1,10 +1,10 @@
 import { timeRestrictionsErrorId } from '../../../src/pages/timeRestrictions';
 import * as utils from '../../../src/pages/api/apiUtils/index';
 import timeRestrictions from '../../../src/pages/api/timeRestrictions';
-import { defaultSessionAttributes, getMockRequestAndResponse } from '../../testData/mockData';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';
 import * as sessionUtils from '../../../src/utils/sessions';
-import { TIME_RESTRICTIONS_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_ATTRIBUTE } from '../../../src/constants';
 
 describe('timeRestrictions', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessionUtils, 'updateSessionAttribute');
@@ -16,11 +16,12 @@ describe('timeRestrictions', () => {
     });
 
     describe('redirects', () => {
-        it('should throw an error and redirect to the error page when the FARE_TYPE_COOKIE is missing', () => {
+        it('should throw an error and redirect to the error page when the FARE_TYPE_ATTRIBUTE is missing', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: { fareType: null },
                 body: {},
                 uuid: {},
+                session: { [FARE_TYPE_ATTRIBUTE]: null },
             });
             timeRestrictions(req, res);
             expect(res.writeHead).toBeCalledWith(302, {
@@ -33,7 +34,6 @@ describe('timeRestrictions', () => {
                 cookieValues: {},
                 body: {},
                 uuid: {},
-                session: defaultSessionAttributes,
             });
             timeRestrictions(req, res);
             expect(res.writeHead).toBeCalledWith(302, {
@@ -66,7 +66,6 @@ describe('timeRestrictions', () => {
                     timeRestrictions: 'no',
                 },
                 uuid: {},
-                session: defaultSessionAttributes,
             });
             timeRestrictions(req, res);
             expect(redirectOnFareType).toBeCalled();
@@ -79,7 +78,6 @@ describe('timeRestrictions', () => {
                     timeRestrictions: 'yes',
                 },
                 uuid: {},
-                session: defaultSessionAttributes,
             });
             timeRestrictions(req, res);
             expect(res.writeHead).toBeCalledWith(302, {
