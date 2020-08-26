@@ -17,7 +17,7 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
-    SERVICE_LIST_COOKIE,
+    SERVICE_LIST_ATTRIBUTE,
     ID_TOKEN_COOKIE,
     USER_COOKIE,
     PASSENGER_TYPE_ERRORS_COOKIE,
@@ -76,7 +76,7 @@ export const getMockRequestAndResponse = ({
     requestHeaders = {},
     isLoggedin = true,
     url = null,
-    session = {},
+    session,
 }: GetMockRequestAndResponse = {}): { req: any; res: any } => {
     const res = new MockRes();
     res.writeHead = mockWriteHeadFn;
@@ -125,14 +125,20 @@ export const getMockRequestAndResponse = ({
                 productDurationId: 'multiple-product-duration-3',
             },
         ],
-        selectedServices = [
-            '12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
-            '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
-            '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
-        ],
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
     } = cookieValues;
+
+    const defaultSession = {
+        [SERVICE_LIST_ATTRIBUTE]: {
+            selectedServices: [
+                '12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
+                '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
+                '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+            ],
+        },
+        ...session,
+    };
 
     const {
         operatorUuid = defaultUuid,
@@ -196,12 +202,6 @@ export const getMockRequestAndResponse = ({
         ? `${MULTIPLE_PRODUCT_COOKIE}=${encodeURI(JSON.stringify(multipleProducts))};`
         : '';
 
-    cookieString += selectedServices
-        ? `${SERVICE_LIST_COOKIE}=%7B%22error%22%3Afalse%2C%22selectedServices%22%3A${JSON.stringify(
-              selectedServices,
-          )}%7D;`
-        : '';
-
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';
 
     cookieString += userCookieValue ? `${USER_COOKIE}=${encodeURI(JSON.stringify(userCookieValue))}` : '';
@@ -218,7 +218,7 @@ export const getMockRequestAndResponse = ({
             ...requestHeaders,
         },
         cookies: cookieValues,
-        session,
+        session: { ...defaultSession },
     });
 
     if (body) {
@@ -229,7 +229,7 @@ export const getMockRequestAndResponse = ({
 };
 
 export const getMockContext = ({
-    session = {},
+    session,
     cookies = {},
     body = null,
     uuid = {},

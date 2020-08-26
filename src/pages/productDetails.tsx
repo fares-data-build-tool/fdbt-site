@@ -6,7 +6,7 @@ import {
     OPERATOR_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
-    SERVICE_LIST_COOKIE,
+    SERVICE_LIST_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import {
@@ -22,6 +22,7 @@ import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementW
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
+import { isServiceListAttributeWithErrors } from './serviceList';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -136,14 +137,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
 
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
     const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
     const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     let hintText = '';
 
-    if (!operatorCookie || !passengerTypeCookie || (!fareZoneAttribute && !serviceListCookie)) {
+    if (!operatorCookie || !passengerTypeCookie || (!fareZoneAttribute && !serviceListAttribute)) {
         throw new Error('Failed to retrieve the necessary cookies and/or session objects.');
     }
 
@@ -154,8 +155,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
 
     if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
         hintText = fareZoneAttribute.fareZoneName;
-    } else if (serviceListCookie) {
-        const { selectedServices } = JSON.parse(serviceListCookie);
+    } else if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
+        const { selectedServices } = serviceListAttribute;
         hintText = selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0];
     }
 

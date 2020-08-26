@@ -23,6 +23,8 @@ import {
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     CSV_UPLOAD_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    NUMBER_OF_STAGES_ATTRIBUTE,
 } from '../constants';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -41,6 +43,8 @@ import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRes
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
 import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
+import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
+import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
@@ -61,6 +65,8 @@ type GetSessionAttributeTypes = {
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: undefined | FareZone | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: undefined | CsvUploadAttributeWithErrors;
+    [SERVICE_LIST_ATTRIBUTE]: undefined | ServiceListAttribute | ServiceListAttributeWithErrors;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -87,6 +93,8 @@ type UpdateSessionAttributeTypes = {
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
+    [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

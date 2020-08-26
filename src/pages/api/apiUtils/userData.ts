@@ -12,7 +12,7 @@ import {
     INBOUND_MATCHING_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
-    SERVICE_LIST_COOKIE,
+    SERVICE_LIST_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     PERIOD_TYPE_COOKIE,
     MATCHING_DATA_BUCKET_NAME,
@@ -42,6 +42,7 @@ import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getNocFromIdToken } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
+import { isServiceListAttributeWithErrors } from '../../serviceList';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -308,13 +309,21 @@ export const getPeriodMultipleServicesTicketJson = (
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
-    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
     const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
 
+    const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
-    if (!nocCode || !periodTypeCookie || !passengerTypeCookie || !operatorCookie || !idToken || !serviceListCookie) {
+    if (
+        !nocCode ||
+        !periodTypeCookie ||
+        !passengerTypeCookie ||
+        !operatorCookie ||
+        !idToken ||
+        !serviceListAttribute ||
+        isServiceListAttributeWithErrors(serviceListAttribute)
+    ) {
         throw new Error(
             'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
         );
@@ -330,7 +339,7 @@ export const getPeriodMultipleServicesTicketJson = (
     const requestBody: { [key: string]: string } = req.body;
 
     const operatorObject = JSON.parse(operatorCookie);
-    const { selectedServices } = JSON.parse(serviceListCookie);
+    const { selectedServices } = serviceListAttribute;
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
         const service = selectedService.split('#');
         return {
@@ -392,8 +401,8 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const passengerTypeCookie = unescapeAndDecodeCookie(cookies, PASSENGER_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
-    const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
 
+    const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
     const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
@@ -403,7 +412,8 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         !passengerTypeCookie ||
         !operatorCookie ||
         !idToken ||
-        !serviceListCookie ||
+        !serviceListAttribute ||
+        isServiceListAttributeWithErrors(serviceListAttribute) ||
         !productDetailsAttributeInfo ||
         !isProductData(productDetailsAttributeInfo)
     ) {
@@ -417,7 +427,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const requestBody: { [key: string]: string } = req.body;
     const salesOfferPackages = generateSalesOfferPackages(Object.values(requestBody));
     const operatorObject = JSON.parse(operatorCookie);
-    const { selectedServices } = JSON.parse(serviceListCookie);
+    const { selectedServices } = serviceListAttribute;
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
         const service = selectedService.split('#');
         return {
