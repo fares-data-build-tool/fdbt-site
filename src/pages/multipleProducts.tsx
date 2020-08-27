@@ -73,7 +73,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
         !cookies[PASSENGER_TYPE_COOKIE]
     ) {
-        throw new Error('Necessary cookies/session objects not found to show multiple products page');
+        throw new Error('Necessary cookies/session not found to show multiple products page');
     }
 
     const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);

@@ -55,7 +55,7 @@ interface GetMockContextInput {
 }
 
 interface GetMockRequestAndResponse {
-    session?: { [key: string]: { [key: string]: any } | null };
+    session?: { [key: string]: any };
     cookieValues?: any;
     body?: any;
     uuid?: any;

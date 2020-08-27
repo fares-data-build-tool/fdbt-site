@@ -51,7 +51,7 @@ describe('pages', () => {
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Necessary cookies/session objects not found to show multiple products page',
+                    'Necessary cookies/session not found to show multiple products page',
                 );
             });
         });
