@@ -44,7 +44,7 @@ export const MATCHING_ATTRIBUTE = 'fdbt-matching';
 
 export const INBOUND_MATCHING_ATTRIBUTE = 'fdbt-inbound-matching';
 
-export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
+export const NUMBER_OF_PRODUCTS_ATTRIBUTE = 'fdbt-number-of-products';
 
 export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
 

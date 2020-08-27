@@ -2,6 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import MultipleProducts, { getServerSideProps } from '../../src/pages/multipleProducts';
 import { getMockContext } from '../testData/mockData';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('multipleProduct', () => {
@@ -31,7 +32,9 @@ describe('pages', () => {
                             operatorPublicName: 'BLP',
                         },
                         passengerType: { passengerType: 'Adult' },
-                        numberOfProductsInput: '2',
+                    },
+                    session: {
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
                     },
                 });
                 const result = getServerSideProps(ctx);
@@ -45,11 +48,10 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     cookies: {
                         operator: null,
-                        numberOfProductsInput: null,
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Necessary cookies not found to show multiple products page',
+                    'Necessary cookies/session objects not found to show multiple products page',
                 );
             });
         });

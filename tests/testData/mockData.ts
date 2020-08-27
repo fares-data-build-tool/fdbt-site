@@ -6,7 +6,6 @@ import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
     MULTIPLE_PRODUCT_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
     FARE_TYPE_COOKIE,
     INPUT_METHOD_COOKIE,
@@ -98,7 +97,6 @@ export const getMockRequestAndResponse = ({
         productPrice = '1234',
         daysValid = '2',
         periodTypeName = 'period',
-        numberOfProducts = '2',
         multipleProducts = [
             {
                 productName: 'Weekly Ticket',
@@ -192,10 +190,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += periodTypeName
         ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
-        : '';
-
-    cookieString += numberOfProducts
-        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += multipleProducts

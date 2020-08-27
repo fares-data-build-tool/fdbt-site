@@ -25,6 +25,7 @@ import {
     CSV_UPLOAD_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     NUMBER_OF_STAGES_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -45,6 +46,7 @@ import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
 import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
+import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
@@ -67,6 +69,7 @@ type GetSessionAttributeTypes = {
     [CSV_UPLOAD_ATTRIBUTE]: undefined | CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: undefined | ServiceListAttribute | ServiceListAttributeWithErrors;
     [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -94,7 +97,8 @@ type UpdateSessionAttributeTypes = {
     [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
-    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

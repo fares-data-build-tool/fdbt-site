@@ -1,8 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
+import { NextApiResponse } from 'next';
 import { ErrorSummary } from '../../components/ErrorSummary';
-import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
-import { redirectToError, setCookieOnResponseObject, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
+import { redirectToError, setCookieOnResponseObject, redirectTo } from './apiUtils';
 import {
     isSessionValid,
     removeExcessWhiteSpace,
@@ -10,6 +9,9 @@ import {
     checkPriceIsValid,
     checkDurationIsValid,
 } from './apiUtils/validator';
+import { getSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession } from '../../interfaces';
+import { isNumberOfProductsAttribute } from '../howManyProducts';
 
 export interface MultiProduct {
     productName: string;
@@ -115,14 +117,15 @@ export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduc
     return productsWithErrors;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-        const cookies = new Cookies(req, res);
-        const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_COOKIE);
-        const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
+        const numberOfProductsAtribute = getSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+        const numberOfProducts: string = isNumberOfProductsAttribute(numberOfProductsAtribute)
+            ? numberOfProductsAtribute.numberOfProductsInput
+            : '';
         const numberOfReceivedProducts: number = Object.entries(req.body).length / 3;
 
         if (Number(numberOfProducts) !== numberOfReceivedProducts) {
