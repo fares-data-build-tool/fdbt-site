@@ -218,7 +218,7 @@ export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promis
             WHERE nocCode IN (${substitution})
         `;
 
-        return await executeQuery<OperatorNameType[]>(batchQuery, nocCodes);
+        return executeQuery<OperatorNameType[]>(batchQuery, nocCodes);
     } catch (error) {
         throw new Error(
             `Error performing batch get for operator names against noc codes '${JSON.stringify(nocCodes)}': ${

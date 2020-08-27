@@ -137,8 +137,5 @@ export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boole
     if (databaseNocs) {
         nocs = databaseNocs.split('|');
     }
-    if (nocs?.length > 1) {
-        return true;
-    }
-    return false;
+    return nocs?.length > 1;
 };

@@ -6,9 +6,9 @@ import { checkIfMultipleOperators } from '../utils';
 const title = 'Fares Data Build Tool';
 const description = 'Fares Data Build Tool is a service that allows you to generate data in NeTEx format';
 
-type HomeProps = {
+interface HomeProps {
     multipleOperators: boolean;
-};
+}
 
 const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement => (
     <BaseLayout title={title} description={description}>
@@ -52,12 +52,8 @@ const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement =
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => {
-    const multipleOperators = checkIfMultipleOperators(ctx);
-    if (multipleOperators) {
-        return { props: { multipleOperators: true } };
-    }
-    return { props: { multipleOperators: false } };
-};
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HomeProps } => ({
+    props: { multipleOperators: checkIfMultipleOperators(ctx) },
+});
 
 export default Home;
