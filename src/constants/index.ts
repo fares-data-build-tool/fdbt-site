@@ -48,7 +48,7 @@ export const MULTIPLE_SERVICE_COOKIE = 'fdbt-multiple-service';
 
 export const NUMBER_OF_PRODUCTS_COOKIE = 'fdbt-number-of-products';
 
-export const MULTIPLE_PRODUCT_COOKIE = 'fdbt-multiple-product';
+export const MULTIPLE_PRODUCT_ATTRIBUTE = 'fdbt-multiple-product';
 
 export const USER_COOKIE = 'fdbt-user';
 

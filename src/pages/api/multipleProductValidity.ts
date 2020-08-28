@@ -1,10 +1,24 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { MULTIPLE_PRODUCT_COOKIE } from '../../constants/index';
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { redirectToError, setCookieOnResponseObject, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
-import { Product } from '../multipleProductValidity';
+import { redirectToError, redirectTo } from './apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+
+export interface MultipleProductAttribute {
+    products: Product[];
+}
+
+export interface Product {
+    productName: string;
+    productNameId?: string;
+    productPrice: string;
+    productPriceId?: string;
+    productDuration: string;
+    productDurationId?: string;
+    productValidity?: string;
+    productValidityError?: string;
+}
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
@@ -36,17 +50,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-        const cookies = new Cookies(req, res);
-        const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
+        const multiProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
-        if (multipleProductCookie === '') {
+        if (!multiProductAttribute) {
             throw new Error('Necessary cookies not found for multiple product validity API');
         }
 
-        const rawProducts: Product[] = JSON.parse(multipleProductCookie);
+        const rawProducts: Product[] = multiProductAttribute.products;
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
-        const newMultipleProductCookieValue = JSON.stringify(products);
-        setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, newMultipleProductCookieValue, req, res);
+
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products });
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');
