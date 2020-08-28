@@ -1,12 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
-import {
-    redirectTo,
-    redirectToError,
-    setCookieOnResponseObject,
-    checkEmailValid,
-    checkIfMultipleOperators,
-} from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import { ErrorInfo, CognitoIdToken } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
@@ -50,9 +44,9 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
                 const decodedIdToken = decode(idToken) as CognitoIdToken;
                 const nocCode = decodedIdToken['custom:noc'];
-                if (!checkIfMultipleOperators(req, res)) {
+                if (nocCode.split('|').length === 1) {
                     const operatorName = await getOperatorNameByNocCode(nocCode);
-                    const operatorCookieValue = JSON.stringify({ operator: operatorName });
+                    const operatorCookieValue = JSON.stringify({ operator: operatorName, noc: nocCode });
                     setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
                 }
 

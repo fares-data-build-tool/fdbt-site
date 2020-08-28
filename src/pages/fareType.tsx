@@ -6,7 +6,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_COOKIE, OPERATOR_COOKIE } from '../constants';
 import { ErrorInfo, CustomAppProps } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { deleteCookieOnServerSide, setCookieOnServerSide, getAttributeFromIdToken } from '../utils/index';
+import { deleteCookieOnServerSide, setCookieOnServerSide, getAndValidateNoc } from '../utils/index';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import logger from '../utils/logger';
@@ -23,7 +23,7 @@ type FareTypeProps = {
 
 export const buildUuid = (ctx: NextPageContext): string => {
     const uuid = uuidv4();
-    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+    const noc = getAndValidateNoc(ctx);
     return noc + uuid.substring(0, 8);
 };
 
@@ -116,9 +116,8 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         throw new Error('Necessary cookies not found to show faretype page');
     }
     const operatorInfo = JSON.parse(operatorCookie);
-    const { operator } = operatorInfo;
     const uuid = buildUuid(ctx);
-    const cookieValue = JSON.stringify({ operator, uuid });
+    const cookieValue = JSON.stringify({ ...operatorInfo, uuid });
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
 
@@ -134,11 +133,13 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         if (parsedFareTypeCookie.errorMessage) {
             const { errorMessage } = parsedFareTypeCookie;
             deleteCookieOnServerSide(ctx, FARE_TYPE_COOKIE);
-            return { props: { operator: operator.operatorPublicName, errors: [{ errorMessage, id: errorId }] } };
+            return {
+                props: { operator: operatorInfo.operator.operatorPublicName, errors: [{ errorMessage, id: errorId }] },
+            };
         }
     }
 
-    return { props: { operator: operator.operatorPublicName } };
+    return { props: { operator: operatorInfo.operator.operatorPublicName } };
 };
 
 export default FareType;

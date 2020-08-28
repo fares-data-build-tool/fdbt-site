@@ -121,6 +121,19 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 
 export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');
 
+export const getAndValidateNoc = (ctx: NextPageContext): string => {
+    const idTokenNoc = getNocFromIdToken(ctx);
+    const cookieNoc = getCookieValue(ctx, OPERATOR_COOKIE, 'noc');
+
+    const splitNoc = idTokenNoc?.split('|');
+
+    if (cookieNoc && idTokenNoc && splitNoc?.includes(cookieNoc)) {
+        return cookieNoc;
+    }
+
+    throw new Error('invalid NOC set');
+};
+
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];
     errors.forEach(error => {

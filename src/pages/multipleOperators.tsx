@@ -45,7 +45,7 @@ const MultipleOperators = ({
                                 {operatorsAndNocs.map((operatorAndNoc: OperatorNameType) => (
                                     <option
                                         key="operator"
-                                        value={`${operatorAndNoc.operatorPublicName}`}
+                                        value={`${operatorAndNoc.operatorPublicName}|${operatorAndNoc.nocCode}`}
                                         className="service-option"
                                     >
                                         {operatorAndNoc.operatorPublicName} - {operatorAndNoc.nocCode}
@@ -69,10 +69,10 @@ export const getServerSideProps = async (
 ): Promise<{
     props: MultipleOperatorsProps;
 }> => {
-    const dataBaseNoc = getNocFromIdToken(ctx);
+    const idTokenNoc = getNocFromIdToken(ctx);
     let splitNocs: string[] = [];
-    if (dataBaseNoc) {
-        splitNocs = dataBaseNoc.split('|');
+    if (idTokenNoc) {
+        splitNocs = idTokenNoc.split('|');
     }
 
     const operatorInfo: OperatorNameType[] = await batchGetOperatorNamesByNocCode(splitNocs);

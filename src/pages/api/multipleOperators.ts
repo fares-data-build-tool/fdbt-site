@@ -6,10 +6,14 @@ import { OPERATOR_COOKIE } from '../../constants';
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (req.body.operator) {
+            const splitOperator = (req.body.operator as string).split('|');
+            const noc = splitOperator.slice(-1)[0];
+
             const operatorCookieValue = JSON.stringify({
                 operator: {
-                    operatorPublicName: req.body.operator,
+                    operatorPublicName: splitOperator[0],
                 },
+                noc,
             });
             setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
             redirectTo(res, '/fareType');

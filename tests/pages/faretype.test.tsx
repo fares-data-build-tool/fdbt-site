@@ -23,14 +23,14 @@ describe('pages', () => {
             const ctx = getMockContext({
                 cookies: {
                     idToken:
-                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiQUJDIn0.FagyWmGnj_hoUHQFh4csHw01TMngEPHdHz4X0knj0UY',
+                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.0UFph720FgN250bsFAXMAWV43eUecYkFP1g4VGwZCW8',
                 },
             });
 
             const result = buildUuid(ctx);
 
-            expect(result.substring(0, 3)).toBe('ABC');
-            expect(result.length).toBe(11);
+            expect(result.substring(0, 4)).toBe('TEST');
+            expect(result.length).toBe(12);
         });
     });
 });
