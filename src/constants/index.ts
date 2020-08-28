@@ -100,6 +100,7 @@ export const STAGE = process.env.STAGE || 'dev';
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;
 export const MATCHING_DATA_BUCKET_NAME = `fdbt-matching-data-${STAGE}`;
+export const NETEX_BUCKET_NAME = `fdbt-netex-data-${STAGE}`;
 
 export const PASSENGER_TYPES_LIST: PassengerAttributes[] = [
     { passengerTypeDisplay: 'Adult', passengerTypeValue: 'adult' },

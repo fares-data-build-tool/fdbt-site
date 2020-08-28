@@ -1,7 +1,8 @@
 import AWS from 'aws-sdk';
-import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME } from '../constants';
+import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../constants';
 import { MatchingFareZones } from '../interfaces/matchingInterface';
 import logger from '../utils/logger';
+import { S3NetexFile } from '../interfaces';
 
 export interface FareStage {
     stageName: string;
@@ -158,4 +159,18 @@ export const putDataInS3 = async (
     });
 
     await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
+};
+
+export const retrieveNetexForNoc = async (noc: string): Promise<S3NetexFile[]> => {
+    const request: AWS.S3.ListObjectsV2Request = {
+        Bucket: NETEX_BUCKET_NAME,
+        Prefix: noc,
+    };
+
+    const response = await s3.listObjectsV2(request).promise();
+    const contents = response.Contents ?? [];
+
+    return contents.map(item => ({
+        name: item.Key ?? '',
+    }));
 };

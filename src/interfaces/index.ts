@@ -246,3 +246,7 @@ export interface Stop {
     indicator?: string;
     street?: string;
 }
+
+export interface S3NetexFile {
+    name: string;
+}
