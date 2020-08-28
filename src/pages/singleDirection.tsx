@@ -9,7 +9,7 @@ import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 
 const title = 'Single Direction - Fares Data Build Tool';
@@ -82,7 +82,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     if (!operatorCookie || !serviceCookie || !passengerTypeCookie || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
