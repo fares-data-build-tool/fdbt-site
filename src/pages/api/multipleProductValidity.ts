@@ -10,11 +10,11 @@ import {
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import {
-    getNocFromIdToken,
     redirectTo,
     redirectToError,
     setCookieOnResponseObject,
     unescapeAndDecodeCookie,
+    getAndValidateNoc,
 } from './apiUtils';
 import { Product } from '../multipleProductValidity';
 import { getSessionAttribute } from '../../utils/sessions';
@@ -57,7 +57,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
         const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-        const nocCode = getNocFromIdToken(req, res);
+        const nocCode = getAndValidateNoc(req, res);
 
         const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         if (

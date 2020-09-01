@@ -9,7 +9,7 @@ import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType } from './api/apiUtils/typeChecking';
 import { getSessionAttribute } from '../utils/sessions';
@@ -83,7 +83,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const serviceCookie = cookies[SERVICE_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 

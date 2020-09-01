@@ -7,7 +7,7 @@ import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType } from './api/apiUtils/typeChecking';
 import { getSessionAttribute } from '../utils/sessions';
@@ -87,7 +87,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
