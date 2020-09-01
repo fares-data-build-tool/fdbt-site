@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
 import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 import {
@@ -70,12 +70,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType !== 'period') {
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period') {
             const periodProduct: Product = {
                 productName: productDetails.productName,
                 productPrice: productDetails.productPrice,
             };
-            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, JSON.stringify(periodProduct), req, res);
+            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, periodProduct);
             redirectTo(res, '/chooseValidity');
 
             return;

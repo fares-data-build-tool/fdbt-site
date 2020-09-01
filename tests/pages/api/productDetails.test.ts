@@ -75,8 +75,6 @@ describe('productDetails', () => {
     });
 
     it('should correctly set PRODUCT_DETAILS_ATTRIBUTE and redirect to selectSalesOfferPackage when the user input is valid for a flat fare ticket', () => {
-        const setCookieSpy = jest.spyOn(sessions, 'updateSessionAttribute');
-
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'flatFare' },
             body: {
@@ -94,36 +92,30 @@ describe('productDetails', () => {
 
         productDetails(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, mockPeriodProductDetails);
+        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, mockPeriodProductDetails);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectSalesOfferPackage',
         });
     });
 
-    it('should remove leading and trailing spaces and tabs from valid user input', () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
+    it.only('should remove leading and trailing spaces aes and tabs from valid user input tabs from valid user input', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 productDetailsNameInput: '     ProductBA',
                 productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+            },
         });
 
         const mockProductDetails = {
-            productName: 'ProductBA',
-            productPrice: '121',
+            products: [{ productName: 'ProductBA', productPrice: '121' }],
         };
 
         productDetails(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_ATTRIBUTE,
-            JSON.stringify(mockProductDetails),
-            req,
-            res,
-        );
+        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, mockProductDetails);
     });
 });

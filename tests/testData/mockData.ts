@@ -11,7 +11,6 @@ import {
     INPUT_METHOD_COOKIE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
-    PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
@@ -20,8 +19,9 @@ import {
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
     USER_COOKIE,
-    PASSENGER_TYPE_ERRORS_COOKIE,
     FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -92,8 +92,6 @@ export const getMockRequestAndResponse = ({
             noc: 'TEST',
         },
         inputMethod = 'csv',
-        passengerType = { passengerType: 'Adult' },
-        passengerTypeErrors = null,
         serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
@@ -140,6 +138,8 @@ export const getMockRequestAndResponse = ({
 
     const defaultSession = {
         [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+        [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
         ...session,
     };
 
@@ -160,12 +160,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += inputMethod
         ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
-        : '';
-
-    cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
-
-    cookieString += passengerTypeErrors
-        ? `${PASSENGER_TYPE_ERRORS_COOKIE}=${encodeURI(JSON.stringify(passengerTypeErrors))};`
         : '';
 
     cookieString += serviceLineName
