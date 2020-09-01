@@ -1,19 +1,20 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
-    OPERATOR_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
     MULTIPLE_PRODUCT_COOKIE,
-    PASSENGER_TYPE_COOKIE,
+    NUMBER_OF_PRODUCTS_COOKIE,
+    OPERATOR_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { MultiProduct } from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
+import { isPassengerType } from './api/apiUtils/typeChecking';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Multiple Product - Fares Data Build Tool';
 const description = 'Multiple Product entry page of the Fares Data Build Tool';
@@ -63,16 +64,17 @@ const MultipleProducts = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProductProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
 
-    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !cookies[PASSENGER_TYPE_COOKIE]) {
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+
+    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !isPassengerType(passengerTypeAttribute)) {
         throw new Error('Necessary cookies not found to show multiple products page');
     }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
-    const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
 
     const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
     const { operator } = JSON.parse(operatorCookie);
@@ -87,7 +89,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
                 props: {
                     numberOfProductsToDisplay,
                     operator: operator.operatorPublicName,
-                    passengerType: passengerTypeInfo.passengerType,
+                    passengerType: passengerTypeAttribute.passengerType,
                     errors: parsedMultipleProductCookie.errors,
                     userInput: parsedMultipleProductCookie.userInput,
                 },
@@ -99,7 +101,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: MultipleProdu
         props: {
             numberOfProductsToDisplay,
             operator: operator.operatorPublicName,
-            passengerType: passengerTypeInfo.passengerType,
+            passengerType: passengerTypeAttribute.passengerType,
             userInput: [],
         },
     };

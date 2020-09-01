@@ -3,24 +3,25 @@ import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import {
-    OPERATOR_COOKIE,
-    PRODUCT_DETAILS_ATTRIBUTE,
     CSV_ZONE_UPLOAD_COOKIE,
+    OPERATOR_COOKIE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
     SERVICE_LIST_COOKIE,
-    PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import {
-    ProductInfo,
     CustomAppProps,
+    ErrorInfo,
     NextPageContextWithSession,
     ProductData,
+    ProductInfo,
     ProductInfoWithErrors,
-    ErrorInfo,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
+import { isPassengerType } from './api/apiUtils/typeChecking';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
@@ -134,9 +135,10 @@ const ProductDetails = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const zoneCookie = cookies[CSV_ZONE_UPLOAD_COOKIE];
     const serviceListCookie = cookies[SERVICE_LIST_COOKIE];
+
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     let props = {};
 
@@ -144,7 +146,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         throw new Error('Failed to retrieve operator cookie info for product details page.');
     }
 
-    if (!passengerTypeCookie) {
+    if (!isPassengerType(passengerTypeAttribute)) {
         throw new Error('Failed to retrieve passenger type cookie info for product details page.');
     }
 
@@ -153,8 +155,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     }
 
     const operatorTypeInfo = JSON.parse(operatorCookie);
-    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
-    const { passengerType } = passengerTypeInfo;
     const { operator } = operatorTypeInfo;
 
     if (zoneCookie) {
@@ -175,7 +175,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         props: {
             product: productDetailsAttribute && isProductInfo(productDetailsAttribute) ? productDetailsAttribute : null,
             operator: operator.operatorPublicName,
-            passengerType,
+            passengerType: passengerTypeAttribute.passengerType,
             errors:
                 productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)
                     ? productDetailsAttribute.errors
