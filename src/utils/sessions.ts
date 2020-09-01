@@ -26,6 +26,7 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     NUMBER_OF_STAGES_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -48,6 +49,7 @@ import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/a
 import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
 import { MultipleProductAttribute } from '../pages/api/multipleProductValidity';
 import { BaseMultipleProductAttribute, BaseMultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
+import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
 
 type GetSessionAttributeTypes = {
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
@@ -75,6 +77,7 @@ type GetSessionAttributeTypes = {
         | BaseMultipleProductAttribute
         | BaseMultipleProductAttributeWithErrors
         | MultipleProductAttribute;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -107,6 +110,7 @@ type UpdateSessionAttributeTypes = {
         | BaseMultipleProductAttribute
         | BaseMultipleProductAttributeWithErrors
         | MultipleProductAttribute;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

@@ -4,8 +4,8 @@ import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
@@ -18,6 +18,7 @@ import {
 } from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
+import { isNumberOfProductsAttribute } from './howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
 
 const title = 'Multiple Product - Fares Data Build Tool';
@@ -79,16 +80,20 @@ export const isBaseMultipleProductAttributeWithErrors = (
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
+    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
 
-    if (!cookies[OPERATOR_COOKIE] || !cookies[NUMBER_OF_PRODUCTS_COOKIE] || !cookies[PASSENGER_TYPE_COOKIE]) {
-        throw new Error('Necessary cookies not found to show multiple products page');
+    if (
+        !cookies[OPERATOR_COOKIE] ||
+        !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
+        !cookies[PASSENGER_TYPE_COOKIE]
+    ) {
+        throw new Error('Necessary cookies/session not found to show multiple products page');
     }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
     const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
-    const numberOfProductsToDisplay = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
+    const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
     const { operator } = JSON.parse(operatorCookie);
 
     if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {

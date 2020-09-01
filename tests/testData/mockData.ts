@@ -6,7 +6,7 @@ import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_COOKIE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
     OPERATOR_COOKIE,
     FARE_TYPE_COOKIE,
     INPUT_METHOD_COOKIE,
@@ -44,7 +44,7 @@ import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
 interface GetMockContextInput {
-    session?: any;
+    session?: { [key: string]: any };
     cookies?: any;
     body?: any;
     url?: any;
@@ -56,7 +56,7 @@ interface GetMockContextInput {
 }
 
 interface GetMockRequestAndResponse {
-    session?: any;
+    session?: { [key: string]: any };
     cookieValues?: any;
     body?: any;
     uuid?: any;
@@ -98,7 +98,6 @@ export const getMockRequestAndResponse = ({
         productPrice = '1234',
         daysValid = '2',
         periodTypeName = 'period',
-        numberOfProducts = '2',
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
     } = cookieValues;
@@ -110,6 +109,9 @@ export const getMockRequestAndResponse = ({
                 '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
                 '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
             ],
+        },
+        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
+            numberOfProducts: 2,
         },
         [MULTIPLE_PRODUCT_ATTRIBUTE]: {
             products: [
@@ -194,10 +196,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += periodTypeName
         ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
-        : '';
-
-    cookieString += numberOfProducts
-        ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
         : '';
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';

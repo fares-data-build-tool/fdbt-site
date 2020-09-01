@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, NUMBER_OF_PRODUCTS_COOKIE } from '../../constants/index';
-import { redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
+import { redirectToError, redirectTo } from './apiUtils';
+
 import {
     isSessionValid,
     removeExcessWhiteSpace,
@@ -10,7 +10,8 @@ import {
     checkDurationIsValid,
 } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { isNumberOfProductsAttribute } from '../howManyProducts';
 
 export interface BaseMultipleProductAttribute {
     products: MultiProduct[];
@@ -128,9 +129,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-        const cookies = new Cookies(req, res);
-        const numberOfProductsCookie = unescapeAndDecodeCookie(cookies, NUMBER_OF_PRODUCTS_COOKIE);
-        const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
+        const numberOfProductsAtribute = getSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+        const numberOfProducts: string = isNumberOfProductsAttribute(numberOfProductsAtribute)
+            ? numberOfProductsAtribute.numberOfProductsInput
+            : '';
         const numberOfReceivedProducts: number = Object.entries(req.body).length / 3;
 
         if (Number(numberOfProducts) !== numberOfReceivedProducts) {

@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import MultiProductValidity, { getServerSideProps } from '../../src/pages/multipleProductValidity';
 import { getMockContext } from '../testData/mockData';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../src/constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('multipleProductValidity', () => {
@@ -77,7 +77,11 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('should return number of products to display, name of operator and products if they are set in the cookie', () => {
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
+                    },
+                });
                 const result = getServerSideProps(ctx);
 
                 expect(result.props.numberOfProducts).toBe('2');
@@ -92,12 +96,11 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     cookies: {
                         operator: null,
-                        numberOfProductsInput: null,
                         multipleProduct: null,
                     },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
-                    'Necessary cookies not found to display the multiple product validity page',
+                    'Necessary cookies/session not found to display the multiple product validity page',
                 );
             });
 
@@ -124,6 +127,7 @@ describe('pages', () => {
                                 },
                             ],
                         },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: { numberOfProductsInput: '2' },
                     },
                 });
 
