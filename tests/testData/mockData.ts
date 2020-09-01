@@ -8,7 +8,7 @@ import {
     MULTIPLE_PRODUCT_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
-    INPUT_METHOD_COOKIE,
+    INPUT_METHOD_ATTRIBUTE,
     SERVICE_COOKIE,
     JOURNEY_COOKIE,
     PASSENGER_TYPE_COOKIE,
@@ -159,7 +159,7 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += inputMethod
-        ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
+        ? `${INPUT_METHOD_ATTRIBUTE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
         : '';
 
     cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';

@@ -1,13 +1,11 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
-import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
-import { INPUT_METHOD_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, InputMethodInfo } from '../interfaces';
+import { INPUT_METHOD_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Input Method - Fares Data Build Tool';
 const description = 'Input Method selection page of the Fares Data Build Tool';
@@ -17,6 +15,10 @@ const errorId = 'input-method-error';
 type InputMethodProps = {
     errors: ErrorInfo[];
 };
+
+export const errorsExist = (
+    inputMethodAttribute: InputMethodInfo | ErrorInfo | undefined,
+): inputMethodAttribute is ErrorInfo => (inputMethodAttribute as ErrorInfo)?.errorMessage !== undefined;
 
 const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -86,21 +88,10 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppPro
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    const cookies = parseCookies(ctx);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const inputMethodInfo = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
 
-    if (cookies[INPUT_METHOD_COOKIE]) {
-        const inputMethodCookie = cookies[INPUT_METHOD_COOKIE];
-        const parsedInputMethodCookie = JSON.parse(inputMethodCookie);
-
-        if (parsedInputMethodCookie.errorMessage) {
-            const { errorMessage } = parsedInputMethodCookie;
-            deleteCookieOnServerSide(ctx, INPUT_METHOD_COOKIE);
-            return { props: { errors: [{ errorMessage, id: errorId }] } };
-        }
-    }
-
-    return { props: {} };
+    return { props: { errors: inputMethodInfo && errorsExist(inputMethodInfo) ? inputMethodInfo : [] } };
 };
 
 export default InputMethod;

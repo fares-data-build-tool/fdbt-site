@@ -36,7 +36,7 @@ export const PERIOD_EXPIRY_ATTRIBUTE = 'fdbt-period-expiry';
 
 export const SERVICE_LIST_COOKIE = 'fdbt-services';
 
-export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
+export const INPUT_METHOD_ATTRIBUTE = 'fdbt-input-method';
 
 export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
 

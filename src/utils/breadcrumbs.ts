@@ -1,6 +1,6 @@
 import {
     PASSENGER_TYPE_COOKIE,
-    INPUT_METHOD_COOKIE,
+    INPUT_METHOD_ATTRIBUTE,
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
@@ -11,6 +11,7 @@ import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
 import { getSessionAttribute } from './sessions';
 import { isFareType } from '../pages/api/apiUtils/typeChecking';
+import { errorsExist } from '../pages/inputMethod';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
@@ -22,11 +23,11 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     }
 
     const outboundJourney = getCookieValue(ctx, JOURNEY_COOKIE, 'outboundJourney');
-    const inputMethod = getCookieValue(ctx, INPUT_METHOD_COOKIE, 'inputMethod');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
     const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
     const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
 
+    const inputMethod = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
 
@@ -50,8 +51,20 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const isCsvUploadUrl = csvUploadUrls.includes(url);
     const isManualUploadUrl = manualUploadUrls.includes(url);
     const isSalesOfferPackageUrl = salesOfferPackagesUrls.includes(url);
-    const isCsvUploadCookie = !isCsvUploadUrl && !isManualUploadUrl && inputMethod === 'csv';
-    const isManualUploadCookie = !isCsvUploadUrl && !isManualUploadUrl && inputMethod === 'manual';
+    const isCsvUploadCookie =
+        (!isCsvUploadUrl &&
+            !isManualUploadUrl &&
+            !errorsExist(inputMethod) &&
+            inputMethod &&
+            inputMethod.inputMethod === 'csv') ||
+        false;
+    const isManualUploadCookie =
+        (!isCsvUploadUrl &&
+            !isManualUploadUrl &&
+            !errorsExist(inputMethod) &&
+            inputMethod &&
+            inputMethod.inputMethod === 'manual') ||
+        false;
     const isCsvUploadJourney = isCsvUploadUrl || isCsvUploadCookie;
     const isManualUploadJourney = isManualUploadUrl || isManualUploadCookie;
 

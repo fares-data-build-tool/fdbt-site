@@ -1,4 +1,6 @@
 import {
+    InputMethodInfo,
+    ErrorInfo,
     IncomingMessageWithSession,
     ProductInfo,
     ProductData,
@@ -6,7 +8,8 @@ import {
     GroupDefinition,
     TimeRestriction,
     CompanionInfo,
-} from '../interfaces';
+} from '../interfaces/index';
+
 import {
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -22,6 +25,7 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
 } from '../constants';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -41,6 +45,7 @@ import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
 
 type GetSessionAttributeTypes = {
+    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
@@ -69,6 +74,7 @@ export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWit
     req?.session?.[attributeName];
 
 type UpdateSessionAttributeTypes = {
+    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
     [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
