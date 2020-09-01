@@ -9,7 +9,7 @@ import {
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
     INPUT_METHOD_COOKIE,
-    SERVICE_COOKIE,
+    SERVICE_ATTRIBUTE,
     JOURNEY_COOKIE,
     PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
@@ -94,7 +94,6 @@ export const getMockRequestAndResponse = ({
         inputMethod = 'csv',
         passengerType = { passengerType: 'Adult' },
         passengerTypeErrors = null,
-        serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
         productName = 'Product A',
@@ -140,13 +139,13 @@ export const getMockRequestAndResponse = ({
 
     const defaultSession = {
         [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+        [SERVICE_ATTRIBUTE]: { service: 'X01#NW_05_BLAC_12A_1' },
         ...session,
     };
 
     const {
         operatorUuid = defaultUuid,
         inputMethodUuid = defaultUuid,
-        serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
         daysValidUuid = defaultUuid,
@@ -166,10 +165,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += passengerTypeErrors
         ? `${PASSENGER_TYPE_ERRORS_COOKIE}=${encodeURI(JSON.stringify(passengerTypeErrors))};`
-        : '';
-
-    cookieString += serviceLineName
-        ? `${SERVICE_COOKIE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`
         : '';
 
     cookieString +=

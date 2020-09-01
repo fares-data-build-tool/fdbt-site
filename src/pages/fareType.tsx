@@ -135,7 +135,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operator: operatorInfo.operatorPublicName, errors } };
+    return { props: { operator: operatorInfo.operator.operatorPublicName, errors } };
 };
 
 export default FareTypePage;

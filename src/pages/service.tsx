@@ -1,15 +1,16 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_COOKIE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
+import { getSessionAttribute } from '../utils/sessions';
+import { isServiceAttributeWithErrors } from './api/apiUtils/typeChecking';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
@@ -73,17 +74,13 @@ const Service = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
-    const serviceCookie = cookies[SERVICE_COOKIE];
-    const error: ErrorInfo[] = [];
-    if (serviceCookie) {
-        const serviceInfo = JSON.parse(serviceCookie);
-        if (serviceInfo.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: serviceInfo.errorMessage, id: errorId };
-            error.push(errorInfo);
-        }
-    }
+
+    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+
+    const error: ErrorInfo[] =
+        serviceAttribute && isServiceAttributeWithErrors(serviceAttribute) ? serviceAttribute.errors : [];
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];

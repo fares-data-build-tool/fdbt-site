@@ -8,7 +8,7 @@ export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
 
 export const PASSENGER_TYPE_ERRORS_COOKIE = 'fdbt-passenger-type-errors';
 
-export const SERVICE_COOKIE = 'fdbt-service';
+export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
 export const JOURNEY_COOKIE = 'fdbt-journey';
 

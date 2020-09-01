@@ -13,6 +13,7 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import OutboundMatching, { getServerSideProps } from '../../src/pages/inboundMatching';
+import { SERVICE_ATTRIBUTE } from '../../src/constants';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -181,8 +182,8 @@ describe('Inbound OutboundMatching Page', () => {
 
         it('throws an error if service cookie not set', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    serviceLineName: null,
+                session: {
+                    [SERVICE_ATTRIBUTE]: undefined,
                 },
             });
 
