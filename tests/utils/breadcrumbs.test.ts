@@ -1,3 +1,4 @@
+import { INPUT_METHOD_ATTRIBUTE, TIME_RESTRICTIONS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../src/constants/index';
 import breadcrumb from '../../src/utils/breadcrumbs';
 import {
     getMockContext,
@@ -10,7 +11,6 @@ import {
     mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs,
 } from '../testData/mockData';
 import { NextPageContextWithSession } from '../../src/interfaces';
-import { TIME_RESTRICTIONS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../src/constants';
 
 describe('breadcrumbs', () => {
     let ctx: NextPageContextWithSession;
@@ -23,7 +23,14 @@ describe('breadcrumbs', () => {
     });
 
     it('creates the correct array of Breadcrumbs if user is on matching page having selected single, adult and csv upload', () => {
-        ctx = getMockContext({ url: '/matching' });
+        ctx = getMockContext({
+            url: '/matching',
+            cookies: { passengerType: { passengerType: 'adult' } },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+                [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
+            },
+        });
         const result = breadcrumb(ctx).generate();
 
         expect(result).toEqual(mockSingleAdultCsvUploadFromMatchingBreadcrumbs);
@@ -32,8 +39,11 @@ describe('breadcrumbs', () => {
     it('creates the correct array of Breadcrumbs if user is on outbound matching page having selected return, anyone and manual upload', () => {
         ctx = getMockContext({
             url: '/outboundMatching',
-            cookies: { inputMethod: 'manual', passengerType: { passengerType: 'anyone' } },
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' } },
+            cookies: { passengerType: { passengerType: 'anyone' } },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
+                [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'manual' },
+            },
         });
         const result = breadcrumb(ctx).generate();
 

@@ -52,18 +52,10 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const isManualUploadUrl = manualUploadUrls.includes(url);
     const isSalesOfferPackageUrl = salesOfferPackagesUrls.includes(url);
     const isCsvUploadCookie =
-        (!isCsvUploadUrl &&
-            !isManualUploadUrl &&
-            !errorsExist(inputMethod) &&
-            inputMethod &&
-            inputMethod.inputMethod === 'csv') ||
+        (!isCsvUploadUrl && !isManualUploadUrl && !errorsExist(inputMethod) && inputMethod?.inputMethod === 'csv') ||
         false;
     const isManualUploadCookie =
-        (!isCsvUploadUrl &&
-            !isManualUploadUrl &&
-            !errorsExist(inputMethod) &&
-            inputMethod &&
-            inputMethod.inputMethod === 'manual') ||
+        (!isCsvUploadUrl && !isManualUploadUrl && !errorsExist(inputMethod) && inputMethod?.inputMethod === 'manual') ||
         false;
     const isCsvUploadJourney = isCsvUploadUrl || isCsvUploadCookie;
     const isManualUploadJourney = isManualUploadUrl || isManualUploadCookie;

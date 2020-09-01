@@ -5,7 +5,7 @@ import { INPUT_METHOD_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 
 const title = 'Input Method - Fares Data Build Tool';
 const description = 'Input Method selection page of the Fares Data Build Tool';
@@ -88,10 +88,10 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppPro
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: InputMethodProps } => {
     const inputMethodInfo = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
-
-    return { props: { errors: inputMethodInfo && errorsExist(inputMethodInfo) ? inputMethodInfo : [] } };
+    updateSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE, undefined);
+    return { props: { errors: inputMethodInfo && errorsExist(inputMethodInfo) ? [inputMethodInfo] : [] } };
 };
 
 export default InputMethod;
