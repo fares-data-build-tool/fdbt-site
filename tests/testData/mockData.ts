@@ -91,7 +91,6 @@ export const getMockRequestAndResponse = ({
             },
             noc: 'TEST',
         },
-        inputMethod = 'csv',
         passengerType = { passengerType: 'Adult' },
         passengerTypeErrors = null,
         serviceLineName = 'X01',
@@ -140,12 +139,12 @@ export const getMockRequestAndResponse = ({
 
     const defaultSession = {
         [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+        [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
         ...session,
     };
 
     const {
         operatorUuid = defaultUuid,
-        inputMethodUuid = defaultUuid,
         serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
@@ -156,10 +155,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += operator
         ? `${OPERATOR_COOKIE}=${encodeURI(JSON.stringify({ ...operator, uuid: operatorUuid }))};`
-        : '';
-
-    cookieString += inputMethod
-        ? `${INPUT_METHOD_ATTRIBUTE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
         : '';
 
     cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';

@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession, InputMethodInfo } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import { INPUT_METHOD_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { inputMethodErrorsExist } from './api/apiUtils/typeChecking';
 
 const title = 'Input Method - Fares Data Build Tool';
 const description = 'Input Method selection page of the Fares Data Build Tool';
@@ -15,10 +16,6 @@ const errorId = 'input-method-error';
 type InputMethodProps = {
     errors: ErrorInfo[];
 };
-
-export const errorsExist = (
-    inputMethodAttribute: InputMethodInfo | ErrorInfo | undefined,
-): inputMethodAttribute is ErrorInfo => (inputMethodAttribute as ErrorInfo)?.errorMessage !== undefined;
 
 const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -91,7 +88,7 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppPro
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: InputMethodProps } => {
     const inputMethodInfo = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
     updateSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE, undefined);
-    return { props: { errors: inputMethodInfo && errorsExist(inputMethodInfo) ? [inputMethodInfo] : [] } };
+    return { props: { errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [] } };
 };
 
 export default InputMethod;
