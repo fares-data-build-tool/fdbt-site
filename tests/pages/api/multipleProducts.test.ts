@@ -19,7 +19,7 @@ import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
 describe('multiple product data sorting methods', () => {
     it('returns error summary info given a list of products', () => {
         const errors = getErrorsForCookie(multipleProducts);
-        expect(errors.errors.length).toBe(3);
+        expect(errors.length).toBe(3);
     });
 
     it('returns true if a product list has errors', () => {

@@ -5,7 +5,8 @@ import MockRes from 'mock-res';
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 import {
-    MULTIPLE_PRODUCT_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
     OPERATOR_COOKIE,
     FARE_TYPE_COOKIE,
     INPUT_METHOD_COOKIE,
@@ -97,32 +98,6 @@ export const getMockRequestAndResponse = ({
         productPrice = '1234',
         daysValid = '2',
         periodTypeName = 'period',
-        multipleProducts = [
-            {
-                productName: 'Weekly Ticket',
-                productNameId: 'multiple-product-name-1',
-                productPrice: '50',
-                productPriceId: 'multiple-product-price-1',
-                productDuration: '5',
-                productDurationId: 'multiple-product-duration-1',
-            },
-            {
-                productName: 'Day Ticket',
-                productNameId: 'multiple-product-name-2',
-                productPrice: '2.50',
-                productPriceId: 'multiple-product-price-2',
-                productDuration: '1',
-                productDurationId: 'multiple-product-duration-2',
-            },
-            {
-                productName: 'Monthly Ticket',
-                productNameId: 'multiple-product-name-3',
-                productPrice: '200',
-                productPriceId: 'multiple-product-price-3',
-                productDuration: '28',
-                productDurationId: 'multiple-product-duration-3',
-            },
-        ],
         idToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b206bm9jIjoiVEVTVCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImp0aSI6Ijg1MmQ1MTVlLTU5YWUtNDllZi1iMTA5LTI4YTRhNzk3YWFkNSIsImlhdCI6MTU5Mjk4NzMwNywiZXhwIjoxNTkyOTkwOTA3fQ.DFdxnpdhykDONOMeZMNeMUFpCHZ-hQ3UXczq_Qh0IAI',
         userCookieValue = null,
     } = cookieValues;
@@ -133,6 +108,37 @@ export const getMockRequestAndResponse = ({
                 '12A#NW_05_BLAC_12A_1#13/05/2020#Infinity Works, Leeds - Infinity Works, Manchester',
                 '6#NW_05_BLAC_6_1#08/05/2020#Infinity Works, Edinburgh - Infinity Works, London',
                 '101#NW_05_BLAC_101_1#06/05/2020#Infinity Works, Boston - Infinity Works, Berlin',
+            ],
+        },
+        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: {
+            numberOfProducts: 2,
+        },
+        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+            products: [
+                {
+                    productName: 'Weekly Ticket',
+                    productNameId: 'multiple-product-name-1',
+                    productPrice: '50',
+                    productPriceId: 'multiple-product-price-1',
+                    productDuration: '5',
+                    productDurationId: 'multiple-product-duration-1',
+                },
+                {
+                    productName: 'Day Ticket',
+                    productNameId: 'multiple-product-name-2',
+                    productPrice: '2.50',
+                    productPriceId: 'multiple-product-price-2',
+                    productDuration: '1',
+                    productDurationId: 'multiple-product-duration-2',
+                },
+                {
+                    productName: 'Monthly Ticket',
+                    productNameId: 'multiple-product-name-3',
+                    productPrice: '200',
+                    productPriceId: 'multiple-product-price-3',
+                    productDuration: '28',
+                    productDurationId: 'multiple-product-duration-3',
+                },
             ],
         },
         ...session,
@@ -190,10 +196,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += periodTypeName
         ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
-        : '';
-
-    cookieString += multipleProducts
-        ? `${MULTIPLE_PRODUCT_COOKIE}=${encodeURI(JSON.stringify(multipleProducts))};`
         : '';
 
     cookieString += isLoggedin ? `${ID_TOKEN_COOKIE}=${idToken};` : '';

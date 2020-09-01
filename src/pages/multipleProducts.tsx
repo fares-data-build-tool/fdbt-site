@@ -4,17 +4,22 @@ import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
     OPERATOR_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    MULTIPLE_PRODUCT_COOKIE,
     PASSENGER_TYPE_COOKIE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { MultiProduct } from './api/multipleProducts';
+import {
+    MultiProduct,
+    BaseMultipleProductAttribute,
+    BaseMultipleProductAttributeWithErrors,
+} from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { isNumberOfProductsAttribute } from './howManyProducts';
+import { MultipleProductAttribute } from './api/multipleProductValidity';
 
 const title = 'Multiple Product - Fares Data Build Tool';
 const description = 'Multiple Product entry page of the Fares Data Build Tool';
@@ -64,6 +69,15 @@ const MultipleProducts = ({
     </FullColumnLayout>
 );
 
+export const isBaseMultipleProductAttributeWithErrors = (
+    multiProductAttribute:
+        | undefined
+        | BaseMultipleProductAttribute
+        | BaseMultipleProductAttributeWithErrors
+        | MultipleProductAttribute,
+): multiProductAttribute is BaseMultipleProductAttributeWithErrors =>
+    !!multiProductAttribute && (multiProductAttribute as BaseMultipleProductAttributeWithErrors).errors !== undefined;
+
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
@@ -76,26 +90,23 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         throw new Error('Necessary cookies/session not found to show multiple products page');
     }
 
+    const operatorCookie = cookies[OPERATOR_COOKIE];
+    const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const passengerTypeInfo = JSON.parse(cookies[PASSENGER_TYPE_COOKIE]);
     const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
-    const { operator } = JSON.parse(cookies[OPERATOR_COOKIE]);
+    const { operator } = JSON.parse(operatorCookie);
 
-    if (cookies[MULTIPLE_PRODUCT_COOKIE]) {
-        const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
-        const parsedMultipleProductCookie = JSON.parse(multipleProductCookie);
-        const { errors } = parsedMultipleProductCookie;
-
-        if (errors && errors.length > 0) {
-            return {
-                props: {
-                    numberOfProductsToDisplay,
-                    operator: operator.operatorPublicName,
-                    passengerType: passengerTypeInfo.passengerType,
-                    errors: parsedMultipleProductCookie.errors,
-                    userInput: parsedMultipleProductCookie.userInput,
-                },
-            };
-        }
+    if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
+        const { errors } = multiProductAttribute;
+        return {
+            props: {
+                numberOfProductsToDisplay,
+                operator: operator.operatorPublicName,
+                passengerType: passengerTypeInfo.passengerType,
+                errors,
+                userInput: multiProductAttribute.products,
+            },
+        };
     }
 
     return {

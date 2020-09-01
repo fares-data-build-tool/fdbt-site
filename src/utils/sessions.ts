@@ -25,6 +25,7 @@ import {
     CSV_UPLOAD_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     NUMBER_OF_STAGES_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 
@@ -46,6 +47,8 @@ import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
 import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
+import { MultipleProductAttribute } from '../pages/api/multipleProductValidity';
+import { BaseMultipleProductAttribute, BaseMultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
 import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
 
 type GetSessionAttributeTypes = {
@@ -69,6 +72,11 @@ type GetSessionAttributeTypes = {
     [CSV_UPLOAD_ATTRIBUTE]: undefined | CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: undefined | ServiceListAttribute | ServiceListAttributeWithErrors;
     [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
+    [MULTIPLE_PRODUCT_ATTRIBUTE]:
+        | undefined
+        | BaseMultipleProductAttribute
+        | BaseMultipleProductAttributeWithErrors
+        | MultipleProductAttribute;
     [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 
@@ -97,7 +105,11 @@ type UpdateSessionAttributeTypes = {
     [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
-    [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: undefined | NumberOfStagesAttributeWithError;
+    [MULTIPLE_PRODUCT_ATTRIBUTE]:
+        | BaseMultipleProductAttribute
+        | BaseMultipleProductAttributeWithErrors
+        | MultipleProductAttribute;
     [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
 };
 

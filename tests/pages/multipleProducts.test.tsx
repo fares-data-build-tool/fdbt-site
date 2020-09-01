@@ -49,6 +49,9 @@ describe('pages', () => {
                     cookies: {
                         operator: null,
                     },
+                    session: {
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined,
+                    },
                 });
                 expect(() => getServerSideProps(ctx)).toThrow(
                     'Necessary cookies/session not found to show multiple products page',

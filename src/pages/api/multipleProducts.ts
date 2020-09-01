@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
-import { ErrorSummary } from '../../components/ErrorSummary';
-import { MULTIPLE_PRODUCT_COOKIE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
-import { redirectToError, setCookieOnResponseObject, redirectTo } from './apiUtils';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
+import { redirectToError, redirectTo } from './apiUtils';
+
 import {
     isSessionValid,
     removeExcessWhiteSpace,
@@ -9,9 +9,18 @@ import {
     checkPriceIsValid,
     checkDurationIsValid,
 } from './apiUtils/validator';
-import { getSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { isNumberOfProductsAttribute } from '../howManyProducts';
+
+export interface BaseMultipleProductAttribute {
+    products: MultiProduct[];
+}
+
+export interface BaseMultipleProductAttributeWithErrors {
+    products: MultiProduct[];
+    errors: ErrorInfo[];
+}
 
 export interface MultiProduct {
     productName: string;
@@ -25,33 +34,31 @@ export interface MultiProduct {
     productDurationError?: string;
 }
 
-export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorSummary => {
-    const errorsForCookie: ErrorSummary = {
-        errors: [],
-    };
+export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorInfo[] => {
+    const errors: ErrorInfo[] = [];
 
     validationResult.forEach(product => {
         if (product.productDurationError) {
-            errorsForCookie.errors.push({
+            errors.push({
                 errorMessage: product.productDurationError,
                 id: product.productDurationId,
             });
         }
         if (product.productNameError) {
-            errorsForCookie.errors.push({
+            errors.push({
                 errorMessage: product.productNameError,
                 id: product.productNameId,
             });
         }
         if (product.productPriceError) {
-            errorsForCookie.errors.push({
+            errors.push({
                 errorMessage: product.productPriceError,
                 id: product.productPriceId,
             });
         }
     });
 
-    return errorsForCookie;
+    return errors;
 };
 
 export const containsErrors = (products: MultiProduct[]): boolean => {
@@ -162,18 +169,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const fullValidationResult: MultiProduct[] = checkProductDurationsAreValid(priceValidationResult);
 
         if (containsErrors(fullValidationResult)) {
-            const errors: ErrorSummary = getErrorsForCookie(fullValidationResult);
-            const cookieContent = JSON.stringify({ ...errors, userInput: multipleProducts });
-
-            setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, cookieContent, req, res);
+            const errors: ErrorInfo[] = getErrorsForCookie(fullValidationResult);
+            updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { errors, products: multipleProducts });
             redirectTo(res, '/multipleProducts');
             return;
         }
 
-        const validInputs = JSON.stringify(multipleProducts);
-
-        setCookieOnResponseObject(MULTIPLE_PRODUCT_COOKIE, validInputs, req, res);
-
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {
         const message = 'There was a problem inputting the product name, price and/or duration:';
