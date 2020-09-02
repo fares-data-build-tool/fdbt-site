@@ -167,12 +167,16 @@ export const putDataInS3 = async (
 };
 
 export const getNetexSignedUrl = async (key: string): Promise<string> => {
-    const request = {
-        Bucket: NETEX_BUCKET_NAME,
-        Key: key,
-    };
+    try {
+        const request = {
+            Bucket: NETEX_BUCKET_NAME,
+            Key: key,
+        };
 
-    return s3.getSignedUrlPromise('getObject', request);
+        return s3.getSignedUrlPromise('getObject', request);
+    } catch (error) {
+        throw new Error(`Failed to get signed url for key: ${key}`);
+    }
 };
 
 export const getMatchingDataObject = async (
