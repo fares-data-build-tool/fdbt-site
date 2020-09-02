@@ -1,8 +1,13 @@
 import AWS from 'aws-sdk';
-import { USER_DATA_BUCKET_NAME, RAW_USER_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../constants';
+import { PromiseResult } from 'aws-sdk/lib/request';
+import {
+    USER_DATA_BUCKET_NAME,
+    RAW_USER_DATA_BUCKET_NAME,
+    NETEX_BUCKET_NAME,
+    MATCHING_DATA_BUCKET_NAME,
+} from '../constants';
 import { MatchingFareZones } from '../interfaces/matchingInterface';
 import logger from '../utils/logger';
-import { S3NetexFile } from '../interfaces';
 
 export interface FareStage {
     stageName: string;
@@ -161,16 +166,45 @@ export const putDataInS3 = async (
     await putStringInS3(bucketName, key, JSON.stringify(data), contentType);
 };
 
-export const retrieveNetexForNoc = async (noc: string): Promise<S3NetexFile[]> => {
-    const request: AWS.S3.ListObjectsV2Request = {
+export const getNetexSignedUrl = async (key: string): Promise<string> => {
+    const request = {
         Bucket: NETEX_BUCKET_NAME,
-        Prefix: noc,
+        Key: key,
     };
 
-    const response = await s3.listObjectsV2(request).promise();
-    const contents = response.Contents ?? [];
+    return s3.getSignedUrlPromise('getObject', request);
+};
 
-    return contents.map(item => ({
-        name: item.Key ?? '',
-    }));
+export const getMatchingDataObject = async (
+    key: string,
+): Promise<PromiseResult<AWS.S3.GetObjectOutput, AWS.AWSError>> => {
+    try {
+        const request: AWS.S3.GetObjectRequest = {
+            Bucket: MATCHING_DATA_BUCKET_NAME,
+            Key: key,
+        };
+
+        return s3.getObject(request).promise();
+    } catch (err) {
+        throw new Error(`Failed to get matching data for key: ${key}`);
+    }
+};
+
+export const retrieveNetexForNocs = async (nocList: string[]): Promise<AWS.S3.Object[]> => {
+    try {
+        const requestPromises = nocList.map(noc => {
+            const request: AWS.S3.ListObjectsV2Request = {
+                Bucket: NETEX_BUCKET_NAME,
+                Prefix: noc,
+            };
+
+            return s3.listObjectsV2(request).promise();
+        });
+
+        const response = await Promise.all(requestPromises);
+
+        return response.flatMap(item => item.Contents || []);
+    } catch (error) {
+        throw new Error('Failed to retrieve NeTEx from NOCs');
+    }
 };
