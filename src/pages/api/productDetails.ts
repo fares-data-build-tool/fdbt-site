@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
 import { PRODUCT_DETAILS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 import {
@@ -28,9 +28,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
         if (
             !fareTypeAttribute ||
             (isFareType(fareTypeAttribute) &&
@@ -39,22 +37,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         ) {
             throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
         }
-
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;
-
         const productDetails = getProductDetails(productDetailsNameInput, productDetailsPriceInput);
-
         const productNameError = checkProductNameIsValid(productDetails.productName);
-
         if (productNameError) {
             errors.push({
                 errorMessage: productNameError,
                 id: 'product-name-error',
             });
         }
-
         const productPriceError = checkPriceIsValid(productDetails.productPrice);
-
         if (productPriceError) {
             errors.push({
                 errorMessage: productPriceError,
@@ -64,23 +56,20 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (errors.length) {
             const invalidInputs = { ...productDetails, errors };
-
             updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, invalidInputs);
             redirectTo(res, '/productDetails');
             return;
         }
-
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType !== 'period') {
+        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period') {
             const periodProduct: Product = {
                 productName: productDetails.productName,
                 productPrice: productDetails.productPrice,
             };
-            setCookieOnResponseObject(PRODUCT_DETAILS_ATTRIBUTE, JSON.stringify(periodProduct), req, res);
+            updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, periodProduct);
             redirectTo(res, '/chooseValidity');
 
             return;
         }
-
         const flatFareProduct: ProductData = {
             products: [{ productName: productDetails.productName, productPrice: productDetails.productPrice }],
         };

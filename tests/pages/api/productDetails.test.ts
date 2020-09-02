@@ -1,6 +1,6 @@
+import { ProductData, Product } from '../../../src/interfaces/index';
 import productDetails from '../../../src/pages/api/productDetails';
 import { FARE_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../../src/constants';
-import * as apiUtils from '../../../src/pages/api/apiUtils';
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
@@ -44,7 +44,7 @@ describe('productDetails', () => {
     });
 
     it('should correctly set PRODUCT_DETAILS_ATTRIBUTE cookie and redirect to chooseValidity when the user input is valid for a period ticket', () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -52,78 +52,77 @@ describe('productDetails', () => {
                 productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
-            mockWriteHeadFn: writeHeadMock,
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
+            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
         });
 
-        const mockPeriodProductDetails = {
+        const mockPeriodProductDetails: Product = {
             productName: 'ProductA',
             productPrice: '121',
         };
 
         productDetails(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_ATTRIBUTE,
-            JSON.stringify(mockPeriodProductDetails),
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
-            res,
+            PRODUCT_DETAILS_ATTRIBUTE,
+            mockPeriodProductDetails,
         );
-        expect(writeHeadMock).toBeCalledWith(302, {
+        expect(res.writeHead).toBeCalledWith(302, {
             Location: '/chooseValidity',
         });
     });
 
     it('should correctly set PRODUCT_DETAILS_ATTRIBUTE and redirect to selectSalesOfferPackage when the user input is valid for a flat fare ticket', () => {
-        const setCookieSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'flatFare' },
             body: {
                 productDetailsNameInput: 'ProductA',
-                productDetailsPriceInput: '121',
-                uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
-            },
-            mockWriteHeadFn: writeHeadMock,
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
-        });
-
-        const mockPeriodProductDetails = {
-            products: [{ productName: 'ProductA', productPrice: '121' }],
-        };
-
-        productDetails(req, res);
-
-        expect(setCookieSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, mockPeriodProductDetails);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectSalesOfferPackage',
-        });
-    });
-
-    it('should remove leading and trailing spaces and tabs from valid user input', () => {
-        const setCookieSpy = jest.spyOn(apiUtils, 'setCookieOnResponseObject');
-
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                productDetailsNameInput: '     ProductBA',
                 productDetailsPriceInput: '121',
                 uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
             },
             session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' } },
         });
 
-        const mockProductDetails = {
-            productName: 'ProductBA',
-            productPrice: '121',
+        const mockPeriodProductDetails: ProductData = {
+            products: [
+                {
+                    productName: 'ProductA',
+                    productPrice: '121',
+                },
+            ],
         };
 
         productDetails(req, res);
 
-        expect(setCookieSpy).toHaveBeenCalledWith(
-            PRODUCT_DETAILS_ATTRIBUTE,
-            JSON.stringify(mockProductDetails),
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
-            res,
+            PRODUCT_DETAILS_ATTRIBUTE,
+            mockPeriodProductDetails,
         );
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/selectSalesOfferPackage',
+        });
+    });
+
+    it('should remove leading and trailing spaces and tabs from valid user input', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                productDetailsNameInput: '     ProductBA',
+                productDetailsPriceInput: '121',
+                uuid: '1e0459b3-082e-4e70-89db-96e8ae173e1',
+            },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+            },
+        });
+
+        const mockProductDetails = {
+            products: [{ productName: 'ProductBA', productPrice: '121' }],
+        };
+
+        productDetails(req, res);
+
+        expect(updateAttributeSpy).toHaveBeenCalledWith(req, PRODUCT_DETAILS_ATTRIBUTE, mockProductDetails);
     });
 });

@@ -57,6 +57,10 @@ export interface InputCheck {
     error: string;
 }
 
+export interface InputMethodInfo {
+    inputMethod: string;
+}
+
 /* eslint-disable camelcase */
 export interface CognitoIdToken {
     sub: string;

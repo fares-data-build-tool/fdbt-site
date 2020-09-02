@@ -4,9 +4,9 @@ export const OPERATOR_COOKIE = 'fdbt-operator';
 
 export const FARE_TYPE_ATTRIBUTE = 'fdbt-fare-type';
 
-export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
+export const PASSENGER_TYPE_ATTRIBUTE = 'fdbt-passenger-type';
 
-export const PASSENGER_TYPE_ERRORS_COOKIE = 'fdbt-passenger-type-errors';
+export const DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-passenger-type-errors';
 
 export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
@@ -36,7 +36,7 @@ export const PERIOD_EXPIRY_ATTRIBUTE = 'fdbt-period-expiry';
 
 export const SERVICE_LIST_COOKIE = 'fdbt-services';
 
-export const INPUT_METHOD_COOKIE = 'fdbt-input-method';
+export const INPUT_METHOD_ATTRIBUTE = 'fdbt-input-method';
 
 export const NUMBER_OF_STAGES_COOKIE = 'fdbt-number-stages';
 

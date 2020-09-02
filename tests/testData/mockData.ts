@@ -8,10 +8,9 @@ import {
     MULTIPLE_PRODUCT_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
-    INPUT_METHOD_COOKIE,
     SERVICE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
     JOURNEY_COOKIE,
-    PASSENGER_TYPE_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
@@ -20,8 +19,9 @@ import {
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
     USER_COOKIE,
-    PASSENGER_TYPE_ERRORS_COOKIE,
     FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../../src/constants/index';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
@@ -91,9 +91,6 @@ export const getMockRequestAndResponse = ({
             },
             noc: 'TEST',
         },
-        inputMethod = 'csv',
-        passengerType = { passengerType: 'Adult' },
-        passengerTypeErrors = null,
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
         productName = 'Product A',
@@ -140,12 +137,14 @@ export const getMockRequestAndResponse = ({
     const defaultSession = {
         [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
         [SERVICE_ATTRIBUTE]: { service: 'X01#NW_05_BLAC_12A_1' },
+        [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
+        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
+        [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
         ...session,
     };
 
     const {
         operatorUuid = defaultUuid,
-        inputMethodUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
         daysValidUuid = defaultUuid,
@@ -155,16 +154,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += operator
         ? `${OPERATOR_COOKIE}=${encodeURI(JSON.stringify({ ...operator, uuid: operatorUuid }))};`
-        : '';
-
-    cookieString += inputMethod
-        ? `${INPUT_METHOD_COOKIE}=%7B%22inputMethod%22%3A%22${inputMethod}%22%2C%22uuid%22%3A%22${inputMethodUuid}%22%7D;`
-        : '';
-
-    cookieString += passengerType ? `${PASSENGER_TYPE_COOKIE}=${encodeURI(JSON.stringify(passengerType))};` : '';
-
-    cookieString += passengerTypeErrors
-        ? `${PASSENGER_TYPE_ERRORS_COOKIE}=${encodeURI(JSON.stringify(passengerTypeErrors))};`
         : '';
 
     cookieString +=

@@ -1,12 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import isEmpty from 'lodash/isEmpty';
+import { NextApiRequestWithSession } from '../../interfaces/index';
+import { updateSessionAttribute } from '../../utils/sessions';
 import {
     JOURNEY_COOKIE,
     USER_DATA_BUCKET_NAME,
     PRICE_ENTRY_INPUTS_COOKIE,
     PRICE_ENTRY_ERRORS_COOKIE,
-    INPUT_METHOD_COOKIE,
+    INPUT_METHOD_ATTRIBUTE,
 } from '../../constants/index';
 import {
     getUuidFromCookie,
@@ -123,7 +125,7 @@ export const putDataInS3 = async (uuid: string, text: string): Promise<void> => 
     await putStringInS3(USER_DATA_BUCKET_NAME, `${uuid}.json`, text, 'application/json; charset=utf-8');
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!req.body || isEmpty(req.body)) {
             throw new Error('Body of request not found.');
@@ -155,7 +157,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
         const journeyObject = JSON.parse(journeyCookie);
 
-        setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'manual' }), req, res);
+        updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'manual' });
 
         if (journeyObject?.outboundJourney) {
             redirectTo(res, '/outboundMatching');

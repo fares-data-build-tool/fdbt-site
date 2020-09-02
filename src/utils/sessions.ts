@@ -1,4 +1,6 @@
 import {
+    InputMethodInfo,
+    ErrorInfo,
     IncomingMessageWithSession,
     ProductInfo,
     ProductData,
@@ -6,7 +8,8 @@ import {
     GroupDefinition,
     TimeRestriction,
     CompanionInfo,
-} from '../interfaces';
+} from '../interfaces/index';
+
 import {
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -23,6 +26,9 @@ import {
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../constants';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -40,9 +46,12 @@ import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
+import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
+import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { Service, ServiceWithErrors } from '../pages/api/service';
 
 type GetSessionAttributeTypes = {
+    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
@@ -60,6 +69,8 @@ type GetSessionAttributeTypes = {
     [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_TYPE_ATTRIBUTE]: undefined | FareType | FareTypeWithErrors;
+    [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
+    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: undefined | Service | ServiceWithErrors;
 };
 
@@ -72,6 +83,7 @@ export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWit
     req?.session?.[attributeName];
 
 type UpdateSessionAttributeTypes = {
+    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
     [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
@@ -86,6 +98,8 @@ type UpdateSessionAttributeTypes = {
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
+    [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
+    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
 };
 
