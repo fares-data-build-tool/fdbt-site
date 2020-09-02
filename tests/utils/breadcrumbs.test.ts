@@ -1,4 +1,9 @@
-import { INPUT_METHOD_ATTRIBUTE, TIME_RESTRICTIONS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../src/constants/index';
+import {
+    INPUT_METHOD_ATTRIBUTE,
+    TIME_RESTRICTIONS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+} from '../../src/constants/index';
 import breadcrumb from '../../src/utils/breadcrumbs';
 import {
     getMockContext,
@@ -39,9 +44,10 @@ describe('breadcrumbs', () => {
     it('creates the correct array of Breadcrumbs if user is on outbound matching page having selected return, anyone and manual upload', () => {
         ctx = getMockContext({
             url: '/outboundMatching',
-            cookies: { passengerType: { passengerType: 'anyone' } },
+            cookies: { passengerType: { passengerType: 'anyone' }, inputMethod: 'manual' },
             session: {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
                 [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'manual' },
             },
         });
@@ -55,9 +61,11 @@ describe('breadcrumbs', () => {
             url: '/csvZoneUpload',
             cookies: {
                 periodTypeName: 'periodGeoZone',
-                passengerType: { passengerType: 'Senior' },
             },
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Senior' },
+            },
         });
         const result = breadcrumb(ctx).generate();
 
@@ -80,9 +88,11 @@ describe('breadcrumbs', () => {
             url: '/multipleProductValidity',
             cookies: {
                 periodTypeName: 'periodMultipleServices',
-                passengerType: { passengerType: 'anyone' },
             },
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' } },
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
+            },
         });
         const result = breadcrumb(ctx).generate();
 
@@ -100,6 +110,7 @@ describe('breadcrumbs', () => {
             session: {
                 [TIME_RESTRICTIONS_ATTRIBUTE]: { timeRestrictions: true },
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
             },
         });
         const result = breadcrumb(ctx).generate();

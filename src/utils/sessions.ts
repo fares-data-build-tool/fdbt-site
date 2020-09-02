@@ -26,6 +26,8 @@ import {
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../constants';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -43,6 +45,8 @@ import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
+import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
+import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 
 type GetSessionAttributeTypes = {
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
@@ -63,6 +67,8 @@ type GetSessionAttributeTypes = {
     [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_TYPE_ATTRIBUTE]: undefined | FareType | FareTypeWithErrors;
+    [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
+    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -89,6 +95,8 @@ type UpdateSessionAttributeTypes = {
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
+    [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
+    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

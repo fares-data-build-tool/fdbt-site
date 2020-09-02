@@ -4,9 +4,9 @@ export const OPERATOR_COOKIE = 'fdbt-operator';
 
 export const FARE_TYPE_ATTRIBUTE = 'fdbt-fare-type';
 
-export const PASSENGER_TYPE_COOKIE = 'fdbt-passenger-type';
+export const PASSENGER_TYPE_ATTRIBUTE = 'fdbt-passenger-type';
 
-export const PASSENGER_TYPE_ERRORS_COOKIE = 'fdbt-passenger-type-errors';
+export const DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-passenger-type-errors';
 
 export const SERVICE_COOKIE = 'fdbt-service';
 

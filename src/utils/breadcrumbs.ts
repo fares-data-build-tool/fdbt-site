@@ -1,16 +1,16 @@
 import {
-    PASSENGER_TYPE_COOKIE,
     INPUT_METHOD_ATTRIBUTE,
     JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
 import { getSessionAttribute } from './sessions';
-import { isFareType, inputMethodErrorsExist } from '../pages/api/apiUtils/typeChecking';
+import { isFareType, isPassengerType, inputMethodErrorsExist } from '../pages/api/apiUtils/typeChecking';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
@@ -23,12 +23,12 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
 
     const outboundJourney = getCookieValue(ctx, JOURNEY_COOKIE, 'outboundJourney');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
-    const passengerType = getCookieValue(ctx, PASSENGER_TYPE_COOKIE, 'passengerType');
     const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
 
     const inputMethod = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];
@@ -195,7 +195,8 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     ];
 
     const getFullBreadcrumbList = (): Breadcrumb[] => {
-        const isNotAnyonePassengerType = passengerType !== 'anyone';
+        const isNotAnyonePassengerType =
+            isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.passengerType !== 'anyone';
         const isTimeRestrictionDefined = timeRestrictionsAttribute?.timeRestrictions || false;
 
         const breadcrumbList: Breadcrumb[] = [

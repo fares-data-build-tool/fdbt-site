@@ -1,15 +1,16 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
+import { isPassengerType } from './api/apiUtils/typeChecking';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
@@ -73,7 +74,7 @@ const Service = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: ServiceProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
     const serviceCookie = cookies[SERVICE_COOKIE];
     const error: ErrorInfo[] = [];
@@ -86,17 +87,16 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
     }
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
 
-    if (!operatorCookie || !passengerTypeCookie || !nocCode) {
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+
+    if (!operatorCookie || !isPassengerType(passengerTypeAttribute) || !nocCode) {
         throw new Error('Could not render the service selection page. Necessary cookies not found.');
     }
 
     const operatorInfo = JSON.parse(operatorCookie);
     const { operator } = operatorInfo;
-    const passengerTypeInfo = JSON.parse(passengerTypeCookie);
-    const { passengerType } = passengerTypeInfo;
 
     const services = await getServicesByNocCode(nocCode);
 
@@ -104,7 +104,14 @@ export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props:
         throw new Error(`No services found for NOC Code: ${nocCode}`);
     }
 
-    return { props: { operator: operator.operatorPublicName, passengerType, services, error } };
+    return {
+        props: {
+            operator: operator.operatorPublicName,
+            passengerType: passengerTypeAttribute.passengerType,
+            services,
+            error,
+        },
+    };
 };
 
 export default Service;

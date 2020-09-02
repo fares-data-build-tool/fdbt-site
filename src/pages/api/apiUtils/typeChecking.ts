@@ -1,5 +1,6 @@
 import { FareType, FareTypeWithErrors } from '../fareType';
 import { InputMethodInfo, ErrorInfo } from '../../../interfaces';
+import { PassengerType, PassengerTypeWithErrors } from '../passengerType';
 
 export const isFareTypeAttributeWithErrors = (
     fareTypeAttribute: FareType | FareTypeWithErrors,
@@ -12,3 +13,12 @@ export const isFareType = (fareType: FareType | FareTypeWithErrors | undefined):
 export const inputMethodErrorsExist = (
     inputMethodAttribute: InputMethodInfo | ErrorInfo | undefined,
 ): inputMethodAttribute is ErrorInfo => (inputMethodAttribute as ErrorInfo)?.errorMessage !== undefined;
+export const isPassengerTypeAttributeWithErrors = (
+    fareTypeAttribute: PassengerType | PassengerTypeWithErrors,
+): fareTypeAttribute is PassengerTypeWithErrors => (fareTypeAttribute as PassengerTypeWithErrors).errors !== undefined;
+
+export const isPassengerType = (
+    passengerType: PassengerType | PassengerTypeWithErrors | undefined,
+): passengerType is PassengerType => {
+    return passengerType !== undefined && (passengerType as PassengerType).passengerType !== undefined;
+};

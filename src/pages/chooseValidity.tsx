@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { NextPageContext } from 'next';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_COOKIE, PASSENGER_TYPE_COOKIE } from '../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
+import { isPassengerType } from './api/apiUtils/typeChecking';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';
@@ -65,22 +66,22 @@ const ChooseValidity = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: ValidityProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ValidityProps } => {
     const cookies = parseCookies(ctx);
     const productCookie = cookies[PRODUCT_DETAILS_ATTRIBUTE];
-    const passengerTypeCookie = cookies[PASSENGER_TYPE_COOKIE];
     const validityCookie = cookies[DAYS_VALID_COOKIE];
+
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (!productCookie) {
         throw new Error('Failed to retrieve productCookie info for choose validity page.');
     }
 
-    if (!passengerTypeCookie) {
-        throw new Error('Failed to retrieve passengerTypeCookie info for choose validity page.');
+    if (!isPassengerType(passengerTypeAttribute)) {
+        throw new Error('Failed to retrieve passenger type session info for choose validity page.');
     }
 
     const product = JSON.parse(productCookie);
-    const passengerType = JSON.parse(passengerTypeCookie);
 
     let validity;
 
@@ -92,7 +93,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ValidityProps
         props: {
             productName: product.productName,
             productPrice: product.productPrice,
-            passengerType: passengerType.passengerType,
+            passengerType: passengerTypeAttribute.passengerType,
             daysValid: validity?.daysValid ?? '',
             errors: validity?.error ? [validity.error] : [],
         },
