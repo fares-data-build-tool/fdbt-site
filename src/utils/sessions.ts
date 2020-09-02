@@ -25,6 +25,7 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
@@ -47,6 +48,7 @@ import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
 import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
+import { Service, ServiceWithErrors } from '../pages/api/service';
 
 type GetSessionAttributeTypes = {
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
@@ -69,6 +71,7 @@ type GetSessionAttributeTypes = {
     [FARE_TYPE_ATTRIBUTE]: undefined | FareType | FareTypeWithErrors;
     [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
+    [SERVICE_ATTRIBUTE]: undefined | Service | ServiceWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -97,6 +100,7 @@ type UpdateSessionAttributeTypes = {
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
     [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
+    [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

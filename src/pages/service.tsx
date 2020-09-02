@@ -4,12 +4,12 @@ import upperFirst from 'lodash/upperFirst';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType } from './api/apiUtils/typeChecking';
+import { isPassengerType, isServiceAttributeWithErrors } from './api/apiUtils/typeChecking';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Service - Fares Data Build Tool';
@@ -76,15 +76,11 @@ const Service = ({
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceProps }> => {
     const cookies = parseCookies(ctx);
-    const serviceCookie = cookies[SERVICE_COOKIE];
-    const error: ErrorInfo[] = [];
-    if (serviceCookie) {
-        const serviceInfo = JSON.parse(serviceCookie);
-        if (serviceInfo.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: serviceInfo.errorMessage, id: errorId };
-            error.push(errorInfo);
-        }
-    }
+
+    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
+
+    const error: ErrorInfo[] =
+        serviceAttribute && isServiceAttributeWithErrors(serviceAttribute) ? serviceAttribute.errors : [];
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const nocCode = getAndValidateNoc(ctx);

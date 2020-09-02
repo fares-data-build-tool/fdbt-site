@@ -1,10 +1,18 @@
 import { NextApiResponse } from 'next';
-import { getUuidFromCookie, setCookieOnResponseObject, redirectToError, redirectTo } from './apiUtils/index';
-import { FARE_TYPE_ATTRIBUTE, SERVICE_COOKIE } from '../../constants/index';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils/index';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { getSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType } from './apiUtils/typeChecking';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+
+export interface Service {
+    service: string;
+}
+
+export interface ServiceWithErrors {
+    errors: ErrorInfo[];
+}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -14,8 +22,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { service } = req.body;
 
         if (!service) {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose a service from the options' });
-            setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+            const errors: ErrorInfo[] = [{ id: 'service-error', errorMessage: 'Choose a service from the options' }];
+
+            updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
             redirectTo(res, '/service');
             return;
         }
@@ -26,8 +35,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('No UUID found');
         }
 
-        const cookieValue = JSON.stringify({ service, uuid });
-        setCookieOnResponseObject(SERVICE_COOKIE, cookieValue, req, res);
+        updateSessionAttribute(req, SERVICE_ATTRIBUTE, { service });
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 

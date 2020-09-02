@@ -8,8 +8,8 @@ import {
     MULTIPLE_PRODUCT_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
+    SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
-    SERVICE_COOKIE,
     JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
@@ -91,7 +91,6 @@ export const getMockRequestAndResponse = ({
             },
             noc: 'TEST',
         },
-        serviceLineName = 'X01',
         journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
         productName = 'Product A',
@@ -137,6 +136,7 @@ export const getMockRequestAndResponse = ({
 
     const defaultSession = {
         [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+        [SERVICE_ATTRIBUTE]: { service: 'X01#NW_05_BLAC_12A_1' },
         [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
         [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
@@ -145,7 +145,6 @@ export const getMockRequestAndResponse = ({
 
     const {
         operatorUuid = defaultUuid,
-        serviceUuid = defaultUuid,
         journeyUuid = defaultUuid,
         csvUploadZoneUuid = defaultUuid,
         daysValidUuid = defaultUuid,
@@ -155,10 +154,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += operator
         ? `${OPERATOR_COOKIE}=${encodeURI(JSON.stringify({ ...operator, uuid: operatorUuid }))};`
-        : '';
-
-    cookieString += serviceLineName
-        ? `${SERVICE_COOKIE}=%7B%22service%22%3A%22${serviceLineName}%2329%2F04%2F2019%22%2C%22uuid%22%3A%22${serviceUuid}%22%7D;`
         : '';
 
     cookieString +=

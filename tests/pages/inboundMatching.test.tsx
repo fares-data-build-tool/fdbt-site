@@ -13,6 +13,7 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import InboundMatching, { getServerSideProps } from '../../src/pages/inboundMatching';
+import { SERVICE_ATTRIBUTE } from '../../src/constants';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -179,10 +180,10 @@ describe('Inbound Matching Page', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
         });
 
-        it('throws an error if service cookie not set', async () => {
+        it('throws an error if service attribute not set', async () => {
             const ctx = getMockContext({
-                cookies: {
-                    serviceLineName: null,
+                session: {
+                    [SERVICE_ATTRIBUTE]: undefined,
                 },
             });
 

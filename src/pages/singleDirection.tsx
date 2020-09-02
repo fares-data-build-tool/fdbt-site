@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_COOKIE, JOURNEY_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -11,7 +11,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType } from './api/apiUtils/typeChecking';
+import { isPassengerType, isService } from './api/apiUtils/typeChecking';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Fares Data Build Tool';
@@ -82,19 +82,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
     }
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const serviceCookie = cookies[SERVICE_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
 
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
-    if (!operatorCookie || !serviceCookie || !isPassengerType(passengerTypeAttribute) || !nocCode) {
+    if (!operatorCookie || !isService(serviceAttribute) || !isPassengerType(passengerTypeAttribute) || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
     const { operator } = JSON.parse(operatorCookie);
-    const serviceInfo = JSON.parse(serviceCookie);
 
-    const lineName = serviceInfo.service.split('#')[0];
+    const lineName = serviceAttribute.service.split('#')[0];
 
     const rawService: RawService = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const service: Service = {

@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import TwoThirdsLayout from '../layout/Layout';
-import { SERVICE_COOKIE, JOURNEY_COOKIE, FARE_TYPE_ATTRIBUTE } from '../constants';
-import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
+import { FARE_TYPE_ATTRIBUTE, JOURNEY_COOKIE, SERVICE_ATTRIBUTE } from '../constants';
+import { getServiceByNocCodeAndLineName, RawService, Service } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { getUuidFromCookies, setCookieOnServerSide, getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getUuidFromCookies, setCookieOnServerSide } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isFareType } from './api/apiUtils/typeChecking';
+import { isFareType, isService } from './api/apiUtils/typeChecking';
 
 const title = 'Return Direction - Fares Data Build Tool';
 const description = 'Return Direction selection page of the Fares Data Build Tool';
@@ -88,19 +88,17 @@ const ReturnDirection = ({
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
     const cookies = parseCookies(ctx);
-    const serviceCookie = cookies[SERVICE_COOKIE];
     const journeyCookie = cookies[JOURNEY_COOKIE];
 
+    const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
 
-    if (!serviceCookie || !fareTypeAttribute || !nocCode) {
+    if (!isService(serviceAttribute) || !fareTypeAttribute || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
-    const serviceInfo = JSON.parse(serviceCookie);
-
-    const lineName = serviceInfo.service.split('#')[0];
+    const lineName = serviceAttribute.service.split('#')[0];
 
     const rawService: RawService = await getServiceByNocCodeAndLineName(nocCode, lineName);
     const service: Service = {
