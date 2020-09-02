@@ -180,7 +180,7 @@ describe('Inbound Matching Page', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
         });
 
-        it('throws an error if service cookie not set', async () => {
+        it('throws an error if service attribute not set', async () => {
             const ctx = getMockContext({
                 session: {
                     [SERVICE_ATTRIBUTE]: undefined,
