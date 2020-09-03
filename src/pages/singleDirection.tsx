@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
@@ -11,7 +11,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType, isService } from './api/apiUtils/typeChecking';
+import { isJourney, isPassengerType, isService } from './api/apiUtils/typeChecking';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Fares Data Build Tool';
@@ -72,15 +72,8 @@ const SingleDirection = ({
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
     const cookies = parseCookies(ctx);
-    const journeyCookie = cookies[JOURNEY_COOKIE];
-    const error: ErrorInfo[] = [];
-    if (journeyCookie) {
-        const journeyInfo = JSON.parse(journeyCookie);
-        if (journeyInfo.errorMessage) {
-            const errorInfo: ErrorInfo = { errorMessage: journeyInfo.errorMessage, id: errorId };
-            error.push(errorInfo);
-        }
-    }
+
+    const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
 
@@ -119,7 +112,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             passengerType: passengerTypeAttribute.passengerType,
             lineName,
             service,
-            error,
+            error: (isJourney(journeyAttribute) && journeyAttribute.errors) || [],
         },
     };
 };

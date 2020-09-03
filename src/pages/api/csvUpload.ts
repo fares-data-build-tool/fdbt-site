@@ -1,20 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import uniq from 'lodash/uniq';
 import { NextApiRequestWithSession } from '../../interfaces/index';
-import {
-    getUuidFromCookie,
-    redirectToError,
-    redirectTo,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-} from './apiUtils';
+import { getUuidFromCookie, redirectToError, redirectTo, setCookieOnResponseObject } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE, INPUT_METHOD_ATTRIBUTE } from '../../constants';
+import { CSV_UPLOAD_COOKIE, JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isJourney } from './apiUtils/typeChecking';
 
 interface FareTriangleData {
     fareStages: {
@@ -163,13 +157,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
-            const cookies = new Cookies(req, res);
-            const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
-            const journeyObject = JSON.parse(journeyCookie);
-
             updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
 
-            if (journeyObject?.outboundJourney) {
+            const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
+
+            if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');
                 return;
             }

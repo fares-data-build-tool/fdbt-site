@@ -1,16 +1,16 @@
 import {
     INPUT_METHOD_ATTRIBUTE,
-    JOURNEY_COOKIE,
     PERIOD_TYPE_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getCookieValue } from '.';
 import { getSessionAttribute } from './sessions';
-import { isFareType, isPassengerType, inputMethodErrorsExist } from '../pages/api/apiUtils/typeChecking';
+import { isFareType, isPassengerType, inputMethodErrorsExist, isJourney } from '../pages/api/apiUtils/typeChecking';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
@@ -21,7 +21,6 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
         };
     }
 
-    const outboundJourney = getCookieValue(ctx, JOURNEY_COOKIE, 'outboundJourney');
     const periodType = getCookieValue(ctx, PERIOD_TYPE_COOKIE, 'periodTypeName');
     const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
 
@@ -29,6 +28,7 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
 
     const csvUploadUrls = ['/csvUpload'];
     const manualUploadUrls = ['/howManyStages', '/chooseStages', '/stageNames', '/priceEntry'];
@@ -42,7 +42,7 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const isFlatFare = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare';
     const isMultiService = periodType === 'periodMultipleServices';
     const isGeoZone = periodType === 'periodGeoZone';
-    const isCircular = isReturn && !outboundJourney;
+    const isCircular = isReturn && isJourney(journeyAttribute) && !journeyAttribute.outboundJourney;
 
     const isSingleProduct = singleProductUrls.includes(url) || numberOfProducts === '1';
     const isMultiProduct = multiProductUrls.includes(url) || (numberOfProducts !== null && numberOfProducts !== '1');

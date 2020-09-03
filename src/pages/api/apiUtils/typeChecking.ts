@@ -1,5 +1,5 @@
 import { FareType, FareTypeWithErrors } from '../fareType';
-import { InputMethodInfo, ErrorInfo } from '../../../interfaces';
+import { InputMethodInfo, ErrorInfo, Journey, JourneyWithErrors } from '../../../interfaces';
 import { PassengerType, PassengerTypeWithErrors } from '../passengerType';
 import { Service, ServiceWithErrors } from '../service';
 
@@ -30,4 +30,18 @@ export const isServiceAttributeWithErrors = (
 
 export const isService = (service: Service | ServiceWithErrors | undefined): service is Service => {
     return service !== undefined && (service as Service).service !== undefined;
+};
+
+export const isJourneyAttributeWithErrors = (
+    journeyAttribute: Journey | JourneyWithErrors,
+): journeyAttribute is JourneyWithErrors => (journeyAttribute as JourneyWithErrors).errors !== undefined;
+
+export const isJourney = (journey: Journey | JourneyWithErrors | undefined): journey is Journey => {
+    return (
+        journey !== undefined &&
+        ((journey as Journey).directionJourneyPattern !== undefined ||
+            (journey as Journey).inboundJourney !== undefined ||
+            (journey as Journey).outboundJourney !== undefined ||
+            (journey as Journey).errors !== undefined)
+    );
 };

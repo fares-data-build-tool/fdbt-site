@@ -250,3 +250,13 @@ export interface Stop {
     indicator?: string;
     street?: string;
 }
+
+export interface Journey extends JourneyWithErrors {
+    directionJourneyPattern?: string;
+    inboundJourney?: string;
+    outboundJourney?: string;
+}
+
+export interface JourneyWithErrors {
+    errors?: ErrorInfo[];
+}

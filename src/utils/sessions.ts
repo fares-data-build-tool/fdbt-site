@@ -8,6 +8,8 @@ import {
     GroupDefinition,
     TimeRestriction,
     CompanionInfo,
+    Journey,
+    JourneyWithErrors,
 } from '../interfaces/index';
 
 import {
@@ -29,6 +31,7 @@ import {
     INPUT_METHOD_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
 } from '../constants';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -72,6 +75,7 @@ type GetSessionAttributeTypes = {
     [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: undefined | Service | ServiceWithErrors;
+    [JOURNEY_ATTRIBUTE]: undefined | Journey | JourneyWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -101,6 +105,7 @@ type UpdateSessionAttributeTypes = {
     [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
+    [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
