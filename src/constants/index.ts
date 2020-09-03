@@ -22,7 +22,7 @@ export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedb
 
 export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
 
-export const DAYS_VALID_COOKIE = 'fdbt-days-valid';
+export const DAYS_VALID_ATTRIBUTE = 'fdbt-days-valid';
 
 export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
 
