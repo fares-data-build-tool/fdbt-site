@@ -12,12 +12,17 @@ import {
     isMultipleServicesTicket,
     isNotEmpty,
 } from '../interfaces/typeGuards';
+import Pagination from '../components/Pagination';
+import { CREATED_FILES_NUM_PER_PAGE } from '../constants';
 
 const title = 'Created Files - Fares Data Build Tool';
 const description = 'Created Files page for the Fares Data Build Tool';
 
 interface CreateFilesProps {
     files: S3NetexFile[];
+    numberOfResults: number;
+    currentPage: number;
+    numberPerPage: number;
 }
 
 const buildName = (file: PointToPointTicket | PeriodTicket): string => {
@@ -32,8 +37,15 @@ const buildName = (file: PointToPointTicket | PeriodTicket): string => {
     return name;
 };
 
-const enrichNetexFileData = async (files: AWS.S3.Object[]): Promise<S3NetexFile[]> => {
-    const requestPromises = files.map(async file => {
+const enrichNetexFileData = async (
+    files: AWS.S3.Object[],
+    pageNumber: number,
+    numberPerPage: number,
+): Promise<S3NetexFile[]> => {
+    const start = (pageNumber - 1) * numberPerPage;
+    const slicedFiles = files.slice(start, start + numberPerPage);
+
+    const requestPromises = slicedFiles.map(async file => {
         if (!file.Key) {
             return null;
         }
@@ -80,9 +92,12 @@ const enrichNetexFileData = async (files: AWS.S3.Object[]): Promise<S3NetexFile[
         .filter(isNotEmpty);
 };
 
-const CreatedFiles = ({ files }: CreateFilesProps): ReactElement => (
+const CreatedFiles = ({ files, numberOfResults, currentPage, numberPerPage }: CreateFilesProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-l">Previously created files</h1>
+        <span className="govuk-hint" id="fare-type-operator-hint">
+            This page will show any NeTEx files created in the last 60 days
+        </span>
         <div className="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
             {files.map((file, index) => (
                 <div className="govuk-accordion__section" key={file.reference}>
@@ -152,38 +167,55 @@ const CreatedFiles = ({ files }: CreateFilesProps): ReactElement => (
                 </div>
             ))}
         </div>
+        {numberOfResults > numberPerPage && (
+            <Pagination
+                numberPerPage={numberPerPage}
+                numberOfResults={numberOfResults}
+                currentPage={currentPage}
+                link="/createdFiles"
+            />
+        )}
     </TwoThirdsLayout>
 );
 
 export const getServerSideProps = async (ctx: NextPageContext): Promise<{ props: CreateFilesProps } | null> => {
     const nocList = getNocFromIdToken(ctx)?.split('|');
 
+    let page = 1;
+
+    page = Number.parseInt((ctx.query.page as string) || '1', 10);
+
+    if (Number.isNaN(page)) {
+        page = 1;
+    }
+
     if (!nocList) {
         throw new Error('no NOCs found in ID token');
     }
 
     const files = await retrieveNetexForNocs(nocList);
-    const filesToEnrich = files
-        .sort((a, b) => {
-            if (!a.LastModified || !b.LastModified) {
-                return 0;
-            }
-
-            if (a.LastModified < b.LastModified) {
-                return 1;
-            }
-
-            if (a.LastModified > b.LastModified) {
-                return -1;
-            }
-
+    const filesToEnrich = files.sort((a, b) => {
+        if (!a.LastModified || !b.LastModified) {
             return 0;
-        })
-        .slice(0, 100);
+        }
+
+        if (a.LastModified < b.LastModified) {
+            return 1;
+        }
+
+        if (a.LastModified > b.LastModified) {
+            return -1;
+        }
+
+        return 0;
+    });
 
     return {
         props: {
-            files: await enrichNetexFileData(filesToEnrich),
+            files: await enrichNetexFileData(filesToEnrich, page, CREATED_FILES_NUM_PER_PAGE),
+            numberOfResults: filesToEnrich.length,
+            currentPage: page,
+            numberPerPage: CREATED_FILES_NUM_PER_PAGE,
         },
     };
 };

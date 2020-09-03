@@ -10,6 +10,12 @@ exports[`pages createdFiles should render correctly 1`] = `
   >
     Previously created files
   </h1>
+  <span
+    className="govuk-hint"
+    id="fare-type-operator-hint"
+  >
+    This page will show any NeTEx files created in the last 60 days
+  </span>
   <div
     className="govuk-accordion"
     data-module="govuk-accordion"
@@ -210,5 +216,11 @@ exports[`pages createdFiles should render correctly 1`] = `
       </div>
     </div>
   </div>
+  <Pagination
+    currentPage={1}
+    link="/createdFiles"
+    numberOfResults={10}
+    numberPerPage={5}
+  />
 </Component>
 `;

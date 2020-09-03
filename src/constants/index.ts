@@ -118,3 +118,5 @@ export const PASSENGER_TYPES_WITH_GROUP: PassengerAttributes[] = [
 ];
 
 export const INTERNAL_NOC = 'IWBusCo';
+
+export const CREATED_FILES_NUM_PER_PAGE = 10;

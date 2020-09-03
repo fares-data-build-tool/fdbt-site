@@ -57,6 +57,7 @@ describe('pages', () => {
             getMatchingDataObjectSpy = jest.spyOn(s3, 'getMatchingDataObject').mockImplementation(() =>
                 Promise.resolve({
                     Body: JSON.stringify(expectedMatchingJsonSingle),
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } as any),
             );
 
@@ -70,8 +71,24 @@ describe('pages', () => {
         });
 
         it('should render correctly', () => {
-            const tree = shallow(<CreatedFiles files={netexFiles} />);
+            const tree = shallow(
+                <CreatedFiles files={netexFiles} numberOfResults={10} currentPage={1} numberPerPage={5} />,
+            );
             expect(tree).toMatchSnapshot();
+        });
+
+        it('should render pagination if number of results more than number per page', () => {
+            const tree = shallow(
+                <CreatedFiles files={netexFiles} numberOfResults={10} currentPage={1} numberPerPage={5} />,
+            );
+            expect(tree.find('Pagination')).toHaveLength(1);
+        });
+
+        it('should not render pagination if number of results less than number per page', () => {
+            const tree = shallow(
+                <CreatedFiles files={netexFiles} numberOfResults={2} currentPage={1} numberPerPage={5} />,
+            );
+            expect(tree.find('Pagination')).toHaveLength(0);
         });
 
         describe('getServerSideProps', () => {
@@ -109,6 +126,7 @@ describe('pages', () => {
 
                 expect(result).toEqual({
                     props: {
+                        currentPage: 1,
                         files: [
                             {
                                 date: '',
@@ -139,6 +157,8 @@ describe('pages', () => {
                                 zoneName: '',
                             },
                         ],
+                        numberOfResults: 2,
+                        numberPerPage: 10,
                     },
                 });
             });
