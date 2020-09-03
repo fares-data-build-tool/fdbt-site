@@ -2,9 +2,8 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { RawService, Service } from '../../src/data/auroradb';
-import { UserFareStages } from '../../src/data/s3';
 import {
+    DAYS_VALID_ATTRIBUTE,
     MULTIPLE_PRODUCT_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
     OPERATOR_COOKIE,
@@ -14,7 +13,6 @@ import {
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
-    DAYS_VALID_COOKIE,
     PERIOD_TYPE_COOKIE,
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
@@ -23,6 +21,8 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../../src/constants/index';
+import { RawService, Service } from '../../src/data/auroradb';
+import { UserFareStages } from '../../src/data/s3';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
@@ -96,7 +96,6 @@ export const getMockRequestAndResponse = ({
         productName = 'Product A',
         productPrice = '1234',
         fareZoneName = 'fare zone 1',
-        daysValid = '2',
         periodTypeName = 'period',
         numberOfProducts = '2',
         multipleProducts = [
@@ -140,15 +139,11 @@ export const getMockRequestAndResponse = ({
         [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
         [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
+        [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
         ...session,
     };
 
-    const {
-        operatorUuid = defaultUuid,
-        journeyUuid = defaultUuid,
-        csvUploadZoneUuid = defaultUuid,
-        daysValidUuid = defaultUuid,
-    } = uuid;
+    const { operatorUuid = defaultUuid, journeyUuid = defaultUuid, csvUploadZoneUuid = defaultUuid } = uuid;
 
     let cookieString = '';
 
@@ -167,10 +162,6 @@ export const getMockRequestAndResponse = ({
 
     cookieString += fareZoneName
         ? `${CSV_ZONE_UPLOAD_COOKIE}=%7B%22fareZoneName%22%3A%22${fareZoneName}%22%2C%22uuid%22%3A%22${csvUploadZoneUuid}%22%7D;`
-        : '';
-
-    cookieString += daysValid
-        ? `${DAYS_VALID_COOKIE}=%7B%22daysValid%22%3A%22${daysValid}%22%2C%22uuid%22%3A%22${daysValidUuid}%22%7D;`
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';

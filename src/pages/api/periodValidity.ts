@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_COOKIE } from '../../constants';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo, unescapeAndDecodeCookie } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, ProductData } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
 
 export interface PeriodExpiryWithErrors {
     errorMessage: string;
@@ -22,14 +22,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const cookies = new Cookies(req, res);
 
             const productDetailsCookie = unescapeAndDecodeCookie(cookies, PRODUCT_DETAILS_ATTRIBUTE);
-            const daysValidCookie = unescapeAndDecodeCookie(cookies, DAYS_VALID_COOKIE);
+            const daysValidInfo = getSessionAttribute(req, DAYS_VALID_ATTRIBUTE);
 
-            if (productDetailsCookie === '' || daysValidCookie === '') {
+            if (productDetailsCookie === '' || !daysValidInfo) {
                 throw new Error('Necessary cookies not found for period validity API');
             }
 
             const { productName, productPrice } = JSON.parse(productDetailsCookie);
-            const { daysValid } = JSON.parse(daysValidCookie);
+            const { daysValid } = daysValidInfo;
 
             const periodExpiryAttributeValue: ProductData = {
                 products: [

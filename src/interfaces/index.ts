@@ -14,6 +14,11 @@ export interface ProductInfo {
     productPrice: string;
 }
 
+export interface DaysValidInfo {
+    daysValid: string;
+    errors: ErrorInfo[];
+}
+
 export interface ProductInfoWithErrors extends ProductInfo {
     errors: ErrorInfo[];
 }

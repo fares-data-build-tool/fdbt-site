@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_COOKIE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -69,8 +69,7 @@ const ChooseValidity = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ValidityProps } => {
     const cookies = parseCookies(ctx);
     const productCookie = cookies[PRODUCT_DETAILS_ATTRIBUTE];
-    const validityCookie = cookies[DAYS_VALID_COOKIE];
-
+    const validityInfo = getSessionAttribute(ctx.req, DAYS_VALID_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (!productCookie) {
@@ -85,8 +84,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
 
     let validity;
 
-    if (validityCookie) {
-        validity = JSON.parse(validityCookie);
+    if (validityInfo) {
+        validity = validityInfo.daysValid;
     }
 
     return {
@@ -94,8 +93,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
             productName: product.productName,
             productPrice: product.productPrice,
             passengerType: passengerTypeAttribute.passengerType,
-            daysValid: validity?.daysValid ?? '',
-            errors: validity?.error ? [validity.error] : [],
+            daysValid: validity ?? '',
+            errors: validityInfo?.errors ?? [],
         },
     };
 };

@@ -1,16 +1,5 @@
 import {
-    InputMethodInfo,
-    ErrorInfo,
-    IncomingMessageWithSession,
-    ProductInfo,
-    ProductData,
-    ProductInfoWithErrors,
-    GroupDefinition,
-    TimeRestriction,
-    CompanionInfo,
-} from '../interfaces/index';
-
-import {
+    DAYS_VALID_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
@@ -29,7 +18,19 @@ import {
     INPUT_METHOD_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-} from '../constants';
+} from '../constants/index';
+import {
+    InputMethodInfo,
+    ErrorInfo,
+    IncomingMessageWithSession,
+    ProductInfo,
+    ProductData,
+    ProductInfoWithErrors,
+    GroupDefinition,
+    TimeRestriction,
+    CompanionInfo,
+    DaysValidInfo,
+} from '../interfaces/index';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -51,6 +52,7 @@ import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType'
 import { Service, ServiceWithErrors } from '../pages/api/service';
 
 type GetSessionAttributeTypes = {
+    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo | undefined;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
@@ -83,6 +85,7 @@ export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWit
     req?.session?.[attributeName];
 
 type UpdateSessionAttributeTypes = {
+    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo | undefined;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
