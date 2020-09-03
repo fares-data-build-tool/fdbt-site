@@ -5,7 +5,7 @@ import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_ATTRIBUTE } from '../constants';
 import { ServiceType, getServicesByNocCode } from '../data/auroradb';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { getNocFromIdToken } from '../utils';
+import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from './api/serviceList';
@@ -111,7 +111,7 @@ export const isServiceListAttributeWithErrors = (
     (serviceListAttribute as ServiceListAttributeWithErrors).errors !== undefined;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceListProps }> => {
-    const nocCode = getNocFromIdToken(ctx);
+    const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     if (!nocCode) {
