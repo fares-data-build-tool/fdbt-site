@@ -19,6 +19,7 @@ import {
     DAYS_VALID_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
 } from '../constants/index';
 import {
     Journey,
@@ -33,6 +34,8 @@ import {
     TimeRestriction,
     CompanionInfo,
     DaysValidInfo,
+    PeriodTypeAttribute,
+    PeriodTypeAttributeWithErrors,
 } from '../interfaces/index';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -78,15 +81,17 @@ type GetSessionAttributeTypes = {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: undefined | Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: undefined | Journey | JourneyWithErrors;
+    [PERIOD_TYPE_ATTRIBUTE]: undefined | PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
 };
 
-type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
-    req: IncomingMessageWithSession,
-    attributeName: Key,
-) => GetSessionAttributeTypes[Key];
+type GetSessionAttribute<T extends string> = T extends keyof GetSessionAttributeTypes
+    ? GetSessionAttributeTypes[T]
+    : string;
 
-export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWithSession, attributeName) =>
-    req?.session?.[attributeName];
+export const getSessionAttribute = <T extends string>(
+    req: IncomingMessageWithSession,
+    attributeName: T,
+): GetSessionAttribute<T> => req?.session?.[attributeName];
 
 type UpdateSessionAttributeTypes = {
     [DAYS_VALID_ATTRIBUTE]: DaysValidInfo | undefined;
@@ -109,18 +114,17 @@ type UpdateSessionAttributeTypes = {
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
+    [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
 };
 
-type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
-    req: IncomingMessageWithSession,
-    attributeName: Key,
-    attributeValue: UpdateSessionAttributeTypes[Key],
-) => void;
+type UpdateSessionAttribute<T extends string> = T extends keyof UpdateSessionAttributeTypes
+    ? UpdateSessionAttributeTypes[T]
+    : string;
 
-export const updateSessionAttribute: UpdateSessionAttribute = (
+export const updateSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,
-    attributeName,
-    attributeValue,
+    attributeName: T,
+    attributeValue: UpdateSessionAttribute<T>,
 ): void => {
     req.session[attributeName] = attributeValue;
 };

@@ -14,7 +14,7 @@ import {
     OPERATOR_COOKIE,
     PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    PERIOD_TYPE_COOKIE,
+    PERIOD_TYPE_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     SERVICE_LIST_COOKIE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
@@ -40,7 +40,7 @@ import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../
 import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { isFareType, isPassengerType } from './typeChecking';
+import { isFareType, isPassengerType, isPeriodType } from './typeChecking';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
@@ -214,7 +214,6 @@ export const getPeriodGeoZoneTicketJson = async (
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
-    const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
     const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
@@ -223,11 +222,12 @@ export const getPeriodGeoZoneTicketJson = async (
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
+    const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
 
     if (
         !nocCode ||
-        !periodTypeCookie ||
         !isPassengerType(passengerTypeAttribute) ||
+        !isPeriodType(periodTypeAttribute) ||
         !operatorCookie ||
         !idToken ||
         !fareZoneCookie
@@ -236,7 +236,6 @@ export const getPeriodGeoZoneTicketJson = async (
             'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
         );
     }
-    const { periodTypeName } = JSON.parse(periodTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
     const requestBody: { [key: string]: string } = req.body;
@@ -277,7 +276,7 @@ export const getPeriodGeoZoneTicketJson = async (
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: periodTypeName,
+        type: periodTypeAttribute.name,
         ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
@@ -299,7 +298,6 @@ export const getPeriodMultipleServicesTicketJson = (
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
-    const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
     const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
@@ -308,11 +306,12 @@ export const getPeriodMultipleServicesTicketJson = (
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
+    const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
 
     if (
         !nocCode ||
-        !periodTypeCookie ||
         !isPassengerType(passengerTypeAttribute) ||
+        !isPeriodType(periodTypeAttribute) ||
         !operatorCookie ||
         !idToken ||
         !serviceListCookie
@@ -322,7 +321,6 @@ export const getPeriodMultipleServicesTicketJson = (
         );
     }
 
-    const { periodTypeName } = JSON.parse(periodTypeCookie);
     const decodedIdToken = decode(idToken) as CognitoIdToken;
     const uuid = getUuidFromCookie(req, res);
 
@@ -371,7 +369,7 @@ export const getPeriodMultipleServicesTicketJson = (
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: periodTypeName,
+        type: periodTypeAttribute.name,
         ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,

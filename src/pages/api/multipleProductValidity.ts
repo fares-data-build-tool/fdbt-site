@@ -1,25 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import {
-    CSV_ZONE_UPLOAD_COOKIE,
-    MULTIPLE_PRODUCT_COOKIE,
-    OPERATOR_COOKIE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    PERIOD_TYPE_COOKIE,
-    SERVICE_LIST_COOKIE,
-} from '../../constants/index';
+import { MULTIPLE_PRODUCT_COOKIE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import {
-    redirectTo,
-    redirectToError,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-    getAndValidateNoc,
-} from './apiUtils';
+import { redirectTo, redirectToError, setCookieOnResponseObject, unescapeAndDecodeCookie } from './apiUtils';
 import { Product } from '../multipleProductValidity';
-import { getSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { isPassengerType } from './apiUtils/typeChecking';
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
@@ -52,23 +37,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
         const cookies = new Cookies(req, res);
-        const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
-        const fareZoneCookie = unescapeAndDecodeCookie(cookies, CSV_ZONE_UPLOAD_COOKIE);
-        const serviceListCookie = unescapeAndDecodeCookie(cookies, SERVICE_LIST_COOKIE);
-        const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
         const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-        const nocCode = getAndValidateNoc(req, res);
-
-        const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-        if (
-            !nocCode ||
-            multipleProductCookie === '' ||
-            periodTypeCookie === '' ||
-            !isPassengerType(passengerTypeAttribute) ||
-            (operatorCookie === '' && (fareZoneCookie === '' || serviceListCookie === ''))
-        ) {
-            throw new Error('Necessary cookies not found for multiple product validity API');
-        }
 
         const rawProducts: Product[] = JSON.parse(multipleProductCookie);
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
