@@ -1,13 +1,6 @@
+import { FaresInformation } from '../pages/api/priceEntry';
 import {
-    IncomingMessageWithSession,
-    ProductInfo,
-    ProductData,
-    ProductInfoWithErrors,
-    GroupDefinition,
-    TimeRestriction,
-    CompanionInfo,
-} from '../interfaces';
-import {
+    PRICE_ENTRY_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
@@ -27,7 +20,16 @@ import {
     NUMBER_OF_STAGES_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-} from '../constants';
+} from '../constants/index';
+import {
+    IncomingMessageWithSession,
+    ProductInfo,
+    ProductData,
+    ProductInfoWithErrors,
+    GroupDefinition,
+    TimeRestriction,
+    CompanionInfo,
+} from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -52,6 +54,7 @@ import { BaseMultipleProductAttribute, BaseMultipleProductAttributeWithErrors } 
 import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
 
 type GetSessionAttributeTypes = {
+    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation | undefined;
     [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
@@ -89,6 +92,7 @@ export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWit
     req?.session?.[attributeName];
 
 type UpdateSessionAttributeTypes = {
+    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation | undefined;
     [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
     [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
