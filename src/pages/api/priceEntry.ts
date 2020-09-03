@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import isEmpty from 'lodash/isEmpty';
 import { NextApiRequestWithSession } from '../../interfaces/index';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
-    JOURNEY_COOKIE,
+    JOURNEY_ATTRIBUTE,
     USER_DATA_BUCKET_NAME,
     PRICE_ENTRY_INPUTS_COOKIE,
     PRICE_ENTRY_ERRORS_COOKIE,
@@ -14,12 +13,12 @@ import {
     getUuidFromCookie,
     redirectToError,
     redirectTo,
-    unescapeAndDecodeCookie,
     setCookieOnResponseObject,
     deleteCookieOnResponseObject,
 } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './apiUtils/validator';
+import { isJourney } from './apiUtils/typeChecking';
 
 interface UserFareStages {
     fareStages: {
@@ -153,13 +152,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const uuid = getUuidFromCookie(req, res);
         await putDataInS3(uuid, JSON.stringify(mappedData));
 
-        const cookies = new Cookies(req, res);
-        const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
-        const journeyObject = JSON.parse(journeyCookie);
-
         updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'manual' });
 
-        if (journeyObject?.outboundJourney) {
+        const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
+
+        if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
             redirectTo(res, '/outboundMatching');
             return;
         }

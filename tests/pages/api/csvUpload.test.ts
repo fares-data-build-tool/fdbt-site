@@ -5,6 +5,7 @@ import * as s3 from '../../../src/data/s3';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import logger from '../../../src/utils/logger';
 import { containsDuplicateFareStages } from '../../../src/pages/api/csvUpload';
+import { JOURNEY_ATTRIBUTE } from '../../../src/constants';
 
 jest.spyOn(s3, 'putStringInS3');
 
@@ -208,6 +209,11 @@ describe('csvUpload', () => {
             cookieValues: {},
             body: null,
             uuid: {},
+            session: {
+                [JOURNEY_ATTRIBUTE]: {
+                    outboundJourney: '13003921A#13003655B',
+                },
+            },
         });
         const file = {
             'csv-upload': {

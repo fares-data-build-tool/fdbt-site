@@ -1,5 +1,4 @@
 import {
-    DAYS_VALID_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
@@ -14,12 +13,16 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-    SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    DAYS_VALID_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
 } from '../constants/index';
 import {
+    Journey,
+    JourneyWithErrors,
     InputMethodInfo,
     ErrorInfo,
     IncomingMessageWithSession,
@@ -74,6 +77,7 @@ type GetSessionAttributeTypes = {
     [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: undefined | Service | ServiceWithErrors;
+    [JOURNEY_ATTRIBUTE]: undefined | Journey | JourneyWithErrors;
 };
 
 type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
@@ -104,6 +108,7 @@ type UpdateSessionAttributeTypes = {
     [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
+    [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
 };
 
 type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(

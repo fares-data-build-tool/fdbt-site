@@ -9,7 +9,6 @@ import {
     OPERATOR_COOKIE,
     SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
-    JOURNEY_COOKIE,
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
@@ -91,7 +90,6 @@ export const getMockRequestAndResponse = ({
             },
             noc: 'TEST',
         },
-        journey: { startPoint = '13003921A', endPoint = '13003655B' } = {},
         fareStages = 6,
         productName = 'Product A',
         productPrice = '1234',
@@ -143,18 +141,13 @@ export const getMockRequestAndResponse = ({
         ...session,
     };
 
-    const { operatorUuid = defaultUuid, journeyUuid = defaultUuid, csvUploadZoneUuid = defaultUuid } = uuid;
+    const { operatorUuid = defaultUuid, csvUploadZoneUuid = defaultUuid } = uuid;
 
     let cookieString = '';
 
     cookieString += operator
         ? `${OPERATOR_COOKIE}=${encodeURI(JSON.stringify({ ...operator, uuid: operatorUuid }))};`
         : '';
-
-    cookieString +=
-        startPoint && endPoint
-            ? `${JOURNEY_COOKIE}=%7B%22directionJourneyPattern%22%3A%22${startPoint}%23${endPoint}%22%2C%22inboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22outboundJourney%22%3A%22${startPoint}%23${endPoint}%22%2C%22uuid%22%3A%22${journeyUuid}%22%7D;`
-            : '';
 
     cookieString += productName
         ? `${PRODUCT_DETAILS_ATTRIBUTE}=%7B%22productName%22%3A%22${productName}%22%2C%22productPrice%22%3A%22${productPrice}%22%7D;`

@@ -10,7 +10,7 @@ export const DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE = 'fdbt-passenger-type-error
 
 export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
-export const JOURNEY_COOKIE = 'fdbt-journey';
+export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 
