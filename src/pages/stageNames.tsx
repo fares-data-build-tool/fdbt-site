@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import uniqBy from 'lodash/uniqBy';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_STAGES_COOKIE, STAGE_NAMES_COOKIE, STAGE_NAME_VALIDATION_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { FARE_STAGES_COOKIE, STAGE_NAMES_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
+import { getSessionAttribute } from '../utils/sessions';
+import { isInputCheck } from './api/apiUtils/typeChecking';
 
 const title = 'Stage Names - Fares Data Build Tool';
 const description = 'Stage Names entry page of the Fares Data Build Tool';
@@ -90,8 +90,7 @@ const StageNames = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    deleteCookieOnServerSide(ctx, STAGE_NAMES_COOKIE);
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const cookies = parseCookies(ctx);
     const fareStagesCookie = cookies[FARE_STAGES_COOKIE];
 
@@ -101,11 +100,11 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
 
     const fareStagesObject = JSON.parse(fareStagesCookie);
     const numberOfFareStages = Number(fareStagesObject.fareStages);
+    const stageNamesInfo = getSessionAttribute(ctx.req, STAGE_NAMES_ATTRIBUTE);
 
     let inputChecks: InputCheck[] = [];
-    if (cookies[STAGE_NAME_VALIDATION_COOKIE]) {
-        const validationCookie = cookies[STAGE_NAME_VALIDATION_COOKIE];
-        inputChecks = JSON.parse(validationCookie);
+    if (stageNamesInfo && stageNamesInfo.length > 0 && isInputCheck(stageNamesInfo)) {
+        inputChecks = stageNamesInfo;
     }
 
     if (inputChecks.length > 0) {
