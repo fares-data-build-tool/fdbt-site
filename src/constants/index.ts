@@ -16,11 +16,9 @@ export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-governme
 
 export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
 
-export const STAGE_NAME_VALIDATION_COOKIE = 'fdbt-stage-names-validation';
-
 export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
 
-export const STAGE_NAMES_COOKIE = 'fdbt-stage-names';
+export const STAGE_NAMES_ATTRIBUTE = 'fdbt-stage-names';
 
 export const DAYS_VALID_ATTRIBUTE = 'fdbt-days-valid';
 

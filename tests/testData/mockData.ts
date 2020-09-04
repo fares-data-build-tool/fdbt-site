@@ -3,6 +3,7 @@ import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import {
+    STAGE_NAMES_ATTRIBUTE,
     DAYS_VALID_ATTRIBUTE,
     MULTIPLE_PRODUCT_COOKIE,
     NUMBER_OF_PRODUCTS_COOKIE,
@@ -20,6 +21,7 @@ import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
 } from '../../src/constants/index';
+
 import { RawService, Service } from '../../src/data/auroradb';
 import { UserFareStages } from '../../src/data/s3';
 
@@ -138,6 +140,7 @@ export const getMockRequestAndResponse = ({
         [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
         [PERIOD_TYPE_ATTRIBUTE]: { name: 'period' },
         [FARE_STAGES_ATTRIBUTE]: { fareStages: 6 },
+        [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
         ...session,
     };
 
