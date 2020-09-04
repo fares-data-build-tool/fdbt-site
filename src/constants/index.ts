@@ -26,7 +26,7 @@ export const DAYS_VALID_ATTRIBUTE = 'fdbt-days-valid';
 
 export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
 
-export const PERIOD_TYPE_COOKIE = 'fdbt-period-type';
+export const PERIOD_TYPE_ATTRIBUTE = 'fdbt-period-type';
 
 export const CSV_UPLOAD_COOKIE = 'fdbt-csv-upload';
 

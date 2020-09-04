@@ -3,6 +3,7 @@ import {
     TIME_RESTRICTIONS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
 } from '../../src/constants/index';
 import breadcrumb from '../../src/utils/breadcrumbs';
 import {
@@ -59,12 +60,10 @@ describe('breadcrumbs', () => {
     it('creates the correct array of Breadcrumbs if user is on csv zone upload page having selected period geozone and senior', () => {
         ctx = getMockContext({
             url: '/csvZoneUpload',
-            cookies: {
-                periodTypeName: 'periodGeoZone',
-            },
             session: {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Senior' },
+                [PERIOD_TYPE_ATTRIBUTE]: { name: 'periodGeoZone' },
             },
         });
         const result = breadcrumb(ctx).generate();
@@ -86,12 +85,10 @@ describe('breadcrumbs', () => {
     it('creates the correct array of Breadcrumbs if user is on multiple product validity page having selected multiple services and anyone', () => {
         ctx = getMockContext({
             url: '/multipleProductValidity',
-            cookies: {
-                periodTypeName: 'periodMultipleServices',
-            },
             session: {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
+                [PERIOD_TYPE_ATTRIBUTE]: { name: 'periodMultipleServices' },
             },
         });
         const result = breadcrumb(ctx).generate();
@@ -103,7 +100,6 @@ describe('breadcrumbs', () => {
         ctx = getMockContext({
             url: '/periodValidity',
             cookies: {
-                periodTypeName: 'periodMultipleServices',
                 passengerType: { passengerType: 'anyone' },
                 numberOfProducts: '1',
             },
@@ -111,6 +107,7 @@ describe('breadcrumbs', () => {
                 [TIME_RESTRICTIONS_ATTRIBUTE]: { timeRestrictions: true },
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'anyone' },
+                [PERIOD_TYPE_ATTRIBUTE]: { name: 'periodMultipleServices' },
             },
         });
         const result = breadcrumb(ctx).generate();

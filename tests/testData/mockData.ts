@@ -12,7 +12,7 @@ import {
     FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
-    PERIOD_TYPE_COOKIE,
+    PERIOD_TYPE_ATTRIBUTE,
     SERVICE_LIST_COOKIE,
     ID_TOKEN_COOKIE,
     USER_COOKIE,
@@ -94,7 +94,6 @@ export const getMockRequestAndResponse = ({
         productName = 'Product A',
         productPrice = '1234',
         fareZoneName = 'fare zone 1',
-        periodTypeName = 'period',
         numberOfProducts = '2',
         multipleProducts = [
             {
@@ -138,6 +137,7 @@ export const getMockRequestAndResponse = ({
         [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
         [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
+        [PERIOD_TYPE_ATTRIBUTE]: { name: 'period' },
         ...session,
     };
 
@@ -158,10 +158,6 @@ export const getMockRequestAndResponse = ({
         : '';
 
     cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
-
-    cookieString += periodTypeName
-        ? `${PERIOD_TYPE_COOKIE}=%7B%22periodTypeName%22%3A%22${periodTypeName}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
-        : '';
 
     cookieString += numberOfProducts
         ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`

@@ -12,7 +12,7 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
-    PERIOD_TYPE_COOKIE,
+    PERIOD_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_COOKIE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
@@ -20,7 +20,7 @@ import {
 } from '../../constants';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from './apiUtils/typeChecking';
+import { isFareType, isPeriodType } from './apiUtils/typeChecking';
 
 export interface SelectSalesOfferPackageWithError {
     errorMessage: string;
@@ -84,17 +84,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'period') {
-            const periodTypeCookie = unescapeAndDecodeCookie(cookies, PERIOD_TYPE_COOKIE);
-            const periodTypeObject = JSON.parse(periodTypeCookie);
-            const { periodTypeName } = periodTypeObject;
+            const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
+            const periodType = isPeriodType(periodTypeAttribute) ? periodTypeAttribute.name : '';
 
-            if (periodTypeName !== 'periodGeoZone' && periodTypeName !== 'periodMultipleServices') {
+            if (periodType !== 'periodGeoZone' && periodType !== 'periodMultipleServices') {
                 throw new Error('No period type found to generate user data json.');
             }
 
-            if (periodTypeName === 'periodGeoZone') {
+            if (periodType === 'periodGeoZone') {
                 userDataJson = await getPeriodGeoZoneTicketJson(req, res);
-            } else if (periodTypeName === 'periodMultipleServices') {
+            } else if (periodType === 'periodMultipleServices') {
                 userDataJson = getPeriodMultipleServicesTicketJson(req, res);
             }
         } else if (fareType === 'flatFare') {

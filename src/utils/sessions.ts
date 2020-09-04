@@ -19,6 +19,7 @@ import {
     DAYS_VALID_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
+    PERIOD_TYPE_ATTRIBUTE,
 } from '../constants/index';
 import {
     Journey,
@@ -33,14 +34,15 @@ import {
     TimeRestriction,
     CompanionInfo,
     DaysValidInfo,
+    PeriodTypeAttribute,
+    PeriodTypeAttributeWithErrors,
 } from '../interfaces/index';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
-import { SalesOfferPackage, SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
+import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import { PeriodExpiryWithErrors } from '../pages/api/periodValidity';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
-import { MatchingValues } from '../pages/api/outboundMatching';
 import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
 import {
     GroupPassengerTypesCollection,
@@ -54,73 +56,41 @@ import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerTy
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { Service, ServiceWithErrors } from '../pages/api/service';
 
-type GetSessionAttributeTypes = {
-    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo | undefined;
-    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
-    [SOP_ATTRIBUTE]: undefined | SalesOfferPackageWithErrors;
-    [SOP_INFO_ATTRIBUTE]: undefined | SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
-    [MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | MatchingInfo;
-    [INBOUND_MATCHING_ATTRIBUTE]: undefined | MatchingWithErrors | InboundMatchingInfo;
-    [PERIOD_EXPIRY_ATTRIBUTE]: undefined | PeriodExpiryWithErrors | ProductData;
-    [PRODUCT_DETAILS_ATTRIBUTE]: undefined | ProductInfo | ProductData | ProductInfoWithErrors;
-    [SALES_OFFER_PACKAGES_ATTRIBUTE]: undefined | SelectSalesOfferPackageWithError;
-    [GROUP_SIZE_ATTRIBUTE]: undefined | GroupTicketAttribute | GroupTicketAttributeWithErrors;
-    [GROUP_PASSENGER_TYPES_ATTRIBUTE]:
-        | undefined
-        | GroupPassengerTypesCollection
-        | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
-    [GROUP_DEFINITION_ATTRIBUTE]: undefined | GroupDefinition | GroupDefinitionWithErrors;
-    [TIME_RESTRICTIONS_ATTRIBUTE]: undefined | TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
-    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: undefined | TimeRestriction | TimeRestrictionsDefinitionWithErrors;
-    [FARE_TYPE_ATTRIBUTE]: undefined | FareType | FareTypeWithErrors;
-    [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
-    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
-    [SERVICE_ATTRIBUTE]: undefined | Service | ServiceWithErrors;
-    [JOURNEY_ATTRIBUTE]: undefined | Journey | JourneyWithErrors;
-};
-
-type GetSessionAttribute = <Key extends keyof GetSessionAttributeTypes>(
-    req: IncomingMessageWithSession,
-    attributeName: Key,
-) => GetSessionAttributeTypes[Key];
-
-export const getSessionAttribute: GetSessionAttribute = (req: IncomingMessageWithSession, attributeName) =>
-    req?.session?.[attributeName];
-
-type UpdateSessionAttributeTypes = {
-    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo | undefined;
-    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo | undefined;
-    [SOP_ATTRIBUTE]: SalesOfferPackage | SalesOfferPackageWithErrors | undefined;
-    [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors | undefined;
-    [INBOUND_MATCHING_ATTRIBUTE]: InboundMatchingInfo | MatchingWithErrors;
-    [MATCHING_ATTRIBUTE]: MatchingInfo | MatchingWithErrors | MatchingValues;
-    [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | PeriodExpiryWithErrors;
-    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData;
+type SessionAttributeTypes = {
+    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo;
+    [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
+    [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
+    [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
+    [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
+    [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
+    [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiryWithErrors | ProductData;
+    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData | ProductInfoWithErrors;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
-    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[] | undefined;
+    [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
-    [PASSENGER_TYPE_ATTRIBUTE]: undefined | PassengerType | PassengerTypeWithErrors;
-    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: undefined | PassengerType | DefinePassengerTypeWithErrors;
+    [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
+    [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
+    [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
 };
 
-type UpdateSessionAttribute = <Key extends keyof UpdateSessionAttributeTypes>(
-    req: IncomingMessageWithSession,
-    attributeName: Key,
-    attributeValue: UpdateSessionAttributeTypes[Key],
-) => void;
+type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;
 
-export const updateSessionAttribute: UpdateSessionAttribute = (
+export const getSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,
-    attributeName,
-    attributeValue,
+    attributeName: T,
+): SessionAttribute<T> => req?.session?.[attributeName];
+
+export const updateSessionAttribute = <T extends string>(
+    req: IncomingMessageWithSession,
+    attributeName: T,
+    attributeValue: SessionAttribute<T> | undefined,
 ): void => {
     req.session[attributeName] = attributeValue;
 };

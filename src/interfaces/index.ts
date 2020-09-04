@@ -265,3 +265,11 @@ export interface Journey extends JourneyWithErrors {
 export interface JourneyWithErrors {
     errors?: ErrorInfo[];
 }
+
+export interface PeriodTypeAttribute {
+    name: string;
+}
+
+export interface PeriodTypeAttributeWithErrors {
+    errors?: ErrorInfo[];
+}

@@ -1,5 +1,12 @@
 import { FareType, FareTypeWithErrors } from '../fareType';
-import { InputMethodInfo, ErrorInfo, Journey, JourneyWithErrors } from '../../../interfaces';
+import {
+    InputMethodInfo,
+    ErrorInfo,
+    Journey,
+    JourneyWithErrors,
+    PeriodTypeAttribute,
+    PeriodTypeAttributeWithErrors,
+} from '../../../interfaces';
 import { PassengerType, PassengerTypeWithErrors } from '../passengerType';
 import { Service, ServiceWithErrors } from '../service';
 
@@ -14,6 +21,7 @@ export const isFareType = (fareType: FareType | FareTypeWithErrors | undefined):
 export const inputMethodErrorsExist = (
     inputMethodAttribute: InputMethodInfo | ErrorInfo | undefined,
 ): inputMethodAttribute is ErrorInfo => (inputMethodAttribute as ErrorInfo)?.errorMessage !== undefined;
+
 export const isPassengerTypeAttributeWithErrors = (
     fareTypeAttribute: PassengerType | PassengerTypeWithErrors,
 ): fareTypeAttribute is PassengerTypeWithErrors => (fareTypeAttribute as PassengerTypeWithErrors).errors !== undefined;
@@ -45,3 +53,13 @@ export const isJourney = (journey: Journey | JourneyWithErrors | undefined): jou
             (journey as Journey).errors !== undefined)
     );
 };
+
+export const isPeriodTypeWithErrors = (
+    periodType: PeriodTypeAttribute | PeriodTypeAttributeWithErrors | undefined,
+): periodType is PeriodTypeAttributeWithErrors =>
+    periodType !== undefined && (periodType as PeriodTypeAttributeWithErrors).errors !== undefined;
+
+export const isPeriodType = (
+    periodType: PeriodTypeAttribute | PeriodTypeAttributeWithErrors | undefined,
+): periodType is PeriodTypeAttribute =>
+    periodType !== undefined && (periodType as PeriodTypeAttribute).name !== undefined;
