@@ -1,4 +1,5 @@
 import {
+    DAYS_VALID_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
@@ -16,10 +17,10 @@ import {
     INPUT_METHOD_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    DAYS_VALID_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
     STAGE_NAMES_ATTRIBUTE,
 } from '../constants/index';
 import {
@@ -56,6 +57,7 @@ import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
 import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { Service, ServiceWithErrors } from '../pages/api/service';
+import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
 
 type SessionAttributeTypes = {
@@ -81,6 +83,7 @@ type SessionAttributeTypes = {
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
     [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
+    [FARE_STAGES_ATTRIBUTE]: undefined | FareStagesAttribute | FareStagesAttributeWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

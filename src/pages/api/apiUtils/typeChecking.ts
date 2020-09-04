@@ -9,6 +9,7 @@ import {
 } from '../../../interfaces';
 import { PassengerType, PassengerTypeWithErrors } from '../passengerType';
 import { Service, ServiceWithErrors } from '../service';
+import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../chooseStages';
 import { InputCheck } from '../../stageNames';
 
 export const isFareTypeAttributeWithErrors = (
@@ -67,3 +68,13 @@ export const isPeriodType = (
 
 export const isInputCheck = (stageNamesInfo: string[] | InputCheck[] | undefined): stageNamesInfo is InputCheck[] =>
     stageNamesInfo !== undefined && (stageNamesInfo[0] as InputCheck).error !== undefined;
+
+export const isFareStageWithErrors = (
+    periodType: FareStagesAttribute | FareStagesAttributeWithErrors | undefined,
+): periodType is FareStagesAttributeWithErrors =>
+    periodType !== undefined && (periodType as FareStagesAttributeWithErrors).errors !== undefined;
+
+export const isFareStage = (
+    fareStages: FareStagesAttribute | FareStagesAttributeWithErrors | undefined,
+): fareStages is FareStagesAttribute =>
+    fareStages !== undefined && (fareStages as FareStagesAttribute).fareStages !== undefined;

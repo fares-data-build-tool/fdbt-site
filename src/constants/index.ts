@@ -14,7 +14,7 @@ export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 
-export const FARE_STAGES_COOKIE = 'fdbt-fare-stages';
+export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
 
 export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
 

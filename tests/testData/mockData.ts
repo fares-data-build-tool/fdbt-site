@@ -10,7 +10,6 @@ import {
     OPERATOR_COOKIE,
     SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
-    FARE_STAGES_COOKIE,
     CSV_ZONE_UPLOAD_COOKIE,
     PRODUCT_DETAILS_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
@@ -20,6 +19,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
 } from '../../src/constants/index';
 
 import { RawService, Service } from '../../src/data/auroradb';
@@ -92,7 +92,6 @@ export const getMockRequestAndResponse = ({
             },
             noc: 'TEST',
         },
-        fareStages = 6,
         productName = 'Product A',
         productPrice = '1234',
         fareZoneName = 'fare zone 1',
@@ -140,6 +139,7 @@ export const getMockRequestAndResponse = ({
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
         [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
         [PERIOD_TYPE_ATTRIBUTE]: { name: 'period' },
+        [FARE_STAGES_ATTRIBUTE]: { fareStages: 6 },
         [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
         ...session,
     };
@@ -159,8 +159,6 @@ export const getMockRequestAndResponse = ({
     cookieString += fareZoneName
         ? `${CSV_ZONE_UPLOAD_COOKIE}=%7B%22fareZoneName%22%3A%22${fareZoneName}%22%2C%22uuid%22%3A%22${csvUploadZoneUuid}%22%7D;`
         : '';
-
-    cookieString += fareStages ? `${FARE_STAGES_COOKIE}=%7B%22fareStages%22%3A%22${fareStages}%22%7D;` : '';
 
     cookieString += numberOfProducts
         ? `${NUMBER_OF_PRODUCTS_COOKIE}=%7B%22numberOfProductsInput%22%3A%22${numberOfProducts}%22%2C%22uuid%22%3A%22${operatorUuid}%22%7D;`
