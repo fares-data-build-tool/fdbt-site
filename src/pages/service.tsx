@@ -9,7 +9,7 @@ import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType, isServiceAttributeWithErrors } from './api/apiUtils/typeChecking';
+import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Service - Fares Data Build Tool';

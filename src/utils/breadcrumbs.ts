@@ -1,22 +1,16 @@
 import {
     INPUT_METHOD_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_COOKIE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     JOURNEY_ATTRIBUTE,
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
-import { getCookieValue } from '.';
 import { getSessionAttribute } from './sessions';
-import {
-    isFareType,
-    isPassengerType,
-    inputMethodErrorsExist,
-    isJourney,
-    isPeriodType,
-} from '../pages/api/apiUtils/typeChecking';
+import { isFareType, isPassengerType, inputMethodErrorsExist, isJourney, isPeriodType } from '../interfaces/typeGuards';
+import { isNumberOfProductsAttribute } from '../pages/howManyProducts';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
@@ -27,10 +21,10 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
         };
     }
 
-    const numberOfProducts = getCookieValue(ctx, NUMBER_OF_PRODUCTS_COOKIE, 'numberOfProductsInput');
-
     const inputMethod = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+
+    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const timeRestrictionsAttribute = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
@@ -50,8 +44,14 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const isGeoZone = isPeriodType(periodTypeAttribute) && periodTypeAttribute.name === 'periodGeoZone';
     const isCircular = isReturn && isJourney(journeyAttribute) && !journeyAttribute.outboundJourney;
 
-    const isSingleProduct = singleProductUrls.includes(url) || numberOfProducts === '1';
-    const isMultiProduct = multiProductUrls.includes(url) || (numberOfProducts !== null && numberOfProducts !== '1');
+    const isSingleProduct =
+        singleProductUrls.includes(url) ||
+        (isNumberOfProductsAttribute(numberOfProductsAttribute) &&
+            numberOfProductsAttribute.numberOfProductsInput === '1');
+    const isMultiProduct =
+        multiProductUrls.includes(url) ||
+        (isNumberOfProductsAttribute(numberOfProductsAttribute) &&
+            Number(numberOfProductsAttribute.numberOfProductsInput) > 1);
 
     const isCsvUploadUrl = csvUploadUrls.includes(url);
     const isManualUploadUrl = manualUploadUrls.includes(url);

@@ -10,7 +10,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import logger from '../utils/logger';
 import { getSessionAttribute } from '../utils/sessions';
-import { isFareTypeAttributeWithErrors } from './api/apiUtils/typeChecking';
+import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';

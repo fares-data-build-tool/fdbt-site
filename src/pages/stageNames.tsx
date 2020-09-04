@@ -7,7 +7,7 @@ import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interf
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
-import { isInputCheck, isFareStage } from './api/apiUtils/typeChecking';
+import { isInputCheck, isFareStage } from '../interfaces/typeGuards';
 
 const title = 'Stage Names - Fares Data Build Tool';
 const description = 'Stage Names entry page of the Fares Data Build Tool';

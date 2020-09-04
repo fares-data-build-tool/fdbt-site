@@ -5,7 +5,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { isFareStageWithErrors } from './api/apiUtils/typeChecking';
+import { isFareStageWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { FareStagesAttribute } from './api/chooseStages';
 

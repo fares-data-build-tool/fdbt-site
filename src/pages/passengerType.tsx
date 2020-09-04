@@ -7,7 +7,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerTypeAttributeWithErrors } from './api/apiUtils/typeChecking';
+import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';

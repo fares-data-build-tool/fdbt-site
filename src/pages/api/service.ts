@@ -3,7 +3,7 @@ import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils/index
 import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from './apiUtils/typeChecking';
+import { isFareType } from '../../interfaces/typeGuards';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export interface Service {

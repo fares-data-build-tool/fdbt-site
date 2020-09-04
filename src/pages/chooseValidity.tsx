@@ -7,7 +7,7 @@ import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { isPassengerType } from './api/apiUtils/typeChecking';
+import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Choose Validity - Fares Data Build Tool';

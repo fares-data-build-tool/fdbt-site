@@ -28,14 +28,6 @@ export type PassengerAttributes = {
     passengerTypeValue: string;
 };
 
-export interface ServicesInfo {
-    lineName: string;
-    startDate: string;
-    serviceCode: string;
-    serviceDescription?: string;
-    checked?: boolean;
-}
-
 export interface BasicService {
     lineName: string;
     nocCode: string;
@@ -272,4 +264,18 @@ export interface PeriodTypeAttribute {
 
 export interface PeriodTypeAttributeWithErrors {
     errors?: ErrorInfo[];
+}
+export interface S3NetexFile {
+    name: string;
+    noc: string;
+    reference: string;
+    fareType: string;
+    productNames?: string;
+    passengerType: string;
+    serviceNames?: string;
+    lineName?: string;
+    zoneName?: string;
+    sopNames: string;
+    date: string;
+    signedUrl: string;
 }

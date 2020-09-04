@@ -11,7 +11,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isJourney, isPassengerType, isService } from './api/apiUtils/typeChecking';
+import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Fares Data Build Tool';

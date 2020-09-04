@@ -1,16 +1,37 @@
-import { FareType, FareTypeWithErrors } from '../fareType';
 import {
+    PeriodTicket,
+    PointToPointTicket,
+    PeriodMultipleServicesTicket,
+    FlatFareTicket,
+    PeriodGeoZoneTicket,
     InputMethodInfo,
     ErrorInfo,
     Journey,
     JourneyWithErrors,
     PeriodTypeAttribute,
     PeriodTypeAttributeWithErrors,
-} from '../../../interfaces';
-import { PassengerType, PassengerTypeWithErrors } from '../passengerType';
-import { Service, ServiceWithErrors } from '../service';
-import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../chooseStages';
-import { InputCheck } from '../../stageNames';
+} from '.';
+import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
+import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
+import { Service, ServiceWithErrors } from '../pages/api/service';
+import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
+import { InputCheck } from '../pages/stageNames';
+
+export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
+
+export const isPeriodTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PeriodTicket =>
+    (ticket as PeriodTicket).products?.[0]?.productName !== undefined;
+
+export const isMultipleServicesTicket = (
+    ticket: PeriodTicket | PointToPointTicket,
+): ticket is PeriodMultipleServicesTicket | FlatFareTicket =>
+    (ticket as PeriodMultipleServicesTicket).selectedServices !== undefined;
+
+export const isPointToPointTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PointToPointTicket =>
+    (ticket as PointToPointTicket).lineName !== undefined;
+
+export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PeriodGeoZoneTicket =>
+    (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
 
 export const isFareTypeAttributeWithErrors = (
     fareTypeAttribute: FareType | FareTypeWithErrors,

@@ -1,6 +1,5 @@
 import { NextApiResponse } from 'next';
-import Cookies from 'cookies';
-import { redirectTo, redirectToError, getUuidFromCookie, unescapeAndDecodeCookie } from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import {
     getSingleTicketJson,
     getReturnTicketJson,
@@ -13,14 +12,14 @@ import { isSessionValid } from './apiUtils/validator';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
-    MULTIPLE_PRODUCT_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType, isPeriodType } from './apiUtils/typeChecking';
+import { isFareType, isPeriodType } from '../../interfaces/typeGuards';
 
 export interface SelectSalesOfferPackageWithError {
     errorMessage: string;
@@ -33,15 +32,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('Session is invalid.');
         }
 
-        const cookies = new Cookies(req, res);
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+        const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
         if (!fareTypeAttribute) {
-            throw new Error('No fare type cookie found.');
+            throw new Error('No fare type session attribute found.');
         }
 
-        const multipleProductCookie = unescapeAndDecodeCookie(cookies, MULTIPLE_PRODUCT_COOKIE);
-        const parsedCookie = multipleProductCookie && JSON.parse(multipleProductCookie);
+        const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
         if (
             isFareType(fareTypeAttribute) &&
@@ -63,7 +61,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (Object.keys(req.body).length < parsedCookie.length) {
+        if (Object.keys(req.body).length < products.length) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
                 errorMessage: 'Choose at least one sales offer package for each product',
                 selected: req.body,

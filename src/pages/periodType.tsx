@@ -6,7 +6,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPeriodTypeWithErrors } from './api/apiUtils/typeChecking';
+import { isPeriodTypeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Period Type - Fares Data Build Tool';
 const description = 'Period Type selection page of the Fares Data Build Tool';

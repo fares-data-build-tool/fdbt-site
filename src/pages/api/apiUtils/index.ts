@@ -8,7 +8,7 @@ import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../i
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
 import { getSessionAttribute } from '../../../utils/sessions';
-import { isFareType } from './typeChecking';
+import { isFareType } from '../../../interfaces/typeGuards';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;

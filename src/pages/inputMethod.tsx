@@ -6,7 +6,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { inputMethodErrorsExist } from './api/apiUtils/typeChecking';
+import { inputMethodErrorsExist } from '../interfaces/typeGuards';
 
 const title = 'Input Method - Fares Data Build Tool';
 const description = 'Input Method selection page of the Fares Data Build Tool';

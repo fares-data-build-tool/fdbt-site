@@ -1,5 +1,7 @@
+import { FaresInformation } from '../pages/api/priceEntry';
 import {
     DAYS_VALID_ATTRIBUTE,
+    PRICE_ENTRY_ATTRIBUTE,
     TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
@@ -13,19 +15,23 @@ import {
     GROUP_DEFINITION_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
+    STAGE_NAMES_ATTRIBUTE,
+    FARE_ZONE_ATTRIBUTE,
+    CSV_UPLOAD_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    NUMBER_OF_STAGES_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    JOURNEY_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
-    STAGE_NAMES_ATTRIBUTE,
 } from '../constants/index';
 import {
-    Journey,
-    JourneyWithErrors,
     InputMethodInfo,
     ErrorInfo,
     IncomingMessageWithSession,
@@ -36,9 +42,11 @@ import {
     TimeRestriction,
     CompanionInfo,
     DaysValidInfo,
+    Journey,
+    JourneyWithErrors,
     PeriodTypeAttribute,
     PeriodTypeAttributeWithErrors,
-} from '../interfaces/index';
+} from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -53,15 +61,22 @@ import {
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
 import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
-import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
-import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
-import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
-import { Service, ServiceWithErrors } from '../pages/api/service';
-import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
+import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
+import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
+import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
+import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
+import { MultipleProductAttribute } from '../pages/api/multipleProductValidity';
+import { BaseMultipleProductAttribute, BaseMultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
+import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
+import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
+import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerType';
+import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
+import { ServiceWithErrors, Service } from '../pages/api/service';
+import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 
 type SessionAttributeTypes = {
-    [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[] | undefined;
+    [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
     [DAYS_VALID_ATTRIBUTE]: DaysValidInfo;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
     [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
@@ -70,6 +85,7 @@ type SessionAttributeTypes = {
     [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiryWithErrors | ProductData;
     [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData | ProductInfoWithErrors;
+    [PRICE_ENTRY_ATTRIBUTE]: FaresInformation;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]: SelectSalesOfferPackageWithError;
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
@@ -77,13 +93,22 @@ type SessionAttributeTypes = {
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
+    [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
+    [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
+    [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
+    [MULTIPLE_PRODUCT_ATTRIBUTE]:
+        | BaseMultipleProductAttribute
+        | BaseMultipleProductAttributeWithErrors
+        | MultipleProductAttribute;
+    [NUMBER_OF_PRODUCTS_ATTRIBUTE]: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors;
     [FARE_TYPE_ATTRIBUTE]: FareType | FareTypeWithErrors;
     [PASSENGER_TYPE_ATTRIBUTE]: PassengerType | PassengerTypeWithErrors;
     [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: PassengerType | DefinePassengerTypeWithErrors;
     [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
     [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
-    [FARE_STAGES_ATTRIBUTE]: undefined | FareStagesAttribute | FareStagesAttributeWithErrors;
+    [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;
@@ -91,7 +116,7 @@ type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes 
 export const getSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,
     attributeName: T,
-): SessionAttribute<T> => req?.session?.[attributeName];
+): SessionAttribute<T> | undefined => req?.session?.[attributeName];
 
 export const updateSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,

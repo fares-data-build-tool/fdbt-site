@@ -9,7 +9,7 @@ import { getAndValidateNoc } from '../utils';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import { getSessionAttribute } from '../utils/sessions';
 import { MatchingWithErrors, MatchingInfo } from '../interfaces/matchingInterface';
-import { isService, isJourney } from './api/apiUtils/typeChecking';
+import { isService, isJourney } from '../interfaces/typeGuards';
 
 const title = 'Matching - Fares Data Build Tool';
 const description = 'Matching page of the Fares Data Build Tool';

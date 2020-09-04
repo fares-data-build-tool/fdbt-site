@@ -3,33 +3,25 @@ import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import { FullColumnLayout } from '../layout/Layout';
 import {
-    MULTIPLE_PRODUCT_COOKIE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_COOKIE,
-    NUMBER_OF_PRODUCTS_COOKIE,
     PASSENGER_TYPE_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerType } from './api/apiUtils/typeChecking';
+import { isPassengerType } from '../interfaces/typeGuards';
+import { isNumberOfProductsAttribute } from './howManyProducts';
+import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
+import { Product } from './api/multipleProductValidity';
 
 const title = 'Multiple Product Validity - Fares Data Build Tool';
 const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
 
 const errorId = 'multiple-product-validity-error';
-
-export interface Product {
-    productName: string;
-    productNameId?: string;
-    productPrice: string;
-    productPriceId?: string;
-    productDuration: string;
-    productDurationId?: string;
-    productValidity?: string;
-    productValidityError?: string;
-}
 
 interface MultipleProductValidityProps {
     operator: string;
@@ -93,7 +85,7 @@ const MultipleProductValidity = ({
                                 </div>
                             </div>
                             {multipleProducts.map((product, index) => (
-                                <fieldset className="govuk-fieldset">
+                                <fieldset className="govuk-fieldset" key={product.productNameId}>
                                     <div className="grid-content-wrapper">
                                         <label
                                             className="govuk-label grid-column-content-one-fifth"
@@ -166,28 +158,31 @@ const MultipleProductValidity = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
-    const numberOfProductsCookie = cookies[NUMBER_OF_PRODUCTS_COOKIE];
-    const multipleProductCookie = cookies[MULTIPLE_PRODUCT_COOKIE];
 
+    const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
         !operatorCookie ||
-        !numberOfProductsCookie ||
-        !multipleProductCookie ||
+        !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
+        !multipleProductAttribute ||
+        isBaseMultipleProductAttributeWithErrors(multipleProductAttribute) ||
         !isPassengerType(passengerTypeAttribute)
     ) {
-        throw new Error('Necessary cookies not found to display the multiple product validity page');
+        throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }
-
     const { operator } = JSON.parse(operatorCookie);
-    const numberOfProducts: string = JSON.parse(numberOfProductsCookie).numberOfProductsInput;
-    const multipleProducts: Product[] = JSON.parse(multipleProductCookie);
+
+    const multipleProducts: Product[] = multipleProductAttribute.products;
+    const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
 
     const errors: ErrorInfo[] = [];
     const productWithErrors = multipleProducts.find(el => el.productValidityError);
+
     if (productWithErrors) {
         const errorHref = 'multiple-product-validity-radios-error';
+
         const error: ErrorInfo = {
             errorMessage: productWithErrors.productValidityError ?? '',
             id: errorHref,

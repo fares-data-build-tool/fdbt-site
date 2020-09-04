@@ -11,7 +11,7 @@ import { getAndValidateNoc } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { isFareType, isJourney, isService } from './api/apiUtils/typeChecking';
+import { isFareType, isJourney, isService } from '../interfaces/typeGuards';
 
 const title = 'Return Direction - Fares Data Build Tool';
 const description = 'Return Direction selection page of the Fares Data Build Tool';

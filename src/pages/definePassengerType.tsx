@@ -22,7 +22,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getErrorsByIds } from '../utils';
-import { isPassengerType, isPassengerTypeAttributeWithErrors } from './api/apiUtils/typeChecking';
+import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';

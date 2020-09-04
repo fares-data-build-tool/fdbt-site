@@ -9,7 +9,7 @@ import { BasicService, CustomAppProps, NextPageContextWithSession } from '../int
 import { getAndValidateNoc } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { isMatchingWithErrors } from './matching';
-import { isJourney, isService } from './api/apiUtils/typeChecking';
+import { isJourney, isService } from '../interfaces/typeGuards';
 
 const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Fares Data Build Tool';

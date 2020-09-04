@@ -1,32 +1,21 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { isArray } from 'util';
-import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { SERVICE_LIST_COOKIE, FARE_TYPE_ATTRIBUTE } from '../../constants';
-import { getSessionAttribute } from '../../utils/sessions';
-import { isFareType } from './apiUtils/typeChecking';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isFareType } from '../../interfaces/typeGuards';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 
-interface ServiceList {
+const errorId = 'service-list-error';
+
+export interface ServiceListAttribute {
     selectedServices: string[];
-    error: boolean;
 }
 
-const setServiceListCookie = (
-    req: NextApiRequest,
-    res: NextApiResponse,
-    error?: boolean,
-    checkedServiceList?: string[],
-): void => {
-    const serviceListObject: ServiceList = { error: false, selectedServices: [] };
-
-    setCookieOnResponseObject(
-        SERVICE_LIST_COOKIE,
-        JSON.stringify({ ...serviceListObject, selectedServices: checkedServiceList, error: !!error }),
-        req,
-        res,
-    );
-};
+export interface ServiceListAttributeWithErrors {
+    errors: ErrorInfo[];
+}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';
@@ -50,19 +39,19 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const isSelected = selectAll === selectAllText;
 
         if (selectAll && queryString) {
-            setServiceListCookie(req, res);
             redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
             return;
         }
 
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
-            const cookieValue = JSON.stringify({ errorMessage: 'Choose at least one service from the options' });
-            setCookieOnResponseObject(SERVICE_LIST_COOKIE, cookieValue, req, res);
+            updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, {
+                errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
+            });
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }
 
-        const checkedServiceList: string[] = [];
+        const selectedServices: string[] = [];
 
         const requestBody: { [key: string]: string | string[] } = req.body;
 
@@ -76,10 +65,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 serviceDescription = description;
             }
             const data = `${lineNameServiceCodeStartDate}#${serviceDescription}`;
-            checkedServiceList.push(data);
+            selectedServices.push(data);
         });
 
-        setServiceListCookie(req, res, false, checkedServiceList);
+        updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
         if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare') {
             redirectTo(res, '/productDetails');

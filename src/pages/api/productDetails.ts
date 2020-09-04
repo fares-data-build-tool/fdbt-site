@@ -9,7 +9,7 @@ import {
     checkProductNameIsValid,
 } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from './apiUtils/typeChecking';
+import { isFareType } from '../../interfaces/typeGuards';
 
 const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
