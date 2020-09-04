@@ -42,7 +42,7 @@ export const isProductInfoWithErrors = (
     (productDetailsAttribute as ProductInfoWithErrors)?.errors !== undefined;
 
 export const isProductInfo = (
-    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
+    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors | undefined,
 ): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;
 
 const ProductDetails = ({

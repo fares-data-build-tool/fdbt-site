@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import { PRODUCT_DETAILS_ATTRIBUTE, DAYS_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
@@ -9,6 +8,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
+import { isProductInfo } from './productDetails';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';
@@ -67,20 +67,17 @@ const ChooseValidity = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ValidityProps } => {
-    const cookies = parseCookies(ctx);
-    const productCookie = cookies[PRODUCT_DETAILS_ATTRIBUTE];
     const validityInfo = getSessionAttribute(ctx.req, DAYS_VALID_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const productAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
-    if (!productCookie) {
+    if (!isProductInfo(productAttribute)) {
         throw new Error('Failed to retrieve productCookie info for choose validity page.');
     }
 
     if (!isPassengerType(passengerTypeAttribute)) {
         throw new Error('Failed to retrieve passenger type session info for choose validity page.');
     }
-
-    const product = JSON.parse(productCookie);
 
     let validity;
 
@@ -90,8 +87,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
 
     return {
         props: {
-            productName: product.productName,
-            productPrice: product.productPrice,
+            productName: productAttribute.productName,
+            productPrice: productAttribute.productPrice,
             passengerType: passengerTypeAttribute.passengerType,
             daysValid: validity ?? '',
             errors: validityInfo?.errors ?? [],

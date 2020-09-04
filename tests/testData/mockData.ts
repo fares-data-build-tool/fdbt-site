@@ -145,6 +145,10 @@ export const getMockRequestAndResponse = ({
                 },
             ],
         },
+        [PRODUCT_DETAILS_ATTRIBUTE]: {
+            productName: 'Product A',
+            productPrice: '1234',
+        },
         ...session,
     };
 
