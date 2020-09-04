@@ -20,15 +20,35 @@ const Confirmation = ({ csrfToken }: ConfirmationProps & CustomAppProps): ReactE
                         <ConfirmationTable
                             confirmationElements={[
                                 {
-                                    header: 'Stuff',
+                                    header: 'Fare Information',
                                     innerElements: [
-                                        { name: 'Name', content: 'Bob', href: '/fareType' },
-                                        { name: 'House', content: 'Big', href: '/fareType' },
+                                        { name: 'Faretype', content: 'Single', href: '/fareType' },
+                                        { name: 'Passenger Type', content: 'Adult', href: '/passengerType' },
+                                        { name: 'Time Restrictions', content: 'No', href: '/timeRestrictions' },
                                     ],
                                 },
                                 {
-                                    header: 'Other Stuff',
-                                    innerElements: [{ name: 'Age', content: '21', href: '/login' }],
+                                    header: 'Ticket Information',
+                                    innerElements: [
+                                        { name: 'Service', content: '19 - Start date 05/04/2020', href: '/service' },
+                                        {
+                                            name: 'Direction',
+                                            content: 'Bibby Drive, Staining TO Central Library, Blackpool',
+                                            href: '/singleDirection',
+                                        },
+                                        { name: 'Fare Information', content: '<prices>', href: '/priceEntry' },
+                                        { name: 'Matching', content: '<matching Stuff>', href: '/matching' },
+                                    ],
+                                },
+                                {
+                                    header: 'Sales Information',
+                                    innerElements: [
+                                        {
+                                            name: 'Sales offer packages',
+                                            content: 'Onboard cash, Onboard Contactless',
+                                            href: '/selectSalesOfferPackage',
+                                        },
+                                    ],
                                 },
                             ]}
                         />
