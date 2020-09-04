@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
-import { NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
-import { STAGE_NAMES_COOKIE, PRICE_ENTRY_ERRORS_COOKIE, PRICE_ENTRY_INPUTS_COOKIE } from '../constants';
+import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ERRORS_COOKIE, PRICE_ENTRY_INPUTS_COOKIE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { FaresInformation, FaresInput, PriceEntryError } from './api/priceEntry';
+import { getSessionAttribute } from '../utils/sessions';
+import { isInputCheck } from './api/apiUtils/typeChecking';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
@@ -157,17 +158,17 @@ const PriceEntry = ({
     </FullColumnLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): { props: PriceEntryProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PriceEntryProps } => {
     const cookies = parseCookies(ctx);
-    const stageNamesCookie = cookies[STAGE_NAMES_COOKIE];
+    const stageNamesInfo = getSessionAttribute(ctx.req, STAGE_NAMES_ATTRIBUTE);
     const priceEntryErrorsCookie = cookies[PRICE_ENTRY_ERRORS_COOKIE];
     const priceEntryInputsCookie = cookies[PRICE_ENTRY_INPUTS_COOKIE];
 
-    if (!stageNamesCookie) {
-        throw new Error('Necessary stage names cookies not found to show price entry page');
+    if (!stageNamesInfo || stageNamesInfo.length === 0 || isInputCheck(stageNamesInfo)) {
+        throw new Error('Necessary stage names not found to show price entry page');
     }
 
-    const stageNamesArray = JSON.parse(stageNamesCookie);
+    const stageNamesArray: string[] = stageNamesInfo;
 
     if (stageNamesArray.length === 0 && ctx.res) {
         throw new Error('No stages in cookie data');

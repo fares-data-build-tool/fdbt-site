@@ -20,6 +20,7 @@ import {
     JOURNEY_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
+    STAGE_NAMES_ATTRIBUTE,
 } from '../constants/index';
 import {
     Journey,
@@ -55,8 +56,10 @@ import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
 import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerType';
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { Service, ServiceWithErrors } from '../pages/api/service';
+import { InputCheck } from '../pages/stageNames';
 
 type SessionAttributeTypes = {
+    [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[] | undefined;
     [DAYS_VALID_ATTRIBUTE]: DaysValidInfo;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
     [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
