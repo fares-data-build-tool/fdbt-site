@@ -1,18 +1,20 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
+import { NextApiResponse } from 'next';
 import uniq from 'lodash/uniq';
-import {
-    getUuidFromCookie,
-    redirectToError,
-    redirectTo,
-    setCookieOnResponseObject,
-    unescapeAndDecodeCookie,
-} from './apiUtils';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putDataInS3, UserFareStages } from '../../data/s3';
-import { CSV_UPLOAD_COOKIE, JOURNEY_COOKIE, INPUT_METHOD_COOKIE } from '../../constants';
+import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { isJourney } from '../../interfaces/typeGuards';
+
+const errorId = 'csv-upload-error';
+
+export interface CsvUploadAttributeWithErrors {
+    errors: ErrorInfo[];
+}
 
 interface FareTriangleData {
     fareStages: {
@@ -32,13 +34,13 @@ export const config = {
     },
 };
 
-export const setUploadCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, error = ''): void => {
-    const cookieValue = JSON.stringify({ error });
-    setCookieOnResponseObject(CSV_UPLOAD_COOKIE, cookieValue, req, res);
-
-    if (error) {
-        redirectTo(res, '/csvUpload');
-    }
+export const setCsvUploadAttributeAndRedirect = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+    errors: ErrorInfo[],
+): void => {
+    updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors });
+    redirectTo(res, '/csvUpload');
 };
 
 export const containsDuplicateFareStages = (fareStageNames: string[]): boolean =>
@@ -46,7 +48,7 @@ export const containsDuplicateFareStages = (fareStageNames: string[]): boolean =
 
 export const faresTriangleDataMapper = (
     dataToMap: string,
-    req: NextApiRequest,
+    req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): UserFareStages | null => {
     const fareTriangle: FareTriangleData = {
@@ -62,8 +64,8 @@ export const faresTriangleDataMapper = (
             context: 'api.csvUpload',
             message: `At least 2 fare stages are needed, only ${fareStageCount} found`,
         });
-
-        setUploadCookieAndRedirect(req, res, 'At least 2 fare stages are needed');
+        const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'At least 2 fare stages are needed' }];
+        setCsvUploadAttributeAndRedirect(req, res, errors);
         return null;
     }
 
@@ -116,8 +118,8 @@ export const faresTriangleDataMapper = (
             context: 'api.csvUpload',
             message: `Duplicate fare stage names found, fare stage names: ${fareStageNames}`,
         });
-
-        setUploadCookieAndRedirect(req, res, 'Fare stage names cannot be the same');
+        const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'Fare stage names cannot be the same' }];
+        setCsvUploadAttributeAndRedirect(req, res, errors);
         return null;
     }
 
@@ -130,15 +132,15 @@ export const faresTriangleDataMapper = (
             context: 'api.csvUpload',
             message: `Data conversion has not worked properly. Expected ${expectedNumberOfPrices}, got ${numberOfPrices}`,
         });
-
-        setUploadCookieAndRedirect(req, res, 'The selected file must use the template');
+        const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'The selected file must use the template' }];
+        setCsvUploadAttributeAndRedirect(req, res, errors);
         return null;
     }
 
     return mappedFareTriangle;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
@@ -147,7 +149,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         const { fileContents, fileError } = await processFileUpload(req, 'csv-upload');
 
         if (fileError) {
-            setUploadCookieAndRedirect(req, res, fileError);
+            const errors: ErrorInfo[] = [{ id: errorId, errorMessage: fileError }];
+            setCsvUploadAttributeAndRedirect(req, res, errors);
             return;
         }
 
@@ -161,17 +164,15 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
-            const cookies = new Cookies(req, res);
-            const journeyCookie = unescapeAndDecodeCookie(cookies, JOURNEY_COOKIE);
-            const journeyObject = JSON.parse(journeyCookie);
+            updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
+            updateSessionAttribute(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
 
-            setCookieOnResponseObject(INPUT_METHOD_COOKIE, JSON.stringify({ inputMethod: 'csv' }), req, res);
+            const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
 
-            if (journeyObject?.outboundJourney) {
+            if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');
                 return;
             }
-
             redirectTo(res, '/matching');
         }
     } catch (error) {
