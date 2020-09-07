@@ -38,6 +38,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     }
     const redirectTo = redirectFrom && redirectFrom === '/resetPassword' ? '/login' : '/account';
     deleteCookieOnServerSide(ctx, USER_COOKIE);
+
     return { props: { redirectTo } };
 };
 

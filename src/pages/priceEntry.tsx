@@ -4,9 +4,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
 import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { FaresInformation } from './api/priceEntry';
-import { isInputCheck } from '../interfaces/typeGuards';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, FaresInformation, WithErrors } from '../interfaces';
+import { isInputCheck, isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
@@ -15,11 +14,11 @@ const errorId = 'fare-triangle-container';
 
 interface PriceEntryProps {
     stageNamesArray: string[];
-    faresInformation?: FaresInformation;
+    faresInformation?: WithErrors<FaresInformation>;
     errors?: ErrorInfo[];
 }
 
-export const getDefaultValue = (fareInformation: FaresInformation, rowStage: string, columnStage: string): string => {
+const getDefaultValue = (fareInformation: FaresInformation, rowStage: string, columnStage: string): string => {
     if (!fareInformation) {
         return '';
     }
@@ -31,7 +30,7 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
     return defaultInput?.input || '';
 };
 
-export const createClassName = (
+const createClassName = (
     inputs: FaresInformation | undefined,
     rowIndex: number,
     rowStage: string,
@@ -49,14 +48,14 @@ export const createClassName = (
 
     const name = `${rowStage}-${columnStage}`;
 
-    if (inputs.errorInformation.some(el => el.locator === name)) {
+    if (isWithErrors(inputs) && inputs.inputs.some(el => el.locator === name)) {
         errorClass = ' govuk-input--error';
     }
 
     return className + errorClass;
 };
 
-export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
+const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
     const filteredErrors: ErrorInfo[] = [];
     errors.forEach(error => {
         if (!filteredErrors.some(el => !!el.errorMessage && el.errorMessage !== '')) {
@@ -67,7 +66,7 @@ export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => {
     return filteredErrors;
 };
 
-export const createErrorSpans = (errors: ErrorInfo[]): ReactElement[] => {
+const createErrorSpans = (errors: ErrorInfo[]): ReactElement[] => {
     const errorSpans: ReactElement[] = [];
 
     errors.forEach((error: ErrorInfo) => {
@@ -80,7 +79,7 @@ export const createErrorSpans = (errors: ErrorInfo[]): ReactElement[] => {
 const PriceEntry = ({
     stageNamesArray,
     csrfToken,
-    faresInformation = { inputs: [], errorInformation: [] },
+    faresInformation = { inputs: [], errors: [] },
     errors = [],
 }: PriceEntryProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={title} description={description}>
@@ -163,17 +162,20 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const priceEntryInfo = getSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE);
 
     if (priceEntryInfo) {
-        const errors: ErrorInfo[] = priceEntryInfo.errorInformation.map(error => {
-            return { errorMessage: error.input, id: errorId };
-        });
+        const errors: ErrorInfo[] = isWithErrors(priceEntryInfo)
+            ? priceEntryInfo.errors.map(error => {
+                  return { errorMessage: error.errorMessage, id: errorId };
+              })
+            : [];
         const filteredErrors = filterErrors(errors);
         updateSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE, undefined);
+
         return {
             props: {
                 stageNamesArray,
                 faresInformation: {
                     inputs: priceEntryInfo.inputs,
-                    errorInformation: priceEntryInfo.errorInformation,
+                    errors,
                 },
                 errors: filteredErrors,
             },

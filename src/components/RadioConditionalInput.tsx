@@ -1,35 +1,16 @@
 import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
-import { ErrorInfo, BaseReactElement } from '../interfaces';
+import {
+    ErrorInfo,
+    BaseReactElement,
+    RadioConditionalInputFieldset,
+    RadioWithConditionalInputs,
+    RadioButton,
+} from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
+import { isRadioWithConditionalInputs } from '../interfaces/typeGuards';
 
-export interface RadioWithoutConditionals extends BaseReactElement {
-    value: string;
-}
-
-export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
-    dataAriaControls: string;
-    hint: {
-        id: string;
-        content: string;
-    };
-    inputType: string;
-    inputs: BaseReactElement[];
-    inputErrors: ErrorInfo[];
-}
-
-export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
-
-export interface RadioConditionalInputFieldset {
-    heading: {
-        id: string;
-        content: string;
-    };
-    radios: RadioButton[];
-    radioError: ErrorInfo[];
-}
-
-export interface RadioConditionalInputProps {
+interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
 }
 
@@ -38,6 +19,7 @@ export const createErrorId = (input: BaseReactElement, inputErrors: ErrorInfo[])
     if (el) {
         return el.id;
     }
+
     return '';
 };
 
@@ -54,6 +36,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
             </span>
             {radio.inputs.map(input => {
                 const errorId = createErrorId(input, radio.inputErrors);
+
                 return (
                     <div
                         key={input.id}
@@ -156,12 +139,6 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
             {radio.inputType === 'checkbox' ? renderConditionalCheckbox(radio) : renderConditionalTextInput(radio)}
         </div>
     );
-};
-
-const isRadioWithConditionalInputs = (
-    radioButton: RadioWithConditionalInputs | RadioWithoutConditionals,
-): radioButton is RadioWithConditionalInputs => {
-    return (radioButton as RadioWithConditionalInputs).hint !== undefined;
 };
 
 const renderRadioButtonSet = (radio: RadioButton): ReactElement => {

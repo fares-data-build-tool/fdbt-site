@@ -19,6 +19,7 @@ export default (server: Express): void => {
     const csrfErrorHandler: ErrorRequestHandler = (error, _req, res, next) => {
         if (error.code !== 'EBADCSRFTOKEN') {
             next(error);
+
             return;
         }
 

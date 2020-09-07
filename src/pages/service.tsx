@@ -1,27 +1,27 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, ServiceType } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
-import { getServicesByNocCode, ServiceType } from '../data/auroradb';
+import { getServicesByNocCode } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
 const errorId = 'service-error';
 
-type ServiceProps = {
+interface ServiceProps {
     operator: string;
     passengerType: string;
     services: ServiceType[];
     error: ErrorInfo[];
-};
+}
 
 const Service = ({
     operator,
@@ -79,15 +79,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
-    const error: ErrorInfo[] =
-        serviceAttribute && isServiceAttributeWithErrors(serviceAttribute) ? serviceAttribute.errors : [];
+    const error: ErrorInfo[] = serviceAttribute && isWithErrors(serviceAttribute) ? serviceAttribute.errors : [];
 
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
 
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    if (!operatorCookie || !isPassengerType(passengerTypeAttribute) || !nocCode) {
+    if (!operatorCookie || !passengerTypeAttribute || !nocCode) {
         throw new Error('Could not render the service selection page. Necessary cookies not found.');
     }
 

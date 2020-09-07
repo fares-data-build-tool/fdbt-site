@@ -6,8 +6,8 @@ import {
     mockMatchingUserFareStagesWithAllStagesAssigned,
 } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
 import { MATCHING_ATTRIBUTE } from '../../../src/constants';
+import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces';
 
 const selections = {
     option0:

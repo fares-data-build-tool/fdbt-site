@@ -20,6 +20,7 @@ describe('pages', () => {
             const tree = shallow(
                 <GroupPassengerTypes
                     groupPassengerInfo={{
+                        passengerTypes: [],
                         errors: [
                             {
                                 errorMessage: 'Choose one or two passenger types - you cannot exceed this limit',

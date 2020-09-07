@@ -9,23 +9,16 @@ import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
 import ProductRow from '../components/ProductRow';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import {
-    MultiProduct,
-    BaseMultipleProductAttribute,
-    BaseMultipleProductAttributeWithErrors,
-} from './api/multipleProducts';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
-import { isNumberOfProductsAttribute } from './howManyProducts';
-import { MultipleProductAttribute } from './api/multipleProductValidity';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Multiple Product - Fares Data Build Tool';
 const description = 'Multiple Product entry page of the Fares Data Build Tool';
 
-export interface MultipleProductProps {
+interface MultipleProductProps {
     numberOfProductsToDisplay: string;
     operator: string;
     passengerType: string;
@@ -70,15 +63,6 @@ const MultipleProducts = ({
     </FullColumnLayout>
 );
 
-export const isBaseMultipleProductAttributeWithErrors = (
-    multiProductAttribute:
-        | undefined
-        | BaseMultipleProductAttribute
-        | BaseMultipleProductAttributeWithErrors
-        | MultipleProductAttribute,
-): multiProductAttribute is BaseMultipleProductAttributeWithErrors =>
-    !!multiProductAttribute && (multiProductAttribute as BaseMultipleProductAttributeWithErrors).errors !== undefined;
-
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const cookies = parseCookies(ctx);
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
@@ -87,8 +71,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     if (
         !cookies[OPERATOR_COOKIE] ||
-        !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
-        !isPassengerType(passengerTypeAttribute)
+        !numberOfProductsAttribute ||
+        !passengerTypeAttribute ||
+        isWithErrors(numberOfProductsAttribute)
     ) {
         throw new Error('Necessary cookies/session not found to show multiple products page');
     }
@@ -98,7 +83,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
     const { operator } = JSON.parse(operatorCookie);
 
-    if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
+    if (isWithErrors(multiProductAttribute)) {
         const { errors } = multiProductAttribute;
 
         return {

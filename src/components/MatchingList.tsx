@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
-import { FareStage, UserFareStages } from '../data/s3';
-import { Stop } from '../data/auroradb';
 import { formatStopName } from '../utils';
+import { UserFareStages, Stop, FareStage } from '../interfaces';
 
 interface MatchingListProps {
     userFareStages: UserFareStages;
@@ -60,6 +59,7 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
             </fieldset>
         );
     });
+
     return stopItems;
 };
 

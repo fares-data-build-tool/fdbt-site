@@ -28,6 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
         if (inputChecks.some(el => el.errorMessage !== '')) {
             setErrorsCookie(inputChecks, regKey, username, expiry);
+
             return;
         }
 
@@ -38,6 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         } catch (error) {
             if (error.message === 'ExpiredCodeException') {
                 redirectTo(res, '/resetLinkExpired');
+
                 return;
             }
 

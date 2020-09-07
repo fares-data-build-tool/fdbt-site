@@ -1,4 +1,5 @@
-import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern, RawService } from '../data/auroradb';
+import { batchGetStopsByAtcoCode } from '../data/auroradb';
+import { RawJourneyPattern, JourneyPattern, RawService } from '../interfaces';
 
 export const enrichJourneyPatternsWithNaptanInfo = async (
     journeyPatterns: RawJourneyPattern[],

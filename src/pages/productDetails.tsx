@@ -9,41 +9,23 @@ import {
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
 } from '../constants';
-import {
-    CustomAppProps,
-    ErrorInfo,
-    NextPageContextWithSession,
-    ProductData,
-    ProductInfo,
-    ProductInfoWithErrors,
-} from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerType } from '../interfaces/typeGuards';
-import { isFareZoneAttributeWithErrors } from './csvZoneUpload';
-import { isServiceListAttributeWithErrors } from './serviceList';
+import { isProductInfo, isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Product Details - Fares Data Build Tool';
 const description = 'Product Details entry page of the Fares Data Build Tool';
 
-type ProductDetailsProps = {
+interface ProductDetailsProps {
     product: ProductInfo | null;
     operator: string;
     passengerType: string;
     hintText?: string;
     errors: ErrorInfo[];
-};
-
-export const isProductInfoWithErrors = (
-    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
-): productDetailsAttribute is ProductInfoWithErrors =>
-    (productDetailsAttribute as ProductInfoWithErrors)?.errors !== undefined;
-
-export const isProductInfo = (
-    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors | undefined,
-): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;
+}
 
 const ProductDetails = ({
     product,
@@ -149,16 +131,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
         throw new Error('Failed to retrieve the necessary cookies and/or session objects.');
     }
 
-    if (!isPassengerType(passengerTypeAttribute)) {
+    if (!passengerTypeAttribute) {
         throw new Error('Failed to retrieve passenger type cookie info for product details page.');
     }
 
     const operatorTypeInfo = JSON.parse(operatorCookie);
     const { operator } = operatorTypeInfo;
 
-    if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
+    if (fareZoneAttribute && !isWithErrors(fareZoneAttribute)) {
         hintText = fareZoneAttribute.fareZoneName;
-    } else if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
+    } else if (serviceListAttribute && !isWithErrors(serviceListAttribute)) {
         const { selectedServices } = serviceListAttribute;
         hintText = selectedServices.length > 1 ? 'Multiple Services' : selectedServices[0].split('#')[0];
     }
@@ -169,9 +151,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
             operator: operator.operatorPublicName,
             passengerType: passengerTypeAttribute.passengerType,
             errors:
-                productDetailsAttribute && isProductInfoWithErrors(productDetailsAttribute)
-                    ? productDetailsAttribute.errors
-                    : [],
+                productDetailsAttribute && isWithErrors(productDetailsAttribute) ? productDetailsAttribute.errors : [],
             hintText,
         },
     };

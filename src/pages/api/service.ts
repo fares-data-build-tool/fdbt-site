@@ -3,16 +3,7 @@ import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils/index
 import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-
-export interface Service {
-    service: string;
-}
-
-export interface ServiceWithErrors {
-    errors: ErrorInfo[];
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -24,8 +15,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!service) {
             const errors: ErrorInfo[] = [{ id: 'service-error', errorMessage: 'Choose a service from the options' }];
 
-            updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
+            updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors, service: '' });
             redirectTo(res, '/service');
+
             return;
         }
 
@@ -39,8 +31,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (fareTypeAttribute && isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return') {
+        if (fareTypeAttribute && fareTypeAttribute !== undefined && fareTypeAttribute.fareType === 'return') {
             redirectTo(res, '/returnDirection');
+
             return;
         }
 

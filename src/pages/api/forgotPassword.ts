@@ -11,6 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             const cookieContent = JSON.stringify({ email, error: 'Enter your email address' });
             setCookieOnResponseObject(FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/forgotPassword');
+
             return;
         }
 

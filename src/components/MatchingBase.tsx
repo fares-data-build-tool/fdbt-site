@@ -3,9 +3,7 @@ import ErrorSummary from './ErrorSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import MatchingList from './MatchingList';
-import { UserFareStages } from '../data/s3';
-import { Stop } from '../data/auroradb';
-import { BasicService, ErrorInfo } from '../interfaces';
+import { BasicService, ErrorInfo, UserFareStages, Stop } from '../interfaces';
 import CsrfForm from './CsrfForm';
 
 interface MatchingBaseProps {

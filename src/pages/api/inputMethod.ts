@@ -3,7 +3,7 @@ import { redirectTo, redirectToError } from './apiUtils/index';
 import { isSessionValid } from './apiUtils/validator';
 import { INPUT_METHOD_ATTRIBUTE } from '../../constants';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, WithErrors } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -15,9 +15,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             switch (req.body.inputMethod) {
                 case 'csv':
                     redirectTo(res, '/csvUpload');
+
                     return;
                 case 'manual':
                     redirectTo(res, '/howManyStages');
+
                     return;
                 case 'interactiveMap':
                     // redirect to map page
@@ -26,7 +28,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     throw new Error('Input method we expect was not received.');
             }
         } else {
-            const sessionContent: ErrorInfo = { errorMessage: 'Choose an input method from the options', id: '' };
+            const sessionContent: WithErrors<{}> = {
+                errors: [{ errorMessage: 'Choose an input method from the options', id: '' }],
+            };
             updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, sessionContent);
             redirectTo(res, '/inputMethod');
         }

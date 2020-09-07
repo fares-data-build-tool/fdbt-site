@@ -1,22 +1,14 @@
 import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
-import { putDataInS3, UserFareZone } from '../../data/s3';
+import { putDataInS3 } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes } from '../../data/auroradb';
 import { FARE_ZONE_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, UserFareZone } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-
-export interface FareZone {
-    fareZoneName: string;
-}
-
-export interface FareZoneWithErrors {
-    errors: ErrorInfo[];
-}
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -40,6 +32,7 @@ export const csvParser = (stringifiedCsvData: string): UserFareZone[] => {
         skip_empty_lines: false, // eslint-disable-line @typescript-eslint/camelcase
         delimiter: ',',
     });
+
     return parsedFileContent;
 };
 
@@ -57,8 +50,10 @@ export const getAtcoCodesForStops = async (
                     AtcoCodes: atcoItem.atcoCode,
                 };
             }
+
             return rawUserFareZone;
         });
+
         return userFareZones;
     } catch (error) {
         throw new Error(`Could not fetch data for naptanCodes: ${naptanCodesToQuery}. Error: ${error.stack}`);
@@ -118,6 +113,7 @@ export const processCsv = async (
 
         if (!csvValid) {
             setFareZoneAttributeAndRedirect(req, res, errors);
+
             return null;
         }
 
@@ -147,6 +143,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (fileError) {
             const errors: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: fileError }];
             setFareZoneAttributeAndRedirect(req, res, errors);
+
             return;
         }
 

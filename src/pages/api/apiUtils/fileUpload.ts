@@ -23,6 +23,7 @@ export const formParse = async (req: NextApiRequest): Promise<Files> => {
             if (err) {
                 return reject(err);
             }
+
             return resolve(file);
         });
     });

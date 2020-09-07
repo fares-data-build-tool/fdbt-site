@@ -1,11 +1,8 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import salesOfferPackages, {
-    SalesOfferPackageInfoWithErrors,
-    SalesOfferPackageInfo,
-} from '../../../src/pages/api/salesOfferPackages';
+import salesOfferPackages from '../../../src/pages/api/salesOfferPackages';
 import * as session from '../../../src/utils/sessions';
 import { SOP_INFO_ATTRIBUTE } from '../../../src/constants';
-import { ErrorInfo } from '../../../src/interfaces';
+import { ErrorInfo, SalesOfferPackageInfo } from '../../../src/interfaces';
 
 jest.mock('../../../src/utils/sessions.ts');
 
@@ -35,7 +32,7 @@ describe('salesOfferPackages', () => {
                 purchaseLocations: 'OnBoard',
             },
         });
-        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+        const expectedSessionAttributeCall = {
             purchaseLocations: ['OnBoard'],
             ticketFormats: [],
             paymentMethods: [],
@@ -56,7 +53,7 @@ describe('salesOfferPackages', () => {
                 paymentMethods: 'Cash',
             },
         });
-        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+        const expectedSessionAttributeCall = {
             purchaseLocations: [],
             ticketFormats: [],
             paymentMethods: ['Cash'],
@@ -77,7 +74,7 @@ describe('salesOfferPackages', () => {
                 ticketFormats: 'Paper Ticket',
             },
         });
-        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+        const expectedSessionAttributeCall = {
             purchaseLocations: [],
             ticketFormats: ['Paper Ticket'],
             paymentMethods: [],
@@ -99,7 +96,7 @@ describe('salesOfferPackages', () => {
                 ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             },
         });
-        const expectedSessionAttributeCall: SalesOfferPackageInfoWithErrors = {
+        const expectedSessionAttributeCall = {
             purchaseLocations: ['OnBoard', 'Online Account'],
             ticketFormats: ['Paper Ticket', 'Debit/Credit card'],
             paymentMethods: [],

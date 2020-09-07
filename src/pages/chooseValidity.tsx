@@ -6,9 +6,8 @@ import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { isPassengerType } from '../interfaces/typeGuards';
+import { isProductInfo } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
-import { isProductInfo } from './productDetails';
 
 const title = 'Choose Validity - Fares Data Build Tool';
 const description = 'Choose Validity page of the Fares Data Build Tool';
@@ -75,7 +74,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
         throw new Error('Failed to retrieve productCookie info for choose validity page.');
     }
 
-    if (!isPassengerType(passengerTypeAttribute)) {
+    if (!passengerTypeAttribute) {
         throw new Error('Failed to retrieve passenger type session info for choose validity page.');
     }
 

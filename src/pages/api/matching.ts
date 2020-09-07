@@ -1,12 +1,16 @@
 import { NextApiResponse } from 'next';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
-import { BasicService, NextApiRequestWithSession } from '../../interfaces';
-import { UserFareStages } from '../../data/s3';
+import {
+    BasicService,
+    NextApiRequestWithSession,
+    UserFareStages,
+    MatchingWithErrors,
+    MatchingInfo,
+} from '../../interfaces';
 import { isSessionValid } from './apiUtils/validator';
 import { MATCHING_ATTRIBUTE } from '../../constants';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
-import { MatchingWithErrors, MatchingInfo } from '../../interfaces/matchingInterface';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

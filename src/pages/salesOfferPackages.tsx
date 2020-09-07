@@ -3,14 +3,14 @@ import startCase from 'lodash/startCase';
 import kebabCase from 'lodash/kebabCase';
 import upperCase from 'lodash/upperCase';
 import { BaseLayout } from '../layout/Layout';
-import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession, SalesOfferPackageInfo } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { SOP_INFO_ATTRIBUTE } from '../constants';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from './api/salesOfferPackages';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Sales Offer Packages - Fares Data Build Tool';
 const description = 'Sales Offer Packages page for the Fares Data Build Tool';
@@ -30,20 +30,16 @@ export const ticketFormatsList = {
     ticketFormats: ['paperTicket', 'mobileApp', 'smartCard'],
 };
 
-export interface SalesOfferPackagesProps {
-    salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
+interface SalesOfferPackagesProps {
+    salesOfferPackage: SalesOfferPackageInfo;
 }
-
-export const isSalesOfferPackageInfoWithErrors = (
-    salesOfferPackage: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors,
-): salesOfferPackage is SalesOfferPackageInfoWithErrors =>
-    (salesOfferPackage as SalesOfferPackageInfoWithErrors).errors?.length > 0;
 
 const SalesOfferPackages = ({
     salesOfferPackage,
     csrfToken,
 }: SalesOfferPackagesProps & CustomAppProps): ReactElement => {
-    const errors = isSalesOfferPackageInfoWithErrors(salesOfferPackage) ? salesOfferPackage.errors : [];
+    const errors = isWithErrors(salesOfferPackage) ? salesOfferPackage.errors : [];
+
     return (
         <BaseLayout title={title} description={description}>
             <CsrfForm action="/api/salesOfferPackages" method="post" csrfToken={csrfToken}>
@@ -67,6 +63,7 @@ const SalesOfferPackages = ({
                                         </p>
                                         {purchaseLocationsList.method.map((purchaseLocations, index) => {
                                             const purchaseLocationId = kebabCase(purchaseLocations);
+
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
@@ -106,6 +103,7 @@ const SalesOfferPackages = ({
                                         </p>
                                         {paymentMethodsList.paymentMethods.map((paymentMethods, index) => {
                                             const paymentMethodId = kebabCase(paymentMethods);
+
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
@@ -148,6 +146,7 @@ const SalesOfferPackages = ({
                                         <p className="govuk-body">What format do the tickets come in?</p>
                                         {ticketFormatsList.ticketFormats.map((ticketFormats, index) => {
                                             const ticketFormatId = kebabCase(ticketFormats);
+
                                             return (
                                                 <div
                                                     className="govuk-checkboxes__item"
@@ -199,9 +198,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     return {
         props: {
             salesOfferPackage:
-                rawSalesOfferPackage && isSalesOfferPackageInfoWithErrors(rawSalesOfferPackage)
-                    ? rawSalesOfferPackage
-                    : defaultSOP,
+                rawSalesOfferPackage && isWithErrors(rawSalesOfferPackage) ? rawSalesOfferPackage : defaultSOP,
         },
     };
 };

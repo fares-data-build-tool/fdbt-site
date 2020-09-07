@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react';
 import personIcon from '../assets/images/np-person-781585-ffffff.a9472bb89c43.png';
 import CsrfForm from '../components/CsrfForm';
 
-type HeaderProps = {
+interface HeaderProps {
     isAuthed: boolean;
     csrfToken: string;
-};
+}
 
 const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
     <header className="govuk-header " role="banner" data-module="govuk-header">

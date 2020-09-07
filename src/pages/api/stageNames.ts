@@ -1,12 +1,11 @@
 import { NextApiResponse } from 'next';
-import { NextApiRequestWithSession } from '../../interfaces/index';
+import { NextApiRequestWithSession, InputCheck } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { STAGE_NAMES_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
-import { InputCheck } from '../stageNames';
 
-export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
+const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: string): boolean => {
     let counter = 0;
     stageNames.forEach(stage => {
         if (stage === stageName) {
@@ -16,6 +15,7 @@ export const stageNameInArrayMultipleTimes = (stageNames: string[], stageName: s
     if (counter === 1) {
         return false;
     }
+
     return true;
 };
 
@@ -33,9 +33,10 @@ export const isStageNameValid = (req: NextApiRequestWithSession): InputCheck[] =
         } else {
             error = '';
         }
-        const check: InputCheck = { input: stageNameInput[i], error, id: `fare-stage-name-${i + 1}-error` };
+        const check: InputCheck = { inputValue: stageNameInput[i], error, id: `fare-stage-name-${i + 1}-error` };
         response.push(check);
     }
+
     return response;
 };
 

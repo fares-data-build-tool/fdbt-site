@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import TimeRestrictions, { TimeRestrictionsProps, getServerSideProps } from '../../src/pages/timeRestrictions';
+import TimeRestrictions, { getServerSideProps } from '../../src/pages/timeRestrictions';
 import { getMockContext } from '../testData/mockData';
-import { TimeRestrictionsAttributeWithErrors } from '../../src/pages/api/timeRestrictions';
 import { TIME_RESTRICTIONS_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
@@ -32,7 +31,7 @@ describe('pages', () => {
     describe('getServerSideProps', () => {
         it('should return default props when there is no TIME_RESTRICTIONS_ATTRIBUTE', () => {
             const ctx = getMockContext();
-            const expectedProps: { props: TimeRestrictionsProps } = {
+            const expectedProps = {
                 props: {
                     errors: [],
                 },
@@ -42,7 +41,7 @@ describe('pages', () => {
         });
 
         it('should return props containing errors when the GROUP_SIZE_ATTRIBUTE contains errors', () => {
-            const timeRestrictionsInfoWithErrors: TimeRestrictionsAttributeWithErrors = {
+            const timeRestrictionsInfoWithErrors = {
                 timeRestrictions: false,
                 errors: [
                     {
@@ -57,7 +56,7 @@ describe('pages', () => {
                     [TIME_RESTRICTIONS_ATTRIBUTE]: timeRestrictionsInfoWithErrors,
                 },
             });
-            const expectedProps: { props: TimeRestrictionsProps } = {
+            const expectedProps = {
                 props: {
                     errors: timeRestrictionsInfoWithErrors.errors,
                 },

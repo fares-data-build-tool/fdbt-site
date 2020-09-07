@@ -6,26 +6,8 @@ import {
     NETEX_BUCKET_NAME,
     MATCHING_DATA_BUCKET_NAME,
 } from '../constants';
-import { MatchingFareZones } from '../interfaces/matchingInterface';
 import logger from '../utils/logger';
-
-export interface FareStage {
-    stageName: string;
-    prices: {
-        price: string;
-        fareZones: string[];
-    }[];
-}
-
-export interface UserFareStages {
-    fareStages: FareStage[];
-}
-
-export interface UserFareZone {
-    FareZoneName: string;
-    NaptanCodes: string;
-    AtcoCodes: string;
-}
+import { UserFareStages, UserFareZone, MatchingFareZones } from '../interfaces';
 
 const getS3Client = (): AWS.S3 => {
     let options: AWS.S3.ClientConfiguration = {

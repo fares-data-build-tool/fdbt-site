@@ -1,5 +1,6 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import multipleProductValidity, { addErrorsIfInvalid, Product } from '../../../src/pages/api/multipleProductValidity';
+import multipleProductValidity, { addErrorsIfInvalid } from '../../../src/pages/api/multipleProductValidity';
+import { Product } from '../../../src/interfaces';
 
 describe('multipleProductValidity', () => {
     const writeHeadMock = jest.fn();

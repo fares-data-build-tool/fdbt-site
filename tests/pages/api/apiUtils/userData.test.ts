@@ -35,8 +35,6 @@ import {
     FARE_ZONE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
 } from '../../../../src/constants';
-import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
-import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProductValidity';
 
 describe('generateSalesOfferPackages', () => {
     it('should return an array of SalesOfferPackage objects', () => {
@@ -60,7 +58,7 @@ describe('getProductsAndSalesOfferPackages', () => {
             },
         });
         const requestBody: { [key: string]: string } = req.body;
-        const multipleProductAttribute: MultipleProductAttribute = {
+        const multipleProductAttribute = {
             products: [
                 { productName: 'DayRider', productPrice: '2.99', productDuration: '1', productValidity: '24hr' },
                 { productName: 'WeekRider', productPrice: '7.99', productDuration: '7', productValidity: '24hr' },
@@ -154,7 +152,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
     });
 
     it('should return a PeriodGeoZoneTicket object', async () => {
-        const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
+        const mockFareZoneAttribute = { fareZoneName: 'Green Lane Shops' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {
                 multipleProducts: [

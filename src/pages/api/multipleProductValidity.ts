@@ -1,24 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { isSessionValid } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, Product } from '../../interfaces';
 import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-
-export interface MultipleProductAttribute {
-    products: Product[];
-}
-
-export interface Product {
-    productName: string;
-    productNameId?: string;
-    productPrice: string;
-    productPriceId?: string;
-    productDuration: string;
-    productDurationId?: string;
-    productValidity?: string;
-    productValidityError?: string;
-}
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     let validity = req.body[`validity-row${index}`];
@@ -26,6 +11,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
     if (!validity) {
         validity = '';
         error = 'Select one of the two validity options';
+
         return {
             productName: rawProduct.productName,
             productNameId: rawProduct.productNameId,
@@ -37,6 +23,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productValidityError: error,
         };
     }
+
     return {
         productName: rawProduct.productName,
         productPrice: rawProduct.productPrice,
@@ -64,6 +51,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');
+
             return;
         }
 

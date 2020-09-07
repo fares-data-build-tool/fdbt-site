@@ -17,14 +17,9 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType, isPeriodType } from '../../interfaces/typeGuards';
-
-export interface SelectSalesOfferPackageWithError {
-    errorMessage: string;
-    selected: { [key: string]: string };
-}
+import { isWithErrors } from '../../interfaces/typeGuards';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -42,7 +37,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
         if (
-            isFareType(fareTypeAttribute) &&
+            fareTypeAttribute &&
             fareTypeAttribute.fareType !== 'single' &&
             fareTypeAttribute.fareType !== 'return' &&
             fareTypeAttribute.fareType !== 'period' &&
@@ -52,22 +47,28 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (!req.body || Object.keys(req.body).length === 0) {
-            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
-                errorMessage: 'Choose at least one sales offer package from the options',
-                selected: req.body,
-            };
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
+            const errors: ErrorInfo[] = [
+                {
+                    errorMessage: 'Choose at least one sales offer package from the options',
+                    id: 'sales-offer-package-error',
+                },
+            ];
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, { errors, selected: req.body });
             redirectTo(res, `/selectSalesOfferPackage`);
+
             return;
         }
 
         if (Object.keys(req.body).length < products.length) {
-            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
-                errorMessage: 'Choose at least one sales offer package for each product',
-                selected: req.body,
-            };
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
+            const errors: ErrorInfo[] = [
+                {
+                    errorMessage: 'Choose at least one sales offer package for each product',
+                    id: 'sales-offer-package-error',
+                },
+            ];
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, { errors, selected: req.body });
             redirectTo(res, `/selectSalesOfferPackage`);
+
             return;
         }
 
@@ -75,7 +76,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         let userDataJson;
 
-        const fareType = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType;
+        const fareType = fareTypeAttribute && fareTypeAttribute.fareType;
 
         if (fareType === 'single') {
             userDataJson = getSingleTicketJson(req, res);
@@ -83,7 +84,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'period') {
             const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
-            const periodType = isPeriodType(periodTypeAttribute) ? periodTypeAttribute.name : '';
+            const periodType =
+                periodTypeAttribute && !isWithErrors(periodTypeAttribute) ? periodTypeAttribute.name : '';
 
             if (periodType !== 'periodGeoZone' && periodType !== 'periodMultipleServices') {
                 throw new Error('No period type found to generate user data json.');
@@ -119,6 +121,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             redirectTo(res, '/thankyou');
         }
+
         return;
     } catch (error) {
         const message =

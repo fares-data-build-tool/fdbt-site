@@ -8,7 +8,6 @@ import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../i
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
 import { getSessionAttribute } from '../../../utils/sessions';
-import { isFareType } from '../../../interfaces/typeGuards';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -61,19 +60,23 @@ export const redirectToError = (
 export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-    if (isFareType(fareTypeAttribute)) {
+    if (fareTypeAttribute) {
         switch (fareTypeAttribute.fareType) {
             case 'period':
                 redirectTo(res, '/periodType');
+
                 return;
             case 'single':
                 redirectTo(res, '/service');
+
                 return;
             case 'return':
                 redirectTo(res, '/service');
+
                 return;
             case 'flatFare':
                 redirectTo(res, '/serviceList');
+
                 return;
             default:
                 throw new Error('Fare Type we expect was not received.');
@@ -85,6 +88,7 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
 
 export const checkEmailValid = (email: string): boolean => {
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+
     return emailRegex.test(email) && email !== '';
 };
 
@@ -141,6 +145,7 @@ export const getSelectedStages = (req: NextApiRequest): string[] => {
         if (requestBody[e] !== '') {
             selectObjectsArray.push(requestBody[e]);
         }
+
         return null;
     });
 
@@ -159,6 +164,7 @@ export const validateNewPassword = (
     } else if (password !== confirmPassword) {
         inputChecks.push({ id: 'new-password', errorMessage: 'Passwords do not match' });
     }
+
     return inputChecks;
 };
 

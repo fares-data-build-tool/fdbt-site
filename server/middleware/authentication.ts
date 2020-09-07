@@ -11,7 +11,7 @@ import logger from '../../src/utils/logger';
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
 
-export const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
+const deleteCookieOnResponseObject = (cookieName: string, req: Req, res: Res): void => {
     const cookies = new Cookies(req, res);
 
     cookies.set(cookieName, '', { overwrite: true, maxAge: 0, path: '/' });
@@ -120,6 +120,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
         (disableAuthCookie === 'true' || req.query.disableAuth === 'true')
     ) {
         next();
+
         return;
     }
 
@@ -127,6 +128,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
 
     if (!idToken) {
         res.redirect('/login');
+
         return;
     }
 

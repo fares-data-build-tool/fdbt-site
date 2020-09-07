@@ -10,17 +10,17 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import logger from '../utils/logger';
 import { getSessionAttribute } from '../utils/sessions';
-import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Fare Type - Fares Data Build Tool';
 const description = 'Fare Type selection page of the Fares Data Build Tool';
 
 const errorId = 'fare-type-error';
 
-type FareTypeProps = {
+interface FareTypeProps {
     operator: string;
     errors: ErrorInfo[];
-};
+}
 
 export const buildUuid = (noc: string): string => {
     const uuid = uuidv4();
@@ -132,8 +132,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
 
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
-    const errors: ErrorInfo[] =
-        fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
+    const errors: ErrorInfo[] = fareTypeAttribute && isWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
     return { props: { operator: operatorInfo.operator.operatorPublicName, errors } };
 };

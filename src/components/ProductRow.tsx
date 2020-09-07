@@ -1,19 +1,18 @@
 import React, { ReactElement } from 'react';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, MultiProduct } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
-import { MultiProduct } from '../pages/api/multipleProducts';
 
-export interface ProductRowProps {
+interface ProductRowProps {
     numberOfProductsToDisplay: string;
     errors: ErrorInfo[];
     userInput: MultiProduct[];
 }
 
-export const continueButton = (): ReactElement => {
+const continueButton = (): ReactElement => {
     return <input type="submit" value="Continue" id="continue-button" className="govuk-button" />;
 };
 
-export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (
+const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (
     <div className="flex-container" key={index}>
         <div className="govuk-grid-column-one-half">
             <FormGroupWrapper errors={errors} errorId={`multiple-product-name-input-${index}`}>
@@ -114,15 +113,12 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
     </div>
 );
 
-export const renderRows = (
-    numberOfRows: string,
-    errors: ErrorInfo[],
-    userInput: MultiProduct[] = [],
-): ReactElement[] => {
+const renderRows = (numberOfRows: string, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < Number(numberOfRows); i += 1) {
         elements.push(renderTable(i, errors, userInput));
     }
+
     return elements;
 };
 

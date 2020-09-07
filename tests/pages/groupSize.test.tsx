@@ -2,8 +2,8 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import GroupSize, { getServerSideProps, GroupSizeProps } from '../../src/pages/groupSize';
 import { getMockContext } from '../testData/mockData';
-import { GroupTicketAttributeWithErrors } from '../../src/pages/api/groupSize';
 import { GROUP_SIZE_ATTRIBUTE } from '../../src/constants';
+import { GroupTicketAttribute, WithErrors } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('groupSize', () => {
@@ -48,7 +48,7 @@ describe('pages', () => {
         });
 
         it('should return props containing errors when the GROUP_SIZE_ATTRIBUTE contains errors', () => {
-            const groupTicketInfoWithErrors: GroupTicketAttributeWithErrors = {
+            const groupTicketInfoWithErrors: WithErrors<GroupTicketAttribute> = {
                 maxGroupSize: 'wrong input',
                 errors: [
                     {

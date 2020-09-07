@@ -6,14 +6,6 @@ import { FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export interface FareType {
-    fareType: string;
-}
-
-export interface FareTypeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
@@ -31,6 +23,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             ];
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 errors,
+                fareType: '',
             });
             redirectTo(res, '/fareType');
         }

@@ -21,11 +21,6 @@ import {
     FARE_STAGES_ATTRIBUTE,
 } from '../../src/constants/index';
 
-import { RawService, Service } from '../../src/data/auroradb';
-import { UserFareStages } from '../../src/data/s3';
-
-import { MultiProduct } from '../../src/pages/api/multipleProducts';
-import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
 import {
     ErrorInfo,
     Breadcrumb,
@@ -40,8 +35,13 @@ import {
     SalesOfferPackage,
     ProductDetails,
     TimeRestriction,
+    RawService,
+    UserFareStages,
+    Service,
+    RadioConditionalInputFieldset,
+    MultiProduct,
+    MatchingFareZones,
 } from '../../src/interfaces';
-import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
 interface GetMockContextInput {
@@ -1643,116 +1643,6 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
     ],
 };
 
-export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
-    operatorName: 'test',
-    type: 'period',
-    nocCode: 'TEST',
-    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    email: 'test@example.com',
-    passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
-    products: [
-        {
-            productName: 'Product A',
-            productPrice: '1234',
-            productDuration: '2',
-            productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
-        },
-    ],
-    selectedServices: [
-        {
-            lineName: '12A',
-            serviceCode: 'NW_05_BLAC_12A_1',
-            startDate: '13/05/2020',
-            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
-        },
-        {
-            lineName: '6',
-            serviceCode: 'NW_05_BLAC_6_1',
-            startDate: '08/05/2020',
-            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
-        },
-        {
-            lineName: '101',
-            serviceCode: 'NW_05_BLAC_101_1',
-            startDate: '06/05/2020',
-            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
-        },
-    ],
-};
-
-export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket = {
-    operatorName: 'test',
-    type: 'period',
-    nocCode: 'TEST',
-    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    email: 'test@example.com',
-    zoneName: 'fare zone 1',
-    stops: zoneStops,
-    passengerType: 'Adult',
-    timeRestriction: mockTimeRestriction,
-    products: [
-        {
-            productName: 'Weekly Ticket',
-            productPrice: '50',
-            productDuration: '5',
-            productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
-        },
-        {
-            productName: 'Day Ticket',
-            productPrice: '2.50',
-            productDuration: '1',
-            productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
-        },
-        {
-            productName: 'Monthly Ticket',
-            productPrice: '200',
-            productDuration: '28',
-            productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
-        },
-    ],
-};
-
 export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
     operatorName: 'test',
     type: 'period',
@@ -2427,24 +2317,6 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 id: 'define-passenger-proof',
             },
         ],
-    },
-];
-
-export const mockPassengerTypeRadioAndInputErrors: ErrorInfo[] = [
-    {
-        userInput: '',
-        errorMessage: 'Choose one of the options below',
-        id: 'define-passenger-proof',
-    },
-    {
-        userInput: '',
-        errorMessage: 'Enter a minimum or maximum age',
-        id: 'age-range-min',
-    },
-    {
-        userInput: '',
-        errorMessage: 'Enter a minimum or maximum age',
-        id: 'age-range-max',
     },
 ];
 

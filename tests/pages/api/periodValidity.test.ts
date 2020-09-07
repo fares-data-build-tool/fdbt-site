@@ -1,6 +1,6 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import periodValidity, { PeriodExpiryWithErrors } from '../../../src/pages/api/periodValidity';
+import periodValidity from '../../../src/pages/api/periodValidity';
 import { ProductData } from '../../../src/interfaces';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants';
 
@@ -36,8 +36,11 @@ describe('periodValidity', () => {
     });
 
     it('correctly generates period expiry error info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to periodValidity page when there is no period validity info', () => {
-        const mockPeriodExpiryAttributeError: PeriodExpiryWithErrors = {
-            errorMessage: 'Choose an option regarding your period ticket validity',
+        const mockPeriodExpiryAttributeError = {
+            errors: [
+                { errorMessage: 'Choose an option regarding your period ticket validity', id: 'period-validity-error' },
+            ],
+            products: [],
         };
 
         const { req, res } = getMockRequestAndResponse({

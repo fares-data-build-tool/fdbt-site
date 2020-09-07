@@ -6,16 +6,16 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { inputMethodErrorsExist } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Input Method - Fares Data Build Tool';
 const description = 'Input Method selection page of the Fares Data Build Tool';
 
 const errorId = 'input-method-error';
 
-type InputMethodProps = {
+interface InputMethodProps {
     errors: ErrorInfo[];
-};
+}
 
 const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -88,7 +88,8 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps & CustomAppPro
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: InputMethodProps } => {
     const inputMethodInfo = getSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE);
     updateSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE, undefined);
-    return { props: { errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [] } };
+
+    return { props: { errors: isWithErrors(inputMethodInfo) ? inputMethodInfo.errors : [] } };
 };
 
 export default InputMethod;

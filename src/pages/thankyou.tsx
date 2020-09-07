@@ -11,10 +11,10 @@ import logger from '../utils/logger';
 const title = 'Thank You - Fares Data Build Tool';
 const description = 'Thank you page for the Fares Data Build Tool';
 
-type ThankYouProps = {
+interface ThankYouProps {
     uuid: string;
     emailAddress: string;
-};
+}
 
 const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
@@ -64,6 +64,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
     }
 
     deleteAllCookiesOnServerSide(ctx);
+
     return { props: { uuid, emailAddress: decodedIdToken.email } };
 };
 

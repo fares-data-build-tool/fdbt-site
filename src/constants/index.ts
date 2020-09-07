@@ -12,8 +12,6 @@ export const SERVICE_ATTRIBUTE = 'fdbt-service';
 
 export const JOURNEY_ATTRIBUTE = 'fdbt-journey';
 
-export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
-
 export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
 
 export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
@@ -89,7 +87,7 @@ export const ALLOWED_CSV_FILE_TYPES = [
     'text/tab-separated-values',
 ];
 
-export const STAGE = process.env.STAGE || 'dev';
+const STAGE = process.env.STAGE || 'dev';
 
 export const RAW_USER_DATA_BUCKET_NAME = `fdbt-raw-user-data-${STAGE}`;
 export const USER_DATA_BUCKET_NAME = `fdbt-user-data-${STAGE}`;

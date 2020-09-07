@@ -26,6 +26,7 @@ const ResetLinkExpired: NextPage = (): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContext): {} => {
     deleteCookieOnServerSide(ctx, USER_COOKIE);
+
     return { props: {} };
 };
 

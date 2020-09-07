@@ -18,6 +18,7 @@ const AccountDetails = ({ emailAddress, nocCode }: AccountDetailsProps): ReactEl
     for (let i = 0; i < 8; i += 1) {
         passwordDots.push(<span key={i} className="dot" />);
     }
+
     return (
         <TwoThirdsLayout title={title} description={description}>
             <div className="account-details-page">
@@ -73,6 +74,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetail
     if (!email || !noc) {
         throw new Error('Could not extract the user email address and/or noc code from their ID token');
     }
+
     return { props: { emailAddress: email, nocCode: noc } };
 };
 

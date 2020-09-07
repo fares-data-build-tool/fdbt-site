@@ -5,11 +5,18 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
+import {
+    SalesOfferPackage,
+    CustomAppProps,
+    ErrorInfo,
+    NextPageContextWithSession,
+    ProductInfo,
+    Product,
+} from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { Product } from './api/multipleProductValidity';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
@@ -49,7 +56,7 @@ export const defaultSalesOfferPackageFour: SalesOfferPackage = {
     ticketFormats: ['mobileApp'],
 };
 
-export interface SelectSalesOfferPackageProps {
+interface SelectSalesOfferPackageProps {
     selected?: { [key: string]: string };
     productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
@@ -229,17 +236,14 @@ export const getServerSideProps = async (
     }
 
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
-    const errors: ErrorInfo[] = [];
 
-    if (salesOfferPackageAttribute && salesOfferPackageAttribute.errorMessage) {
-        const errorInfo: ErrorInfo = { errorMessage: salesOfferPackageAttribute.errorMessage, id: errorId };
-        errors.push(errorInfo);
+    if (isWithErrors(salesOfferPackageAttribute)) {
         return {
             props: {
                 selected: salesOfferPackageAttribute.selected,
                 productNamesList: productNames,
                 salesOfferPackagesList,
-                errors,
+                errors: salesOfferPackageAttribute.errors,
             },
         };
     }

@@ -6,14 +6,14 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPeriodTypeWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Period Type - Fares Data Build Tool';
 const description = 'Period Type selection page of the Fares Data Build Tool';
 
-type PeriodTypeProps = {
+interface PeriodTypeProps {
     errors: ErrorInfo[];
-};
+}
 
 const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -93,7 +93,7 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const periodType = getSessionAttribute(ctx.req, PERIOD_TYPE_ATTRIBUTE);
 
-    if (isPeriodTypeWithErrors(periodType)) {
+    if (isWithErrors(periodType)) {
         return { props: { errors: periodType.errors } };
     }
 

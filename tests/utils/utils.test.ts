@@ -1,8 +1,8 @@
 import MockReq from 'mock-req';
 import { NextPageContext } from 'next';
 import { getHost, formatStopName, getAttributeFromIdToken } from '../../src/utils';
-import { Stop } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
+import { Stop } from '../../src/interfaces';
 
 describe('utils', () => {
     describe('getHost', () => {

@@ -100,6 +100,7 @@ describe('changePassword', () => {
             if (authResponse === 0) {
                 throw new Error();
             }
+
             return Promise.resolve({ AuthenticationResult: {} });
         });
 

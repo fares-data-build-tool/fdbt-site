@@ -11,7 +11,7 @@ import { USER_COOKIE } from '../../constants';
 import { initiateAuth, updateUserPassword } from '../../data/cognito';
 import logger from '../../utils/logger';
 
-export const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
+const setCookieAndRedirect = (req: NextApiRequest, res: NextApiResponse, inputChecks: ErrorInfo[]): void => {
     const cookieContent = JSON.stringify({ inputChecks });
     setCookieOnResponseObject(USER_COOKIE, cookieContent, req, res);
     redirectTo(res, '/changePassword');
@@ -30,11 +30,13 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             inputChecks.push({ id: 'old-password', errorMessage: 'Enter your current password' });
             inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
             setCookieAndRedirect(req, res, inputChecks);
+
             return;
         }
         inputChecks = validateNewPassword(newPassword, confirmNewPassword, inputChecks);
         if (inputChecks.some(el => el.errorMessage !== '')) {
             setCookieAndRedirect(req, res, inputChecks);
+
             return;
         }
         try {

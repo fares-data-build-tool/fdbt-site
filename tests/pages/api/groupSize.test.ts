@@ -1,8 +1,4 @@
-import groupSize, {
-    groupSizeSchema,
-    GroupTicketAttributeWithErrors,
-    GroupTicketAttribute,
-} from '../../../src/pages/api/groupSize';
+import groupSize, { groupSizeSchema } from '../../../src/pages/api/groupSize';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessionUtils from '../../../src/utils/sessions';
 import { GROUP_SIZE_ATTRIBUTE } from '../../../src/constants';
@@ -34,7 +30,7 @@ describe('groupSize', () => {
 
     it('should update the GROUP_SIZE_ATTRIBUTE and redirect to itself (i.e. /groupSize) when there are validation errors', async () => {
         const { req, res } = getMockRequestAndResponse({ body: { maxGroupSize: 'wrong input' } });
-        const groupTicketInfoWithErrors: GroupTicketAttributeWithErrors = {
+        const groupTicketInfoWithErrors = {
             maxGroupSize: 'wronginput',
             errors: [
                 {
@@ -51,7 +47,7 @@ describe('groupSize', () => {
 
     it('should update the GROUP_SIZE_ATTRIBUTE and redirect to /groupPassengerTypes when there are validation errors', async () => {
         const { req, res } = getMockRequestAndResponse({ body: { maxGroupSize: '5' } });
-        const groupTicketInfo: GroupTicketAttribute = {
+        const groupTicketInfo = {
             maxGroupSize: '5',
         };
         await groupSize(req, res);

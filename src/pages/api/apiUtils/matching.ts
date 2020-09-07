@@ -1,7 +1,5 @@
 import { NextApiRequest } from 'next';
-import { UserFareStages } from '../../../data/s3';
-import { Stop } from '../../../data/auroradb';
-import { MatchingFareZones, MatchingFareZonesData } from '../../../interfaces/matchingInterface';
+import { UserFareStages, Stop, MatchingFareZones, MatchingFareZonesData } from '../../../interfaces';
 
 export const getFareZones = (
     userFareStages: UserFareStages,

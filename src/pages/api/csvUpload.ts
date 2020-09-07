@@ -1,20 +1,15 @@
 import { NextApiResponse } from 'next';
 import uniq from 'lodash/uniq';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
-import { putDataInS3, UserFareStages } from '../../data/s3';
+import { putDataInS3 } from '../../data/s3';
 import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants';
 import { isSessionValid } from './apiUtils/validator';
 import { processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isJourney } from '../../interfaces/typeGuards';
 
 const errorId = 'csv-upload-error';
-
-export interface CsvUploadAttributeWithErrors {
-    errors: ErrorInfo[];
-}
 
 interface FareTriangleData {
     fareStages: {
@@ -66,6 +61,7 @@ export const faresTriangleDataMapper = (
         });
         const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'At least 2 fare stages are needed' }];
         setCsvUploadAttributeAndRedirect(req, res, errors);
+
         return null;
     }
 
@@ -120,6 +116,7 @@ export const faresTriangleDataMapper = (
         });
         const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'Fare stage names cannot be the same' }];
         setCsvUploadAttributeAndRedirect(req, res, errors);
+
         return null;
     }
 
@@ -134,6 +131,7 @@ export const faresTriangleDataMapper = (
         });
         const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'The selected file must use the template' }];
         setCsvUploadAttributeAndRedirect(req, res, errors);
+
         return null;
     }
 
@@ -151,6 +149,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (fileError) {
             const errors: ErrorInfo[] = [{ id: errorId, errorMessage: fileError }];
             setCsvUploadAttributeAndRedirect(req, res, errors);
+
             return;
         }
 
@@ -169,8 +168,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
 
-            if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
+            if (journeyAttribute && journeyAttribute?.outboundJourney) {
                 redirectTo(res, '/outboundMatching');
+
                 return;
             }
             redirectTo(res, '/matching');

@@ -4,18 +4,9 @@ import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { NextApiRequestWithSession } from '../../interfaces';
 
 const errorId = 'service-list-error';
-
-export interface ServiceListAttribute {
-    selectedServices: string[];
-}
-
-export interface ServiceListAttributeWithErrors {
-    errors: ErrorInfo[];
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';
@@ -28,7 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (isFareType(fareTypeAttribute) && !fareTypeAttribute.fareType) {
+        if (fareTypeAttribute && !fareTypeAttribute.fareType) {
             throw new Error('Failed to retrieve fare type attribute info for serviceList API');
         }
 
@@ -40,6 +31,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (selectAll && queryString) {
             redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
+
             return;
         }
 
@@ -48,6 +40,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
             });
             redirectTo(res, `${redirectUrl}?selectAll=false`);
+
             return;
         }
 
@@ -70,12 +63,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare') {
+        if (fareTypeAttribute && fareTypeAttribute.fareType === 'flatFare') {
             redirectTo(res, '/productDetails');
+
             return;
         }
 
         redirectTo(res, '/howManyProducts');
+
         return;
     } catch (error) {
         const message = 'There was a problem processing the selected services from the servicesList page:';

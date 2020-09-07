@@ -11,10 +11,8 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../../../src/constants';
-import { GroupPassengerTypesCollection } from '../../../src/pages/api/groupPassengerTypes';
 import * as sessions from '../../../src/utils/sessions';
 import { CompanionInfo } from '../../../src/interfaces';
-import { GroupTicketAttribute } from '../../../src/pages/api/groupSize';
 
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
@@ -291,8 +289,8 @@ describe('definePassengerType', () => {
             proofDocuments: ['Membership Card', 'Student Card'],
         };
 
-        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
-        const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const groupPassengerTypesAttribute = { passengerTypes: ['adult', 'child'] };
+        const groupSizeAttribute = { maxGroupSize: '20' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareType: 'single' },
             body: mockPassengerTypeDetails,
@@ -325,8 +323,8 @@ describe('definePassengerType', () => {
     });
 
     it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the PASSENGER_TYPE_ERRORS_COOKIE and redirect to /timeRestrictions', async () => {
-        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['child'] };
-        const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const groupPassengerTypesAttribute = { passengerTypes: ['child'] };
+        const groupSizeAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
             {
                 minNumber: '2',

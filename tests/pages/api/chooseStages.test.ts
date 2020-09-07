@@ -45,7 +45,7 @@ describe('chooseStages', () => {
 
     it.only('should set the fare stages cookie according to the specified number of fare stages', () => {
         const setUpdateSessionspy = jest.spyOn(sessions, 'updateSessionAttribute');
-        const mockFareStages = { errors: [], fareStages: '6' };
+        const mockFareStages = { fareStages: '6' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { fareStageInput: '6' },

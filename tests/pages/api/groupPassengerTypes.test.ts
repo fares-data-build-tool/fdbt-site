@@ -26,6 +26,7 @@ describe('groupPassengerTypes', () => {
             errors: [
                 { errorMessage: 'Choose one or two passenger types from the options', id: 'passenger-types-error' },
             ],
+            passengerTypes: [],
         });
     });
 
@@ -49,6 +50,7 @@ describe('groupPassengerTypes', () => {
                     id: 'passenger-types-error',
                 },
             ],
+            passengerTypes: [],
         });
     });
 

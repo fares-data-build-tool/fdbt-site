@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-export const SalesOfferPackageExplanation = (): ReactElement => (
+const SalesOfferPackageExplanation = (): ReactElement => (
     <>
         <h1 className="govuk-heading-s">What is a Sales Offer Package?</h1>
         <p className="govuk-body">To create NeTEx for your fares, you need to provide the following:</p>

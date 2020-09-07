@@ -1,10 +1,7 @@
 import { shallow } from 'enzyme';
 import React, { ReactElement } from 'react';
-import { ErrorInfo } from '../../src/interfaces';
-import RadioConditionalInput, {
-    RadioConditionalInputFieldset,
-    renderConditionalTextInput,
-} from '../../src/components/RadioConditionalInput';
+import { ErrorInfo, RadioConditionalInputFieldset } from '../../src/interfaces';
+import RadioConditionalInput, { renderConditionalTextInput } from '../../src/components/RadioConditionalInput';
 
 describe('RadioConditionalInput', () => {
     it('should render an ordinary set of radio buttons when given a base fieldset', () => {

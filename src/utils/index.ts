@@ -4,10 +4,9 @@ import { IncomingMessage } from 'http';
 import { parseCookies, destroyCookie } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import { OPERATOR_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../constants/index';
-import { Stop } from '../data/auroradb';
-import { ErrorInfo, CognitoIdToken, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, CognitoIdToken, NextPageContextWithSession, Stop } from '../interfaces';
 
-export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
+const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
 
     if (cookies[cookie]) {
@@ -64,6 +63,7 @@ export const getHost = (req: IncomingMessage | undefined): string => {
         if (host && host.startsWith('localhost')) {
             return `http://${host}`;
         }
+
         return `https://${host}`;
     }
 
@@ -77,17 +77,8 @@ export const getUuidFromCookies = (ctx: NextPageContext): string | null => {
         return null;
     }
     const operatorInfo = JSON.parse(operatorCookie);
-    return operatorInfo.uuid;
-};
 
-export const getJourneyPatternFromCookies = (ctx: NextPageContext): string | null => {
-    const cookies = parseCookies(ctx);
-    const operatorCookie = cookies[OPERATOR_COOKIE];
-    if (!operatorCookie) {
-        return null;
-    }
-    const operatorInfo = JSON.parse(operatorCookie);
-    return operatorInfo.journeyPattern;
+    return operatorInfo.uuid;
 };
 
 export const formatStopName = (stop: Stop): string =>
@@ -141,6 +132,7 @@ export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] 
             compactErrors.push(error);
         }
     });
+
     return compactErrors;
 };
 
@@ -150,5 +142,6 @@ export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boole
     if (databaseNocs) {
         nocs = databaseNocs.split('|');
     }
+
     return nocs?.length > 1;
 };

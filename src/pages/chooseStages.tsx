@@ -4,10 +4,9 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { isFareStageWithErrors } from '../interfaces/typeGuards';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, FareStagesAttribute } from '../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { FareStagesAttribute } from './api/chooseStages';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Choose Stages - Fares Data Build Tool';
 const description = 'Choose Stages page of the Fares Data Build Tool';
@@ -60,10 +59,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
 
     const fareStagesAttribute = getSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE);
 
-    if (isFareStageWithErrors(fareStagesAttribute)) {
-        if (isFareStageWithErrors(fareStagesAttribute)) {
-            errors = fareStagesAttribute.errors;
-        }
+    if (isWithErrors(fareStagesAttribute)) {
+        errors = fareStagesAttribute.errors;
 
         updateSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE, undefined);
     }

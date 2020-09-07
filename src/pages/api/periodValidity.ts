@@ -3,12 +3,8 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DAYS_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { NextApiRequestWithSession, ProductData } from '../../interfaces';
-import { isProductInfo } from '../productDetails';
-
-export interface PeriodExpiryWithErrors {
-    errorMessage: string;
-}
+import { NextApiRequestWithSession, ProductData, ErrorInfo } from '../../interfaces';
+import { isProductInfo } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -44,10 +40,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             redirectTo(res, '/selectSalesOfferPackage');
         } else {
-            const periodExpiryAttributeError: PeriodExpiryWithErrors = {
-                errorMessage: 'Choose an option regarding your period ticket validity',
-            };
-            updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeError);
+            const errors: ErrorInfo[] = [
+                {
+                    errorMessage: 'Choose an option regarding your period ticket validity',
+                    id: 'period-validity-error',
+                },
+            ];
+            updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {

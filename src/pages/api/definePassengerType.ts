@@ -10,16 +10,10 @@ import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { CompanionInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { CompanionInfo, ErrorInfo, NextApiRequestWithSession, GroupPassengerTypesCollection } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { GroupPassengerTypesCollection } from './groupPassengerTypes';
-import { PassengerType } from './passengerType';
 
-export interface DefinePassengerTypeWithErrors extends PassengerType {
-    errors: ErrorInfo[];
-}
-
-export interface FilteredRequestBody {
+interface FilteredRequestBody {
     minNumber?: string;
     maxNumber?: string;
     maxGroupSize?: string;
@@ -154,14 +148,17 @@ export const formatRequestBody = (req: NextApiRequestWithSession): FilteredReque
                 return;
             }
             filteredReqBody[entry[0]] = strippedInput;
+
             return;
         }
         if (entry[0] === 'proofDocuments') {
             filteredReqBody[entry[0]] = !isArray(entry[1]) ? [entry[1] as string] : (entry[1] as string[]);
+
             return;
         }
         filteredReqBody[entry[0]] = entry[1] as string;
     });
+
     return filteredReqBody;
 };
 
@@ -272,17 +269,20 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(res, '/timeRestrictions');
                     }
+
                     return;
                 }
             }
             updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
             redirectTo(res, '/timeRestrictions');
+
             return;
         }
 
         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, { errors, passengerType });
         if (group) {
             redirectTo(res, `/definePassengerType?groupPassengerType=${passengerType}`);
+
             return;
         }
         redirectTo(res, '/definePassengerType');

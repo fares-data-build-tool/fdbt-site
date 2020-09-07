@@ -1,26 +1,21 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession, ProductData } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { PeriodExpiryWithErrors } from './api/periodValidity';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Period Validity - Fares Data Build Tool';
 const description = 'Period Validity selection page of the Fares Data Build Tool';
 
 const errorId = 'period-validity-error';
 
-type PeriodValidityProps = {
+interface PeriodValidityProps {
     errors: ErrorInfo[];
-};
-
-const isPeriodExpiryWithErrors = (
-    periodExpiryAttribute: ProductData | PeriodExpiryWithErrors,
-): periodExpiryAttribute is PeriodExpiryWithErrors =>
-    (periodExpiryAttribute as PeriodExpiryWithErrors)?.errorMessage !== undefined;
+}
 
 const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & CustomAppProps): ReactElement => {
     return (
@@ -99,10 +94,12 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps & Custom
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (periodExpiryAttribute && isPeriodExpiryWithErrors(periodExpiryAttribute)) {
-        const { errorMessage } = periodExpiryAttribute;
-        return { props: { errors: [{ errorMessage, id: errorId }] } };
+    if (periodExpiryAttribute && isWithErrors(periodExpiryAttribute)) {
+        const { errors } = periodExpiryAttribute;
+
+        return { props: { errors } };
     }
+
     return { props: {} };
 };
 

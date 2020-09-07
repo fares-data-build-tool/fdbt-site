@@ -3,21 +3,17 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_ATTRIBUTE } from '../constants';
-import { ServiceType, getServicesByNocCode } from '../data/auroradb';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { getServicesByNocCode } from '../data/auroradb';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, ServicesInfo } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { ServiceListAttribute, ServiceListAttributeWithErrors } from './api/serviceList';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const pageTitle = 'Service List - Fares Data Build Tool';
 const pageDescription = 'Service List selection page of the Fares Data Build Tool';
 
-export interface ServicesInfo extends ServiceType {
-    checked?: boolean;
-}
-
-export interface ServiceListProps {
+interface ServiceListProps {
     serviceList: ServicesInfo[];
     buttonText: string;
     errors: ErrorInfo[];
@@ -105,11 +101,6 @@ const ServiceList = ({
     </FullColumnLayout>
 );
 
-export const isServiceListAttributeWithErrors = (
-    serviceListAttribute: ServiceListAttribute | ServiceListAttributeWithErrors,
-): serviceListAttribute is ServiceListAttributeWithErrors =>
-    (serviceListAttribute as ServiceListAttributeWithErrors).errors !== undefined;
-
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceListProps }> => {
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
@@ -133,10 +124,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             serviceList,
             buttonText: selectAll === 'true' ? 'Unselect All' : 'Select All',
-            errors:
-                serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
-                    ? serviceListAttribute.errors
-                    : [],
+            errors: serviceListAttribute && isWithErrors(serviceListAttribute) ? serviceListAttribute.errors : [],
         },
     };
 };

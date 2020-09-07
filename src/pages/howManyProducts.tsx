@@ -5,8 +5,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from './api/howManyProducts';
 import { getSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'How Many Products - Fares Data Build Tool';
 const description = 'How Many Products entry page of the Fares Data Build Tool';
@@ -52,23 +52,11 @@ const HowManyProducts = ({ errors, csrfToken }: HowManyProductProps & CustomAppP
     </TwoThirdsLayout>
 );
 
-const isNumberOfProductsAttributeWithErrors = (
-    numberOfProductsAttribute: NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors,
-): numberOfProductsAttribute is NumberOfProductsAttributeWithErrors =>
-    (numberOfProductsAttribute as NumberOfProductsAttributeWithErrors).errors !== undefined;
-
-export const isNumberOfProductsAttribute = (
-    numberOfProductsAttribute: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors,
-): numberOfProductsAttribute is NumberOfProductsAttribute =>
-    !!numberOfProductsAttribute &&
-    (numberOfProductsAttribute as NumberOfProductsAttribute).numberOfProductsInput !== undefined;
-
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
     const errors: ErrorInfo[] =
-        numberOfProductsAttribute && isNumberOfProductsAttributeWithErrors(numberOfProductsAttribute)
-            ? numberOfProductsAttribute.errors
-            : [];
+        numberOfProductsAttribute && isWithErrors(numberOfProductsAttribute) ? numberOfProductsAttribute.errors : [];
+
     return { props: { errors } };
 };
 

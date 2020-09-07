@@ -9,7 +9,6 @@ import {
     checkProductNameIsValid,
 } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType } from '../../interfaces/typeGuards';
 
 const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
     const cleanedNameInput = removeExcessWhiteSpace(productDetailsNameInput);
@@ -31,9 +30,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
         if (
             !fareTypeAttribute ||
-            (isFareType(fareTypeAttribute) &&
-                fareTypeAttribute.fareType !== 'period' &&
-                fareTypeAttribute.fareType !== 'flatFare')
+            (fareTypeAttribute && fareTypeAttribute.fareType !== 'period' && fareTypeAttribute.fareType !== 'flatFare')
         ) {
             throw new Error('Failed to retrieve FARE_TYPE_ATTRIBUTE info for productDetails API');
         }
@@ -58,9 +55,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const invalidInputs = { ...productDetails, errors };
             updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, invalidInputs);
             redirectTo(res, '/productDetails');
+
             return;
         }
-        if (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period') {
+        if (fareTypeAttribute && fareTypeAttribute.fareType === 'period') {
             const periodProduct: Product = {
                 productName: productDetails.productName,
                 productPrice: productDetails.productPrice,
@@ -75,6 +73,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         };
         updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, flatFareProduct);
         redirectTo(res, '/selectSalesOfferPackage');
+
         return;
     } catch (error) {
         const message = 'There was a problem processing the product details.';

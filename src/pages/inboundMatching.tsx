@@ -1,15 +1,14 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
+import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../data/auroradb';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE } from '../constants';
-import { getUserFareStages, UserFareStages } from '../data/s3';
+import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
+import { BasicService, CustomAppProps, NextPageContextWithSession, UserFareStages, Stop } from '../interfaces/index';
 import { getAndValidateNoc } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { InboundMatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
-import { isService, isJourney } from '../interfaces/typeGuards';
+import { isMatchingWithErrors } from '../interfaces/typeGuards';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Fares Data Build Tool';
@@ -49,9 +48,6 @@ const InboundMatching = ({
         csrfToken={csrfToken}
     />
 );
-const isMatchingWithErrors = (
-    matchingAttribute: InboundMatchingInfo | MatchingWithErrors,
-): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.error;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
@@ -61,7 +57,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
 
-    if (!operatorCookie || !isService(serviceAttribute) || !isJourney(journeyAttribute) || !nocCode) {
+    if (!operatorCookie || !serviceAttribute || !journeyAttribute || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 

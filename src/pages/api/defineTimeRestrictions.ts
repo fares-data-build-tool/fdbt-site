@@ -4,17 +4,14 @@ import isArray from 'lodash/isArray';
 import { redirectToError, redirectTo, redirectOnFareType } from './apiUtils/index';
 import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession, TimeRestriction } from '../../interfaces';
+import {
+    ErrorInfo,
+    NextApiRequestWithSession,
+    TimeRestriction,
+    WithErrors,
+    TimeRestrictionsDefinition,
+} from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-
-interface TimeRestrictionsDefinition extends TimeRestriction {
-    timeRestriction?: string;
-    validDaysSelected?: string;
-}
-
-export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {
-    errors: ErrorInfo[];
-}
 
 const radioButtonError = 'Choose one of the options below';
 const startTimeRestrictionValidityError = 'Enter a start time in a valid 24 hour format between 0000 - 2300';
@@ -108,14 +105,17 @@ export const formatRequestBody = (req: NextApiRequestWithSession): TimeRestricti
                 return;
             }
             filteredReqBody[entry[0]] = strippedInput;
+
             return;
         }
         if (entry[0] === 'validDays') {
             filteredReqBody[entry[0]] = !isArray(entry[1]) ? [entry[1] as string] : (entry[1] as string[]);
+
             return;
         }
         filteredReqBody[entry[0]] = entry[1] as string;
     });
+
     return filteredReqBody;
 };
 
@@ -148,10 +148,11 @@ export const collectUniqueErrors = (initialErrors: ErrorInfo[], currentSchemaErr
             errorCollection.push(error);
         });
     }
+
     return errorCollection;
 };
 
-export const runValidationSchema = async (
+const runValidationSchema = async (
     schema: yup.ObjectSchema,
     reqBody: TimeRestriction,
     initialErrors: ErrorInfo[] = [],
@@ -169,6 +170,7 @@ export const runValidationSchema = async (
         }));
     }
     const errorCollection = collectUniqueErrors(initialErrors, errors);
+
     return errorCollection;
 };
 
@@ -202,7 +204,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         };
 
         if (combinedErrors.length > 0) {
-            const timeRestrictionsDefinitionWithErrors: TimeRestrictionsDefinitionWithErrors = {
+            const timeRestrictionsDefinitionWithErrors: WithErrors<TimeRestrictionsDefinition> = {
                 ...timeRestrictionsDefinition,
                 timeRestriction,
                 validDaysSelected,
@@ -210,6 +212,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             };
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinitionWithErrors);
             redirectTo(res, '/defineTimeRestrictions');
+
             return;
         }
 

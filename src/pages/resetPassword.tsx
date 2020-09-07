@@ -134,6 +134,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ResetPassword
             if (check.errorMessage) {
                 errors.push({ id: check.id, errorMessage: check.errorMessage });
             }
+
             return errors;
         });
     }

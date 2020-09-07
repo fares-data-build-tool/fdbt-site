@@ -17,9 +17,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             switch (req.body.howManyStages) {
                 case 'lessThan20':
                     redirectTo(res, '/chooseStages');
+
                     return;
                 case 'moreThan20':
                     redirectTo(res, '/csvUpload');
+
                     return;
                 default:
                     throw new Error('number of fare stages we expect was not received.');

@@ -5,14 +5,6 @@ import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export interface PassengerType {
-    passengerType: string;
-}
-
-export interface PassengerTypeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
@@ -28,15 +20,18 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             if (passengerType === 'anyone') {
                 redirectTo(res, '/timeRestrictions');
+
                 return;
             }
 
             if (passengerType === 'group') {
                 redirectTo(res, '/groupSize');
+
                 return;
             }
 
             redirectTo(res, '/definePassengerType');
+
             return;
         }
 
@@ -46,6 +41,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
             errors,
+            passengerType: '',
         });
 
         redirectTo(res, '/passengerType');

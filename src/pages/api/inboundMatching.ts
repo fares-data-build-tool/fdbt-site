@@ -1,12 +1,10 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
-import { NextApiRequestWithSession } from '../../interfaces';
-import { UserFareStages } from '../../data/s3';
+import { NextApiRequestWithSession, UserFareStages, MatchingWithErrors, InboundMatchingInfo } from '../../interfaces';
 import { isSessionValid } from './apiUtils/validator';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { INBOUND_MATCHING_ATTRIBUTE } from '../../constants';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -31,6 +29,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const matchingAttributeError: MatchingWithErrors = { error: true, selectedFareStages: selectedStagesList };
             updateSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE, matchingAttributeError);
             redirectTo(res, '/inboundMatching');
+
             return;
         }
         const matchingAttributeValue: InboundMatchingInfo = { inboundUserFareStages, inboundMatchingFareZones };

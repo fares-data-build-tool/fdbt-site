@@ -36,6 +36,7 @@ const CsvUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): ReactEle
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
     const csvUploadAttribute = getSessionAttribute(ctx.req, CSV_UPLOAD_ATTRIBUTE);
     const errors: ErrorInfo[] = csvUploadAttribute ? csvUploadAttribute.errors : [];
+
     return {
         props: {
             csvUploadApiRoute: '/api/csvUpload',

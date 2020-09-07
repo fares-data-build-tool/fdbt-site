@@ -14,7 +14,6 @@ import {
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../src/constants';
-import { TimeRestrictionsDefinitionWithErrors } from '../../src/pages/api/defineTimeRestrictions';
 
 describe('pages', () => {
     describe('defineTimeRestrictions', () => {
@@ -101,7 +100,7 @@ describe('pages', () => {
                 expect(result.props.fieldsets).toEqual(mockDefineTimeRestrictionsFieldsets);
             });
             it('should return props containing errors and valid fieldsets when errors are present', () => {
-                const timeRestrictionsDefinition: TimeRestrictionsDefinitionWithErrors = {
+                const timeRestrictionsDefinition = {
                     validDays: ['monday', 'tuesday'],
                     errors: mockTimeRestrictionsInputErrors,
                 };

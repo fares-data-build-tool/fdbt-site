@@ -9,8 +9,7 @@ import {
 } from '../constants/index';
 import { Breadcrumb, NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute } from './sessions';
-import { isFareType, isPassengerType, inputMethodErrorsExist, isJourney, isPeriodType } from '../interfaces/typeGuards';
-import { isNumberOfProductsAttribute } from '../pages/howManyProducts';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[] } => {
     const url = ctx.req?.url;
@@ -36,36 +35,35 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
     const multiProductUrls = ['/multipleProducts', '/multipleProductValidity'];
     const salesOfferPackagesUrls = ['/selectSalesOfferPackage', '/salesOfferPackages', '/describeSalesOfferPackage'];
 
-    const isSingle = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'single';
-    const isReturn = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'return';
-    const isPeriod = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'period';
-    const isFlatFare = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'flatFare';
-    const isMultiService = isPeriodType(periodTypeAttribute) && periodTypeAttribute.name === 'periodMultipleServices';
-    const isGeoZone = isPeriodType(periodTypeAttribute) && periodTypeAttribute.name === 'periodGeoZone';
-    const isCircular = isReturn && isJourney(journeyAttribute) && !journeyAttribute.outboundJourney;
+    const isSingle = !!fareTypeAttribute && fareTypeAttribute.fareType === 'single';
+    const isReturn = !!fareTypeAttribute && fareTypeAttribute.fareType === 'return';
+    const isPeriod = !!fareTypeAttribute && fareTypeAttribute.fareType === 'period';
+    const isFlatFare = !!fareTypeAttribute && fareTypeAttribute.fareType === 'flatFare';
+    const isMultiService = !!periodTypeAttribute && periodTypeAttribute.name === 'periodMultipleServices';
+    const isGeoZone = !!periodTypeAttribute && periodTypeAttribute.name === 'periodGeoZone';
+    const isCircular = isReturn && !!journeyAttribute && !journeyAttribute.outboundJourney;
 
     const isSingleProduct =
         singleProductUrls.includes(url) ||
-        (isNumberOfProductsAttribute(numberOfProductsAttribute) &&
+        (!!numberOfProductsAttribute &&
+            !isWithErrors(numberOfProductsAttribute) &&
             numberOfProductsAttribute.numberOfProductsInput === '1');
     const isMultiProduct =
         multiProductUrls.includes(url) ||
-        (isNumberOfProductsAttribute(numberOfProductsAttribute) &&
+        (!!numberOfProductsAttribute &&
+            !isWithErrors(numberOfProductsAttribute) &&
             Number(numberOfProductsAttribute.numberOfProductsInput) > 1);
 
     const isCsvUploadUrl = csvUploadUrls.includes(url);
     const isManualUploadUrl = manualUploadUrls.includes(url);
     const isSalesOfferPackageUrl = salesOfferPackagesUrls.includes(url);
     const isCsvUploadCookie =
-        (!isCsvUploadUrl &&
-            !isManualUploadUrl &&
-            !inputMethodErrorsExist(inputMethod) &&
-            inputMethod?.inputMethod === 'csv') ||
+        (!isCsvUploadUrl && !isManualUploadUrl && !isWithErrors(inputMethod) && inputMethod?.inputMethod === 'csv') ||
         false;
     const isManualUploadCookie =
         (!isCsvUploadUrl &&
             !isManualUploadUrl &&
-            !inputMethodErrorsExist(inputMethod) &&
+            !isWithErrors(inputMethod) &&
             inputMethod?.inputMethod === 'manual') ||
         false;
     const isCsvUploadJourney = isCsvUploadUrl || isCsvUploadCookie;
@@ -202,7 +200,9 @@ export default (ctx: NextPageContextWithSession): { generate: () => Breadcrumb[]
 
     const getFullBreadcrumbList = (): Breadcrumb[] => {
         const isNotAnyonePassengerType =
-            isPassengerType(passengerTypeAttribute) && passengerTypeAttribute.passengerType !== 'anyone';
+            !!passengerTypeAttribute &&
+            !isWithErrors(passengerTypeAttribute) &&
+            passengerTypeAttribute.passengerType !== 'anyone';
         const isTimeRestrictionDefined = timeRestrictionsAttribute?.timeRestrictions || false;
 
         const breadcrumbList: Breadcrumb[] = [

@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession, TimeRestriction } from '../interfaces';
+import RadioConditionalInput from '../components/RadioConditionalInput';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, RadioConditionalInputFieldset } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
-import { TimeRestrictionsDefinitionWithErrors } from './api/defineTimeRestrictions';
 import { getErrorsByIds } from '../utils';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Define Time Restrictions - Fares Data Build Tool';
 const description = 'Define Time Restrictions page of the Fares Data Build Tool';
 
-export interface DefineTimeRestrictionsProps {
+interface DefineTimeRestrictionsProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
 }
@@ -124,13 +124,9 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         ],
         radioError: getErrorsByIds(['define-valid-days'], errors),
     };
+
     return [timeRestrictionsFieldset, validDaysFieldset];
 };
-
-export const isTimeRestrictionsDefinitionWithErrors = (
-    timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
-): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
-    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
 
 const DefineTimeRestrictions = ({
     errors = [],
@@ -167,11 +163,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
     let errors: ErrorInfo[] = [];
-    if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
+    if (timeRestrictionsDefinition && isWithErrors(timeRestrictionsDefinition)) {
         errors = timeRestrictionsDefinition.errors;
     }
 
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
+
     return { props: { errors, fieldsets } };
 };
 

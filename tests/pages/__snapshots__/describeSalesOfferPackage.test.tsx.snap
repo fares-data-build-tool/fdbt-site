@@ -103,7 +103,7 @@ exports[`describeSalesOfferPackage should be able to handle being passed undefin
     <div
       className="govuk-grid-column-one-third"
     >
-      <Component />
+      <SalesOfferPackageExplanation />
     </div>
   </div>
 </Component>
@@ -240,7 +240,7 @@ exports[`describeSalesOfferPackage should render the page with errors when error
     <div
       className="govuk-grid-column-one-third"
     >
-      <Component />
+      <SalesOfferPackageExplanation />
     </div>
   </div>
 </Component>
@@ -349,7 +349,7 @@ exports[`describeSalesOfferPackage should render the page with no errors when no
     <div
       className="govuk-grid-column-one-third"
     >
-      <Component />
+      <SalesOfferPackageExplanation />
     </div>
   </div>
 </Component>

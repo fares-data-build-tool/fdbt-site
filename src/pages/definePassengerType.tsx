@@ -7,29 +7,22 @@ import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
 } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, {
-    createErrorId,
-    RadioConditionalInputFieldset,
-} from '../components/RadioConditionalInput';
+import RadioConditionalInput, { createErrorId } from '../components/RadioConditionalInput';
 import {
     BaseReactElement,
     CustomAppProps,
     ErrorInfo,
-    GroupDefinition,
     NextPageContextWithSession,
+    RadioConditionalInputFieldset,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getErrorsByIds } from '../utils';
-import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Define Passenger Type - Fares Data Build Tool';
 const description = 'Define Passenger Type page of the Fares Data Build Tool';
-
-export interface GroupDefinitionWithErrors extends GroupDefinition {
-    errors: ErrorInfo[];
-}
 
 export interface TextInputFieldset {
     heading: {
@@ -40,7 +33,7 @@ export interface TextInputFieldset {
     inputErrors: ErrorInfo[];
 }
 
-export interface DefinePassengerTypeProps {
+interface DefinePassengerTypeProps {
     group: boolean;
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
@@ -167,8 +160,9 @@ export const getNumberOfPassengerTypeFieldset = (errors: ErrorInfo[], passengerT
     inputErrors: getErrorsByIds(['min-number-of-passengers', 'max-number-of-passengers'], errors),
 });
 
-export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): ReactElement => {
+const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): ReactElement => {
     const error = fieldset.inputErrors.length > 0;
+
     return (
         <div className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>
@@ -179,6 +173,7 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                 </legend>
                 {fieldset.inputs.map(input => {
                     const errorId = createErrorId(input, fieldset.inputErrors);
+
                     return (
                         <div
                             key={input.id}
@@ -256,27 +251,23 @@ const DefinePassengerType = ({
     </TwoThirdsLayout>
 );
 
-export const isGroupDefinitionWithErrors = (
-    groupDefinition: GroupDefinition | GroupDefinitionWithErrors,
-): groupDefinition is GroupDefinitionWithErrors => (groupDefinition as GroupDefinitionWithErrors).errors.length > 0;
-
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePassengerTypeProps } => {
     const groupPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const passengerTypeErrorsAttribute = getSessionAttribute(ctx.req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
 
-    if (!isPassengerType(passengerTypeAttribute) && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
+    if (!passengerTypeAttribute && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
     const errors: ErrorInfo[] =
-        passengerTypeErrorsAttribute && isPassengerTypeAttributeWithErrors(passengerTypeErrorsAttribute)
+        passengerTypeErrorsAttribute && isWithErrors(passengerTypeErrorsAttribute)
             ? passengerTypeErrorsAttribute.errors
             : [];
 
     let passengerType = ctx?.query?.groupPassengerType as string;
 
-    if (!passengerType && isPassengerType(passengerTypeAttribute)) {
+    if (!passengerType && !!passengerTypeAttribute) {
         passengerType = passengerTypeAttribute.passengerType;
     }
 

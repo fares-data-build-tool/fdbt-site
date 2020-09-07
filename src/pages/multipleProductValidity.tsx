@@ -8,15 +8,12 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, Product } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerType } from '../interfaces/typeGuards';
-import { isNumberOfProductsAttribute } from './howManyProducts';
-import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
-import { Product } from './api/multipleProductValidity';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Multiple Product Validity - Fares Data Build Tool';
 const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
@@ -165,10 +162,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     if (
         !operatorCookie ||
-        !isNumberOfProductsAttribute(numberOfProductsAttribute) ||
+        !numberOfProductsAttribute ||
         !multipleProductAttribute ||
-        isBaseMultipleProductAttributeWithErrors(multipleProductAttribute) ||
-        !isPassengerType(passengerTypeAttribute)
+        isWithErrors(multipleProductAttribute) ||
+        isWithErrors(numberOfProductsAttribute) ||
+        !passengerTypeAttribute
     ) {
         throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }

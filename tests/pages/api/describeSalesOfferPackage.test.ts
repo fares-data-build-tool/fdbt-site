@@ -1,12 +1,9 @@
 import describeSalesOfferPackage, {
     sopInfoSchema,
     checkUserInput,
-    SalesOfferPackage,
-    SalesOfferPackageWithErrors,
 } from '../../../src/pages/api/describeSalesOfferPackage';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../../src/pages/api/salesOfferPackages';
-import { ErrorInfo } from '../../../src/interfaces';
+import { ErrorInfo, SalesOfferPackageInfo, SalesOfferPackage } from '../../../src/interfaces';
 import * as sessionUtils from '../../../src/utils/sessions';
 import * as aurora from '../../../src/data/auroradb';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../../src/constants';
@@ -24,7 +21,7 @@ describe('describeSalesOfferPackage', () => {
         paymentMethods: ['Card', 'Cash'],
         ticketFormats: ['Paper', 'Mobile'],
     };
-    const mockSopInfoAttributeWithErrors: SalesOfferPackageInfoWithErrors = {
+    const mockSopInfoAttributeWithErrors = {
         purchaseLocations: [],
         paymentMethods: ['Card', 'Cash'],
         ticketFormats: [],
@@ -35,7 +32,7 @@ describe('describeSalesOfferPackage', () => {
         description: 'This is a sales offer package',
         ...mockSopInfoAttribute,
     };
-    const mockSopAttributeWithErrors: SalesOfferPackageWithErrors = {
+    const mockSopAttributeWithErrors = {
         name: '',
         description: '',
         ...mockSopInfoAttribute,

@@ -5,7 +5,7 @@ import { DAYS_VALID_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 
-export const isInvalidValidityNumber = (req: NextApiRequestWithSession): boolean => {
+const isInvalidValidityNumber = (req: NextApiRequestWithSession): boolean => {
     const { validityInput } = req.body;
 
     if (Number.isNaN(validityInput)) {
@@ -23,7 +23,7 @@ export const isInvalidValidityNumber = (req: NextApiRequestWithSession): boolean
     return false;
 };
 
-export const setSession = (req: NextApiRequestWithSession, res: NextApiResponse, error = ''): void => {
+const setSession = (req: NextApiRequestWithSession, res: NextApiResponse, error = ''): void => {
     const daysValid = req.body.validityInput;
 
     if (error) {
@@ -35,6 +35,7 @@ export const setSession = (req: NextApiRequestWithSession, res: NextApiResponse,
         ];
         updateSessionAttribute(req, DAYS_VALID_ATTRIBUTE, { daysValid, errors: errorInfo });
         redirectTo(res, '/chooseValidity');
+
         return;
     }
     updateSessionAttribute(req, DAYS_VALID_ATTRIBUTE, { daysValid, errors: [] });
@@ -48,11 +49,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         if (req.body.validityInput === '0') {
             setSession(req, res, 'The value of days your product is valid for cannot be 0.');
+
             return;
         }
 
         if (!req.body.validityInput) {
             setSession(req, res, 'The value of days your product is valid for cannot be empty.');
+
             return;
         }
 
@@ -62,6 +65,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 res,
                 'The value of days your product is valid for has to be a whole number between 1 and 366.',
             );
+
             return;
         }
 

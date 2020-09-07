@@ -10,10 +10,6 @@ import { getSessionAttribute } from '../utils/sessions';
 const title = 'How Many Stages - Fares Data Build Tool';
 const description = 'How Many Stages selection page of the Fares Data Build Tool';
 
-export interface NumberOfStagesAttributeWithError {
-    errors: ErrorInfo[];
-}
-
 interface HowManyStagesProps {
     errors: ErrorInfo[];
 }
@@ -85,6 +81,7 @@ const HowManyStages = ({ errors, csrfToken }: HowManyStagesProps & CustomAppProp
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HowManyStagesProps } => {
     const numberOfStagesAttribute = getSessionAttribute(ctx.req, NUMBER_OF_STAGES_ATTRIBUTE);
     const errors: ErrorInfo[] = numberOfStagesAttribute ? numberOfStagesAttribute.errors : [];
+
     return { props: { errors } };
 };
 

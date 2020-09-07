@@ -3,17 +3,9 @@ import { FARE_STAGES_ATTRIBUTE } from '../../constants/index';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, WithErrors } from '../../interfaces';
 
-export interface FareStagesAttribute {
-    fareStages: string;
-}
-
-export interface FareStagesAttributeWithErrors {
-    errors: ErrorInfo[];
-}
-
-export const isInvalidFareStageNumber = (fareStageInput: string): FareStagesAttributeWithErrors => {
+export const isInvalidFareStageNumber = (fareStageInput: string): WithErrors<{}> => {
     const inputAsNumber = Number(fareStageInput);
     const errors: ErrorInfo[] = [];
 
@@ -44,10 +36,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 fareStages: fareStageInput,
             });
             redirectTo(res, '/chooseStages');
+
             return;
         }
 
-        updateSessionAttribute(req, FARE_STAGES_ATTRIBUTE, { fareStages: fareStageInput, errors: [] });
+        updateSessionAttribute(req, FARE_STAGES_ATTRIBUTE, { fareStages: fareStageInput });
         redirectTo(res, '/stageNames');
     } catch (error) {
         const message = 'there was a problem inputting the number of fare stages:';

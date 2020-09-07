@@ -77,6 +77,7 @@ const setStaticRoutes = (server: Express): void => {
         unauthenticatedGetRoutes.forEach(route => {
             server.get(route, (req: Request, res: Response) => {
                 res.locals.csrfToken = req.csrfToken();
+
                 return handle(req, res);
             });
         });
@@ -89,6 +90,7 @@ const setStaticRoutes = (server: Express): void => {
 
         server.get('*', requireAuth, (req: Request, res: Response) => {
             res.locals.csrfToken = req.csrfToken();
+
             return handle(req, res);
         });
 

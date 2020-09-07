@@ -2,6 +2,7 @@ import * as priceEntryApi from '../../../src/pages/api/priceEntry';
 import priceEntry from '../../../src/pages/api/priceEntry';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { JOURNEY_ATTRIBUTE } from '../../../src/constants';
+import { FaresInformation, WithErrors } from '../../../src/interfaces';
 
 describe('priceEntry', () => {
     describe('API validation of number of price inputs', () => {
@@ -27,7 +28,7 @@ describe('priceEntry', () => {
                 },
             });
             const result = priceEntryApi.inputsValidityCheck(req);
-            expect(result.errorInformation.length).toBe(0);
+            expect((result as WithErrors<FaresInformation>).errors).toEqual([]);
         });
 
         it('should return fares information with errors if the inputs contains invalid data', () => {
@@ -52,7 +53,7 @@ describe('priceEntry', () => {
                 },
             });
             const result = priceEntryApi.inputsValidityCheck(req);
-            expect(result.errorInformation.length).toBe(4);
+            expect((result as WithErrors<FaresInformation>).errors.length).toBe(4);
         });
     });
 

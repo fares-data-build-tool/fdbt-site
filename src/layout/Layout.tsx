@@ -5,11 +5,11 @@ import favicon from '../assets/images/favicon.ico';
 import { buildTitle } from '../utils';
 import { ErrorInfo } from '../interfaces';
 
-type LayoutProps = {
+interface LayoutProps {
     title: string;
     description: string;
     errors?: ErrorInfo[];
-};
+}
 
 export const BaseLayout: FC<LayoutProps> = ({
     title,

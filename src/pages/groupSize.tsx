@@ -2,26 +2,22 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession, ErrorInfo, GroupTicketAttribute, WithErrors } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
 import { GROUP_SIZE_ATTRIBUTE } from '../constants';
-import { GroupTicketAttributeWithErrors, GroupTicketAttribute } from './api/groupSize';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Group Size - Fares Data Build Tool';
 const description = 'Group Size entry page of the Fares Data Build Tool';
 
 export interface GroupSizeProps {
-    groupTicketInfo: GroupTicketAttribute | GroupTicketAttributeWithErrors;
+    groupTicketInfo: GroupTicketAttribute | WithErrors<GroupTicketAttribute>;
 }
 
-const isGroupTicketInfoWithErrors = (
-    groupTicketInfo: GroupTicketAttribute | GroupTicketAttributeWithErrors,
-): groupTicketInfo is GroupTicketAttributeWithErrors =>
-    (groupTicketInfo as GroupTicketAttributeWithErrors).errors !== undefined;
-
 const GroupSize = ({ groupTicketInfo, csrfToken }: GroupSizeProps & CustomAppProps): ReactElement => {
-    const errors: ErrorInfo[] = isGroupTicketInfoWithErrors(groupTicketInfo) ? groupTicketInfo.errors : [];
+    const errors: ErrorInfo[] = isWithErrors(groupTicketInfo) ? groupTicketInfo.errors : [];
+
     return (
         <TwoThirdsLayout title={title} description={description}>
             <CsrfForm action="/api/groupSize" method="post" csrfToken={csrfToken}>
@@ -69,6 +65,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Gr
     const defaultGroupTicketInfo: GroupTicketAttribute = {
         maxGroupSize: '',
     };
+
     return {
         props: {
             groupTicketInfo: groupTicketInfo || defaultGroupTicketInfo,

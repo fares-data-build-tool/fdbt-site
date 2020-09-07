@@ -1,30 +1,23 @@
 import React, { ReactElement } from 'react';
-import uniqBy from 'lodash/uniqBy';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_STAGES_ATTRIBUTE, STAGE_NAMES_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, InputCheck } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
-import { isInputCheck, isFareStage } from '../interfaces/typeGuards';
+import { isInputCheck } from '../interfaces/typeGuards';
 
 const title = 'Stage Names - Fares Data Build Tool';
 const description = 'Stage Names entry page of the Fares Data Build Tool';
 
-export interface InputCheck {
-    error: string;
-    input: string;
-    id: string;
-}
-
-type StageNameProps = {
+interface StageNameProps {
     numberOfFareStages: number;
     inputChecks: InputCheck[];
     errors: ErrorInfo[];
-};
+}
 
-export const renderInputField = (index: number, inputCheck: InputCheck, errors: ErrorInfo[] = []): ReactElement => (
+const renderInputField = (index: number, inputCheck: InputCheck, errors: ErrorInfo[] = []): ReactElement => (
     <div
         className={`govuk-form-group${inputCheck?.error ? ' govuk-form-group--error' : ''}`}
         key={`fare-stage-name-${index + 1}`}
@@ -42,7 +35,7 @@ export const renderInputField = (index: number, inputCheck: InputCheck, errors: 
                 id={`fare-stage-name-${index + 1}`}
                 name="stageNameInput"
                 type="text"
-                defaultValue={!inputCheck?.error ? inputCheck?.input : ''}
+                defaultValue={!inputCheck?.error ? inputCheck?.inputValue : ''}
                 aria-describedby={inputCheck?.error ? `fareStageName${index + 1}-error` : ''}
             />
         </FormElementWrapper>
@@ -61,8 +54,6 @@ export const renderInputFields = (
 
     return elements;
 };
-
-export const filterErrors = (errors: ErrorInfo[]): ErrorInfo[] => uniqBy(errors, 'errorMessage');
 
 const StageNames = ({
     numberOfFareStages,
@@ -92,7 +83,7 @@ const StageNames = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const fareStagesAttribute = getSessionAttribute(ctx.req, FARE_STAGES_ATTRIBUTE);
 
-    if (!isFareStage(fareStagesAttribute)) {
+    if (!fareStagesAttribute) {
         throw new Error('Necessary fare stage session not found to show stage names page');
     }
 
@@ -111,6 +102,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
                 errors.push({ errorMessage: inputCheck.error, id: inputCheck.id });
             }
         });
+
         return { props: { numberOfFareStages, inputChecks, errors } };
     }
 

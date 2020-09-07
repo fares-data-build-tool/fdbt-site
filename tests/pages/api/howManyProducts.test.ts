@@ -1,12 +1,8 @@
 import * as sessions from '../../../src/utils/sessions';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
-import howManyProducts, {
-    getErrors,
-    NumberOfProductsAttributeWithErrors,
-    NumberOfProductsAttribute,
-} from '../../../src/pages/api/howManyProducts';
+import howManyProducts, { getErrors } from '../../../src/pages/api/howManyProducts';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { ErrorInfo } from '../../../src/interfaces';
+import { ErrorInfo, NumberOfProductsAttribute } from '../../../src/interfaces';
 
 describe('howManyProducts', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -91,7 +87,7 @@ describe('howManyProducts', () => {
             cookieValues: {},
             body: mockBody,
         });
-        const attributeValue: NumberOfProductsAttributeWithErrors = {
+        const attributeValue = {
             errors: [
                 { id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10', userInput: '' },
             ],

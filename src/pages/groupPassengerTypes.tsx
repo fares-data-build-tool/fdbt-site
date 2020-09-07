@@ -3,34 +3,30 @@ import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPES_LIST, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import {
+    ErrorInfo,
+    CustomAppProps,
+    NextPageContextWithSession,
+    GroupPassengerTypesCollection,
+    WithErrors,
+} from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { GroupPassengerTypesCollectionWithErrors, GroupPassengerTypesCollection } from './api/groupPassengerTypes';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Define Group Passengers - Fares Data Build Tool';
 const description = 'Group Passengers selection page of the Fares Data Build Tool';
 
-export type PassengerAttributes = {
-    passengerTypeDisplay: string;
-    passengerTypeValue: string;
-    greyedOut: boolean;
-};
-
-const isGroupPassengerWithErrors = (
-    groupPassengerTypesAttribute: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors,
-): groupPassengerTypesAttribute is GroupPassengerTypesCollectionWithErrors =>
-    (groupPassengerTypesAttribute as GroupPassengerTypesCollectionWithErrors).errors !== undefined;
-
 interface PassengerTypeProps {
-    groupPassengerInfo: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
+    groupPassengerInfo: GroupPassengerTypesCollection | WithErrors<GroupPassengerTypesCollection>;
 }
 
 const insetText = 'More passenger types will become available soon';
 
 const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypeProps & CustomAppProps): ReactElement => {
-    const errors: ErrorInfo[] = isGroupPassengerWithErrors(groupPassengerInfo) ? groupPassengerInfo.errors : [];
+    const errors: ErrorInfo[] = isWithErrors(groupPassengerInfo) ? groupPassengerInfo.errors : [];
+
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/groupPassengerTypes" method="post" csrfToken={csrfToken}>

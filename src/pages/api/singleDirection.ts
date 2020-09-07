@@ -24,6 +24,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, JOURNEY_ATTRIBUTE, { errors });
 
             redirectTo(res, '/singleDirection');
+
             return;
         }
 

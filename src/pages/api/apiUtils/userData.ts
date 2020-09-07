@@ -26,25 +26,25 @@ import {
     PeriodGeoZoneTicket,
     PeriodMultipleServicesTicket,
     Product,
-    ProductData,
     ProductDetails,
-    ProductInfo,
     ReturnTicket,
     SalesOfferPackage,
     SelectedService,
     SingleTicket,
     Stop,
+    MultipleProductAttribute,
 } from '../../../interfaces';
-import { PeriodExpiryWithErrors } from '../periodValidity';
-import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../interfaces/matchingInterface';
 import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { isFareType, isPassengerType, isPeriodType } from '../../../interfaces/typeGuards';
+import {
+    isMatchingInfo,
+    isInboundMatchingInfo,
+    isPeriodProductDetails,
+    isProductData,
+    isWithErrors,
+} from '../../../interfaces/typeGuards';
 import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
-import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
-import { isServiceListAttributeWithErrors } from '../../serviceList';
-import { MultipleProductAttribute } from '../multipleProductValidity';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -109,10 +109,6 @@ export const putUserDataInS3 = async (
 };
 
 export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): SingleTicket => {
-    const isMatchingInfo = (
-        matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
-    ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
-
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -122,8 +118,8 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
-        !isFareType(fareTypeAttribute) ||
-        !isPassengerType(passengerTypeAttribute) ||
+        !fareTypeAttribute ||
+        !passengerTypeAttribute ||
         !idToken ||
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo)
@@ -151,14 +147,6 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
 };
 
 export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): ReturnTicket => {
-    const isMatchingInfo = (
-        matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
-    ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
-    const isInboundMatchingInfo = (
-        inboundMatchingAttributeInfo: InboundMatchingInfo | MatchingWithErrors,
-    ): inboundMatchingAttributeInfo is InboundMatchingInfo =>
-        (inboundMatchingAttributeInfo as InboundMatchingInfo)?.inboundUserFareStages !== null;
-
     const cookies = new Cookies(req, res);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
@@ -169,8 +157,8 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
 
     if (
-        !isFareType(fareTypeAttribute) ||
-        !isPassengerType(passengerTypeAttribute) ||
+        !fareTypeAttribute ||
+        !passengerTypeAttribute ||
         !idToken ||
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo)
@@ -204,18 +192,10 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     };
 };
 
-const isPeriodProductDetails = (product: Product): product is ProductDetails =>
-    (product as ProductDetails)?.productDuration !== undefined &&
-    (product as ProductDetails)?.productValidity !== undefined;
-
 export const getPeriodGeoZoneTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): Promise<PeriodGeoZoneTicket> => {
-    const isProductData = (
-        periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
-    ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
-
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
@@ -231,12 +211,12 @@ export const getPeriodGeoZoneTicketJson = async (
 
     if (
         !nocCode ||
-        !isPassengerType(passengerTypeAttribute) ||
-        !isPeriodType(periodTypeAttribute) ||
+        !passengerTypeAttribute ||
+        !periodTypeAttribute ||
         !operatorCookie ||
         !idToken ||
         !fareZoneAttribute ||
-        isFareZoneAttributeWithErrors(fareZoneAttribute)
+        isWithErrors(fareZoneAttribute)
     ) {
         throw new Error(
             'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
@@ -257,7 +237,7 @@ export const getPeriodGeoZoneTicketJson = async (
     let productDetailsList: ProductDetails[];
 
     if (!multipleProductAttribute) {
-        if (!periodExpiryAttributeInfo || !isProductData(periodExpiryAttributeInfo)) {
+        if (!periodExpiryAttributeInfo || !periodExpiryAttributeInfo) {
             throw new Error(
                 'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
             );
@@ -296,10 +276,6 @@ export const getPeriodMultipleServicesTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): PeriodMultipleServicesTicket => {
-    const isProductData = (
-        periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
-    ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
-
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
@@ -315,12 +291,12 @@ export const getPeriodMultipleServicesTicketJson = (
 
     if (
         !nocCode ||
-        !isPassengerType(passengerTypeAttribute) ||
-        !isPeriodType(periodTypeAttribute) ||
+        !passengerTypeAttribute ||
+        !periodTypeAttribute ||
         !operatorCookie ||
         !idToken ||
         !serviceListAttribute ||
-        isServiceListAttributeWithErrors(serviceListAttribute)
+        isWithErrors(serviceListAttribute)
     ) {
         throw new Error(
             'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
@@ -336,6 +312,7 @@ export const getPeriodMultipleServicesTicketJson = (
     const { selectedServices } = serviceListAttribute;
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
         const service = selectedService.split('#');
+
         return {
             lineName: service[0],
             serviceCode: service[1],
@@ -384,10 +361,6 @@ export const getPeriodMultipleServicesTicketJson = (
 };
 
 export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): FlatFareTicket => {
-    const isProductData = (
-        productDetailsAttributeInfo: ProductData | ProductInfo,
-    ): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
-
     const nocCode = getAndValidateNoc(req, res);
 
     const cookies = new Cookies(req, res);
@@ -402,12 +375,12 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     if (
         !nocCode ||
-        !isFareType(fareTypeAttribute) ||
-        !isPassengerType(passengerTypeAttribute) ||
+        !fareTypeAttribute ||
+        !passengerTypeAttribute ||
         !operatorCookie ||
         !idToken ||
         !serviceListAttribute ||
-        isServiceListAttributeWithErrors(serviceListAttribute) ||
+        isWithErrors(serviceListAttribute) ||
         !productDetailsAttributeInfo ||
         !isProductData(productDetailsAttributeInfo)
     ) {
@@ -423,6 +396,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const { selectedServices } = serviceListAttribute;
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
         const service = selectedService.split('#');
+
         return {
             lineName: service[0],
             serviceCode: service[1],

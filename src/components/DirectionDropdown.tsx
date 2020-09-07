@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { JourneyPattern } from '../data/auroradb';
+import { JourneyPattern } from '../interfaces';
 
 interface DirectionProps {
     selectName: string;

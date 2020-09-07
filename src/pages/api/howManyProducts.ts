@@ -5,19 +5,12 @@ import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export interface NumberOfProductsAttribute {
-    numberOfProductsInput: string;
-}
-
-export interface NumberOfProductsAttributeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export const getErrors = (inputAsNumber: number): ErrorInfo[] => {
     const errorMessage =
         Number.isNaN(inputAsNumber) || !Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1
             ? 'Enter a whole number between 1 and 10'
             : '';
+
     return errorMessage !== '' ? [{ id: 'how-many-products-error', errorMessage }] : [];
 };
 
@@ -35,6 +28,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             errors[0].userInput = numberOfProductsInput;
             updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, { errors });
             redirectTo(res, '/howManyProducts');
+
             return;
         }
 

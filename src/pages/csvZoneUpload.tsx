@@ -7,7 +7,7 @@ import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
 import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
-import { FareZoneWithErrors, FareZone } from './api/csvZoneUpload';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'CSV Zone Upload - Fares Data Build Tool';
 const description = 'CSV Zone Upload page of the Fares Data Build Tool';
@@ -32,14 +32,9 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps & CustomAppProps): Reac
     </BaseLayout>
 );
 
-export const isFareZoneAttributeWithErrors = (
-    fareZoneAttribute: FareZone | FareZoneWithErrors,
-): fareZoneAttribute is FareZoneWithErrors => (fareZoneAttribute as FareZoneWithErrors).errors !== undefined;
-
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
     const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
-    const errors: ErrorInfo[] =
-        fareZoneAttribute && isFareZoneAttributeWithErrors(fareZoneAttribute) ? fareZoneAttribute.errors : [];
+    const errors: ErrorInfo[] = fareZoneAttribute && isWithErrors(fareZoneAttribute) ? fareZoneAttribute.errors : [];
 
     return {
         props: {

@@ -204,6 +204,7 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
             if (check.error) {
                 errors.push({ id: check.id, errorMessage: check.error });
             }
+
             return errors;
         });
 

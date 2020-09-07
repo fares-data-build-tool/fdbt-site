@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import SelectSalesOfferPackage, {
-    SelectSalesOfferPackageProps,
     getServerSideProps,
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageTwo,
@@ -15,7 +14,7 @@ import { SalesOfferPackage } from '../../src/interfaces';
 jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
-    const selectSalesOfferPackagePropsInfoNoError: SelectSalesOfferPackageProps = {
+    const selectSalesOfferPackagePropsInfoNoError = {
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
@@ -26,7 +25,7 @@ describe('pages', () => {
         productNamesList: [],
     };
 
-    const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
+    const selectSalesOfferPackagePropsInfoWithError = {
         productNamesList: [],
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,

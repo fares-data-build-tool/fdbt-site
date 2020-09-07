@@ -1,18 +1,10 @@
 import { NextApiResponse } from 'next';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
+import { NextApiRequestWithSession } from '../../interfaces/index';
 import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectToError, redirectOnFareType, redirectTo } from './apiUtils/index';
 import { isSessionValid } from './apiUtils/validator';
 import { timeRestrictionsErrorId } from '../timeRestrictions';
-
-export interface TimeRestrictionsAttribute {
-    timeRestrictions: boolean;
-}
-
-export interface TimeRestrictionsAttributeWithErrors extends TimeRestrictionsAttribute {
-    errors: ErrorInfo[];
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -32,6 +24,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 timeRestrictions: false,
             });
             redirectOnFareType(req, res);
+
             return;
         }
 
@@ -40,6 +33,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 timeRestrictions: true,
             });
             redirectTo(res, '/defineTimeRestrictions');
+
             return;
         }
 
@@ -48,6 +42,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             errors: [{ errorMessage: 'Choose either yes or no', id: timeRestrictionsErrorId }],
         });
         redirectTo(res, '/timeRestrictions');
+
         return;
     } catch (error) {
         const message = 'There was a problem selecting if there are time restrictions:';

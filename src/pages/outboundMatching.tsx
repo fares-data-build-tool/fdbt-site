@@ -1,15 +1,14 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import { batchGetStopsByAtcoCode, getServiceByNocCodeAndLineName, Stop } from '../data/auroradb';
+import { batchGetStopsByAtcoCode, getServiceByNocCodeAndLineName } from '../data/auroradb';
 import { JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE, OPERATOR_COOKIE, SERVICE_ATTRIBUTE } from '../constants';
-import { getUserFareStages, UserFareStages } from '../data/s3';
+import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
+import { BasicService, CustomAppProps, NextPageContextWithSession, UserFareStages, Stop } from '../interfaces/index';
 import { getAndValidateNoc } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { isMatchingWithErrors } from './matching';
-import { isJourney, isService } from '../interfaces/typeGuards';
+import { isMatchingWithErrors } from '../interfaces/typeGuards';
 
 const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Fares Data Build Tool';
@@ -58,7 +57,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
 
-    if (!operatorCookie || !isService(serviceAttribute) || !isJourney(journeyAttribute) || !nocCode) {
+    if (!operatorCookie || !serviceAttribute || !journeyAttribute || !nocCode) {
         throw new Error('Necessary cookies not found to show matching page');
     }
 

@@ -131,9 +131,11 @@ export const getServerSideProps = (ctx: NextPageContext): { props: ChangePasswor
             if (check.errorMessage) {
                 errors.push({ id: check.id, errorMessage: check.errorMessage });
             }
+
             return errors;
         });
     }
+
     return { props: { errors } };
 };
 

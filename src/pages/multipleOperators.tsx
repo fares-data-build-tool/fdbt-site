@@ -3,20 +3,20 @@ import { parseCookies } from 'nookies';
 import { getNocFromIdToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, OperatorNameType } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { batchGetOperatorNamesByNocCode, OperatorNameType } from '../data/auroradb';
+import { batchGetOperatorNamesByNocCode } from '../data/auroradb';
 import { OPERATOR_COOKIE } from '../constants';
 
 const title = 'Multiple Operators - Fares Data Build Tool';
 const description = 'Multiple Operators page of the Fares Data Build Tool';
 const errorId = 'operator-error';
 
-type MultipleOperatorsProps = {
+interface MultipleOperatorsProps {
     errors?: ErrorInfo[];
     operatorsAndNocs: OperatorNameType[];
-};
+}
 
 const MultipleOperators = ({
     operatorsAndNocs,

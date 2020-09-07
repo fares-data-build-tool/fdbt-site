@@ -6,21 +6,16 @@ import { CustomAppProps, NextPageContextWithSession, ErrorInfo } from '../interf
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
-import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from './api/timeRestrictions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Time Restrictions - Fares Data Build Tool';
 const description = 'Time Restrictions selection page of the Fares Data Build Tool';
 
 export const timeRestrictionsErrorId = 'time-restrictions-error';
 
-export interface TimeRestrictionsProps {
+interface TimeRestrictionsProps {
     errors: ErrorInfo[];
 }
-
-const isTimeRestrictionsAttributeWithErrors = (
-    timeRestrictionsInfo: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors,
-): timeRestrictionsInfo is TimeRestrictionsAttributeWithErrors =>
-    (timeRestrictionsInfo as TimeRestrictionsAttributeWithErrors).errors !== undefined;
 
 const TimeRestrictions = ({ errors, csrfToken }: TimeRestrictionsProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -85,9 +80,7 @@ const TimeRestrictions = ({ errors, csrfToken }: TimeRestrictionsProps & CustomA
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TimeRestrictionsProps } => {
     const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_ATTRIBUTE);
     const errors: ErrorInfo[] =
-        timeRestrictionsInfo && isTimeRestrictionsAttributeWithErrors(timeRestrictionsInfo)
-            ? timeRestrictionsInfo.errors
-            : [];
+        timeRestrictionsInfo && isWithErrors(timeRestrictionsInfo) ? timeRestrictionsInfo.errors : [];
 
     return { props: { errors } };
 };

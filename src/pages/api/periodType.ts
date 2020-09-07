@@ -20,9 +20,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             switch (periodType) {
                 case 'periodGeoZone':
                     redirectTo(res, '/csvZoneUpload');
+
                     return;
                 case 'periodMultipleServices':
                     redirectTo(res, '/serviceList?selectAll=false');
+
                     return;
                 case 'periodMultipleOperators':
                     return;
@@ -31,6 +33,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             }
         } else {
             updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, {
+                name: '',
                 errors: [
                     { errorMessage: 'Choose an option regarding your period ticket type', id: 'period-type-error' },
                 ],

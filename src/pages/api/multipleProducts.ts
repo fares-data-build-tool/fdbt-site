@@ -9,30 +9,9 @@ import {
     checkPriceIsValid,
     checkDurationIsValid,
 } from './apiUtils/validator';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, MultiProduct } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
-import { isNumberOfProductsAttribute } from '../howManyProducts';
-
-export interface BaseMultipleProductAttribute {
-    products: MultiProduct[];
-}
-
-export interface BaseMultipleProductAttributeWithErrors {
-    products: MultiProduct[];
-    errors: ErrorInfo[];
-}
-
-export interface MultiProduct {
-    productName: string;
-    productNameId: string;
-    productNameError?: string;
-    productPrice: string;
-    productPriceId: string;
-    productPriceError?: string;
-    productDuration: string;
-    productDurationId: string;
-    productDurationError?: string;
-}
+import { isWithErrors } from '../../interfaces/typeGuards';
 
 export const getErrorsForCookie = (validationResult: MultiProduct[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
@@ -130,9 +109,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
         const numberOfProductsAtribute = getSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
-        const numberOfProducts: string = isNumberOfProductsAttribute(numberOfProductsAtribute)
-            ? numberOfProductsAtribute.numberOfProductsInput
-            : '';
+        const numberOfProducts: string =
+            numberOfProductsAtribute && !isWithErrors(numberOfProductsAtribute)
+                ? numberOfProductsAtribute.numberOfProductsInput
+                : '';
         const numberOfReceivedProducts: number = Object.entries(req.body).length / 3;
 
         if (Number(numberOfProducts) !== numberOfReceivedProducts) {
@@ -172,6 +152,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const errors: ErrorInfo[] = getErrorsForCookie(fullValidationResult);
             updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { errors, products: multipleProducts });
             redirectTo(res, '/multipleProducts');
+
             return;
         }
 

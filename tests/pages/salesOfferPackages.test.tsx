@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import SalesOfferPackages, { getServerSideProps, SalesOfferPackagesProps } from '../../src/pages/salesOfferPackages';
+import SalesOfferPackages, { getServerSideProps } from '../../src/pages/salesOfferPackages';
 import { getMockContext } from '../testData/mockData';
-import { ErrorInfo } from '../../src/interfaces';
+import { ErrorInfo, SalesOfferPackageInfo } from '../../src/interfaces';
 import { SOP_INFO_ATTRIBUTE } from '../../src/constants';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../../src/pages/api/salesOfferPackages';
 
 describe('pages', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    const salesOfferPackagesNoError: SalesOfferPackagesProps = {
+    const salesOfferPackagesNoError = {
         salesOfferPackage: {
             purchaseLocations: [],
             paymentMethods: [],
@@ -19,7 +18,7 @@ describe('pages', () => {
         },
     };
 
-    const salesOfferPackageWithError: SalesOfferPackagesProps = {
+    const salesOfferPackageWithError = {
         salesOfferPackage: {
             purchaseLocations: [],
             paymentMethods: [],
@@ -72,7 +71,7 @@ describe('pages', () => {
                 },
             });
 
-            const expectedProps: SalesOfferPackageInfoWithErrors = {
+            const expectedProps = {
                 purchaseLocations: ['OnBoard'],
                 paymentMethods: [],
                 ticketFormats: [],

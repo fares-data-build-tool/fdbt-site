@@ -2,34 +2,10 @@ import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
 import logger from '../utils/logger';
-import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
 import { INTERNAL_NOC } from '../constants';
+import { SalesOfferPackage, ServiceType, OperatorNameType, Stop, RawService } from '../interfaces';
 
-export interface ServiceType {
-    lineName: string;
-    startDate: string;
-    description: string;
-    serviceCode: string;
-}
-
-export interface OperatorNameType {
-    operatorPublicName: string;
-    nocCode?: string;
-}
-
-export interface JourneyPattern {
-    startPoint: {
-        Id: string;
-        Display: string;
-    };
-    endPoint: {
-        Id: string;
-        Display: string;
-    };
-    stopList: string[];
-}
-
-export interface QueryData {
+interface ServiceQueryResult {
     operatorShortName: string;
     serviceDescription: string;
     lineName: string;
@@ -40,14 +16,8 @@ export interface QueryData {
     journeyPatternId: string;
     order: string;
 }
-export interface RawJourneyPattern {
-    orderedStopPoints: {
-        stopPointRef: string;
-        commonName: string;
-    }[];
-}
 
-interface NaptanInfo {
+interface NaptanInfoQueryResult {
     commonName: string;
     naptanCode: string;
     atcoCode: string;
@@ -58,41 +28,12 @@ interface NaptanInfo {
     street: string;
 }
 
-interface NaptanAtcoCodes {
+interface NaptanAtcoCodesQueryResult {
     naptanCode: string;
     atcoCode: string;
 }
 
-export interface Stop {
-    stopName: string;
-    naptanCode: string;
-    atcoCode: string;
-    localityCode: string;
-    localityName: string;
-    parentLocalityName: string;
-    indicator?: string;
-    street?: string;
-    qualifierName?: string;
-}
-
-export interface StopIdentifiers {
-    naptanCode: string | null;
-    atcoCode: string;
-}
-
-export interface Service {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: JourneyPattern[];
-}
-
-export interface RawService {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: RawJourneyPattern[];
-}
-
-interface RawSalesOfferPackage {
+interface RawSalesOfferPackageQueryResult {
     name: string;
     description: string;
     purchaseLocations: string;
@@ -147,6 +88,7 @@ const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
         connectionPool = getAuroraDBClient();
     }
     const [rows] = await connectionPool.execute(query, values);
+
     return JSON.parse(JSON.stringify(rows));
 };
 
@@ -243,7 +185,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
             WHERE atcoCode IN (${substitution})
         `;
 
-        const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
+        const queryResults = await executeQuery<NaptanInfoQueryResult[]>(batchQuery, atcoCodes);
 
         return queryResults.map(item => ({
             stopName: item.commonName,
@@ -262,7 +204,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
     }
 };
 
-export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodes[]> => {
+export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<NaptanAtcoCodesQueryResult[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving atco codes by naptan codes',
@@ -275,7 +217,7 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     `;
 
     try {
-        const queryResults = await executeQuery<NaptanAtcoCodes[]>(atcoCodesByNaptanCodeQuery, naptanCodes);
+        const queryResults = await executeQuery<NaptanAtcoCodesQueryResult[]>(atcoCodesByNaptanCodeQuery, naptanCodes);
 
         return queryResults.map(item => ({ atcoCode: item.atcoCode, naptanCode: item.naptanCode }));
     } catch (error) {
@@ -307,7 +249,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
         ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
-    let queryResult: QueryData[];
+    let queryResult: ServiceQueryResult[];
 
     try {
         queryResult = await executeQuery(serviceQuery, [nocCodeParameter, lineName]);
@@ -333,7 +275,7 @@ export const getServiceByNocCodeAndLineName = async (nocCode: string, lineName: 
                     stopPointRef: filteredJourney[0].fromAtcoCode,
                     commonName: filteredJourney[0].fromCommonName,
                 },
-                ...filteredJourney.map((data: QueryData) => ({
+                ...filteredJourney.map((data: ServiceQueryResult) => ({
                     stopPointRef: data.toAtcoCode,
                     commonName: data.toCommonName,
                 })),
@@ -366,7 +308,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode]);
+        const queryResults = await executeQuery<RawSalesOfferPackageQueryResult[]>(queryInput, [nocCode]);
 
         return (
             queryResults.map(item => ({

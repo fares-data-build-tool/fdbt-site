@@ -1,17 +1,17 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants';
-import { getServiceByNocCodeAndLineName, RawService, Service } from '../data/auroradb';
+import { getServiceByNocCodeAndLineName } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import FormElementWrapper from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, RawService, Service } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { getAndValidateNoc } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { isFareType, isJourney, isService } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Return Direction - Fares Data Build Tool';
 const description = 'Return Direction selection page of the Fares Data Build Tool';
@@ -92,7 +92,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const nocCode = getAndValidateNoc(ctx);
 
-    if (!isService(serviceAttribute) || !fareTypeAttribute || !nocCode) {
+    if (!serviceAttribute || !fareTypeAttribute || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
@@ -111,7 +111,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     // Redirect to inputMethod page if there is only one journeyPattern (i.e. circular journey)
     if (
         service.journeyPatterns.length === 1 &&
-        isFareType(fareTypeAttribute) &&
+        !!fareTypeAttribute &&
+        !isWithErrors(fareTypeAttribute) &&
         fareTypeAttribute.fareType === 'return'
     ) {
         if (ctx.res) {
@@ -129,13 +130,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ) === index,
     );
 
-    if (journeyAttribute && isJourney(journeyAttribute)) {
-        const { outboundJourney = '', inboundJourney = '', errors = [] } = journeyAttribute;
+    if (journeyAttribute) {
+        const { outboundJourney = '', inboundJourney = '' } = journeyAttribute;
 
         return {
             props: {
                 service,
-                errors,
+                errors: isWithErrors(journeyAttribute) ? journeyAttribute.errors : [],
                 outboundJourney,
                 inboundJourney,
             },

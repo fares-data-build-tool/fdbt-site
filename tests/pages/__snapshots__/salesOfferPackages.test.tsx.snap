@@ -314,7 +314,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
       <div
         className="govuk-grid-column-one-third"
       >
-        <Component />
+        <SalesOfferPackageExplanation />
       </div>
     </div>
     <input
@@ -613,7 +613,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
       <div
         className="govuk-grid-column-one-third"
       >
-        <Component />
+        <SalesOfferPackageExplanation />
       </div>
     </div>
     <input

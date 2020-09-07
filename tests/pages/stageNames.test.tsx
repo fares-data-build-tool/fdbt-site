@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import StageNames, { renderInputFields, InputCheck, getServerSideProps } from '../../src/pages/stageNames';
+import StageNames, { renderInputFields, getServerSideProps } from '../../src/pages/stageNames';
 import { getMockContext } from '../testData/mockData';
+import { InputCheck } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('renderInputFields', () => {
         it('should return a list of html elements that matches the number of fare stages and inputCheck objects', () => {
             const mockNumberOfFareStages = 4;
             const mockInputCheck: InputCheck[] = [
-                { error: '', input: 'ab', id: 'fare-stage-name-1' },
-                { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-2' },
-                { error: '', input: 'cd', id: 'fare-stage-name-3' },
-                { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-4' },
+                { error: '', inputValue: 'ab', id: 'fare-stage-name-1' },
+                { error: 'Enter a name for this fare stage', inputValue: '', id: 'fare-stage-name-2' },
+                { error: '', inputValue: 'cd', id: 'fare-stage-name-3' },
+                { error: 'Enter a name for this fare stage', inputValue: '', id: 'fare-stage-name-4' },
             ];
             const renderElements = renderInputFields(mockNumberOfFareStages, mockInputCheck, []);
             expect(renderElements).toHaveLength(4);
@@ -45,11 +46,11 @@ describe('pages', () => {
         it('should render correctly when a user is redirected to the page from itself when incorrect data is entered', () => {
             const mockNumberOfFareStages = 5;
             const mockInputChecks: InputCheck[] = [
-                { error: '', input: '', id: 'fare-stage-name-1' },
-                { error: '', input: '', id: 'fare-stage-name-2' },
-                { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-3' },
-                { error: '', input: '', id: 'fare-stage-name-4' },
-                { error: '', input: '', id: 'fare-stage-name-5' },
+                { error: '', inputValue: '', id: 'fare-stage-name-1' },
+                { error: '', inputValue: '', id: 'fare-stage-name-2' },
+                { error: 'Enter a name for this fare stage', inputValue: '', id: 'fare-stage-name-3' },
+                { error: '', inputValue: '', id: 'fare-stage-name-4' },
+                { error: '', inputValue: '', id: 'fare-stage-name-5' },
             ];
             const tree = shallow(
                 <StageNames
@@ -65,10 +66,10 @@ describe('pages', () => {
         it('should render correctly when a user is redirected to the page from itself when no data is entered', () => {
             const mockNumberOfFareStages = 4;
             const mockinputChecks: InputCheck[] = [
-                { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-1' },
-                { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-2' },
-                { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-3' },
-                { error: 'Enter a name for this fare stage', input: '', id: 'fare-stage-name-4' },
+                { error: 'Enter a name for this fare stage', inputValue: '', id: 'fare-stage-name-1' },
+                { error: 'Enter a name for this fare stage', inputValue: '', id: 'fare-stage-name-2' },
+                { error: 'Enter a name for this fare stage', inputValue: '', id: 'fare-stage-name-3' },
+                { error: 'Enter a name for this fare stage', inputValue: '', id: 'fare-stage-name-4' },
             ];
             const tree = shallow(
                 <StageNames

@@ -3,16 +3,16 @@ import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
-import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
+import { getServiceByNocCodeAndLineName } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, RawService, Service } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Single Direction - Fares Data Build Tool';
 const description = 'Single Direction selection page of the Fares Data Build Tool';
@@ -80,7 +80,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
 
-    if (!operatorCookie || !isService(serviceAttribute) || !isPassengerType(passengerTypeAttribute) || !nocCode) {
+    if (!operatorCookie || !serviceAttribute || !passengerTypeAttribute || !nocCode) {
         throw new Error('Necessary cookies not found to show direction page');
     }
 
@@ -112,7 +112,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             passengerType: passengerTypeAttribute.passengerType,
             lineName,
             service,
-            error: (isJourney(journeyAttribute) && journeyAttribute.errors) || [],
+            error: isWithErrors(journeyAttribute) ? journeyAttribute.errors : [],
         },
     };
 };

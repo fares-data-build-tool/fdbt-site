@@ -7,7 +7,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Passenger Type - Fares Data Build Tool';
 const description = 'Passenger Type selection page of the Fares Data Build Tool';
@@ -15,9 +15,9 @@ const description = 'Passenger Type selection page of the Fares Data Build Tool'
 const errorId = 'passenger-type-error';
 const insetText = 'More passenger types will become available soon';
 
-type PassengerTypeProps = {
+interface PassengerTypeProps {
     errors?: ErrorInfo[];
-};
+}
 
 const PassengerType = ({ errors = [], csrfToken }: PassengerTypeProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -70,9 +70,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
-        passengerTypeAttribute && isPassengerTypeAttributeWithErrors(passengerTypeAttribute)
-            ? passengerTypeAttribute.errors
-            : [];
+        passengerTypeAttribute && isWithErrors(passengerTypeAttribute) ? passengerTypeAttribute.errors : [];
 
     return { props: { errors } };
 };

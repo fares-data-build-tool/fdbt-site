@@ -1,28 +1,25 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import isEmpty from 'lodash/isEmpty';
-import { NextApiRequestWithSession } from '../../interfaces/index';
+import {
+    NextApiRequestWithSession,
+    UserFareStages,
+    FaresInformation,
+    FaresInput,
+    ErrorInfo,
+    WithErrors,
+} from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
     JOURNEY_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
     USER_DATA_BUCKET_NAME,
-} from '../../constants/index';
+} from '../../constants';
 
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { isSessionValid } from './apiUtils/validator';
-import { isJourney } from '../../interfaces/typeGuards';
-
-interface UserFareStages {
-    fareStages: {
-        stageName: string;
-        prices: {
-            price: string;
-            fareZones: string[];
-        }[];
-    }[];
-}
+import { isWithErrors } from '../../interfaces/typeGuards';
 
 interface FareTriangleData {
     [stageName: string]: {
@@ -33,42 +30,28 @@ interface FareTriangleData {
     };
 }
 
-export interface FaresInformation {
-    inputs: FaresInput[];
-    errorInformation: PriceEntryError[];
-}
-
-export interface FaresInput {
-    input: string;
-    locator: string;
-}
-
-export interface PriceEntryError {
-    input: string;
-    locator: string;
-}
-
-export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
+export const inputsValidityCheck = (req: NextApiRequest): FaresInformation | WithErrors<FaresInformation> => {
     const priceEntries = Object.entries(req.body);
-    const errors: PriceEntryError[] = [];
+    const errors: ErrorInfo[] = [];
     const sortedInputs: FaresInput[] = priceEntries.map(priceEntry => {
         if (priceEntry[1] !== '0' || Number(priceEntry[1]) !== 0) {
             if (!priceEntry[1] || Number.isNaN(Number(priceEntry[1])) || Number(priceEntry[1]) % 1 !== 0) {
-                // k and v used to keep cookie size small - key and value
                 errors.push({
-                    input: 'Enter a valid price for each stage',
-                    locator: priceEntry[0],
+                    errorMessage: 'Enter a valid price for each stage',
+                    id: priceEntry[0],
                 });
             }
         }
+
         return {
             input: priceEntry[1] as string,
             locator: priceEntry[0],
         };
     });
+
     return {
         inputs: sortedInputs,
-        errorInformation: errors,
+        errors,
     };
 };
 
@@ -104,6 +87,7 @@ export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => 
     const mappedFareTriangle: UserFareStages = {
         fareStages: originStages.map(kv => {
             const pricesToDestinationStages = Object.values(kv[1]);
+
             return {
                 stageName: kv[0],
                 prices: pricesToDestinationStages,
@@ -130,9 +114,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const errorCheck: FaresInformation = inputsValidityCheck(req);
 
-        if (errorCheck.errorInformation.length > 0) {
+        if (isWithErrors(errorCheck)) {
             updateSessionAttribute(req, PRICE_ENTRY_ATTRIBUTE, errorCheck);
             redirectTo(res, '/priceEntry');
+
             return;
         }
 
@@ -144,8 +129,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const journeyAttribute = getSessionAttribute(req, JOURNEY_ATTRIBUTE);
 
-        if (isJourney(journeyAttribute) && journeyAttribute?.outboundJourney) {
+        if (journeyAttribute && journeyAttribute?.outboundJourney) {
             redirectTo(res, '/outboundMatching');
+
             return;
         }
         redirectTo(res, '/matching');

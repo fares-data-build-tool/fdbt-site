@@ -1,18 +1,10 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo, GroupTicketAttribute } from '../../interfaces';
 import { GROUP_SIZE_ATTRIBUTE } from '../../constants';
 import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { redirectToError, redirectTo } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
-
-export interface GroupTicketAttribute {
-    maxGroupSize: string;
-}
-
-export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
-    errors: ErrorInfo[];
-}
 
 const wrongInputError = 'Enter a whole number between 1 and 30';
 
@@ -49,12 +41,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             });
         }
         if (errors.length > 0) {
-            const attributeValueWithErrors: GroupTicketAttributeWithErrors = {
+            const attributeValueWithErrors = {
                 maxGroupSize: attributeValue.maxGroupSize,
                 errors,
             };
             updateSessionAttribute(req, GROUP_SIZE_ATTRIBUTE, attributeValueWithErrors);
             redirectTo(res, '/groupSize');
+
             return;
         }
 

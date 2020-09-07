@@ -19,27 +19,20 @@ export interface DaysValidInfo {
     errors: ErrorInfo[];
 }
 
-export interface ProductInfoWithErrors extends ProductInfo {
-    errors: ErrorInfo[];
-}
-
-export type PassengerAttributes = {
+export interface PassengerAttributes {
     passengerTypeDisplay: string;
     passengerTypeValue: string;
-};
+}
+
+export interface PassengerType {
+    passengerType: string;
+}
 
 export interface BasicService {
     lineName: string;
     nocCode: string;
     operatorShortName: string;
     serviceDescription: string;
-}
-
-export interface PassengerDetails {
-    passengerType: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string[];
 }
 
 export interface ErrorInfo {
@@ -85,7 +78,7 @@ export interface Breadcrumb {
     show: boolean;
 }
 
-export interface Session {
+interface Session {
     session: Express.Session;
 }
 
@@ -101,28 +94,42 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
-export interface SalesOfferPackage {
-    name: string;
-    description: string;
+export interface SalesOfferPackageInfo {
     purchaseLocations: string[];
     paymentMethods: string[];
     ticketFormats: string[];
 }
 
+export interface SalesOfferPackage extends SalesOfferPackageInfo {
+    name: string;
+    description: string;
+}
+
+export interface SelectSalesOfferPackage {
+    selected: { [key: string]: string };
+}
+
 export interface Product {
     productName: string;
+    productNameId?: string;
     productPrice: string;
+    productPriceId?: string;
     productDuration?: string;
+    productDurationId?: string;
     productValidity?: string;
+    productValidityError?: string;
 }
 
 export interface ProductData {
     products: Product[];
 }
 
-export interface GroupPassengerInfo extends CompanionInfo {
-    ageRange: string;
-    proof: string;
+export interface GroupPassengerTypesCollection {
+    passengerTypes: string[];
+}
+
+export interface GroupTicketAttribute {
+    maxGroupSize: string;
 }
 
 export interface CompanionInfo {
@@ -139,21 +146,22 @@ export interface GroupDefinition {
     companions: CompanionInfo[];
 }
 
-export interface BaseGroupTicket {
-    nocCode: string;
-    type: string;
-    groupDefinition: GroupDefinition;
-    email: string;
-    uuid: string;
-}
-
 export interface TimeRestriction {
     startTime?: string;
     endTime?: string;
     validDays?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
 }
 
-export interface BaseTicket {
+export interface TimeRestrictionsDefinition extends TimeRestriction {
+    timeRestriction?: string;
+    validDaysSelected?: string;
+}
+
+export interface TimeRestrictionsAttribute {
+    timeRestrictions: boolean;
+}
+
+interface BaseTicket {
     timeRestriction?: TimeRestriction;
     nocCode: string;
     type: string;
@@ -169,7 +177,7 @@ export interface BaseTicket {
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
 
-export interface BasePointToPointTicket extends BaseTicket {
+interface BasePointToPointTicket extends BaseTicket {
     operatorShortName: string;
     lineName: string;
     serviceDescription: string;
@@ -185,20 +193,28 @@ export interface ReturnTicket extends BasePointToPointTicket {
     outboundFareZones: FareZone[];
 }
 
-export interface FareZone {
+export interface FareZoneName {
+    fareZoneName: string;
+}
+
+interface FareZone {
     name: string;
     stops: Stop[];
     prices: FareZonePrices[];
 }
 
-export interface FareZonePrices {
+interface FareZonePrices {
     price: string;
     fareZones: string[];
 }
 
 export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;
 
-export interface BasePeriodTicket extends BaseTicket {
+export interface FareType {
+    fareType: string;
+}
+
+interface BasePeriodTicket extends BaseTicket {
     operatorName: string;
     products: ProductDetails[];
 }
@@ -225,16 +241,44 @@ export interface SelectedService {
     serviceDescription: string;
 }
 
-export interface BaseProduct {
-    salesOfferPackages: SalesOfferPackage[];
+export interface ServiceListAttribute {
+    selectedServices: string[];
 }
 
-export interface FlatFareProductDetails extends BaseProduct {
-    productName: string;
-    productPrice: string;
+export interface RawJourneyPattern {
+    orderedStopPoints: {
+        stopPointRef: string;
+        commonName: string;
+    }[];
 }
 
-export interface ProductDetails extends Product, BaseProduct {}
+export interface JourneyPattern {
+    startPoint: {
+        Id: string;
+        Display: string;
+    };
+    endPoint: {
+        Id: string;
+        Display: string;
+    };
+    stopList: string[];
+}
+
+export interface ServiceName {
+    service: string;
+}
+
+export interface Service {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: JourneyPattern[];
+}
+
+export interface RawService {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: RawJourneyPattern[];
+}
 
 export interface Stop {
     stopName: string;
@@ -243,27 +287,101 @@ export interface Stop {
     localityCode: string;
     localityName: string;
     parentLocalityName: string;
-    qualifierName?: string;
     indicator?: string;
     street?: string;
+    qualifierName?: string;
 }
 
-export interface Journey extends JourneyWithErrors {
+export interface ServiceType {
+    lineName: string;
+    startDate: string;
+    description: string;
+    serviceCode: string;
+}
+
+export interface ServicesInfo extends ServiceType {
+    checked?: boolean;
+}
+
+export interface FareStage {
+    stageName: string;
+    prices: {
+        price: string;
+        fareZones: string[];
+    }[];
+}
+
+export interface FareStagesAttribute {
+    fareStages: string;
+}
+
+export interface UserFareStages {
+    fareStages: FareStage[];
+}
+
+export interface UserFareZone {
+    FareZoneName: string;
+    NaptanCodes: string;
+    AtcoCodes: string;
+}
+
+export interface FaresInput {
+    input: string;
+    locator: string;
+}
+
+export interface FaresInformation {
+    inputs: FaresInput[];
+}
+
+export interface OperatorNameType {
+    operatorPublicName: string;
+    nocCode?: string;
+}
+
+export interface BaseProduct {
+    salesOfferPackages: SalesOfferPackage[];
+}
+
+export interface MultiProduct {
+    productName: string;
+    productNameId: string;
+    productNameError?: string;
+    productPrice: string;
+    productPriceId: string;
+    productPriceError?: string;
+    productDuration: string;
+    productDurationId: string;
+    productDurationError?: string;
+}
+
+export interface MultipleProductAttribute {
+    products: Product[];
+}
+
+export interface BaseMultipleProductAttribute {
+    products: MultiProduct[];
+}
+
+interface FlatFareProductDetails extends BaseProduct {
+    productName: string;
+    productPrice: string;
+}
+
+export interface ProductDetails extends Product, BaseProduct {}
+
+export interface NumberOfProductsAttribute {
+    numberOfProductsInput: string;
+}
+
+export interface Journey {
     directionJourneyPattern?: string;
     inboundJourney?: string;
     outboundJourney?: string;
 }
 
-export interface JourneyWithErrors {
-    errors?: ErrorInfo[];
-}
-
 export interface PeriodTypeAttribute {
     name: string;
-}
-
-export interface PeriodTypeAttributeWithErrors {
-    errors?: ErrorInfo[];
 }
 export interface S3NetexFile {
     name: string;
@@ -279,3 +397,64 @@ export interface S3NetexFile {
     date: string;
     signedUrl: string;
 }
+
+export interface RadioWithoutConditionals extends BaseReactElement {
+    value: string;
+}
+
+export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
+    dataAriaControls: string;
+    hint: {
+        id: string;
+        content: string;
+    };
+    inputType: string;
+    inputs: BaseReactElement[];
+    inputErrors: ErrorInfo[];
+}
+
+export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
+
+export interface RadioConditionalInputFieldset {
+    heading: {
+        id: string;
+        content: string;
+    };
+    radios: RadioButton[];
+    radioError: ErrorInfo[];
+}
+
+interface Price {
+    price: string;
+    fareZones: string[];
+}
+
+export interface MatchingInfo {
+    service: BasicService;
+    userFareStages: UserFareStages;
+    matchingFareZones: MatchingFareZones;
+}
+
+export interface InboundMatchingInfo {
+    inboundUserFareStages: UserFareStages;
+    inboundMatchingFareZones: MatchingFareZones;
+}
+
+export interface MatchingWithErrors {
+    error: boolean;
+    selectedFareStages: string[];
+}
+
+export interface MatchingFareZonesData {
+    name: string;
+    stops: Stop[];
+    prices: Price[];
+}
+
+export interface MatchingFareZones {
+    [key: string]: MatchingFareZonesData;
+}
+
+export type WithErrors<T> = {
+    errors: ErrorInfo[];
+} & T;
