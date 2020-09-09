@@ -308,7 +308,18 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     fieldsets = getFieldsets(errors, passengerType);
 
-    return { props: { group, errors, fieldsets, passengerType: passengerType ?? '' } };
+    let passengerTypeToRender = '';
+
+    if (!passengerType) {
+        if (isPassengerTypeAttributeWithErrors(passengerTypeAttribute)) {
+            throw new Error('Incorrect passenger type found');
+        }
+        passengerTypeToRender = passengerTypeAttribute.passengerType;
+    } else {
+        passengerTypeToRender = passengerType;
+    }
+
+    return { props: { group, errors, fieldsets, passengerType: passengerTypeToRender } };
 };
 
 export default DefinePassengerType;

@@ -57,8 +57,8 @@ const Confirmation = ({
                             details you are providing are correct.
                         </p>
                     </div>
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </div>
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
     </TwoThirdsLayout>
@@ -68,34 +68,21 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Co
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
-    let finalPassengerInfo = '';
-    let finalFareTypeInfo = '';
 
-    if (passengerTypeInfo) {
-        if (isPassengerTypeAttributeWithErrors(passengerTypeInfo)) {
-            throw new Error('User has reached confirmation page with incorrect passenger type info.');
-        }
-        finalPassengerInfo = passengerTypeInfo.passengerType;
-    }
-
-    if (!fareTypeInfo || isFareTypeAttributeWithErrors(fareTypeInfo)) {
-        throw new Error('User has reached confirmation page without necessary data');
-    }
-
-    if (timeRestrictionsInfo && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsInfo)) {
-        throw new Error('User has reached confirmation page without necessary data');
-    }
-
-    if (fareTypeInfo.fareType === 'flatFare') {
-        finalFareTypeInfo = 'flat fare';
-    } else {
-        finalFareTypeInfo = fareTypeInfo.fareType;
+    if (
+        !passengerTypeInfo ||
+        isPassengerTypeAttributeWithErrors(passengerTypeInfo) ||
+        !fareTypeInfo ||
+        isFareTypeAttributeWithErrors(fareTypeInfo) ||
+        (timeRestrictionsInfo && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsInfo))
+    ) {
+        throw new Error('User has reached confirmation page with incorrect passenger type info.');
     }
 
     return {
         props: {
-            fareType: finalFareTypeInfo,
-            passengerType: finalPassengerInfo,
+            fareType: fareTypeInfo.fareType,
+            passengerType: passengerTypeInfo.passengerType,
             timeRestrictions: timeRestrictionsInfo ? 'Yes' : 'No',
         },
     };

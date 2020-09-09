@@ -59,13 +59,13 @@ exports[`pages confirmation should render correctly 1`] = `
           By submitting this notification you are confirming that, to the best of your knowledge, the details you are providing are correct.
         </p>
       </div>
+      <input
+        className="govuk-button"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
     </div>
-    <input
-      className="govuk-button"
-      id="continue-button"
-      type="submit"
-      value="Continue"
-    />
   </CsrfForm>
 </Component>
 `;

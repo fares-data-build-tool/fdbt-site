@@ -68,7 +68,6 @@ describe('getProductsAndSalesOfferPackages', () => {
 describe('getSingleTicketJson', () => {
     it('should return a SingleTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: {},
             session: {
                 [MATCHING_ATTRIBUTE]: {
                     service,
@@ -87,7 +86,6 @@ describe('getSingleTicketJson', () => {
 describe('getReturnTicketJson', () => {
     it('should return a ReturnTicket object for a non circular return journey', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: {},
             session: {
                 [MATCHING_ATTRIBUTE]: {
                     service,
@@ -108,7 +106,6 @@ describe('getReturnTicketJson', () => {
     it('should return a ReturnTicket object for a circular journey', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: {},
             session: {
                 [MATCHING_ATTRIBUTE]: {
                     service,
@@ -142,7 +139,6 @@ describe('getPeriodGeoZoneTicketJson', () => {
         const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: {},
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
@@ -175,7 +171,6 @@ describe('getPeriodMulipleServicesTicketJson', () => {
     it('should return a PeriodMultipleServicesTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
-            body: {},
             session: {
                 [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'period' },
@@ -225,7 +220,6 @@ describe('getPeriodMulipleServicesTicketJson', () => {
 describe('getFlatFareTicketJson', () => {
     it('should return a string a FlatFareTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
-            body: {},
             session: {
                 [PRODUCT_DETAILS_ATTRIBUTE]: {
                     products: [

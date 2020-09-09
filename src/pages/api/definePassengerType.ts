@@ -228,8 +228,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }));
         }
 
-        console.log(errors);
-
         if (errors.length === 0) {
             if (!group) {
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType, ...filteredReqBody });
