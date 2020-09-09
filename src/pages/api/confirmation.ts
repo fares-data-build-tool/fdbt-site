@@ -15,7 +15,6 @@ import {
     putUserDataInS3,
 } from './apiUtils/userData';
 import { isSessionValid } from './apiUtils/validator';
-
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute } from '../../utils/sessions';
 import { isFareType, isPeriodType } from '../../interfaces/typeGuards';

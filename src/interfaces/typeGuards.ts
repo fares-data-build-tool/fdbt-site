@@ -50,7 +50,7 @@ export const inputMethodErrorsExist = (
 ): inputMethodAttribute is ErrorInfo => (inputMethodAttribute as ErrorInfo)?.errorMessage !== undefined;
 
 export const isPassengerTypeAttributeWithErrors = (
-    fareTypeAttribute: PassengerType | PassengerTypeWithErrors,
+    fareTypeAttribute: PassengerType | PassengerTypeWithErrors | undefined,
 ): fareTypeAttribute is PassengerTypeWithErrors => (fareTypeAttribute as PassengerTypeWithErrors).errors !== undefined;
 
 export const isPassengerType = (

@@ -265,7 +265,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const passengerTypeErrorsAttribute = getSessionAttribute(ctx.req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
 
-    if (!isPassengerType(passengerTypeAttribute) && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
+    if (
+        !passengerTypeAttribute ||
+        (!isPassengerType(passengerTypeAttribute) && (!ctx.query.groupPassengerType || !groupPassengerTypes))
+    ) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
@@ -276,14 +279,17 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     let passengerType = ctx?.query?.groupPassengerType as string;
 
-    if (!passengerType && isPassengerType(passengerTypeAttribute)) {
-        passengerType = passengerTypeAttribute.passengerType;
-    }
-
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
-    const group = !!groupPassengerTypes;
+    const group =
+        !!groupPassengerTypes &&
+        !isPassengerTypeAttributeWithErrors(passengerTypeAttribute) &&
+        passengerTypeAttribute.passengerType === 'group';
+
+    if (!passengerType && isPassengerType(passengerTypeAttribute) && group) {
+        passengerType = passengerTypeAttribute.passengerType;
+    }
 
     if (group) {
         fieldsets = getFieldsets(errors, passengerType);
@@ -302,7 +308,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     fieldsets = getFieldsets(errors, passengerType);
 
-    return { props: { group, errors, fieldsets, passengerType } };
+    return { props: { group, errors, fieldsets, passengerType: passengerType ?? '' } };
 };
 
 export default DefinePassengerType;

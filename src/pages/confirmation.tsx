@@ -1,16 +1,29 @@
 import React, { ReactElement } from 'react';
-import { parseCookies } from 'nookies';
+import startCase from 'lodash/startCase';
+import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
+import { getSessionAttribute } from '../utils/sessions';
+import { isPassengerTypeAttributeWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import { isTimeRestrictionsDefinitionWithErrors } from './defineTimeRestrictions';
 
 const title = 'Confirmation - Fares Data Build Tool';
 const description = 'Confirmation page of the Fares Data Build Tool';
 
-type ConfirmationProps = {};
+type ConfirmationProps = {
+    fareType: string;
+    passengerType: string;
+    timeRestrictions: string;
+};
 
-const Confirmation = ({ csrfToken }: ConfirmationProps & CustomAppProps): ReactElement => (
+const Confirmation = ({
+    csrfToken,
+    fareType,
+    passengerType,
+    timeRestrictions,
+}: ConfirmationProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/confirmation" method="post" csrfToken={csrfToken}>
             <>
@@ -22,31 +35,16 @@ const Confirmation = ({ csrfToken }: ConfirmationProps & CustomAppProps): ReactE
                                 {
                                     header: 'Fare Information',
                                     innerElements: [
-                                        { name: 'Faretype', content: 'Single', href: '/fareType' },
-                                        { name: 'Passenger Type', content: 'Adult', href: '/passengerType' },
-                                        { name: 'Time Restrictions', content: 'No', href: '/timeRestrictions' },
-                                    ],
-                                },
-                                {
-                                    header: 'Ticket Information',
-                                    innerElements: [
-                                        { name: 'Service', content: '19 - Start date 05/04/2020', href: '/service' },
+                                        { name: 'Faretype', content: startCase(fareType), href: '/fareType' },
                                         {
-                                            name: 'Direction',
-                                            content: 'Bibby Drive, Staining TO Central Library, Blackpool',
-                                            href: '/singleDirection',
+                                            name: 'Passenger Type',
+                                            content: startCase(passengerType),
+                                            href: '/passengerType',
                                         },
-                                        { name: 'Fare Information', content: '<prices>', href: '/priceEntry' },
-                                        { name: 'Matching', content: '<matching Stuff>', href: '/matching' },
-                                    ],
-                                },
-                                {
-                                    header: 'Sales Information',
-                                    innerElements: [
                                         {
-                                            name: 'Sales offer packages',
-                                            content: 'Onboard cash, Onboard Contactless',
-                                            href: '/selectSalesOfferPackage',
+                                            name: 'Time Restrictions',
+                                            content: timeRestrictions,
+                                            href: '/timeRestrictions',
                                         },
                                     ],
                                 },
@@ -67,8 +65,40 @@ const Confirmation = ({ csrfToken }: ConfirmationProps & CustomAppProps): ReactE
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ConfirmationProps } => {
-    parseCookies(ctx);
-    return { props: {} };
+    const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
+    let finalPassengerInfo = '';
+    let finalFareTypeInfo = '';
+
+    if (passengerTypeInfo) {
+        if (isPassengerTypeAttributeWithErrors(passengerTypeInfo)) {
+            throw new Error('User has reached confirmation page with incorrect passenger type info.');
+        }
+        finalPassengerInfo = passengerTypeInfo.passengerType;
+    }
+
+    if (!fareTypeInfo || isFareTypeAttributeWithErrors(fareTypeInfo)) {
+        throw new Error('User has reached confirmation page without necessary data');
+    }
+
+    if (timeRestrictionsInfo && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsInfo)) {
+        throw new Error('User has reached confirmation page without necessary data');
+    }
+
+    if (fareTypeInfo.fareType === 'flatFare') {
+        finalFareTypeInfo = 'flat fare';
+    } else {
+        finalFareTypeInfo = fareTypeInfo.fareType;
+    }
+
+    return {
+        props: {
+            fareType: finalFareTypeInfo,
+            passengerType: finalPassengerInfo,
+            timeRestrictions: timeRestrictionsInfo ? 'Yes' : 'No',
+        },
+    };
 };
 
 export default Confirmation;
