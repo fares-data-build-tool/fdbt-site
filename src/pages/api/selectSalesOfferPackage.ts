@@ -68,8 +68,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 };
                 return product;
             });
-            console.log(productsAndSalesOfferPackages[0]);
-            console.log(productsAndSalesOfferPackages[1]);
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, productsAndSalesOfferPackages);
         }
         redirectTo(res, '/confirmation');
