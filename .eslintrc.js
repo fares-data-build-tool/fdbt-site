@@ -27,7 +27,7 @@ module.exports = {
         sourceType: 'module',
         project: `./tsconfig.json`,
     },
-    plugins: ['react', '@typescript-eslint', 'jsx-a11y'],
+    plugins: ['react', '@typescript-eslint', 'jsx-a11y', 'no-only-tests'],
     rules: {
         indent: [
             0,
@@ -84,6 +84,7 @@ module.exports = {
         curly: [2, 'all'],
         '@typescript-eslint/unbound-method': 0,
         'padding-line-between-statements': ['error', { blankLine: 'always', prev: '*', next: 'return' }],
+        'no-only-tests/no-only-tests': 'error',
     },
     settings: {
         'import/resolver': {
