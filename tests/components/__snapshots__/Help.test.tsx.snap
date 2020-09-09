@@ -14,13 +14,13 @@ exports[`Help should render the Help component 1`] = `
   <p
     className="govuk-body"
   >
-    If you are having problems, please contact the Fares Data Build service through the link below:
+    If you are having problems, please contact the Fares Data Build service via the link below:
     <div>
       <a
         className="govuk-link"
         href="/contact"
       >
-        Contact the FDBT team
+        Contact Us
       </a>
     </div>
   </p>

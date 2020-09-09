@@ -7,10 +7,10 @@ const Help = (): ReactElement => {
                 <h1 className="govuk-fieldset__heading">Help and Support</h1>
             </legend>
             <p className="govuk-body">
-                If you are having problems, please contact the Fares Data Build service through the link below:
+                If you are having problems, please contact the Fares Data Build service via the link below:
                 <div>
                     <a href="/contact" className="govuk-link">
-                        Contact the FDBT team
+                        Contact Us
                     </a>
                 </div>
             </p>
