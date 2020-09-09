@@ -212,7 +212,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const filteredReqBody = formatRequestBody(req);
 
-        if (groupPassengerTypes && groupSize) {
+        if (group && !!groupPassengerTypes && !!groupSize) {
             filteredReqBody.maxGroupSize = groupSize.maxGroupSize;
             filteredReqBody.groupPassengerType = passengerType;
         }
