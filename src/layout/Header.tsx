@@ -45,7 +45,7 @@ const Header = ({ isAuthed, csrfToken }: HeaderProps): ReactElement => (
 
             <div className="govuk-header__account-link">
                 <a href={isAuthed ? '/account' : '/login'} className="govuk-header__link">
-                    <img src={personIcon} className="govuk-header__person-icon" alt="Person icon" />
+                    <img src={personIcon} className="govuk-header__person-icon" alt="" />
                     <span> {isAuthed ? 'My Account' : 'Sign in'} </span>
                 </a>
                 {isAuthed && (

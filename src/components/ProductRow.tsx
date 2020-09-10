@@ -14,104 +14,109 @@ export const continueButton = (): ReactElement => {
 };
 
 export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (
-    <div className="flex-container" key={index}>
-        <div className="govuk-grid-column-one-half">
-            <FormGroupWrapper errors={errors} errorId={`multiple-product-name-input-${index}`}>
-                <>
-                    <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
-                        Product Name
-                    </label>
-                    {index === 0 ? (
-                        <span className="govuk-hint" id={`product-name-hint-${index}`}>
-                            Enter the name of your product
-                        </span>
-                    ) : (
-                        ''
-                    )}
-                    <FormElementWrapper
-                        errors={errors}
-                        errorId={`multiple-product-name-input-${index}`}
-                        errorClass="govuk-input--error"
-                    >
-                        <input
-                            className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
-                            id={`multiple-product-name-${index}`}
-                            name={`multipleProductNameInput${index}`}
-                            type="text"
-                            maxLength={50}
-                            defaultValue={userInput.length > 0 ? userInput[index].productName : ''}
-                        />
-                    </FormElementWrapper>
-                </>
-            </FormGroupWrapper>
-        </div>
-        <div className="govuk-grid-column-one-quarter">
-            <FormGroupWrapper errors={errors} errorId={`multiple-product-price-input-${index}`}>
-                <>
-                    <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
-                        Product Price
-                    </label>
-                    {index === 0 ? (
-                        <span className="govuk-hint" id={`product-price-hint${index}`}>
-                            For example, £2.99
-                        </span>
-                    ) : (
-                        ''
-                    )}
-                    <div className="govuk-currency-input">
-                        <div className="govuk-currency-input__inner">
-                            <span className="govuk-currency-input__inner__unit">£</span>
-                            <FormElementWrapper
-                                errors={errors}
-                                errorId={`multiple-product-price-input-${index}`}
-                                errorClass="govuk-input--error"
-                            >
-                                <input
-                                    className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
-                                    aria-label="Enter amount in pounds"
-                                    name={`multipleProductPriceInput${index}`}
-                                    data-non-numeric
-                                    type="text"
-                                    id={`multiple-product-price-${index}`}
-                                    defaultValue={userInput.length > 0 ? userInput[index].productPrice : ''}
-                                />
-                            </FormElementWrapper>
+    <fieldset className="govuk-fieldset">
+        <legend className="govuk-fieldset__legend govuk-visually-hidden">
+            {`Enter details for product ${index + 1}`}
+        </legend>
+        <div className="flex-container" key={index}>
+            <div className="govuk-grid-column-one-half">
+                <FormGroupWrapper errors={errors} errorId={`multiple-product-name-${index}`}>
+                    <>
+                        <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
+                            Product Name
+                        </label>
+                        {index === 0 ? (
+                            <span className="govuk-hint" id={`product-name-hint-${index}`}>
+                                Enter the name of your product
+                            </span>
+                        ) : (
+                            ''
+                        )}
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId={`multiple-product-name-${index}`}
+                            errorClass="govuk-input--error"
+                        >
+                            <input
+                                className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                id={`multiple-product-name-${index}`}
+                                name={`multipleProductNameInput${index}`}
+                                type="text"
+                                maxLength={50}
+                                defaultValue={userInput.length > 0 ? userInput[index].productName : ''}
+                            />
+                        </FormElementWrapper>
+                    </>
+                </FormGroupWrapper>
+            </div>
+            <div className="govuk-grid-column-one-quarter">
+                <FormGroupWrapper errors={errors} errorId={`multiple-product-price-${index}`}>
+                    <>
+                        <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
+                            Product Price
+                        </label>
+                        {index === 0 ? (
+                            <span className="govuk-hint" id={`product-price-hint${index}`}>
+                                For example, £2.99
+                            </span>
+                        ) : (
+                            ''
+                        )}
+                        <div className="govuk-currency-input">
+                            <div className="govuk-currency-input__inner">
+                                <span className="govuk-currency-input__inner__unit">£</span>
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`multiple-product-price-${index}`}
+                                    errorClass="govuk-input--error"
+                                >
+                                    <input
+                                        className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
+                                        aria-label="Enter amount in pounds"
+                                        name={`multipleProductPriceInput${index}`}
+                                        data-non-numeric
+                                        type="text"
+                                        id={`multiple-product-price-${index}`}
+                                        defaultValue={userInput.length > 0 ? userInput[index].productPrice : ''}
+                                    />
+                                </FormElementWrapper>
+                            </div>
                         </div>
-                    </div>
-                </>
-            </FormGroupWrapper>
+                    </>
+                </FormGroupWrapper>
+            </div>
+            <div className="govuk-grid-column-one-quarter">
+                <FormGroupWrapper errors={errors} errorId={`multiple-product-duration-${index}`}>
+                    <>
+                        <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
+                            Product Duration
+                        </label>
+                        {index === 0 ? (
+                            <span className="govuk-hint" id={`product-duration-hint-${index}`}>
+                                Enter a number of days
+                            </span>
+                        ) : (
+                            ''
+                        )}
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId={`multiple-product-duration-${index}`}
+                            errorClass="govuk-input--error"
+                        >
+                            <input
+                                className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
+                                id={`multiple-product-duration-${index}`}
+                                name={`multipleProductDurationInput${index}`}
+                                type="text"
+                                maxLength={366}
+                                defaultValue={userInput.length > 0 ? userInput[index].productDuration : ''}
+                            />
+                        </FormElementWrapper>
+                    </>
+                </FormGroupWrapper>
+            </div>
         </div>
-        <div className="govuk-grid-column-one-quarter">
-            <FormGroupWrapper errors={errors} errorId={`multiple-product-duration-input-${index}`}>
-                <>
-                    <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
-                        Product Duration
-                    </label>
-                    {index === 0 ? (
-                        <span className="govuk-hint" id={`product-duration-hint-${index}`}>
-                            Enter a number of days
-                        </span>
-                    ) : (
-                        ''
-                    )}
-                    <FormElementWrapper
-                        errors={errors}
-                        errorId={`multiple-product-duration-input-${index}`}
-                        errorClass="govuk-input--error"
-                    >
-                        <input
-                            className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
-                            id={`multiple-product-duration-${index}`}
-                            name={`multipleProductDurationInput${index}`}
-                            type="text"
-                            maxLength={366}
-                            defaultValue={userInput.length > 0 ? userInput[index].productDuration : ''}
-                        />
-                    </FormElementWrapper>
-                </>
-            </FormGroupWrapper>
-        </div>
-    </div>
+    </fieldset>
 );
 
 export const renderRows = (

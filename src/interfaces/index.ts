@@ -278,4 +278,5 @@ export interface S3NetexFile {
     sopNames: string;
     date: string;
     signedUrl: string;
+    fileSize: number;
 }

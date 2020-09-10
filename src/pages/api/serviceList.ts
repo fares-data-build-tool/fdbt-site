@@ -7,7 +7,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { isFareType } from '../../interfaces/typeGuards';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 
-const errorId = 'service-list-error';
+const errorId = 'checkbox-0';
 
 export interface ServiceListAttribute {
     selectedServices: string[];

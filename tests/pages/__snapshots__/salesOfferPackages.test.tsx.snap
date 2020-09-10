@@ -39,7 +39,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
       >
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="purchaseLocations"
+          errorId="checkbox-0-on-board"
           errors={
             Array [
               Object {
@@ -56,12 +56,12 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
               aria-describedby="sop-purchase-locations"
               className="govuk-fieldset"
             >
-              <p
-                className="govuk-body"
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
                 id="sop-purchase-locations"
               >
                 Where can tickets be purchased?
-              </p>
+              </legend>
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-on-board"
@@ -124,7 +124,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="paymentMethods"
+          errorId="checkbox-0-cash"
           errors={
             Array [
               Object {
@@ -141,12 +141,12 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
               aria-describedby="sop-payment-methods"
               className="govuk-fieldset"
             >
-              <p
-                className="govuk-body"
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
                 id="sop-payment-methods"
               >
                 How can tickets be paid for?
-              </p>
+              </legend>
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-cash"
@@ -228,7 +228,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="ticketFormats"
+          errorId="checkbox-0-paper-ticket"
           errors={
             Array [
               Object {
@@ -245,11 +245,12 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
               aria-describedby="sales-offer-package-ticket-format"
               className="govuk-fieldset"
             >
-              <p
-                className="govuk-body"
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
+                id="sop-payment-methods"
               >
                 What format do the tickets come in?
-              </p>
+              </legend>
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-paper-ticket"
@@ -359,7 +360,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
       >
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="purchaseLocations"
+          errorId="checkbox-0-on-board"
           errors={Array []}
         >
           <div
@@ -369,12 +370,12 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
               aria-describedby="sop-purchase-locations"
               className="govuk-fieldset"
             >
-              <p
-                className="govuk-body"
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
                 id="sop-purchase-locations"
               >
                 Where can tickets be purchased?
-              </p>
+              </legend>
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-on-board"
@@ -437,7 +438,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="paymentMethods"
+          errorId="checkbox-0-cash"
           errors={Array []}
         >
           <div
@@ -447,12 +448,12 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
               aria-describedby="sop-payment-methods"
               className="govuk-fieldset"
             >
-              <p
-                className="govuk-body"
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
                 id="sop-payment-methods"
               >
                 How can tickets be paid for?
-              </p>
+              </legend>
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-cash"
@@ -534,7 +535,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
         </FormElementWrapper>
         <FormElementWrapper
           errorClass="govuk-form-group--error"
-          errorId="ticketFormats"
+          errorId="checkbox-0-paper-ticket"
           errors={Array []}
         >
           <div
@@ -544,11 +545,12 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
               aria-describedby="sales-offer-package-ticket-format"
               className="govuk-fieldset"
             >
-              <p
-                className="govuk-body"
+              <legend
+                className="govuk-fieldset__legend govuk-fieldset__legend--s"
+                id="sop-payment-methods"
               >
                 What format do the tickets come in?
-              </p>
+              </legend>
               <div
                 className="govuk-checkboxes__item"
                 key="checkbox-item-paper-ticket"

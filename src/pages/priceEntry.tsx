@@ -11,7 +11,7 @@ import { isInputCheck } from '../interfaces/typeGuards';
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
 
-const errorId = 'fare-triangle-container';
+const errorId = 'cell-1-0';
 
 interface PriceEntryProps {
     stageNamesArray: string[];
@@ -99,7 +99,7 @@ const PriceEntry = ({
                         </span>
                         {errors.length > 0 ? createErrorSpans(errors) : null}
                     </fieldset>
-                    <div className="fare-triangle-container" id={errorId}>
+                    <div className="fare-triangle-container">
                         <div className="fare-triangle-column">
                             {stageNamesArray.map((rowStage, rowIndex) => (
                                 <div

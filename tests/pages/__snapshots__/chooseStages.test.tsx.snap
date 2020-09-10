@@ -39,7 +39,7 @@ exports[`pages chooseStages should render correctly 1`] = `
         </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
-          errorId="how-many-stages-error"
+          errorId="fare-stages"
           errors={Array []}
         >
           <input

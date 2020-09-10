@@ -8,7 +8,6 @@ import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import FormElementWrapper from '../components/FormElementWrapper';
 import { getAndValidateNoc } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
@@ -16,7 +15,6 @@ import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Single Direction - Fares Data Build Tool';
 const description = 'Single Direction selection page of the Fares Data Build Tool';
-const errorId = 'direction-error';
 
 interface DirectionProps {
     operator: string;
@@ -51,14 +49,14 @@ const SingleDirection = ({
                         <span className="govuk-hint" id="direction-journey-description-hint">
                             {`Journey: ${service.serviceDescription}`}
                         </span>
-                        <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
-                            <DirectionDropdown
-                                selectName="directionJourneyPattern"
-                                selectNameID="direction-journey-pattern"
-                                journeyPatterns={service.journeyPatterns}
-                                dropdownLabel="Journey direction"
-                            />
-                        </FormElementWrapper>
+                        <DirectionDropdown
+                            selectName="directionJourneyPattern"
+                            selectNameID="direction-journey-pattern"
+                            journeyPatterns={service.journeyPatterns}
+                            dropdownLabel="Journey direction"
+                            hideLabel
+                            errors={error}
+                        />
                         <span className="govuk-hint hint-text" id="traveline-hint">
                             This data is taken from the Traveline National Dataset
                         </span>

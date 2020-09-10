@@ -33,11 +33,7 @@ const ChooseStages = ({ fareStage, errors, csrfToken }: ChooseStagesProps & Cust
                         <label className="govuk-hint" htmlFor="fare-stages" id="fare-stage-hint">
                             Enter the number of fare stages between 2 - 20 (for example 3)
                         </label>
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId="how-many-stages-error"
-                            errorClass="govuk-input--error"
-                        >
+                        <FormElementWrapper errors={errors} errorId="fare-stages" errorClass="govuk-input--error">
                             <input
                                 className="govuk-input govuk-input--width-2"
                                 id="fare-stages"

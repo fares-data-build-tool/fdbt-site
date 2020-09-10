@@ -49,17 +49,24 @@ import { MultipleProductAttribute } from '../multipleProductValidity';
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
 
-    entry.forEach(sop => {
-        const parsedEntry = JSON.parse(sop);
-        const formattedPackageObject = {
-            name: parsedEntry.name,
-            description: parsedEntry.description,
-            purchaseLocations: parsedEntry.purchaseLocations,
-            paymentMethods: parsedEntry.paymentMethods,
-            ticketFormats: parsedEntry.ticketFormats,
-        };
-        salesOfferPackageList.push(formattedPackageObject);
-    });
+    entry
+        .filter(item => item)
+        .forEach(sop => {
+            let sopToProcess = sop;
+
+            if (isArray(sop)) {
+                [sopToProcess] = sop;
+            }
+            const parsedEntry = JSON.parse(sopToProcess);
+            const formattedPackageObject = {
+                name: parsedEntry.name,
+                description: parsedEntry.description,
+                purchaseLocations: parsedEntry.purchaseLocations,
+                paymentMethods: parsedEntry.paymentMethods,
+                ticketFormats: parsedEntry.ticketFormats,
+            };
+            salesOfferPackageList.push(formattedPackageObject);
+        });
 
     return salesOfferPackageList;
 };

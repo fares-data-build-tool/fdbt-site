@@ -33,23 +33,19 @@ const ServiceList = ({
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset" aria-describedby="service-list-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="service-list-page-heading">
-                                Which service(s) is the ticket valid for?
-                            </h1>
-                        </legend>
-                        <span id="radio-error" className="govuk-error-message">
-                            <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
-                                {errors[0] ? errors[0].errorMessage : ''}
-                            </span>
-                        </span>
-                    </fieldset>
+                <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <h1 className="govuk-heading-l" id="service-list-page-heading">
+                        Which service(s) is the ticket valid for?
+                    </h1>
+
                     <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
-                        <span id="service-list-hint" className="govuk-hint">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                             Select all services that apply
-                        </span>
+                        </legend>
+
+                        <label htmlFor="select-all-button" className="govuk-visually-hidden">
+                            {`Click to ${buttonText} services`}
+                        </label>
                         <input
                             type="submit"
                             name="selectAll"
@@ -62,8 +58,9 @@ const ServiceList = ({
                         </span>
                         <FormElementWrapper
                             errors={errors}
-                            errorId={errors[0] ? errors[0].id : ''}
-                            errorClass="govuk-form-group--error"
+                            errorId="checkbox-0"
+                            errorClass=""
+                            addFormGroupError={false}
                         >
                             <div className="govuk-checkboxes">
                                 {serviceList.map((service, index) => {

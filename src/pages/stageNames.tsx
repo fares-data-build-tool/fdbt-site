@@ -32,11 +32,7 @@ export const renderInputField = (index: number, inputCheck: InputCheck, errors: 
         <label className="govuk-label" htmlFor={`fare-stage-name-${index + 1}`}>
             Fare Stage {index + 1}
         </label>
-        <FormElementWrapper
-            errors={errors}
-            errorClass="govuk-input--error"
-            errorId={`fare-stage-name-${index + 1}-error`}
-        >
+        <FormElementWrapper errors={errors} errorClass="govuk-input--error" errorId={`fare-stage-name-${index + 1}`}>
             <input
                 className="govuk-input govuk-input--width-30 stage-name-input-field"
                 id={`fare-stage-name-${index + 1}`}

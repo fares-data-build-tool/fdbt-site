@@ -16,7 +16,6 @@ const FileAttachment: FC<FileAttachmentProps> = ({
     <section className="file-attachment">
         <div className="file-attachment-thumbnail">
             <a href={attachmentUrl} download>
-                <span className="govuk-visually-hidden">Click here to download</span>
                 <img alt="" src={imageUrl} />
             </a>
         </div>

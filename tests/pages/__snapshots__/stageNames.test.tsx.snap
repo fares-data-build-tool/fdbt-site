@@ -45,7 +45,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-1-error"
+            errorId="fare-stage-name-1"
             errors={Array []}
           >
             <input
@@ -70,7 +70,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-2-error"
+            errorId="fare-stage-name-2"
             errors={Array []}
           >
             <input
@@ -95,7 +95,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-3-error"
+            errorId="fare-stage-name-3"
             errors={Array []}
           >
             <input
@@ -120,7 +120,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-4-error"
+            errorId="fare-stage-name-4"
             errors={Array []}
           >
             <input
@@ -145,7 +145,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-5-error"
+            errorId="fare-stage-name-5"
             errors={Array []}
           >
             <input
@@ -170,7 +170,7 @@ exports[`pages stageNames should render correctly when a user first visits the p
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-6-error"
+            errorId="fare-stage-name-6"
             errors={Array []}
           >
             <input
@@ -239,7 +239,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-1-error"
+            errorId="fare-stage-name-1"
             errors={Array []}
           >
             <input
@@ -265,7 +265,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-2-error"
+            errorId="fare-stage-name-2"
             errors={Array []}
           >
             <input
@@ -291,7 +291,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-3-error"
+            errorId="fare-stage-name-3"
             errors={Array []}
           >
             <input
@@ -317,7 +317,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-4-error"
+            errorId="fare-stage-name-4"
             errors={Array []}
           >
             <input
@@ -343,7 +343,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-5-error"
+            errorId="fare-stage-name-5"
             errors={Array []}
           >
             <input
@@ -413,7 +413,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-1-error"
+            errorId="fare-stage-name-1"
             errors={Array []}
           >
             <input
@@ -439,7 +439,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-2-error"
+            errorId="fare-stage-name-2"
             errors={Array []}
           >
             <input
@@ -465,7 +465,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-3-error"
+            errorId="fare-stage-name-3"
             errors={Array []}
           >
             <input
@@ -491,7 +491,7 @@ exports[`pages stageNames should render correctly when a user is redirected to t
           </label>
           <FormElementWrapper
             errorClass="govuk-input--error"
-            errorId="fare-stage-name-4-error"
+            errorId="fare-stage-name-4"
             errors={Array []}
           >
             <input

@@ -28,36 +28,29 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
         });
 
         return (
-            <fieldset key={stop.atcoCode} className="govuk-fieldset">
-                <div className="matching-wrapper">
-                    <label className="govuk-label matching-stop-name" htmlFor={`option-${index}`}>
-                        {formatStopName(stop)}
-                    </label>
-                    <label className="govuk-label naptan-code" htmlFor={`option-${index}`}>
-                        {stop.naptanCode}
-                    </label>
-                    <div className="farestage-select-wrapper">
-                        <select
-                            className="govuk-select farestage-select"
-                            id={`option-${index}`}
-                            name={`option-${index}`}
-                            defaultValue={selectValue}
-                        >
-                            <option value="">Not Applicable</option>
-                            {userFareStages.fareStages.map((stage: FareStage) => {
-                                return (
-                                    <option
-                                        key={stage.stageName}
-                                        value={JSON.stringify({ stop, stage: stage.stageName })}
-                                    >
-                                        {stage.stageName}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
+            <div key={stop.atcoCode} className="matching-wrapper">
+                <label className="govuk-label matching-stop-name" htmlFor={`option-${index}`}>
+                    {formatStopName(stop)}
+                </label>
+                <div className="govuk-label naptan-code">{stop.naptanCode}</div>
+                <div className="farestage-select-wrapper">
+                    <select
+                        className="govuk-select farestage-select"
+                        id={`option-${index}`}
+                        name={`option-${index}`}
+                        defaultValue={selectValue}
+                    >
+                        <option value="">Not Applicable</option>
+                        {userFareStages.fareStages.map((stage: FareStage) => {
+                            return (
+                                <option key={stage.stageName} value={JSON.stringify({ stop, stage: stage.stageName })}>
+                                    {stage.stageName}
+                                </option>
+                            );
+                        })}
+                    </select>
                 </div>
-            </fieldset>
+            </div>
         );
     });
     return stopItems;

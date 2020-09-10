@@ -18,16 +18,12 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="multiple-product-validity-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="multiple-product-validity-page-heading"
-        >
-          When does the product expire?
-        </h1>
-      </legend>
+        When does the product expire?
+      </h1>
       <span
         className="govuk-hint"
         id="operator-products-hint"
@@ -56,17 +52,9 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
       >
         24hr means a ticket purchased at 3pm will be valid until 3pm on its day of expiry
       </span>
-      <span
-        className="govuk-error-message"
-        id="multiple-product-validity-radios-error"
-      >
-        <span
-          className="govuk-visually-hidden"
-        />
-      </span>
       <FormElementWrapper
         errorClass="govuk-radios--error"
-        errorId="multiple-product-validity-error"
+        errorId="twenty-four-hours-row-0"
         errors={Array []}
       >
         <div
@@ -104,6 +92,11 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
           className="govuk-fieldset"
           key="multiple-product-name-1"
         >
+          <legend
+            className="govuk-fieldset__legend govuk-visually-hidden"
+          >
+            Choose validity for Weekly Ticket
+          </legend>
           <div
             className="grid-content-wrapper"
           >
@@ -144,7 +137,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                   htmlFor="twenty-four-hours-row-0"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     24 hour
                   </span>
@@ -165,7 +158,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                   htmlFor="calendar-day-row-0"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     Calendar
                   </span>
@@ -178,6 +171,11 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
           className="govuk-fieldset"
           key="multiple-product-name-2"
         >
+          <legend
+            className="govuk-fieldset__legend govuk-visually-hidden"
+          >
+            Choose validity for Day Ticket
+          </legend>
           <div
             className="grid-content-wrapper"
           >
@@ -218,7 +216,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                   htmlFor="twenty-four-hours-row-1"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     24 hour
                   </span>
@@ -239,7 +237,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                   htmlFor="calendar-day-row-1"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     Calendar
                   </span>
@@ -267,7 +265,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
     Array [
       Object {
         "errorMessage": "Select one of the two validity options",
-        "id": "multiple-product-validity-error",
+        "id": "twenty-four-hours-row-0",
       },
     ]
   }
@@ -284,7 +282,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
         Array [
           Object {
             "errorMessage": "Select one of the two validity options",
-            "id": "multiple-product-validity-error",
+            "id": "twenty-four-hours-row-0",
           },
         ]
       }
@@ -292,16 +290,12 @@ exports[`pages multipleProductValidity should render error messaging when errors
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="multiple-product-validity-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="multiple-product-validity-page-heading"
-        >
-          When does the product expire?
-        </h1>
-      </legend>
+        When does the product expire?
+      </h1>
       <span
         className="govuk-hint"
         id="operator-products-hint"
@@ -330,24 +324,14 @@ exports[`pages multipleProductValidity should render error messaging when errors
       >
         24hr means a ticket purchased at 3pm will be valid until 3pm on its day of expiry
       </span>
-      <span
-        className="govuk-error-message"
-        id="multiple-product-validity-radios-error"
-      >
-        <span
-          className=""
-        >
-          Select one of the two validity options
-        </span>
-      </span>
       <FormElementWrapper
         errorClass="govuk-radios--error"
-        errorId="multiple-product-validity-error"
+        errorId="twenty-four-hours-row-0"
         errors={
           Array [
             Object {
               "errorMessage": "Select one of the two validity options",
-              "id": "multiple-product-validity-error",
+              "id": "twenty-four-hours-row-0",
             },
           ]
         }
@@ -387,6 +371,11 @@ exports[`pages multipleProductValidity should render error messaging when errors
           className="govuk-fieldset"
           key="multiple-product-name-1"
         >
+          <legend
+            className="govuk-fieldset__legend govuk-visually-hidden"
+          >
+            Choose validity for Weekly Ticket
+          </legend>
           <div
             className="grid-content-wrapper"
           >
@@ -427,7 +416,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                   htmlFor="twenty-four-hours-row-0"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     24 hour
                   </span>
@@ -448,7 +437,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                   htmlFor="calendar-day-row-0"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     Calendar
                   </span>
@@ -461,6 +450,11 @@ exports[`pages multipleProductValidity should render error messaging when errors
           className="govuk-fieldset"
           key="multiple-product-name-2"
         >
+          <legend
+            className="govuk-fieldset__legend govuk-visually-hidden"
+          >
+            Choose validity for Day Ticket
+          </legend>
           <div
             className="grid-content-wrapper"
           >
@@ -501,7 +495,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                   htmlFor="twenty-four-hours-row-1"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     24 hour
                   </span>
@@ -522,7 +516,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                   htmlFor="calendar-day-row-1"
                 >
                   <span
-                    className="visually-hidden-label"
+                    className="govuk-visually-hidden"
                   >
                     Calendar
                   </span>

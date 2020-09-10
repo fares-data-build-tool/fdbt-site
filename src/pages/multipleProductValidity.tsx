@@ -21,7 +21,7 @@ import { Product } from './api/multipleProductValidity';
 const title = 'Multiple Product Validity - Fares Data Build Tool';
 const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
 
-const errorId = 'multiple-product-validity-error';
+const errorId = 'twenty-four-hours-row-0';
 
 interface MultipleProductValidityProps {
     operator: string;
@@ -49,11 +49,9 @@ const MultipleProductValidity = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="multiple-product-validity-page-heading">
-                            When does the product expire?
-                        </h1>
-                    </legend>
+                    <h1 className="govuk-heading-l" id="multiple-product-validity-page-heading">
+                        When does the product expire?
+                    </h1>
                     <span className="govuk-hint" id="operator-products-hint">
                         {operator} - {numberOfProducts} products - {upperFirst(passengerType)}
                     </span>
@@ -65,11 +63,6 @@ const MultipleProductValidity = ({
                     </span>
                     <span className="govuk-hint" id="24hr-validity-type-hint">
                         24hr means a ticket purchased at 3pm will be valid until 3pm on its day of expiry
-                    </span>
-                    <span id="multiple-product-validity-radios-error" className="govuk-error-message">
-                        <span className={errors.length > 0 ? '' : 'govuk-visually-hidden'}>
-                            {errors.length > 0 ? errors[0].errorMessage : ''}
-                        </span>
                     </span>
                     <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                         <>
@@ -86,6 +79,9 @@ const MultipleProductValidity = ({
                             </div>
                             {multipleProducts.map((product, index) => (
                                 <fieldset className="govuk-fieldset" key={product.productNameId}>
+                                    <legend className="govuk-fieldset__legend govuk-visually-hidden">
+                                        {`Choose validity for ${product.productName}`}
+                                    </legend>
                                     <div className="grid-content-wrapper">
                                         <label
                                             className="govuk-label grid-column-content-one-fifth"
@@ -122,7 +118,7 @@ const MultipleProductValidity = ({
                                                     }`}
                                                     htmlFor={`twenty-four-hours-row-${index}`}
                                                 >
-                                                    <span className="visually-hidden-label">24 hour</span>
+                                                    <span className="govuk-visually-hidden">24 hour</span>
                                                 </label>
                                             </div>
                                             <div className="govuk-radios__item">
@@ -139,7 +135,7 @@ const MultipleProductValidity = ({
                                                     }`}
                                                     htmlFor={`calendar-day-row-${index}`}
                                                 >
-                                                    <span className="visually-hidden-label">Calendar</span>
+                                                    <span className="govuk-visually-hidden">Calendar</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -181,11 +177,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const productWithErrors = multipleProducts.find(el => el.productValidityError);
 
     if (productWithErrors) {
-        const errorHref = 'multiple-product-validity-radios-error';
-
         const error: ErrorInfo = {
             errorMessage: productWithErrors.productValidityError ?? '',
-            id: errorHref,
+            id: errorId,
         };
         errors.push(error);
     }

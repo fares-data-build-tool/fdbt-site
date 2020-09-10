@@ -15,16 +15,12 @@ exports[`pages definePassengerType should render correctly when on the group tic
       errors={Array []}
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-passenger-type-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-passenger-type-page-heading"
-        >
-          Provide passenger type details
-        </h1>
-      </legend>
+        Provide passenger type details
+      </h1>
       <br />
       <br />
       <div
@@ -222,16 +218,12 @@ exports[`pages definePassengerType should render correctly when on the non-group
       errors={Array []}
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-passenger-type-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-passenger-type-page-heading"
-        >
-          Provide passenger type details
-        </h1>
-      </legend>
+        Provide passenger type details
+      </h1>
       <span
         className="govuk-hint"
         id="define-passenger-type-hint"
@@ -396,16 +388,12 @@ exports[`pages definePassengerType should render errors correctly when input err
       }
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-passenger-type-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-passenger-type-page-heading"
-        >
-          Provide passenger type details
-        </h1>
-      </legend>
+        Provide passenger type details
+      </h1>
       <span
         className="govuk-hint"
         id="define-passenger-type-hint"
@@ -577,16 +565,12 @@ exports[`pages definePassengerType should render errors correctly when radio err
       }
     />
     <div>
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="define-passenger-type-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="define-passenger-type-page-heading"
-        >
-          Provide passenger type details
-        </h1>
-      </legend>
+        Provide passenger type details
+      </h1>
       <span
         className="govuk-hint"
         id="define-passenger-type-hint"

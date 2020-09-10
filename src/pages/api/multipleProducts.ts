@@ -147,9 +147,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const productName = String(arrayedRequest[0][1]);
             const productPrice = String(arrayedRequest[1][1]);
             const productDuration = String(arrayedRequest[2][1]);
-            const productNameId = `multiple-product-name-input-${count}`;
-            const productPriceId = `multiple-product-price-input-${count}`;
-            const productDurationId = `multiple-product-duration-input-${count}`;
+            const productNameId = `multiple-product-name-${count}`;
+            const productPriceId = `multiple-product-price-${count}`;
+            const productDurationId = `multiple-product-duration-${count}`;
             const product: MultiProduct = {
                 productName,
                 productNameId,

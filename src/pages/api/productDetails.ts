@@ -43,14 +43,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (productNameError) {
             errors.push({
                 errorMessage: productNameError,
-                id: 'product-name-error',
+                id: 'product-details-name',
             });
         }
         const productPriceError = checkPriceIsValid(productDetails.productPrice);
         if (productPriceError) {
             errors.push({
                 errorMessage: productPriceError,
-                id: 'product-price-error',
+                id: 'product-details-price',
             });
         }
 

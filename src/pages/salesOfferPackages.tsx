@@ -16,17 +16,17 @@ const title = 'Sales Offer Packages - Fares Data Build Tool';
 const description = 'Sales Offer Packages page for the Fares Data Build Tool';
 
 export const purchaseLocationsList = {
-    id: 'purchaseLocations',
+    id: 'checkbox-0-on-board',
     method: ['onBoard', 'online', 'mobileDevice'],
 };
 
 export const paymentMethodsList = {
-    id: 'paymentMethods',
+    id: 'checkbox-0-cash',
     paymentMethods: ['cash', 'debitCard', 'creditCard', 'mobilePhone'],
 };
 
 export const ticketFormatsList = {
-    id: 'ticketFormats',
+    id: 'checkbox-0-paper-ticket',
     ticketFormats: ['paperTicket', 'mobileApp', 'smartCard'],
 };
 
@@ -62,9 +62,12 @@ const SalesOfferPackages = ({
                             >
                                 <div className="govuk-form-group">
                                     <fieldset className="govuk-fieldset" aria-describedby="sop-purchase-locations">
-                                        <p className="govuk-body" id="sop-purchase-locations">
+                                        <legend
+                                            className="govuk-fieldset__legend govuk-fieldset__legend--s"
+                                            id="sop-purchase-locations"
+                                        >
                                             Where can tickets be purchased?
-                                        </p>
+                                        </legend>
                                         {purchaseLocationsList.method.map((purchaseLocations, index) => {
                                             const purchaseLocationId = kebabCase(purchaseLocations);
                                             return (
@@ -101,9 +104,12 @@ const SalesOfferPackages = ({
                             >
                                 <div className="govuk-form-group">
                                     <fieldset className="govuk-fieldset" aria-describedby="sop-payment-methods">
-                                        <p className="govuk-body" id="sop-payment-methods">
+                                        <legend
+                                            className="govuk-fieldset__legend govuk-fieldset__legend--s"
+                                            id="sop-payment-methods"
+                                        >
                                             How can tickets be paid for?
-                                        </p>
+                                        </legend>
                                         {paymentMethodsList.paymentMethods.map((paymentMethods, index) => {
                                             const paymentMethodId = kebabCase(paymentMethods);
                                             return (
@@ -145,7 +151,12 @@ const SalesOfferPackages = ({
                                         className="govuk-fieldset"
                                         aria-describedby="sales-offer-package-ticket-format"
                                     >
-                                        <p className="govuk-body">What format do the tickets come in?</p>
+                                        <legend
+                                            className="govuk-fieldset__legend govuk-fieldset__legend--s"
+                                            id="sop-payment-methods"
+                                        >
+                                            What format do the tickets come in?
+                                        </legend>
                                         {ticketFormatsList.ticketFormats.map((ticketFormats, index) => {
                                             const ticketFormatId = kebabCase(ticketFormats);
                                             return (

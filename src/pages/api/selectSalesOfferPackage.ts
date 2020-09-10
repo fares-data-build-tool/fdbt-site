@@ -12,18 +12,17 @@ import { isSessionValid } from './apiUtils/validator';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
 } from '../../constants';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType, isPeriodType } from '../../interfaces/typeGuards';
 
 export interface SelectSalesOfferPackageWithError {
-    errorMessage: string;
-    selected: { [key: string]: string };
+    errors: ErrorInfo[];
+    selected: { [key: string]: string[] };
 }
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -33,13 +32,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-        const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
 
         if (!fareTypeAttribute) {
             throw new Error('No fare type session attribute found.');
         }
-
-        const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
         if (
             isFareType(fareTypeAttribute) &&
@@ -51,20 +47,25 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('No fare type found to generate user data json.');
         }
 
-        if (!req.body || Object.keys(req.body).length === 0) {
-            const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
-                errorMessage: 'Choose at least one sales offer package from the options',
-                selected: req.body,
-            };
-            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
-            redirectTo(res, `/selectSalesOfferPackage`);
-            return;
-        }
+        const errors: ErrorInfo[] = [];
 
-        if (Object.keys(req.body).length < products.length) {
+        const sanitisedBody: { [key: string]: string[] } = {};
+
+        Object.entries(req.body).forEach(item => {
+            if (item[1]) {
+                sanitisedBody[item[0]] = (item[1] as string[]).filter(a => a !== '');
+            } else {
+                errors.push({
+                    errorMessage: 'Choose at least one sales offer package from the options',
+                    id: `${item[0]}-checkbox-0`,
+                });
+            }
+        });
+
+        if (errors.length > 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
-                errorMessage: 'Choose at least one sales offer package for each product',
-                selected: req.body,
+                errors,
+                selected: sanitisedBody,
             };
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackagesAttributeError);
             redirectTo(res, `/selectSalesOfferPackage`);

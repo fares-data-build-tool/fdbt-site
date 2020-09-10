@@ -61,7 +61,7 @@ exports[`Header should render correctly 1`] = `
         href="/account"
       >
         <img
-          alt="Person icon"
+          alt=""
           className="govuk-header__person-icon"
           src={Object {}}
         />

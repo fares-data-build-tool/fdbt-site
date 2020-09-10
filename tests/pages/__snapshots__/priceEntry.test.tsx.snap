@@ -39,7 +39,6 @@ exports[`Price Entry Page should render correctly 1`] = `
       </fieldset>
       <div
         className="fare-triangle-container"
-        id="fare-triangle-container"
       >
         <div
           className="fare-triangle-column"

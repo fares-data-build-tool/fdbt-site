@@ -41,7 +41,7 @@ const UserDataUploadComponent = ({
             <CsrfForm action={csvUploadApiRoute} method="post" encType="multipart/form-data" csrfToken={csrfToken}>
                 <>
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="csv-upload-hint csv-upload-error">
+                        <fieldset className="govuk-fieldset" aria-describedby="csv-upload-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading">Select a file to upload</h1>
                             </legend>
@@ -82,9 +82,7 @@ const UserDataUploadComponent = ({
             </CsrfForm>
         </div>
         <div className="govuk-grid-column-one-third">
-            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                <h1 className="govuk-fieldset__heading">Help documents</h1>
-            </legend>
+            <h3 className="govuk-heading-s">Help documents</h3>
             <FileAttachment
                 displayName={guidanceDocDisplayName}
                 attachmentUrl={`${guidanceDocAttachmentUrl}`}

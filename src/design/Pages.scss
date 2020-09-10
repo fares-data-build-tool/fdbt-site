@@ -207,16 +207,6 @@
     .header-text-alignment {
         padding-right: 20px;
     }
-
-    .visually-hidden-label {
-        position: absolute !important;
-        height: 1px;
-        width: 1px;
-        overflow: hidden;
-        clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-        clip: rect(1px, 1px, 1px, 1px);
-        white-space: nowrap; /* added line */
-    }
 }
 
 .stage-name-input-field {
@@ -229,4 +219,8 @@
 
 .input-form {
     margin-top: 40px;
+}
+
+.sop-option {
+    margin-bottom: 20px;
 }

@@ -1,5 +1,26 @@
 @import '../../node_modules/govuk-frontend/govuk/all';
 
+main {
+    border: none;
+    outline: none;
+}
+
+.skip {
+    position: absolute;
+    overflow: hidden;
+    top: -1px;
+    width: 1px;
+    height: 1px;
+
+    &:focus {
+        position: relative;
+        top: auto;
+        width: auto;
+        height: auto;
+        overflow: auto;
+    }
+}
+
 .crownPadding {
     padding-left: 5px;
 }
