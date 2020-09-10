@@ -1,31 +1,22 @@
+import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import {
-    getSingleTicketJson,
-    getReturnTicketJson,
-    getPeriodGeoZoneTicketJson,
-    getPeriodMultipleServicesTicketJson,
-    getFlatFareTicketJson,
-    putUserDataInS3,
-} from './apiUtils/userData';
+    SalesOfferPackage,
+    NextApiRequestWithSession,
+    ErrorInfo,
+    ProductWithSalesOfferPackages,
+} from '../../interfaces';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import {
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    PERIOD_TYPE_ATTRIBUTE,
-    GROUP_SIZE_ATTRIBUTE,
-    GROUP_PASSENGER_INFO_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
-} from '../../constants';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { isFareType, isPeriodType } from '../../interfaces/typeGuards';
 
 export interface SelectSalesOfferPackageWithError {
     errors: ErrorInfo[];
     selected: { [key: string]: string[] };
 }
 
-export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
+export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
             throw new Error('Session is invalid.');
@@ -35,16 +26,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (!fareTypeAttribute) {
             throw new Error('No fare type session attribute found.');
-        }
-
-        if (
-            isFareType(fareTypeAttribute) &&
-            fareTypeAttribute.fareType !== 'single' &&
-            fareTypeAttribute.fareType !== 'return' &&
-            fareTypeAttribute.fareType !== 'period' &&
-            fareTypeAttribute.fareType !== 'flatFare'
-        ) {
-            throw new Error('No fare type found to generate user data json.');
         }
 
         const errors: ErrorInfo[] = [];
@@ -72,54 +53,43 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const uuid = getUuidFromCookie(req, res);
+        const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
+        const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
-        let userDataJson;
+        console.log(products);
 
-        const fareType = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType;
+        if (products.length === 0) {
+            const salesOfferPackages: SalesOfferPackage[] = Object.entries(sanitisedBody)[0][1].map(sop => {
+                console.log(sop);
+                const salesOfferPackage: SalesOfferPackage = JSON.parse(sop);
+                return salesOfferPackage;
+            });
 
-        if (fareType === 'single') {
-            userDataJson = getSingleTicketJson(req, res);
-        } else if (fareType === 'return') {
-            userDataJson = getReturnTicketJson(req, res);
-        } else if (fareType === 'period') {
-            const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
-            const periodType = isPeriodType(periodTypeAttribute) ? periodTypeAttribute.name : '';
-
-            if (periodType !== 'periodGeoZone' && periodType !== 'periodMultipleServices') {
-                throw new Error('No period type found to generate user data json.');
-            }
-
-            if (periodType === 'periodGeoZone') {
-                userDataJson = await getPeriodGeoZoneTicketJson(req, res);
-            } else if (periodType === 'periodMultipleServices') {
-                userDataJson = getPeriodMultipleServicesTicketJson(req, res);
-            }
-        } else if (fareType === 'flatFare') {
-            userDataJson = getFlatFareTicketJson(req, res);
-        }
-
-        if (userDataJson) {
-            const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
-            const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
-            const group = !!sessionGroup && !!groupSize;
-
-            if (group) {
-                const userDataWithGroupJson = {
-                    ...userDataJson,
-                    groupDefinition: {
-                        maxPeople: groupSize?.maxGroupSize,
-                        companions: sessionGroup,
-                    },
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackages);
+        } else {
+            const keys: string[] = Object.keys(req.body);
+            const productsAndSalesOfferPackages: ProductWithSalesOfferPackages[] = keys.map(objectKey => {
+                const content: string | string[] = req.body[objectKey];
+                if (isArray(content)) {
+                    const salesOfferPackages: SalesOfferPackage[] = content.map(sop => {
+                        const salesOfferPackage: SalesOfferPackage = JSON.parse(sop);
+                        return salesOfferPackage;
+                    });
+                    const product: ProductWithSalesOfferPackages = {
+                        productName: objectKey,
+                        salesOfferPackages,
+                    };
+                    return product;
+                }
+                const product: ProductWithSalesOfferPackages = {
+                    productName: objectKey,
+                    salesOfferPackages: [JSON.parse(content)],
                 };
-
-                await putUserDataInS3(userDataWithGroupJson, uuid);
-            } else {
-                await putUserDataInS3(userDataJson, uuid);
-            }
-
-            redirectTo(res, '/thankyou');
+                return product;
+            });
+            updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, productsAndSalesOfferPackages);
         }
+        redirectTo(res, '/confirmation');
         return;
     } catch (error) {
         const message =

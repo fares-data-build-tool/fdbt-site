@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { isSalesOfferPackageWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -224,7 +225,11 @@ export const getServerSideProps = async (
 
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
 
-    if (salesOfferPackageAttribute && salesOfferPackageAttribute.errors) {
+    if (
+        salesOfferPackageAttribute &&
+        isSalesOfferPackageWithErrors(salesOfferPackageAttribute) &&
+        salesOfferPackageAttribute.errors
+    ) {
         return {
             props: {
                 selected: salesOfferPackageAttribute.selected || '',

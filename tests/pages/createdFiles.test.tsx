@@ -142,7 +142,7 @@ describe('pages', () => {
                                 reference: '1e0459b3-082e-4e70-89db-96e8ae173e10',
                                 serviceNames: '',
                                 signedUrl: 'https://test.example.com/gfnhgddd',
-                                sopNames: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                                sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
                             },
                             {
@@ -156,7 +156,7 @@ describe('pages', () => {
                                 reference: '1e0459b3-082e-4e70-89db-96e8ae173e10',
                                 serviceNames: '',
                                 signedUrl: 'https://test.example.com/gfnhgddd',
-                                sopNames: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                                sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
                             },
                         ],

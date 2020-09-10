@@ -298,7 +298,7 @@ describe('definePassengerType', () => {
             session: {
                 [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
                 [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
-                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'adult' },
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
             },
         });
 
@@ -347,11 +347,12 @@ describe('definePassengerType', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'single' },
+            cookieValues: {},
             body: mockCurrentPassengerTypeDetails,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
                 [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
                 [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
                 [GROUP_PASSENGER_INFO_ATTRIBUTE]: mockPreviousPassengerTypeDetails,
