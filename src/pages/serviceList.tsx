@@ -34,14 +34,14 @@ const ServiceList = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <h1 className="govuk-heading-l" id="service-list-page-heading">
-                        Which service(s) is the ticket valid for?
-                    </h1>
-
-                    <fieldset className="govuk-fieldset" aria-describedby="service-list-hint">
+                    <fieldset className="govuk-fieldset">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                            Select all services that apply
+                            <h1 className="govuk-heading-l" id="service-list-page-heading">
+                                Which service(s) is the ticket valid for?
+                            </h1>
                         </legend>
+
+                        <span className="govuk-heading-s">Select all services that apply</span>
 
                         <label htmlFor="select-all-button" className="govuk-visually-hidden">
                             {`Click to ${buttonText} services`}

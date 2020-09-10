@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { isSalesOfferPackageWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
-import FormElementWrapper from '../components/FormElementWrapper';
+import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
@@ -110,24 +110,25 @@ const createSalesOffer = (
     selected?: { [key: string]: string[] },
     errors: ErrorInfo[] = [],
 ): ReactElement[] =>
-    productNames.map((productName, index) => {
-        return (
-            <div className="sop-option">
-                <FormElementWrapper
-                    errors={errors}
-                    errorId={`product-${index}-checkbox-0`}
-                    errorClass="govuk-form-group--error"
-                    addFormGroupError
-                >
-                    <fieldset className="govuk-fieldset">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
-                        {generateCheckbox(salesOfferPackagesList, index, selected)}
-                        <input type="hidden" name={`product-${index}`} />
-                    </fieldset>
-                </FormElementWrapper>
-            </div>
-        );
-    });
+    productNames.map((productName, index) => (
+        <div className="sop-option">
+            <FormGroupWrapper errorId={`product-${index}-checkbox-0`} errors={errors}>
+                <fieldset className="govuk-fieldset">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
+                    <FormElementWrapper
+                        errors={errors}
+                        errorId={`product-${index}-checkbox-0`}
+                        errorClass="govuk-form-group--error"
+                    >
+                        <>
+                            {generateCheckbox(salesOfferPackagesList, index, selected)}
+                            <input type="hidden" name={`product-${index}`} />
+                        </>
+                    </FormElementWrapper>
+                </fieldset>
+            </FormGroupWrapper>
+        </div>
+    ));
 
 const SelectSalesOfferPackage = ({
     selected,
@@ -141,30 +142,26 @@ const SelectSalesOfferPackage = ({
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <div className="govuk-form-group">
-                        <h1 className="govuk-heading-l" id="select-sales-offer-package-page-heading">
-                            How are the tickets sold?
-                        </h1>
-                        <div>
-                            <p className="govuk-body">
-                                To create NeTEx for your fare it needs to contain the following:
-                            </p>
-                            <ol className="govuk-list govuk-list--number">
-                                <li>Where a ticket can be bought</li>
-                                <li>What payment method it can be bought with</li>
-                                <li>What format the ticket is provided to the passenger in</li>
-                            </ol>
-                            <p className="govuk-body">
-                                This combination of information is called a <strong>sales offer package</strong>. You
-                                can choose from one you have already setup or create a new one for these products.
-                            </p>
-                            <p className="govuk-body">
-                                Choose from your previously used sales offer packages or create a new one:
-                            </p>
-                        </div>
-                        <div className="govuk-checkboxes">
-                            <>{createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}</>
-                        </div>
+                    <h1 className="govuk-heading-l" id="select-sales-offer-package-page-heading">
+                        How are the tickets sold?
+                    </h1>
+                    <div>
+                        <p className="govuk-body">To create NeTEx for your fare it needs to contain the following:</p>
+                        <ol className="govuk-list govuk-list--number">
+                            <li>Where a ticket can be bought</li>
+                            <li>What payment method it can be bought with</li>
+                            <li>What format the ticket is provided to the passenger in</li>
+                        </ol>
+                        <p className="govuk-body">
+                            This combination of information is called a <strong>sales offer package</strong>. You can
+                            choose from one you have already setup or create a new one for these products.
+                        </p>
+                        <p className="govuk-body">
+                            Choose from your previously used sales offer packages or create a new one:
+                        </p>
+                    </div>
+                    <div className="govuk-checkboxes">
+                        <>{createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}</>
                     </div>
                     <input
                         type="submit"

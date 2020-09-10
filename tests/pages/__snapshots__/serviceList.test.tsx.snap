@@ -23,21 +23,24 @@ exports[`pages serviceList should render an error when the error flag is set to 
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <h1
-        className="govuk-heading-l"
-        id="service-list-page-heading"
-      >
-        Which service(s) is the ticket valid for?
-      </h1>
       <fieldset
-        aria-describedby="service-list-hint"
         className="govuk-fieldset"
       >
         <legend
           className="govuk-fieldset__legend govuk-fieldset__legend--s"
         >
-          Select all services that apply
+          <h1
+            className="govuk-heading-l"
+            id="service-list-page-heading"
+          >
+            Which service(s) is the ticket valid for?
+          </h1>
         </legend>
+        <span
+          className="govuk-heading-s"
+        >
+          Select all services that apply
+        </span>
         <label
           className="govuk-visually-hidden"
           htmlFor="select-all-button"
@@ -102,21 +105,24 @@ exports[`pages serviceList should render correctly 1`] = `
     <div
       className="govuk-form-group "
     >
-      <h1
-        className="govuk-heading-l"
-        id="service-list-page-heading"
-      >
-        Which service(s) is the ticket valid for?
-      </h1>
       <fieldset
-        aria-describedby="service-list-hint"
         className="govuk-fieldset"
       >
         <legend
           className="govuk-fieldset__legend govuk-fieldset__legend--s"
         >
-          Select all services that apply
+          <h1
+            className="govuk-heading-l"
+            id="service-list-page-heading"
+          >
+            Which service(s) is the ticket valid for?
+          </h1>
         </legend>
+        <span
+          className="govuk-heading-s"
+        >
+          Select all services that apply
+        </span>
         <label
           className="govuk-visually-hidden"
           htmlFor="select-all-button"

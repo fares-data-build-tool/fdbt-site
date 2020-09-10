@@ -39,6 +39,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
     return {
         props: {
             csvUploadApiRoute: '/api/csvUpload',
+            csvUploadTitle: 'Upload fares triangle as CSV',
             csvUploadHintText:
                 'Upload a fares triangle as a CSV file below. Refer to the documents section to download a help file and a fares triangle template.',
             guidanceDocDisplayName: `Download Help File - File Type PDF - File Size 1.3MB`,

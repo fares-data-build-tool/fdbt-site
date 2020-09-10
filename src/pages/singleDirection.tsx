@@ -37,30 +37,27 @@ const SingleDirection = ({
             <>
                 <ErrorSummary errors={error} />
                 <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="single-direction-page-heading">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="single-direction-page-heading">
-                                Select a journey direction
-                            </h1>
-                        </legend>
-                        <span className="govuk-hint" id="direction-operator-linename-passenger-type-hint">
-                            {operator} - {lineName} - {upperFirst(passengerType)}
-                        </span>
-                        <span className="govuk-hint" id="direction-journey-description-hint">
-                            {`Journey: ${service.serviceDescription}`}
-                        </span>
-                        <DirectionDropdown
-                            selectName="directionJourneyPattern"
-                            selectNameID="direction-journey-pattern"
-                            journeyPatterns={service.journeyPatterns}
-                            dropdownLabel="Journey direction"
-                            hideLabel
-                            errors={error}
-                        />
-                        <span className="govuk-hint hint-text" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset
-                        </span>
-                    </fieldset>
+                    <h1 className="govuk-heading-l" id="single-direction-page-heading">
+                        Select a journey direction
+                    </h1>
+
+                    <span className="govuk-hint" id="direction-operator-linename-passenger-type-hint">
+                        {operator} - {lineName} - {upperFirst(passengerType)}
+                    </span>
+                    <span className="govuk-hint" id="direction-journey-description-hint">
+                        {`Journey: ${service.serviceDescription}`}
+                    </span>
+                    <DirectionDropdown
+                        selectName="directionJourneyPattern"
+                        selectNameID="direction-journey-pattern"
+                        journeyPatterns={service.journeyPatterns}
+                        dropdownLabel="Journey direction"
+                        hideLabel
+                        errors={error}
+                    />
+                    <span className="govuk-hint hint-text" id="traveline-hint">
+                        This data is taken from the Traveline National Dataset
+                    </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>

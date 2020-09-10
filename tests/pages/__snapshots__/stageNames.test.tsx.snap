@@ -25,12 +25,12 @@ exports[`pages stageNames should render correctly when a user first visits the p
         >
           Enter the names of the fare stages in order from first to last
         </h1>
-        <p
-          className="govuk-hint"
-        >
-          Fare stage names are limited to 30 characters
-        </p>
       </legend>
+      <div
+        className="govuk-hint"
+      >
+        Fare stage names are limited to 30 characters
+      </div>
       <div>
         <div
           className="govuk-form-group"
@@ -49,7 +49,6 @@ exports[`pages stageNames should render correctly when a user first visits the p
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fare-stage-name-1"
               name="stageNameInput"
@@ -74,7 +73,6 @@ exports[`pages stageNames should render correctly when a user first visits the p
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fare-stage-name-2"
               name="stageNameInput"
@@ -99,7 +97,6 @@ exports[`pages stageNames should render correctly when a user first visits the p
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fare-stage-name-3"
               name="stageNameInput"
@@ -124,7 +121,6 @@ exports[`pages stageNames should render correctly when a user first visits the p
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fare-stage-name-4"
               name="stageNameInput"
@@ -149,7 +145,6 @@ exports[`pages stageNames should render correctly when a user first visits the p
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fare-stage-name-5"
               name="stageNameInput"
@@ -174,7 +169,6 @@ exports[`pages stageNames should render correctly when a user first visits the p
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               id="fare-stage-name-6"
               name="stageNameInput"
@@ -219,12 +213,12 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         >
           Enter the names of the fare stages in order from first to last
         </h1>
-        <p
-          className="govuk-hint"
-        >
-          Fare stage names are limited to 30 characters
-        </p>
       </legend>
+      <div
+        className="govuk-hint"
+      >
+        Fare stage names are limited to 30 characters
+      </div>
       <div>
         <div
           className="govuk-form-group"
@@ -243,7 +237,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-1"
@@ -269,7 +262,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-2"
@@ -295,7 +287,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby="fareStageName3-error"
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-3"
@@ -321,7 +312,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-4"
@@ -347,7 +337,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby=""
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-5"
@@ -393,12 +382,12 @@ exports[`pages stageNames should render correctly when a user is redirected to t
         >
           Enter the names of the fare stages in order from first to last
         </h1>
-        <p
-          className="govuk-hint"
-        >
-          Fare stage names are limited to 30 characters
-        </p>
       </legend>
+      <div
+        className="govuk-hint"
+      >
+        Fare stage names are limited to 30 characters
+      </div>
       <div>
         <div
           className="govuk-form-group govuk-form-group--error"
@@ -417,7 +406,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby="fareStageName1-error"
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-1"
@@ -443,7 +431,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby="fareStageName2-error"
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-2"
@@ -469,7 +456,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby="fareStageName3-error"
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-3"
@@ -495,7 +481,6 @@ exports[`pages stageNames should render correctly when a user is redirected to t
             errors={Array []}
           >
             <input
-              aria-describedby="fareStageName4-error"
               className="govuk-input govuk-input--width-30 stage-name-input-field"
               defaultValue=""
               id="fare-stage-name-4"

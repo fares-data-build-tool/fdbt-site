@@ -20,53 +20,49 @@ exports[`pages serviceList should render an error when an error message is passe
         ]
       }
     />
-    <div
-      className="govuk-form-group"
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
     >
-      <h1
-        className="govuk-heading-l"
-        id="select-sales-offer-package-page-heading"
+      How are the tickets sold?
+    </h1>
+    <div>
+      <p
+        className="govuk-body"
       >
-        How are the tickets sold?
-      </h1>
-      <div>
-        <p
-          className="govuk-body"
-        >
-          To create NeTEx for your fare it needs to contain the following:
-        </p>
-        <ol
-          className="govuk-list govuk-list--number"
-        >
-          <li>
-            Where a ticket can be bought
-          </li>
-          <li>
-            What payment method it can be bought with
-          </li>
-          <li>
-            What format the ticket is provided to the passenger in
-          </li>
-        </ol>
-        <p
-          className="govuk-body"
-        >
-          This combination of information is called a 
-          <strong>
-            sales offer package
-          </strong>
-          . You can choose from one you have already setup or create a new one for these products.
-        </p>
-        <p
-          className="govuk-body"
-        >
-          Choose from your previously used sales offer packages or create a new one:
-        </p>
-      </div>
-      <div
-        className="govuk-checkboxes"
-      />
+        To create NeTEx for your fare it needs to contain the following:
+      </p>
+      <ol
+        className="govuk-list govuk-list--number"
+      >
+        <li>
+          Where a ticket can be bought
+        </li>
+        <li>
+          What payment method it can be bought with
+        </li>
+        <li>
+          What format the ticket is provided to the passenger in
+        </li>
+      </ol>
+      <p
+        className="govuk-body"
+      >
+        This combination of information is called a 
+        <strong>
+          sales offer package
+        </strong>
+        . You can choose from one you have already setup or create a new one for these products.
+      </p>
+      <p
+        className="govuk-body"
+      >
+        Choose from your previously used sales offer packages or create a new one:
+      </p>
     </div>
+    <div
+      className="govuk-checkboxes"
+    />
     <input
       className="govuk-button govuk-!-margin-right-8"
       id="continue-button"
@@ -100,53 +96,49 @@ exports[`pages serviceList should render correctly 1`] = `
     <ErrorSummary
       errors={Array []}
     />
-    <div
-      className="govuk-form-group"
+    <h1
+      className="govuk-heading-l"
+      id="select-sales-offer-package-page-heading"
     >
-      <h1
-        className="govuk-heading-l"
-        id="select-sales-offer-package-page-heading"
+      How are the tickets sold?
+    </h1>
+    <div>
+      <p
+        className="govuk-body"
       >
-        How are the tickets sold?
-      </h1>
-      <div>
-        <p
-          className="govuk-body"
-        >
-          To create NeTEx for your fare it needs to contain the following:
-        </p>
-        <ol
-          className="govuk-list govuk-list--number"
-        >
-          <li>
-            Where a ticket can be bought
-          </li>
-          <li>
-            What payment method it can be bought with
-          </li>
-          <li>
-            What format the ticket is provided to the passenger in
-          </li>
-        </ol>
-        <p
-          className="govuk-body"
-        >
-          This combination of information is called a 
-          <strong>
-            sales offer package
-          </strong>
-          . You can choose from one you have already setup or create a new one for these products.
-        </p>
-        <p
-          className="govuk-body"
-        >
-          Choose from your previously used sales offer packages or create a new one:
-        </p>
-      </div>
-      <div
-        className="govuk-checkboxes"
-      />
+        To create NeTEx for your fare it needs to contain the following:
+      </p>
+      <ol
+        className="govuk-list govuk-list--number"
+      >
+        <li>
+          Where a ticket can be bought
+        </li>
+        <li>
+          What payment method it can be bought with
+        </li>
+        <li>
+          What format the ticket is provided to the passenger in
+        </li>
+      </ol>
+      <p
+        className="govuk-body"
+      >
+        This combination of information is called a 
+        <strong>
+          sales offer package
+        </strong>
+        . You can choose from one you have already setup or create a new one for these products.
+      </p>
+      <p
+        className="govuk-body"
+      >
+        Choose from your previously used sales offer packages or create a new one:
+      </p>
     </div>
+    <div
+      className="govuk-checkboxes"
+    />
     <input
       className="govuk-button govuk-!-margin-right-8"
       id="continue-button"

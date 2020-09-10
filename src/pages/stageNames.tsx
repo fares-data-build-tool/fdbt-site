@@ -39,7 +39,6 @@ export const renderInputField = (index: number, inputCheck: InputCheck, errors: 
                 name="stageNameInput"
                 type="text"
                 defaultValue={!inputCheck?.error ? inputCheck?.input : ''}
-                aria-describedby={inputCheck?.error ? `fareStageName${index + 1}-error` : ''}
             />
         </FormElementWrapper>
     </div>
@@ -75,8 +74,8 @@ const StageNames = ({
                         <h1 className="govuk-fieldset__heading">
                             Enter the names of the fare stages in order from first to last
                         </h1>
-                        <p className="govuk-hint">Fare stage names are limited to 30 characters</p>
                     </legend>
+                    <div className="govuk-hint">Fare stage names are limited to 30 characters</div>
                     <div>{renderInputFields(numberOfFareStages, inputChecks, errors)}</div>
                 </fieldset>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />

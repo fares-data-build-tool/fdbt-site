@@ -34,10 +34,10 @@ const TimeRestrictions = ({ errors, csrfToken }: TimeRestrictionsProps & CustomA
                                 Are there time restrictions on your ticket(s)?
                             </h1>
                         </legend>
-                        <p className="govuk-hint" id="time-restrictions-page-example">
+                        <div className="govuk-hint" id="time-restrictions-page-example">
                             We need to know if your ticket(s) will have any time restrictions, for example select yes if
                             your ticket(s) can only be used on a certain day or during a certain time period
-                        </p>
+                        </div>
                         <FormElementWrapper
                             errors={errors}
                             errorId={timeRestrictionsErrorId}
