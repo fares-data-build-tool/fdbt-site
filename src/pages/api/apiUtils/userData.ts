@@ -63,7 +63,6 @@ export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[]
     entry
         .filter(item => item)
         .forEach(sop => {
-            console.log(sop);
             let sopToProcess = sop;
 
             if (isArray(sop)) {

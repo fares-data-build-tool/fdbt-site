@@ -475,8 +475,7 @@ exports[`pages definePassengerType should render errors correctly when input err
                 "inputErrors": Array [
                   Object {
                     "errorMessage": "Select at least one proof document",
-                    "id": "proof-required",
-                    "userInput": "",
+                    "id": "membership-card",
                   },
                 ],
                 "inputType": "checkbox",
@@ -589,7 +588,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
             "radioError": Array [
               Object {
                 "errorMessage": "Choose one of the options below",
-                "id": "define-passenger-age-range",
+                "id": "age-range-required",
               },
             ],
             "radios": Array [
@@ -639,7 +638,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
             "radioError": Array [
               Object {
                 "errorMessage": "Choose one of the options below",
-                "id": "define-passenger-proof",
+                "id": "proof-required",
               },
             ],
             "radios": Array [

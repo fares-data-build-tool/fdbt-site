@@ -2036,7 +2036,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-age-range',
+                id: 'age-range-required',
             },
         ],
     },
@@ -2081,7 +2081,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-proof',
+                id: 'proof-required',
             },
         ],
     },
@@ -2185,8 +2185,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputErrors: [
                     {
                         errorMessage: 'Select at least one proof document',
-                        id: 'proof-required',
-                        userInput: '',
+                        id: 'membership-card',
                     },
                 ],
             },
@@ -2302,7 +2301,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-proof',
+                id: 'proof-required',
             },
         ],
     },

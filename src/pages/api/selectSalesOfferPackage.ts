@@ -56,11 +56,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const products = multipleProductAttribute ? multipleProductAttribute.products : [];
 
-        console.log(products);
-
         if (products.length === 0) {
             const salesOfferPackages: SalesOfferPackage[] = Object.entries(sanitisedBody)[0][1].map(sop => {
-                console.log(sop);
                 const salesOfferPackage: SalesOfferPackage = JSON.parse(sop);
                 return salesOfferPackage;
             });

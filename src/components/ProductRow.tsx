@@ -14,11 +14,11 @@ export const continueButton = (): ReactElement => {
 };
 
 export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (
-    <fieldset className="govuk-fieldset">
+    <fieldset key={index} className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-visually-hidden">
             {`Enter details for product ${index + 1}`}
         </legend>
-        <div className="flex-container" key={index}>
+        <div className="flex-container">
             <div className="govuk-grid-column-one-half">
                 <FormGroupWrapper errors={errors} errorId={`multiple-product-name-${index}`}>
                     <>

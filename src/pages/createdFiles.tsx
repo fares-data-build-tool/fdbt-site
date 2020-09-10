@@ -62,6 +62,7 @@ const enrichNetexFileData = async (
         return {
             matchingData: await getMatchingDataObject(file.Key.replace('.xml', '.json')),
             signedUrl,
+            fileSize: file.Size,
         };
     });
 
@@ -96,7 +97,7 @@ const enrichNetexFileData = async (
                           .join(', ')
                     : '',
                 signedUrl: item.signedUrl,
-                fileSize: item.matchingData.ContentLength || 0,
+                fileSize: item.fileSize || 0,
             };
         })
         .filter(isNotEmpty);
@@ -110,7 +111,7 @@ const getCleanFileSize = (fileSize: number): string => {
     const sizeInKb = fileSize / 1024;
 
     if (sizeInKb < 1024) {
-        return `${sizeInKb.toFixed(1)}KB`;
+        return `${sizeInKb.toFixed(0)}KB`;
     }
 
     const sizeInMb = sizeInKb / 1024;

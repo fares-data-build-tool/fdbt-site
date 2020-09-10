@@ -63,10 +63,7 @@ const Confirmation = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ConfirmationProps } => {
     const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    console.log(passengerTypeInfo);
-    console.log(fareTypeInfo);
     const timeRestrictionsInfo = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
-    console.log(timeRestrictionsInfo);
 
     if (
         !passengerTypeInfo ||

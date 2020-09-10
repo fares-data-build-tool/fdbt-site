@@ -23,7 +23,7 @@ describe('groupPassengerTypes', () => {
             Location: '/groupPassengerTypes',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_TYPES_ATTRIBUTE, {
-            errors: [{ errorMessage: 'Choose one or two passenger types from the options', id: 'passenger-types-0' }],
+            errors: [{ errorMessage: 'Choose one or two passenger types from the options', id: 'passenger-type-0' }],
         });
     });
 
@@ -44,7 +44,7 @@ describe('groupPassengerTypes', () => {
             errors: [
                 {
                     errorMessage: 'Choose one or two passenger types - you cannot exceed this limit',
-                    id: 'passenger-types-0',
+                    id: 'passenger-type-0',
                 },
             ],
         });

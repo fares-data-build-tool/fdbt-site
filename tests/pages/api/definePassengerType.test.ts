@@ -227,7 +227,7 @@ describe('definePassengerType', () => {
                     errorMessage: 'Enter a minimum or maximum age',
                 },
                 {
-                    id: 'proof-required',
+                    id: 'membership-card',
                     errorMessage: 'Select at least one proof document',
                 },
             ],

@@ -49,10 +49,12 @@ describe('pages', () => {
                     {
                         LastModified: new Date(new Date().setHours(currentDate.getHours() - 3)),
                         Key: 'testKey.xml',
+                        Size: 1234032,
                     },
                     {
                         LastModified: new Date(new Date().setHours(currentDate.getHours() - 1)),
                         Key: 'testKey2.xml',
+                        Size: 1234,
                     },
                 ]),
             );
@@ -144,6 +146,7 @@ describe('pages', () => {
                                 signedUrl: 'https://test.example.com/gfnhgddd',
                                 sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
+                                fileSize: 1234,
                             },
                             {
                                 date: '',
@@ -158,6 +161,7 @@ describe('pages', () => {
                                 signedUrl: 'https://test.example.com/gfnhgddd',
                                 sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
+                                fileSize: 1234032,
                             },
                         ],
                         numberOfResults: 2,
