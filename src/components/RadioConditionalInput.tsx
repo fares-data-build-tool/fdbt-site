@@ -13,7 +13,7 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
         id: string;
         content: string;
     };
-    inputType: string;
+    inputType: 'checkbox' | 'date' | 'text';
     inputs: BaseReactElement[];
     inputErrors: ErrorInfo[];
 }
@@ -68,7 +68,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
                             errorClass="govuk-input--error"
                         >
                             <input
-                                className="govuk-input govuk-!-width-one-third"
+                                className={`govuk-input govuk-!-width-one-third ${input.className}`}
                                 id={input.id}
                                 name={input.name}
                                 type="text"
@@ -124,6 +124,79 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
     );
 };
 
+const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactElement => {
+    const error = radio.inputErrors.length > 0;
+
+    return (
+        <div
+            className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
+            id={radio.dataAriaControls}
+        >
+            {radio.inputs.map(input => {
+                const dayId = `${input.id}-day`;
+                const monthId = `${input.id}-month`;
+                const yearId = `${input.id}-year`;
+
+                return (
+                    <div className="govuk-form-group">
+                        <fieldset className="govuk-fieldset" role="group" aria-describedby="product-date-information">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h1 className="govuk-fieldset__heading">{input.label}</h1>
+                            </legend>
+                            <div className="govuk-date-input" id={input.id}>
+                                <div className="govuk-date-input__item">
+                                    <div className="govuk-form-group">
+                                        <label className="govuk-label govuk-date-input__label" htmlFor={dayId}>
+                                            Day
+                                        </label>
+                                        <input
+                                            className="govuk-input govuk-date-input__input govuk-input--width-2"
+                                            id={dayId}
+                                            name={dayId}
+                                            type="text"
+                                            pattern="[0-9]*"
+                                            inputMode="numeric"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="govuk-date-input__item">
+                                    <div className="govuk-form-group">
+                                        <label className="govuk-label govuk-date-input__label" htmlFor={monthId}>
+                                            Month
+                                        </label>
+                                        <input
+                                            className="govuk-input govuk-date-input__input govuk-input--width-2"
+                                            id={monthId}
+                                            name={monthId}
+                                            type="text"
+                                            pattern="[0-9]*"
+                                            inputMode="numeric"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="govuk-date-input__item">
+                                    <div className="govuk-form-group">
+                                        <label className="govuk-label govuk-date-input__label" htmlFor={yearId}>
+                                            Year
+                                        </label>
+                                        <input
+                                            className="govuk-input govuk-date-input__input govuk-input--width-4"
+                                            id={yearId}
+                                            name={yearId}
+                                            type="text"
+                                            pattern="[0-9]*"
+                                            inputMode="numeric"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
 const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLabel: ReactElement): ReactElement => {
     const baseRadioInput = (
         <input
@@ -147,13 +220,19 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
         />
     );
 
+    const inputTypeMap = {
+        checkbox: renderConditionalCheckbox,
+        text: renderConditionalTextInput,
+        date: renderConditionalDateInputs,
+    };
+
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
             </div>
-            {radio.inputType === 'checkbox' ? renderConditionalCheckbox(radio) : renderConditionalTextInput(radio)}
+            {inputTypeMap[radio.inputType](radio)}
         </div>
     );
 };
