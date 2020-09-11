@@ -9,7 +9,7 @@ import { RETURN_VALIDITY_ATTRIBUTE } from '../constants';
 import { getErrorsByIds } from '../utils';
 
 const title = 'Return Validity - Fares Data Build Tool';
-const description = 'Return Val page of the Fares Data Build Tool';
+const description = 'Return Validity page of the Fares Data Build Tool';
 
 export interface ReturnValidity {
     validityAmount: string;
