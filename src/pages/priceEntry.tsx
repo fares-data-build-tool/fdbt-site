@@ -33,13 +33,10 @@ export const getDefaultValue = (fareInformation: FaresInformation, rowStage: str
 
 export const createClassName = (
     inputs: FaresInformation | undefined,
-    rowIndex: number,
     rowStage: string,
     columnStage: string,
 ): string => {
-    const className = `govuk-input govuk-input--width-4 fare-triangle-input ${
-        rowIndex % 2 === 0 ? 'fare-triangle-input-white' : 'fare-triangle-input-light-grey'
-    }`;
+    const className = 'govuk-input govuk-input--width-4';
 
     if (!inputs) {
         return className;
@@ -94,48 +91,61 @@ const PriceEntry = ({
                                 Enter the prices for all fare stages in pence
                             </h1>
                         </legend>
-                        <span className="govuk-hint" id="price-entry-hint">
-                            Example: £2.40 would be 240
-                        </span>
-                        {errors.length > 0 ? createErrorSpans(errors) : null}
                     </fieldset>
-                    <div className="fare-triangle-container">
-                        <div className="fare-triangle-column">
+                    <span className="govuk-hint" id="price-entry-hint">
+                        Example: £2.40 would be 240
+                    </span>
+                    {errors.length > 0 ? createErrorSpans(errors) : null}
+
+                    <div className="fare-triangle-container" role="table">
+                        <div className="fare-triangle" role="rowgroup">
                             {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div
-                                    className="govuk-heading-s fare-triangle-label-left"
-                                    key={stageNamesArray[rowIndex]}
-                                >
-                                    <span>{rowIndex > 0 ? rowStage : null}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="fare-triangle">
-                            {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div id={`row-${rowIndex}`} className="fare-triangle-row" key={rowStage}>
+                                <div id={`row-${rowIndex}`} className="fare-triangle-row" role="row" key={rowStage}>
+                                    <span
+                                        className="govuk-heading-s fare-triangle-label-left"
+                                        role="rowheader"
+                                        key={stageNamesArray[rowIndex]}
+                                    >
+                                        <span>{rowIndex > 0 ? rowStage : null}</span>
+                                    </span>
                                     {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
-                                        <React.Fragment key={columnStage}>
-                                            <input
-                                                className={createClassName(
-                                                    faresInformation,
-                                                    rowIndex,
-                                                    rowStage,
-                                                    columnStage,
-                                                )}
-                                                id={`cell-${rowIndex}-${columnIndex}`}
-                                                name={`${rowStage}-${columnStage}`}
-                                                type="text"
-                                                defaultValue={getDefaultValue(faresInformation, rowStage, columnStage)}
-                                            />
+                                        <>
+                                            <span
+                                                role="cell"
+                                                className={`fare-triangle-input ${
+                                                    rowIndex % 2 === 0
+                                                        ? 'fare-triangle-input-white'
+                                                        : 'fare-triangle-input-light-grey'
+                                                }`}
+                                                key={columnStage}
+                                            >
+                                                <input
+                                                    id={`cell-${rowIndex}-${columnIndex}`}
+                                                    className={createClassName(faresInformation, rowStage, columnStage)}
+                                                    name={`${rowStage}-${columnStage}`}
+                                                    type="text"
+                                                    defaultValue={getDefaultValue(
+                                                        faresInformation,
+                                                        rowStage,
+                                                        columnStage,
+                                                    )}
+                                                />
+                                            </span>
                                             <label
                                                 htmlFor={`cell-${rowIndex}-${columnIndex}`}
                                                 className="govuk-visually-hidden"
                                             >
-                                                Cell on row {rowIndex} and column {columnIndex + 1}
+                                                Input price from {columnStage} to {rowStage} in pence
                                             </label>
-                                        </React.Fragment>
+                                        </>
                                     ))}
-                                    <div className="govuk-heading-s fare-triangle-label-right">{rowStage}</div>
+                                    <div
+                                        role="columnheader"
+                                        aria-sort="none"
+                                        className="govuk-heading-s fare-triangle-label-right"
+                                    >
+                                        {rowStage}
+                                    </div>
                                 </div>
                             ))}
                         </div>

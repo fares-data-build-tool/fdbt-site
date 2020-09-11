@@ -30,140 +30,38 @@ exports[`Price Entry Page should render correctly 1`] = `
             Enter the prices for all fare stages in pence
           </h1>
         </legend>
-        <span
-          className="govuk-hint"
-          id="price-entry-hint"
-        >
-          Example: £2.40 would be 240
-        </span>
       </fieldset>
+      <span
+        className="govuk-hint"
+        id="price-entry-hint"
+      >
+        Example: £2.40 would be 240
+      </span>
       <div
         className="fare-triangle-container"
+        role="table"
       >
         <div
-          className="fare-triangle-column"
-        >
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Briggate"
-          >
-            <span />
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Chapeltown"
-          >
-            <span>
-              Chapeltown
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Chapel Allerton"
-          >
-            <span>
-              Chapel Allerton
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Moortown"
-          >
-            <span>
-              Moortown
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Harrogate Road"
-          >
-            <span>
-              Harrogate Road
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Harehills"
-          >
-            <span>
-              Harehills
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Gipton"
-          >
-            <span>
-              Gipton
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Armley"
-          >
-            <span>
-              Armley
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Stanningley"
-          >
-            <span>
-              Stanningley
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Pudsey"
-          >
-            <span>
-              Pudsey
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Seacroft"
-          >
-            <span>
-              Seacroft
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Rothwell"
-          >
-            <span>
-              Rothwell
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Dewsbury"
-          >
-            <span>
-              Dewsbury
-            </span>
-          </div>
-          <div
-            className="govuk-heading-s fare-triangle-label-left"
-            key="Wakefield"
-          >
-            <span>
-              Wakefield
-            </span>
-          </div>
-        </div>
-        <div
           className="fare-triangle"
+          role="rowgroup"
         >
           <div
             className="fare-triangle-row"
             id="row-0"
             key="Briggate"
+            role="row"
           >
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Briggate"
+              role="rowheader"
+            >
+              <span />
+            </span>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Briggate
             </div>
@@ -172,25 +70,44 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-1"
             key="Chapeltown"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-1-0"
-              name="Chapeltown-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Chapeltown"
+              role="rowheader"
+            >
+              <span>
+                Chapeltown
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-1-0"
+                name="Chapeltown-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-1-0"
             >
-              Cell on row 
-              1
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Chapeltown
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Chapeltown
             </div>
@@ -199,41 +116,67 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-2"
             key="Chapel Allerton"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-2-0"
-              name="Chapel Allerton-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Chapel Allerton"
+              role="rowheader"
+            >
+              <span>
+                Chapel Allerton
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-2-0"
+                name="Chapel Allerton-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-2-0"
             >
-              Cell on row 
-              2
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Chapel Allerton
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-2-1"
-              name="Chapel Allerton-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-2-1"
+                name="Chapel Allerton-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-2-1"
             >
-              Cell on row 
-              2
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Chapel Allerton
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Chapel Allerton
             </div>
@@ -242,57 +185,90 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-3"
             key="Moortown"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-3-0"
-              name="Moortown-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Moortown"
+              role="rowheader"
+            >
+              <span>
+                Moortown
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-3-0"
+                name="Moortown-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-3-0"
             >
-              Cell on row 
-              3
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Moortown
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-3-1"
-              name="Moortown-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-3-1"
+                name="Moortown-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-3-1"
             >
-              Cell on row 
-              3
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Moortown
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-3-2"
-              name="Moortown-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-3-2"
+                name="Moortown-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-3-2"
             >
-              Cell on row 
-              3
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Moortown
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Moortown
             </div>
@@ -301,73 +277,113 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-4"
             key="Harrogate Road"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-4-0"
-              name="Harrogate Road-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Harrogate Road"
+              role="rowheader"
+            >
+              <span>
+                Harrogate Road
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-4-0"
+                name="Harrogate Road-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-4-0"
             >
-              Cell on row 
-              4
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Harrogate Road
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-4-1"
-              name="Harrogate Road-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-4-1"
+                name="Harrogate Road-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-4-1"
             >
-              Cell on row 
-              4
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Harrogate Road
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-4-2"
-              name="Harrogate Road-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-4-2"
+                name="Harrogate Road-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-4-2"
             >
-              Cell on row 
-              4
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Harrogate Road
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-4-3"
-              name="Harrogate Road-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-4-3"
+                name="Harrogate Road-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-4-3"
             >
-              Cell on row 
-              4
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Harrogate Road
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Harrogate Road
             </div>
@@ -376,89 +392,136 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-5"
             key="Harehills"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-5-0"
-              name="Harehills-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Harehills"
+              role="rowheader"
+            >
+              <span>
+                Harehills
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-5-0"
+                name="Harehills-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-5-0"
             >
-              Cell on row 
-              5
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Harehills
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-5-1"
-              name="Harehills-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-5-1"
+                name="Harehills-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-5-1"
             >
-              Cell on row 
-              5
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Harehills
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-5-2"
-              name="Harehills-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-5-2"
+                name="Harehills-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-5-2"
             >
-              Cell on row 
-              5
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Harehills
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-5-3"
-              name="Harehills-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-5-3"
+                name="Harehills-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-5-3"
             >
-              Cell on row 
-              5
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Harehills
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-5-4"
-              name="Harehills-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-5-4"
+                name="Harehills-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-5-4"
             >
-              Cell on row 
-              5
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Harehills
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Harehills
             </div>
@@ -467,105 +530,159 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-6"
             key="Gipton"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-6-0"
-              name="Gipton-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Gipton"
+              role="rowheader"
+            >
+              <span>
+                Gipton
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-6-0"
+                name="Gipton-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-6-0"
             >
-              Cell on row 
-              6
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Gipton
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-6-1"
-              name="Gipton-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-6-1"
+                name="Gipton-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-6-1"
             >
-              Cell on row 
-              6
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Gipton
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-6-2"
-              name="Gipton-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-6-2"
+                name="Gipton-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-6-2"
             >
-              Cell on row 
-              6
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Gipton
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-6-3"
-              name="Gipton-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-6-3"
+                name="Gipton-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-6-3"
             >
-              Cell on row 
-              6
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Gipton
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-6-4"
-              name="Gipton-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-6-4"
+                name="Gipton-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-6-4"
             >
-              Cell on row 
-              6
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Gipton
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-6-5"
-              name="Gipton-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-6-5"
+                name="Gipton-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-6-5"
             >
-              Cell on row 
-              6
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Gipton
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Gipton
             </div>
@@ -574,121 +691,182 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-7"
             key="Armley"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-7-0"
-              name="Armley-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Armley"
+              role="rowheader"
+            >
+              <span>
+                Armley
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-7-0"
+                name="Armley-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-7-0"
             >
-              Cell on row 
-              7
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Armley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-7-1"
-              name="Armley-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-7-1"
+                name="Armley-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-7-1"
             >
-              Cell on row 
-              7
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Armley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-7-2"
-              name="Armley-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-7-2"
+                name="Armley-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-7-2"
             >
-              Cell on row 
-              7
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Armley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-7-3"
-              name="Armley-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-7-3"
+                name="Armley-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-7-3"
             >
-              Cell on row 
-              7
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Armley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-7-4"
-              name="Armley-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-7-4"
+                name="Armley-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-7-4"
             >
-              Cell on row 
-              7
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Armley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-7-5"
-              name="Armley-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-7-5"
+                name="Armley-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-7-5"
             >
-              Cell on row 
-              7
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Armley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-7-6"
-              name="Armley-Gipton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Gipton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-7-6"
+                name="Armley-Gipton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-7-6"
             >
-              Cell on row 
-              7
-               and column 
-              7
+              Input price from 
+              Gipton
+               to 
+              Armley
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Armley
             </div>
@@ -697,137 +875,205 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-8"
             key="Stanningley"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-0"
-              name="Stanningley-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Stanningley"
+              role="rowheader"
+            >
+              <span>
+                Stanningley
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-0"
+                name="Stanningley-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-0"
             >
-              Cell on row 
-              8
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Stanningley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-1"
-              name="Stanningley-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-1"
+                name="Stanningley-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-1"
             >
-              Cell on row 
-              8
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Stanningley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-2"
-              name="Stanningley-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-2"
+                name="Stanningley-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-2"
             >
-              Cell on row 
-              8
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Stanningley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-3"
-              name="Stanningley-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-3"
+                name="Stanningley-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-3"
             >
-              Cell on row 
-              8
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Stanningley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-4"
-              name="Stanningley-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-4"
+                name="Stanningley-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-4"
             >
-              Cell on row 
-              8
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Stanningley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-5"
-              name="Stanningley-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-5"
+                name="Stanningley-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-5"
             >
-              Cell on row 
-              8
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Stanningley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-6"
-              name="Stanningley-Gipton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Gipton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-6"
+                name="Stanningley-Gipton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-6"
             >
-              Cell on row 
-              8
-               and column 
-              7
+              Input price from 
+              Gipton
+               to 
+              Stanningley
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-8-7"
-              name="Stanningley-Armley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Armley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-8-7"
+                name="Stanningley-Armley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-8-7"
             >
-              Cell on row 
-              8
-               and column 
-              8
+              Input price from 
+              Armley
+               to 
+              Stanningley
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Stanningley
             </div>
@@ -836,153 +1082,228 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-9"
             key="Pudsey"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-0"
-              name="Pudsey-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Pudsey"
+              role="rowheader"
+            >
+              <span>
+                Pudsey
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-0"
+                name="Pudsey-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-0"
             >
-              Cell on row 
-              9
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-1"
-              name="Pudsey-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-1"
+                name="Pudsey-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-1"
             >
-              Cell on row 
-              9
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-2"
-              name="Pudsey-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-2"
+                name="Pudsey-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-2"
             >
-              Cell on row 
-              9
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-3"
-              name="Pudsey-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-3"
+                name="Pudsey-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-3"
             >
-              Cell on row 
-              9
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-4"
-              name="Pudsey-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-4"
+                name="Pudsey-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-4"
             >
-              Cell on row 
-              9
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-5"
-              name="Pudsey-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-5"
+                name="Pudsey-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-5"
             >
-              Cell on row 
-              9
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-6"
-              name="Pudsey-Gipton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Gipton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-6"
+                name="Pudsey-Gipton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-6"
             >
-              Cell on row 
-              9
-               and column 
-              7
+              Input price from 
+              Gipton
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-7"
-              name="Pudsey-Armley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Armley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-7"
+                name="Pudsey-Armley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-7"
             >
-              Cell on row 
-              9
-               and column 
-              8
+              Input price from 
+              Armley
+               to 
+              Pudsey
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-9-8"
-              name="Pudsey-Stanningley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Stanningley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-9-8"
+                name="Pudsey-Stanningley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-9-8"
             >
-              Cell on row 
-              9
-               and column 
-              9
+              Input price from 
+              Stanningley
+               to 
+              Pudsey
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Pudsey
             </div>
@@ -991,169 +1312,251 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-10"
             key="Seacroft"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-0"
-              name="Seacroft-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Seacroft"
+              role="rowheader"
+            >
+              <span>
+                Seacroft
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-0"
+                name="Seacroft-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-0"
             >
-              Cell on row 
-              10
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-1"
-              name="Seacroft-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-1"
+                name="Seacroft-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-1"
             >
-              Cell on row 
-              10
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-2"
-              name="Seacroft-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-2"
+                name="Seacroft-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-2"
             >
-              Cell on row 
-              10
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-3"
-              name="Seacroft-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-3"
+                name="Seacroft-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-3"
             >
-              Cell on row 
-              10
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-4"
-              name="Seacroft-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-4"
+                name="Seacroft-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-4"
             >
-              Cell on row 
-              10
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-5"
-              name="Seacroft-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-5"
+                name="Seacroft-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-5"
             >
-              Cell on row 
-              10
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-6"
-              name="Seacroft-Gipton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Gipton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-6"
+                name="Seacroft-Gipton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-6"
             >
-              Cell on row 
-              10
-               and column 
-              7
+              Input price from 
+              Gipton
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-7"
-              name="Seacroft-Armley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Armley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-7"
+                name="Seacroft-Armley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-7"
             >
-              Cell on row 
-              10
-               and column 
-              8
+              Input price from 
+              Armley
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-8"
-              name="Seacroft-Stanningley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Stanningley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-8"
+                name="Seacroft-Stanningley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-8"
             >
-              Cell on row 
-              10
-               and column 
-              9
+              Input price from 
+              Stanningley
+               to 
+              Seacroft
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-10-9"
-              name="Seacroft-Pudsey"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Pudsey"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-10-9"
+                name="Seacroft-Pudsey"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-10-9"
             >
-              Cell on row 
-              10
-               and column 
-              10
+              Input price from 
+              Pudsey
+               to 
+              Seacroft
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Seacroft
             </div>
@@ -1162,185 +1565,274 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-11"
             key="Rothwell"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-0"
-              name="Rothwell-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Rothwell"
+              role="rowheader"
+            >
+              <span>
+                Rothwell
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-0"
+                name="Rothwell-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-0"
             >
-              Cell on row 
-              11
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-1"
-              name="Rothwell-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-1"
+                name="Rothwell-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-1"
             >
-              Cell on row 
-              11
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-2"
-              name="Rothwell-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-2"
+                name="Rothwell-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-2"
             >
-              Cell on row 
-              11
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-3"
-              name="Rothwell-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-3"
+                name="Rothwell-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-3"
             >
-              Cell on row 
-              11
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-4"
-              name="Rothwell-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-4"
+                name="Rothwell-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-4"
             >
-              Cell on row 
-              11
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-5"
-              name="Rothwell-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-5"
+                name="Rothwell-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-5"
             >
-              Cell on row 
-              11
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-6"
-              name="Rothwell-Gipton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Gipton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-6"
+                name="Rothwell-Gipton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-6"
             >
-              Cell on row 
-              11
-               and column 
-              7
+              Input price from 
+              Gipton
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-7"
-              name="Rothwell-Armley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Armley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-7"
+                name="Rothwell-Armley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-7"
             >
-              Cell on row 
-              11
-               and column 
-              8
+              Input price from 
+              Armley
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-8"
-              name="Rothwell-Stanningley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Stanningley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-8"
+                name="Rothwell-Stanningley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-8"
             >
-              Cell on row 
-              11
-               and column 
-              9
+              Input price from 
+              Stanningley
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-9"
-              name="Rothwell-Pudsey"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Pudsey"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-9"
+                name="Rothwell-Pudsey"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-9"
             >
-              Cell on row 
-              11
-               and column 
-              10
+              Input price from 
+              Pudsey
+               to 
+              Rothwell
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-11-10"
-              name="Rothwell-Seacroft"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Seacroft"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-11-10"
+                name="Rothwell-Seacroft"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-11-10"
             >
-              Cell on row 
-              11
-               and column 
-              11
+              Input price from 
+              Seacroft
+               to 
+              Rothwell
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Rothwell
             </div>
@@ -1349,201 +1841,297 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-12"
             key="Dewsbury"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-0"
-              name="Dewsbury-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Dewsbury"
+              role="rowheader"
+            >
+              <span>
+                Dewsbury
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-0"
+                name="Dewsbury-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-0"
             >
-              Cell on row 
-              12
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-1"
-              name="Dewsbury-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-1"
+                name="Dewsbury-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-1"
             >
-              Cell on row 
-              12
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-2"
-              name="Dewsbury-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-2"
+                name="Dewsbury-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-2"
             >
-              Cell on row 
-              12
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-3"
-              name="Dewsbury-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-3"
+                name="Dewsbury-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-3"
             >
-              Cell on row 
-              12
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-4"
-              name="Dewsbury-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-4"
+                name="Dewsbury-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-4"
             >
-              Cell on row 
-              12
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-5"
-              name="Dewsbury-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-5"
+                name="Dewsbury-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-5"
             >
-              Cell on row 
-              12
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-6"
-              name="Dewsbury-Gipton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Gipton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-6"
+                name="Dewsbury-Gipton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-6"
             >
-              Cell on row 
-              12
-               and column 
-              7
+              Input price from 
+              Gipton
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-7"
-              name="Dewsbury-Armley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Armley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-7"
+                name="Dewsbury-Armley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-7"
             >
-              Cell on row 
-              12
-               and column 
-              8
+              Input price from 
+              Armley
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-8"
-              name="Dewsbury-Stanningley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Stanningley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-8"
+                name="Dewsbury-Stanningley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-8"
             >
-              Cell on row 
-              12
-               and column 
-              9
+              Input price from 
+              Stanningley
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-9"
-              name="Dewsbury-Pudsey"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Pudsey"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-9"
+                name="Dewsbury-Pudsey"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-9"
             >
-              Cell on row 
-              12
-               and column 
-              10
+              Input price from 
+              Pudsey
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-10"
-              name="Dewsbury-Seacroft"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Seacroft"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-10"
+                name="Dewsbury-Seacroft"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-10"
             >
-              Cell on row 
-              12
-               and column 
-              11
+              Input price from 
+              Seacroft
+               to 
+              Dewsbury
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-white"
-              defaultValue=""
-              id="cell-12-11"
-              name="Dewsbury-Rothwell"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-white"
+              key="Rothwell"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-12-11"
+                name="Dewsbury-Rothwell"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-12-11"
             >
-              Cell on row 
-              12
-               and column 
-              12
+              Input price from 
+              Rothwell
+               to 
+              Dewsbury
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Dewsbury
             </div>
@@ -1552,217 +2140,320 @@ exports[`Price Entry Page should render correctly 1`] = `
             className="fare-triangle-row"
             id="row-13"
             key="Wakefield"
+            role="row"
           >
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-0"
-              name="Wakefield-Briggate"
-              type="text"
-            />
+            <span
+              className="govuk-heading-s fare-triangle-label-left"
+              key="Wakefield"
+              role="rowheader"
+            >
+              <span>
+                Wakefield
+              </span>
+            </span>
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Briggate"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-0"
+                name="Wakefield-Briggate"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-0"
             >
-              Cell on row 
-              13
-               and column 
-              1
+              Input price from 
+              Briggate
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-1"
-              name="Wakefield-Chapeltown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapeltown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-1"
+                name="Wakefield-Chapeltown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-1"
             >
-              Cell on row 
-              13
-               and column 
-              2
+              Input price from 
+              Chapeltown
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-2"
-              name="Wakefield-Chapel Allerton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Chapel Allerton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-2"
+                name="Wakefield-Chapel Allerton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-2"
             >
-              Cell on row 
-              13
-               and column 
-              3
+              Input price from 
+              Chapel Allerton
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-3"
-              name="Wakefield-Moortown"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Moortown"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-3"
+                name="Wakefield-Moortown"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-3"
             >
-              Cell on row 
-              13
-               and column 
-              4
+              Input price from 
+              Moortown
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-4"
-              name="Wakefield-Harrogate Road"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harrogate Road"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-4"
+                name="Wakefield-Harrogate Road"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-4"
             >
-              Cell on row 
-              13
-               and column 
-              5
+              Input price from 
+              Harrogate Road
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-5"
-              name="Wakefield-Harehills"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Harehills"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-5"
+                name="Wakefield-Harehills"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-5"
             >
-              Cell on row 
-              13
-               and column 
-              6
+              Input price from 
+              Harehills
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-6"
-              name="Wakefield-Gipton"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Gipton"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-6"
+                name="Wakefield-Gipton"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-6"
             >
-              Cell on row 
-              13
-               and column 
-              7
+              Input price from 
+              Gipton
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-7"
-              name="Wakefield-Armley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Armley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-7"
+                name="Wakefield-Armley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-7"
             >
-              Cell on row 
-              13
-               and column 
-              8
+              Input price from 
+              Armley
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-8"
-              name="Wakefield-Stanningley"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Stanningley"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-8"
+                name="Wakefield-Stanningley"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-8"
             >
-              Cell on row 
-              13
-               and column 
-              9
+              Input price from 
+              Stanningley
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-9"
-              name="Wakefield-Pudsey"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Pudsey"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-9"
+                name="Wakefield-Pudsey"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-9"
             >
-              Cell on row 
-              13
-               and column 
-              10
+              Input price from 
+              Pudsey
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-10"
-              name="Wakefield-Seacroft"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Seacroft"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-10"
+                name="Wakefield-Seacroft"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-10"
             >
-              Cell on row 
-              13
-               and column 
-              11
+              Input price from 
+              Seacroft
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-11"
-              name="Wakefield-Rothwell"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Rothwell"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-11"
+                name="Wakefield-Rothwell"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-11"
             >
-              Cell on row 
-              13
-               and column 
-              12
+              Input price from 
+              Rothwell
+               to 
+              Wakefield
+               in pence
             </label>
-            <input
-              className="govuk-input govuk-input--width-4 fare-triangle-input fare-triangle-input-light-grey"
-              defaultValue=""
-              id="cell-13-12"
-              name="Wakefield-Dewsbury"
-              type="text"
-            />
+            <span
+              className="fare-triangle-input fare-triangle-input-light-grey"
+              key="Dewsbury"
+              role="cell"
+            >
+              <input
+                className="govuk-input govuk-input--width-4"
+                defaultValue=""
+                id="cell-13-12"
+                name="Wakefield-Dewsbury"
+                type="text"
+              />
+            </span>
             <label
               className="govuk-visually-hidden"
               htmlFor="cell-13-12"
             >
-              Cell on row 
-              13
-               and column 
-              13
+              Input price from 
+              Dewsbury
+               to 
+              Wakefield
+               in pence
             </label>
             <div
+              aria-sort="none"
               className="govuk-heading-s fare-triangle-label-right"
+              role="columnheader"
             >
               Wakefield
             </div>
