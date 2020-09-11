@@ -120,10 +120,10 @@ const createSalesOffer = (
                         errorId={`product-${index}-checkbox-0`}
                         errorClass="govuk-form-group--error"
                     >
-                        <>
+                        <div className="govuk-checkboxes">
                             {generateCheckbox(salesOfferPackagesList, index, selected)}
                             <input type="hidden" name={`product-${index}`} />
-                        </>
+                        </div>
                     </FormElementWrapper>
                 </fieldset>
             </FormGroupWrapper>
@@ -156,13 +156,8 @@ const SelectSalesOfferPackage = ({
                             This combination of information is called a <strong>sales offer package</strong>. You can
                             choose from one you have already setup or create a new one for these products.
                         </p>
-                        <p className="govuk-body">
-                            Choose from your previously used sales offer packages or create a new one:
-                        </p>
                     </div>
-                    <div className="govuk-checkboxes">
-                        <>{createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}</>
-                    </div>
+                    {createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}
                     <input
                         type="submit"
                         value="Continue"
