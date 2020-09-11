@@ -3,7 +3,7 @@ FROM node:12-alpine AS build
 WORKDIR /tmp
 
 COPY package*.json ./
-RUN apk add --no-cache git && npm install --ignore-scripts
+RUN apk add --no-cache git clamav && npm install --ignore-scripts
 
 COPY . .
 RUN npm run build

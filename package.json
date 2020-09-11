@@ -42,6 +42,7 @@
         "cookies": "^0.8.0",
         "csurf": "^1.11.0",
         "csv-parse": "^4.9.1",
+        "clamscan": "^1.3.3",
         "dateformat": "^3.0.3",
         "express": "^4.17.1",
         "express-session": "^1.17.1",
