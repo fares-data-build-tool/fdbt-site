@@ -102,7 +102,7 @@ const PriceEntry = ({
                                     <span className="govuk-heading-s fare-triangle-label-left" role="rowheader">
                                         <span>{rowIndex > 0 ? rowStage : null}</span>
                                     </span>
-                                    {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
+                                    {stageNamesArray.slice(0, rowIndex).map(columnStage => (
                                         <React.Fragment key={columnStage}>
                                             <span
                                                 role="cell"
@@ -126,7 +126,7 @@ const PriceEntry = ({
                                                 />
                                             </span>
                                             <label
-                                                htmlFor={`cell-${rowIndex}-${columnIndex}`}
+                                                htmlFor={`${rowStage}-${columnStage}`}
                                                 className="govuk-visually-hidden"
                                             >
                                                 Input price from {columnStage} to {rowStage} in pence
