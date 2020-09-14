@@ -37,17 +37,17 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 inputType: 'date',
                 inputs: [
                     {
-                        id: 'product-dates-information-start-date',
+                        id: 'start-date',
                         name: 'startDate',
                         label: 'Start Date',
                     },
                     {
-                        id: 'product-dates-information-end-date',
+                        id: 'end-date',
                         name: 'endDate',
                         label: 'End Date',
                     },
                 ],
-                inputErrors: getErrorsByIds(['start-date', 'end-date'], errors),
+                inputErrors: getErrorsByIds(['start-date-day', 'start-date-month'], errors),
             },
             {
                 id: 'product-dates-information-not-required',
@@ -66,20 +66,24 @@ const ProductDateInformation = ({
     csrfToken,
     errors = [],
     fieldsets,
-}: FareDateInformationProps & CustomAppProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description}>
-        <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
-            <>
-                <ErrorSummary errors={errors} />
-                {fieldsets.map(fieldset => {
-                    return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
-                })}
+}: FareDateInformationProps & CustomAppProps): ReactElement => {
 
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-            </>
-        </CsrfForm>
-    </TwoThirdsLayout>
-);
+    console.log('errors======', errors);
+    return (
+        <TwoThirdsLayout title={title} description={description}>
+            <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
+                <>
+                    <ErrorSummary errors={errors} />
+                    {fieldsets.map(fieldset => {
+                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
+                    })}
+
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                </>
+            </CsrfForm>
+        </TwoThirdsLayout>
+    );
+};
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const productDateAttribute = getSessionAttribute(ctx.req, PRODUCT_DATE_INFORMATION);

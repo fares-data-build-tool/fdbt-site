@@ -68,7 +68,7 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
                             errorClass="govuk-input--error"
                         >
                             <input
-                                className={`govuk-input govuk-!-width-one-third ${input.className}`}
+                                className="govuk-input govuk-!-width-one-third"
                                 id={input.id}
                                 name={input.name}
                                 type="text"
@@ -133,12 +133,15 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
             id={radio.dataAriaControls}
         >
             {radio.inputs.map(input => {
+                const errorId = createErrorId(input, radio.inputErrors);
+
+                console.log('errorId', errorId);
                 const dayId = `${input.id}-day`;
                 const monthId = `${input.id}-month`;
                 const yearId = `${input.id}-year`;
 
                 return (
-                    <div className="govuk-form-group">
+                    <div className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" role="group" aria-describedby="product-date-information">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                 <h1 className="govuk-fieldset__heading">{input.label}</h1>
@@ -149,14 +152,20 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                         <label className="govuk-label govuk-date-input__label" htmlFor={dayId}>
                                             Day
                                         </label>
-                                        <input
-                                            className="govuk-input govuk-date-input__input govuk-input--width-2"
-                                            id={dayId}
-                                            name={dayId}
-                                            type="text"
-                                            pattern="[0-9]*"
-                                            inputMode="numeric"
-                                        />
+                                        <FormElementWrapper
+                                            errors={radio.inputErrors}
+                                            errorId={errorId}
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                id={dayId}
+                                                name={dayId}
+                                                type="text"
+                                                pattern="[0-9]*"
+                                                inputMode="numeric"
+                                            />
+                                        </FormElementWrapper>
                                     </div>
                                 </div>
                                 <div className="govuk-date-input__item">
@@ -164,14 +173,20 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                         <label className="govuk-label govuk-date-input__label" htmlFor={monthId}>
                                             Month
                                         </label>
-                                        <input
-                                            className="govuk-input govuk-date-input__input govuk-input--width-2"
-                                            id={monthId}
-                                            name={monthId}
-                                            type="text"
-                                            pattern="[0-9]*"
-                                            inputMode="numeric"
-                                        />
+                                        <FormElementWrapper
+                                            errors={radio.inputErrors}
+                                            errorId={errorId}
+                                            errorClass="govuk-input--error"
+                                        >
+                                            <input
+                                                className="govuk-input govuk-date-input__input govuk-input--width-2"
+                                                id={monthId}
+                                                name={monthId}
+                                                type="text"
+                                                pattern="[0-9]*"
+                                                inputMode="numeric"
+                                            />
+                                        </FormElementWrapper>
                                     </div>
                                 </div>
                                 <div className="govuk-date-input__item">
