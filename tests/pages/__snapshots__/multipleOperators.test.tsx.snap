@@ -29,7 +29,7 @@ exports[`pages multipleOperators should render correctly with multiple operator 
       </label>
       <FormElementWrapper
         errorClass="govuk-select--error"
-        errorId="operator-error"
+        errorId="operators"
         errors={Array []}
       >
         <select
@@ -119,7 +119,7 @@ exports[`pages multipleOperators should render correctly with one operator NOC p
       </label>
       <FormElementWrapper
         errorClass="govuk-select--error"
-        errorId="operator-error"
+        errorId="operators"
         errors={Array []}
       >
         <select

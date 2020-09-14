@@ -37,7 +37,7 @@ exports[`pages service should render correctly 1`] = `
       </span>
       <FormElementWrapper
         errorClass="govuk-select--error"
-        errorId="service-error"
+        errorId="service"
         errors={Array []}
       >
         <select

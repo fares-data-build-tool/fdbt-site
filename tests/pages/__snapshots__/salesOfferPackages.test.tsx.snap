@@ -259,7 +259,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
           >
             <legend
               className="govuk-fieldset__legend govuk-fieldset__legend--s"
-              id="sop-payment-methods"
+              id="sop-ticket-formats"
             >
               What format do the tickets come in?
             </legend>
@@ -569,7 +569,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
           >
             <legend
               className="govuk-fieldset__legend govuk-fieldset__legend--s"
-              id="sop-payment-methods"
+              id="sop-ticket-formats"
             >
               What format do the tickets come in?
             </legend>
