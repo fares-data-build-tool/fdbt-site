@@ -46,6 +46,10 @@ describe('csvUpload', () => {
             fileContents: csvData.testCsvDuplicateFareStages,
         });
 
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
         await csvUpload.default(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
@@ -55,7 +59,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload when no file is attached', async () => {
-        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file is empty' }];
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'Select a CSV file to upload' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -78,17 +82,17 @@ describe('csvUpload', () => {
             fileContents: '',
         });
 
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
         await csvUpload.default(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/csvUpload',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
-        expect(loggerSpy).toBeCalledWith('', {
-            context: 'api.utils.validateFile',
-            fileName: 'string',
-            message: 'empty CSV Selected',
-        });
+        expect(loggerSpy).toBeCalledWith('', { context: 'api.utils.processFileUpload', message: 'no file attached' });
     });
 
     it('should return 302 redirect to /csvUpload with an error message when a the attached file is too large', async () => {
@@ -116,6 +120,10 @@ describe('csvUpload', () => {
             files: file,
             fileContents: csvData.testCsv,
         });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -154,6 +162,10 @@ describe('csvUpload', () => {
             files: file,
             fileContents: csvData.testCsv,
         });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
 
         await csvUpload.default(req, res);
 
@@ -195,6 +207,10 @@ describe('csvUpload', () => {
                 files: file,
                 fileContents: csv,
             });
+
+            jest.spyOn(fileUpload, 'containsViruses')
+                .mockImplementation()
+                .mockResolvedValue(false);
 
             await csvUpload.default(req, res);
 
@@ -242,6 +258,10 @@ describe('csvUpload', () => {
             fileContents: csvData.testCsv,
         });
 
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
         await csvUpload.default(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
@@ -276,6 +296,10 @@ describe('csvUpload', () => {
             fileContents: csvData.nonNumericPricesTestCsv,
         });
 
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
         await csvUpload.default(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
@@ -309,6 +333,46 @@ describe('csvUpload', () => {
             files: file,
             fileContents: csvData.missingPricesTestCsv,
         });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
+        await csvUpload.default(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/csvUpload',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
+    });
+
+    it('should return 302 redirect to /csvUpload with an error message if the file contains a virus', async () => {
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file contains a virus' }];
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+        });
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        getFormDataSpy.mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: 'i am a virus',
+        });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(true);
 
         await csvUpload.default(req, res);
 

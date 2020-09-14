@@ -117,11 +117,19 @@ export const containsViruses = async (pathToFileToScan: string): Promise<boolean
 export const processFileUpload = async (req: NextApiRequest, inputName: string): Promise<FileUploadResponse> => {
     const formData = await getFormData(req);
 
+    if (!formData.fileContents || formData.fileContents === '') {
+        logger.warn('', { context: 'api.utils.processFileUpload', message: 'no file attached' });
+        return {
+            fileContents: '',
+            fileError: 'Select a CSV file to upload',
+        };
+    }
+
     const fileData = formData.files[inputName];
     if (await containsViruses(fileData.path)) {
         return {
             fileContents: '',
-            fileError: 'The selected file contains a virus.',
+            fileError: 'The selected file contains a virus',
         };
     }
     const { fileContents } = formData;
