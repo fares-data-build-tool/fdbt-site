@@ -127,16 +127,17 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
 const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactElement => {
     const error = radio.inputErrors.length > 0;
 
+    console.log('crap error', radio.inputErrors);
     return (
         <div
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
             {radio.inputs.map(input => {
-                const errorId = createErrorId(input, radio.inputErrors);
+                const inputGroupError = radio.inputErrors.find(({ id }) => id.includes(input.id));
 
                 return (
-                    <div className={`govuk-form-group${errorId !== '' ? ' govuk-form-group--error' : ''}`}>
+                    <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" role="group" aria-describedby="product-date-information">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                                 <h1 className="govuk-fieldset__heading">{input.label}</h1>
@@ -149,7 +150,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                         </label>
                                         <FormElementWrapper
                                             errors={radio.inputErrors}
-                                            errorId={errorId}
+                                            errorId={inputGroupError ? `${input.id}-day` : ''}
                                             errorClass="govuk-input--error"
                                         >
                                             <input
@@ -170,7 +171,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                         </label>
                                         <FormElementWrapper
                                             errors={radio.inputErrors}
-                                            errorId={errorId}
+                                            errorId={inputGroupError ? `${input.id}-month` : ''}
                                             errorClass="govuk-input--error"
                                         >
                                             <input
@@ -191,7 +192,7 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                         </label>
                                         <FormElementWrapper
                                             errors={radio.inputErrors}
-                                            errorId={errorId}
+                                            errorId={inputGroupError ? `${input.id}-year` : ''}
                                             errorClass="govuk-input--error"
                                         >
                                             <input

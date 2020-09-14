@@ -47,7 +47,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         label: 'End Date',
                     },
                 ],
-                inputErrors: getErrorsByIds(['start-date-day', 'start-date-month'], errors),
+                inputErrors: getErrorsByIds(['start-date', 'end-date'], errors),
             },
             {
                 id: 'product-dates-information-not-required',
