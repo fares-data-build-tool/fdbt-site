@@ -56,20 +56,20 @@ exports[`pages selectSalesOfferPackage should render an error when an error mess
       </p>
     </div>
     <input
-      className="govuk-button govuk-!-margin-right-8"
+      className="govuk-button"
       id="continue-button"
       type="submit"
       value="Continue"
     />
     <a
-      className="govuk-button govuk-button--secondary"
+      className="govuk-button govuk-button--secondary create-new-sop-button"
       data-module="govuk-button"
       draggable="false"
       href="/salesOfferPackages"
       id="create-new-button"
       role="button"
     >
-      Create New
+      Create New Sales Offer Package
     </a>
   </CsrfForm>
 </Component>
@@ -124,20 +124,20 @@ exports[`pages selectSalesOfferPackage should render correctly 1`] = `
       </p>
     </div>
     <input
-      className="govuk-button govuk-!-margin-right-8"
+      className="govuk-button"
       id="continue-button"
       type="submit"
       value="Continue"
     />
     <a
-      className="govuk-button govuk-button--secondary"
+      className="govuk-button govuk-button--secondary create-new-sop-button"
       data-module="govuk-button"
       draggable="false"
       href="/salesOfferPackages"
       id="create-new-button"
       role="button"
     >
-      Create New
+      Create New Sales Offer Package
     </a>
   </CsrfForm>
 </Component>

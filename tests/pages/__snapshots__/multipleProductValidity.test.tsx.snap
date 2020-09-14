@@ -141,13 +141,10 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                       >
                         When does the product expire? - 
                         Weekly Ticket
-                         - 24 hour
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        24 hour
-                      </span>
+                      24 hour
                     </label>
                   </span>
                   <span
@@ -170,13 +167,10 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                       >
                         When does the product expire? - 
                         Weekly Ticket
-                         - Calendar
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        Calendar
-                      </span>
+                      Calendar
                     </label>
                   </span>
                 </span>
@@ -228,13 +222,10 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                       >
                         When does the product expire? - 
                         Day Ticket
-                         - 24 hour
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        24 hour
-                      </span>
+                      24 hour
                     </label>
                   </span>
                   <span
@@ -257,13 +248,10 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                       >
                         When does the product expire? - 
                         Day Ticket
-                         - Calendar
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        Calendar
-                      </span>
+                      Calendar
                     </label>
                   </span>
                 </span>
@@ -445,13 +433,10 @@ exports[`pages multipleProductValidity should render error messaging when errors
                       >
                         When does the product expire? - 
                         Weekly Ticket
-                         - 24 hour
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        24 hour
-                      </span>
+                      24 hour
                     </label>
                   </span>
                   <span
@@ -474,13 +459,10 @@ exports[`pages multipleProductValidity should render error messaging when errors
                       >
                         When does the product expire? - 
                         Weekly Ticket
-                         - Calendar
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        Calendar
-                      </span>
+                      Calendar
                     </label>
                   </span>
                 </span>
@@ -532,13 +514,10 @@ exports[`pages multipleProductValidity should render error messaging when errors
                       >
                         When does the product expire? - 
                         Day Ticket
-                         - 24 hour
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        24 hour
-                      </span>
+                      24 hour
                     </label>
                   </span>
                   <span
@@ -561,13 +540,10 @@ exports[`pages multipleProductValidity should render error messaging when errors
                       >
                         When does the product expire? - 
                         Day Ticket
-                         - Calendar
+                         -
+                         
                       </span>
-                      <span
-                        aria-hidden={true}
-                      >
-                        Calendar
-                      </span>
+                      Calendar
                     </label>
                   </span>
                 </span>

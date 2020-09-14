@@ -108,10 +108,9 @@ const MultipleProductValidity = ({
                                                         htmlFor={`twenty-four-hours-row-${index}`}
                                                     >
                                                         <span className="govuk-visually-hidden">
-                                                            When does the product expire? - {product.productName} - 24
-                                                            hour
+                                                            When does the product expire? - {product.productName} -{' '}
                                                         </span>
-                                                        <span aria-hidden>24 hour</span>
+                                                        24 hour
                                                     </label>
                                                 </span>
                                                 <span className="govuk-radios__item">
@@ -128,10 +127,9 @@ const MultipleProductValidity = ({
                                                         htmlFor={`calendar-day-row-${index}`}
                                                     >
                                                         <span className="govuk-visually-hidden">
-                                                            When does the product expire? - {product.productName} -
-                                                            Calendar
+                                                            When does the product expire? - {product.productName} -{' '}
                                                         </span>
-                                                        <span aria-hidden>Calendar</span>
+                                                        Calendar
                                                     </label>
                                                 </span>
                                             </span>

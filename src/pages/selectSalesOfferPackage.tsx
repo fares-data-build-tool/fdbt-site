@@ -159,21 +159,16 @@ const SelectSalesOfferPackage = ({
                         </p>
                     </div>
                     {createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}
-                    <input
-                        type="submit"
-                        value="Continue"
-                        id="continue-button"
-                        className="govuk-button govuk-!-margin-right-8"
-                    />
+                    <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                     <a
                         href="/salesOfferPackages"
                         role="button"
                         draggable="false"
-                        className="govuk-button govuk-button--secondary"
+                        className="govuk-button govuk-button--secondary create-new-sop-button"
                         data-module="govuk-button"
                         id="create-new-button"
                     >
-                        Create New
+                        Create New Sales Offer Package
                     </a>
                 </>
             </CsrfForm>

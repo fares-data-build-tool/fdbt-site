@@ -23,7 +23,8 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 <FormGroupWrapper errors={errors} errorId={`multiple-product-name-${index}`}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
-                            Product Name
+                            <span className="govuk-visually-hidden">{`Product Name - Product ${index + 1}`}</span>
+                            <span aria-hidden>Product Name</span>
                         </label>
                         <span className="govuk-hint" id={`product-name-hint-${index}`}>
                             Must be between 2 and 50 characters long
@@ -51,7 +52,9 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 <FormGroupWrapper errors={errors} errorId={`multiple-product-price-${index}`}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
-                            Product Price, in pounds
+                            <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${index +
+                                1}`}</span>
+                            <span aria-hidden>Product Price, in pounds</span>
                         </label>
                         <span className="govuk-hint" id={`product-price-hint-${index}`}>
                             For example, 2.99
@@ -67,7 +70,6 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 >
                                     <input
                                         className="govuk-input govuk-input--width-10 govuk-currency-input__inner__input"
-                                        aria-label="Enter amount in pounds"
                                         name={`multipleProductPriceInput${index}`}
                                         data-non-numeric
                                         type="text"
@@ -85,7 +87,9 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                 <FormGroupWrapper errors={errors} errorId={`multiple-product-duration-${index}`}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
-                            Product Duration, in days
+                            <span className="govuk-visually-hidden">{`Product Duration, in days - Product ${index +
+                                1}`}</span>
+                            <span aria-hidden>Product Duration, in days</span>
                         </label>
                         <span className="govuk-hint" id={`product-duration-hint-${index}`}>
                             Enter a whole number
