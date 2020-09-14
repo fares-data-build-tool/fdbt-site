@@ -11,8 +11,6 @@ import { isInputCheck } from '../interfaces/typeGuards';
 const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
 const description = 'Price Entry page of the Fares Data Build Tool';
 
-const errorId = 'cell-1-0';
-
 interface PriceEntryProps {
     stageNamesArray: string[];
     faresInformation?: FaresInformation;
@@ -93,7 +91,7 @@ const PriceEntry = ({
                         </legend>
                     </fieldset>
                     <span className="govuk-hint" id="price-entry-hint">
-                        Example: £2.40 would be 240
+                        For example, £2.40 would be 240
                     </span>
                     {errors.length > 0 ? createErrorSpans(errors) : null}
 
@@ -101,15 +99,11 @@ const PriceEntry = ({
                         <div className="fare-triangle" role="rowgroup">
                             {stageNamesArray.map((rowStage, rowIndex) => (
                                 <div id={`row-${rowIndex}`} className="fare-triangle-row" role="row" key={rowStage}>
-                                    <span
-                                        className="govuk-heading-s fare-triangle-label-left"
-                                        role="rowheader"
-                                        key={stageNamesArray[rowIndex]}
-                                    >
+                                    <span className="govuk-heading-s fare-triangle-label-left" role="rowheader">
                                         <span>{rowIndex > 0 ? rowStage : null}</span>
                                     </span>
                                     {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
-                                        <>
+                                        <React.Fragment key={columnStage}>
                                             <span
                                                 role="cell"
                                                 className={`fare-triangle-input ${
@@ -117,13 +111,13 @@ const PriceEntry = ({
                                                         ? 'fare-triangle-input-white'
                                                         : 'fare-triangle-input-light-grey'
                                                 }`}
-                                                key={columnStage}
                                             >
                                                 <input
-                                                    id={`cell-${rowIndex}-${columnIndex}`}
+                                                    id={`${rowStage}-${columnStage}`}
                                                     className={createClassName(faresInformation, rowStage, columnStage)}
                                                     name={`${rowStage}-${columnStage}`}
                                                     type="text"
+                                                    aria-describedby="price-entry-hint"
                                                     defaultValue={getDefaultValue(
                                                         faresInformation,
                                                         rowStage,
@@ -137,7 +131,7 @@ const PriceEntry = ({
                                             >
                                                 Input price from {columnStage} to {rowStage} in pence
                                             </label>
-                                        </>
+                                        </React.Fragment>
                                     ))}
                                     <div
                                         role="columnheader"
@@ -174,7 +168,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
 
     if (priceEntryInfo) {
         const errors: ErrorInfo[] = priceEntryInfo.errorInformation.map(error => {
-            return { errorMessage: error.input, id: errorId };
+            return { errorMessage: error.input, id: priceEntryInfo.errorInformation[0].locator };
         });
         const filteredErrors = filterErrors(errors);
         updateSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE, undefined);
