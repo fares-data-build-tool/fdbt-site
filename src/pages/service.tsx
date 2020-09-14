@@ -14,7 +14,7 @@ import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Service - Fares Data Build Tool';
 const description = 'Service selection page of the Fares Data Build Tool';
-const errorId = 'service-error';
+const errorId = 'service';
 
 type ServiceProps = {
     operator: string;

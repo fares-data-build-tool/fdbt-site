@@ -11,7 +11,7 @@ import { OPERATOR_COOKIE } from '../constants';
 
 const title = 'Multiple Operators - Fares Data Build Tool';
 const description = 'Multiple Operators page of the Fares Data Build Tool';
-const errorId = 'operator-error';
+const errorId = 'operators';
 
 type MultipleOperatorsProps = {
     errors?: ErrorInfo[];

@@ -95,7 +95,7 @@ const PriceEntry = ({
                             </h1>
                         </legend>
                         <span className="govuk-hint" id="price-entry-hint">
-                            Example: £2.40 would be 240
+                            For example, £2.40 would be 240
                         </span>
                         {errors.length > 0 ? createErrorSpans(errors) : null}
                     </fieldset>

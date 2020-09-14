@@ -51,7 +51,7 @@ const MultipleProducts = ({
                 <span className="govuk-hint" id="service-operator-hint">
                     {operator} - {numberOfProductsToDisplay} Products - {upperFirst(passengerType)}
                 </span>
-                <div className="govuk-inset-text">For example, Super Saver ticket - £4.95 - 2</div>
+                <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2</div>
                 <div className="govuk-grid-row">
                     <ProductRow
                         numberOfProductsToDisplay={numberOfProductsToDisplay}

@@ -1,5 +1,9 @@
 import { NextApiResponse } from 'next';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../constants/index';
+import {
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+} from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
 
 import {
@@ -175,6 +179,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
+        updateSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE, undefined);
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products: multipleProducts });
         redirectTo(res, '/multipleProductValidity');
     } catch (error) {
