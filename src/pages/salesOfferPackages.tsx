@@ -154,7 +154,7 @@ const SalesOfferPackages = ({
                                 >
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"
-                                        id="sop-payment-methods"
+                                        id="sop-ticket-formats"
                                     >
                                         What format do the tickets come in?
                                     </legend>

@@ -1,9 +1,14 @@
 import React, { ReactElement } from 'react';
-import { isSalesOfferPackageWithErrors } from '../interfaces/typeGuards';
+import { isSalesOfferPackageWithErrors, isFareType } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../constants';
+import {
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+} from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
@@ -115,15 +120,11 @@ const createSalesOffer = (
             <FormGroupWrapper errorId={`product-${index}-checkbox-0`} errors={errors}>
                 <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
-                    <FormElementWrapper
-                        errors={errors}
-                        errorId={`product-${index}-checkbox-0`}
-                        errorClass="govuk-form-group--error"
-                    >
-                        <>
+                    <FormElementWrapper errors={errors} errorId={`product-${index}-checkbox-0`} errorClass="">
+                        <div className="govuk-checkboxes">
                             {generateCheckbox(salesOfferPackagesList, index, selected)}
                             <input type="hidden" name={`product-${index}`} />
-                        </>
+                        </div>
                     </FormElementWrapper>
                 </fieldset>
             </FormGroupWrapper>
@@ -156,13 +157,8 @@ const SelectSalesOfferPackage = ({
                             This combination of information is called a <strong>sales offer package</strong>. You can
                             choose from one you have already setup or create a new one for these products.
                         </p>
-                        <p className="govuk-body">
-                            Choose from your previously used sales offer packages or create a new one:
-                        </p>
                     </div>
-                    <div className="govuk-checkboxes">
-                        <>{createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}</>
-                    </div>
+                    {createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}
                     <input
                         type="submit"
                         value="Continue"
@@ -204,20 +200,21 @@ export const getServerSideProps = async (
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const singleProductAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
 
-    let productNames: string[] = [];
+    let productNames: string[] = ['product'];
 
-    if (multipleProductAttribute) {
-        const multiProducts: Product[] = multipleProductAttribute.products;
-        productNames = multiProducts.map((product: ProductInfo) => product.productName);
-    } else if (singleProductAttribute) {
-        if (isProductData(singleProductAttribute)) {
-            productNames = [singleProductAttribute.products[0].productName];
-        } else if (isProductInfo(singleProductAttribute)) {
-            productNames = [singleProductAttribute.productName];
+    if (isFareType(fareTypeAttribute)) {
+        if (fareTypeAttribute.fareType === 'period' && multipleProductAttribute) {
+            const multiProducts: Product[] = multipleProductAttribute.products;
+            productNames = multiProducts.map((product: ProductInfo) => product.productName);
+        } else if (singleProductAttribute) {
+            if (fareTypeAttribute.fareType === 'flatFare' && isProductData(singleProductAttribute)) {
+                productNames = [singleProductAttribute.products[0].productName];
+            } else if (fareTypeAttribute.fareType === 'period' && isProductInfo(singleProductAttribute)) {
+                productNames = [singleProductAttribute.productName];
+            }
         }
-    } else {
-        productNames = ['product'];
     }
 
     const salesOfferPackageAttribute = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);

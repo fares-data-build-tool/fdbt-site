@@ -75,13 +75,13 @@ const ProductDetails = ({
                             <span className="govuk-hint" id="service-operator-hint">
                                 {operator} - {hintText} - {upperFirst(passengerType)}
                             </span>
-                            <FormGroupWrapper errors={errors} errorId="product-name-error">
+                            <FormGroupWrapper errors={errors} errorId="product-details-name">
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-name">
                                         Product Name
                                     </label>
                                     <span className="govuk-hint" id="product-name-hint">
-                                        Enter the name of your product
+                                        Must be between 2 and 50 characters long
                                     </span>
                                     <FormElementWrapper
                                         errors={errors}
@@ -92,21 +92,21 @@ const ProductDetails = ({
                                             className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
                                             id="product-details-name"
                                             name="productDetailsNameInput"
-                                            aria-describedby="product-name-hint"
                                             type="text"
+                                            aria-describedby="product-name-hint"
                                             maxLength={50}
                                             defaultValue={productName || ''}
                                         />
                                     </FormElementWrapper>
                                 </>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errors={errors} errorId="product-price-error">
+                            <FormGroupWrapper errors={errors} errorId="product-details-price">
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-price">
-                                        Product Price
+                                        Product Price, in pounds
                                     </label>
                                     <span className="govuk-hint" id="product-price-hint">
-                                        For example, £2.99
+                                        For example, 2.99
                                     </span>
                                     <div className="govuk-currency-input">
                                         <div className="govuk-currency-input__inner">
@@ -122,6 +122,7 @@ const ProductDetails = ({
                                                     data-non-numeric
                                                     type="text"
                                                     id="product-details-price"
+                                                    aria-describedby="product-price-hint"
                                                     defaultValue={productPrice || ''}
                                                 />
                                             </FormElementWrapper>

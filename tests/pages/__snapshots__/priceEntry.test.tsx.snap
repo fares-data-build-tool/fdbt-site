@@ -35,7 +35,7 @@ exports[`Price Entry Page should render correctly 1`] = `
         className="govuk-hint"
         id="price-entry-hint"
       >
-        Example: £2.40 would be 240
+        For example, £2.40 would be 240
       </span>
       <div
         className="fare-triangle-container"
@@ -53,7 +53,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Briggate"
               role="rowheader"
             >
               <span />
@@ -74,7 +73,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Chapeltown"
               role="rowheader"
             >
               <span>
@@ -86,9 +84,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-1-0"
+                id="Chapeltown-Briggate"
                 name="Chapeltown-Briggate"
                 type="text"
               />
@@ -119,7 +118,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Chapel Allerton"
               role="rowheader"
             >
               <span>
@@ -131,9 +129,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-2-0"
+                id="Chapel Allerton-Briggate"
                 name="Chapel Allerton-Briggate"
                 type="text"
               />
@@ -153,9 +152,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-2-1"
+                id="Chapel Allerton-Chapeltown"
                 name="Chapel Allerton-Chapeltown"
                 type="text"
               />
@@ -186,7 +186,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Moortown"
               role="rowheader"
             >
               <span>
@@ -198,9 +197,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-3-0"
+                id="Moortown-Briggate"
                 name="Moortown-Briggate"
                 type="text"
               />
@@ -220,9 +220,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-3-1"
+                id="Moortown-Chapeltown"
                 name="Moortown-Chapeltown"
                 type="text"
               />
@@ -242,9 +243,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-3-2"
+                id="Moortown-Chapel Allerton"
                 name="Moortown-Chapel Allerton"
                 type="text"
               />
@@ -275,7 +277,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Harrogate Road"
               role="rowheader"
             >
               <span>
@@ -287,9 +288,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-4-0"
+                id="Harrogate Road-Briggate"
                 name="Harrogate Road-Briggate"
                 type="text"
               />
@@ -309,9 +311,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-4-1"
+                id="Harrogate Road-Chapeltown"
                 name="Harrogate Road-Chapeltown"
                 type="text"
               />
@@ -331,9 +334,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-4-2"
+                id="Harrogate Road-Chapel Allerton"
                 name="Harrogate Road-Chapel Allerton"
                 type="text"
               />
@@ -353,9 +357,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-4-3"
+                id="Harrogate Road-Moortown"
                 name="Harrogate Road-Moortown"
                 type="text"
               />
@@ -386,7 +391,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Harehills"
               role="rowheader"
             >
               <span>
@@ -398,9 +402,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-5-0"
+                id="Harehills-Briggate"
                 name="Harehills-Briggate"
                 type="text"
               />
@@ -420,9 +425,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-5-1"
+                id="Harehills-Chapeltown"
                 name="Harehills-Chapeltown"
                 type="text"
               />
@@ -442,9 +448,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-5-2"
+                id="Harehills-Chapel Allerton"
                 name="Harehills-Chapel Allerton"
                 type="text"
               />
@@ -464,9 +471,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-5-3"
+                id="Harehills-Moortown"
                 name="Harehills-Moortown"
                 type="text"
               />
@@ -486,9 +494,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-5-4"
+                id="Harehills-Harrogate Road"
                 name="Harehills-Harrogate Road"
                 type="text"
               />
@@ -519,7 +528,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Gipton"
               role="rowheader"
             >
               <span>
@@ -531,9 +539,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-6-0"
+                id="Gipton-Briggate"
                 name="Gipton-Briggate"
                 type="text"
               />
@@ -553,9 +562,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-6-1"
+                id="Gipton-Chapeltown"
                 name="Gipton-Chapeltown"
                 type="text"
               />
@@ -575,9 +585,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-6-2"
+                id="Gipton-Chapel Allerton"
                 name="Gipton-Chapel Allerton"
                 type="text"
               />
@@ -597,9 +608,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-6-3"
+                id="Gipton-Moortown"
                 name="Gipton-Moortown"
                 type="text"
               />
@@ -619,9 +631,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-6-4"
+                id="Gipton-Harrogate Road"
                 name="Gipton-Harrogate Road"
                 type="text"
               />
@@ -641,9 +654,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-6-5"
+                id="Gipton-Harehills"
                 name="Gipton-Harehills"
                 type="text"
               />
@@ -674,7 +688,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Armley"
               role="rowheader"
             >
               <span>
@@ -686,9 +699,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-7-0"
+                id="Armley-Briggate"
                 name="Armley-Briggate"
                 type="text"
               />
@@ -708,9 +722,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-7-1"
+                id="Armley-Chapeltown"
                 name="Armley-Chapeltown"
                 type="text"
               />
@@ -730,9 +745,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-7-2"
+                id="Armley-Chapel Allerton"
                 name="Armley-Chapel Allerton"
                 type="text"
               />
@@ -752,9 +768,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-7-3"
+                id="Armley-Moortown"
                 name="Armley-Moortown"
                 type="text"
               />
@@ -774,9 +791,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-7-4"
+                id="Armley-Harrogate Road"
                 name="Armley-Harrogate Road"
                 type="text"
               />
@@ -796,9 +814,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-7-5"
+                id="Armley-Harehills"
                 name="Armley-Harehills"
                 type="text"
               />
@@ -818,9 +837,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-7-6"
+                id="Armley-Gipton"
                 name="Armley-Gipton"
                 type="text"
               />
@@ -851,7 +871,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Stanningley"
               role="rowheader"
             >
               <span>
@@ -863,9 +882,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-0"
+                id="Stanningley-Briggate"
                 name="Stanningley-Briggate"
                 type="text"
               />
@@ -885,9 +905,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-1"
+                id="Stanningley-Chapeltown"
                 name="Stanningley-Chapeltown"
                 type="text"
               />
@@ -907,9 +928,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-2"
+                id="Stanningley-Chapel Allerton"
                 name="Stanningley-Chapel Allerton"
                 type="text"
               />
@@ -929,9 +951,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-3"
+                id="Stanningley-Moortown"
                 name="Stanningley-Moortown"
                 type="text"
               />
@@ -951,9 +974,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-4"
+                id="Stanningley-Harrogate Road"
                 name="Stanningley-Harrogate Road"
                 type="text"
               />
@@ -973,9 +997,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-5"
+                id="Stanningley-Harehills"
                 name="Stanningley-Harehills"
                 type="text"
               />
@@ -995,9 +1020,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-6"
+                id="Stanningley-Gipton"
                 name="Stanningley-Gipton"
                 type="text"
               />
@@ -1017,9 +1043,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-8-7"
+                id="Stanningley-Armley"
                 name="Stanningley-Armley"
                 type="text"
               />
@@ -1050,7 +1077,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Pudsey"
               role="rowheader"
             >
               <span>
@@ -1062,9 +1088,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-0"
+                id="Pudsey-Briggate"
                 name="Pudsey-Briggate"
                 type="text"
               />
@@ -1084,9 +1111,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-1"
+                id="Pudsey-Chapeltown"
                 name="Pudsey-Chapeltown"
                 type="text"
               />
@@ -1106,9 +1134,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-2"
+                id="Pudsey-Chapel Allerton"
                 name="Pudsey-Chapel Allerton"
                 type="text"
               />
@@ -1128,9 +1157,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-3"
+                id="Pudsey-Moortown"
                 name="Pudsey-Moortown"
                 type="text"
               />
@@ -1150,9 +1180,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-4"
+                id="Pudsey-Harrogate Road"
                 name="Pudsey-Harrogate Road"
                 type="text"
               />
@@ -1172,9 +1203,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-5"
+                id="Pudsey-Harehills"
                 name="Pudsey-Harehills"
                 type="text"
               />
@@ -1194,9 +1226,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-6"
+                id="Pudsey-Gipton"
                 name="Pudsey-Gipton"
                 type="text"
               />
@@ -1216,9 +1249,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-7"
+                id="Pudsey-Armley"
                 name="Pudsey-Armley"
                 type="text"
               />
@@ -1238,9 +1272,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-9-8"
+                id="Pudsey-Stanningley"
                 name="Pudsey-Stanningley"
                 type="text"
               />
@@ -1271,7 +1306,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Seacroft"
               role="rowheader"
             >
               <span>
@@ -1283,9 +1317,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-0"
+                id="Seacroft-Briggate"
                 name="Seacroft-Briggate"
                 type="text"
               />
@@ -1305,9 +1340,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-1"
+                id="Seacroft-Chapeltown"
                 name="Seacroft-Chapeltown"
                 type="text"
               />
@@ -1327,9 +1363,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-2"
+                id="Seacroft-Chapel Allerton"
                 name="Seacroft-Chapel Allerton"
                 type="text"
               />
@@ -1349,9 +1386,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-3"
+                id="Seacroft-Moortown"
                 name="Seacroft-Moortown"
                 type="text"
               />
@@ -1371,9 +1409,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-4"
+                id="Seacroft-Harrogate Road"
                 name="Seacroft-Harrogate Road"
                 type="text"
               />
@@ -1393,9 +1432,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-5"
+                id="Seacroft-Harehills"
                 name="Seacroft-Harehills"
                 type="text"
               />
@@ -1415,9 +1455,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-6"
+                id="Seacroft-Gipton"
                 name="Seacroft-Gipton"
                 type="text"
               />
@@ -1437,9 +1478,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-7"
+                id="Seacroft-Armley"
                 name="Seacroft-Armley"
                 type="text"
               />
@@ -1459,9 +1501,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-8"
+                id="Seacroft-Stanningley"
                 name="Seacroft-Stanningley"
                 type="text"
               />
@@ -1481,9 +1524,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-10-9"
+                id="Seacroft-Pudsey"
                 name="Seacroft-Pudsey"
                 type="text"
               />
@@ -1514,7 +1558,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Rothwell"
               role="rowheader"
             >
               <span>
@@ -1526,9 +1569,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-0"
+                id="Rothwell-Briggate"
                 name="Rothwell-Briggate"
                 type="text"
               />
@@ -1548,9 +1592,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-1"
+                id="Rothwell-Chapeltown"
                 name="Rothwell-Chapeltown"
                 type="text"
               />
@@ -1570,9 +1615,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-2"
+                id="Rothwell-Chapel Allerton"
                 name="Rothwell-Chapel Allerton"
                 type="text"
               />
@@ -1592,9 +1638,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-3"
+                id="Rothwell-Moortown"
                 name="Rothwell-Moortown"
                 type="text"
               />
@@ -1614,9 +1661,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-4"
+                id="Rothwell-Harrogate Road"
                 name="Rothwell-Harrogate Road"
                 type="text"
               />
@@ -1636,9 +1684,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-5"
+                id="Rothwell-Harehills"
                 name="Rothwell-Harehills"
                 type="text"
               />
@@ -1658,9 +1707,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-6"
+                id="Rothwell-Gipton"
                 name="Rothwell-Gipton"
                 type="text"
               />
@@ -1680,9 +1730,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-7"
+                id="Rothwell-Armley"
                 name="Rothwell-Armley"
                 type="text"
               />
@@ -1702,9 +1753,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-8"
+                id="Rothwell-Stanningley"
                 name="Rothwell-Stanningley"
                 type="text"
               />
@@ -1724,9 +1776,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-9"
+                id="Rothwell-Pudsey"
                 name="Rothwell-Pudsey"
                 type="text"
               />
@@ -1746,9 +1799,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-11-10"
+                id="Rothwell-Seacroft"
                 name="Rothwell-Seacroft"
                 type="text"
               />
@@ -1779,7 +1833,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Dewsbury"
               role="rowheader"
             >
               <span>
@@ -1791,9 +1844,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-0"
+                id="Dewsbury-Briggate"
                 name="Dewsbury-Briggate"
                 type="text"
               />
@@ -1813,9 +1867,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-1"
+                id="Dewsbury-Chapeltown"
                 name="Dewsbury-Chapeltown"
                 type="text"
               />
@@ -1835,9 +1890,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-2"
+                id="Dewsbury-Chapel Allerton"
                 name="Dewsbury-Chapel Allerton"
                 type="text"
               />
@@ -1857,9 +1913,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-3"
+                id="Dewsbury-Moortown"
                 name="Dewsbury-Moortown"
                 type="text"
               />
@@ -1879,9 +1936,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-4"
+                id="Dewsbury-Harrogate Road"
                 name="Dewsbury-Harrogate Road"
                 type="text"
               />
@@ -1901,9 +1959,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-5"
+                id="Dewsbury-Harehills"
                 name="Dewsbury-Harehills"
                 type="text"
               />
@@ -1923,9 +1982,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-6"
+                id="Dewsbury-Gipton"
                 name="Dewsbury-Gipton"
                 type="text"
               />
@@ -1945,9 +2005,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-7"
+                id="Dewsbury-Armley"
                 name="Dewsbury-Armley"
                 type="text"
               />
@@ -1967,9 +2028,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-8"
+                id="Dewsbury-Stanningley"
                 name="Dewsbury-Stanningley"
                 type="text"
               />
@@ -1989,9 +2051,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-9"
+                id="Dewsbury-Pudsey"
                 name="Dewsbury-Pudsey"
                 type="text"
               />
@@ -2011,9 +2074,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-10"
+                id="Dewsbury-Seacroft"
                 name="Dewsbury-Seacroft"
                 type="text"
               />
@@ -2033,9 +2097,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-12-11"
+                id="Dewsbury-Rothwell"
                 name="Dewsbury-Rothwell"
                 type="text"
               />
@@ -2066,7 +2131,6 @@ exports[`Price Entry Page should render correctly 1`] = `
           >
             <span
               className="govuk-heading-s fare-triangle-label-left"
-              key="Wakefield"
               role="rowheader"
             >
               <span>
@@ -2078,9 +2142,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-0"
+                id="Wakefield-Briggate"
                 name="Wakefield-Briggate"
                 type="text"
               />
@@ -2100,9 +2165,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-1"
+                id="Wakefield-Chapeltown"
                 name="Wakefield-Chapeltown"
                 type="text"
               />
@@ -2122,9 +2188,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-2"
+                id="Wakefield-Chapel Allerton"
                 name="Wakefield-Chapel Allerton"
                 type="text"
               />
@@ -2144,9 +2211,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-3"
+                id="Wakefield-Moortown"
                 name="Wakefield-Moortown"
                 type="text"
               />
@@ -2166,9 +2234,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-4"
+                id="Wakefield-Harrogate Road"
                 name="Wakefield-Harrogate Road"
                 type="text"
               />
@@ -2188,9 +2257,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-5"
+                id="Wakefield-Harehills"
                 name="Wakefield-Harehills"
                 type="text"
               />
@@ -2210,9 +2280,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-6"
+                id="Wakefield-Gipton"
                 name="Wakefield-Gipton"
                 type="text"
               />
@@ -2232,9 +2303,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-7"
+                id="Wakefield-Armley"
                 name="Wakefield-Armley"
                 type="text"
               />
@@ -2254,9 +2326,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-8"
+                id="Wakefield-Stanningley"
                 name="Wakefield-Stanningley"
                 type="text"
               />
@@ -2276,9 +2349,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-9"
+                id="Wakefield-Pudsey"
                 name="Wakefield-Pudsey"
                 type="text"
               />
@@ -2298,9 +2372,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-10"
+                id="Wakefield-Seacroft"
                 name="Wakefield-Seacroft"
                 type="text"
               />
@@ -2320,9 +2395,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-11"
+                id="Wakefield-Rothwell"
                 name="Wakefield-Rothwell"
                 type="text"
               />
@@ -2342,9 +2418,10 @@ exports[`Price Entry Page should render correctly 1`] = `
               role="cell"
             >
               <input
+                aria-describedby="price-entry-hint"
                 className="govuk-input govuk-input--width-4"
                 defaultValue=""
-                id="cell-13-12"
+                id="Wakefield-Dewsbury"
                 name="Wakefield-Dewsbury"
                 type="text"
               />
