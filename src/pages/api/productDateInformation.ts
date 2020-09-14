@@ -14,20 +14,39 @@ export interface ProductDatesAttributeWithErrors {
     errors: ErrorInfo[];
 }
 
+const yearRegex = new RegExp('^[0-9][0-9][0-9][0-9]$');
+
 export const dateValidationSchema = yup.object({
     startDateDay: yup
-        .number()
+        .string()
         .min(1)
         .max(31)
-        .required(),
+        .required('Start Day is required'),
     startDateMonth: yup
-        .number()
+        .string()
         .min(1)
         .max(12)
-        .required(),
+        .required('Start Month is required'),
+    startDateYear: yup
+        .string()
+        .matches(yearRegex, 'Year is not valid')
+        .required('Start Year is required'),
+    endDateDay: yup
+        .string()
+        .min(1)
+        .max(31)
+        .required('End Day is required'),
+    endDateMonth: yup
+        .string()
+        .min(1)
+        .max(12)
+        .required('End Month is required'),
+    endDateYear: yup
+        .string()
+        .matches(yearRegex, 'Year is not valid')
+        .required('End Year is required'),
 });
 
-// 4digits
 
 // is start date > end date then error
 
@@ -37,6 +56,14 @@ export const getErrorIdFromDateError = (errorPath: string): string => {
             return 'start-date';
         case 'startDateMonth':
             return 'start-date';
+        case 'startDateYear':
+            return 'start-date';
+        case 'endDateDay':
+            return 'end-date';
+        case 'endDateMonth':
+            return 'end-date';
+        case 'endDateYear':
+            return 'end-date';
         default:
             throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
@@ -54,7 +81,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         try {
             await dateValidationSchema.validate(req.body, { abortEarly: false });
         } catch (validationErrors) {
-            console.log('validiotan errors', validationErrors);
             const validityErrors: yup.ValidationError = validationErrors;
             errors = validityErrors.inner.map(error => ({
                 id: getErrorIdFromDateError(error.path),
@@ -63,21 +89,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }));
         }
 
-        console.log('yoyoyooy=', errors.length);
-        // if (errors.length > 0) {
         updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, { errors });
         redirectTo(res, '/productDateInformation');
-        // }
-
-        // const startDate = new Date().toLocaleDateString('en-GB', {
-        //     day: 'numeric',
-        //     month: 'short',
-        //     year: 'numeric',
-        // });
-
-        // if (endDateDay === '' || endDateMonth === '' || endDateYear === '') {
-        //     errors.push({ errorMessage: 'Fill in end dates', id: 'endDate' });
-        // }
 
         //check if entry are numbers if all filled in
         // validate if empty one field empty
@@ -86,7 +99,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         //redirectTo(res, '/fareDateInformation');
         return;
     } catch (error) {
-        const message = 'There was a problem in the definePassengerType API.';
-        redirectToError(res, message, 'api.definePassengerType', error);
+        const message = 'There was a problem in the productDateInformation API.';
+        redirectToError(res, message, 'api.productDateInformation', error);
     }
 };

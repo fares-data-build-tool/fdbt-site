@@ -37,12 +37,12 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 inputType: 'date',
                 inputs: [
                     {
-                        id: 'start-date',
+                        id: 'startDate',
                         name: 'startDate',
                         label: 'Start Date',
                     },
                     {
-                        id: 'end-date',
+                        id: 'endDate',
                         name: 'endDate',
                         label: 'End Date',
                     },
@@ -67,13 +67,27 @@ const ProductDateInformation = ({
     errors = [],
     fieldsets,
 }: FareDateInformationProps & CustomAppProps): ReactElement => {
+    const customErrors: ErrorInfo[] = [];
 
     console.log('errors======', errors);
+
+    const startDateErrors = errors.find(error => error.id === 'start-date');
+
+    if (startDateErrors) {
+        customErrors.push({ errorMessage: 'Start Date needs to be entered', id: 'start-date-error' });
+    }
+
+    const endDateErrors = errors.find(error => error.id === 'end-date');
+
+    if (endDateErrors) {
+        customErrors.push({ errorMessage: 'End Date needs to be entered', id: 'end-date-error' });
+    }
+
     return (
         <TwoThirdsLayout title={title} description={description}>
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
                 <>
-                    <ErrorSummary errors={errors} />
+                    <ErrorSummary errors={customErrors} />
                     {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
