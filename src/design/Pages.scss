@@ -116,6 +116,22 @@
         margin-left: auto;
         width: 20%;
     }
+
+    .naptan-cell {
+        vertical-align: middle;
+    }
+
+    .stop-cell {
+        vertical-align: middle;
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    .stage-cell {
+        vertical-align: middle;
+    }
 }
 
 .account-details-page {
@@ -222,4 +238,10 @@
 
 .sop-option {
     margin-bottom: 20px;
+}
+
+.multiple-product-validity-table {
+    .govuk-table__cell {
+        vertical-align: middle;
+    }
 }

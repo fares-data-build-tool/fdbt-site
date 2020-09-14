@@ -109,7 +109,7 @@ const PriceEntry = ({
                                         <span>{rowIndex > 0 ? rowStage : null}</span>
                                     </span>
                                     {stageNamesArray.slice(0, rowIndex).map((columnStage, columnIndex) => (
-                                        <>
+                                        <React.Fragment key={columnStage}>
                                             <span
                                                 role="cell"
                                                 className={`fare-triangle-input ${
@@ -117,7 +117,6 @@ const PriceEntry = ({
                                                         ? 'fare-triangle-input-white'
                                                         : 'fare-triangle-input-light-grey'
                                                 }`}
-                                                key={columnStage}
                                             >
                                                 <input
                                                     id={`cell-${rowIndex}-${columnIndex}`}
@@ -137,7 +136,7 @@ const PriceEntry = ({
                                             >
                                                 Input price from {columnStage} to {rowStage} in pence
                                             </label>
-                                        </>
+                                        </React.Fragment>
                                     ))}
                                     <div
                                         role="columnheader"

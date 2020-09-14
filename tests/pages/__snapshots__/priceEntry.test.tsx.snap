@@ -83,7 +83,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -129,7 +128,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -152,7 +150,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -198,7 +195,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -221,7 +217,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -244,7 +239,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -290,7 +284,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -313,7 +306,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -336,7 +328,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -359,7 +350,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -405,7 +395,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -428,7 +417,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -451,7 +439,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -474,7 +461,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -497,7 +483,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -543,7 +528,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -566,7 +550,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -589,7 +572,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -612,7 +594,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -635,7 +616,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -658,7 +638,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -704,7 +683,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -727,7 +705,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -750,7 +727,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -773,7 +749,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -796,7 +771,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -819,7 +793,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -842,7 +815,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Gipton"
               role="cell"
             >
               <input
@@ -888,7 +860,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -911,7 +882,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -934,7 +904,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -957,7 +926,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -980,7 +948,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -1003,7 +970,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -1026,7 +992,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Gipton"
               role="cell"
             >
               <input
@@ -1049,7 +1014,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Armley"
               role="cell"
             >
               <input
@@ -1095,7 +1059,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -1118,7 +1081,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -1141,7 +1103,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -1164,7 +1125,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -1187,7 +1147,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -1210,7 +1169,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -1233,7 +1191,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Gipton"
               role="cell"
             >
               <input
@@ -1256,7 +1213,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Armley"
               role="cell"
             >
               <input
@@ -1279,7 +1235,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Stanningley"
               role="cell"
             >
               <input
@@ -1325,7 +1280,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -1348,7 +1302,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -1371,7 +1324,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -1394,7 +1346,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -1417,7 +1368,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -1440,7 +1390,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -1463,7 +1412,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Gipton"
               role="cell"
             >
               <input
@@ -1486,7 +1434,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Armley"
               role="cell"
             >
               <input
@@ -1509,7 +1456,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Stanningley"
               role="cell"
             >
               <input
@@ -1532,7 +1478,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Pudsey"
               role="cell"
             >
               <input
@@ -1578,7 +1523,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -1601,7 +1545,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -1624,7 +1567,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -1647,7 +1589,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -1670,7 +1611,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -1693,7 +1633,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -1716,7 +1655,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Gipton"
               role="cell"
             >
               <input
@@ -1739,7 +1677,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Armley"
               role="cell"
             >
               <input
@@ -1762,7 +1699,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Stanningley"
               role="cell"
             >
               <input
@@ -1785,7 +1721,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Pudsey"
               role="cell"
             >
               <input
@@ -1808,7 +1743,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Seacroft"
               role="cell"
             >
               <input
@@ -1854,7 +1788,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -1877,7 +1810,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -1900,7 +1832,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -1923,7 +1854,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -1946,7 +1876,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -1969,7 +1898,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -1992,7 +1920,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Gipton"
               role="cell"
             >
               <input
@@ -2015,7 +1942,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Armley"
               role="cell"
             >
               <input
@@ -2038,7 +1964,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Stanningley"
               role="cell"
             >
               <input
@@ -2061,7 +1986,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Pudsey"
               role="cell"
             >
               <input
@@ -2084,7 +2008,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Seacroft"
               role="cell"
             >
               <input
@@ -2107,7 +2030,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-white"
-              key="Rothwell"
               role="cell"
             >
               <input
@@ -2153,7 +2075,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </span>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Briggate"
               role="cell"
             >
               <input
@@ -2176,7 +2097,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapeltown"
               role="cell"
             >
               <input
@@ -2199,7 +2119,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Chapel Allerton"
               role="cell"
             >
               <input
@@ -2222,7 +2141,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Moortown"
               role="cell"
             >
               <input
@@ -2245,7 +2163,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harrogate Road"
               role="cell"
             >
               <input
@@ -2268,7 +2185,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Harehills"
               role="cell"
             >
               <input
@@ -2291,7 +2207,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Gipton"
               role="cell"
             >
               <input
@@ -2314,7 +2229,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Armley"
               role="cell"
             >
               <input
@@ -2337,7 +2251,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Stanningley"
               role="cell"
             >
               <input
@@ -2360,7 +2273,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Pudsey"
               role="cell"
             >
               <input
@@ -2383,7 +2295,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Seacroft"
               role="cell"
             >
               <input
@@ -2406,7 +2317,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Rothwell"
               role="cell"
             >
               <input
@@ -2429,7 +2339,6 @@ exports[`Price Entry Page should render correctly 1`] = `
             </label>
             <span
               className="fare-triangle-input fare-triangle-input-light-grey"
-              key="Dewsbury"
               role="cell"
             >
               <input
