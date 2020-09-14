@@ -8,17 +8,17 @@ import { getSessionAttribute } from '../utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../constants';
 import { getErrorsByIds } from '../utils';
 
-const title = 'Return Validity - Fares Data Build Tool';
-const description = 'Return Validity page of the Fares Data Build Tool';
-
 export interface ReturnValidity {
-    validityAmount: string;
-    validityDuration: string;
+    amount: string;
+    duration: string;
 }
 
-export interface ReturnValidityWithErrors extends ReturnValidity {
+export interface ReturnValidityWithErrors {
     errors: ErrorInfo[];
 }
+
+const title = 'Return Validity - Fares Data Build Tool';
+const description = 'Return Validity page of the Fares Data Build Tool';
 
 export interface ReturnValidityProps {
     errors: ErrorInfo[];
@@ -28,7 +28,7 @@ export interface ReturnValidityProps {
 export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset => ({
     heading: {
         id: 'define-return-validity',
-        content: 'Is the return journey of this ticket only valid for a set period of time?',
+        content: 'Is this ticket valid for more than one day?',
         hidden: true,
     },
     radios: [
@@ -40,7 +40,7 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
             label: 'Yes',
             hint: {
                 id: 'define-return-validity-hint',
-                content: 'Enter an amount, then select a duration from the dropdown',
+                content: 'Enter an amount and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
             inputs: [
@@ -53,7 +53,7 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
-                    options: ['Days', 'Weeks', 'Months', 'Years'],
+                    options: ['days', 'weeks', 'months', 'years'],
                 },
             ],
             inputErrors: getErrorsByIds(['return-validity-amount', 'return-validity-units'], errors),
@@ -65,7 +65,7 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
             label: 'No',
         },
     ],
-    radioError: getErrorsByIds(['define-return-validity'], errors),
+    radioError: getErrorsByIds(['return-validity-defined'], errors),
 });
 
 export const isReturnValidityWithErrors = (
@@ -85,7 +85,7 @@ const ReturnValidity = ({ errors = [], fieldset, csrfToken }: ReturnValidityProp
                         </h1>
                     </legend>
                     <span className="govuk-hint" id="return-validity-hint">
-                        If the return journey is valid indefinitely, select no.
+                        Select no if this ticket is only valid on day of travel
                     </span>
                     <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
                 </div>

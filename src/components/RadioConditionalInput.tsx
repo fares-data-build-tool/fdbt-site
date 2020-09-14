@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
+import startCase from 'lodash/startCase';
 import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
@@ -149,20 +150,18 @@ const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalInputs):
                         <FormElementWrapper
                             errors={radio.inputErrors}
                             errorId={errorId}
-                            errorClass="govuk-input--error"
+                            errorClass={`${input.id.includes('units') ? 'govuk-select--error' : 'govuk-input--error'}`}
                         >
                             {input.id.includes('units') ? (
-                                <select className="govuk-select" id={input.id} name={input.name}>
+                                <select className="govuk-select" id={input.id} name={input.name} defaultValue="">
                                     <option value="" disabled>
                                         Select a {input.name}
                                     </option>
-                                    {input.options?.map(unit => {
-                                        return (
-                                            <option key={`${input.id}-option`} value={`${input.id}-option`}>
-                                                {unit}
-                                            </option>
-                                        );
-                                    })}
+                                    {input.options?.map(unit => (
+                                        <option key={`${unit}-option`} value={unit}>
+                                            {startCase(unit)}
+                                        </option>
+                                    ))}
                                 </select>
                             ) : (
                                 <input
