@@ -28,17 +28,20 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
         });
 
         return (
-            <div key={stop.atcoCode} className="matching-wrapper">
-                <label className="govuk-label matching-stop-name" htmlFor={`option-${index}`}>
+            <tr key={stop.atcoCode} className="govuk-table__row">
+                <td className="govuk-table__cell stop-cell" id={`stop-${index}`}>
                     {formatStopName(stop)}
-                </label>
-                <div className="govuk-label naptan-code">{stop.naptanCode}</div>
-                <div className="farestage-select-wrapper">
+                </td>
+                <td className="govuk-table__cell naptan-cell" id={`naptan-${index}`}>
+                    {stop.naptanCode}
+                </td>
+                <td className="govuk-table__cell stage-cell">
                     <select
                         className="govuk-select farestage-select"
                         id={`option-${index}`}
                         name={`option-${index}`}
                         defaultValue={selectValue}
+                        aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
                     >
                         <option value="">Not Applicable</option>
                         {userFareStages.fareStages.map((stage: FareStage) => {
@@ -49,22 +52,30 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
                             );
                         })}
                     </select>
-                </div>
-            </div>
+                </td>
+            </tr>
         );
     });
     return stopItems;
 };
 
 const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingListProps): ReactElement => (
-    <div>
-        <div className="matching-wrapper">
-            <div className="govuk-heading-s matching-stop-header">Stop name</div>
-            <div className="govuk-heading-s naptan-code-header">Naptan code</div>
-            <div className="govuk-heading-s fare-stage-header">Fare stage</div>
-        </div>
-        {getStopItems(userFareStages, stops, selectedFareStages)}
-    </div>
+    <table className="govuk-table">
+        <thead className="govuk-table__head">
+            <tr className="govuk-table__row">
+                <th scope="col" className="govuk-table__header govuk-!-width-one-half" id="stop-name-header">
+                    Stop name
+                </th>
+                <th scope="col" className="govuk-table__header govuk-!-width-one-quarter" id="naptan-code-header">
+                    Naptan code
+                </th>
+                <th scope="col" className="govuk-table__header govuk-!-width-one-quarter" id="fare-stage-header">
+                    Fare stage
+                </th>
+            </tr>
+        </thead>
+        <tbody className="govuk-table__body">{getStopItems(userFareStages, stops, selectedFareStages)}</tbody>
+    </table>
 );
 
 export default MatchingList;

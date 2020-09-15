@@ -19,7 +19,7 @@ export interface ServiceListAttributeWithErrors {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';
-    const selectAllText = 'Select All';
+    const selectAllText = 'Select All Services';
 
     try {
         if (!isSessionValid(req, res)) {
