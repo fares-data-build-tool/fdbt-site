@@ -248,3 +248,9 @@
         vertical-align: middle;
     }
 }
+
+.create-new-sop-button {
+    @media (min-width: 641px) {
+        margin-left: 20px;
+    }
+}

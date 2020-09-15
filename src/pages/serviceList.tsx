@@ -43,9 +43,6 @@ const ServiceList = ({
 
                         <span className="govuk-heading-s">Select all services that apply</span>
 
-                        <label htmlFor="select-all-button" className="govuk-visually-hidden">
-                            {`Click to ${buttonText} services`}
-                        </label>
                         <input
                             type="submit"
                             name="selectAll"
@@ -129,7 +126,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     return {
         props: {
             serviceList,
-            buttonText: selectAll === 'true' ? 'Unselect All' : 'Select All',
+            buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
             errors:
                 serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
                     ? serviceListAttribute.errors

@@ -41,12 +41,6 @@ exports[`pages serviceList should render an error when the error flag is set to 
         >
           Select all services that apply
         </span>
-        <label
-          className="govuk-visually-hidden"
-          htmlFor="select-all-button"
-        >
-          Click to Select All services
-        </label>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -123,12 +117,6 @@ exports[`pages serviceList should render correctly 1`] = `
         >
           Select all services that apply
         </span>
-        <label
-          className="govuk-visually-hidden"
-          htmlFor="select-all-button"
-        >
-          Click to Select All services
-        </label>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
