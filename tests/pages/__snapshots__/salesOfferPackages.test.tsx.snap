@@ -254,7 +254,7 @@ exports[`pages salesOfferPackage should render an error when errors are passed t
           }
         >
           <fieldset
-            aria-describedby="sales-offer-package-ticket-format"
+            aria-describedby="sop-ticket-formats"
             className="govuk-fieldset"
           >
             <legend
@@ -564,7 +564,7 @@ exports[`pages salesOfferPackage should render correctly 1`] = `
           errors={Array []}
         >
           <fieldset
-            aria-describedby="sales-offer-package-ticket-format"
+            aria-describedby="sop-ticket-formats"
             className="govuk-fieldset"
           >
             <legend

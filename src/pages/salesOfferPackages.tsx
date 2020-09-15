@@ -148,10 +148,7 @@ const SalesOfferPackages = ({
                                 </fieldset>
                             </FormGroupWrapper>
                             <FormGroupWrapper errorId={ticketFormatsList.id} errors={errors}>
-                                <fieldset
-                                    className="govuk-fieldset"
-                                    aria-describedby="sales-offer-package-ticket-format"
-                                >
+                                <fieldset className="govuk-fieldset" aria-describedby="sop-ticket-formats">
                                     <legend
                                         className="govuk-fieldset__legend govuk-fieldset__legend--s"
                                         id="sop-ticket-formats"
