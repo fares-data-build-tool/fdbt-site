@@ -126,7 +126,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
     );
 };
 
-const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalInputs): ReactElement => {
+export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalInputs): ReactElement => {
     const error = radio.inputErrors.length > 0;
 
     return (
