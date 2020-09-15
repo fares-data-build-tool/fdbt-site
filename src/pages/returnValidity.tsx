@@ -73,7 +73,7 @@ export const isReturnValidityWithErrors = (
 ): returnValidityDefinition is ReturnValidityWithErrors =>
     (returnValidityDefinition as ReturnValidityWithErrors).errors !== undefined;
 
-const ReturnValidity = ({ errors = [], fieldset, csrfToken }: ReturnValidityProps & CustomAppProps): ReactElement => (
+const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/returnValidity" method="post" csrfToken={csrfToken}>
             <>
