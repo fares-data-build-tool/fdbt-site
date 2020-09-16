@@ -97,7 +97,7 @@ export const containsViruses = async (pathToFileToScan: string): Promise<boolean
             port: false, // Port of host to use when connecting via TCP interface
             timeout: 60000, // Timeout for scanning files
             local_fallback: false, // Do no fail over to binary-method of scanning
-            path: 'usr/local/bin/clamdscan', // Path to the clamdscan binary on your server
+            path: process.env.NODE_ENV === 'development' ? 'usr/local/bin/clamdscan' : 'usr/bin/clamdscan', // Path to the clamdscan binary on your server
             config_file: null, // Specify config file if it's in an unusual place
             multiscan: true, // Scan using all available cores! Yay!
             reload_db: false, // If true, will re-load the DB on every call (slow)
