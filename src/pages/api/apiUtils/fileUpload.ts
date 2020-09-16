@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/camelcase */
 import formidable, { Files } from 'formidable';
@@ -126,11 +125,14 @@ export const processFileUpload = async (req: NextApiRequest, inputName: string):
     }
 
     const fileData = formData.files[inputName];
-    if (await containsViruses(fileData.path)) {
-        return {
-            fileContents: '',
-            fileError: 'The selected file contains a virus',
-        };
+
+    if (process.env.NODE_ENV !== 'development') {
+        if (await containsViruses(fileData.path)) {
+            return {
+                fileContents: '',
+                fileError: 'The selected file contains a virus',
+            };
+        }
     }
     const { fileContents } = formData;
 
