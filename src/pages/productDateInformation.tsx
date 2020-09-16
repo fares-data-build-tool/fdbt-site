@@ -72,18 +72,16 @@ const ProductDateInformation = ({
 }: FareDateInformationProps & CustomAppProps): ReactElement => {
     const customErrors: ErrorInfo[] = [];
 
-    console.log('dates======', dates);
-
     const startDateErrors = errors.find(error => error.id === 'start-date');
 
     if (startDateErrors) {
-        customErrors.push({ errorMessage: 'Start Date needs to be entered', id: 'start-date-error' });
+        customErrors.push({ errorMessage: startDateErrors.errorMessage, id: 'start-date-error' });
     }
 
     const endDateErrors = errors.find(error => error.id === 'end-date');
 
     if (endDateErrors) {
-        customErrors.push({ errorMessage: 'End Date needs to be entered', id: 'end-date-error' });
+        customErrors.push({ errorMessage: endDateErrors.errorMessage, id: 'end-date-error' });
     }
 
     return (

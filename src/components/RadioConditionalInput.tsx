@@ -142,10 +142,6 @@ const renderConditionalDateInputs = (
                     return id.includes(input.id);
                 });
 
-                console.log('in put name', input.name);
-                console.log('radio options', radio);
-                console.log('dates==', dates);
-
                 const dayValue = input.name === 'startDate' ? dates.startDateDay : dates.endDateDay;
                 const monthValue = input.name === 'startDate' ? dates.startDateMonth : dates.endDateMonth;
                 const yearValue = input.name === 'startDate' ? dates.startDateYear : dates.endDateYear;
