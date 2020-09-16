@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
 import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
+import { ProductDateInformationAttribute } from 'src/pages/api/productDateInformation';
 
 export interface RadioWithoutConditionals extends BaseReactElement {
     value: string;
@@ -31,6 +32,7 @@ export interface RadioConditionalInputFieldset {
 
 export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
+    dates: ProductDateInformationAttribute;
 }
 
 export const createErrorId = (input: BaseReactElement, inputErrors: ErrorInfo[]): string => {
@@ -124,17 +126,29 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
     );
 };
 
-const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactElement => {
+const renderConditionalDateInputs = (
+    radio: RadioWithConditionalInputs,
+    dates: ProductDateInformationAttribute,
+): ReactElement => {
     const error = radio.inputErrors.length > 0;
 
-    console.log('crap error', radio.inputErrors);
     return (
         <div
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
             {radio.inputs.map(input => {
-                const inputGroupError = radio.inputErrors.find(({ id }) => id.includes(input.id));
+                const inputGroupError = radio.inputErrors.find(({ id }) => {
+                    return id.includes(input.id);
+                });
+
+                console.log('in put name', input.name);
+                console.log('radio options', radio);
+                console.log('dates==', dates);
+
+                const dayValue = input.name === 'startDate' ? dates.startDateDay : dates.endDateDay;
+                const monthValue = input.name === 'startDate' ? dates.startDateMonth : dates.endDateMonth;
+                const yearValue = input.name === 'startDate' ? dates.startDateYear : dates.endDateYear;
 
                 return (
                     <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>
@@ -143,67 +157,73 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
                                 <h1 className="govuk-fieldset__heading">{input.label}</h1>
                             </legend>
                             <div className="govuk-date-input" id={input.id}>
+                                {inputGroupError ? (
+                                    <span id={input.id} className="govuk-error-message">
+                                        {radio.inputErrors[0].errorMessage}
+                                    </span>
+                                ) : null}
+
                                 <div className="govuk-date-input__item">
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label govuk-date-input__label" htmlFor={`${input.id}-day`}>
+                                        <label
+                                            className="govuk-label govuk-date-input__label"
+                                            htmlFor={`${input.id}-day`}
+                                        >
                                             Day
                                         </label>
-                                        <FormElementWrapper
-                                            errors={radio.inputErrors}
-                                            errorId={inputGroupError ? `${input.id}-day` : ''}
-                                            errorClass="govuk-input--error"
-                                        >
-                                            <input
-                                                className="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                id={`${input.id}-day`}
-                                                name={`${input.name}Day`}
-                                                type="text"
-                                                pattern="[0-9]*"
-                                                inputMode="numeric"
-                                            />
-                                        </FormElementWrapper>
+                                        <input
+                                            className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                                                inputGroupError ? 'govuk-input--error' : ''
+                                            }`}
+                                            id={`${input.id}-day`}
+                                            name={`${input.name}Day`}
+                                            type="text"
+                                            pattern="[0-9]*"
+                                            inputMode="numeric"
+                                            defaultValue={dayValue}
+                                        />
                                     </div>
                                 </div>
                                 <div className="govuk-date-input__item">
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label govuk-date-input__label" htmlFor={`${input.id}-month`}>
+                                        <label
+                                            className="govuk-label govuk-date-input__label"
+                                            htmlFor={`${input.id}-month`}
+                                        >
                                             Month
                                         </label>
-                                        <FormElementWrapper
-                                            errors={radio.inputErrors}
-                                            errorId={inputGroupError ? `${input.id}-month` : ''}
-                                            errorClass="govuk-input--error"
-                                        >
-                                            <input
-                                                className="govuk-input govuk-date-input__input govuk-input--width-2"
-                                                id={`${input.id}-month`}
-                                                name={`${input.name}Month`}
-                                                type="text"
-                                                pattern="[0-9]*"
-                                                inputMode="numeric"
-                                            />
-                                        </FormElementWrapper>
+                                        <input
+                                            className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                                                inputGroupError ? 'govuk-input--error' : ''
+                                            }`}
+                                            id={`${input.id}-month`}
+                                            name={`${input.name}Month`}
+                                            type="text"
+                                            pattern="[0-9]*"
+                                            inputMode="numeric"
+                                            defaultValue={monthValue}
+                                        />
                                     </div>
                                 </div>
                                 <div className="govuk-date-input__item">
                                     <div className="govuk-form-group">
-                                        <label className="govuk-label govuk-date-input__label" htmlFor={`${input.id}-year`}>
+                                        <label
+                                            className="govuk-label govuk-date-input__label"
+                                            htmlFor={`${input.id}-year`}
+                                        >
                                             Year
                                         </label>
-                                        <FormElementWrapper
-                                            errors={radio.inputErrors}
-                                            errorId={inputGroupError ? `${input.id}-year` : ''}
-                                            errorClass="govuk-input--error"
-                                        >
-                                            <input
-                                                className="govuk-input govuk-date-input__input govuk-input--width-4"
-                                                id={`${input.id}-year`}
-                                                name={`${input.name}Year`}
-                                                type="text"
-                                                pattern="[0-9]*"
-                                                inputMode="numeric"
-                                            />
-                                        </FormElementWrapper>
+                                        <input
+                                            className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
+                                                inputGroupError ? 'govuk-input--error' : ''
+                                            }`}
+                                            id={`${input.id}-year`}
+                                            name={`${input.name}Year`}
+                                            type="text"
+                                            pattern="[0-9]*"
+                                            inputMode="numeric"
+                                            defaultValue={yearValue}
+                                        />
                                         ∏
                                     </div>
                                 </div>
@@ -215,7 +235,11 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
         </div>
     );
 };
-const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLabel: ReactElement): ReactElement => {
+const renderConditionalRadioButton = (
+    radio: RadioWithConditionalInputs,
+    radioLabel: ReactElement,
+    dates?: ProductDateInformationAttribute,
+): ReactElement => {
     const baseRadioInput = (
         <input
             className="govuk-radios__input"
@@ -241,16 +265,28 @@ const renderConditionalRadioButton = (radio: RadioWithConditionalInputs, radioLa
     const inputTypeMap = {
         checkbox: renderConditionalCheckbox,
         text: renderConditionalTextInput,
-        date: renderConditionalDateInputs,
     };
 
+    console.log('radio.inputType===', dates);
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
             </div>
-            {inputTypeMap[radio.inputType](radio)}
+            {radio.inputType === 'date'
+                ? renderConditionalDateInputs(
+                      radio,
+                      dates || {
+                          startDateDay: '',
+                          startDateMonth: '',
+                          startDateYear: '',
+                          endDateDay: '',
+                          endDateMonth: '',
+                          endDateYear: '',
+                      },
+                  )
+                : inputTypeMap[radio.inputType](radio)}
         </div>
     );
 };
@@ -261,7 +297,7 @@ const isRadioWithConditionalInputs = (
     return (radioButton as RadioWithConditionalInputs).hint !== undefined;
 };
 
-const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
+const renderRadioButtonSet = (radio: RadioButton, dates: ProductDateInformationAttribute): ReactElement => {
     const radioButtonLabel: ReactElement = (
         <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
             {radio.label}
@@ -269,7 +305,7 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     );
 
     if (isRadioWithConditionalInputs(radio)) {
-        return renderConditionalRadioButton(radio, radioButtonLabel);
+        return renderConditionalRadioButton(radio, radioButtonLabel, dates);
     }
 
     return (
@@ -280,7 +316,7 @@ const renderRadioButtonSet = (radio: RadioButton): ReactElement => {
     );
 };
 
-const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactElement => {
+const RadioConditionalInput = ({ fieldset, dates }: RadioConditionalInputProps): ReactElement => {
     const radioError = fieldset.radioError.length > 0;
 
     return (
@@ -297,7 +333,7 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => renderRadioButtonSet(radio))}
+                        {fieldset.radios.map(radio => renderRadioButtonSet(radio, dates))}
                     </div>
                 </FormElementWrapper>
             </fieldset>

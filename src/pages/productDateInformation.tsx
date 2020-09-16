@@ -8,6 +8,7 @@ import { isProductDateAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { getErrorsByIds } from '../utils';
+import { ProductDateInformationAttribute } from './api/productDateInformation';
 
 const title = 'Product Date Information - Fares Data Build Tool';
 const description = 'Product Date Information page of the Fares Data Build Tool';
@@ -15,6 +16,7 @@ const description = 'Product Date Information page of the Fares Data Build Tool'
 export interface FareDateInformationProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
+    dates: ProductDateInformationAttribute;
 }
 
 export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
@@ -37,12 +39,12 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 inputType: 'date',
                 inputs: [
                     {
-                        id: 'startDate',
+                        id: 'start-date',
                         name: 'startDate',
                         label: 'Start Date',
                     },
                     {
-                        id: 'endDate',
+                        id: 'end-date',
                         name: 'endDate',
                         label: 'End Date',
                     },
@@ -66,10 +68,11 @@ const ProductDateInformation = ({
     csrfToken,
     errors = [],
     fieldsets,
+    dates,
 }: FareDateInformationProps & CustomAppProps): ReactElement => {
     const customErrors: ErrorInfo[] = [];
 
-    console.log('errors======', errors);
+    console.log('dates======', dates);
 
     const startDateErrors = errors.find(error => error.id === 'start-date');
 
@@ -89,7 +92,7 @@ const ProductDateInformation = ({
                 <>
                     <ErrorSummary errors={customErrors} />
                     {fieldsets.map(fieldset => {
-                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
+                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} dates={dates} />;
                     })}
 
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -109,7 +112,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
 
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
 
-    return { props: { errors, fieldsets } };
+    return {
+        props: {
+            errors,
+            fieldsets,
+            dates:
+                productDateAttribute && isProductDateAttributeWithErrors(productDateAttribute)
+                    ? productDateAttribute.dates
+                    : undefined,
+        },
+    };
 };
 
 export default ProductDateInformation;

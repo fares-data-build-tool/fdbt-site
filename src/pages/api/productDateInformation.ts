@@ -5,50 +5,66 @@ import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 import * as yup from 'yup';
 
-export interface ProductDatesAttribute {
+export interface ProductDateAttribute {
     startDate: string;
     endDate: string;
 }
 
 export interface ProductDatesAttributeWithErrors {
     errors: ErrorInfo[];
+    dates: ProductDateInformationAttribute;
+}
+
+export interface ProductDateInformationAttribute {
+    startDateDay: string;
+    startDateMonth: string;
+    startDateYear: string;
+    endDateDay: string;
+    endDateMonth: string;
+    endDateYear: string;
 }
 
 const yearRegex = new RegExp('^[0-9][0-9][0-9][0-9]$');
 
+const errorMessage = (input: string) => `${input} date must be in the following format`;
+const startErrorMessage = errorMessage('Start');
+const endErrorMessage = errorMessage('Start');
+
 export const dateValidationSchema = yup.object({
     startDateDay: yup
         .string()
-        .min(1)
-        .max(31)
-        .required('Start Day is required'),
+        .min(1, startErrorMessage)
+        .max(31, startErrorMessage)
+        .required(startErrorMessage),
     startDateMonth: yup
         .string()
-        .min(1)
-        .max(12)
-        .required('Start Month is required'),
+        .min(1, startErrorMessage)
+        .max(31, startErrorMessage)
+        .required(startErrorMessage),
     startDateYear: yup
         .string()
-        .matches(yearRegex, 'Year is not valid')
-        .required('Start Year is required'),
+        .matches(yearRegex, startErrorMessage)
+        .required(startErrorMessage),
     endDateDay: yup
         .string()
-        .min(1)
-        .max(31)
-        .required('End Day is required'),
+        .min(1, endErrorMessage)
+        .max(31, endErrorMessage)
+        .required(endErrorMessage),
     endDateMonth: yup
         .string()
-        .min(1)
-        .max(12)
-        .required('End Month is required'),
+        .min(1, endErrorMessage)
+        .max(12, endErrorMessage)
+        .required(endErrorMessage),
     endDateYear: yup
         .string()
-        .matches(yearRegex, 'Year is not valid')
-        .required('End Year is required'),
+        .matches(yearRegex, endErrorMessage)
+        .required(endErrorMessage),
 });
 
-
-// is start date > end date then error
+export const combinedDateSchema = yup.object({
+    startDate: yup.date(),
+    endDate: yup.date().min(yup.ref('startDate'), 'end date cannot be before the start date'),
+});
 
 export const getErrorIdFromDateError = (errorPath: string): string => {
     switch (errorPath) {
@@ -64,6 +80,10 @@ export const getErrorIdFromDateError = (errorPath: string): string => {
             return 'end-date';
         case 'endDateYear':
             return 'end-date';
+        case 'startDate':
+            return 'start-date';
+        case 'endDate':
+            return 'end-date';
         default:
             throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
     }
@@ -73,11 +93,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         let errors: ErrorInfo[] = [];
 
-        // if at least one field filled then need to validate
-        // whether invalid characters
-        // if date entered is correct after adding each element to new date and parsing it
+        const { startDateDay, startDateMonth, startDateYear, endDateDay, endDateMonth, endDateYear } = req.body;
 
-        console.log('req===', req.body);
+        const dateInput: ProductDateInformationAttribute = {
+            startDateDay,
+            startDateMonth,
+            startDateYear,
+            endDateDay,
+            endDateMonth,
+            endDateYear,
+        };
+
         try {
             await dateValidationSchema.validate(req.body, { abortEarly: false });
         } catch (validationErrors) {
@@ -89,14 +115,32 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }));
         }
 
-        updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, { errors });
+        // require this as need the top validation to work first otherwise the messages are not consistent
+        if (errors.length === 0) {
+            const startDate = new Date(startDateYear, startDateMonth, startDateDay);
+            const endDate = new Date(endDateYear, endDateMonth, endDateDay);
+
+            try {
+                await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
+            } catch (validationErrors) {
+                const validityErrors: yup.ValidationError = validationErrors;
+                errors = validityErrors.inner.map(error => ({
+                    id: getErrorIdFromDateError(error.path),
+                    errorMessage: error.message,
+                    userInput: error.value,
+                }));
+            }
+
+            updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, { errors, dates: dateInput });
+            redirectTo(res, '/productDateInformation');
+        }
+
+        updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, {
+            errors,
+            dates: dateInput,
+        });
         redirectTo(res, '/productDateInformation');
 
-        //check if entry are numbers if all filled in
-        // validate if empty one field empty
-        //convert to date
-
-        //redirectTo(res, '/fareDateInformation');
         return;
     } catch (error) {
         const message = 'There was a problem in the productDateInformation API.';
