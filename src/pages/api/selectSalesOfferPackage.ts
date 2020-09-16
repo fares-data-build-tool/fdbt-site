@@ -64,9 +64,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackages);
         } else {
-            const keys: string[] = Object.keys(req.body);
+            const keys: string[] = Object.keys(sanitisedBody);
             const productsAndSalesOfferPackages: ProductWithSalesOfferPackages[] = keys.map(objectKey => {
-                const content: string | string[] = req.body[objectKey];
+                const content: string | string[] = sanitisedBody[objectKey];
                 if (isArray(content)) {
                     const salesOfferPackages: SalesOfferPackage[] = content.map(sop => {
                         const salesOfferPackage: SalesOfferPackage = JSON.parse(sop);
