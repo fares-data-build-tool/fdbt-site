@@ -82,7 +82,7 @@ const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & C
         <CsrfForm action="/api/returnValidity" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div>
+                <div className={`govuk-form-group ${fieldset.radioError.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 className="govuk-fieldset__heading" id="return-validity-page-heading">
                             {fieldset.heading.content}

@@ -14,7 +14,9 @@ exports[`pages returnValidity should render the page correctly 1`] = `
     <ErrorSummary
       errors={Array []}
     />
-    <div>
+    <div
+      className="govuk-form-group "
+    >
       <legend
         className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
@@ -132,7 +134,9 @@ exports[`pages returnValidity should render the page with errors when both text 
         ]
       }
     />
-    <div>
+    <div
+      className="govuk-form-group "
+    >
       <legend
         className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
@@ -251,7 +255,9 @@ exports[`pages returnValidity should render the page with errors when only dropd
         ]
       }
     />
-    <div>
+    <div
+      className="govuk-form-group "
+    >
       <legend
         className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
@@ -366,7 +372,9 @@ exports[`pages returnValidity should render the page with errors when only text 
         ]
       }
     />
-    <div>
+    <div
+      className="govuk-form-group "
+    >
       <legend
         className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
@@ -481,7 +489,9 @@ exports[`pages returnValidity should render the page with errors when radio erro
         ]
       }
     />
-    <div>
+    <div
+      className="govuk-form-group govuk-form-group--error"
+    >
       <legend
         className="govuk-fieldset__legend govuk-fieldset__legend--l"
       >
