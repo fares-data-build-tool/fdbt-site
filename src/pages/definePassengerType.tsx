@@ -89,7 +89,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['define-passenger-age-range'], errors),
+        radioError: getErrorsByIds(['age-range-required'], errors),
     };
 
     const proofRequiredFieldset: RadioConditionalInputFieldset = {
@@ -126,7 +126,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                         label: 'Identity Document',
                     },
                 ],
-                inputErrors: getErrorsByIds(['proof-required'], errors),
+                inputErrors: getErrorsByIds(['membership-card'], errors),
             },
             {
                 id: 'proof-not-required',
@@ -135,7 +135,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['define-passenger-proof'], errors),
+        radioError: getErrorsByIds(['proof-required'], errors),
     };
 
     fieldsets.push(ageRangeFieldset);
@@ -228,11 +228,9 @@ const DefinePassengerType = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="define-passenger-type-page-heading">
-                            Provide passenger type details
-                        </h1>
-                    </legend>
+                    <h1 className="govuk-heading-l" id="define-passenger-type-page-heading">
+                        Provide passenger type details
+                    </h1>
                     {group === false ? (
                         <span className="govuk-hint" id="define-passenger-type-hint">
                             Select if the passenger type requires an age range or proof document
@@ -265,7 +263,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const passengerTypeErrorsAttribute = getSessionAttribute(ctx.req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
 
-    if (!isPassengerType(passengerTypeAttribute) && (!ctx.query.groupPassengerType || !groupPassengerTypes)) {
+    if (
+        !passengerTypeAttribute ||
+        (!isPassengerType(passengerTypeAttribute) && (!ctx.query.groupPassengerType || !groupPassengerTypes))
+    ) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
@@ -276,14 +277,17 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     let passengerType = ctx?.query?.groupPassengerType as string;
 
-    if (!passengerType && isPassengerType(passengerTypeAttribute)) {
-        passengerType = passengerTypeAttribute.passengerType;
-    }
-
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
-    const group = !!groupPassengerTypes;
+    const group =
+        !!groupPassengerTypes &&
+        !isPassengerTypeAttributeWithErrors(passengerTypeAttribute) &&
+        passengerTypeAttribute.passengerType === 'group';
+
+    if (!passengerType && isPassengerType(passengerTypeAttribute) && group) {
+        passengerType = passengerTypeAttribute.passengerType;
+    }
 
     if (group) {
         fieldsets = getFieldsets(errors, passengerType);
@@ -302,7 +306,18 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     fieldsets = getFieldsets(errors, passengerType);
 
-    return { props: { group, errors, fieldsets, passengerType } };
+    let passengerTypeToRender = '';
+
+    if (!passengerType) {
+        if (isPassengerTypeAttributeWithErrors(passengerTypeAttribute)) {
+            throw new Error('Incorrect passenger type found');
+        }
+        passengerTypeToRender = passengerTypeAttribute.passengerType;
+    } else {
+        passengerTypeToRender = passengerType;
+    }
+
+    return { props: { group, errors, fieldsets, passengerType: passengerTypeToRender } };
 };
 
 export default DefinePassengerType;

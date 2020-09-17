@@ -229,6 +229,10 @@ export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
 
+export interface ProductWithSalesOfferPackages extends BaseProduct {
+    productName: string;
+}
+
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
@@ -278,4 +282,5 @@ export interface S3NetexFile {
     sopNames: string;
     date: string;
     signedUrl: string;
+    fileSize: number;
 }

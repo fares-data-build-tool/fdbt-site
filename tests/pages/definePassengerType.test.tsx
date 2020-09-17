@@ -97,11 +97,11 @@ describe('pages', () => {
                 const radioErrors: ErrorInfo[] = [
                     {
                         errorMessage: 'Choose one of the options below',
-                        id: 'define-passenger-age-range',
+                        id: 'age-range-required',
                     },
                     {
                         errorMessage: 'Choose one of the options below',
-                        id: 'define-passenger-proof',
+                        id: 'proof-required',
                     },
                 ];
                 const fieldsets = getFieldsets(radioErrors, defaultPassengerType);
@@ -120,8 +120,7 @@ describe('pages', () => {
                     },
                     {
                         errorMessage: 'Select at least one proof document',
-                        id: 'proof-required',
-                        userInput: '',
+                        id: 'membership-card',
                     },
                 ];
                 const fieldsets = getFieldsets(inputErrors, defaultPassengerType);
@@ -193,8 +192,9 @@ describe('pages', () => {
                 [
                     'group',
                     {
-                        cookies: { passengerType: 'group' },
+                        cookies: {},
                         session: {
+                            [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
                             [GROUP_PASSENGER_TYPES_ATTRIBUTE]: ['adult', 'child'],
                         },
                         query: {
@@ -219,7 +219,7 @@ describe('pages', () => {
             );
             it('should return props containing errors and valid fieldsets when radio and input errors are present on a non-group ticket user journey', () => {
                 const errors: ErrorInfo[] = [
-                    { errorMessage: 'Choose one of the options below', id: 'define-passenger-proof' },
+                    { errorMessage: 'Choose one of the options below', id: 'proof-required' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-min' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-max' },
                 ];
@@ -237,7 +237,7 @@ describe('pages', () => {
 
             it('should return props containing errors and valid fieldsets when radio and all input errors are present on a group ticket user journey', () => {
                 const errors: ErrorInfo[] = [
-                    { errorMessage: 'Choose one of the options below', id: 'define-passenger-proof' },
+                    { errorMessage: 'Choose one of the options below', id: 'proof-required' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-min' },
                     { errorMessage: 'Enter a minimum or maximum age', id: 'age-range-max' },
                     {
@@ -264,7 +264,7 @@ describe('pages', () => {
                                 proofDocuments: [],
                             },
                         },
-                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'child' },
+                        [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
                         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { errors, passengerType: 'child' },
                     },
                     query: {

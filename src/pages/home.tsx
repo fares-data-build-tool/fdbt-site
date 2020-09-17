@@ -16,9 +16,7 @@ const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement =
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
                 <div>
-                    <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">
-                        Create & download fares data
-                    </p>
+                    <h2 className="govuk-heading-s">Create & download fares data</h2>
                     <p className="govuk-body">
                         For bus operators running commercial bus services in England, and local authorities that need to
                         create or access NeTEx data for the services they operate.
@@ -36,8 +34,8 @@ const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement =
                         Download previously created NeTEx data
                     </a>
                 </div>
-                <div className="govuk-!-margin-top-9">
-                    <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Operator settings</p>
+                <div className="govuk-!-margin-top-7 govuk-!-padding-bottom-7">
+                    <h2 className="govuk-heading-s">Operator settings</h2>
                     <p className="govuk-body">
                         For updating the information we use about your services when creating NeTEx data.
                     </p>
@@ -48,7 +46,7 @@ const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement =
                 </div>
             </div>
             <div className="govuk-grid-column-one-third">
-                <p className="govuk-body govuk-!-font-weight-bold content-one-quarter">Public information</p>
+                <h2 className="govuk-heading-s">Public information</h2>
                 <a href="/contact" className="govuk-link govuk-!-font-size-19" id="contact-link">
                     Contact Us
                 </a>
