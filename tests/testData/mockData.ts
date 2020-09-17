@@ -1911,6 +1911,33 @@ export const invalidNameProducts: MultiProduct[] = [
     },
 ];
 
+export const duplicateNameProducts: MultiProduct[] = [
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: 'v.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];
+
 export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] = [
     {
         heading: {
