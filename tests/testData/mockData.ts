@@ -2,7 +2,9 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
+import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
     STAGE_NAMES_ATTRIBUTE,
     DAYS_VALID_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
@@ -149,6 +151,9 @@ export const getMockRequestAndResponse = ({
             productName: 'Product A',
             productPrice: '1234',
         },
+        [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        destroy: (): void => {},
         ...session,
     };
 
@@ -1130,35 +1135,18 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
 
 export const expectedProductDetailsArray: ProductDetails[] = [
     {
-        productName: 'DayRider',
+        productName: 'Product',
         productPrice: '2.99',
         productDuration: '1',
         productValidity: '24hr',
-        salesOfferPackages: [
-            {
-                name: 'CashRider - Cash - Ticket Machine',
-                description: 'A Day Rider ticket for an adult that can bought using cash at a ticket machine',
-                purchaseLocations: ['TicketMachine'],
-                paymentMethods: ['Cash'],
-                ticketFormats: ['Paper'],
-            },
-        ],
+        salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
     },
     {
-        productName: 'WeekRider',
+        productName: 'Product Two',
         productPrice: '7.99',
         productDuration: '7',
         productValidity: '24hr',
-        salesOfferPackages: [
-            {
-                name: 'CashCardRider - Cash & Card - Bus, Ticket Machine, Shop',
-                description:
-                    'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                paymentMethods: ['Cash', 'Card'],
-                ticketFormats: ['Paper', 'Mobile'],
-            },
-        ],
+        salesOfferPackages: [defaultSalesOfferPackageTwo],
     },
 ];
 
@@ -1180,16 +1168,7 @@ export const expectedMatchingJsonSingle: SingleTicket = {
     timeRestriction: mockTimeRestriction,
     products: [
         {
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     fareZones: [
@@ -1318,16 +1297,7 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     timeRestriction: mockTimeRestriction,
     products: [
         {
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     inboundFareZones: [
@@ -1486,16 +1456,7 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     timeRestriction: mockTimeRestriction,
     products: [
         {
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     inboundFareZones: [],
@@ -1629,16 +1590,7 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
             productPrice: '1234',
             productDuration: '2',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
 };
@@ -1657,16 +1609,7 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
             productPrice: '1234',
             productDuration: '2',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     selectedServices: [
@@ -1707,48 +1650,21 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
             productPrice: '50',
             productDuration: '5',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
 };
@@ -1767,48 +1683,21 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
             productPrice: '50',
             productDuration: '5',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
             productDuration: '1',
             productValidity: '24hr',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Day Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Day Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
             productDuration: '28',
             productValidity: 'endOfCalendarDay',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Monthly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Monthly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     selectedServices: [
@@ -1844,16 +1733,7 @@ export const expectedFlatFareProductUploadJson: FlatFareTicket = {
         {
             productName: 'Weekly Rider',
             productPrice: '7',
-            salesOfferPackages: [
-                {
-                    name: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
-                    description:
-                        'A Weekly Rider ticket for an adult that can bought using cash and card, on a bus and at a ticket machine or shop',
-                    purchaseLocations: ['OnBus', 'TicketMachine', 'Shop'],
-                    paymentMethods: ['Cash', 'Card'],
-                    ticketFormats: ['Paper', 'Mobile'],
-                },
-            ],
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
     ],
     selectedServices: [
@@ -2033,6 +1913,33 @@ export const invalidNameProducts: MultiProduct[] = [
     },
 ];
 
+export const duplicateNameProducts: MultiProduct[] = [
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: 'v.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+    {
+        productName: 'Super Saver Bus Ticket',
+        productNameId: '.',
+        productPrice: '.',
+        productPriceId: '.',
+        productDuration: '.',
+        productDurationId: '.',
+    },
+];
+
 export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] = [
     {
         heading: {
@@ -2158,7 +2065,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-age-range',
+                id: 'age-range-required',
             },
         ],
     },
@@ -2203,7 +2110,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-proof',
+                id: 'proof-required',
             },
         ],
     },
@@ -2307,8 +2214,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 inputErrors: [
                     {
                         errorMessage: 'Select at least one proof document',
-                        id: 'proof-required',
-                        userInput: '',
+                        id: 'membership-card',
                     },
                 ],
             },
@@ -2424,7 +2330,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
         radioError: [
             {
                 errorMessage: 'Choose one of the options below',
-                id: 'define-passenger-proof',
+                id: 'proof-required',
             },
         ],
     },
@@ -2618,7 +2524,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
         ],
         radioError: [
             {
-                id: 'define-time-restrictions',
+                id: 'time-restriction-required',
                 errorMessage: 'Choose one of the options below',
             },
         ],
@@ -2660,7 +2566,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
         ],
         radioError: [
             {
-                id: 'define-valid-days',
+                id: 'valid-days-required',
                 errorMessage: 'Choose one of the options below',
             },
         ],
@@ -2669,11 +2575,11 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioErrors: RadioConditiona
 
 export const mockTimeRestrictionsRadioErrors: ErrorInfo[] = [
     {
-        id: 'define-time-restrictions',
+        id: 'time-restriction-required',
         errorMessage: 'Choose one of the options below',
     },
     {
-        id: 'define-valid-days',
+        id: 'valid-days-required',
         errorMessage: 'Choose one of the options below',
     },
 ];
@@ -2756,7 +2662,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithInputErrors: RadioConditiona
                 ],
                 inputErrors: [
                     {
-                        id: 'valid-days-required',
+                        id: 'monday',
                         errorMessage: 'Select at least one day',
                     },
                 ],
@@ -2776,17 +2682,14 @@ export const mockTimeRestrictionsInputErrors: ErrorInfo[] = [
     {
         id: 'start-time',
         errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
     {
         id: 'end-time',
         errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
     {
-        id: 'valid-days-required',
+        id: 'monday',
         errorMessage: 'Select at least one day',
-        userInput: undefined,
     },
 ];
 
@@ -2877,7 +2780,7 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
         ],
         radioError: [
             {
-                id: 'define-valid-days',
+                id: 'valid-days-required',
                 errorMessage: 'Choose one of the options below',
             },
         ],
@@ -2886,19 +2789,16 @@ export const mockDefineTimeRestrictionsFieldsetsWithRadioAndInputErrors: RadioCo
 
 export const mockTimeRestrictionsRadioAndInputErrors: ErrorInfo[] = [
     {
-        id: 'define-valid-days',
+        id: 'valid-days-required',
         errorMessage: 'Choose one of the options below',
-        userInput: undefined,
     },
     {
         id: 'start-time',
         errorMessage: 'Enter a start time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
     {
         id: 'end-time',
         errorMessage: 'Enter an end time in a valid 24 hour format between 0000 - 2300',
-        userInput: undefined,
     },
 ];
 

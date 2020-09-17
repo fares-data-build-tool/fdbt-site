@@ -18,6 +18,7 @@ const netexFiles: S3NetexFile[] = [
         signedUrl: 'https://test.example.com/dscsdcd',
         sopNames: 'Test SOP Name, Test SOP Name 2',
         lineName: 'X01',
+        fileSize: 123,
     },
     {
         name: 'Test Name 2',
@@ -30,6 +31,7 @@ const netexFiles: S3NetexFile[] = [
         sopNames: 'Test SOP Name 2',
         serviceNames: '1, 56, X02',
         productNames: 'Product 1, Product 2',
+        fileSize: 456,
     },
 ];
 
@@ -47,10 +49,12 @@ describe('pages', () => {
                     {
                         LastModified: new Date(new Date().setHours(currentDate.getHours() - 3)),
                         Key: 'testKey.xml',
+                        Size: 1234032,
                     },
                     {
                         LastModified: new Date(new Date().setHours(currentDate.getHours() - 1)),
                         Key: 'testKey2.xml',
+                        Size: 1234,
                     },
                 ]),
             );
@@ -140,8 +144,9 @@ describe('pages', () => {
                                 reference: '1e0459b3-082e-4e70-89db-96e8ae173e10',
                                 serviceNames: '',
                                 signedUrl: 'https://test.example.com/gfnhgddd',
-                                sopNames: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                                sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
+                                fileSize: 1234,
                             },
                             {
                                 date: '',
@@ -154,8 +159,9 @@ describe('pages', () => {
                                 reference: '1e0459b3-082e-4e70-89db-96e8ae173e10',
                                 serviceNames: '',
                                 signedUrl: 'https://test.example.com/gfnhgddd',
-                                sopNames: 'Adult - Weekly Rider - Cash, Card - OnBus, TicketMachine, Shop',
+                                sopNames: 'Onboard (cash),Onboard (contactless)',
                                 zoneName: '',
+                                fileSize: 1234032,
                             },
                         ],
                         numberOfResults: 2,
