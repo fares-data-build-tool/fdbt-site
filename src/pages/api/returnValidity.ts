@@ -113,7 +113,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length > 0) {
-            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { errors });
+            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount, duration, errors });
             redirectTo(res, '/returnValidity');
             return;
         }

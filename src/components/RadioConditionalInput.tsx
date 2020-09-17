@@ -153,7 +153,12 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                             errorClass={`${input.id.includes('units') ? 'govuk-select--error' : 'govuk-input--error'}`}
                         >
                             {input.id.includes('units') ? (
-                                <select className="govuk-select" id={input.id} name={input.name} defaultValue="">
+                                <select
+                                    className="govuk-select"
+                                    id={input.id}
+                                    name={input.name}
+                                    defaultValue={input.defaultValue || ''}
+                                >
                                     <option value="" disabled>
                                         Select a {input.name}
                                     </option>
@@ -169,6 +174,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                                     id={input.id}
                                     name={input.name}
                                     type="text"
+                                    defaultValue={input.defaultValue || ''}
                                 />
                             )}
                         </FormElementWrapper>

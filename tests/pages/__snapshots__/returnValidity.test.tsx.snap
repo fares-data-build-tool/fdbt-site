@@ -52,11 +52,13 @@ exports[`pages returnValidity should render the page correctly 1`] = `
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-amount",
                     "label": "Amount",
                     "name": "amount",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -177,11 +179,13 @@ exports[`pages returnValidity should render the page with errors when both text 
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-amount",
                     "label": "Amount",
                     "name": "amount",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -290,11 +294,13 @@ exports[`pages returnValidity should render the page with errors when only dropd
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-amount",
                     "label": "Amount",
                     "name": "amount",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -403,11 +409,13 @@ exports[`pages returnValidity should render the page with errors when only text 
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-amount",
                     "label": "Amount",
                     "name": "amount",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",
@@ -516,11 +524,13 @@ exports[`pages returnValidity should render the page with errors when radio erro
                 "inputType": "textWithUnits",
                 "inputs": Array [
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-amount",
                     "label": "Amount",
                     "name": "amount",
                   },
                   Object {
+                    "defaultValue": "",
                     "id": "return-validity-units",
                     "label": "Duration",
                     "name": "duration",

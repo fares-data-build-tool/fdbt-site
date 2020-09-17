@@ -58,7 +58,7 @@ describe('pages', () => {
                 ],
                 ['with radio errors when they are present', radioError, mockReturnValidityFieldsetWithRadioErrors],
             ])('should return a fieldset %s', (_case, errors, mockFieldset) => {
-                const fieldset = getFieldset(errors);
+                const fieldset = getFieldset(errors, '', '');
                 expect(fieldset).toEqual(mockFieldset);
             });
         });

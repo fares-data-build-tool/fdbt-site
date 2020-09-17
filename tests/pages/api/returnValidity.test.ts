@@ -89,7 +89,7 @@ describe('returnValidity', () => {
     });
 
     it('should set the RETURN_VALIDITY_ATTRIBUTE with errors and redirect to itself (i.e. /returnValidity) when there are errors present', async () => {
-        const mockPassengerTypeDetails = {
+        const mockReturnValidityDetails = {
             validity: 'Yes',
             amount: '54',
             duration: 'days',
@@ -102,11 +102,15 @@ describe('returnValidity', () => {
             },
         ];
         const { req, res } = getMockRequestAndResponse({
-            body: mockPassengerTypeDetails,
+            body: mockReturnValidityDetails,
             mockWriteHeadFn: writeHeadMock,
         });
         await returnValidity(req, res);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, { errors: mockErrors });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, {
+            amount: mockReturnValidityDetails.amount,
+            duration: mockReturnValidityDetails.duration,
+            errors: mockErrors,
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/returnValidity',
         });

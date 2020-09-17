@@ -14,6 +14,8 @@ export interface ReturnValidity {
 }
 
 export interface ReturnValidityWithErrors {
+    amount?: string;
+    duration?: string;
     errors: ErrorInfo[];
 }
 
@@ -25,7 +27,7 @@ export interface ReturnValidityProps {
     fieldset: RadioConditionalInputFieldset;
 }
 
-export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset => ({
+export const getFieldset = (errors: ErrorInfo[], amount: string, duration: string): RadioConditionalInputFieldset => ({
     heading: {
         id: 'define-return-validity',
         content: 'Is this ticket valid for more than one day?',
@@ -48,11 +50,13 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
                     id: 'return-validity-amount',
                     name: 'amount',
                     label: 'Amount',
+                    defaultValue: amount,
                 },
                 {
                     id: 'return-validity-units',
                     name: 'duration',
                     label: 'Duration',
+                    defaultValue: duration,
                     options: ['days', 'weeks', 'months', 'years'],
                 },
             ],
@@ -98,12 +102,12 @@ const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & C
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ReturnValidityProps } => {
     const returnValidity = getSessionAttribute(ctx.req, RETURN_VALIDITY_ATTRIBUTE);
 
-    let errors: ErrorInfo[] = [];
-    if (returnValidity && isReturnValidityWithErrors(returnValidity)) {
-        errors = returnValidity.errors;
-    }
+    const errors: ErrorInfo[] =
+        returnValidity && isReturnValidityWithErrors(returnValidity) ? returnValidity.errors : [];
+    const amount = (returnValidity && returnValidity.amount) || '';
+    const duration = (returnValidity && returnValidity.duration) || '';
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(errors);
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, amount, duration);
     return { props: { errors, fieldset } };
 };
 
