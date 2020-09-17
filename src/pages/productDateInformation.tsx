@@ -68,7 +68,14 @@ const ProductDateInformation = ({
     csrfToken,
     errors = [],
     fieldsets,
-    dates,
+    dates = {
+        startDateDay: '',
+        startDateMonth: '',
+        startDateYear: '',
+        endDateDay: '',
+        endDateMonth: '',
+        endDateYear: '',
+    },
 }: FareDateInformationProps & CustomAppProps): ReactElement => {
     const customErrors: ErrorInfo[] = [];
 
@@ -117,7 +124,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
             dates:
                 productDateAttribute && isProductDateAttributeWithErrors(productDateAttribute)
                     ? productDateAttribute.dates
-                    : undefined,
+                    : {
+                          startDateDay: '',
+                          startDateMonth: '',
+                          startDateYear: '',
+                          endDateDay: '',
+                          endDateMonth: '',
+                          endDateYear: '',
+                      },
         },
     };
 };

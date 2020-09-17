@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
+import moment from 'moment';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DATE_INFORMATION } from '../../constants';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
-import moment from 'moment';
 
 export interface ProductDateAttribute {
     startDate: string;
@@ -25,24 +25,6 @@ export interface ProductDateInformationAttribute {
     endDateYear: string;
 }
 
-const yearRegex = new RegExp('^[0-9][0-9][0-9][0-9]$');
-
-const errorMessage = (input: string) => `Enter your ${input} date must be in the following format`;
-const startErrorMessage = errorMessage('Start');
-const endErrorMessage = errorMessage('End');
-
-// export const dateValidationSchemaStartEnd = yup.object().shape({
-//     startDateDay: yup
-//         .string()
-//         .when('startDateMonth').is(value => value !== '')
-//         .min(1, startErrorMessage)
-//         .max(31, startErrorMessage),
-//     startDateMonth: yup
-//         .string()
-//         .min(1, startErrorMessage)
-//         .max(31, startErrorMessage),
-// })
-
 export const dateValidationSchema = yup.object({
     startDateDay: yup.string().notRequired(),
     startDateMonth: yup.string().notRequired(),
@@ -53,8 +35,7 @@ export const dateValidationSchema = yup.object({
 });
 
 export const combinedDateSchema = yup.object({
-    startDate: yup.date().min(new Date(1900, 1, 1)),
-    endDate: yup.date().min(yup.ref('startDate'), 'End date cannot be before the start date'),
+    endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),
 });
 
 export const getErrorIdFromDateError = (errorPath: string): string => {
@@ -80,11 +61,23 @@ export const getErrorIdFromDateError = (errorPath: string): string => {
     }
 };
 
+const isDatesFieldEmpty = (day: string, month: string, year: string) => {
+    return day === '' && month === '' && year === '';
+};
+
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         let errors: ErrorInfo[] = [];
 
-        const { startDateDay, startDateMonth, startDateYear, endDateDay, endDateMonth, endDateYear } = req.body;
+        const {
+            startDateDay,
+            startDateMonth,
+            startDateYear,
+            endDateDay,
+            endDateMonth,
+            endDateYear,
+            productDates,
+        } = req.body;
 
         const dateInput: ProductDateInformationAttribute = {
             startDateDay,
@@ -95,31 +88,30 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             endDateYear,
         };
 
-        // try {
-        //     await dateValidationSchema.validate(req.body, { abortEarly: false });
-        // } catch (validationErrors) {
-        //     const validityErrors: yup.ValidationError = validationErrors;
-        //     console.log('datwvalidtiona', validationErrors);
-        //     errors = validityErrors.inner.map(error => ({
-        //         id: getErrorIdFromDateError(error.path),
-        //         errorMessage: error.message,
-        //         userInput: error.value,
-        //     }));
-        // }
+        let startDate = moment();
+        let endDate = moment().add(100, 'y');
 
-        // require this as need the top validation to work first otherwise the messages are not consistent
-        if (errors.length === 0) {
-            const startDate = moment([startDateYear, startDateMonth - 1, startDateDay]);
-            const endDate = moment([endDateYear, endDateMonth - 1, endDateDay, '23', '59']);
+        if (productDates === 'Yes') {
+            const isStartDateEmpty = isDatesFieldEmpty(startDateDay, startDateMonth, startDateYear);
+            const isEndDateEmpty = isDatesFieldEmpty(endDateDay, endDateMonth, endDateYear);
 
-            const startDateValid = startDate.isValid();
-            const endDateValid = endDate.isValid();
+            if (isStartDateEmpty && isEndDateEmpty) {
+                errors.push({ errorMessage: 'Enter a start or end date', id: 'start-date' });
+            }
 
-            if (!startDateValid) {
+            if (!isStartDateEmpty) {
+                startDate = moment([startDateYear, startDateMonth - 1, startDateDay, '00', '01']);
+            }
+
+            if (!isEndDateEmpty) {
+                endDate = moment([endDateYear, endDateMonth - 1, endDateDay, '23', '59']);
+            }
+
+            if (!startDate.isValid() && !isStartDateEmpty) {
                 errors.push({ errorMessage: 'Start date must be a real date', id: 'start-date' });
             }
 
-            if (!endDateValid) {
+            if (!endDate.isValid() && !isEndDateEmpty) {
                 errors.push({ errorMessage: 'End date must be a real date', id: 'end-date' });
             }
 
@@ -129,29 +121,44 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            try {
-                console.log('start end', startDate, endDate);
-                await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
-            } catch (validationErrors) {
-                const validityErrors: yup.ValidationError = validationErrors;
-                errors = validityErrors.inner.map(error => ({
-                    id: getErrorIdFromDateError(error.path),
-                    errorMessage: error.message,
-                    userInput: error.value,
-                }));
+            if (!isStartDateEmpty && !isEndDateEmpty) {
+                try {
+                    await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
+                } catch (validationErrors) {
+                    const validityErrors: yup.ValidationError = validationErrors;
+                    errors = validityErrors.inner.map(error => ({
+                        id: getErrorIdFromDateError(error.path),
+                        errorMessage: error.message,
+                        userInput: error.value,
+                    }));
+
+                    if (errors.length > 0) {
+                        updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, {
+                            errors,
+                            dates: dateInput,
+                        });
+                        redirectTo(res, '/productDateInformation');
+                        return;
+                    }
+                }
             }
 
-            updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, { errors, dates: dateInput });
-            redirectTo(res, '/productDateInformation');
+            updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+            });
+
+            redirectTo(res, '/productDateConfirmation');
+            return;
         }
 
         updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, {
-            errors,
-            dates: dateInput,
+            startDate: moment().toISOString(),
+            endDate: moment()
+                .add(100, 'y')
+                .toISOString(),
         });
-        redirectTo(res, '/productDateInformation');
-
-        return;
+        redirectTo(res, '/productDateConfirmation');
     } catch (error) {
         const message = 'There was a problem in the productDateInformation API.';
         redirectToError(res, message, 'api.productDateInformation', error);

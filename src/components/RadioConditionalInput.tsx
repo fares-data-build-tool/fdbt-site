@@ -155,7 +155,7 @@ const renderConditionalDateInputs = (
                             <div className="govuk-date-input" id={input.id}>
                                 {inputGroupError ? (
                                     <span id={input.id} className="govuk-error-message">
-                                        {radio.inputErrors[0].errorMessage}
+                                        {inputGroupError.errorMessage}
                                     </span>
                                 ) : null}
 
@@ -263,7 +263,6 @@ const renderConditionalRadioButton = (
         text: renderConditionalTextInput,
     };
 
-    console.log('radio.inputType===', dates);
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
