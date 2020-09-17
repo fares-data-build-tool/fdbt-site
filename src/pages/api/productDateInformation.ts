@@ -61,9 +61,8 @@ export const getErrorIdFromDateError = (errorPath: string): string => {
     }
 };
 
-const isDatesFieldEmpty = (day: string, month: string, year: string) => {
-    return day === '' && month === '' && year === '';
-};
+const isDatesFieldEmpty = (day: string, month: string, year: string): boolean =>
+    day === '' && month === '' && year === '';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -137,7 +136,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             errors,
                             dates: dateInput,
                         });
-                        redirectTo(res, '/productDateInformation');
+                        redirectTo(res, '/confirmation');
                         return;
                     }
                 }
@@ -148,7 +147,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 endDate: endDate.toISOString(),
             });
 
-            redirectTo(res, '/productDateConfirmation');
+            redirectTo(res, '/confirmation');
             return;
         }
 

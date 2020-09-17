@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
 import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
-import { ProductDateInformationAttribute } from 'src/pages/api/productDateInformation';
+import { ProductDateInformationAttribute } from '../pages/api/productDateInformation';
 
 export interface RadioWithoutConditionals extends BaseReactElement {
     value: string;
@@ -32,7 +32,7 @@ export interface RadioConditionalInputFieldset {
 
 export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
-    dates: ProductDateInformationAttribute;
+    dates?: ProductDateInformationAttribute;
 }
 
 export const createErrorId = (input: BaseReactElement, inputErrors: ErrorInfo[]): string => {
@@ -292,7 +292,7 @@ const isRadioWithConditionalInputs = (
     return (radioButton as RadioWithConditionalInputs).hint !== undefined;
 };
 
-const renderRadioButtonSet = (radio: RadioButton, dates: ProductDateInformationAttribute): ReactElement => {
+const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformationAttribute): ReactElement => {
     const radioButtonLabel: ReactElement = (
         <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
             {radio.label}

@@ -2938,6 +2938,11 @@ export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
         show: true,
     },
     {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
+        show: true,
+    },
+    {
         name: 'Service',
         link: '/service',
         show: true,
@@ -2983,6 +2988,11 @@ export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[]
     {
         name: 'Time restrictions',
         link: '/timeRestrictions',
+        show: true,
+    },
+    {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
         show: true,
     },
     {
@@ -3054,6 +3064,11 @@ export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] =
         show: true,
     },
     {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
+        show: true,
+    },
+    {
         name: 'Period type',
         link: '/periodType',
         show: true,
@@ -3110,6 +3125,11 @@ export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Brea
         show: true,
     },
     {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
+        show: true,
+    },
+    {
         name: 'Period type',
         link: '/periodType',
         show: true,
@@ -3160,6 +3180,11 @@ export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] 
     {
         name: 'Time restrictions details',
         link: '/defineTimeRestrictions',
+        show: true,
+    },
+    {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
         show: true,
     },
     {

@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../../src/interfaces';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
+    RadioWithConditionalInputs,
     renderConditionalTextInput,
 } from '../../src/components/RadioConditionalInput';
 
@@ -57,7 +58,7 @@ describe('RadioConditionalInput', () => {
                     id: 'age-range-min',
                 },
             ];
-            const mockRadio = {
+            const mockRadio: RadioWithConditionalInputs = {
                 id: 'age-range-required',
                 name: 'ageRange',
                 value: 'Yes',

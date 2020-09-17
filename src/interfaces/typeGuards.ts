@@ -16,7 +16,7 @@ import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerTy
 import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
-import { ProductDatesAttribute, ProductDatesAttributeWithErrors } from 'src/pages/api/productDateInformation';
+import { ProductDateAttribute, ProductDatesAttributeWithErrors } from '../pages/api/productDateInformation';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -102,6 +102,6 @@ export const isFareStage = (
     fareStages !== undefined && (fareStages as FareStagesAttribute).fareStages !== undefined;
 
 export const isProductDateAttributeWithErrors = (
-    productDates: ProductDatesAttribute | ProductDatesAttributeWithErrors | undefined,
+    productDates: ProductDateAttribute | ProductDatesAttributeWithErrors | undefined,
 ): productDates is ProductDatesAttributeWithErrors =>
     productDates !== undefined && (productDates as ProductDatesAttributeWithErrors).errors !== undefined;

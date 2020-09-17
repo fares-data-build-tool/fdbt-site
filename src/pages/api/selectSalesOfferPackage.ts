@@ -117,7 +117,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 await putUserDataInS3(userDataJson, uuid);
             }
 
-            redirectTo(res, '/thankyou');
+            redirectTo(res, '/productDateInformation');
         }
         return;
     } catch (error) {
