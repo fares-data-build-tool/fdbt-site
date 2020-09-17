@@ -152,6 +152,8 @@ export const getMockRequestAndResponse = ({
             productPrice: '1234',
         },
         [SALES_OFFER_PACKAGES_ATTRIBUTE]: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        destroy: (): void => {},
         ...session,
     };
 
