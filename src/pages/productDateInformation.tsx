@@ -82,13 +82,13 @@ const ProductDateInfo = ({
     const startDateErrors = errors.find(error => error.id === 'start-date');
 
     if (startDateErrors) {
-        customErrors.push({ errorMessage: startDateErrors.errorMessage, id: 'start-date-error' });
+        customErrors.push({ errorMessage: startDateErrors.errorMessage, id: 'start-date' });
     }
 
     const endDateErrors = errors.find(error => error.id === 'end-date');
 
     if (endDateErrors) {
-        customErrors.push({ errorMessage: endDateErrors.errorMessage, id: 'end-date-error' });
+        customErrors.push({ errorMessage: endDateErrors.errorMessage, id: 'end-date' });
     }
 
     return (
