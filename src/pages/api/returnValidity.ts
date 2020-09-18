@@ -32,7 +32,7 @@ export const returnValiditySchema = yup
                     .number()
                     .typeError(inputError)
                     .when('duration', {
-                        is: 'days',
+                        is: 'day',
                         then: yup
                             .number()
                             .typeError(inputError)
@@ -41,7 +41,7 @@ export const returnValiditySchema = yup
                             .max(31, daysAmountError),
                     })
                     .when('duration', {
-                        is: 'weeks',
+                        is: 'week',
                         then: yup
                             .number()
                             .typeError(inputError)
@@ -50,7 +50,7 @@ export const returnValiditySchema = yup
                             .max(52, weeksAmountError),
                     })
                     .when('duration', {
-                        is: 'months',
+                        is: 'month',
                         then: yup
                             .number()
                             .typeError(inputError)
@@ -59,7 +59,7 @@ export const returnValiditySchema = yup
                             .max(72, monthsAmountError),
                     })
                     .when('duration', {
-                        is: 'years',
+                        is: 'year',
                         then: yup
                             .number()
                             .typeError(inputError)
@@ -72,7 +72,7 @@ export const returnValiditySchema = yup
             is: 'Yes',
             then: yup
                 .string()
-                .oneOf(['days', 'weeks', 'months', 'years'], selectError)
+                .oneOf(['day', 'week', 'month', 'year'], selectError)
                 .required(selectError),
         }),
     })
@@ -97,7 +97,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             throw new Error('session is invalid.');
         }
 
-        const { amount, duration } = req.body;
+        const { amount, duration, validity } = req.body;
+
+        if (validity === 'No') {
+            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+            redirectTo(res, '/selectSalesOfferPackage');
+            return;
+        }
 
         let errors: ErrorInfo[] = [];
 
@@ -113,12 +119,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length > 0) {
-            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount, duration, errors });
+            updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount, typeOfDuration: duration, errors });
             redirectTo(res, '/returnValidity');
             return;
         }
 
-        updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount, duration });
+        updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount, typeOfDuration: duration });
         redirectTo(res, '/selectSalesOfferPackage');
     } catch (error) {
         const message = 'There was a problem in the returnValidity API.';

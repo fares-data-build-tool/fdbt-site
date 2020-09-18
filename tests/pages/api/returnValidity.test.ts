@@ -21,21 +21,21 @@ describe('returnValidity', () => {
             [{ validity: 'No' }, true],
             [{ validity: 'Yes' }, false],
             [{ validity: 'Yes', amount: '5' }, false],
-            [{ validity: 'Yes', duration: 'days' }, false],
-            [{ validity: 'Yes', amount: '7', duration: 'days' }, true],
-            [{ validity: 'Yes', amount: 'abc', duration: 'days' }, false],
-            [{ validity: 'Yes', amount: '   ', duration: 'days' }, false],
-            [{ validity: 'Yes', amount: '0', duration: 'days' }, false],
-            [{ validity: 'Yes', amount: '-17', duration: 'days' }, false],
-            [{ validity: 'Yes', amount: '1.74', duration: 'days' }, false],
+            [{ validity: 'Yes', duration: 'day' }, false],
+            [{ validity: 'Yes', amount: '7', duration: 'day' }, true],
+            [{ validity: 'Yes', amount: 'abc', duration: 'day' }, false],
+            [{ validity: 'Yes', amount: '   ', duration: 'day' }, false],
+            [{ validity: 'Yes', amount: '0', duration: 'day' }, false],
+            [{ validity: 'Yes', amount: '-17', duration: 'day' }, false],
+            [{ validity: 'Yes', amount: '1.74', duration: 'day' }, false],
             [{ validity: 'Yes', amount: '6', duration: 'hello there' }, false],
-            [{ validity: 'Yes', amount: '31', duration: 'days' }, true],
-            [{ validity: 'Yes', amount: '32', duration: 'days' }, false],
-            [{ validity: 'Yes', amount: '53', duration: 'weeks' }, false],
-            [{ validity: 'Yes', amount: '52', duration: 'weeks' }, true],
-            [{ validity: 'Yes', amount: '73', duration: 'months' }, false],
-            [{ validity: 'Yes', amount: '72', duration: 'months' }, true],
-            [{ validity: 'Yes', amount: '5', duration: 'years' }, true],
+            [{ validity: 'Yes', amount: '31', duration: 'day' }, true],
+            [{ validity: 'Yes', amount: '32', duration: 'day' }, false],
+            [{ validity: 'Yes', amount: '53', duration: 'week' }, false],
+            [{ validity: 'Yes', amount: '52', duration: 'week' }, true],
+            [{ validity: 'Yes', amount: '73', duration: 'month' }, false],
+            [{ validity: 'Yes', amount: '72', duration: 'month' }, true],
+            [{ validity: 'Yes', amount: '5', duration: 'year' }, true],
         ])('should validate that %s is %s', (candidate, validity) => {
             const result = returnValiditySchema.isValidSync(candidate);
             expect(result).toEqual(validity);
@@ -68,13 +68,14 @@ describe('returnValidity', () => {
         });
     });
 
-    it('should set the RETURN_VALIDITY_ATTRIBUTE and redirect to /selectSalesOfferPackage when no errors are found', async () => {
+    it('should set the RETURN_VALIDITY_ATTRIBUTE and redirect to /selectSalesOfferPackage when no errors are found and validity info is entered', async () => {
         const mockPassengerTypeDetails = {
             amount: '6',
-            duration: 'weeks',
+            typeOfDuration: 'week',
         };
         const mockBody = {
-            ...mockPassengerTypeDetails,
+            amount: '6',
+            duration: 'week',
             validity: 'Yes',
         };
         const { req, res } = getMockRequestAndResponse({
@@ -88,11 +89,26 @@ describe('returnValidity', () => {
         });
     });
 
+    it.only('should set the RETURN_VALIDITY_ATTRIBUTE and redirect to /selectSalesOfferPackage when no errors are found and no validity info is entered', async () => {
+        const mockBody = {
+            validity: 'No',
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: mockBody,
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await returnValidity(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectSalesOfferPackage',
+        });
+    });
+
     it('should set the RETURN_VALIDITY_ATTRIBUTE with errors and redirect to itself (i.e. /returnValidity) when there are errors present', async () => {
         const mockReturnValidityDetails = {
             validity: 'Yes',
             amount: '54',
-            duration: 'days',
+            duration: 'day',
         };
         const mockErrors: ErrorInfo[] = [
             {
@@ -108,7 +124,7 @@ describe('returnValidity', () => {
         await returnValidity(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, RETURN_VALIDITY_ATTRIBUTE, {
             amount: mockReturnValidityDetails.amount,
-            duration: mockReturnValidityDetails.duration,
+            typeOfDuration: mockReturnValidityDetails.duration,
             errors: mockErrors,
         });
         expect(writeHeadMock).toBeCalledWith(302, {

@@ -2,20 +2,15 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, CustomAppProps, NextPageContextWithSession, ReturnPeriodValidity } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../constants';
 import { getErrorsByIds } from '../utils';
 
-export interface ReturnValidity {
-    amount: string;
-    duration: string;
-}
-
-export interface ReturnValidityWithErrors {
+export interface ReturnPeriodValidityWithErrors {
     amount?: string;
-    duration?: string;
+    typeOfDuration?: string;
     errors: ErrorInfo[];
 }
 
@@ -57,7 +52,7 @@ export const getFieldset = (errors: ErrorInfo[], amount: string, duration: strin
                     name: 'duration',
                     label: 'Duration',
                     defaultValue: duration,
-                    options: ['days', 'weeks', 'months', 'years'],
+                    options: ['day', 'week', 'month', 'year'],
                 },
             ],
             inputErrors: getErrorsByIds(['return-validity-amount', 'return-validity-units'], errors),
@@ -72,10 +67,11 @@ export const getFieldset = (errors: ErrorInfo[], amount: string, duration: strin
     radioError: getErrorsByIds(['return-validity-defined'], errors),
 });
 
-export const isReturnValidityWithErrors = (
-    returnValidityDefinition: ReturnValidity | ReturnValidityWithErrors,
-): returnValidityDefinition is ReturnValidityWithErrors =>
-    (returnValidityDefinition as ReturnValidityWithErrors).errors !== undefined;
+export const isReturnPeriodValidityWithErrors = (
+    returnValidityDefinition: undefined | ReturnPeriodValidity | ReturnPeriodValidityWithErrors,
+): returnValidityDefinition is ReturnPeriodValidityWithErrors =>
+    returnValidityDefinition !== undefined &&
+    (returnValidityDefinition as ReturnPeriodValidityWithErrors).errors !== undefined;
 
 const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -103,9 +99,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Re
     const returnValidity = getSessionAttribute(ctx.req, RETURN_VALIDITY_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
-        returnValidity && isReturnValidityWithErrors(returnValidity) ? returnValidity.errors : [];
+        returnValidity && isReturnPeriodValidityWithErrors(returnValidity) ? returnValidity.errors : [];
     const amount = (returnValidity && returnValidity.amount) || '';
-    const duration = (returnValidity && returnValidity.duration) || '';
+    const duration = returnValidity && returnValidity.typeOfDuration !== undefined ? returnValidity.typeOfDuration : '';
 
     const fieldset: RadioConditionalInputFieldset = getFieldset(errors, amount, duration);
     return { props: { errors, fieldset } };

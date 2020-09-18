@@ -49,6 +49,7 @@ import {
     PeriodTypeAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
+    ReturnPeriodValidity,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -77,7 +78,7 @@ import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerTy
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { ReturnValidity, ReturnValidityWithErrors } from '../pages/returnValidity';
+import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -117,7 +118,7 @@ type SessionAttributeTypes = {
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
     [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
-    [RETURN_VALIDITY_ATTRIBUTE]: ReturnValidity | ReturnValidityWithErrors;
+    [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

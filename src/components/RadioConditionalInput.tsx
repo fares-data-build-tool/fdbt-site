@@ -164,7 +164,7 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
                                     </option>
                                     {input.options?.map(unit => (
                                         <option key={`${unit}-option`} value={unit}>
-                                            {startCase(unit)}
+                                            {startCase(`${unit}s`)}
                                         </option>
                                     ))}
                                 </select>
