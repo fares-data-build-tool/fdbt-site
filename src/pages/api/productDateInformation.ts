@@ -127,25 +127,23 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
 
-            if (!isStartDateEmpty && !isEndDateEmpty) {
-                try {
-                    await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
-                } catch (validationErrors) {
-                    const validityErrors: yup.ValidationError = validationErrors;
-                    errors = validityErrors.inner.map(error => ({
-                        id: getErrorIdFromDateError(error.path),
-                        errorMessage: error.message,
-                        userInput: error.value,
-                    }));
+            try {
+                await combinedDateSchema.validate({ startDate, endDate }, { abortEarly: false });
+            } catch (validationErrors) {
+                const validityErrors: yup.ValidationError = validationErrors;
+                errors = validityErrors.inner.map(error => ({
+                    id: getErrorIdFromDateError(error.path),
+                    errorMessage: error.message,
+                    userInput: error.value,
+                }));
 
-                    if (errors.length > 0) {
-                        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
-                            errors,
-                            dates: dateInput,
-                        });
-                        redirectTo(res, '/productDateInformation');
-                        return;
-                    }
+                if (errors.length > 0) {
+                    updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
+                        errors,
+                        dates: dateInput,
+                    });
+                    redirectTo(res, '/productDateInformation');
+                    return;
                 }
             }
 
