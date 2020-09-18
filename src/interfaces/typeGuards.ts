@@ -139,3 +139,10 @@ export const isProductDateAttributeWithErrors = (
     productDates: ProductDateAttribute | ProductDatesAttributeWithErrors | undefined,
 ): productDates is ProductDatesAttributeWithErrors =>
     productDates !== undefined && (productDates as ProductDatesAttributeWithErrors).errors !== undefined;
+
+export const isProductDateAttribute = (
+    productDates: ProductDateAttribute | ProductDatesAttributeWithErrors | undefined,
+): productDates is ProductDateAttribute =>
+    productDates !== undefined &&
+    (productDates as ProductDateAttribute).startDate !== undefined &&
+    (productDates as ProductDateAttribute).endDate !== undefined;

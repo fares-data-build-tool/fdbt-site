@@ -1164,6 +1164,10 @@ export const expectedMatchingJsonSingle: SingleTicket = {
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
@@ -1293,6 +1297,10 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
@@ -1452,6 +1460,10 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
@@ -1582,6 +1594,10 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
     stops: zoneStops,
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Product A',
@@ -1601,6 +1617,10 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
     email: 'test@example.com',
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Product A',
@@ -1642,6 +1662,10 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
     stops: zoneStops,
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1675,6 +1699,10 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
     email: 'test@example.com',
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1727,6 +1755,10 @@ export const expectedFlatFareProductUploadJson: FlatFareTicket = {
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Weekly Rider',

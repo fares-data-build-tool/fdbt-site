@@ -87,6 +87,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             endDateYear,
         };
 
+        if (!productDates) {
+            errors.push({ errorMessage: 'Choose one of the options below', id: 'product-dates-required' });
+            updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, { errors, dates: dateInput });
+            redirectTo(res, '/productDateInformation');
+            return;
+        }
+
         let startDate = moment();
         let endDate = moment().add(100, 'y');
 
@@ -136,7 +143,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             errors,
                             dates: dateInput,
                         });
-                        redirectTo(res, '/confirmation');
+                        redirectTo(res, '/productDateInformation');
                         return;
                     }
                 }
@@ -157,7 +164,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 .add(100, 'y')
                 .toISOString(),
         });
-        redirectTo(res, '/productDateConfirmation');
+        redirectTo(res, '/confirmation');
     } catch (error) {
         const message = 'There was a problem in the productDateInformation API.';
         redirectToError(res, message, 'api.productDateInformation', error);

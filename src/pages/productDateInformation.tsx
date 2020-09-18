@@ -58,7 +58,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['product-dates-information'], errors),
+        radioError: getErrorsByIds(['product-dates-required'], errors),
     };
 
     return [productDatesFieldsets];

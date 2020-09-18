@@ -220,7 +220,6 @@ const renderConditionalDateInputs = (
                                             inputMode="numeric"
                                             defaultValue={yearValue}
                                         />
-                                        ∏
                                     </div>
                                 </div>
                             </div>
