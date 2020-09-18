@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import camelCase from 'lodash/camelCase';
 import { ErrorInfo, BaseReactElement } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
-import { ProductDateInformationAttribute } from '../pages/api/productDateInformation';
+import { ProductDateInformation } from '../pages/api/productDateInformation';
 
 export interface RadioWithoutConditionals extends BaseReactElement {
     value: string;
@@ -32,7 +32,7 @@ export interface RadioConditionalInputFieldset {
 
 export interface RadioConditionalInputProps {
     fieldset: RadioConditionalInputFieldset;
-    dates?: ProductDateInformationAttribute;
+    dates?: ProductDateInformation;
 }
 
 export const createErrorId = (input: BaseReactElement, inputErrors: ErrorInfo[]): string => {
@@ -128,7 +128,7 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
 
 const renderConditionalDateInputs = (
     radio: RadioWithConditionalInputs,
-    dates: ProductDateInformationAttribute,
+    dates: ProductDateInformation,
 ): ReactElement => {
     const error = radio.inputErrors.length > 0;
 
@@ -233,7 +233,7 @@ const renderConditionalDateInputs = (
 const renderConditionalRadioButton = (
     radio: RadioWithConditionalInputs,
     radioLabel: ReactElement,
-    dates?: ProductDateInformationAttribute,
+    dates?: ProductDateInformation,
 ): ReactElement => {
     const baseRadioInput = (
         <input
@@ -291,7 +291,7 @@ const isRadioWithConditionalInputs = (
     return (radioButton as RadioWithConditionalInputs).hint !== undefined;
 };
 
-const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformationAttribute): ReactElement => {
+const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformation): ReactElement => {
     const radioButtonLabel: ReactElement = (
         <label className="govuk-label govuk-radios__label" htmlFor={radio.id}>
             {radio.label}

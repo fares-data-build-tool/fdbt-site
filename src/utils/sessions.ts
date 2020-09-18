@@ -30,7 +30,7 @@ import {
     JOURNEY_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
-    PRODUCT_DATE_INFORMATION,
+    PRODUCT_DATE_ATTRIBUTE,
 } from '../constants/index';
 import {
     InputMethodInfo,
@@ -77,7 +77,7 @@ import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerTy
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { ProductDateAttribute, ProductDatesAttributeWithErrors } from '../pages/api/productDateInformation';
+import { ProductDate, ProductDatesWithErrors } from '../pages/api/productDateInformation';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -117,7 +117,7 @@ type SessionAttributeTypes = {
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
     [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
-    [PRODUCT_DATE_INFORMATION]: ProductDateAttribute | ProductDatesAttributeWithErrors;
+    [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

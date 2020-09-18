@@ -20,7 +20,7 @@ import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerTy
 import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
-import { ProductDateAttribute, ProductDatesAttributeWithErrors } from '../pages/api/productDateInformation';
+import { ProductDate, ProductDatesWithErrors } from '../pages/api/productDateInformation';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -136,13 +136,13 @@ export const isSalesOfferPackages = (
     (salesOfferPackageInfo as SalesOfferPackage[])[0].ticketFormats !== undefined;
 
 export const isProductDateAttributeWithErrors = (
-    productDates: ProductDateAttribute | ProductDatesAttributeWithErrors | undefined,
-): productDates is ProductDatesAttributeWithErrors =>
-    productDates !== undefined && (productDates as ProductDatesAttributeWithErrors).errors !== undefined;
+    productDates: ProductDate | ProductDatesWithErrors | undefined,
+): productDates is ProductDatesWithErrors =>
+    productDates !== undefined && (productDates as ProductDatesWithErrors).errors !== undefined;
 
 export const isProductDateAttribute = (
-    productDates: ProductDateAttribute | ProductDatesAttributeWithErrors | undefined,
-): productDates is ProductDateAttribute =>
+    productDates: ProductDate | ProductDatesWithErrors | undefined,
+): productDates is ProductDate =>
     productDates !== undefined &&
-    (productDates as ProductDateAttribute).startDate !== undefined &&
-    (productDates as ProductDateAttribute).endDate !== undefined;
+    (productDates as ProductDate).startDate !== undefined &&
+    (productDates as ProductDate).endDate !== undefined;

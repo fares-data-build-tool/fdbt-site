@@ -46,7 +46,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
-    PRODUCT_DATE_INFORMATION,
+    PRODUCT_DATE_ATTRIBUTE,
 } from '../../../constants';
 
 import { PeriodExpiryWithErrors } from '../periodValidity';
@@ -135,7 +135,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const matchingAttributeInfo = getSessionAttribute(req, MATCHING_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_INFORMATION);
+    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !isFareType(fareTypeAttribute) ||
@@ -185,7 +185,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const inboundMatchingAttributeInfo = getSessionAttribute(req, INBOUND_MATCHING_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_INFORMATION);
+    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !isFareType(fareTypeAttribute) ||
@@ -248,7 +248,7 @@ export const getPeriodGeoZoneTicketJson = async (
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
-    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_INFORMATION);
+    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !nocCode ||
@@ -341,7 +341,7 @@ export const getPeriodMultipleServicesTicketJson = (
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const periodTypeAttribute = getSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE);
-    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_INFORMATION);
+    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !nocCode ||
@@ -440,7 +440,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_INFORMATION);
+    const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !nocCode ||

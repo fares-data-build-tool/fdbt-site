@@ -3,12 +3,12 @@ import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
-import { PRODUCT_DATE_INFORMATION } from '../constants';
+import { PRODUCT_DATE_ATTRIBUTE } from '../constants';
 import { isProductDateAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
 import { getErrorsByIds } from '../utils';
-import { ProductDateInformationAttribute } from './api/productDateInformation';
+import { ProductDateInformation } from './api/productDateInformation';
 
 const title = 'Product Date Information - Fares Data Build Tool';
 const description = 'Product Date Information page of the Fares Data Build Tool';
@@ -16,7 +16,7 @@ const description = 'Product Date Information page of the Fares Data Build Tool'
 export interface FareDateInformationProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
-    dates: ProductDateInformationAttribute;
+    dates: ProductDateInformation;
 }
 
 export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
@@ -64,7 +64,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
     return [productDatesFieldsets];
 };
 
-const ProductDateInformation = ({
+const ProductDateInfo = ({
     csrfToken,
     errors = [],
     fieldsets,
@@ -108,7 +108,7 @@ const ProductDateInformation = ({
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
-    const productDateAttribute = getSessionAttribute(ctx.req, PRODUCT_DATE_INFORMATION);
+    const productDateAttribute = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
         productDateAttribute && isProductDateAttributeWithErrors(productDateAttribute)
@@ -136,4 +136,4 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     };
 };
 
-export default ProductDateInformation;
+export default ProductDateInfo;

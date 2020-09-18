@@ -2,21 +2,21 @@ import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import moment from 'moment';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { PRODUCT_DATE_INFORMATION } from '../../constants';
+import { PRODUCT_DATE_ATTRIBUTE } from '../../constants';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
 
-export interface ProductDateAttribute {
+export interface ProductDate {
     startDate: string;
     endDate: string;
 }
 
-export interface ProductDatesAttributeWithErrors {
+export interface ProductDatesWithErrors {
     errors: ErrorInfo[];
-    dates: ProductDateInformationAttribute;
+    dates: ProductDateInformation;
 }
 
-export interface ProductDateInformationAttribute {
+export interface ProductDateInformation {
     startDateDay: string;
     startDateMonth: string;
     startDateYear: string;
@@ -78,7 +78,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             productDates,
         } = req.body;
 
-        const dateInput: ProductDateInformationAttribute = {
+        const dateInput: ProductDateInformation = {
             startDateDay,
             startDateMonth,
             startDateYear,
@@ -89,7 +89,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (!productDates) {
             errors.push({ errorMessage: 'Choose one of the options below', id: 'product-dates-required' });
-            updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, { errors, dates: dateInput });
+            updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, { errors, dates: dateInput });
             redirectTo(res, '/productDateInformation');
             return;
         }
@@ -122,7 +122,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             if (errors.length > 0) {
-                updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, { errors, dates: dateInput });
+                updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, { errors, dates: dateInput });
                 redirectTo(res, '/productDateInformation');
                 return;
             }
@@ -139,7 +139,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     }));
 
                     if (errors.length > 0) {
-                        updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, {
+                        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
                             errors,
                             dates: dateInput,
                         });
@@ -149,7 +149,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
             }
 
-            updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, {
+            updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
                 startDate: startDate.toISOString(),
                 endDate: endDate.toISOString(),
             });
@@ -158,7 +158,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        updateSessionAttribute(req, PRODUCT_DATE_INFORMATION, {
+        updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: moment().toISOString(),
             endDate: moment()
                 .add(100, 'y')
