@@ -186,7 +186,7 @@ describe('csvZoneUpload', () => {
                 errors: [
                     {
                         errorMessage: 'Select a CSV file to upload',
-                        id: 'csv-upload-error',
+                        id: 'csv-upload',
                     },
                 ],
             });
@@ -226,7 +226,7 @@ describe('csvZoneUpload', () => {
                 errors: [
                     {
                         errorMessage: 'The selected file must be smaller than 5MB',
-                        id: 'csv-upload-error',
+                        id: 'csv-upload',
                     },
                 ],
             });
@@ -266,7 +266,7 @@ describe('csvZoneUpload', () => {
                 errors: [
                     {
                         errorMessage: 'The selected file must be a CSV',
-                        id: 'csv-upload-error',
+                        id: 'csv-upload',
                     },
                 ],
             });
@@ -306,7 +306,7 @@ describe('csvZoneUpload', () => {
                 errors: [
                     {
                         errorMessage: 'The selected file contains a virus',
-                        id: 'csv-upload-error',
+                        id: 'csv-upload',
                     },
                 ],
             });

@@ -21,9 +21,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error when the file contains duplicate fare stages', async () => {
-        const mockError: ErrorInfo[] = [
-            { id: 'csv-upload-error', errorMessage: 'Fare stage names cannot be the same' },
-        ];
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'Fare stage names cannot be the same' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -59,7 +57,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload when no file is attached', async () => {
-        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'Select a CSV file to upload' }];
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'Select a CSV file to upload' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -97,7 +95,7 @@ describe('csvUpload', () => {
 
     it('should return 302 redirect to /csvUpload with an error message when a the attached file is too large', async () => {
         const mockError: ErrorInfo[] = [
-            { id: 'csv-upload-error', errorMessage: 'The selected file must be smaller than 5MB' },
+            { id: 'csv-upload', errorMessage: 'The selected file must be smaller than 5MB' },
         ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
@@ -140,7 +138,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error message when the attached file is not a csv', async () => {
-        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file must be a CSV' }];
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file must be a CSV' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -271,9 +269,7 @@ describe('csvUpload', () => {
     });
 
     it('should throw an error if the fares triangle data has non-numerical prices', async () => {
-        const mockError: ErrorInfo[] = [
-            { id: 'csv-upload-error', errorMessage: 'The selected file must use the template' },
-        ];
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file must use the template' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -309,9 +305,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error message if the fares triangle data has missing prices', async () => {
-        const mockError: ErrorInfo[] = [
-            { id: 'csv-upload-error', errorMessage: 'The selected file must use the template' },
-        ];
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file must use the template' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -347,7 +341,7 @@ describe('csvUpload', () => {
     });
 
     it('should return 302 redirect to /csvUpload with an error message if the file contains a virus', async () => {
-        const mockError: ErrorInfo[] = [{ id: 'csv-upload-error', errorMessage: 'The selected file contains a virus' }];
+        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file contains a virus' }];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
