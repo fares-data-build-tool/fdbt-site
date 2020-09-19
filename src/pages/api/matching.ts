@@ -18,6 +18,38 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('No service or userfarestages info found');
         }
 
+        if (req.body.interpolate === 'yes') {
+            delete req.body.service;
+            delete req.body.userfarestages;
+            delete req.body.interpolate;
+            const keys = Object.keys(req.body);
+            const data = req.body;
+            let currentFareStage = '';
+            keys.forEach((key, index) => {
+                if (index === 0) {
+                    currentFareStage = data[key];
+                }
+
+                if (data[key] === '') {
+                    data[key] = currentFareStage;
+                } else {
+                    currentFareStage = data[key];
+                }
+            });
+            const interpolatedStages: string[] = [];
+
+            Object.keys(data).map(e => {
+                if (data[e] !== '') {
+                    interpolatedStages.push(data[e]);
+                }
+                return null;
+            });
+
+            const matchingAttributeError: MatchingWithErrors = { error: false, selectedFareStages: interpolatedStages };
+            updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
+            redirectTo(res, '/matching');
+            return;
+        }
         const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
         const matchingFareZones = getMatchingFareZonesFromForm(req);

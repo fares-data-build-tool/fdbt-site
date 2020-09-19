@@ -7,12 +7,20 @@ interface MatchingListProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     selectedFareStages: string[];
+    interpolatedFareStages: string[];
 }
 
-const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFareStages: string[]): ReactElement[] => {
+const getStopItems = (
+    userFareStages: UserFareStages,
+    stops: Stop[],
+    selectedFareStages: string[],
+    interpolatedFareStages: string[],
+): ReactElement[] => {
     const stopItems: ReactElement[] = stops.map((stop, index) => {
         let selectValue = '';
-
+        if (interpolatedFareStages.length > 0) {
+            selectValue = interpolatedFareStages[index];
+        }
         userFareStages.fareStages.map((stage: FareStage) => {
             const currentValue = JSON.stringify({ stop, stage: stage.stageName });
 
@@ -26,7 +34,6 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
 
             return null;
         });
-
         return (
             <tr key={stop.atcoCode} className="govuk-table__row">
                 <td className="govuk-table__cell stop-cell" id={`stop-${index}`}>
@@ -46,7 +53,11 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
                         <option value="">Not Applicable</option>
                         {userFareStages.fareStages.map((stage: FareStage) => {
                             return (
-                                <option key={stage.stageName} value={JSON.stringify({ stop, stage: stage.stageName })}>
+                                <option
+                                    selected={stage.stageName === JSON.parse(selectValue).stage}
+                                    key={stage.stageName}
+                                    value={JSON.stringify({ stop, stage: stage.stageName })}
+                                >
                                     {stage.stageName}
                                 </option>
                             );
@@ -59,7 +70,12 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
     return stopItems;
 };
 
-const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingListProps): ReactElement => (
+const MatchingList = ({
+    userFareStages,
+    stops,
+    selectedFareStages,
+    interpolatedFareStages,
+}: MatchingListProps): ReactElement => (
     <table className="govuk-table">
         <thead className="govuk-table__head">
             <tr className="govuk-table__row">
@@ -74,7 +90,9 @@ const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingLis
                 </th>
             </tr>
         </thead>
-        <tbody className="govuk-table__body">{getStopItems(userFareStages, stops, selectedFareStages)}</tbody>
+        <tbody className="govuk-table__body">
+            {getStopItems(userFareStages, stops, selectedFareStages, interpolatedFareStages)}
+        </tbody>
     </table>
 );
 

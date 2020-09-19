@@ -21,6 +21,7 @@ interface MatchingBaseProps {
     heading: string;
     apiEndpoint: string;
     csrfToken: string;
+    interpolatedFareStages: string[];
 }
 
 const MatchingBase = ({
@@ -36,6 +37,7 @@ const MatchingBase = ({
     heading,
     apiEndpoint,
     csrfToken,
+    interpolatedFareStages,
 }: MatchingBaseProps): ReactElement => {
     const errors: ErrorInfo[] = [];
 
@@ -64,6 +66,7 @@ const MatchingBase = ({
                                     userFareStages={userFareStages}
                                     stops={stops}
                                     selectedFareStages={selectedFareStages}
+                                    interpolatedFareStages={interpolatedFareStages}
                                 />
                             </FormElementWrapper>
                         </fieldset>
@@ -71,6 +74,25 @@ const MatchingBase = ({
 
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
+                    <div className="govuk-checkboxes">
+                        <div className="govuk-checkboxes__item">
+                            <input
+                                className="govuk-checkboxes__input"
+                                id="interpolate"
+                                name="interpolate"
+                                type="checkbox"
+                                value="yes"
+                                aria-describedby="interpolate-label"
+                            />
+                            <label
+                                id="interpolate-label"
+                                className="govuk-label govuk-checkboxes__label"
+                                htmlFor="interpolate"
+                            >
+                                Interpolate fare stages and refresh
+                            </label>
+                        </div>
+                    </div>
                     <input type="submit" value="Continue" id="submit-button" className="govuk-button" />
                 </>
             </CsrfForm>

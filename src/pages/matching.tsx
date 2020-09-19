@@ -24,6 +24,7 @@ interface MatchingProps {
     service: BasicService;
     error: boolean;
     selectedFareStages: string[];
+    interpolatedFareStages: string[];
 }
 
 const Matching = ({
@@ -33,6 +34,7 @@ const Matching = ({
     error,
     selectedFareStages,
     csrfToken,
+    interpolatedFareStages,
 }: MatchingProps & CustomAppProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
@@ -47,12 +49,17 @@ const Matching = ({
         travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
         csrfToken={csrfToken}
+        interpolatedFareStages={interpolatedFareStages}
     />
 );
 
 export const isMatchingWithErrors = (
     matchingAttribute: MatchingInfo | MatchingWithErrors,
 ): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.error;
+
+export const isMatchingWithInterpolation = (
+    matchingAttribute: MatchingInfo | MatchingWithErrors,
+): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.selectedFareStages.length > 0;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const cookies = parseCookies(ctx);
@@ -91,6 +98,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
 
     const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
+    let selectedFareStages: string[] = [];
+    let interpolatedFareStages: string[] = [];
+    if (matchingAttribute && isMatchingWithErrors(matchingAttribute)) {
+        selectedFareStages = matchingAttribute.selectedFareStages;
+    } else if (matchingAttribute && isMatchingWithInterpolation(matchingAttribute)) {
+        interpolatedFareStages = matchingAttribute.selectedFareStages;
+    }
 
     return {
         props: {
@@ -103,10 +117,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 serviceDescription: service.serviceDescription,
             },
             error: matchingAttribute && isMatchingWithErrors(matchingAttribute) ? matchingAttribute.error : false,
-            selectedFareStages:
-                matchingAttribute && isMatchingWithErrors(matchingAttribute)
-                    ? matchingAttribute.selectedFareStages
-                    : [],
+            selectedFareStages,
+            interpolatedFareStages,
         },
     };
 };
