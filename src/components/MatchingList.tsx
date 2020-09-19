@@ -7,20 +7,11 @@ interface MatchingListProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     selectedFareStages: string[];
-    interpolatedFareStages: string[];
 }
 
-const getStopItems = (
-    userFareStages: UserFareStages,
-    stops: Stop[],
-    selectedFareStages: string[],
-    interpolatedFareStages: string[],
-): ReactElement[] => {
+const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFareStages: string[]): ReactElement[] => {
     const stopItems: ReactElement[] = stops.map((stop, index) => {
         let selectValue = '';
-        if (interpolatedFareStages.length > 0) {
-            selectValue = interpolatedFareStages[index];
-        }
         userFareStages.fareStages.map((stage: FareStage) => {
             const currentValue = JSON.stringify({ stop, stage: stage.stageName });
 
@@ -53,11 +44,7 @@ const getStopItems = (
                         <option value="">Not Applicable</option>
                         {userFareStages.fareStages.map((stage: FareStage) => {
                             return (
-                                <option
-                                    selected={stage.stageName === JSON.parse(selectValue).stage}
-                                    key={stage.stageName}
-                                    value={JSON.stringify({ stop, stage: stage.stageName })}
-                                >
+                                <option key={stage.stageName} value={JSON.stringify({ stop, stage: stage.stageName })}>
                                     {stage.stageName}
                                 </option>
                             );
@@ -70,12 +57,7 @@ const getStopItems = (
     return stopItems;
 };
 
-const MatchingList = ({
-    userFareStages,
-    stops,
-    selectedFareStages,
-    interpolatedFareStages,
-}: MatchingListProps): ReactElement => (
+const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingListProps): ReactElement => (
     <table className="govuk-table">
         <thead className="govuk-table__head">
             <tr className="govuk-table__row">
@@ -90,9 +72,7 @@ const MatchingList = ({
                 </th>
             </tr>
         </thead>
-        <tbody className="govuk-table__body">
-            {getStopItems(userFareStages, stops, selectedFareStages, interpolatedFareStages)}
-        </tbody>
+        <tbody className="govuk-table__body">{getStopItems(userFareStages, stops, selectedFareStages)}</tbody>
     </table>
 );
 

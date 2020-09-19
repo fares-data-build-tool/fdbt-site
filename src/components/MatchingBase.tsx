@@ -21,7 +21,6 @@ interface MatchingBaseProps {
     heading: string;
     apiEndpoint: string;
     csrfToken: string;
-    interpolatedFareStages: string[];
 }
 
 const MatchingBase = ({
@@ -37,7 +36,6 @@ const MatchingBase = ({
     heading,
     apiEndpoint,
     csrfToken,
-    interpolatedFareStages,
 }: MatchingBaseProps): ReactElement => {
     const errors: ErrorInfo[] = [];
 
@@ -66,7 +64,6 @@ const MatchingBase = ({
                                     userFareStages={userFareStages}
                                     stops={stops}
                                     selectedFareStages={selectedFareStages}
-                                    interpolatedFareStages={interpolatedFareStages}
                                 />
                             </FormElementWrapper>
                         </fieldset>

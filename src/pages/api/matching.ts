@@ -45,6 +45,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 return null;
             });
 
+            console.log(interpolatedStages);
+
             const matchingAttributeError: MatchingWithErrors = { error: false, selectedFareStages: interpolatedStages };
             updateSessionAttribute(req, MATCHING_ATTRIBUTE, matchingAttributeError);
             redirectTo(res, '/matching');

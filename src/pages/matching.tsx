@@ -24,7 +24,6 @@ interface MatchingProps {
     service: BasicService;
     error: boolean;
     selectedFareStages: string[];
-    interpolatedFareStages: string[];
 }
 
 const Matching = ({
@@ -34,7 +33,6 @@ const Matching = ({
     error,
     selectedFareStages,
     csrfToken,
-    interpolatedFareStages,
 }: MatchingProps & CustomAppProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
@@ -49,7 +47,6 @@ const Matching = ({
         travelineHintText={travelineHintText}
         apiEndpoint={apiEndpoint}
         csrfToken={csrfToken}
-        interpolatedFareStages={interpolatedFareStages}
     />
 );
 
@@ -99,11 +96,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
     let selectedFareStages: string[] = [];
-    let interpolatedFareStages: string[] = [];
     if (matchingAttribute && isMatchingWithErrors(matchingAttribute)) {
         selectedFareStages = matchingAttribute.selectedFareStages;
     } else if (matchingAttribute && isMatchingWithInterpolation(matchingAttribute)) {
-        interpolatedFareStages = matchingAttribute.selectedFareStages;
+        selectedFareStages = matchingAttribute.selectedFareStages;
     }
 
     return {
@@ -118,7 +114,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             },
             error: matchingAttribute && isMatchingWithErrors(matchingAttribute) ? matchingAttribute.error : false,
             selectedFareStages,
-            interpolatedFareStages,
         },
     };
 };
