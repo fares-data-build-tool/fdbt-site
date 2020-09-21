@@ -24,20 +24,20 @@ exports[`pages returnValidity should render the page correctly 1`] = `
           className="govuk-fieldset__heading"
           id="return-validity-page-heading"
         >
-          Is this ticket valid for more than one day?
+          Is the return part of this ticket valid for more than one day?
         </h1>
       </legend>
       <span
         className="govuk-hint"
         id="return-validity-hint"
       >
-        Select no if this ticket is only valid on day of travel
+        Select no if the return journey is only valid on the same day as the outbound journey
       </span>
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is this ticket valid for more than one day?",
+              "content": "Is the return part of this ticket valid for more than one day?",
               "hidden": true,
               "id": "define-return-validity",
             },
@@ -104,7 +104,7 @@ exports[`pages returnValidity should render the page with errors when both text 
   errors={
     Array [
       Object {
-        "errorMessage": "Enter a whole number",
+        "errorMessage": "Enter a whole number greater than zero",
         "id": "return-validity-amount",
       },
       Object {
@@ -124,7 +124,7 @@ exports[`pages returnValidity should render the page with errors when both text 
       errors={
         Array [
           Object {
-            "errorMessage": "Enter a whole number",
+            "errorMessage": "Enter a whole number greater than zero",
             "id": "return-validity-amount",
           },
           Object {
@@ -144,20 +144,20 @@ exports[`pages returnValidity should render the page with errors when both text 
           className="govuk-fieldset__heading"
           id="return-validity-page-heading"
         >
-          Is this ticket valid for more than one day?
+          Is the return part of this ticket valid for more than one day?
         </h1>
       </legend>
       <span
         className="govuk-hint"
         id="return-validity-hint"
       >
-        Select no if this ticket is only valid on day of travel
+        Select no if the return journey is only valid on the same day as the outbound journey
       </span>
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is this ticket valid for more than one day?",
+              "content": "Is the return part of this ticket valid for more than one day?",
               "hidden": true,
               "id": "define-return-validity",
             },
@@ -172,7 +172,7 @@ exports[`pages returnValidity should render the page with errors when both text 
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
-                    "errorMessage": "Enter a whole number",
+                    "errorMessage": "Enter a whole number greater than zero",
                     "id": "return-validity-amount",
                   },
                   Object {
@@ -265,20 +265,20 @@ exports[`pages returnValidity should render the page with errors when only dropd
           className="govuk-fieldset__heading"
           id="return-validity-page-heading"
         >
-          Is this ticket valid for more than one day?
+          Is the return part of this ticket valid for more than one day?
         </h1>
       </legend>
       <span
         className="govuk-hint"
         id="return-validity-hint"
       >
-        Select no if this ticket is only valid on day of travel
+        Select no if the return journey is only valid on the same day as the outbound journey
       </span>
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is this ticket valid for more than one day?",
+              "content": "Is the return part of this ticket valid for more than one day?",
               "hidden": true,
               "id": "define-return-validity",
             },
@@ -350,7 +350,7 @@ exports[`pages returnValidity should render the page with errors when only text 
   errors={
     Array [
       Object {
-        "errorMessage": "Enter a whole number",
+        "errorMessage": "Enter a whole number greater than zero",
         "id": "return-validity-amount",
       },
     ]
@@ -366,7 +366,7 @@ exports[`pages returnValidity should render the page with errors when only text 
       errors={
         Array [
           Object {
-            "errorMessage": "Enter a whole number",
+            "errorMessage": "Enter a whole number greater than zero",
             "id": "return-validity-amount",
           },
         ]
@@ -382,20 +382,20 @@ exports[`pages returnValidity should render the page with errors when only text 
           className="govuk-fieldset__heading"
           id="return-validity-page-heading"
         >
-          Is this ticket valid for more than one day?
+          Is the return part of this ticket valid for more than one day?
         </h1>
       </legend>
       <span
         className="govuk-hint"
         id="return-validity-hint"
       >
-        Select no if this ticket is only valid on day of travel
+        Select no if the return journey is only valid on the same day as the outbound journey
       </span>
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is this ticket valid for more than one day?",
+              "content": "Is the return part of this ticket valid for more than one day?",
               "hidden": true,
               "id": "define-return-validity",
             },
@@ -410,7 +410,7 @@ exports[`pages returnValidity should render the page with errors when only text 
                 "id": "return-validity-defined",
                 "inputErrors": Array [
                   Object {
-                    "errorMessage": "Enter a whole number",
+                    "errorMessage": "Enter a whole number greater than zero",
                     "id": "return-validity-amount",
                   },
                 ],
@@ -499,20 +499,20 @@ exports[`pages returnValidity should render the page with errors when radio erro
           className="govuk-fieldset__heading"
           id="return-validity-page-heading"
         >
-          Is this ticket valid for more than one day?
+          Is the return part of this ticket valid for more than one day?
         </h1>
       </legend>
       <span
         className="govuk-hint"
         id="return-validity-hint"
       >
-        Select no if this ticket is only valid on day of travel
+        Select no if the return journey is only valid on the same day as the outbound journey
       </span>
       <RadioConditionalInput
         fieldset={
           Object {
             "heading": Object {
-              "content": "Is this ticket valid for more than one day?",
+              "content": "Is the return part of this ticket valid for more than one day?",
               "hidden": true,
               "id": "define-return-validity",
             },

@@ -15,12 +15,14 @@ import { RETURN_VALIDITY_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('returnValidity', () => {
-        const textInputError: ErrorInfo[] = [{ errorMessage: 'Enter a whole number', id: 'return-validity-amount' }];
+        const textInputError: ErrorInfo[] = [
+            { errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' },
+        ];
         const dropdownInputError: ErrorInfo[] = [
             { errorMessage: 'Choose one of the options from the dropdown list', id: 'return-validity-units' },
         ];
         const textAndDropdownInputErrors: ErrorInfo[] = [
-            { errorMessage: 'Enter a whole number', id: 'return-validity-amount' },
+            { errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' },
             { errorMessage: 'Choose one of the options from the dropdown list', id: 'return-validity-units' },
         ];
         const radioError: ErrorInfo[] = [

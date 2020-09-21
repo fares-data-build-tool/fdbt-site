@@ -2,6 +2,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import returnValidity, {
     returnValiditySchema,
     getErrorIdFromValidityError,
+    formatRequestBody,
 } from '../../../src/pages/api/returnValidity';
 import * as sessions from '../../../src/utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../../../src/constants';
@@ -29,12 +30,12 @@ describe('returnValidity', () => {
             [{ validity: 'Yes', amount: '-17', duration: 'day' }, false],
             [{ validity: 'Yes', amount: '1.74', duration: 'day' }, false],
             [{ validity: 'Yes', amount: '6', duration: 'hello there' }, false],
-            [{ validity: 'Yes', amount: '31', duration: 'day' }, true],
-            [{ validity: 'Yes', amount: '32', duration: 'day' }, false],
-            [{ validity: 'Yes', amount: '53', duration: 'week' }, false],
-            [{ validity: 'Yes', amount: '52', duration: 'week' }, true],
-            [{ validity: 'Yes', amount: '73', duration: 'month' }, false],
-            [{ validity: 'Yes', amount: '72', duration: 'month' }, true],
+            [{ validity: 'Yes', amount: '365', duration: 'day' }, true],
+            [{ validity: 'Yes', amount: '366', duration: 'day' }, false],
+            [{ validity: 'Yes', amount: '260', duration: 'week' }, true],
+            [{ validity: 'Yes', amount: '261', duration: 'week' }, false],
+            [{ validity: 'Yes', amount: '120', duration: 'month' }, true],
+            [{ validity: 'Yes', amount: '121', duration: 'month' }, false],
             [{ validity: 'Yes', amount: '5', duration: 'year' }, true],
         ])('should validate that %s is %s', (candidate, validity) => {
             const result = returnValiditySchema.isValidSync(candidate);
@@ -54,6 +55,18 @@ describe('returnValidity', () => {
 
         it('should throw an error when the error path does not match a valid input field', () => {
             expect(() => getErrorIdFromValidityError('notValid')).toThrow();
+        });
+    });
+
+    describe('formatRequestBody', () => {
+        it('should remove whitespace from the request body text input of amount', () => {
+            const reqBodyParams = { validity: 'Yes' };
+            const { req } = getMockRequestAndResponse({
+                cookieValues: {},
+                body: { amount: '   2   4', ...reqBodyParams },
+            });
+            const filtered = formatRequestBody(req);
+            expect(filtered).toEqual({ amount: '24', ...reqBodyParams });
         });
     });
 
@@ -89,7 +102,7 @@ describe('returnValidity', () => {
         });
     });
 
-    it.only('should set the RETURN_VALIDITY_ATTRIBUTE and redirect to /selectSalesOfferPackage when no errors are found and no validity info is entered', async () => {
+    it('should set the RETURN_VALIDITY_ATTRIBUTE and redirect to /selectSalesOfferPackage when no errors are found and no validity info is entered', async () => {
         const mockBody = {
             validity: 'No',
         };
@@ -107,14 +120,14 @@ describe('returnValidity', () => {
     it('should set the RETURN_VALIDITY_ATTRIBUTE with errors and redirect to itself (i.e. /returnValidity) when there are errors present', async () => {
         const mockReturnValidityDetails = {
             validity: 'Yes',
-            amount: '54',
-            duration: 'day',
+            amount: '720',
+            duration: 'week',
         };
         const mockErrors: ErrorInfo[] = [
             {
-                errorMessage: 'Enter a number of days between 1 and 31',
+                errorMessage: 'Enter a whole number greater than zero',
                 id: 'return-validity-amount',
-                userInput: '54',
+                userInput: '720',
             },
         ];
         const { req, res } = getMockRequestAndResponse({

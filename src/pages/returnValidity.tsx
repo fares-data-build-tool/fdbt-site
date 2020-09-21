@@ -25,7 +25,7 @@ export interface ReturnValidityProps {
 export const getFieldset = (errors: ErrorInfo[], amount: string, duration: string): RadioConditionalInputFieldset => ({
     heading: {
         id: 'define-return-validity',
-        content: 'Is this ticket valid for more than one day?',
+        content: 'Is the return part of this ticket valid for more than one day?',
         hidden: true,
     },
     radios: [
@@ -85,7 +85,7 @@ const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & C
                         </h1>
                     </legend>
                     <span className="govuk-hint" id="return-validity-hint">
-                        Select no if this ticket is only valid on day of travel
+                        Select no if the return journey is only valid on the same day as the outbound journey
                     </span>
                     <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
                 </div>

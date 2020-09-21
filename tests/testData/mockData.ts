@@ -2805,7 +2805,7 @@ export const mockTimeRestrictionsRadioAndInputErrors: ErrorInfo[] = [
 export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
     heading: {
         id: 'define-return-validity',
-        content: 'Is this ticket valid for more than one day?',
+        content: 'Is the return part of this ticket valid for more than one day?',
         hidden: true,
     },
     radios: [
@@ -2850,7 +2850,7 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
 export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'define-return-validity',
-        content: 'Is this ticket valid for more than one day?',
+        content: 'Is the return part of this ticket valid for more than one day?',
         hidden: true,
     },
     radios: [
@@ -2880,7 +2880,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
                     defaultValue: '',
                 },
             ],
-            inputErrors: [{ errorMessage: 'Enter a whole number', id: 'return-validity-amount' }],
+            inputErrors: [{ errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' }],
         },
         {
             id: 'return-validity-not-defined',
@@ -2895,7 +2895,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
 export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'define-return-validity',
-        content: 'Is this ticket valid for more than one day?',
+        content: 'Is the return part of this ticket valid for more than one day?',
         hidden: true,
     },
     radios: [
@@ -2942,7 +2942,7 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
 export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'define-return-validity',
-        content: 'Is this ticket valid for more than one day?',
+        content: 'Is the return part of this ticket valid for more than one day?',
         hidden: true,
     },
     radios: [
@@ -2973,7 +2973,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
                 },
             ],
             inputErrors: [
-                { errorMessage: 'Enter a whole number', id: 'return-validity-amount' },
+                { errorMessage: 'Enter a whole number greater than zero', id: 'return-validity-amount' },
                 { errorMessage: 'Choose one of the options from the dropdown list', id: 'return-validity-units' },
             ],
         },
@@ -2990,7 +2990,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
 export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFieldset = {
     heading: {
         id: 'define-return-validity',
-        content: 'Is this ticket valid for more than one day?',
+        content: 'Is the return part of this ticket valid for more than one day?',
         hidden: true,
     },
     radios: [

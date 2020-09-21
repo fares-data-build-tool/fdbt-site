@@ -7,12 +7,8 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { RETURN_VALIDITY_ATTRIBUTE } from '../../constants';
 
 const radioButtonError = 'Choose one of the options below';
-const inputError = 'Enter a whole number';
-const daysAmountError = 'Enter a number of days between 1 and 31';
-const weeksAmountError = 'Enter a number of weeks between 1 and 52';
-const monthsAmountError = 'Enter a number of months between 1 and 72';
-const yearsAmountError = 'Enter a number of years greater than 1';
-const selectError = 'Choose one of the options from the dropdown list';
+const textInputError = 'Enter a whole number greater than zero';
+const selectInputError = 'Choose one of the options from the dropdown list';
 
 export const returnValiditySchema = yup
     .object({
@@ -30,53 +26,70 @@ export const returnValiditySchema = yup
                 is: 'Yes',
                 then: yup
                     .number()
-                    .typeError(inputError)
+                    .typeError(textInputError)
                     .when('duration', {
                         is: 'day',
                         then: yup
                             .number()
-                            .typeError(inputError)
-                            .integer(inputError)
-                            .min(1, daysAmountError)
-                            .max(31, daysAmountError),
+                            .typeError(textInputError)
+                            .integer(textInputError)
+                            .min(1, textInputError)
+                            .max(365, textInputError),
                     })
                     .when('duration', {
                         is: 'week',
                         then: yup
                             .number()
-                            .typeError(inputError)
-                            .integer(inputError)
-                            .min(1, weeksAmountError)
-                            .max(52, weeksAmountError),
+                            .typeError(textInputError)
+                            .integer(textInputError)
+                            .min(1, textInputError)
+                            .max(260, textInputError),
                     })
                     .when('duration', {
                         is: 'month',
                         then: yup
                             .number()
-                            .typeError(inputError)
-                            .integer(inputError)
-                            .min(1, monthsAmountError)
-                            .max(72, monthsAmountError),
+                            .typeError(textInputError)
+                            .integer(textInputError)
+                            .min(1, textInputError)
+                            .max(120, textInputError),
                     })
                     .when('duration', {
                         is: 'year',
                         then: yup
                             .number()
-                            .typeError(inputError)
-                            .integer(inputError)
-                            .min(1, yearsAmountError),
+                            .typeError(textInputError)
+                            .integer(textInputError)
+                            .min(1, textInputError),
                     })
-                    .required(inputError),
+                    .required(textInputError),
             }),
         duration: yup.string().when('validity', {
             is: 'Yes',
             then: yup
                 .string()
-                .oneOf(['day', 'week', 'month', 'year'], selectError)
-                .required(selectError),
+                .oneOf(['day', 'week', 'month', 'year'], selectInputError)
+                .required(selectInputError),
         }),
     })
     .required();
+
+export const formatRequestBody = (req: NextApiRequestWithSession): { [key: string]: string } => {
+    const filteredReqBody: { [key: string]: string } = {};
+    Object.entries(req.body).forEach(entry => {
+        if (entry[0] === 'amount') {
+            const input = entry[1] as string;
+            const strippedInput = input.replace(/\s+/g, '');
+            if (strippedInput === '') {
+                return;
+            }
+            filteredReqBody[entry[0]] = strippedInput;
+            return;
+        }
+        filteredReqBody[entry[0]] = entry[1] as string;
+    });
+    return filteredReqBody;
+};
 
 export const getErrorIdFromValidityError = (errorPath: string): string => {
     switch (errorPath) {
@@ -105,10 +118,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
+        const filteredReqBody = formatRequestBody(req);
+
         let errors: ErrorInfo[] = [];
 
         try {
-            await returnValiditySchema.validate(req.body, { abortEarly: false });
+            await returnValiditySchema.validate(filteredReqBody, { abortEarly: false });
         } catch (validationErrors) {
             const validityErrors: yup.ValidationError = validationErrors;
             errors = validityErrors.inner.map(error => ({
