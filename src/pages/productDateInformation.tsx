@@ -13,10 +13,10 @@ import { ProductDateInformation } from './api/productDateInformation';
 const title = 'Product Date Information - Fares Data Build Tool';
 const description = 'Product Date Information page of the Fares Data Build Tool';
 
-export interface FareDateInformationProps {
+export interface ProductDateInformationProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
-    dates: ProductDateInformation;
+    dates?: ProductDateInformation;
 }
 
 export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
@@ -76,7 +76,7 @@ const ProductDateInfo = ({
         endDateMonth: '',
         endDateYear: '',
     },
-}: FareDateInformationProps & CustomAppProps): ReactElement => {
+}: ProductDateInformationProps & CustomAppProps): ReactElement => {
     const customErrors: ErrorInfo[] = [];
 
     const startDateErrors = errors.find(error => error.id === 'start-date');

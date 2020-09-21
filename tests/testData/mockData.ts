@@ -1972,6 +1972,156 @@ export const duplicateNameProducts: MultiProduct[] = [
     },
 ];
 
+export const mockProductRadioErrors: ErrorInfo[] = [
+    {
+        errorMessage: 'Choose one of the options below',
+        id: 'start-date',
+    },
+];
+
+export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'product-dates-information',
+            content: 'Is there a start or end date for your product?',
+        },
+        radios: [
+            {
+                id: 'product-dates-required',
+                name: 'productDates',
+                value: 'Yes',
+                dataAriaControls: 'product-dates-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'product-dates-required-restriction-hint',
+                    content: 'Enter a start and end date',
+                },
+                inputType: 'date',
+                inputs: [
+                    {
+                        id: 'start-date',
+                        name: 'startDate',
+                        label: 'Start Date',
+                    },
+                    {
+                        id: 'end-date',
+                        name: 'endDate',
+                        label: 'End Date',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'product-dates-information-not-required',
+                name: 'productDates',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'product-dates-information',
+            content: 'Is there a start or end date for your product?',
+        },
+        radios: [
+            {
+                id: 'product-dates-required',
+                name: 'productDates',
+                value: 'Yes',
+                dataAriaControls: 'product-dates-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'product-dates-required-restriction-hint',
+                    content: 'Enter a start and end date',
+                },
+                inputType: 'date',
+                inputs: [
+                    {
+                        id: 'start-date',
+                        name: 'startDate',
+                        label: 'Start Date',
+                    },
+                    {
+                        id: 'end-date',
+                        name: 'endDate',
+                        label: 'End Date',
+                    },
+                ],
+                inputErrors: [
+                    {
+                        id: 'start-date',
+                        errorMessage: 'Start date must be a real date',
+                    },
+                    {
+                        id: 'end-date',
+                        errorMessage: 'End date must be a real date',
+                    },
+                ],
+            },
+            {
+                id: 'product-dates-information-not-required',
+                name: 'productDates',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [],
+    },
+];
+
+export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInputFieldset[] = [
+    {
+        heading: {
+            id: 'product-dates-information',
+            content: 'Is there a start or end date for your product?',
+        },
+        radios: [
+            {
+                id: 'product-dates-required',
+                name: 'productDates',
+                value: 'Yes',
+                dataAriaControls: 'product-dates-required-conditional',
+                label: 'Yes',
+                hint: {
+                    id: 'product-dates-required-restriction-hint',
+                    content: 'Enter a start and end date',
+                },
+                inputType: 'date',
+                inputs: [
+                    {
+                        id: 'start-date',
+                        name: 'startDate',
+                        label: 'Start Date',
+                    },
+                    {
+                        id: 'end-date',
+                        name: 'endDate',
+                        label: 'End Date',
+                    },
+                ],
+                inputErrors: [],
+            },
+            {
+                id: 'product-dates-information-not-required',
+                name: 'productDates',
+                value: 'No',
+                label: 'No',
+            },
+        ],
+        radioError: [
+            {
+                id: 'start-date',
+                errorMessage: 'Choose one of the options below',
+            },
+        ],
+    },
+];
+
 export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] = [
     {
         heading: {
