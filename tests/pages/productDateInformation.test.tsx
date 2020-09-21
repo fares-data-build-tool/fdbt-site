@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import {
+    getMockContext,
     mockProductDateInformationFieldsets,
     mockProductDateInformationFieldsetsWithInputErrors,
     mockProductRadioErrors,
 } from '../testData/mockData';
-import ProductDateInfo, { getFieldsets } from '../../src/pages/productDateInformation';
+import ProductDateInfo, { getFieldsets, getServerSideProps } from '../../src/pages/productDateInformation';
 import { ErrorInfo } from '../../src/interfaces';
+import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('productDateInformation', () => {
@@ -70,6 +72,43 @@ describe('pages', () => {
             ];
             const fieldset = getFieldsets(errors);
             expect(fieldset).toEqual(mockProductDateInformationFieldsetsWithInputErrors);
+        });
+
+        describe('getServerSideProps', () => {
+            it('should return props containing no errors and valid fieldsets when no are present', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [PRODUCT_DATE_ATTRIBUTE]: { errors: [] },
+                    },
+                });
+                const result = getServerSideProps(ctx);
+
+                expect(result.props.errors).toEqual([]);
+                expect(result.props.fieldsets).toEqual(mockProductDateInformationFieldsets);
+            });
+
+            it('should return props containing errors and valid fieldsets when radio and all input errors are present', () => {
+                const errors: ErrorInfo[] = [
+                    {
+                        id: 'start-date',
+                        errorMessage: 'Start date must be a real date',
+                    },
+                    {
+                        id: 'end-date',
+                        errorMessage: 'End date must be a real date',
+                    },
+                ];
+
+                const ctx = getMockContext({
+                    session: {
+                        [PRODUCT_DATE_ATTRIBUTE]: { errors },
+                    },
+                });
+                const result = getServerSideProps(ctx);
+
+                expect(result.props.errors).toEqual(errors);
+                expect(result.props.fieldsets).toEqual(mockProductDateInformationFieldsetsWithInputErrors);
+            });
         });
     });
 });

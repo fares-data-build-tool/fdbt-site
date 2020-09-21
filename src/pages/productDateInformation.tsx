@@ -107,7 +107,7 @@ const ProductDateInfo = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDateInformationProps } => {
     const productDateAttribute = getSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
 
     const errors: ErrorInfo[] =
