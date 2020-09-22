@@ -134,7 +134,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 errors = validityErrors.inner.map(error => ({
                     id: getErrorIdFromDateError(error.path),
                     errorMessage: error.message,
-                    userInput: error.value,
                 }));
 
                 if (errors.length > 0) {
