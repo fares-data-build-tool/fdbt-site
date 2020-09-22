@@ -174,8 +174,6 @@ const renderConditionalDateInputs = (
                                             id={`${input.id}-day`}
                                             name={`${input.name}Day`}
                                             type="text"
-                                            pattern="[0-9]*"
-                                            inputMode="numeric"
                                             defaultValue={dayValue}
                                         />
                                     </div>
@@ -195,8 +193,6 @@ const renderConditionalDateInputs = (
                                             id={`${input.id}-month`}
                                             name={`${input.name}Month`}
                                             type="text"
-                                            pattern="[0-9]*"
-                                            inputMode="numeric"
                                             defaultValue={monthValue}
                                         />
                                     </div>
@@ -216,8 +212,6 @@ const renderConditionalDateInputs = (
                                             id={`${input.id}-year`}
                                             name={`${input.name}Year`}
                                             type="text"
-                                            pattern="[0-9]*"
-                                            inputMode="numeric"
                                             defaultValue={yearValue}
                                         />
                                     </div>
