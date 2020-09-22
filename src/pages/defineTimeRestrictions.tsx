@@ -141,20 +141,17 @@ const DefineTimeRestrictions = ({
         <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div>
-                    <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
-                        Tell us more about the time restrictions
-                    </h1>
-                    <span className="govuk-hint" id="define-time-restrictions-hint">
-                        The following two questions will provide us with all the information we need for time
-                        restrictions
-                    </span>
-                    <br />
-                    <br />
-                    {fieldsets.map(fieldset => {
-                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
-                    })}
-                </div>
+                <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
+                    Tell us more about the time restrictions
+                </h1>
+                <span className="govuk-hint" id="define-time-restrictions-hint">
+                    The following two questions will provide us with all the information we need for time restrictions
+                </span>
+                <br />
+                <br />
+                {fieldsets.map(fieldset => {
+                    return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
+                })}
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>

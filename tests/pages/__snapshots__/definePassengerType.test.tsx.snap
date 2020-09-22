@@ -14,180 +14,178 @@ exports[`pages definePassengerType should render correctly when on the group tic
     <ErrorSummary
       errors={Array []}
     />
-    <div>
-      <h1
-        className="govuk-heading-l"
-        id="define-passenger-type-page-heading"
+    <h1
+      className="govuk-heading-l"
+      id="define-passenger-type-page-heading"
+    >
+      Provide passenger type details
+    </h1>
+    <br />
+    <br />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="number-of-passenger-type-heading"
+        className="govuk-fieldset"
       >
-        Provide passenger type details
-      </h1>
-      <br />
-      <br />
-      <div
-        className="govuk-form-group "
-      >
-        <fieldset
-          aria-describedby="number-of-passenger-type-heading"
-          className="govuk-fieldset"
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
         >
-          <legend
-            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          <h2
+            className="govuk-fieldset__heading"
+            id="number-of-passenger-type-heading"
           >
-            <h2
-              className="govuk-fieldset__heading"
-              id="number-of-passenger-type-heading"
-            >
-              How many child passengers can be in the group?
-            </h2>
-          </legend>
-          <div
-            className="govuk-form-group"
-            key="min-number-of-passengers"
+            How many child passengers can be in the group?
+          </h2>
+        </legend>
+        <div
+          className="govuk-form-group"
+          key="min-number-of-passengers"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="min-number-of-passengers"
           >
-            <label
-              className="govuk-label"
-              htmlFor="min-number-of-passengers"
-            >
-              Minimum (optional)
-            </label>
-            <FormElementWrapper
-              errorClass="govuk-input--error"
-              errorId=""
-              errors={Array []}
-            >
-              <input
-                className="govuk-input govuk-input--width-2"
-                defaultValue=""
-                id="min-number-of-passengers"
-                name="minNumber"
-                type="text"
-              />
-            </FormElementWrapper>
-          </div>
-          <div
-            className="govuk-form-group"
-            key="max-number-of-passengers"
+            Minimum (optional)
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId=""
+            errors={Array []}
           >
-            <label
-              className="govuk-label"
-              htmlFor="max-number-of-passengers"
-            >
-              Maximum (required)
-            </label>
-            <FormElementWrapper
-              errorClass="govuk-input--error"
-              errorId=""
-              errors={Array []}
-            >
-              <input
-                className="govuk-input govuk-input--width-2"
-                defaultValue=""
-                id="max-number-of-passengers"
-                name="maxNumber"
-                type="text"
-              />
-            </FormElementWrapper>
-          </div>
-        </fieldset>
-        <br />
-        <br />
-      </div>
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": Any<String>,
-              "id": "define-passenger-age-range",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
-                  "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-hint",
-                },
-                "id": "age-range-required",
-                "inputErrors": Array [],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "age-range-min",
-                    "label": "Minimum Age (if applicable)",
-                    "name": "ageRangeMin",
-                  },
-                  Object {
-                    "id": "age-range-max",
-                    "label": "Maximum Age (if applicable)",
-                    "name": "ageRangeMax",
-                  },
-                ],
-                "label": "Yes",
-                "name": "ageRange",
-                "value": "Yes",
-              },
-              Object {
-                "id": "age-range-not-required",
-                "label": "No",
-                "name": "ageRange",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-passenger-age-range"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": Any<String>,
-              "id": "define-passenger-proof",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
-                  "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-hint",
-                },
-                "id": "proof-required",
-                "inputErrors": Array [],
-                "inputType": "checkbox",
-                "inputs": Array [
-                  Object {
-                    "id": "membership-card",
-                    "label": "Membership Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "student-card",
-                    "label": "Student Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "identity-document",
-                    "label": "Identity Document",
-                    "name": "proofDocuments",
-                  },
-                ],
-                "label": "Yes",
-                "name": "proof",
-                "value": "Yes",
-              },
-              Object {
-                "id": "proof-not-required",
-                "label": "No",
-                "name": "proof",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-passenger-proof"
-      />
+            <input
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="min-number-of-passengers"
+              name="minNumber"
+              type="text"
+            />
+          </FormElementWrapper>
+        </div>
+        <div
+          className="govuk-form-group"
+          key="max-number-of-passengers"
+        >
+          <label
+            className="govuk-label"
+            htmlFor="max-number-of-passengers"
+          >
+            Maximum (required)
+          </label>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId=""
+            errors={Array []}
+          >
+            <input
+              className="govuk-input govuk-input--width-2"
+              defaultValue=""
+              id="max-number-of-passengers"
+              name="maxNumber"
+              type="text"
+            />
+          </FormElementWrapper>
+        </div>
+      </fieldset>
+      <br />
+      <br />
     </div>
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": Any<String>,
+            "id": "define-passenger-age-range",
+          },
+          "radioError": Array [],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "age-range-required-conditional",
+              "hint": Object {
+                "content": "Enter a minimum and/or maximum age for this passenger type.",
+                "id": "define-passenger-age-range-hint",
+              },
+              "id": "age-range-required",
+              "inputErrors": Array [],
+              "inputType": "text",
+              "inputs": Array [
+                Object {
+                  "id": "age-range-min",
+                  "label": "Minimum Age (if applicable)",
+                  "name": "ageRangeMin",
+                },
+                Object {
+                  "id": "age-range-max",
+                  "label": "Maximum Age (if applicable)",
+                  "name": "ageRangeMax",
+                },
+              ],
+              "label": "Yes",
+              "name": "ageRange",
+              "value": "Yes",
+            },
+            Object {
+              "id": "age-range-not-required",
+              "label": "No",
+              "name": "ageRange",
+              "value": "No",
+            },
+          ],
+        }
+      }
+      key="define-passenger-age-range"
+    />
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": Any<String>,
+            "id": "define-passenger-proof",
+          },
+          "radioError": Array [],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "proof-required-conditional",
+              "hint": Object {
+                "content": "Select the applicable proof document(s).",
+                "id": "define-passenger-proof-hint",
+              },
+              "id": "proof-required",
+              "inputErrors": Array [],
+              "inputType": "checkbox",
+              "inputs": Array [
+                Object {
+                  "id": "membership-card",
+                  "label": "Membership Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "student-card",
+                  "label": "Student Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "identity-document",
+                  "label": "Identity Document",
+                  "name": "proofDocuments",
+                },
+              ],
+              "label": "Yes",
+              "name": "proof",
+              "value": "Yes",
+            },
+            Object {
+              "id": "proof-not-required",
+              "label": "No",
+              "name": "proof",
+              "value": "No",
+            },
+          ],
+        }
+      }
+      key="define-passenger-proof"
+    />
     <input
       name="passengerType"
       type="hidden"
@@ -217,117 +215,115 @@ exports[`pages definePassengerType should render correctly when on the non-group
     <ErrorSummary
       errors={Array []}
     />
-    <div>
-      <h1
-        className="govuk-heading-l"
-        id="define-passenger-type-page-heading"
-      >
-        Provide passenger type details
-      </h1>
-      <span
-        className="govuk-hint"
-        id="define-passenger-type-hint"
-      >
-        Select if the passenger type requires an age range or proof document
-      </span>
-      <br />
-      <br />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": Any<String>,
-              "id": "define-passenger-age-range",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
-                  "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-hint",
+    <h1
+      className="govuk-heading-l"
+      id="define-passenger-type-page-heading"
+    >
+      Provide passenger type details
+    </h1>
+    <span
+      className="govuk-hint"
+      id="define-passenger-type-hint"
+    >
+      Select if the passenger type requires an age range or proof document
+    </span>
+    <br />
+    <br />
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": Any<String>,
+            "id": "define-passenger-age-range",
+          },
+          "radioError": Array [],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "age-range-required-conditional",
+              "hint": Object {
+                "content": "Enter a minimum and/or maximum age for this passenger type.",
+                "id": "define-passenger-age-range-hint",
+              },
+              "id": "age-range-required",
+              "inputErrors": Array [],
+              "inputType": "text",
+              "inputs": Array [
+                Object {
+                  "id": "age-range-min",
+                  "label": "Minimum Age (if applicable)",
+                  "name": "ageRangeMin",
                 },
-                "id": "age-range-required",
-                "inputErrors": Array [],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "age-range-min",
-                    "label": "Minimum Age (if applicable)",
-                    "name": "ageRangeMin",
-                  },
-                  Object {
-                    "id": "age-range-max",
-                    "label": "Maximum Age (if applicable)",
-                    "name": "ageRangeMax",
-                  },
-                ],
-                "label": "Yes",
-                "name": "ageRange",
-                "value": "Yes",
-              },
-              Object {
-                "id": "age-range-not-required",
-                "label": "No",
-                "name": "ageRange",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-passenger-age-range"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": Any<String>,
-              "id": "define-passenger-proof",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
-                  "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-hint",
+                Object {
+                  "id": "age-range-max",
+                  "label": "Maximum Age (if applicable)",
+                  "name": "ageRangeMax",
                 },
-                "id": "proof-required",
-                "inputErrors": Array [],
-                "inputType": "checkbox",
-                "inputs": Array [
-                  Object {
-                    "id": "membership-card",
-                    "label": "Membership Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "student-card",
-                    "label": "Student Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "identity-document",
-                    "label": "Identity Document",
-                    "name": "proofDocuments",
-                  },
-                ],
-                "label": "Yes",
-                "name": "proof",
-                "value": "Yes",
-              },
-              Object {
-                "id": "proof-not-required",
-                "label": "No",
-                "name": "proof",
-                "value": "No",
-              },
-            ],
-          }
+              ],
+              "label": "Yes",
+              "name": "ageRange",
+              "value": "Yes",
+            },
+            Object {
+              "id": "age-range-not-required",
+              "label": "No",
+              "name": "ageRange",
+              "value": "No",
+            },
+          ],
         }
-        key="define-passenger-proof"
-      />
-    </div>
+      }
+      key="define-passenger-age-range"
+    />
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": Any<String>,
+            "id": "define-passenger-proof",
+          },
+          "radioError": Array [],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "proof-required-conditional",
+              "hint": Object {
+                "content": "Select the applicable proof document(s).",
+                "id": "define-passenger-proof-hint",
+              },
+              "id": "proof-required",
+              "inputErrors": Array [],
+              "inputType": "checkbox",
+              "inputs": Array [
+                Object {
+                  "id": "membership-card",
+                  "label": "Membership Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "student-card",
+                  "label": "Student Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "identity-document",
+                  "label": "Identity Document",
+                  "name": "proofDocuments",
+                },
+              ],
+              "label": "Yes",
+              "name": "proof",
+              "value": "Yes",
+            },
+            Object {
+              "id": "proof-not-required",
+              "label": "No",
+              "name": "proof",
+              "value": "No",
+            },
+          ],
+        }
+      }
+      key="define-passenger-proof"
+    />
     <input
       name="passengerType"
       type="hidden"
@@ -387,131 +383,129 @@ exports[`pages definePassengerType should render errors correctly when input err
         ]
       }
     />
-    <div>
-      <h1
-        className="govuk-heading-l"
-        id="define-passenger-type-page-heading"
-      >
-        Provide passenger type details
-      </h1>
-      <span
-        className="govuk-hint"
-        id="define-passenger-type-hint"
-      >
-        Select if the passenger type requires an age range or proof document
-      </span>
-      <br />
-      <br />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Do child passengers have an age range?",
-              "id": "define-passenger-age-range",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
-                  "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-hint",
+    <h1
+      className="govuk-heading-l"
+      id="define-passenger-type-page-heading"
+    >
+      Provide passenger type details
+    </h1>
+    <span
+      className="govuk-hint"
+      id="define-passenger-type-hint"
+    >
+      Select if the passenger type requires an age range or proof document
+    </span>
+    <br />
+    <br />
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": "Do child passengers have an age range?",
+            "id": "define-passenger-age-range",
+          },
+          "radioError": Array [],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "age-range-required-conditional",
+              "hint": Object {
+                "content": "Enter a minimum and/or maximum age for this passenger type.",
+                "id": "define-passenger-age-range-hint",
+              },
+              "id": "age-range-required",
+              "inputErrors": Array [
+                Object {
+                  "errorMessage": "Enter a minimum or maximum age",
+                  "id": "age-range-min",
                 },
-                "id": "age-range-required",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Enter a minimum or maximum age",
-                    "id": "age-range-min",
-                  },
-                  Object {
-                    "errorMessage": "Enter a minimum or maximum age",
-                    "id": "age-range-max",
-                  },
-                ],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "age-range-min",
-                    "label": "Minimum Age (if applicable)",
-                    "name": "ageRangeMin",
-                  },
-                  Object {
-                    "id": "age-range-max",
-                    "label": "Maximum Age (if applicable)",
-                    "name": "ageRangeMax",
-                  },
-                ],
-                "label": "Yes",
-                "name": "ageRange",
-                "value": "Yes",
-              },
-              Object {
-                "id": "age-range-not-required",
-                "label": "No",
-                "name": "ageRange",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-passenger-age-range"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Do child passengers require a proof document?",
-              "id": "define-passenger-proof",
-            },
-            "radioError": Array [],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
-                  "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-hint",
+                Object {
+                  "errorMessage": "Enter a minimum or maximum age",
+                  "id": "age-range-max",
                 },
-                "id": "proof-required",
-                "inputErrors": Array [
-                  Object {
-                    "errorMessage": "Select at least one proof document",
-                    "id": "membership-card",
-                  },
-                ],
-                "inputType": "checkbox",
-                "inputs": Array [
-                  Object {
-                    "id": "membership-card",
-                    "label": "Membership Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "student-card",
-                    "label": "Student Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "identity-document",
-                    "label": "Identity Document",
-                    "name": "proofDocuments",
-                  },
-                ],
-                "label": "Yes",
-                "name": "proof",
-                "value": "Yes",
-              },
-              Object {
-                "id": "proof-not-required",
-                "label": "No",
-                "name": "proof",
-                "value": "No",
-              },
-            ],
-          }
+              ],
+              "inputType": "text",
+              "inputs": Array [
+                Object {
+                  "id": "age-range-min",
+                  "label": "Minimum Age (if applicable)",
+                  "name": "ageRangeMin",
+                },
+                Object {
+                  "id": "age-range-max",
+                  "label": "Maximum Age (if applicable)",
+                  "name": "ageRangeMax",
+                },
+              ],
+              "label": "Yes",
+              "name": "ageRange",
+              "value": "Yes",
+            },
+            Object {
+              "id": "age-range-not-required",
+              "label": "No",
+              "name": "ageRange",
+              "value": "No",
+            },
+          ],
         }
-        key="define-passenger-proof"
-      />
-    </div>
+      }
+      key="define-passenger-age-range"
+    />
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": "Do child passengers require a proof document?",
+            "id": "define-passenger-proof",
+          },
+          "radioError": Array [],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "proof-required-conditional",
+              "hint": Object {
+                "content": "Select the applicable proof document(s).",
+                "id": "define-passenger-proof-hint",
+              },
+              "id": "proof-required",
+              "inputErrors": Array [
+                Object {
+                  "errorMessage": "Select at least one proof document",
+                  "id": "membership-card",
+                },
+              ],
+              "inputType": "checkbox",
+              "inputs": Array [
+                Object {
+                  "id": "membership-card",
+                  "label": "Membership Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "student-card",
+                  "label": "Student Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "identity-document",
+                  "label": "Identity Document",
+                  "name": "proofDocuments",
+                },
+              ],
+              "label": "Yes",
+              "name": "proof",
+              "value": "Yes",
+            },
+            Object {
+              "id": "proof-not-required",
+              "label": "No",
+              "name": "proof",
+              "value": "No",
+            },
+          ],
+        }
+      }
+      key="define-passenger-proof"
+    />
     <input
       name="passengerType"
       type="hidden"
@@ -563,127 +557,125 @@ exports[`pages definePassengerType should render errors correctly when radio err
         ]
       }
     />
-    <div>
-      <h1
-        className="govuk-heading-l"
-        id="define-passenger-type-page-heading"
-      >
-        Provide passenger type details
-      </h1>
-      <span
-        className="govuk-hint"
-        id="define-passenger-type-hint"
-      >
-        Select if the passenger type requires an age range or proof document
-      </span>
-      <br />
-      <br />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Do child passengers have an age range?",
-              "id": "define-passenger-age-range",
+    <h1
+      className="govuk-heading-l"
+      id="define-passenger-type-page-heading"
+    >
+      Provide passenger type details
+    </h1>
+    <span
+      className="govuk-hint"
+      id="define-passenger-type-hint"
+    >
+      Select if the passenger type requires an age range or proof document
+    </span>
+    <br />
+    <br />
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": "Do child passengers have an age range?",
+            "id": "define-passenger-age-range",
+          },
+          "radioError": Array [
+            Object {
+              "errorMessage": "Choose one of the options below",
+              "id": "age-range-required",
             },
-            "radioError": Array [
-              Object {
-                "errorMessage": "Choose one of the options below",
-                "id": "age-range-required",
+          ],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "age-range-required-conditional",
+              "hint": Object {
+                "content": "Enter a minimum and/or maximum age for this passenger type.",
+                "id": "define-passenger-age-range-hint",
               },
-            ],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "age-range-required-conditional",
-                "hint": Object {
-                  "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-hint",
+              "id": "age-range-required",
+              "inputErrors": Array [],
+              "inputType": "text",
+              "inputs": Array [
+                Object {
+                  "id": "age-range-min",
+                  "label": "Minimum Age (if applicable)",
+                  "name": "ageRangeMin",
                 },
-                "id": "age-range-required",
-                "inputErrors": Array [],
-                "inputType": "text",
-                "inputs": Array [
-                  Object {
-                    "id": "age-range-min",
-                    "label": "Minimum Age (if applicable)",
-                    "name": "ageRangeMin",
-                  },
-                  Object {
-                    "id": "age-range-max",
-                    "label": "Maximum Age (if applicable)",
-                    "name": "ageRangeMax",
-                  },
-                ],
-                "label": "Yes",
-                "name": "ageRange",
-                "value": "Yes",
-              },
-              Object {
-                "id": "age-range-not-required",
-                "label": "No",
-                "name": "ageRange",
-                "value": "No",
-              },
-            ],
-          }
-        }
-        key="define-passenger-age-range"
-      />
-      <RadioConditionalInput
-        fieldset={
-          Object {
-            "heading": Object {
-              "content": "Do child passengers require a proof document?",
-              "id": "define-passenger-proof",
+                Object {
+                  "id": "age-range-max",
+                  "label": "Maximum Age (if applicable)",
+                  "name": "ageRangeMax",
+                },
+              ],
+              "label": "Yes",
+              "name": "ageRange",
+              "value": "Yes",
             },
-            "radioError": Array [
-              Object {
-                "errorMessage": "Choose one of the options below",
-                "id": "proof-required",
-              },
-            ],
-            "radios": Array [
-              Object {
-                "dataAriaControls": "proof-required-conditional",
-                "hint": Object {
-                  "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-hint",
-                },
-                "id": "proof-required",
-                "inputErrors": Array [],
-                "inputType": "checkbox",
-                "inputs": Array [
-                  Object {
-                    "id": "membership-card",
-                    "label": "Membership Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "student-card",
-                    "label": "Student Card",
-                    "name": "proofDocuments",
-                  },
-                  Object {
-                    "id": "identity-document",
-                    "label": "Identity Document",
-                    "name": "proofDocuments",
-                  },
-                ],
-                "label": "Yes",
-                "name": "proof",
-                "value": "Yes",
-              },
-              Object {
-                "id": "proof-not-required",
-                "label": "No",
-                "name": "proof",
-                "value": "No",
-              },
-            ],
-          }
+            Object {
+              "id": "age-range-not-required",
+              "label": "No",
+              "name": "ageRange",
+              "value": "No",
+            },
+          ],
         }
-        key="define-passenger-proof"
-      />
-    </div>
+      }
+      key="define-passenger-age-range"
+    />
+    <RadioConditionalInput
+      fieldset={
+        Object {
+          "heading": Object {
+            "content": "Do child passengers require a proof document?",
+            "id": "define-passenger-proof",
+          },
+          "radioError": Array [
+            Object {
+              "errorMessage": "Choose one of the options below",
+              "id": "proof-required",
+            },
+          ],
+          "radios": Array [
+            Object {
+              "dataAriaControls": "proof-required-conditional",
+              "hint": Object {
+                "content": "Select the applicable proof document(s).",
+                "id": "define-passenger-proof-hint",
+              },
+              "id": "proof-required",
+              "inputErrors": Array [],
+              "inputType": "checkbox",
+              "inputs": Array [
+                Object {
+                  "id": "membership-card",
+                  "label": "Membership Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "student-card",
+                  "label": "Student Card",
+                  "name": "proofDocuments",
+                },
+                Object {
+                  "id": "identity-document",
+                  "label": "Identity Document",
+                  "name": "proofDocuments",
+                },
+              ],
+              "label": "Yes",
+              "name": "proof",
+              "value": "Yes",
+            },
+            Object {
+              "id": "proof-not-required",
+              "label": "No",
+              "name": "proof",
+              "value": "No",
+            },
+          ],
+        }
+      }
+      key="define-passenger-proof"
+    />
     <input
       name="passengerType"
       type="hidden"

@@ -227,26 +227,24 @@ const DefinePassengerType = ({
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
-                <div>
-                    <h1 className="govuk-heading-l" id="define-passenger-type-page-heading">
-                        Provide passenger type details
-                    </h1>
-                    {group === false ? (
-                        <span className="govuk-hint" id="define-passenger-type-hint">
-                            Select if the passenger type requires an age range or proof document
-                        </span>
-                    ) : (
-                        ''
-                    )}
-                    <br />
-                    <br />
-                    {group === true && numberOfPassengerTypeFieldset
-                        ? numberOfPassengerTypeQuestion(numberOfPassengerTypeFieldset)
-                        : ''}
-                    {fieldsets.map(fieldset => {
-                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
-                    })}
-                </div>
+                <h1 className="govuk-heading-l" id="define-passenger-type-page-heading">
+                    Provide passenger type details
+                </h1>
+                {group === false ? (
+                    <span className="govuk-hint" id="define-passenger-type-hint">
+                        Select if the passenger type requires an age range or proof document
+                    </span>
+                ) : (
+                    ''
+                )}
+                <br />
+                <br />
+                {group === true && numberOfPassengerTypeFieldset
+                    ? numberOfPassengerTypeQuestion(numberOfPassengerTypeFieldset)
+                    : ''}
+                {fieldsets.map(fieldset => {
+                    return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
+                })}
                 <input value={passengerType} type="hidden" name="passengerType" />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
