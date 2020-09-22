@@ -12,7 +12,7 @@ import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants';
 
 describe('pages', () => {
     describe('productDateInformation', () => {
-        it('should render the product date information page', () => {
+        it('it should render the product date information page', () => {
             const wrapper = shallow(
                 <ProductDateInfo
                     errors={[]}
@@ -31,11 +31,11 @@ describe('pages', () => {
             );
             expect(wrapper).toMatchSnapshot();
         });
-        it('should render errors correctly when radio errors are passed to the page', () => {
+        it('it should render errors correctly when radio errors are passed to the page', () => {
             const wrapper = shallow(
                 <ProductDateInfo
                     errors={mockProductRadioErrors}
-                    fieldsets={mockProductDateInformationFieldsetsWithInputErrors}
+                    fieldsets={mockProductDateInformationFieldsets}
                     csrfToken=""
                     dates={{
                         startDateDay: '',
@@ -53,13 +53,13 @@ describe('pages', () => {
     });
 
     describe('getProductDateInformationFieldSets', () => {
-        it('should return a fieldset containing two text inputs with no errors when no errors are passed', () => {
+        it('it should return a fieldset containing two text inputs with no errors when no errors are passed', () => {
             const errors: ErrorInfo[] = [];
             const fieldset = getFieldsets(errors);
             expect(fieldset).toEqual(mockProductDateInformationFieldsets);
         });
 
-        it('should return a fieldset containing two text inputs with errors attached when errors are passed', () => {
+        it('it should return a fieldset containing two text inputs with errors attached when errors are passed', () => {
             const errors: ErrorInfo[] = [
                 {
                     id: 'start-date',
@@ -75,7 +75,15 @@ describe('pages', () => {
         });
 
         describe('getServerSideProps', () => {
-            it('should return props containing no errors and valid fieldsets when no are present', () => {
+            it('it should return props containing no errors and valid fieldsets when no product session is present', () => {
+                const ctx = getMockContext();
+                const result = getServerSideProps(ctx);
+
+                expect(result.props.errors).toEqual([]);
+                expect(result.props.fieldsets).toEqual(mockProductDateInformationFieldsets);
+            });
+
+            it('it should return props containing no errors and valid fieldsets when no are present', () => {
                 const ctx = getMockContext({
                     session: {
                         [PRODUCT_DATE_ATTRIBUTE]: { errors: [] },
@@ -87,7 +95,7 @@ describe('pages', () => {
                 expect(result.props.fieldsets).toEqual(mockProductDateInformationFieldsets);
             });
 
-            it('should return props containing errors and valid fieldsets when radio and all input errors are present', () => {
+            it('it should return props containing errors and valid fieldsets when radio and all input errors are present', () => {
                 const errors: ErrorInfo[] = [
                     {
                         id: 'start-date',

@@ -15,12 +15,12 @@ const description = 'Product Date Information page of the Fares Data Build Tool'
 
 export interface ProductDateInformationProps {
     errors: ErrorInfo[];
-    fieldsets: RadioConditionalInputFieldset[];
+    fieldsets: RadioConditionalInputFieldset;
     dates?: ProductDateInformation;
 }
 
-export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
-    const productDatesFieldsets: RadioConditionalInputFieldset = {
+export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
+    return {
         heading: {
             id: 'product-dates-information',
             content: 'Is there a start or end date for your product?',
@@ -34,7 +34,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 label: 'Yes',
                 hint: {
                     id: 'product-dates-required-restriction-hint',
-                    content: 'Enter a start and end date',
+                    content: 'Enter a start or end date',
                 },
                 inputType: 'date',
                 inputs: [
@@ -60,8 +60,6 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         ],
         radioError: getErrorsByIds(['product-dates-required'], errors),
     };
-
-    return [productDatesFieldsets];
 };
 
 const ProductDateInfo = ({
@@ -77,29 +75,12 @@ const ProductDateInfo = ({
         endDateYear: '',
     },
 }: ProductDateInformationProps & CustomAppProps): ReactElement => {
-    const customErrors: ErrorInfo[] = [];
-
-    const startDateErrors = errors.find(error => error.id === 'start-date');
-
-    if (startDateErrors) {
-        customErrors.push({ errorMessage: startDateErrors.errorMessage, id: 'start-date' });
-    }
-
-    const endDateErrors = errors.find(error => error.id === 'end-date');
-
-    if (endDateErrors) {
-        customErrors.push({ errorMessage: endDateErrors.errorMessage, id: 'end-date' });
-    }
-
     return (
         <TwoThirdsLayout title={title} description={description}>
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
                 <>
-                    <ErrorSummary errors={customErrors} />
-                    {fieldsets.map(fieldset => {
-                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} dates={dates} />;
-                    })}
-
+                    <ErrorSummary errors={errors} />
+                    <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
             </CsrfForm>
@@ -115,7 +96,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
             ? productDateAttribute.errors
             : [];
 
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
+    const fieldsets: RadioConditionalInputFieldset = getFieldsets(errors);
 
     return {
         props: {

@@ -25,40 +25,30 @@ export interface ProductDateInformation {
     endDateYear: string;
 }
 
-export const dateValidationSchema = yup.object({
-    startDateDay: yup.string().notRequired(),
-    startDateMonth: yup.string().notRequired(),
-    startDateYear: yup.string().notRequired(),
-    endDateDay: yup.string().notRequired(),
-    endDateMonth: yup.string().notRequired(),
-    endDateYear: yup.string().notRequired(),
-});
-
 export const combinedDateSchema = yup.object({
     endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),
 });
 
 export const getErrorIdFromDateError = (errorPath: string): string => {
-    switch (errorPath) {
-        case 'startDateDay':
-            return 'start-date';
-        case 'startDateMonth':
-            return 'start-date';
-        case 'startDateYear':
-            return 'start-date';
-        case 'endDateDay':
-            return 'end-date';
-        case 'endDateMonth':
-            return 'end-date';
-        case 'endDateYear':
-            return 'end-date';
-        case 'startDate':
-            return 'start-date';
-        case 'endDate':
-            return 'end-date';
-        default:
-            throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
+    if (
+        errorPath === 'startDateDay' ||
+        errorPath === 'startDateMonth' ||
+        errorPath === 'startDateYear' ||
+        errorPath === 'startDate'
+    ) {
+        return 'start-date';
     }
+
+    if (
+        errorPath === 'endDateDay' ||
+        errorPath === 'endDateMonth' ||
+        errorPath === 'endDateYear' ||
+        errorPath === 'endDate'
+    ) {
+        return 'end-date';
+    }
+
+    throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
 };
 
 const isDatesFieldEmpty = (day: string, month: string, year: string): boolean =>
@@ -102,7 +92,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const isEndDateEmpty = isDatesFieldEmpty(endDateDay, endDateMonth, endDateYear);
 
             if (isStartDateEmpty && isEndDateEmpty) {
-                errors.push({ errorMessage: 'Enter a start or end date', id: 'start-date' });
+                errors.push(
+                    { errorMessage: 'Enter a start date', id: 'start-date' },
+                    { errorMessage: 'Enter an end date', id: 'end-date' },
+                );
             }
 
             if (!isStartDateEmpty) {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages productDateInformation should render errors correctly when radio errors are passed to the page 1`] = `
+exports[`pages productDateInformation it should render errors correctly when radio errors are passed to the page 1`] = `
 <Component
   description="Product Date Information page of the Fares Data Build Tool"
   title="Product Date Information - Fares Data Build Tool"
@@ -42,20 +42,11 @@ exports[`pages productDateInformation should render errors correctly when radio 
             Object {
               "dataAriaControls": "product-dates-required-conditional",
               "hint": Object {
-                "content": "Enter a start and end date",
+                "content": "Enter a start or end date",
                 "id": "product-dates-required-restriction-hint",
               },
               "id": "product-dates-required",
-              "inputErrors": Array [
-                Object {
-                  "errorMessage": "Start date must be a real date",
-                  "id": "start-date",
-                },
-                Object {
-                  "errorMessage": "End date must be a real date",
-                  "id": "end-date",
-                },
-              ],
+              "inputErrors": Array [],
               "inputType": "date",
               "inputs": Array [
                 Object {
@@ -94,7 +85,7 @@ exports[`pages productDateInformation should render errors correctly when radio 
 </Component>
 `;
 
-exports[`pages productDateInformation should render the product date information page 1`] = `
+exports[`pages productDateInformation it should render the product date information page 1`] = `
 <Component
   description="Product Date Information page of the Fares Data Build Tool"
   title="Product Date Information - Fares Data Build Tool"
@@ -129,7 +120,7 @@ exports[`pages productDateInformation should render the product date information
             Object {
               "dataAriaControls": "product-dates-required-conditional",
               "hint": Object {
-                "content": "Enter a start and end date",
+                "content": "Enter a start or end date",
                 "id": "product-dates-required-restriction-hint",
               },
               "id": "product-dates-required",

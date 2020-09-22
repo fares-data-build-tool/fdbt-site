@@ -11,7 +11,7 @@ describe('productDataInformation', () => {
         jest.resetAllMocks();
     });
 
-    it('add error to session if there is no productDates option passed in', async () => {
+    it('it should add error to session if there is no productDates option passed in', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {},
@@ -25,7 +25,7 @@ describe('productDataInformation', () => {
         });
     });
 
-    it('throw an error and update the PRODUCT_DATE_ATTRIBUTE if the start and end date are not filled in', async () => {
+    it('it should throw an error and update the PRODUCT_DATE_ATTRIBUTE if the start and end date are not filled in', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -42,7 +42,10 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            errors: [{ errorMessage: 'Enter a start or end date', id: 'start-date' }],
+            errors: [
+                { errorMessage: 'Enter a start date', id: 'start-date' },
+                { errorMessage: 'Enter an end date', id: 'end-date' },
+            ],
             dates: {
                 startDateDay: '',
                 startDateMonth: '',
@@ -54,7 +57,7 @@ describe('productDataInformation', () => {
         });
     });
 
-    it('throw an error and update the PRODUCT_DATE_ATTRIBUTE if the start or end date are not filled in correctly', async () => {
+    it('it should throw an error and update the PRODUCT_DATE_ATTRIBUTE if the start or end date are not filled in correctly', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -91,7 +94,7 @@ describe('productDataInformation', () => {
         });
     });
 
-    it('should validate the start and end date and error if the end date is less than the start date', async () => {
+    it('it should validate the start and end date and error if the end date is less than the start date', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -130,7 +133,7 @@ describe('productDataInformation', () => {
         });
     });
 
-    it('should set the start and end date when entered correctly and redirect to confirmation page', async () => {
+    it('it should set the start and end date when entered correctly and redirect to confirmation page', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {
@@ -157,7 +160,7 @@ describe('productDataInformation', () => {
         });
     });
 
-    it('should set the start and end date when entered correctly and redirect to confirmation page', async () => {
+    it('it should set the start and end date when entered correctly and redirect to confirmation page', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {

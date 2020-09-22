@@ -137,6 +137,9 @@ const renderConditionalDateInputs = (
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
+            <span className="govuk-hint" id={radio.hint.id}>
+                {radio.hint.content}
+            </span>
             {radio.inputs.map(input => {
                 const inputGroupError = radio.inputErrors.find(({ id }) => {
                     return id.includes(input.id);
