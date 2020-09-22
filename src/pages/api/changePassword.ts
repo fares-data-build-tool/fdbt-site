@@ -26,14 +26,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         }
         const inputChecks: ErrorInfo[] = [];
 
-        const newPasswordValidity = validatePassword(newPassword, confirmNewPassword, 'new-password', true);
+        const newPasswordValidityError = validatePassword(newPassword, confirmNewPassword, 'new-password', true);
 
         if (!oldPassword) {
             inputChecks.push({ id: 'old-password', errorMessage: 'Enter your current password' });
         }
 
-        if (newPasswordValidity) {
-            inputChecks.push(newPasswordValidity);
+        if (newPasswordValidityError) {
+            inputChecks.push(newPasswordValidityError);
         }
 
         if (inputChecks.some(el => el.errorMessage !== '')) {

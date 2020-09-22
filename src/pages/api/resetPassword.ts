@@ -24,10 +24,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             });
         }
 
-        const passwordValidity = validatePassword(password, confirmPassword, 'new-password', true);
+        const passwordValidityError = validatePassword(password, confirmPassword, 'new-password', true);
 
-        if (passwordValidity) {
-            inputChecks.push(passwordValidity);
+        if (passwordValidityError) {
+            inputChecks.push(passwordValidityError);
         }
 
         if (inputChecks.some(el => el.errorMessage !== '')) {

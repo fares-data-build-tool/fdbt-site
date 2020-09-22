@@ -32,10 +32,10 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
             errorMessage: !emailValid ? 'Enter an email address in the correct format, like name@example.com' : '',
         });
 
-        const passwordValidity = validatePassword(password, confirmPassword, 'password');
+        const passwordValidityError = validatePassword(password, confirmPassword, 'password');
 
-        if (passwordValidity) {
-            inputChecks.push({ userInput: '', ...passwordValidity });
+        if (passwordValidityError) {
+            inputChecks.push({ userInput: '', ...passwordValidityError });
         }
 
         inputChecks.push({
