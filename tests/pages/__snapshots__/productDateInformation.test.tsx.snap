@@ -20,68 +20,72 @@ exports[`pages productDateInformation it should render errors correctly when rad
         ]
       }
     />
-    <h1
-      className="govuk-heading-l"
-      id="product-date-information-heading"
+    <div
+      className="govuk-form-group "
     >
-      Is there a start or end date for your product?
-    </h1>
-    <RadioConditionalInput
-      dates={
-        Object {
-          "endDateDay": "",
-          "endDateMonth": "",
-          "endDateYear": "",
-          "startDateDay": "",
-          "startDateMonth": "",
-          "startDateYear": "",
+      <h1
+        className="govuk-heading-l"
+        id="product-date-information-heading"
+      >
+        Is there a start or end date for your product?
+      </h1>
+      <RadioConditionalInput
+        dates={
+          Object {
+            "endDateDay": "",
+            "endDateMonth": "",
+            "endDateYear": "",
+            "startDateDay": "",
+            "startDateMonth": "",
+            "startDateYear": "",
+          }
         }
-      }
-      fieldset={
-        Object {
-          "heading": Object {
-            "content": "Is there a start or end date for your product?",
-            "hidden": true,
-            "id": "product-dates-information",
-          },
-          "radioError": Array [],
-          "radios": Array [
-            Object {
-              "dataAriaControls": "product-dates-required-conditional",
-              "hint": Object {
-                "content": "Enter a start and/or end date",
-                "id": "product-dates-required-restriction-hint",
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is there a start or end date for your product?",
+              "hidden": true,
+              "id": "product-dates-information",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "product-dates-required-conditional",
+                "hint": Object {
+                  "content": "Enter a start and/or end date",
+                  "id": "product-dates-required-restriction-hint",
+                },
+                "id": "product-dates-required",
+                "inputErrors": Array [],
+                "inputType": "date",
+                "inputs": Array [
+                  Object {
+                    "id": "start-date",
+                    "label": "Start Date",
+                    "name": "startDate",
+                  },
+                  Object {
+                    "id": "end-date",
+                    "label": "End Date",
+                    "name": "endDate",
+                  },
+                ],
+                "label": "Yes",
+                "name": "productDates",
+                "value": "Yes",
               },
-              "id": "product-dates-required",
-              "inputErrors": Array [],
-              "inputType": "date",
-              "inputs": Array [
-                Object {
-                  "id": "start-date",
-                  "label": "Start Date",
-                  "name": "startDate",
-                },
-                Object {
-                  "id": "end-date",
-                  "label": "End Date",
-                  "name": "endDate",
-                },
-              ],
-              "label": "Yes",
-              "name": "productDates",
-              "value": "Yes",
-            },
-            Object {
-              "id": "product-dates-information-not-required",
-              "label": "No",
-              "name": "productDates",
-              "value": "No",
-            },
-          ],
+              Object {
+                "id": "product-dates-information-not-required",
+                "label": "No",
+                "name": "productDates",
+                "value": "No",
+              },
+            ],
+          }
         }
-      }
-      key="product-dates-information"
-    />
+        key="product-dates-information"
+      />
+    </div>
     <input
       className="govuk-button"
       id="continue-button"
@@ -105,68 +109,72 @@ exports[`pages productDateInformation it should render the product date informat
     <ErrorSummary
       errors={Array []}
     />
-    <h1
-      className="govuk-heading-l"
-      id="product-date-information-heading"
+    <div
+      className="govuk-form-group "
     >
-      Is there a start or end date for your product?
-    </h1>
-    <RadioConditionalInput
-      dates={
-        Object {
-          "endDateDay": "",
-          "endDateMonth": "",
-          "endDateYear": "",
-          "startDateDay": "",
-          "startDateMonth": "",
-          "startDateYear": "",
+      <h1
+        className="govuk-heading-l"
+        id="product-date-information-heading"
+      >
+        Is there a start or end date for your product?
+      </h1>
+      <RadioConditionalInput
+        dates={
+          Object {
+            "endDateDay": "",
+            "endDateMonth": "",
+            "endDateYear": "",
+            "startDateDay": "",
+            "startDateMonth": "",
+            "startDateYear": "",
+          }
         }
-      }
-      fieldset={
-        Object {
-          "heading": Object {
-            "content": "Is there a start or end date for your product?",
-            "hidden": true,
-            "id": "product-dates-information",
-          },
-          "radioError": Array [],
-          "radios": Array [
-            Object {
-              "dataAriaControls": "product-dates-required-conditional",
-              "hint": Object {
-                "content": "Enter a start and/or end date",
-                "id": "product-dates-required-restriction-hint",
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Is there a start or end date for your product?",
+              "hidden": true,
+              "id": "product-dates-information",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "product-dates-required-conditional",
+                "hint": Object {
+                  "content": "Enter a start and/or end date",
+                  "id": "product-dates-required-restriction-hint",
+                },
+                "id": "product-dates-required",
+                "inputErrors": Array [],
+                "inputType": "date",
+                "inputs": Array [
+                  Object {
+                    "id": "start-date",
+                    "label": "Start Date",
+                    "name": "startDate",
+                  },
+                  Object {
+                    "id": "end-date",
+                    "label": "End Date",
+                    "name": "endDate",
+                  },
+                ],
+                "label": "Yes",
+                "name": "productDates",
+                "value": "Yes",
               },
-              "id": "product-dates-required",
-              "inputErrors": Array [],
-              "inputType": "date",
-              "inputs": Array [
-                Object {
-                  "id": "start-date",
-                  "label": "Start Date",
-                  "name": "startDate",
-                },
-                Object {
-                  "id": "end-date",
-                  "label": "End Date",
-                  "name": "endDate",
-                },
-              ],
-              "label": "Yes",
-              "name": "productDates",
-              "value": "Yes",
-            },
-            Object {
-              "id": "product-dates-information-not-required",
-              "label": "No",
-              "name": "productDates",
-              "value": "No",
-            },
-          ],
+              Object {
+                "id": "product-dates-information-not-required",
+                "label": "No",
+                "name": "productDates",
+                "value": "No",
+              },
+            ],
+          }
         }
-      }
-      key="product-dates-information"
-    />
+        key="product-dates-information"
+      />
+    </div>
     <input
       className="govuk-button"
       id="continue-button"

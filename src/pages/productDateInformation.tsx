@@ -74,10 +74,16 @@ const ProductDateInfo = ({
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <h1 className="govuk-heading-l" id="product-date-information-heading">
-                        {fieldsets.heading.content}
-                    </h1>
-                    <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
+                    <div
+                        className={`govuk-form-group ${
+                            fieldsets.radioError.length > 0 ? 'govuk-form-group--error' : ''
+                        }`}
+                    >
+                        <h1 className="govuk-heading-l" id="product-date-information-heading">
+                            {fieldsets.heading.content}
+                        </h1>
+                        <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
+                    </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
             </CsrfForm>
