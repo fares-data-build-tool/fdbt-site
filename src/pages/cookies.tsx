@@ -1,13 +1,26 @@
+import { parseCookies } from 'nookies';
 import React, { ReactElement } from 'react';
+import { COOKIE_SETTINGS_SAVED_COOKIE } from '../constants';
+import { deleteCookieOnServerSide } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps } from '../interfaces';
+import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import { TwoThirdsLayout } from '../layout/Layout';
 
 const title = 'Cookies on the Fares Data Build Tool';
 const description = 'Cookies Preferences page of the Fares Data Build Tool';
 
-const Cookies = ({ csrfToken }: CustomAppProps): ReactElement => (
+interface CookiesProps {
+    settingsSaved: boolean;
+}
+
+const Cookies = ({ settingsSaved, csrfToken }: CookiesProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
+        {settingsSaved ? (
+            <div className="cookie-settings__confirmation">
+                <h2 className="govuk-heading-m">Your cookie settings were saved</h2>
+                <p className="govuk-body">Return to this page at any point to change your cookie settings.</p>
+            </div>
+        ) : null}
         <div className="govuk-!-margin-bottom-8">
             <h1 className="govuk-heading-l">Cookies on the Fares Data Build Tool</h1>
         </div>
@@ -51,7 +64,7 @@ const Cookies = ({ csrfToken }: CustomAppProps): ReactElement => (
                                         className="govuk-radios__input"
                                         type="radio"
                                         id="accept-analytics-cookies"
-                                        name="analyticsCookies"
+                                        name="tracking"
                                         value="on"
                                     />
                                     <label
@@ -66,8 +79,9 @@ const Cookies = ({ csrfToken }: CustomAppProps): ReactElement => (
                                         className="govuk-radios__input"
                                         type="radio"
                                         id="decline-analytics-cookies"
-                                        name="analyticsCookies"
+                                        name="tracking"
                                         value="off"
+                                        defaultChecked
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label"
@@ -98,5 +112,16 @@ const Cookies = ({ csrfToken }: CustomAppProps): ReactElement => (
         </div>
     </TwoThirdsLayout>
 );
+
+export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+    const cookies = parseCookies(ctx);
+    deleteCookieOnServerSide(ctx, COOKIE_SETTINGS_SAVED_COOKIE);
+
+    const settingsSaved = cookies[COOKIE_SETTINGS_SAVED_COOKIE]
+        ? JSON.parse(cookies[COOKIE_SETTINGS_SAVED_COOKIE])
+        : false;
+
+    return { props: { settingsSaved } };
+};
 
 export default Cookies;
