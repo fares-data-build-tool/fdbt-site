@@ -20,6 +20,12 @@ exports[`pages productDateInformation it should render errors correctly when rad
         ]
       }
     />
+    <h1
+      className="govuk-heading-l"
+      id="product-date-information-heading"
+    >
+      Is there a start or end date for your product?
+    </h1>
     <RadioConditionalInput
       dates={
         Object {
@@ -35,6 +41,7 @@ exports[`pages productDateInformation it should render errors correctly when rad
         Object {
           "heading": Object {
             "content": "Is there a start or end date for your product?",
+            "hidden": true,
             "id": "product-dates-information",
           },
           "radioError": Array [],
@@ -98,6 +105,12 @@ exports[`pages productDateInformation it should render the product date informat
     <ErrorSummary
       errors={Array []}
     />
+    <h1
+      className="govuk-heading-l"
+      id="product-date-information-heading"
+    >
+      Is there a start or end date for your product?
+    </h1>
     <RadioConditionalInput
       dates={
         Object {
@@ -113,6 +126,7 @@ exports[`pages productDateInformation it should render the product date informat
         Object {
           "heading": Object {
             "content": "Is there a start or end date for your product?",
+            "hidden": true,
             "id": "product-dates-information",
           },
           "radioError": Array [],

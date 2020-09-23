@@ -29,28 +29,6 @@ export const combinedDateSchema = yup.object({
     endDate: yup.date().min(yup.ref('startDate'), 'The end date must be after the start date'),
 });
 
-export const getErrorIdFromDateError = (errorPath: string): string => {
-    if (
-        errorPath === 'startDateDay' ||
-        errorPath === 'startDateMonth' ||
-        errorPath === 'startDateYear' ||
-        errorPath === 'startDate'
-    ) {
-        return 'start-date';
-    }
-
-    if (
-        errorPath === 'endDateDay' ||
-        errorPath === 'endDateMonth' ||
-        errorPath === 'endDateYear' ||
-        errorPath === 'endDate'
-    ) {
-        return 'end-date';
-    }
-
-    throw new Error(`Could not match the following error with an expected input. Error path: ${errorPath}.`);
-};
-
 const isDatesFieldEmpty = (day: string, month: string, year: string): boolean =>
     day === '' && month === '' && year === '';
 
@@ -93,8 +71,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             if (isStartDateEmpty && isEndDateEmpty) {
                 errors.push(
-                    { errorMessage: 'Enter a start date', id: 'start-date' },
-                    { errorMessage: 'Enter an end date', id: 'end-date' },
+                    { errorMessage: 'Enter a start date', id: 'start-date-day' },
+                    { errorMessage: 'Enter an end date', id: 'end-date-day' },
                 );
             }
 
@@ -107,11 +85,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             if (!startDate.isValid() && !isStartDateEmpty) {
-                errors.push({ errorMessage: 'Start date must be a real date', id: 'start-date' });
+                errors.push({ errorMessage: 'Start date must be a real date', id: 'start-date-day' });
             }
 
             if (!endDate.isValid() && !isEndDateEmpty) {
-                errors.push({ errorMessage: 'End date must be a real date', id: 'end-date' });
+                errors.push({ errorMessage: 'End date must be a real date', id: 'end-date-day' });
             }
 
             if (errors.length > 0) {
@@ -125,7 +103,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             } catch (validationErrors) {
                 const validityErrors: yup.ValidationError = validationErrors;
                 errors = validityErrors.inner.map(error => ({
-                    id: getErrorIdFromDateError(error.path),
+                    id: 'end-date-day',
                     errorMessage: error.message,
                 }));
 

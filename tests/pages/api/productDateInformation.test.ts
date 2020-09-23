@@ -43,8 +43,8 @@ describe('productDataInformation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             errors: [
-                { errorMessage: 'Enter a start date', id: 'start-date' },
-                { errorMessage: 'Enter an end date', id: 'end-date' },
+                { errorMessage: 'Enter a start date', id: 'start-date-day' },
+                { errorMessage: 'Enter an end date', id: 'end-date-day' },
             ],
             dates: {
                 startDateDay: '',
@@ -76,8 +76,8 @@ describe('productDataInformation', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
             errors: [
-                { errorMessage: 'Start date must be a real date', id: 'start-date' },
-                { errorMessage: 'End date must be a real date', id: 'end-date' },
+                { errorMessage: 'Start date must be a real date', id: 'start-date-day' },
+                { errorMessage: 'End date must be a real date', id: 'end-date-day' },
             ],
             dates: {
                 startDateDay: '12',
@@ -115,7 +115,7 @@ describe('productDataInformation', () => {
             errors: [
                 {
                     errorMessage: 'The end date must be after the start date',
-                    id: 'end-date',
+                    id: 'end-date-day',
                 },
             ],
             dates: {

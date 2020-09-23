@@ -1983,6 +1983,7 @@ export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset 
     heading: {
         id: 'product-dates-information',
         content: 'Is there a start or end date for your product?',
+        hidden: true,
     },
     radios: [
         {
@@ -2024,6 +2025,7 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
     heading: {
         id: 'product-dates-information',
         content: 'Is there a start or end date for your product?',
+        hidden: true,
     },
     radios: [
         {
@@ -2051,11 +2053,11 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
             ],
             inputErrors: [
                 {
-                    id: 'start-date',
+                    id: 'start-date-day',
                     errorMessage: 'Start date must be a real date',
                 },
                 {
-                    id: 'end-date',
+                    id: 'end-date-day',
                     errorMessage: 'End date must be a real date',
                 },
             ],
@@ -2074,6 +2076,7 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
     heading: {
         id: 'product-dates-information',
         content: 'Is there a start or end date for your product?',
+        hidden: true,
     },
     radios: [
         {
@@ -2089,12 +2092,12 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
             inputType: 'date',
             inputs: [
                 {
-                    id: 'start-date',
+                    id: 'start-date-day',
                     name: 'startDate',
                     label: 'Start Date',
                 },
                 {
-                    id: 'end-date',
+                    id: 'end-date-day',
                     name: 'endDate',
                     label: 'End Date',
                 },

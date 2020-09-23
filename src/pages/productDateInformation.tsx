@@ -24,6 +24,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         heading: {
             id: 'product-dates-information',
             content: 'Is there a start or end date for your product?',
+            hidden: true,
         },
         radios: [
             {
@@ -49,7 +50,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         label: 'End Date',
                     },
                 ],
-                inputErrors: getErrorsByIds(['start-date', 'end-date'], errors),
+                inputErrors: getErrorsByIds(['start-date-day', 'end-date-day'], errors),
             },
             {
                 id: 'product-dates-information-not-required',
@@ -73,6 +74,9 @@ const ProductDateInfo = ({
             <CsrfForm action="/api/productDateInformation" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
+                    <h1 className="govuk-heading-l" id="product-date-information-heading">
+                        {fieldsets.heading.content}
+                    </h1>
                     <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>

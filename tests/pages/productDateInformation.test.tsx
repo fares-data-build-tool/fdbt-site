@@ -62,11 +62,11 @@ describe('pages', () => {
         it('it should return a fieldset containing two text inputs with errors attached when errors are passed', () => {
             const errors: ErrorInfo[] = [
                 {
-                    id: 'start-date',
+                    id: 'start-date-day',
                     errorMessage: 'Start date must be a real date',
                 },
                 {
-                    id: 'end-date',
+                    id: 'end-date-day',
                     errorMessage: 'End date must be a real date',
                 },
             ];
@@ -98,11 +98,11 @@ describe('pages', () => {
             it('it should return props containing errors and valid fieldsets when radio and all input errors are present', () => {
                 const errors: ErrorInfo[] = [
                     {
-                        id: 'start-date',
+                        id: 'start-date-day',
                         errorMessage: 'Start date must be a real date',
                     },
                     {
-                        id: 'end-date',
+                        id: 'end-date-day',
                         errorMessage: 'End date must be a real date',
                     },
                 ];
