@@ -46,6 +46,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
 } from '../../../constants';
 
@@ -58,6 +59,7 @@ import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { MultipleProductAttribute } from '../multipleProductValidity';
+import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -186,6 +188,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+    const returnPeriodValidity = getSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE);
 
     if (
         !isFareType(fareTypeAttribute) ||
@@ -194,6 +197,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
         !isSalesOfferPackages(salesOfferPackages) ||
+        isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
         !isProductDateAttribute(productDateAttribute)
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
@@ -216,6 +220,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
                       inboundMatchingAttributeInfo.inboundMatchingFareZones,
                   )
                 : [],
+        ...(returnPeriodValidity && { returnPeriodValidity }),
         email: decodedIdToken.email,
         uuid,
         products: [{ salesOfferPackages }],

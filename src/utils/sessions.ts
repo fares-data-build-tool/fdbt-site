@@ -31,6 +31,7 @@ import {
     PERIOD_TYPE_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
+    RETURN_VALIDITY_ATTRIBUTE,
 } from '../constants/index';
 import {
     InputMethodInfo,
@@ -49,6 +50,7 @@ import {
     PeriodTypeAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
+    ReturnPeriodValidity,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -78,6 +80,7 @@ import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType'
 import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { ProductDate, ProductDatesWithErrors } from '../pages/api/productDateInformation';
+import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -117,6 +120,7 @@ type SessionAttributeTypes = {
     [JOURNEY_ATTRIBUTE]: Journey | JourneyWithErrors;
     [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
+    [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
 };
 
