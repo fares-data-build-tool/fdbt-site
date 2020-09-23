@@ -42,7 +42,7 @@ exports[`pages productDateInformation it should render errors correctly when rad
             Object {
               "dataAriaControls": "product-dates-required-conditional",
               "hint": Object {
-                "content": "Enter a start or end date",
+                "content": "Enter a start and/or end date",
                 "id": "product-dates-required-restriction-hint",
               },
               "id": "product-dates-required",
@@ -120,7 +120,7 @@ exports[`pages productDateInformation it should render the product date informat
             Object {
               "dataAriaControls": "product-dates-required-conditional",
               "hint": Object {
-                "content": "Enter a start or end date",
+                "content": "Enter a start and/or end date",
                 "id": "product-dates-required-restriction-hint",
               },
               "id": "product-dates-required",

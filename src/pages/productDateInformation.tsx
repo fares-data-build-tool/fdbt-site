@@ -34,7 +34,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 label: 'Yes',
                 hint: {
                     id: 'product-dates-required-restriction-hint',
-                    content: 'Enter a start or end date',
+                    content: 'Enter a start and/or end date',
                 },
                 inputType: 'date',
                 inputs: [
@@ -66,14 +66,7 @@ const ProductDateInfo = ({
     csrfToken,
     errors = [],
     fieldsets,
-    dates = {
-        startDateDay: '',
-        startDateMonth: '',
-        startDateYear: '',
-        endDateDay: '',
-        endDateMonth: '',
-        endDateYear: '',
-    },
+    dates,
 }: ProductDateInformationProps & CustomAppProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description}>

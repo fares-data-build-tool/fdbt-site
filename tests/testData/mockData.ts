@@ -1993,7 +1993,7 @@ export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset 
             label: 'Yes',
             hint: {
                 id: 'product-dates-required-restriction-hint',
-                content: 'Enter a start or end date',
+                content: 'Enter a start and/or end date',
             },
             inputType: 'date',
             inputs: [
@@ -2034,7 +2034,7 @@ export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditiona
             label: 'Yes',
             hint: {
                 id: 'product-dates-required-restriction-hint',
-                content: 'Enter a start or end date',
+                content: 'Enter a start and/or end date',
             },
             inputType: 'date',
             inputs: [
@@ -2084,7 +2084,7 @@ export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInpu
             label: 'Yes',
             hint: {
                 id: 'product-dates-required-restriction-hint',
-                content: 'Enter a start or end date',
+                content: 'Enter a start and/or end date',
             },
             inputType: 'date',
             inputs: [
