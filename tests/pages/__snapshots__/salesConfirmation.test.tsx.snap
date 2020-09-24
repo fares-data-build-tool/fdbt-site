@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages confirmation should render correctly 1`] = `
+<Component
+  description="sales Confirmation page of the Fares Data Build Tool"
+  errors={Array []}
+  title="Sales Confirmation - Fares Data Build Tool"
+>
+  <CsrfForm
+    action="/api/salesConfirmation"
+    csrfToken=""
+    method="post"
+  >
+    <h1
+      className="govuk-heading-l"
+    >
+      Check your answers before sending your sales information
+    </h1>
+    <ConfirmationTable
+      confirmationElements={
+        Array [
+          Object {
+            "content": "A Sales Offer Package",
+            "href": "selectSalesOfferPackages",
+            "name": "Sales Offer Package",
+          },
+        ]
+      }
+      header="Sales Information"
+    />
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</Component>
+`;

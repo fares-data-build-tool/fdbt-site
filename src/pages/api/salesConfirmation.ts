@@ -99,6 +99,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         return;
     } catch (error) {
         const message = 'There was a problem processing the information needed for the user data to be put in s3:';
-        redirectToError(res, message, 'api.selectSalesOfferPackage', error);
+        redirectToError(res, message, 'api.salesConfirmation', error);
     }
 };

@@ -114,7 +114,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (validity === 'No') {
             updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, undefined);
-            redirectTo(res, '/selectSalesOfferPackage');
+            redirectTo(res, '/ticketConfirmation');
             return;
         }
 

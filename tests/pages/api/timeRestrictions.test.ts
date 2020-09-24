@@ -58,19 +58,6 @@ describe('timeRestrictions', () => {
             });
         });
 
-        it('should redirect on fare type when no is selected for time restrictions', () => {
-            const redirectOnFareType = jest.spyOn(utils, 'redirectOnFareType');
-            const { req, res } = getMockRequestAndResponse({
-                cookieValues: { operator: null },
-                body: {
-                    timeRestrictions: 'no',
-                },
-                uuid: {},
-            });
-            timeRestrictions(req, res);
-            expect(redirectOnFareType).toBeCalled();
-        });
-
         it('should 302 redirect to /defineTimeRestrictions when yes is selected for time restrictions', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
