@@ -4,7 +4,7 @@ import { ServerResponse } from 'http';
 import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { ID_TOKEN_COOKIE } from '../constants';
+import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../constants';
 import Banner from '../layout/Banner';
 import { Breadcrumb, DocumentContextWithSession } from '../interfaces';
 import Footer from '../layout/Footer';
@@ -17,6 +17,7 @@ interface DocumentProps extends DocumentInitialProps {
     csrfToken: string;
     breadcrumbs: Breadcrumb[];
     url: string;
+    allowTracking: boolean;
 }
 
 interface ResponseWithLocals extends ServerResponse {
@@ -38,12 +39,21 @@ class MyDocument extends Document<DocumentProps> {
 
         const cookies = parseCookies(ctx);
         const idTokenCookie = cookies[ID_TOKEN_COOKIE];
+        const allowTracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
 
         const breadcrumbs = breadcrumb(ctx).generate();
 
         const url = ctx.req?.url ?? '';
 
-        return { ...initialProps, nonce, isAuthed: !!idTokenCookie, csrfToken, breadcrumbs, url };
+        return {
+            ...initialProps,
+            nonce,
+            isAuthed: !!idTokenCookie,
+            csrfToken,
+            breadcrumbs,
+            url,
+            allowTracking,
+        };
     }
 
     render(): ReactElement {
@@ -61,7 +71,8 @@ class MyDocument extends Document<DocumentProps> {
                                 nonce={this.props.nonce}
                                 // eslint-disable-next-line react/no-danger
                                 dangerouslySetInnerHTML={{
-                                    __html: `window.dataLayer = window.dataLayer || [];
+                                    __html: `window['ga-disable-UA-173062045-1'] = ${!this.props.allowTracking};
+                                        window.dataLayer = window.dataLayer || [];
                                         function gtag(){dataLayer.push(arguments);}
                                         gtag('js', new Date());
                                         gtag('config', 'UA-173062045-1');`,

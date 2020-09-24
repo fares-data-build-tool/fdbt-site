@@ -1,6 +1,6 @@
 import { parseCookies } from 'nookies';
 import React, { ReactElement } from 'react';
-import { COOKIE_SETTINGS_SAVED_COOKIE } from '../constants';
+import { COOKIES_POLICY_COOKIE, COOKIE_SETTINGS_SAVED_COOKIE } from '../constants';
 import { deleteCookieOnServerSide } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
@@ -11,9 +11,10 @@ const description = 'Cookies Preferences page of the Fares Data Build Tool';
 
 interface CookiesProps {
     settingsSaved: boolean;
+    trackingDefaultValue: 'on' | 'off';
 }
 
-const Cookies = ({ settingsSaved, csrfToken }: CookiesProps & CustomAppProps): ReactElement => (
+const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiesProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         {settingsSaved ? (
             <div className="cookie-settings__confirmation">
@@ -66,6 +67,7 @@ const Cookies = ({ settingsSaved, csrfToken }: CookiesProps & CustomAppProps): R
                                         id="accept-analytics-cookies"
                                         name="tracking"
                                         value="on"
+                                        defaultChecked={trackingDefaultValue === 'on'}
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label"
@@ -81,7 +83,7 @@ const Cookies = ({ settingsSaved, csrfToken }: CookiesProps & CustomAppProps): R
                                         id="decline-analytics-cookies"
                                         name="tracking"
                                         value="off"
-                                        defaultChecked
+                                        defaultChecked={trackingDefaultValue === 'off'}
                                     />
                                     <label
                                         className="govuk-label govuk-radios__label"
@@ -120,8 +122,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const settingsSaved = cookies[COOKIE_SETTINGS_SAVED_COOKIE]
         ? JSON.parse(cookies[COOKIE_SETTINGS_SAVED_COOKIE])
         : false;
+    const tracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
 
-    return { props: { settingsSaved } };
+    const trackingDefaultValue = !!settingsSaved && !!tracking ? 'on' : 'off';
+
+    return { props: { settingsSaved, trackingDefaultValue } };
 };
 
 export default Cookies;

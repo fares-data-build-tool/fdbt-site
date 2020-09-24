@@ -19,6 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const cookiePolicy: CookiePolicy = { essential: true, usage: tracking === 'on' || false };
 
+        // UPDATE BELOW COOKIE LIFETIMES
         setCookieOnResponseObject(COOKIE_SETTINGS_SAVED_COOKIE, 'true', req, res);
         setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res);
         setCookieOnResponseObject(COOKIES_POLICY_COOKIE, JSON.stringify(cookiePolicy), req, res);

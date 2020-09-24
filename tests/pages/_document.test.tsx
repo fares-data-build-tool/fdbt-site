@@ -40,7 +40,9 @@ describe('_document', () => {
     };
 
     it('should render correctly', () => {
-        const tree = shallow(<MyDocument {...props} nonce="" isAuthed csrfToken="" breadcrumbs={[]} url="" />);
+        const tree = shallow(
+            <MyDocument {...props} nonce="" isAuthed csrfToken="" breadcrumbs={[]} url="" allowTracking />,
+        );
         expect(tree).toMatchSnapshot();
     });
 });
