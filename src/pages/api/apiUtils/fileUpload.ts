@@ -87,7 +87,7 @@ export const containsViruses = async (pathToFileToScan: string): Promise<boolean
         clamdscan: {
             timeout: 60000,
             local_fallback: false,
-            path: process.env.NODE_ENV === 'development' ? '/usr/local/bin/clamdscan' : '/usr/bin/clamdscan', // Path to the clamdscan binary on your server
+            path: process.env.NODE_ENV === 'development' ? '/usr/local/bin/clamdscan' : '/usr/bin/clamdscan',
             multiscan: true,
             reload_db: false,
             active: true,
