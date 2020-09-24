@@ -16,7 +16,7 @@ WORKDIR /home/node/app
 
 COPY package*.json ./
 
-RUN apk update && apk upgrade && apk add --no-cache -t .clamv-run-deps git openrc clamav clamav-daemon clamav-libunrar && \
+RUN apk update && apk upgrade && apk add --no-cache -t .clamv-run-deps openrc clamav clamav-daemon clamav-libunrar && \
     npm install --ignore-scripts && mkdir /run/clamav && chown -R clamav:clamav /run/clamav && freshclam
 
 COPY --from=build /tmp/.next ./.next
