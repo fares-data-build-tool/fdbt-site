@@ -125,11 +125,19 @@ const Contact = (): ReactElement => {
                             fdbt-cookies-policy
                         </th>
                         <td className="govuk-table__cell">
-                            Set to store validation information when resetting password
+                            Set to store information for the agreement of the cookie policy
                         </td>
                         <td className="govuk-table__cell">24 hours</td>
                     </tr>
-                    fdbt-coookies-policy fdbt-cookie-preferences-set
+                    <tr className="govuk-table__row">
+                        <th scope="row" className="govuk-table__header">
+                            fdbt-cookie-preferences-set
+                        </th>
+                        <td className="govuk-table__cell">
+                            Set to store information on your selected cookie preferences
+                        </td>
+                        <td className="govuk-table__cell">24 hours</td>
+                    </tr>
                 </tbody>
             </table>
             <a
