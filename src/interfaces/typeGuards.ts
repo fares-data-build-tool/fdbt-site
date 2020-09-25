@@ -1,3 +1,9 @@
+import {
+    SingleTicketProps,
+    ReturnTicketProps,
+    PeriodTicketProps,
+    FlatFareTicketProps,
+} from '../pages/ticketConfirmation';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import {
     PeriodTicket,
@@ -13,6 +19,7 @@ import {
     PeriodTypeAttributeWithErrors,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
+    ProductDate,
 } from './index';
 
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
@@ -20,7 +27,7 @@ import { PassengerType, PassengerTypeWithErrors } from '../pages/api/passengerTy
 import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
-import { SingleTicketProps, ReturnTicketProps, PeriodTicketProps, FlatFareTicketProps } from 'src/pages/ticketConfirmation';
+import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -150,3 +157,14 @@ export const isPeriodTicketProps = (
 export const isFlatFareTicketProps = (
     props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
 ): props is FlatFareTicketProps => (props as FlatFareTicketProps).productName !== undefined;
+export const isProductDateAttributeWithErrors = (
+    productDates: ProductDate | ProductDatesWithErrors | undefined,
+): productDates is ProductDatesWithErrors =>
+    productDates !== undefined && (productDates as ProductDatesWithErrors).errors !== undefined;
+
+export const isProductDateAttribute = (
+    productDates: ProductDate | ProductDatesWithErrors | undefined,
+): productDates is ProductDate =>
+    productDates !== undefined &&
+    (productDates as ProductDate).startDate !== undefined &&
+    (productDates as ProductDate).endDate !== undefined;

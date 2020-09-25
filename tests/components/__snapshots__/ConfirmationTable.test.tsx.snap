@@ -27,23 +27,31 @@ exports[`ConfirmationTable should render the table with options 1`] = `
   >
     <div
       className="govuk-summary-list__row"
+      key="Name"
     >
       <dt
         className="govuk-summary-list__key"
-      />
+      >
+        Name
+      </dt>
       <dd
         className="govuk-summary-list__value"
-      />
+      >
+        Bob
+      </dd>
       <dd
         className="govuk-summary-list__actions"
       >
         <a
           className="govuk-link"
+          href="/login"
         >
-          Change
+          change
           <span
             className="govuk-visually-hidden"
-          />
+          >
+            Name
+          </span>
         </a>
       </dd>
     </div>
@@ -53,23 +61,31 @@ exports[`ConfirmationTable should render the table with options 1`] = `
   >
     <div
       className="govuk-summary-list__row"
+      key="House"
     >
       <dt
         className="govuk-summary-list__key"
-      />
+      >
+        House
+      </dt>
       <dd
         className="govuk-summary-list__value"
-      />
+      >
+        Big
+      </dd>
       <dd
         className="govuk-summary-list__actions"
       >
         <a
           className="govuk-link"
+          href="/fareType"
         >
-          Change
+          change
           <span
             className="govuk-visually-hidden"
-          />
+          >
+            House
+          </span>
         </a>
       </dd>
     </div>

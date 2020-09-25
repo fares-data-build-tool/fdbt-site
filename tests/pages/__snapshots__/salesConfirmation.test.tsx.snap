@@ -2,7 +2,7 @@
 
 exports[`pages confirmation should render correctly 1`] = `
 <Component
-  description="sales Confirmation page of the Fares Data Build Tool"
+  description="Sales Confirmation page of the Fares Data Build Tool"
   errors={Array []}
   title="Sales Confirmation - Fares Data Build Tool"
 >
@@ -14,25 +14,45 @@ exports[`pages confirmation should render correctly 1`] = `
     <h1
       className="govuk-heading-l"
     >
-      Check your answers before sending your sales information
+      Check your sales information answers before submitting
     </h1>
     <ConfirmationTable
       confirmationElements={
         Array [
           Object {
-            "content": "A Sales Offer Package",
+            "content": "A sales offer package",
             "href": "selectSalesOfferPackages",
             "name": "Sales Offer Package",
+          },
+          Object {
+            "content": "25-09-2020",
+            "href": "productDateInformation",
+            "name": "Ticket Start Date (default)",
+          },
+          Object {
+            "content": "25-09-2120",
+            "href": "productDateInformation",
+            "name": "Ticket End Date (default)",
           },
         ]
       }
       header="Sales Information"
     />
+    <h2
+      className="govuk-heading-m"
+    >
+      Now submit your data for NeTEx creation
+    </h2>
+    <p
+      className="govuk-body"
+    >
+      By submitting this data you are confirming that, to the best of your knowledge, the details you are providing are correct.
+    </p>
     <input
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Continue"
+      value="Submit"
     />
   </CsrfForm>
 </Component>

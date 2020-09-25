@@ -30,6 +30,7 @@ import {
     JOURNEY_ATTRIBUTE,
     PERIOD_TYPE_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
 } from '../constants/index';
 import {
@@ -50,6 +51,7 @@ import {
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
+    ProductDate,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -78,6 +80,7 @@ import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerTy
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
+import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 
 type SessionAttributeTypes = {
@@ -119,6 +122,7 @@ type SessionAttributeTypes = {
     [PERIOD_TYPE_ATTRIBUTE]: PeriodTypeAttribute | PeriodTypeAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
+    [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

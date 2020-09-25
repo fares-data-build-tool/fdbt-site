@@ -167,6 +167,17 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
+    ticketPeriod: ProductDate;
+}
+
+export interface ProductDate {
+    startDate?: string;
+    endDate?: string;
+}
+
+export interface TicketPeriod {
+    startDate: string;
+    endDate: string;
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;

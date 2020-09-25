@@ -20,7 +20,7 @@ const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTablePr
                     <dd className="govuk-summary-list__value">{element.content}</dd>
                     <dd className="govuk-summary-list__actions">
                         <a className="govuk-link" href={element.href}>
-                            Change<span className="govuk-visually-hidden">{element.name}</span>
+                            change<span className="govuk-visually-hidden">{element.name}</span>
                         </a>
                     </dd>
                 </div>

@@ -1,5 +1,4 @@
 import { timeRestrictionsErrorId } from '../../../src/pages/timeRestrictions';
-import * as utils from '../../../src/pages/api/apiUtils/index';
 import timeRestrictions from '../../../src/pages/api/timeRestrictions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { isSessionValid } from '../../../src/pages/api/apiUtils/validator';

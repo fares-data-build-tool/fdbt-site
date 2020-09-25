@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import startCase from 'lodash/startCase';
+import upperFirst from 'lodash/upperFirst';
 import {
     CustomAppProps,
     NextPageContextWithSession,
@@ -198,19 +198,24 @@ export const buildTicketConfirmationElements = (
         confirmationElements.push(
             {
                 name: 'Service',
-                content: fareTypeProps.service,
+                content: fareTypeProps.service.split('#')[0],
                 href: 'service',
             },
             {
                 name: 'Journey Direction',
-                content: startCase(fareTypeProps.journeyDirection),
+                content: upperFirst(fareTypeProps.journeyDirection),
                 href: 'singleDirection',
+            },
+            {
+                name: 'Fare Triangle',
+                content: 'You submitted or created a fare triangle',
+                href: 'inputMethod',
             },
         );
         fareTypeProps.matchedFareStages.forEach(fareStage => {
             confirmationElements.push({
                 name: `Fare Stage - ${fareStage.fareStage}`,
-                content: `Stops - ${startCase(fareStage.stops.join(', '))}`,
+                content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
                 href: 'matching',
             });
         });
@@ -218,21 +223,21 @@ export const buildTicketConfirmationElements = (
     if (isReturnTicketProps(fareTypeProps)) {
         confirmationElements.push({
             name: 'Service',
-            content: fareTypeProps.service,
+            content: fareTypeProps.service.split('#')[0],
             href: 'service',
         });
         if (fareTypeProps.circular) {
             fareTypeProps.outboundMatchedFareStages.forEach(fareStage => {
                 confirmationElements.push({
                     name: `Outbound Fare Stage - ${fareStage.fareStage}`,
-                    content: `Stops - ${startCase(fareStage.stops.join(', '))}`,
+                    content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
                     href: 'outboundMatching',
                 });
             });
             fareTypeProps.inboundMatchedFareStages.forEach(fareStage => {
                 confirmationElements.push({
                     name: `Inbound Fare Stage - ${fareStage.fareStage}`,
-                    content: `Stops - ${startCase(fareStage.stops.join(', '))}`,
+                    content: `Stops - ${fareStage.stops.map(stop => upperFirst(stop)).join(', ')}`,
                     href: 'inboundMatching',
                 });
             });
@@ -255,7 +260,7 @@ export const buildTicketConfirmationElements = (
         } else {
             confirmationElements.push({
                 name: 'Services',
-                content: `${fareTypeProps.services.join(', ')}`,
+                content: `${fareTypeProps.services.map(service => service.split('#')[0]).join(', ')}`,
                 href: 'serviceList',
             });
         }
@@ -286,7 +291,7 @@ export const buildTicketConfirmationElements = (
         confirmationElements.push(
             {
                 name: 'Services',
-                content: `${fareTypeProps.services.join(', ')}`,
+                content: `${fareTypeProps.services.map(service => service.split('#')[0]).join(', ')}`,
                 href: 'serviceList',
             },
             {

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import startCase from 'lodash/startCase';
+import upperFirst from 'lodash/upperFirst';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
 import { CustomAppProps, NextPageContextWithSession, TimeRestriction } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
@@ -26,40 +26,40 @@ export const buildFareConfirmationElements = (
     const confirmationElements: ConfirmationElement[] = [
         {
             name: 'Fare Type',
-            content: startCase(fareType),
+            content: upperFirst(fareType),
             href: 'fareType',
         },
         {
             name: 'Passenger Type',
-            content: startCase(passengerType.passengerType),
+            content: upperFirst(passengerType.passengerType),
             href: 'passengerType',
         },
     ];
     if (passengerType.ageRange && (passengerType.ageRangeMin || passengerType.ageRangeMax)) {
         confirmationElements.push({
             name: 'Passenger Information - Age Range',
-            content: `Minimum Age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'} Maximum Age: ${
-                passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'
+            content: `Minimum Age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : '-'} Maximum Age: ${
+                passengerType.ageRangeMax ? passengerType.ageRangeMax : '-'
             }`,
             href: 'definePassengerType',
         });
     } else {
         confirmationElements.push({
             name: 'Passenger Information - Age Range',
-            content: 'N/A',
+            content: '-',
             href: 'definePassengerType',
         });
     }
     if (passengerType.proof && passengerType.proofDocuments) {
         confirmationElements.push({
             name: 'Passenger Information - Proof Documents',
-            content: startCase(passengerType.proofDocuments.join(', ')),
+            content: passengerType.proofDocuments.map(proofDoc => upperFirst(proofDoc)).join(', '),
             href: 'definePassengerType',
         });
     } else {
         confirmationElements.push({
             name: 'Passenger Information - Proof Documents',
-            content: 'N/A',
+            content: '-',
             href: 'definePassengerType',
         });
     }
@@ -73,7 +73,7 @@ export const buildFareConfirmationElements = (
     } else {
         confirmationElements.push({
             name: 'Time Restrictions - Start Time',
-            content: 'N/A',
+            content: '-',
             href: 'defineTimeRestrictions',
         });
     }
@@ -87,7 +87,7 @@ export const buildFareConfirmationElements = (
     } else {
         confirmationElements.push({
             name: 'Time Restrictions - End Time',
-            content: 'N/A',
+            content: '-',
             href: 'defineTimeRestrictions',
         });
     }
@@ -95,13 +95,13 @@ export const buildFareConfirmationElements = (
     if (timeRestrictions.validDays) {
         confirmationElements.push({
             name: 'Time Restrictions - Valid Days',
-            content: startCase(timeRestrictions.validDays.join(', ')),
+            content: timeRestrictions.validDays.map(stop => upperFirst(stop)).join(', '),
             href: 'defineTimeRestrictions',
         });
     } else {
         confirmationElements.push({
             name: 'Time Restrictions - Valid Days',
-            content: 'N/A',
+            content: '-',
             href: 'defineTimeRestrictions',
         });
     }
