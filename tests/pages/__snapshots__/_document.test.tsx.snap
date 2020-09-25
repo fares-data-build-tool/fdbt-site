@@ -17,6 +17,7 @@ exports[`_document should render correctly 1`] = `
     >
       Skip to main content
     </a>
+    <CookieBanner />
     <Header
       csrfToken=""
       isAuthed={true}
@@ -24,7 +25,7 @@ exports[`_document should render correctly 1`] = `
     <div
       className="govuk-width-container app-width-container--wide"
     >
-      <Banner />
+      <PhaseBanner />
       <main
         id="main-content"
         role="main"

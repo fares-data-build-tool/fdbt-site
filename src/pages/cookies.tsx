@@ -20,6 +20,9 @@ const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiesProp
             <div className="cookie-settings__confirmation">
                 <h2 className="govuk-heading-m">Your cookie settings were saved</h2>
                 <p className="govuk-body">Return to this page at any point to change your cookie settings.</p>
+                <p className="govuk-body">
+                    <a href="/home">Click here to return to the homepage.</a>
+                </p>
             </div>
         ) : null}
         <div className="govuk-!-margin-bottom-8">
@@ -100,7 +103,7 @@ const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiesProp
                         <p className="govuk-body">These essential cookies are used to remember your progress.</p>
                         <p className="govuk-body">They always need to be on.</p>
                         <p className="govuk-body">
-                            <a href="/cookiePolicy">Find out more about our usage of cookies in our cookie policy</a>
+                            <a href="/cookieDetails">Find out more about our usage of cookies in our cookie policy</a>
                         </p>
                     </div>
                     <input

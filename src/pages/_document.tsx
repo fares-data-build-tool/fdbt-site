@@ -4,12 +4,13 @@ import { ServerResponse } from 'http';
 import { parseCookies } from 'nookies';
 import Header from '../layout/Header';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../constants';
-import Banner from '../layout/Banner';
+import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, ID_TOKEN_COOKIE } from '../constants';
+import PhaseBanner from '../layout/PhaseBanner';
 import { Breadcrumb, DocumentContextWithSession } from '../interfaces';
 import Footer from '../layout/Footer';
 import breadcrumb from '../utils/breadcrumbs';
 import Help from '../components/Help';
+import CookieBanner from '../layout/CookieBanner';
 
 interface DocumentProps extends DocumentInitialProps {
     nonce: string;
@@ -17,6 +18,7 @@ interface DocumentProps extends DocumentInitialProps {
     csrfToken: string;
     breadcrumbs: Breadcrumb[];
     url: string;
+    showCookieBanner: boolean;
     allowTracking: boolean;
 }
 
@@ -37,13 +39,18 @@ class MyDocument extends Document<DocumentProps> {
             ctx.res?.setHeader('X-Robots-Tag', 'none, noindex, nofollow, noimageindex, noarchive');
         }
 
-        const cookies = parseCookies(ctx);
-        const idTokenCookie = cookies[ID_TOKEN_COOKIE];
-        const allowTracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
-
         const breadcrumbs = breadcrumb(ctx).generate();
 
         const url = ctx.req?.url ?? '';
+
+        const cookies = parseCookies(ctx);
+        const idTokenCookie = cookies[ID_TOKEN_COOKIE];
+
+        const cookiePreferencesSet = cookies[COOKIE_PREFERENCES_COOKIE]
+            ? JSON.parse(cookies[COOKIE_PREFERENCES_COOKIE])
+            : false;
+        const showCookieBanner = !!idTokenCookie && !cookiePreferencesSet && url !== '/cookies';
+        const allowTracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
 
         return {
             ...initialProps,
@@ -52,6 +59,7 @@ class MyDocument extends Document<DocumentProps> {
             csrfToken,
             breadcrumbs,
             url,
+            showCookieBanner,
             allowTracking,
         };
     }
@@ -85,9 +93,10 @@ class MyDocument extends Document<DocumentProps> {
                     <a href="#main-content" className="govuk-skip-link">
                         Skip to main content
                     </a>
+                    {this.props.showCookieBanner ? <CookieBanner /> : null}
                     <Header isAuthed={this.props.isAuthed} csrfToken={this.props.csrfToken} />
                     <div className="govuk-width-container app-width-container--wide">
-                        <Banner />
+                        <PhaseBanner />
                         {this.props.breadcrumbs.length !== 0 && <Breadcrumbs breadcrumbs={this.props.breadcrumbs} />}
                         <main id="main-content" role="main" tabIndex={-1}>
                             <div className="govuk-main-wrapper app-main-class">
