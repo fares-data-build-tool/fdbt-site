@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { FullColumnLayout } from '../layout/Layout';
+import TwoThirdsLayout from '../layout/Layout';
 
 const title = 'Cookie details - Fares Data Build Tool';
 const description = 'Cookie details page for the Fares Data Build Tool';
 
 const Contact = (): ReactElement => {
     return (
-        <FullColumnLayout title={title} description={description}>
+        <TwoThirdsLayout title={title} description={description}>
             <h1 className="govuk-heading-xl">Details about cookies on the Fares Data Build Tool</h1>
             <p className="govuk-body">
                 Fares Data Build Tool puts small files (known as ‘cookies’) onto your computer to collect information
@@ -150,7 +150,7 @@ const Contact = (): ReactElement => {
             >
                 Preferences
             </a>
-        </FullColumnLayout>
+        </TwoThirdsLayout>
     );
 };
 
