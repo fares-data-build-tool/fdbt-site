@@ -3,7 +3,7 @@ import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, COOKIE_SETTINGS_SAVED
 import { NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 
-interface CookiePolicy {
+export interface CookiePolicy {
     essential: boolean;
     usage: boolean;
 }

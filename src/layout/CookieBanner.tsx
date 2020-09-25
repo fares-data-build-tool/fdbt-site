@@ -17,7 +17,12 @@ const CookieBanner: FC = () => (
                         </p>
                     </div>
                     <div className="cookie-banner__button">
-                        <a className="govuk-button cookie-banner__button--inline" role="button" href="/cookies">
+                        <a
+                            id="set-cookie-preferences-link"
+                            className="govuk-button cookie-banner__button--inline"
+                            role="button"
+                            href="/cookies"
+                        >
                             Set cookie preferences
                         </a>
                     </div>

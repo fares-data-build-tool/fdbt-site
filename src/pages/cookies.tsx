@@ -9,12 +9,16 @@ import { TwoThirdsLayout } from '../layout/Layout';
 const title = 'Cookies on the Fares Data Build Tool';
 const description = 'Cookies Preferences page of the Fares Data Build Tool';
 
-interface CookiesProps {
+export interface CookiePreferencesProps {
     settingsSaved: boolean;
     trackingDefaultValue: 'on' | 'off';
 }
 
-const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiesProps & CustomAppProps): ReactElement => (
+const Cookies = ({
+    settingsSaved,
+    trackingDefaultValue,
+    csrfToken,
+}: CookiePreferencesProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         {settingsSaved ? (
             <div className="cookie-settings__confirmation">
@@ -118,7 +122,7 @@ const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiesProp
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CookiePreferencesProps } => {
     const cookies = parseCookies(ctx);
     deleteCookieOnServerSide(ctx, COOKIE_SETTINGS_SAVED_COOKIE);
 
