@@ -62,7 +62,10 @@ const Cookies = ({
                                 </p>
                                 <ul className="govuk-list govuk-list--bullet govuk-hint">
                                     <li>how you got to the site</li>
-                                    <li>the pages you visit on the Fares Data Build Tool, and how long each page</li>
+                                    <li>
+                                        the pages you visit on the Fares Data Build Tool, and how long you spend on each
+                                        page
+                                    </li>
                                     <li>what you click on while you&apos;re visiting the site</li>
                                 </ul>
                             </div>
@@ -106,8 +109,10 @@ const Cookies = ({
                         <h2 className="govuk-heading-m">Strictly necessary cookies</h2>
                         <p className="govuk-body">These essential cookies are used to remember your progress.</p>
                         <p className="govuk-body">They always need to be on.</p>
-                        <p className="govuk-body">
-                            <a href="/cookieDetails">Find out more about our usage of cookies in our cookie policy</a>
+                        <p className="govuk-link govuk-!-font-size-19">
+                            <a className="govuk-link govuk-!-font-size-19" href="/cookieDetails">
+                                Find out more about our usage of cookies in our cookie policy
+                            </a>
                         </p>
                     </div>
                     <input

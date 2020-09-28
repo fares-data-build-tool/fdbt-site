@@ -102,7 +102,7 @@ exports[`pages cookies should display a confirmation box when the user saves the
                 how you got to the site
               </li>
               <li>
-                the pages you visit on the Fares Data Build Tool, and how long each page
+                the pages you visit on the Fares Data Build Tool, and how long you spend on each page
               </li>
               <li>
                 what you click on while you're visiting the site
@@ -168,9 +168,10 @@ exports[`pages cookies should display a confirmation box when the user saves the
           They always need to be on.
         </p>
         <p
-          className="govuk-body"
+          className="govuk-link govuk-!-font-size-19"
         >
           <a
+            className="govuk-link govuk-!-font-size-19"
             href="/cookieDetails"
           >
             Find out more about our usage of cookies in our cookie policy
@@ -267,7 +268,7 @@ exports[`pages cookies should render correctly with the tracking cookie selectio
                 how you got to the site
               </li>
               <li>
-                the pages you visit on the Fares Data Build Tool, and how long each page
+                the pages you visit on the Fares Data Build Tool, and how long you spend on each page
               </li>
               <li>
                 what you click on while you're visiting the site
@@ -333,9 +334,10 @@ exports[`pages cookies should render correctly with the tracking cookie selectio
           They always need to be on.
         </p>
         <p
-          className="govuk-body"
+          className="govuk-link govuk-!-font-size-19"
         >
           <a
+            className="govuk-link govuk-!-font-size-19"
             href="/cookieDetails"
           >
             Find out more about our usage of cookies in our cookie policy
@@ -455,7 +457,7 @@ exports[`pages cookies should set the tracking cookie selection radio to 'on' wh
                 how you got to the site
               </li>
               <li>
-                the pages you visit on the Fares Data Build Tool, and how long each page
+                the pages you visit on the Fares Data Build Tool, and how long you spend on each page
               </li>
               <li>
                 what you click on while you're visiting the site
@@ -521,9 +523,10 @@ exports[`pages cookies should set the tracking cookie selection radio to 'on' wh
           They always need to be on.
         </p>
         <p
-          className="govuk-body"
+          className="govuk-link govuk-!-font-size-19"
         >
           <a
+            className="govuk-link govuk-!-font-size-19"
             href="/cookieDetails"
           >
             Find out more about our usage of cookies in our cookie policy

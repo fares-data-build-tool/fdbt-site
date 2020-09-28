@@ -37,6 +37,7 @@ const unauthenticatedPostRoutes = [
     '/api/forgotPassword',
     '/api/resetPassword',
     '/api/cookies',
+    '/api/cookieDetails',
 ];
 
 const setStaticRoutes = (server: Express): void => {
