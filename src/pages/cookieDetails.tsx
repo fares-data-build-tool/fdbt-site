@@ -26,7 +26,7 @@ const Contact = (): ReactElement => {
                 <li>what you click on while you’re visiting the site</li>
             </ul>
             <p className="govuk-body">Google Analytics sets the following cookies.</p>
-            <table className="govuk-table">
+            <table className="govuk-table cookie-detail-table">
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
                         <th scope="col" className="govuk-table__header">
@@ -42,33 +42,37 @@ const Contact = (): ReactElement => {
                 </thead>
                 <tbody className="govuk-table__body">
                     <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            _ga
-                        </th>
+                        <td className="govuk-table__cell">_ga</td>
                         <td className="govuk-table__cell">
                             These help us count how many people visit Fares Data Build Tool by tracking if you’ve
                             visited before
                         </td>
-                        <td className="govuk-table__cell"> 2 years</td>
+                        <td className="govuk-table__cell">2 years</td>
                     </tr>
                     <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            _gid
-                        </th>
+                        <td className="govuk-table__cell">_gid</td>
                         <td className="govuk-table__cell">
                             These help us count how many people visit Fares Data Build Tool by tracking if you’ve
                             visited before
                         </td>
-                        <td className="govuk-table__cell"> 24 hours</td>
+                        <td className="govuk-table__cell">24 hours</td>
+                    </tr>
+                    <tr className="govuk-table__row">
+                        <td className="govuk-table__cell">_gat</td>
+                        <td className="govuk-table__cell">
+                            Used to manage the rate at which page view requests are made
+                        </td>
+                        <td className="govuk-table__cell">1 minute</td>
                     </tr>
                 </tbody>
             </table>
             <h2 className="govuk-heading-m">Strictly necessary cookies</h2>
+            <h3 className="govuk-heading-s">Progress through the tool</h3>
             <p className="govuk-body">
                 When you use the Fares Data Build Tool we will set the following cookies as you progress through the
-                forms. These cookies do not store your personal data and are deleted once you’ve completed the journey
+                forms.
             </p>
-            <table className="govuk-table">
+            <table className="govuk-table cookie-detail-table">
                 <thead className="govuk-table__head">
                     <tr className="govuk-table__row">
                         <th scope="col" className="govuk-table__header">
@@ -84,72 +88,109 @@ const Contact = (): ReactElement => {
                 </thead>
                 <tbody className="govuk-table__body">
                     <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            fdbt-operator
-                        </th>
-                        <td className="govuk-table__cell">Set to remember the operator details</td>
-                        <td className="govuk-table__cell">24 hours</td>
+                        <td className="govuk-table__cell">fdbt-operator</td>
+                        <td className="govuk-table__cell">Stores the logged in operator name and NOC</td>
+                        <td className="govuk-table__cell">When you close your browser or sign out</td>
                     </tr>
                     <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            fdbt-refresh-token
-                        </th>
-                        <td className="govuk-table__cell">Set to store information for your logged in session</td>
-                        <td className="govuk-table__cell">24 hours</td>
-                    </tr>
-                    <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            fdbt-id-token
-                        </th>
-                        <td className="govuk-table__cell">Set to store information for your logged in session</td>
-                        <td className="govuk-table__cell">24 hours</td>
-                    </tr>
-                    <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            fdbt-user
-                        </th>
+                        <td className="govuk-table__cell">fdbt-user</td>
                         <td className="govuk-table__cell">Set to store validation information for user</td>
-                        <td className="govuk-table__cell">24 hours</td>
+                        <td className="govuk-table__cell">When you close your browser</td>
                     </tr>
                     <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            fdbt-reset-password
-                        </th>
+                        <td className="govuk-table__cell">fdbt-reset-password</td>
                         <td className="govuk-table__cell">
                             Set to store validation information when resetting password
                         </td>
-                        <td className="govuk-table__cell">24 hours</td>
+                        <td className="govuk-table__cell">When you close your browser</td>
                     </tr>
                     <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            fdbt-cookies-policy
-                        </th>
-                        <td className="govuk-table__cell">
-                            Set to store information for the agreement of the cookie policy
-                        </td>
-                        <td className="govuk-table__cell">24 hours</td>
-                    </tr>
-                    <tr className="govuk-table__row">
-                        <th scope="row" className="govuk-table__header">
-                            fdbt-cookie-preferences-set
-                        </th>
-                        <td className="govuk-table__cell">
-                            Set to store information on your selected cookie preferences
-                        </td>
-                        <td className="govuk-table__cell">24 hours</td>
+                        <td className="govuk-table__cell">_csrf</td>
+                        <td className="govuk-table__cell">Used to secure form submissions</td>
+                        <td className="govuk-table__cell">When you close your browser</td>
                     </tr>
                 </tbody>
             </table>
-            <a
-                href="/cookies"
-                role="button"
-                draggable="false"
-                className="govuk-button"
-                data-module="govuk-button"
-                id="preference-button"
-            >
-                Preferences
-            </a>
+            <h3 className="govuk-heading-s">Remembering who you are</h3>
+            <p className="govuk-body">
+                When you have logged into the service we use cookies to keep track of who you are until you log out or
+                the session ends automatically.
+            </p>
+            <table className="govuk-table cookie-detail-table">
+                <thead className="govuk-table__head">
+                    <tr className="govuk-table__row">
+                        <th scope="col" className="govuk-table__header">
+                            Name
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Purpose
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Expires
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="govuk-table__body">
+                    <tr className="govuk-table__row">
+                        <td className="govuk-table__cell">fdbt-id-token</td>
+                        <td className="govuk-table__cell">Stores information about your session</td>
+                        <td className="govuk-table__cell">When you close your browser or sign out</td>
+                    </tr>
+                    <tr className="govuk-table__row">
+                        <td className="govuk-table__cell">fdbt-refresh-token</td>
+                        <td className="govuk-table__cell">Allows your session to be extended while using the tool</td>
+                        <td className="govuk-table__cell">When you close your browser or sign out</td>
+                    </tr>
+                    <tr className="govuk-table__row">
+                        <td className="govuk-table__cell">connect.sid</td>
+                        <td className="govuk-table__cell">Stores a session ID</td>
+                        <td className="govuk-table__cell">When you close your browser</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 className="govuk-heading-s">Cookies message</h3>
+            <p className="govuk-body">
+                You may see a banner when you visit GOV.UK inviting you to accept cookies or review your settings. We’ll
+                set cookies so that your computer knows you’ve seen it and not to show it again, and also to store your
+                settings.
+            </p>
+            <table className="govuk-table cookie-detail-table">
+                <thead className="govuk-table__head">
+                    <tr className="govuk-table__row">
+                        <th scope="col" className="govuk-table__header">
+                            Name
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Purpose
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Expires
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="govuk-table__body">
+                    <tr className="govuk-table__row">
+                        <td className="govuk-table__cell">fdbt-cookies-policy</td>
+                        <td className="govuk-table__cell">Saves your cookie consent settings</td>
+                        <td className="govuk-table__cell">1 year</td>
+                    </tr>
+                    <tr className="govuk-table__row">
+                        <td className="govuk-table__cell">fdbt-cookie-preferences-set</td>
+                        <td className="govuk-table__cell">
+                            Lets us know that you’ve saved your cookie consent settings
+                        </td>
+                        <td className="govuk-table__cell">1 year</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 className="govuk-heading-m">Change your settings</h2>
+            <p className="govuk-body">
+                You can{' '}
+                <a className="govuk-link" href="/cookies">
+                    change which cookies you’re happy for us to use
+                </a>
+                .
+            </p>
         </TwoThirdsLayout>
     );
 };
