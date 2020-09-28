@@ -19,10 +19,8 @@ describe('pages', () => {
                     ]}
                     ticketDating={{
                         productDates: {
-                            startDate: moment().toISOString(),
-                            endDate: moment()
-                                .add(100, 'y')
-                                .toISOString(),
+                            startDate: '2017-03-13T18:00:00+00:00',
+                            endDate: '2057-03-13T18:00:00+00:00',
                         },
                         endDefault: true,
                         startDefault: true,
@@ -57,7 +55,7 @@ describe('pages', () => {
                     productDates: {
                         startDate: moment().toISOString(),
                         endDate: moment()
-                            .add(100, 'y')
+                            .add(100, 'years')
                             .toISOString(),
                     },
                     endDefault: true,
@@ -71,8 +69,18 @@ describe('pages', () => {
                     href: 'selectSalesOfferPackages',
                     name: 'Sales Offer Package',
                 },
-                { content: '25-09-2020', href: 'productDateInformation', name: 'Ticket Start Date (default)' },
-                { content: '25-09-2120', href: 'productDateInformation', name: 'Ticket End Date (default)' },
+                {
+                    content: moment().format('DD-MM-YYYY'),
+                    href: 'productDateInformation',
+                    name: 'Ticket Start Date (default)',
+                },
+                {
+                    content: moment()
+                        .add(100, 'years')
+                        .format('DD-MM-YYYY'),
+                    href: 'productDateInformation',
+                    name: 'Ticket End Date (default)',
+                },
             ]);
         });
     });

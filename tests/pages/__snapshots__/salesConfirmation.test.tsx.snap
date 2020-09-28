@@ -25,12 +25,12 @@ exports[`pages confirmation should render correctly 1`] = `
             "name": "Sales Offer Package",
           },
           Object {
-            "content": "25-09-2020",
+            "content": "13-03-2017",
             "href": "productDateInformation",
             "name": "Ticket Start Date (default)",
           },
           Object {
-            "content": "25-09-2120",
+            "content": "13-03-2057",
             "href": "productDateInformation",
             "name": "Ticket End Date (default)",
           },

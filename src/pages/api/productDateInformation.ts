@@ -115,7 +115,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             if (startDate && endDate) {
                 dateInfo = {
-                    startDate: startDate.toISOString(),
+                    startDate: startDate.add(1, 'hours').toISOString(),
                     endDate: endDate.toISOString(),
                 };
             } else if (!startDate && endDate) {
@@ -124,7 +124,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 };
             } else if (startDate && !endDate) {
                 dateInfo = {
-                    startDate: startDate.toISOString(),
+                    startDate: startDate.add(1, 'hours').toISOString(),
                 };
             }
 

@@ -151,7 +151,7 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: '2020-12-12T00:01:00.000Z',
+            startDate: '2020-12-12T01:01:00.000Z',
             endDate: '2020-12-15T23:59:00.000Z',
         });
 

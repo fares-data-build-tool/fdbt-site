@@ -179,8 +179,7 @@ export const buildFareTypeProps = (
         const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
         const services = serviceInformation ? serviceInformation.selectedServices : [];
         const productInfo = (getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE) as ProductData).products;
-        const { productName } = productInfo[0];
-        const { productPrice } = productInfo[0];
+        const { productName, productPrice } = productInfo[0];
         return {
             services,
             productName,

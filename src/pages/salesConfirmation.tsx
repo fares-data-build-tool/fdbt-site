@@ -58,12 +58,8 @@ export const buildSalesConfirmationElements = (
             });
         });
     }
-    const startDate = moment(ticketDating.productDates.startDate)
-        .utc()
-        .format('DD-MM-YYYY');
-    const endDate = moment(ticketDating.productDates.endDate)
-        .utc()
-        .format('DD-MM-YYYY');
+    const startDate = moment(ticketDating.productDates.startDate).format('DD-MM-YYYY');
+    const endDate = moment(ticketDating.productDates.endDate).format('DD-MM-YYYY');
 
     confirmationElements.push(
         {
@@ -121,7 +117,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     let startDefault = false;
     let endDefault = false;
     if (!ticketDatingInfo) {
-        startDate = moment().toISOString();
+        startDate = moment()
+            .add(1, 'hours')
+            .toISOString();
         endDate = moment()
             .add(100, 'y')
             .toISOString();
@@ -130,7 +128,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
     } else if (!ticketDatingInfo.startDate || !ticketDatingInfo.endDate) {
         if (!ticketDatingInfo.startDate) {
             startDefault = true;
-            startDate = moment().toISOString();
+            startDate = moment()
+                .add(1, 'hours')
+                .toISOString();
         } else {
             startDate = ticketDatingInfo.startDate;
         }
