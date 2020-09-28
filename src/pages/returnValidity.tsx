@@ -79,11 +79,9 @@ const ReturnValidity = ({ errors, fieldset, csrfToken }: ReturnValidityProps & C
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${fieldset.radioError.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 className="govuk-fieldset__heading" id="return-validity-page-heading">
-                            {fieldset.heading.content}
-                        </h1>
-                    </legend>
+                    <h1 className="govuk-heading-l" id="return-validity-page-heading">
+                        {fieldset.heading.content}
+                    </h1>
                     <span className="govuk-hint" id="return-validity-hint">
                         Select no if the return journey is only valid on the same day as the outbound journey
                     </span>

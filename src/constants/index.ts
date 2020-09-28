@@ -1,6 +1,7 @@
 import { PassengerAttributes } from '../interfaces/index';
 
 // Cookies
+
 export const OPERATOR_COOKIE = 'fdbt-operator';
 
 export const USER_COOKIE = 'fdbt-user';
@@ -88,6 +89,8 @@ export const TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-time-restrictions';
 export const TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE = 'fdbt-time-restrictions-definition';
 
 export const RETURN_VALIDITY_ATTRIBUTE = 'fdbt-return-validity';
+
+export const PRODUCT_DATE_ATTRIBUTE = 'fdbt-product-date-attribute';
 
 // Other
 

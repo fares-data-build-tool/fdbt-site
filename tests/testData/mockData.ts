@@ -1174,6 +1174,10 @@ export const expectedMatchingJsonSingle: SingleTicket = {
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
@@ -1303,6 +1307,10 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
@@ -1462,6 +1470,10 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
@@ -1592,6 +1604,10 @@ export const expectedSingleProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket 
     stops: zoneStops,
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Product A',
@@ -1611,6 +1627,10 @@ export const expectedSingleProductUploadJsonWithSelectedServices: PeriodMultiple
     email: 'test@example.com',
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Product A',
@@ -1652,6 +1672,10 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
     stops: zoneStops,
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1685,6 +1709,10 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
     email: 'test@example.com',
     passengerType: 'Adult',
     timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Weekly Ticket',
@@ -1737,6 +1765,10 @@ export const expectedFlatFareProductUploadJson: FlatFareTicket = {
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
     products: [
         {
             productName: 'Weekly Rider',
@@ -1947,6 +1979,153 @@ export const duplicateNameProducts: MultiProduct[] = [
         productDurationId: '.',
     },
 ];
+
+export const mockProductRadioErrors: ErrorInfo[] = [
+    {
+        errorMessage: 'Choose one of the options below',
+        id: 'start-date',
+    },
+];
+
+export const mockProductDateInformationFieldsets: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'product-dates-information',
+        content: 'Is there a start or end date for your product?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'product-dates-required',
+            name: 'productDates',
+            value: 'Yes',
+            dataAriaControls: 'product-dates-required-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'product-dates-required-restriction-hint',
+                content: 'Enter a start and/or end date',
+            },
+            inputType: 'date',
+            inputs: [
+                {
+                    id: 'start-date',
+                    name: 'startDate',
+                    label: 'Start Date',
+                },
+                {
+                    id: 'end-date',
+                    name: 'endDate',
+                    label: 'End Date',
+                },
+            ],
+            inputErrors: [],
+        },
+        {
+            id: 'product-dates-information-not-required',
+            name: 'productDates',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockProductDateInformationFieldsetsWithInputErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'product-dates-information',
+        content: 'Is there a start or end date for your product?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'product-dates-required',
+            name: 'productDates',
+            value: 'Yes',
+            dataAriaControls: 'product-dates-required-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'product-dates-required-restriction-hint',
+                content: 'Enter a start and/or end date',
+            },
+            inputType: 'date',
+            inputs: [
+                {
+                    id: 'start-date',
+                    name: 'startDate',
+                    label: 'Start Date',
+                },
+                {
+                    id: 'end-date',
+                    name: 'endDate',
+                    label: 'End Date',
+                },
+            ],
+            inputErrors: [
+                {
+                    id: 'start-date-day',
+                    errorMessage: 'Start date must be a real date',
+                },
+                {
+                    id: 'end-date-day',
+                    errorMessage: 'End date must be a real date',
+                },
+            ],
+        },
+        {
+            id: 'product-dates-information-not-required',
+            name: 'productDates',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockProductDateInformationFieldsetsWithErrors: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'product-dates-information',
+        content: 'Is there a start or end date for your product?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'product-dates-required',
+            name: 'productDates',
+            value: 'Yes',
+            dataAriaControls: 'product-dates-required-conditional',
+            label: 'Yes',
+            hint: {
+                id: 'product-dates-required-restriction-hint',
+                content: 'Enter a start and/or end date',
+            },
+            inputType: 'date',
+            inputs: [
+                {
+                    id: 'start-date-day',
+                    name: 'startDate',
+                    label: 'Start Date',
+                },
+                {
+                    id: 'end-date-day',
+                    name: 'endDate',
+                    label: 'End Date',
+                },
+            ],
+            inputErrors: [],
+        },
+        {
+            id: 'product-dates-information-not-required',
+            name: 'productDates',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [
+        {
+            id: 'start-date',
+            errorMessage: 'Choose one of the options below',
+        },
+    ],
+};
 
 export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] = [
     {
@@ -3076,6 +3255,11 @@ export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
         show: true,
     },
     {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
+        show: true,
+    },
+    {
         name: 'Service',
         link: '/service',
         show: true,
@@ -3121,6 +3305,11 @@ export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[]
     {
         name: 'Time restrictions',
         link: '/timeRestrictions',
+        show: true,
+    },
+    {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
         show: true,
     },
     {
@@ -3192,6 +3381,11 @@ export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] =
         show: true,
     },
     {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
+        show: true,
+    },
+    {
         name: 'Period type',
         link: '/periodType',
         show: true,
@@ -3248,6 +3442,11 @@ export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Brea
         show: true,
     },
     {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
+        show: true,
+    },
+    {
         name: 'Period type',
         link: '/periodType',
         show: true,
@@ -3298,6 +3497,11 @@ export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] 
     {
         name: 'Time restrictions details',
         link: '/defineTimeRestrictions',
+        show: true,
+    },
+    {
+        name: 'Product Date Information',
+        link: '/productDateInformation',
         show: true,
     },
     {

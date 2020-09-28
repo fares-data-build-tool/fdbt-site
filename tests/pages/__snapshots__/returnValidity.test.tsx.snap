@@ -17,16 +17,12 @@ exports[`pages returnValidity should render the page correctly 1`] = `
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="return-validity-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
-        >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
+        Is the return part of this ticket valid for more than one day?
+      </h1>
       <span
         className="govuk-hint"
         id="return-validity-hint"
@@ -137,16 +133,12 @@ exports[`pages returnValidity should render the page with errors when both text 
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="return-validity-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
-        >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
+        Is the return part of this ticket valid for more than one day?
+      </h1>
       <span
         className="govuk-hint"
         id="return-validity-hint"
@@ -258,16 +250,12 @@ exports[`pages returnValidity should render the page with errors when only dropd
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="return-validity-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
-        >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
+        Is the return part of this ticket valid for more than one day?
+      </h1>
       <span
         className="govuk-hint"
         id="return-validity-hint"
@@ -375,16 +363,12 @@ exports[`pages returnValidity should render the page with errors when only text 
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="return-validity-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
-        >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
+        Is the return part of this ticket valid for more than one day?
+      </h1>
       <span
         className="govuk-hint"
         id="return-validity-hint"
@@ -492,16 +476,12 @@ exports[`pages returnValidity should render the page with errors when radio erro
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      <h1
+        className="govuk-heading-l"
+        id="return-validity-page-heading"
       >
-        <h1
-          className="govuk-fieldset__heading"
-          id="return-validity-page-heading"
-        >
-          Is the return part of this ticket valid for more than one day?
-        </h1>
-      </legend>
+        Is the return part of this ticket valid for more than one day?
+      </h1>
       <span
         className="govuk-hint"
         id="return-validity-hint"
