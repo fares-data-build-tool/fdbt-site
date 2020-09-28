@@ -49,7 +49,7 @@ class MyDocument extends Document<DocumentProps> {
         const cookiePreferencesSet = cookies[COOKIE_PREFERENCES_COOKIE]
             ? JSON.parse(cookies[COOKIE_PREFERENCES_COOKIE])
             : false;
-        const showCookieBanner = !!idTokenCookie && !cookiePreferencesSet && url !== '/cookies';
+        const showCookieBanner = !cookiePreferencesSet && url !== '/cookies';
         const allowTracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
 
         return {

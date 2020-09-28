@@ -1,4 +1,4 @@
-import cookies, { CookiePolicy } from '../../../src/pages/api/cookies';
+import cookies, { CookiePolicy, oneYearInMilliseconds } from '../../../src/pages/api/cookies';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, COOKIE_SETTINGS_SAVED_COOKIE } from '../../../src/constants';
@@ -27,13 +27,21 @@ describe('cookies', () => {
         });
         cookies(req, res);
         expect(setCookieSpy).toHaveBeenNthCalledWith(1, COOKIE_SETTINGS_SAVED_COOKIE, 'true', req, res);
-        expect(setCookieSpy).toHaveBeenNthCalledWith(2, COOKIE_PREFERENCES_COOKIE, 'true', req, res);
+        expect(setCookieSpy).toHaveBeenNthCalledWith(
+            2,
+            COOKIE_PREFERENCES_COOKIE,
+            'true',
+            req,
+            res,
+            oneYearInMilliseconds,
+        );
         expect(setCookieSpy).toHaveBeenNthCalledWith(
             3,
             COOKIES_POLICY_COOKIE,
             JSON.stringify(mockCookiePolicy),
             req,
             res,
+            oneYearInMilliseconds,
         );
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies' });
     });
@@ -48,13 +56,21 @@ describe('cookies', () => {
         });
         cookies(req, res);
         expect(setCookieSpy).toHaveBeenNthCalledWith(1, COOKIE_SETTINGS_SAVED_COOKIE, 'true', req, res);
-        expect(setCookieSpy).toHaveBeenNthCalledWith(2, COOKIE_PREFERENCES_COOKIE, 'true', req, res);
+        expect(setCookieSpy).toHaveBeenNthCalledWith(
+            2,
+            COOKIE_PREFERENCES_COOKIE,
+            'true',
+            req,
+            res,
+            oneYearInMilliseconds,
+        );
         expect(setCookieSpy).toHaveBeenNthCalledWith(
             3,
             COOKIES_POLICY_COOKIE,
             JSON.stringify(mockCookiePolicy),
             req,
             res,
+            oneYearInMilliseconds,
         );
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies' });
     });

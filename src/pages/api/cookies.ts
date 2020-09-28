@@ -8,6 +8,8 @@ export interface CookiePolicy {
     usage: boolean;
 }
 
+export const oneYearInMilliseconds = 31556952000;
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { tracking } = req.body;
@@ -19,10 +21,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const cookiePolicy: CookiePolicy = { essential: true, usage: tracking === 'on' || false };
 
-        // UPDATE BELOW COOKIE LIFETIMES
         setCookieOnResponseObject(COOKIE_SETTINGS_SAVED_COOKIE, 'true', req, res);
-        setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res);
-        setCookieOnResponseObject(COOKIES_POLICY_COOKIE, JSON.stringify(cookiePolicy), req, res);
+        setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInMilliseconds);
+        setCookieOnResponseObject(COOKIES_POLICY_COOKIE, JSON.stringify(cookiePolicy), req, res, oneYearInMilliseconds);
 
         redirectTo(res, '/cookies');
     } catch (error) {
