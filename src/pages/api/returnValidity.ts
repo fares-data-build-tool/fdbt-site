@@ -140,7 +140,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         updateSessionAttribute(req, RETURN_VALIDITY_ATTRIBUTE, { amount, typeOfDuration: duration });
-        redirectTo(res, '/selectSalesOfferPackage');
+        redirectTo(res, '/ticketConfirmation');
     } catch (error) {
         const message = 'There was a problem in the returnValidity API.';
         redirectToError(res, message, 'api.returnValidity', error);
