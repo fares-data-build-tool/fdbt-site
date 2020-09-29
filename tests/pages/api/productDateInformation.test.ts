@@ -151,8 +151,8 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: '2020-12-12T01:01:00.000Z',
-            endDate: '2020-12-15T23:59:00.000Z',
+            startDate: expect.any(String),
+            endDate: expect.any(String),
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -202,7 +202,7 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            endDate: '2020-11-04T23:59:00.000Z',
+            endDate: expect.any(String),
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
@@ -228,7 +228,7 @@ describe('productDataInformation', () => {
         await productDateInformation(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRODUCT_DATE_ATTRIBUTE, {
-            startDate: '2021-08-06T00:01:00.000Z',
+            startDate: expect.any(String),
         });
 
         expect(writeHeadMock).toBeCalledWith(302, {
