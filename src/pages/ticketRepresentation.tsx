@@ -1,49 +1,51 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { PERIOD_TYPE_ATTRIBUTE } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
 import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { isPeriodTypeWithErrors } from '../interfaces/typeGuards';
+import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
+import { FareType } from './api/fareType';
 
-const title = 'Period Type - Fares Data Build Tool';
-const description = 'Period Type selection page of the Fares Data Build Tool';
+const title = 'Ticket Representation - Fares Data Build Tool';
+const description = 'Ticket Representation selection page of the Fares Data Build Tool';
 
-type PeriodTypeProps = {
+type TicketRepresentationProps = {
+    fareType: string;
     errors: ErrorInfo[];
 };
 
-const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps): ReactElement => (
+const TicketRepresentation = ({
+    fareType,
+    errors = [],
+    csrfToken,
+}: TicketRepresentationProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
-        <CsrfForm action="/api/periodType" method="post" csrfToken={csrfToken}>
+        <CsrfForm action="/api/ticketRepresentation" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
                 <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                    <fieldset className="govuk-fieldset" aria-describedby="period-type-page-heading">
+                    <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 className="govuk-fieldset__heading" id="period-type-page-heading">
-                                Select a type of period ticket
+                            <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
+                                {`Select a type of ${fareType === 'multiOp' ? 'multi-operator' : 'period'} ticket`}
                             </h1>
                         </legend>
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId="period-type-geo-zone"
-                            errorClass="govuk-radios--errors"
-                        >
+                        <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
                             <div className="govuk-radios">
                                 <div className="govuk-radios__item">
                                     <input
                                         className={`govuk-radios__input ${
                                             errors.length > 0 ? 'govuk-input--error' : ''
                                         } `}
-                                        id="period-type-geo-zone"
-                                        name="periodType"
+                                        id="geo-zone"
+                                        name="ticketType"
                                         type="radio"
-                                        value="periodGeoZone"
+                                        value="geoZone"
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="period-type-geo-zone">
+                                    <label className="govuk-label govuk-radios__label" htmlFor="geo-zone">
                                         A ticket within a geographical zone
                                     </label>
                                 </div>
@@ -52,32 +54,13 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
                                         className={`govuk-radios__input ${
                                             errors.length > 0 ? 'govuk-input--error' : ''
                                         } `}
-                                        id="period-type-single-set-service"
-                                        name="periodType"
+                                        id="set-of-services"
+                                        name="ticketType"
                                         type="radio"
-                                        value="periodMultipleServices"
+                                        value="multipleServices"
                                     />
-                                    <label
-                                        className="govuk-label govuk-radios__label"
-                                        htmlFor="period-type-single-set-service"
-                                    >
-                                        A ticket for some or all of your network of services
-                                    </label>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className={`govuk-radios__input ${
-                                            errors.length > 0 ? 'govuk-input--error' : ''
-                                        } `}
-                                        id="period-type-network"
-                                        name="periodType"
-                                        type="radio"
-                                        value="periodMultipleOperators"
-                                        disabled
-                                        aria-disabled="true"
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="period-type-network">
-                                        A ticket for services across multiple operators (Not yet available)
+                                    <label className="govuk-label govuk-radios__label" htmlFor="set-of-services">
+                                        A ticket for a set of services
                                     </label>
                                 </div>
                             </div>
@@ -90,14 +73,16 @@ const PeriodType = ({ errors = [], csrfToken }: PeriodTypeProps & CustomAppProps
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
-    const periodType = getSessionAttribute(ctx.req, PERIOD_TYPE_ATTRIBUTE);
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TicketRepresentationProps } => {
+    const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
+    const ticketType = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
 
-    if (isPeriodTypeWithErrors(periodType)) {
-        return { props: { errors: periodType.errors } };
-    }
-
-    return { props: {} };
+    return {
+        props: {
+            fareType,
+            errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
+        },
+    };
 };
 
-export default PeriodType;
+export default TicketRepresentation;

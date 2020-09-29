@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import PeriodType from '../../src/pages/ticketRepresentation';
+import TicketRepresentation from '../../src/pages/ticketRepresentation';
 
 describe('pages', () => {
-    describe('periodtype', () => {
+    describe('ticketRepresentation', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodType errors={[]} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<TicketRepresentation fareType="period" errors={[]} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed', () => {
             const tree = shallow(
-                <PeriodType
+                <TicketRepresentation
+                    fareType="period"
                     errors={[
                         {
-                            errorMessage: 'Choose an option regarding your period ticket type',
-                            id: 'period-type-error',
+                            errorMessage: 'Choose a type of ticket representation',
+                            id: 'geo-zone',
                         },
                     ]}
                     csrfToken=""

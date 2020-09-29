@@ -1,8 +1,8 @@
 import { NextApiResponse } from 'next';
-import { getUuidFromCookie, redirectTo, redirectToError } from './apiUtils';
+import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
-import { PERIOD_TYPE_ATTRIBUTE } from '../../constants';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants';
+import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -11,34 +11,29 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
 
-        if (req.body.periodType) {
-            const { periodType } = req.body;
-            const uuid = getUuidFromCookie(req, res);
-            const periodTypeObject = { name: periodType, uuid };
-            updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, periodTypeObject);
+        if (req.body.ticketType) {
+            const { ticketType } = req.body;
+            const ticketTypeObject: TicketRepresentationAttribute = { name: ticketType };
+            updateSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE, ticketTypeObject);
 
-            switch (periodType) {
-                case 'periodGeoZone':
+            switch (ticketType) {
+                case 'geoZone':
                     redirectTo(res, '/csvZoneUpload');
                     return;
-                case 'periodMultipleServices':
+                case 'multipleServices':
                     redirectTo(res, '/serviceList?selectAll=false');
                     return;
-                case 'periodMultipleOperators':
-                    return;
                 default:
-                    throw new Error('Type of period we expect was not received.');
+                    throw new Error('Did not receive an expected ticket type.');
             }
         } else {
-            updateSessionAttribute(req, PERIOD_TYPE_ATTRIBUTE, {
-                errors: [
-                    { errorMessage: 'Choose an option regarding your period ticket type', id: 'period-type-geo-zone' },
-                ],
+            updateSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE, {
+                errors: [{ errorMessage: 'Choose a type of ticket representation', id: 'geo-zone' }],
             });
-            redirectTo(res, '/periodType');
+            redirectTo(res, '/ticketRepresentation');
         }
     } catch (error) {
-        const message = 'There was a problem selecting the type of period ticket:';
-        redirectToError(res, message, 'api.periodType', error);
+        const message = 'There was a problem selecting the type of ticket:';
+        redirectToError(res, message, 'api.ticketRepresentation', error);
     }
 };
