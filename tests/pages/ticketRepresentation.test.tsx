@@ -4,8 +4,13 @@ import TicketRepresentation from '../../src/pages/ticketRepresentation';
 
 describe('pages', () => {
     describe('ticketRepresentation', () => {
-        it('should render correctly', () => {
+        it('should render correctly when the fare type is a period ticket', () => {
             const tree = shallow(<TicketRepresentation fareType="period" errors={[]} csrfToken="" pageProps={[]} />);
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly when the fare type is a multi operator ticket', () => {
+            const tree = shallow(<TicketRepresentation fareType="multiOp" errors={[]} csrfToken="" pageProps={[]} />);
             expect(tree).toMatchSnapshot();
         });
 
