@@ -1,4 +1,4 @@
-import periodType from '../../../src/pages/api/periodType';
+import periodType from '../../../src/pages/api/ticketRepresentation';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('periodType', () => {

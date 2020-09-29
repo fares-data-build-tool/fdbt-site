@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import PeriodType from '../../src/pages/periodType';
+import PeriodType from '../../src/pages/ticketRepresentation';
 
 describe('pages', () => {
     describe('periodtype', () => {
