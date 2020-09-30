@@ -26,7 +26,7 @@ const HowManyProducts = ({ errors, multiOp, csrfToken }: HowManyProductProps & C
                     <label htmlFor="number-of-products">
                         <h1 className="govuk-heading-l" id="page-heading">
                             {multiOp
-                                ? `How many multi operator tickets do you have for the selected operator(s) and/or service(s)`
+                                ? `How many multi operator tickets do you have for the selected operator(s) and/or service(s)?`
                                 : `How many period tickets do you have for the selected services?`}
                         </h1>
                     </label>
