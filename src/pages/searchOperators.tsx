@@ -7,15 +7,19 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
 import { SEARCH_OPERATOR_ATTRIBUTE } from '../constants';
 import { isSearchOperatorAttributeWithErrors } from '../interfaces/typeGuards';
+import { getSearchOperators, OperatorNameType } from '../data/auroradb';
+import { getAndValidateNoc } from '../utils';
 
 const title = 'Search Operators - Fares Data Build Tool';
 const description = 'Search Operators page for the Fares Data Build Tool';
 
 type SearchOperatorProps = {
     errors: ErrorInfo[];
+    searchText: string;
+    operators: OperatorNameType[];
 };
 
-const SearchOperators = ({ errors = [], csrfToken }: SearchOperatorProps & CustomAppProps): ReactElement => (
+const SearchOperators = ({ errors = [], csrfToken, operators }: SearchOperatorProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <ErrorSummary errors={errors} />
         <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
@@ -42,25 +46,76 @@ const SearchOperators = ({ errors = [], csrfToken }: SearchOperatorProps & Custo
                             />
                         </>
                     </FormElementWrapper>
+                    <FormElementWrapper errors={errors} errorId="checkbox-0" errorClass="" addFormGroupError={false}>
+                        <div className="govuk-checkboxes">
+                            {operators.map((operator, index) => {
+                                const { nocCode, operatorPublicName } = operator;
+                                return (
+                                    <div className="govuk-checkboxes__item" key={`checkbox-item-${operatorPublicName}`}>
+                                        <input
+                                            className="govuk-checkboxes__input"
+                                            id={`checkbox-${index}`}
+                                            name={operatorPublicName}
+                                            type="checkbox"
+                                            value={`${nocCode}#${operatorPublicName}`}
+                                        />
+                                        <label
+                                            className="govuk-label govuk-checkboxes__label"
+                                            htmlFor={`checkbox-${index}`}
+                                        >
+                                            {operatorPublicName}
+                                        </label>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </FormElementWrapper>
                 </div>
             </>
         </CsrfForm>
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: SearchOperatorProps } => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SearchOperatorProps }> => {
+    const nocCode = getAndValidateNoc(ctx);
+
+    if (!nocCode) {
+        throw new Error('Necessary cookies not found to show operators page');
+    }
+
     const searchOperatorsAttribute = getSessionAttribute(ctx.req, SEARCH_OPERATOR_ATTRIBUTE);
+
+    const { search } = ctx.query;
 
     if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute) && searchOperatorsAttribute.errors.length > 0) {
         const { errors } = searchOperatorsAttribute;
         return {
             props: {
                 errors,
+                searchText: '',
+                operators: [],
             },
         };
     }
 
-    return { props: { errors: [] } };
+    const searchText = search && search !== '' ? search.toString() : '';
+
+    let operators: OperatorNameType[];
+
+    if (searchText !== '') {
+        const errors: ErrorInfo[] = [];
+
+        operators = await getSearchOperators(searchText, nocCode);
+        if (operators.length === 0) {
+            errors.push({
+                errorMessage: 'No operators found',
+                id: 'searchText',
+            });
+        }
+        return { props: { errors, searchText, operators } };
+    }
+
+    return { props: { errors: [], searchText, operators: [] } };
 };
 
 export default SearchOperators;
