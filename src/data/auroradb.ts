@@ -424,7 +424,7 @@ export const getSearchOperators = async (searchText: string, nocCode: string): P
                         ) AND operatorPublicName LIKE ?`;
 
     try {
-        return await executeQuery<OperatorNameType[]>(searchQuery, [searchText, `%${nocCode}%`]);
+        return await executeQuery<OperatorNameType[]>(searchQuery, [nocCode, `%${searchText}%`]);
     } catch (error) {
         throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
     }
