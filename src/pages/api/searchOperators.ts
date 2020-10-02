@@ -31,7 +31,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors: [], searchResults: [] });
-        redirectTo(res, `/searchOperators?search=${searchText}`);
+        redirectTo(res, `/searchOperators?searchOperator=${searchText}`);
     } catch (err) {
         const message = 'There was a problem in the search operators api.';
         redirectToError(res, message, 'api.searchOperators', err);

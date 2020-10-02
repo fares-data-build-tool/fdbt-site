@@ -19,7 +19,12 @@ type SearchOperatorProps = {
     operators: OperatorNameType[];
 };
 
-const SearchOperators = ({ errors = [], csrfToken, operators }: SearchOperatorProps & CustomAppProps): ReactElement => (
+const SearchOperators = ({
+    errors = [],
+    csrfToken,
+    operators,
+    searchText,
+}: SearchOperatorProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <ErrorSummary errors={errors} />
         <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
@@ -46,30 +51,66 @@ const SearchOperators = ({ errors = [], csrfToken, operators }: SearchOperatorPr
                             />
                         </>
                     </FormElementWrapper>
-                    <FormElementWrapper errors={errors} errorId="checkbox-0" errorClass="" addFormGroupError={false}>
-                        <div className="govuk-checkboxes">
-                            {operators.map((operator, index) => {
-                                const { nocCode, operatorPublicName } = operator;
-                                return (
-                                    <div className="govuk-checkboxes__item" key={`checkbox-item-${operatorPublicName}`}>
-                                        <input
-                                            className="govuk-checkboxes__input"
-                                            id={`checkbox-${index}`}
-                                            name={operatorPublicName}
-                                            type="checkbox"
-                                            value={`${nocCode}#${operatorPublicName}`}
-                                        />
-                                        <label
-                                            className="govuk-label govuk-checkboxes__label"
-                                            htmlFor={`checkbox-${index}`}
-                                        >
-                                            {operatorPublicName}
-                                        </label>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </FormElementWrapper>
+                    {operators.length > 0 ? (
+                        <FormElementWrapper
+                            errors={errors}
+                            errorId="checkbox-0"
+                            errorClass=""
+                            addFormGroupError={false}
+                        >
+                            <>
+                                <div className="govuk-checkboxes">
+                                    <h2 className="govuk-body govuk-heading-l">
+                                        Your search for <strong>{searchText}</strong> returned
+                                        <strong> {operators.length} result(s)</strong>
+                                    </h2>
+                                    <p className="govuk-hint" id="operator-hint-text">
+                                        Select the operators results and click add operator(s). This data is taken from
+                                        the Traveline National Dataset.
+                                    </p>
+                                    {operators.map((operator, index) => {
+                                        const { nocCode, operatorPublicName } = operator;
+                                        return (
+                                            <div
+                                                className="govuk-checkboxes__item"
+                                                key={`checkbox-item-${operatorPublicName}`}
+                                            >
+                                                <input
+                                                    className="govuk-checkboxes__input"
+                                                    id={`checkbox-${index}`}
+                                                    name={operatorPublicName}
+                                                    type="checkbox"
+                                                    value={`${nocCode}#${operatorPublicName}`}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-checkboxes__label"
+                                                    htmlFor={`checkbox-${index}`}
+                                                >
+                                                    {operatorPublicName}
+                                                </label>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <div className="govuk-!-margin-top-7">
+                                    <input
+                                        type="submit"
+                                        value="Add Operator(s)"
+                                        id="add-operator-button"
+                                        className="govuk-button govuk-button--secondary"
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        type="submit"
+                                        value="Continue"
+                                        id="continue-button"
+                                        className="govuk-button"
+                                    />
+                                </div>
+                            </>
+                        </FormElementWrapper>
+                    ) : null}
                 </div>
             </>
         </CsrfForm>
@@ -85,7 +126,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const searchOperatorsAttribute = getSessionAttribute(ctx.req, SEARCH_OPERATOR_ATTRIBUTE);
 
-    const { search } = ctx.query;
+    const { searchOperator } = ctx.query;
 
     if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute) && searchOperatorsAttribute.errors.length > 0) {
         const { errors } = searchOperatorsAttribute;
@@ -98,7 +139,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         };
     }
 
-    const searchText = search && search !== '' ? search.toString() : '';
+    const searchText = searchOperator && searchOperator !== '' ? searchOperator.toString() : '';
 
     let operators: OperatorNameType[];
 
