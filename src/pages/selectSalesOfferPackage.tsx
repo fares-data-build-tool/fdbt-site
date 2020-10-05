@@ -16,6 +16,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { Product } from './api/multipleProductValidity';
 import { isProductInfo, isProductData } from './productDetails';
+import { removeAllWhiteSpace } from './api/apiUtils/validator';
 
 const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
 const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
@@ -74,6 +75,8 @@ const generateCheckbox = (
             checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
         }
 
+        const productNameIds = removeAllWhiteSpace(productName);
+
         let isSelectedOffer = false;
 
         if (selected) {
@@ -92,13 +95,13 @@ const generateCheckbox = (
             <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
                 <input
                     className="govuk-checkboxes__input"
-                    id={`${productName}-checkbox-${index}`}
+                    id={`${productNameIds}-checkbox-${index}`}
                     name={productName}
                     type="checkbox"
                     value={JSON.stringify(offer)}
                     defaultChecked={isSelectedOffer}
                 />
-                <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productName}-checkbox-${index}`}>
+                <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productNameIds}-checkbox-${index}`}>
                     {checkboxTitles}
                 </label>
             </div>
