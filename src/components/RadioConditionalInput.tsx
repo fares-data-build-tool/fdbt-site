@@ -226,27 +226,29 @@ const renderConditionalDateInputs = (
                                     </span>
                                 ) : null}
 
-                                <label className="govuk-label" htmlFor={input.id}>
+                                <label className="govuk-label" htmlFor={input.label}>
                                     {input.label}
                                 </label>
                                 <div className="govuk-date-input__item">
-                                    <div className="govuk-form-group">
-                                        <label
-                                            className="govuk-label govuk-date-input__label"
-                                            htmlFor={`${input.id}-day`}
-                                        >
-                                            Day
-                                        </label>
-                                        <input
-                                            className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
-                                                inputGroupError ? 'govuk-input--error' : ''
-                                            }`}
-                                            id={`${input.id}-day`}
-                                            name={`${input.name}Day`}
-                                            type="text"
-                                            defaultValue={dayValue}
-                                        />
-                                    </div>
+                                    <fieldset className="govuk-fieldset" role="group" aria-describedby={input.label}>
+                                        <div className="govuk-form-group">
+                                            <label
+                                                className="govuk-label govuk-date-input__label"
+                                                htmlFor={`${input.id}-day`}
+                                            >
+                                                Day
+                                            </label>
+                                            <input
+                                                className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                                                    inputGroupError ? 'govuk-input--error' : ''
+                                                }`}
+                                                id={`${input.id}-day`}
+                                                name={`${input.name}Day`}
+                                                type="text"
+                                                defaultValue={dayValue}
+                                            />
+                                        </div>
+                                    </fieldset>
                                 </div>
                                 <div className="govuk-date-input__item">
                                     <div className="govuk-form-group">

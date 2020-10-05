@@ -81,13 +81,15 @@ const ProductDateInfo = ({
                             fieldsets.radioError.length > 0 ? 'govuk-form-group--error' : ''
                         }`}
                     >
-                        <h1 className="govuk-heading-l" id="product-date-information-heading">
-                            {fieldsets.heading.content}
-                        </h1>
-                        <span className="govuk-hint" id="product-dating-hint">
-                            {productDatingHintText}
-                        </span>
-                        <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
+                        <fieldset className="govuk-fieldset" aria-describedby="product-date-information-heading">
+                            <h1 className="govuk-heading-l" id="product-date-information-heading">
+                                {fieldsets.heading.content}
+                            </h1>
+                            <span className="govuk-hint" id="product-dating-hint">
+                                {productDatingHintText}
+                            </span>
+                            <RadioConditionalInput key={fieldsets.heading.id} fieldset={fieldsets} dates={dates} />
+                        </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
