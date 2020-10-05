@@ -149,6 +149,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let operators: OperatorNameType[];
 
+    if (searchText !== '' && searchText.length < 3) {
+        return {
+            props: {
+                errors: [
+                    {
+                        errorMessage: 'Search requires a minimum of three characters',
+                        id: 'searchText',
+                    },
+                ],
+                searchText,
+                operators: [],
+            },
+        };
+    }
+
     if (searchText !== '') {
         const errors: ErrorInfo[] = [];
 
