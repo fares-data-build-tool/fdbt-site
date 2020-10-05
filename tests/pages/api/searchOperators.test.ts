@@ -12,10 +12,10 @@ describe('searchOperators', () => {
 
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
 
-    it('should error if the search text if entered is less than 3', () => {
+    it('should error if the search text if entered is less than or equal to three characters', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                searchText: 'abc',
+                searchText: 'ab',
             },
         });
 
@@ -26,8 +26,8 @@ describe('searchOperators', () => {
                     id: 'searchText',
                 },
             ],
-            searchResults: [],
         };
+
         searchOperators(req, res);
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
@@ -50,7 +50,6 @@ describe('searchOperators', () => {
 
         const expectedSessionAttributeCall: SearchOperatorsWithErrors = {
             errors: [],
-            searchResults: [],
         };
         searchOperators(req, res);
 

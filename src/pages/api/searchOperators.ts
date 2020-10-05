@@ -4,11 +4,7 @@ import { SEARCH_OPERATOR_ATTRIBUTE } from '../../constants';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export interface SearchOperators {
-    searchResults: string[];
-}
-
-export interface SearchOperatorsWithErrors extends SearchOperators {
+export interface SearchOperatorsWithErrors {
     errors: ErrorInfo[];
 }
 
@@ -18,19 +14,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { searchText } = req.body;
 
-        if (searchText.length < 4) {
+        if (searchText.length < 3) {
             errors.push({
                 errorMessage: 'Search requires a minimum of three characters',
                 id: 'searchText',
             });
-        }
-
-        if (errors.length > 0) {
-            updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors, searchResults: [] });
+            updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors });
             redirectTo(res, '/searchOperators');
         }
 
-        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors: [], searchResults: [] });
+        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors: [] });
         redirectTo(res, `/searchOperators?searchOperator=${searchText}`);
     } catch (err) {
         const message = 'There was a problem in the search operators api.';
