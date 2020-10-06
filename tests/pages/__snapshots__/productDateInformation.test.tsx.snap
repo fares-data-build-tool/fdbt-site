@@ -27,12 +27,12 @@ exports[`pages productDateInformation it should render errors correctly when rad
         aria-describedby="product-date-information-heading"
         className="govuk-fieldset"
       >
-        <h1
+        <legend
           className="govuk-heading-l"
           id="product-date-information-heading"
         >
           Is there a start or end date for your product?
-        </h1>
+        </legend>
         <span
           className="govuk-hint"
           id="product-dating-hint"
@@ -62,8 +62,8 @@ exports[`pages productDateInformation it should render errors correctly when rad
                 Object {
                   "dataAriaControls": "product-dates-required-conditional",
                   "hint": Object {
-                    "content": "Enter a start and/or end date",
-                    "id": "product-dates-required-restriction-hint",
+                    "content": "",
+                    "id": "",
                   },
                   "id": "product-dates-required",
                   "inputErrors": Array [],
@@ -127,12 +127,12 @@ exports[`pages productDateInformation it should render the product date informat
         aria-describedby="product-date-information-heading"
         className="govuk-fieldset"
       >
-        <h1
+        <legend
           className="govuk-heading-l"
           id="product-date-information-heading"
         >
           Is there a start or end date for your product?
-        </h1>
+        </legend>
         <span
           className="govuk-hint"
           id="product-dating-hint"
@@ -162,8 +162,8 @@ exports[`pages productDateInformation it should render the product date informat
                 Object {
                   "dataAriaControls": "product-dates-required-conditional",
                   "hint": Object {
-                    "content": "Enter a start and/or end date",
-                    "id": "product-dates-required-restriction-hint",
+                    "content": "",
+                    "id": "",
                   },
                   "id": "product-dates-required",
                   "inputErrors": Array [],
