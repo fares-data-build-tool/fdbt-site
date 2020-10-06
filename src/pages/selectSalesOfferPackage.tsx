@@ -117,10 +117,14 @@ const createSalesOffer = (
 ): ReactElement[] =>
     productNames.map(productName => (
         <div className="sop-option">
-            <FormGroupWrapper errorId={`${[productName]}-checkbox-0`} errors={errors}>
+            <FormGroupWrapper errorId={`${[removeAllWhiteSpace(productName)]}-checkbox-0`} errors={errors}>
                 <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
-                    <FormElementWrapper errors={errors} errorId={`${productName}-checkbox-0`} errorClass="">
+                    <FormElementWrapper
+                        errors={errors}
+                        errorId={`${removeAllWhiteSpace(productName)}-checkbox-0`}
+                        errorClass=""
+                    >
                         <div className="govuk-checkboxes">
                             {generateCheckbox(salesOfferPackagesList, productName, selected)}
                             <input type="hidden" name={productName} />
