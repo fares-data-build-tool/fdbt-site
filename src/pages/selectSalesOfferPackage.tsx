@@ -71,7 +71,7 @@ const generateCheckbox = (
         const { name, description } = offer;
         let checkboxTitles = `${name} - ${description}`;
 
-        if (checkboxTitles.length > 110) {
+        if (checkboxTitles.length > 200) {
             checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
         }
 
