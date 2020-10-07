@@ -23,7 +23,7 @@ describe('searchOperators', () => {
             errors: [
                 {
                     errorMessage: 'Search requires a minimum of three characters',
-                    id: 'searchText',
+                    id: 'search-input',
                 },
             ],
         };

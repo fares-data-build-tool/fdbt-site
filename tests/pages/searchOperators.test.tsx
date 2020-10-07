@@ -30,7 +30,14 @@ describe('pages', () => {
 
         it('should render the page correctly without search results', () => {
             const tree = shallow(
-                <SearchOperators errors={[]} searchText="" operators={[]} csrfToken="" pageProps={[]} />,
+                <SearchOperators
+                    errors={[]}
+                    searchText=""
+                    searchResults={[]}
+                    selectedOperators={[]}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -41,7 +48,8 @@ describe('pages', () => {
                 <SearchOperators
                     errors={[]}
                     searchText=""
-                    operators={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    selectedOperators={[]}
                     csrfToken=""
                     pageProps={[]}
                 />,
@@ -53,9 +61,10 @@ describe('pages', () => {
         it('should render an error when errors are passed through', () => {
             const tree = shallow(
                 <SearchOperators
-                    errors={[{ errorMessage: 'Search requires a minimum of three characters', id: 'searchText' }]}
+                    errors={[{ errorMessage: 'Search requires a minimum of three characters', id: 'search-input' }]}
                     searchText=""
-                    operators={[]}
+                    searchResults={[]}
+                    selectedOperators={[]}
                     csrfToken=""
                     pageProps={[]}
                 />,
@@ -72,7 +81,7 @@ describe('pages', () => {
             const result = await getServerSideProps(ctx);
 
             expect(result.props.errors.length).toBe(0);
-            expect(result.props.operators.length).toBe(0);
+            expect(result.props.searchResults.length).toBe(0);
         });
 
         // below test needs addressing as unsure what it's proving

@@ -5,7 +5,6 @@ import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
 
-// unsure if this interface is needed
 export interface SearchOperatorsWithErrors {
     errors: ErrorInfo[];
 }
@@ -19,12 +18,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (refinedSearch.length < 3) {
             errors.push({
                 errorMessage: 'Search requires a minimum of three characters',
-                id: 'searchText',
+                id: 'search-input',
             });
             updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors });
             redirectTo(res, '/searchOperators');
+            return;
         }
-        // below session attribute arguably shouldnt be set, and if it is, doesnt need an empty array inside it.
         updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, undefined);
         redirectTo(res, `/searchOperators?searchOperator=${refinedSearch}`);
     } catch (err) {

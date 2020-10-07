@@ -15,7 +15,7 @@ exports[`pages searchOperator should render an error when errors are passed thro
         Array [
           Object {
             "errorMessage": "Search requires a minimum of three characters",
-            "id": "searchText",
+            "id": "search-input",
           },
         ]
       }
@@ -23,51 +23,50 @@ exports[`pages searchOperator should render an error when errors are passed thro
     <div
       className="govuk-form-group govuk-form-group--error"
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-label-wrapper"
+        <legend
+          className="govuk-fieldset__legend--l"
         >
-          <label
-            className="govuk-label govuk-label--l"
-            htmlFor="event-name"
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
           >
             Search for the operators that the ticket covers
-          </label>
-        </h1>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="searchText"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Search requires a minimum of three characters",
-                "id": "searchText",
-              },
-            ]
-          }
+          </h1>
+        </legend>
+        <span
+          className="govuk-error-message"
+          id="search-input-error"
         >
-          <label
-            className="govuk-label  govuk-!-margin-top-5"
-            htmlFor="searchText"
+          <span
+            className="govuk-visually-hidden"
           >
-            Operator name
-          </label>
-          <input
-            className="govuk-input govuk-!-width-three-quarters"
-            id="searchText"
-            name="searchText"
-            type="text"
-          />
-          <input
-            className="govuk-button govuk-!-margin-left-5"
-            id="search-button"
-            type="submit"
-            value="Search"
-          />
-        </FormElementWrapper>
-      </div>
+            Error: 
+          </span>
+          Search requires a minimum of three characters
+        </span>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
+        >
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters govuk-input--error"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
     </div>
   </CsrfForm>
 </Component>
@@ -89,45 +88,65 @@ exports[`pages searchOperator should render the page correctly with search resul
     <div
       className="govuk-form-group "
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-label-wrapper"
+        <legend
+          className="govuk-fieldset__legend--l"
         >
-          <label
-            className="govuk-label govuk-label--l"
-            htmlFor="event-name"
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
           >
             Search for the operators that the ticket covers
-          </label>
-        </h1>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="searchText"
-          errors={Array []}
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
         >
-          <label
-            className="govuk-label  govuk-!-margin-top-5"
-            htmlFor="searchText"
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="operator-search-results"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend"
+          id="operator-search-results"
+        >
+          <p
+            className="govuk-body-l govuk-!-margin-bottom-0"
           >
-            Operator name
-          </label>
-          <input
-            className="govuk-input govuk-!-width-three-quarters"
-            id="searchText"
-            name="searchText"
-            type="text"
-          />
-          <input
-            className="govuk-button govuk-!-margin-left-5"
-            id="search-button"
-            type="submit"
-            value="Search"
-          />
-        </FormElementWrapper>
+            Your search for 
+            <strong />
+             returned
+            <strong>
+               
+              1
+               result(s)
+            </strong>
+          </p>
+        </legend>
         <FormElementWrapper
-          addFormGroupError={false}
           errorClass=""
           errorId="checkbox-0"
           errors={Array []}
@@ -135,18 +154,6 @@ exports[`pages searchOperator should render the page correctly with search resul
           <div
             className="govuk-checkboxes"
           >
-            <h2
-              className="govuk-body govuk-heading-l"
-            >
-              Your search for 
-              <strong />
-               returned
-              <strong>
-                 
-                1
-                 result(s)
-              </strong>
-            </h2>
             <p
               className="govuk-hint"
               id="operator-hint-text"
@@ -191,7 +198,7 @@ exports[`pages searchOperator should render the page correctly with search resul
             />
           </div>
         </FormElementWrapper>
-      </div>
+      </fieldset>
     </div>
   </CsrfForm>
 </Component>
@@ -213,44 +220,39 @@ exports[`pages searchOperator should render the page correctly without search re
     <div
       className="govuk-form-group "
     >
-      <div
-        className="govuk-form-group"
+      <fieldset
+        aria-describedby="operator-search"
+        className="govuk-fieldset"
       >
-        <h1
-          className="govuk-label-wrapper"
+        <legend
+          className="govuk-fieldset__legend--l"
         >
-          <label
-            className="govuk-label govuk-label--l"
-            htmlFor="event-name"
+          <h1
+            className="govuk-fieldset__heading"
+            id="operator-search"
           >
             Search for the operators that the ticket covers
-          </label>
-        </h1>
-        <FormElementWrapper
-          errorClass="govuk-input--error"
-          errorId="searchText"
-          errors={Array []}
+          </h1>
+        </legend>
+        <label
+          className="govuk-label"
+          htmlFor="search-input"
         >
-          <label
-            className="govuk-label  govuk-!-margin-top-5"
-            htmlFor="searchText"
-          >
-            Operator name
-          </label>
-          <input
-            className="govuk-input govuk-!-width-three-quarters"
-            id="searchText"
-            name="searchText"
-            type="text"
-          />
-          <input
-            className="govuk-button govuk-!-margin-left-5"
-            id="search-button"
-            type="submit"
-            value="Search"
-          />
-        </FormElementWrapper>
-      </div>
+          Operator name
+        </label>
+        <input
+          className="govuk-input govuk-!-width-three-quarters"
+          id="search-input"
+          name="searchText"
+          type="text"
+        />
+        <input
+          className="govuk-button govuk-!-margin-left-5"
+          id="search-button"
+          type="submit"
+          value="Search"
+        />
+      </fieldset>
     </div>
   </CsrfForm>
 </Component>
