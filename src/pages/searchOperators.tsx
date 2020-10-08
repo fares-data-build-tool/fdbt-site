@@ -7,7 +7,6 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
 import { SEARCH_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { isSearchOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSearchOperators, OperatorNameType } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
@@ -19,7 +18,7 @@ type SearchOperatorProps = {
     errors: ErrorInfo[];
     searchText: string;
     operators: OperatorNameType[];
-    selectedOperators?: OperatorNameType[];
+    selectedOperators: OperatorNameType[];
 };
 
 const fetchSearchData = async (
@@ -160,6 +159,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const searchOperatorsAttribute = getSessionAttribute(ctx.req, SEARCH_OPERATOR_ATTRIBUTE);
 
+    if (!searchOperatorsAttribute) {
+        return {
+            props: {
+                errors: [],
+                searchText: '',
+                operators: [],
+                selectedOperators: [],
+            },
+        };
+    }
+
     const cookies = parseCookies(ctx);
     // structure of the operator cookie is very strange here
     const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
@@ -168,7 +178,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const searchText = searchOperator && searchOperator !== '' ? removeExcessWhiteSpace(searchOperator.toString()) : '';
 
-    console.log('search text', searchOperatorsAttribute);
+    const selectedOperatorsList = searchOperatorsAttribute?.selectedOperators;
+
     if (searchText !== '' && searchText.length < 3) {
         return {
             props: {
@@ -180,29 +191,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 ],
                 searchText,
                 operators: [],
+                selectedOperators: selectedOperatorsList,
             },
         };
     }
 
-    if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute)) {
-        const { errors } = searchOperatorsAttribute;
-
-        let filteredOperators: OperatorNameType[] = [];
-
-        if (searchText !== '') {
-            filteredOperators = await fetchSearchData(searchText, nocCode, operatorName);
-        }
-
+    if (searchOperatorsAttribute.errors.length > 0) {
         return {
             props: {
-                errors,
+                errors: searchOperatorsAttribute.errors,
                 searchText: searchText || '',
-                operators: filteredOperators.length > 0 ? filteredOperators : [],
+                operators: [],
+                selectedOperators: searchOperatorsAttribute.selectedOperators,
             },
         };
     }
-
-    const selectedOperatorsList = searchOperatorsAttribute && searchOperatorsAttribute.selectedOperators;
 
     if (searchText !== '') {
         const errors: ErrorInfo[] = [];
@@ -220,7 +223,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         };
     }
 
-    return { props: { errors: [], searchText, operators: [], selectedOperators: selectedOperatorsList || [] } };
+    return {
+        props: {
+            errors: searchOperatorsAttribute.errors,
+            searchText,
+            operators: [],
+            selectedOperators: selectedOperatorsList || [],
+        },
+    };
 };
 
 export default SearchOperators;

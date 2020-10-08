@@ -30,7 +30,14 @@ describe('pages', () => {
 
         it('should render the page correctly without search results', () => {
             const tree = shallow(
-                <SearchOperators errors={[]} searchText="" operators={[]} csrfToken="" pageProps={[]} />,
+                <SearchOperators
+                    errors={[]}
+                    searchText=""
+                    operators={[]}
+                    selectedOperators={[]}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -42,6 +49,7 @@ describe('pages', () => {
                     errors={[]}
                     searchText=""
                     operators={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    selectedOperators={[]}
                     csrfToken=""
                     pageProps={[]}
                 />,
@@ -56,6 +64,7 @@ describe('pages', () => {
                     errors={[{ errorMessage: 'Search requires a minimum of three characters', id: 'searchText' }]}
                     searchText=""
                     operators={[]}
+                    selectedOperators={[]}
                     csrfToken=""
                     pageProps={[]}
                 />,

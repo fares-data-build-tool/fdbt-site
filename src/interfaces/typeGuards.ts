@@ -28,7 +28,6 @@ import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
 import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
-import { SearchOperators, SearchOperatorsWithErrors } from '../pages/api/searchOperators';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -170,7 +169,12 @@ export const isProductDateAttribute = (
     (productDates as ProductDate).startDate !== undefined &&
     (productDates as ProductDate).endDate !== undefined;
 
-export const isSearchOperatorAttributeWithErrors = (
-    searchOperator: SearchOperators | SearchOperatorsWithErrors | undefined,
-): searchOperator is SearchOperatorsWithErrors =>
-    searchOperator !== undefined && (searchOperator as SearchOperatorsWithErrors).errors !== undefined;
+// export const isSearchOperatorAttribute = (
+//     searchOperator: SearchOperators | SearchOperatorsWithErrors | undefined,
+// ): searchOperator is SearchOperators =>
+//     searchOperator !== undefined && (searchOperator as SearchOperators).selectedOperators !== undefined;
+
+// export const isSearchOperatorAttributeWithErrors = (
+//     searchOperator: SearchOperators | SearchOperatorsWithErrors | undefined,
+// ): searchOperator is SearchOperatorsWithErrors =>
+//     searchOperator !== undefined && (searchOperator as SearchOperatorsWithErrors).errors !== undefined;
