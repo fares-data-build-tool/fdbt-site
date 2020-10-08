@@ -4,6 +4,11 @@ import { SEARCH_OPERATOR_ATTRIBUTE } from '../../constants';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
+import { OperatorNameType } from '../../data/auroradb';
+
+export interface SearchOperators {
+    selectedOperators: OperatorNameType[];
+}
 
 // unsure if this interface is needed
 export interface SearchOperatorsWithErrors {
@@ -12,6 +17,40 @@ export interface SearchOperatorsWithErrors {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];
+
+    const { addOperator } = req.body;
+    const refererUrl = req?.headers?.referer;
+    const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
+
+    if (addOperator) {
+        const requestBody: { [key: string]: string | string[] } = req.body;
+
+        if (Object.keys(req.body).length - 2 === 0) {
+            errors.push({
+                errorMessage: 'Choose at least one operator from the options',
+                id: 'searchText',
+            });
+            updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { errors });
+            redirectTo(res, `/searchOperators?${queryString}`);
+        }
+
+        const selectedOperators: OperatorNameType[] = [];
+
+        Object.entries(requestBody).forEach(entry => {
+            if (entry[0] === 'searchText' || entry[0] === 'addOperator') {
+                return;
+            }
+
+            selectedOperators.push({
+                operatorPublicName: entry[0].toString(),
+                nocCode: removeExcessWhiteSpace(entry[1].toString()),
+            });
+        });
+
+        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, { selectedOperators });
+
+        redirectTo(res, `/searchOperators`);
+    }
 
     try {
         const refinedSearch = removeExcessWhiteSpace(req.body.searchText);
