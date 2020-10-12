@@ -2,14 +2,14 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
-import { OperatorNameType } from '../../src/data/auroradb';
+import { Operator } from '../../src/data/auroradb';
 import SearchOperators, { getServerSideProps, SearchOperatorProps } from '../../src/pages/searchOperators';
-import { SEARCH_OPERATOR_ATTRIBUTE } from '../../src/constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants';
 import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('searchOperator', () => {
-        const mockOperators: OperatorNameType[] = [
+        const mockOperators: Operator[] = [
             {
                 operatorPublicName: "Warrington's Own Buses",
                 nocCode: 'WBTR',
@@ -151,7 +151,7 @@ describe('pages', () => {
                 expect(result).toEqual(mockProps);
             });
 
-            it('should return base props with errors when the the SEARCH_OPERATOR_ATTRIBUTE contains errors', async () => {
+            it('should return base props with errors when the the MULTIPLE_OPERATOR_ATTRIBUTE contains errors', async () => {
                 const mockErrors: ErrorInfo[] = [
                     {
                         errorMessage: 'Search requires a minimum of three characters',
@@ -166,7 +166,7 @@ describe('pages', () => {
                         selectedOperators: [],
                     },
                 };
-                const ctx = getMockContext({ session: { [SEARCH_OPERATOR_ATTRIBUTE]: { errors: mockErrors } } });
+                const ctx = getMockContext({ session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: { errors: mockErrors } } });
                 const result = await getServerSideProps(ctx);
 
                 expect(result).toEqual(mockProps);
@@ -189,7 +189,7 @@ describe('pages', () => {
                     },
                 };
                 const ctx = getMockContext({
-                    session: { [SEARCH_OPERATOR_ATTRIBUTE]: undefined },
+                    session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: undefined },
                     query: { searchOperator: 'asda' },
                 });
                 const result = await getServerSideProps(ctx);
@@ -208,7 +208,7 @@ describe('pages', () => {
                     },
                 };
                 const ctx = getMockContext({
-                    session: { [SEARCH_OPERATOR_ATTRIBUTE]: undefined },
+                    session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: undefined },
                     query: { searchOperator: 'blac' },
                 });
                 const result = await getServerSideProps(ctx);

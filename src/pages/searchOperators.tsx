@@ -5,33 +5,36 @@ import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interf
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { getSessionAttribute } from '../utils/sessions';
-import { SEARCH_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
 import { isSearchOperatorAttributeWithErrors } from '../interfaces/typeGuards';
-import { getSearchOperators, OperatorNameType } from '../data/auroradb';
+import { getSearchOperators, Operator } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 
 const title = 'Search Operators - Fares Data Build Tool';
 const description = 'Search Operators page for the Fares Data Build Tool';
 
+export const searchInputId = 'search-input';
+export const addOperatorsErrorId = 'add-operator-checkbox-0';
+export const removeOperatorsErrorId = 'remove-operator-checkbox-0';
+
 export type SearchOperatorProps = {
     searchText: string;
     errors: ErrorInfo[];
-    searchResults: OperatorNameType[];
-    selectedOperators: OperatorNameType[];
+    searchResults: Operator[];
+    selectedOperators: Operator[];
 };
 
-export const showSelectedOperators = (selectedOperators: OperatorNameType[], errors: ErrorInfo[]): ReactElement => {
-    const operatorRemovalErrorId = 'checkbox-0';
-    const operatorRemovalErrors: ErrorInfo[] = [];
+export const showSelectedOperators = (selectedOperators: Operator[], errors: ErrorInfo[]): ReactElement => {
+    const removeOperatorsErrors: ErrorInfo[] = [];
     errors.forEach(err => {
-        if (err.id === operatorRemovalErrorId) {
-            operatorRemovalErrors.push(err);
+        if (err.id === removeOperatorsErrorId) {
+            removeOperatorsErrors.push(err);
         }
     });
     return (
-        <div className={`govuk-form-group ${operatorRemovalErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+        <div className={`govuk-form-group ${removeOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby="selected-operators">
                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 className="govuk-fieldset__heading" id="selected-operators">
@@ -39,20 +42,20 @@ export const showSelectedOperators = (selectedOperators: OperatorNameType[], err
                     </h1>
                 </legend>
                 <div className="govuk-inset-text">
-                    <FormElementWrapper errors={operatorRemovalErrors} errorId={operatorRemovalErrorId} errorClass="">
+                    <FormElementWrapper errors={removeOperatorsErrors} errorId={removeOperatorsErrorId} errorClass="">
                         <div className="govuk-checkboxes">
                             {selectedOperators.map((operator, index) => (
                                 <div key={operator.nocCode} className="govuk-checkboxes__item">
                                     <input
                                         className="govuk-checkboxes__input"
-                                        id={`checkbox-${index}`}
-                                        name="removedOperators"
+                                        id={`remove-operator-checkbox-${index}`}
+                                        name="operatorsToRemove"
                                         value={`${operator.nocCode}#${operator.operatorPublicName}`}
                                         type="checkbox"
                                     />
                                     <label
                                         className="govuk-label govuk-checkboxes__label"
-                                        htmlFor={`checkbox-${index}`}
+                                        htmlFor={`remove-operator-checkbox-${index}`}
                                     >
                                         {operator.operatorPublicName}
                                     </label>
@@ -62,6 +65,7 @@ export const showSelectedOperators = (selectedOperators: OperatorNameType[], err
                     </FormElementWrapper>
                     <input
                         type="submit"
+                        name="removeOperators"
                         value={selectedOperators.length > 1 ? 'Remove Operators' : 'Remove Operator'}
                         id="remove-operators-button"
                         className="govuk-button govuk-button--secondary govuk-!-margin-top-5"
@@ -85,7 +89,6 @@ export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): R
                 : 'Search for the operators that the ticket covers',
         },
     };
-    const searchInputId = 'search-input';
     const searchInputErrors: ErrorInfo[] = [];
     errors.forEach(err => {
         if (err.id === searchInputId) {
@@ -117,37 +120,38 @@ export const renderSearchBox = (operatorsAdded: boolean, errors: ErrorInfo[]): R
                     name="searchText"
                     type="text"
                 />
-                <input type="submit" value="Search" id="search-button" className="govuk-button govuk-!-margin-left-5" />
+                <input
+                    type="submit"
+                    value="Search"
+                    name="search"
+                    id="search-button"
+                    className="govuk-button govuk-!-margin-left-5"
+                />
             </fieldset>
         </div>
     );
 };
 
-export const showSearchResults = (
-    searchText: string,
-    searchResults: OperatorNameType[],
-    errors: ErrorInfo[],
-): ReactElement => {
-    const operatorSelectionErrorId = 'checkbox-0';
-    const operatorSelectionErrors: ErrorInfo[] = [];
+export const showSearchResults = (searchText: string, searchResults: Operator[], errors: ErrorInfo[]): ReactElement => {
+    const addOperatorsErrors: ErrorInfo[] = [];
     errors.forEach(err => {
-        if (err.id === operatorSelectionErrorId) {
-            operatorSelectionErrors.push(err);
+        if (err.id === addOperatorsErrorId) {
+            addOperatorsErrors.push(err);
         }
     });
     return (
-        <div className={`govuk-form-group ${operatorSelectionErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+        <div className={`govuk-form-group ${addOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby="operator-search-results">
                 <legend className="govuk-fieldset__legend">
                     <h2 className="govuk-body-l govuk-!-margin-bottom-0" id="operator-search-results">
-                        Your search for <strong>{searchText}</strong> returned
+                        Your search for &apos;<strong>{searchText}</strong>&apos; returned
                         <strong>
                             {' '}
-                            {searchResults.length} result{searchResults.length > 1 ? 's' : ''}
+                            {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
                         </strong>
                     </h2>
                 </legend>
-                <FormElementWrapper errors={operatorSelectionErrors} errorId={operatorSelectionErrorId} errorClass="">
+                <FormElementWrapper errors={addOperatorsErrors} errorId={addOperatorsErrorId} errorClass="">
                     <>
                         <div className="govuk-checkboxes">
                             <p className="govuk-hint" id="operator-hint-text">
@@ -160,14 +164,14 @@ export const showSearchResults = (
                                     <div className="govuk-checkboxes__item" key={`checkbox-item-${operatorPublicName}`}>
                                         <input
                                             className="govuk-checkboxes__input"
-                                            id={`checkbox-${index}`}
-                                            name="selectedOperators"
+                                            id={`add-operator-checkbox-${index}`}
+                                            name="operatorsToAdd"
                                             type="checkbox"
                                             value={`${nocCode}#${operatorPublicName}`}
                                         />
                                         <label
                                             className="govuk-label govuk-checkboxes__label"
-                                            htmlFor={`checkbox-${index}`}
+                                            htmlFor={`add-operator-checkbox-${index}`}
                                         >
                                             {operatorPublicName}
                                         </label>
@@ -180,6 +184,7 @@ export const showSearchResults = (
                 <div className="govuk-!-margin-top-7">
                     <input
                         type="submit"
+                        name="addOperators"
                         value="Add Operator(s)"
                         id="add-operator-button"
                         className="govuk-button govuk-button--secondary"
@@ -198,7 +203,7 @@ const SearchOperators = ({
     csrfToken,
 }: SearchOperatorProps & CustomAppProps): ReactElement => {
     const selectedOperatorsToDisplay = selectedOperators.length > 0;
-    const searchResultsToDisplay = searchResults.length > 0;
+    const searchResultsToDisplay = searchResults.length > 0 || errors.find(err => err.id === addOperatorsErrorId);
     return (
         <TwoThirdsLayout title={title} description={description}>
             <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
@@ -209,7 +214,13 @@ const SearchOperators = ({
                     {searchResultsToDisplay ? showSearchResults(searchText, searchResults, errors) : null}
                     {selectedOperatorsToDisplay ? (
                         <div>
-                            <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                            <input
+                                type="submit"
+                                value="Continue"
+                                name="continueButtonClick"
+                                id="continue-button"
+                                className="govuk-button"
+                            />
                         </div>
                     ) : null}
                 </>
@@ -223,27 +234,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let errors: ErrorInfo[] = [];
     let searchText = '';
-    const searchResults: OperatorNameType[] = [];
-    const selectedOperators: OperatorNameType[] = [];
-    // const selectedOperators: OperatorNameType[] = [
-    //     {
-    //         operatorPublicName: "Warrington's Own Buses",
-    //         nocCode: 'WBTR',
-    //     },
-    //     {
-    //         operatorPublicName: 'Blackpool Transport',
-    //         nocCode: 'BLAC',
-    //     },
-    //     {
-    //         operatorPublicName: 'IW Bus Co',
-    //         nocCode: 'IWBusCo',
-    //     },
-    // ];
+    const searchResults: Operator[] = [];
 
-    const searchOperatorsAttribute = getSessionAttribute(ctx.req, SEARCH_OPERATOR_ATTRIBUTE);
+    const searchOperatorsAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
+    const selectedOperators: Operator[] = searchOperatorsAttribute?.selectedOperators
+        ? searchOperatorsAttribute.selectedOperators
+        : [];
 
     if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute)) {
         errors = searchOperatorsAttribute.errors;
+        updateSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
     }
 
     const { searchOperator } = ctx.query;
