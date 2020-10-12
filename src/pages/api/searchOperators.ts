@@ -46,8 +46,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             }
 
             if (
-                searchOperatorAttribute &&
-                !searchOperatorAttribute.selectedOperators.some(
+                !searchOperatorAttribute?.selectedOperators.some(
                     operator => operator.nocCode === removeExcessWhiteSpace(entry[1].toString()),
                 )
             ) {

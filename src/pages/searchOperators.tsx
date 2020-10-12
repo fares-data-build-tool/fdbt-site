@@ -180,6 +180,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const selectedOperatorsList = searchOperatorsAttribute?.selectedOperators;
 
+    let filteredOperators: OperatorNameType[] = [];
+
+    if (searchText !== '') {
+        filteredOperators = await fetchSearchData(searchText, nocCode, operatorName);
+    }
     if (searchText !== '' && searchText.length < 3) {
         return {
             props: {
@@ -190,7 +195,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     },
                 ],
                 searchText,
-                operators: [],
+                operators: filteredOperators || [],
                 selectedOperators: selectedOperatorsList,
             },
         };
@@ -209,8 +214,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (searchText !== '') {
         const errors: ErrorInfo[] = [];
-
-        const filteredOperators: OperatorNameType[] = await fetchSearchData(searchText, nocCode, operatorName);
 
         if (filteredOperators.length === 0) {
             errors.push({
