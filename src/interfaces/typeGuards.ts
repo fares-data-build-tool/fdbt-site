@@ -168,13 +168,3 @@ export const isProductDateAttribute = (
     productDates !== undefined &&
     (productDates as ProductDate).startDate !== undefined &&
     (productDates as ProductDate).endDate !== undefined;
-
-// export const isSearchOperatorAttribute = (
-//     searchOperator: SearchOperators | SearchOperatorsWithErrors | undefined,
-// ): searchOperator is SearchOperators =>
-//     searchOperator !== undefined && (searchOperator as SearchOperators).selectedOperators !== undefined;
-
-// export const isSearchOperatorAttributeWithErrors = (
-//     searchOperator: SearchOperators | SearchOperatorsWithErrors | undefined,
-// ): searchOperator is SearchOperatorsWithErrors =>
-//     searchOperator !== undefined && (searchOperator as SearchOperatorsWithErrors).errors !== undefined;
