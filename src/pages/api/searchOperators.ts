@@ -32,6 +32,11 @@ export const addListToSelectedOperators = (rawList: string[], selectedOperators:
     return updatedList;
 };
 
+export const isSearchInputValid = (searchText: string): boolean => {
+    const searchRegex = new RegExp(/^[a-zA-Z0-9\-:\s]+$/g);
+    return searchRegex.test(searchText);
+};
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const errors: ErrorInfo[] = [];
@@ -74,6 +79,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             if (refinedSearch.length < 3) {
                 errors.push({
                     errorMessage: 'Search requires a minimum of three characters',
+                    id: searchInputId,
+                });
+            } else if (refinedSearch.length >= 3 && !isSearchInputValid(refinedSearch)) {
+                errors.push({
+                    errorMessage: 'Search must only include alphanumeric characters, hyphens or colons',
                     id: searchInputId,
                 });
             } else {
