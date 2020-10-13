@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { isArray } from 'util';
+import isArray from 'lodash/isArray';
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';

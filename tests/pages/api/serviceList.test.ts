@@ -74,7 +74,7 @@ describe('serviceList', () => {
         });
     });
 
-    it('redirects to /searchOperators if input is valid and the user is entering details for a period ticket', () => {
+    it('redirects to /searchOperators if input is valid and the user is entering details for a multi-operator ticket', () => {
         const serviceInfo = {
             '64': 'Leeds-Bradford#12/02/12',
             '45': 'gggggg#02/03/91',
