@@ -162,7 +162,7 @@ exports[`pages searchOperator should render the page correctly with search resul
                 id="checkbox-0"
                 name="Blackpool"
                 type="checkbox"
-                value="BLAC  "
+                value="BLAC"
               />
               <label
                 className="govuk-label govuk-checkboxes__label"

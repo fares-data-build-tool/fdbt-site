@@ -9,7 +9,6 @@ import { getSessionAttribute } from '../utils/sessions';
 import { SEARCH_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
 import { getSearchOperators, OperatorNameType } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
-import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 
 const title = 'Search Operators - Fares Data Build Tool';
 const description = 'Search Operators page for the Fares Data Build Tool';
@@ -114,7 +113,7 @@ const SearchOperators = ({
                                                         id={`checkbox-${index}`}
                                                         name={operatorPublicName}
                                                         type="checkbox"
-                                                        value={`${nocCode}  `}
+                                                        value={`${nocCode}`}
                                                     />
                                                     <label
                                                         className="govuk-label govuk-checkboxes__label"
@@ -176,7 +175,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const { searchOperator } = ctx.query;
 
-    const searchText = searchOperator && searchOperator !== '' ? removeExcessWhiteSpace(searchOperator.toString()) : '';
+    const searchText = searchOperator && searchOperator !== '' ? searchOperator.toString() : '';
 
     const selectedOperatorsList = searchOperatorsAttribute?.selectedOperators;
 
@@ -185,6 +184,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (searchText !== '') {
         filteredOperators = await fetchSearchData(searchText, nocCode, operatorName);
     }
+
     if (searchText !== '' && searchText.length < 3) {
         return {
             props: {
