@@ -101,7 +101,7 @@ const FareTypePage = ({ operator, errors = [], csrfToken }: FareTypeProps & Cust
                                         <input
                                             className="govuk-radios__input"
                                             id="fare-type-multi-operator"
-                                            name="multiOp"
+                                            name="fareType"
                                             type="radio"
                                             value="multiOp"
                                         />
