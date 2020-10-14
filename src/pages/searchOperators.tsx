@@ -7,7 +7,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { isSearchOperatorAttributeWithErrors } from '../interfaces/typeGuards';
+import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSearchOperators, Operator } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
@@ -242,7 +242,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ? searchOperatorsAttribute.selectedOperators
         : [];
 
-    if (isSearchOperatorAttributeWithErrors(searchOperatorsAttribute)) {
+    if (isMultipleOperatorAttributeWithErrors(searchOperatorsAttribute)) {
         errors = searchOperatorsAttribute.errors;
         updateSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
     }

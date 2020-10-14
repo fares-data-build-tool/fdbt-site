@@ -170,7 +170,7 @@ export const isProductDateAttribute = (
     (productDates as ProductDate).startDate !== undefined &&
     (productDates as ProductDate).endDate !== undefined;
 
-export const isSearchOperatorAttributeWithErrors = (
+export const isMultipleOperatorAttributeWithErrors = (
     searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,
 ): searchOperator is MultipleOperatorsAttributeWithErrors =>
     searchOperator !== undefined && (searchOperator as MultipleOperatorsAttributeWithErrors).errors !== undefined;
