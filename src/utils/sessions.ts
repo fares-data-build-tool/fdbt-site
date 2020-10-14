@@ -33,8 +33,7 @@ import {
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
-    MULTI_OPERATOR_SERVICES_ATTRIBUTE,
-    COMPLETED_SERVICES_OPERATORS,
+    COMPLETED_SERVICES_OPERATORS_ATTRIBUTE,
 } from '../constants/index';
 import {
     InputMethodInfo,
@@ -55,7 +54,6 @@ import {
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
     ProductDate,
-    MultiOperatorInfo,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -86,8 +84,7 @@ import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
-import { SearchOperators } from '../pages/api/searchOperators';
-import { MultiOperatorInfoWithErrors } from '../pages/api/multipleOperatorsServiceList';
+import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -129,9 +126,8 @@ type SessionAttributeTypes = {
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
-    [MULTIPLE_OPERATOR_ATTRIBUTE]: SearchOperators;
-    [MULTI_OPERATOR_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
-    [COMPLETED_SERVICES_OPERATORS]: string[] | undefined;
+    [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
+    [COMPLETED_SERVICES_OPERATORS_ATTRIBUTE]: string[] | undefined;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

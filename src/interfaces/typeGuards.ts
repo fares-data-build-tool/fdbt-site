@@ -20,7 +20,6 @@ import {
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ProductDate,
-    MultiOperatorInfo,
 } from './index';
 
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
@@ -29,7 +28,7 @@ import { Service, ServiceWithErrors } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
 import { InputCheck } from '../pages/stageNames';
 import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
-import { MultiOperatorInfoWithErrors } from '../pages/api/multipleOperatorsServiceList';
+import { MultipleOperatorsAttributeWithErrors, MultipleOperatorsAttribute } from '../pages/api/searchOperators';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -170,8 +169,7 @@ export const isProductDateAttribute = (
     productDates !== undefined &&
     (productDates as ProductDate).startDate !== undefined &&
     (productDates as ProductDate).endDate !== undefined;
-
-export const isMultiOperatorInfoWithErrors = (
-    multipleOperatorInfo: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined,
-): multipleOperatorInfo is MultiOperatorInfoWithErrors =>
-    multipleOperatorInfo !== undefined && (multipleOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;
+export const isMultipleOperatorAttributeWithErrors = (
+    searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,
+): searchOperator is MultipleOperatorsAttributeWithErrors =>
+    searchOperator !== undefined && (searchOperator as MultipleOperatorsAttributeWithErrors).errors !== undefined;

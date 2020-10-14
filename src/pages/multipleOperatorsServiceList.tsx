@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { getSessionAttribute } from '../utils/sessions';
-import { MULTI_OPERATOR_SERVICES_ATTRIBUTE, COMPLETED_SERVICES_OPERATORS } from '../constants';
-import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, COMPLETED_SERVICES_OPERATORS_ATTRIBUTE } from '../constants';
+import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -103,12 +103,12 @@ const MultipleOperatorsServiceList = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: MultipleOperatorsServiceListProps }> => {
-    const multiOperatorInfo = getSessionAttribute(ctx.req, MULTI_OPERATOR_SERVICES_ATTRIBUTE);
+    const multiOperatorInfo = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
     const operatorsFound = [
         { operatorPublicName: 'Blackpool', nocCode: 'BLAC' },
         { operatorPublicName: 'Warrington', nocCode: 'WBTR' },
     ];
-    const completedOperators = getSessionAttribute(ctx.req, COMPLETED_SERVICES_OPERATORS);
+    const completedOperators = getSessionAttribute(ctx.req, COMPLETED_SERVICES_OPERATORS_ATTRIBUTE);
 
     let operatorToUse;
 
@@ -139,7 +139,7 @@ export const getServerSideProps = async (
         props: {
             serviceList,
             buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
-            errors: isMultiOperatorInfoWithErrors(multiOperatorInfo) ? multiOperatorInfo.errors : [],
+            errors: isMultipleOperatorAttributeWithErrors(multiOperatorInfo) ? multiOperatorInfo.errors : [],
             operatorName: operatorToUse.operatorPublicName,
         },
     };
