@@ -32,7 +32,7 @@ describe('periodValidity', () => {
         periodValidity(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, mockProductInfo);
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/selectSalesOfferPackage' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
     });
 
     it('correctly generates period expiry error info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to periodValidity page when there is no period validity info', () => {
