@@ -95,14 +95,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (continueButtonClick) {
             if (operatorsToRemove) {
                 errors.push({
-                    errorMessage: "Click the 'Remove Operator(s)' button to remove operators.",
+                    errorMessage: "Click the 'Remove Operator(s)' button to remove operators",
                     id: removeOperatorsErrorId,
                 });
             }
             if (operatorsToAdd) {
                 const previousSearch = req.headers.referer?.split('?searchOperator=')[1] || '';
                 errors.push({
-                    errorMessage: "Click the 'Add Operator(s)' button to add operators.",
+                    errorMessage: "Click the 'Add Operator(s)' button to add operators",
                     id: addOperatorsErrorId,
                 });
                 updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });

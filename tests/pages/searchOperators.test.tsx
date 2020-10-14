@@ -73,20 +73,20 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        // it('should render a selection error when the user tries to add operators without selecting any search results', () => {
-        //     const tree = shallow(
-        //         <SearchOperators
-        //             errors={[]}
-        //             searchText="blac"
-        //             searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
-        //             selectedOperators={[]}
-        //             csrfToken=""
-        //             pageProps={[]}
-        //         />,
-        //     );
+        it('should render a selection error when the user tries to add operators without selecting any search results', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[]}
+                    searchText="blac"
+                    searchResults={[{ nocCode: 'BLAC', operatorPublicName: 'Blackpool' }]}
+                    selectedOperators={[]}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
 
-        //     expect(tree).toMatchSnapshot();
-        // });
+            expect(tree).toMatchSnapshot();
+        });
 
         it('should render the search input and a list of selected operators when search results have been selected', () => {
             const tree = shallow(
@@ -103,20 +103,20 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        // it('should render a selection error when the user tries to remove selected operators without making a selection', () => {
-        //     const tree = shallow(
-        //         <SearchOperators
-        //             errors={[]}
-        //             searchText=""
-        //             searchResults={[]}
-        //             selectedOperators={mockOperators}
-        //             csrfToken=""
-        //             pageProps={[]}
-        //         />,
-        //     );
+        it('should render a selection error when the user tries to remove selected operators without making a selection', () => {
+            const tree = shallow(
+                <SearchOperators
+                    errors={[]}
+                    searchText=""
+                    searchResults={[]}
+                    selectedOperators={mockOperators}
+                    csrfToken=""
+                    pageProps={[]}
+                />,
+            );
 
-        //     expect(tree).toMatchSnapshot();
-        // });
+            expect(tree).toMatchSnapshot();
+        });
 
         it('should render the search input, search results and a list of selected operators when an additional search is made', () => {
             const tree = shallow(

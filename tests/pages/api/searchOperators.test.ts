@@ -154,7 +154,7 @@ describe('searchOperators', () => {
         const expectedSessionAttributeCall: MultipleOperatorsAttributeWithErrors = {
             selectedOperators: [{ nocCode: 'MCTR', operatorPublicName: 'Manchester Community Transport' }],
             errors: [
-                { errorMessage: "Click the 'Add Operator(s)' button to add operators.", id: 'add-operator-checkbox-0' },
+                { errorMessage: "Click the 'Add Operator(s)' button to add operators", id: 'add-operator-checkbox-0' },
             ],
         };
 
@@ -262,7 +262,7 @@ describe('searchOperators', () => {
             selectedOperators: [{ nocCode: 'WBTR', operatorPublicName: "Warrington's Own Buses" }],
             errors: [
                 {
-                    errorMessage: "Click the 'Remove Operator(s)' button to remove operators.",
+                    errorMessage: "Click the 'Remove Operator(s)' button to remove operators",
                     id: 'remove-operator-checkbox-0',
                 },
             ],
