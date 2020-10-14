@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { SEARCH_OPERATOR_ATTRIBUTE } from '../../constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { OperatorNameType } from '../../data/auroradb';
@@ -46,7 +46,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const refererUrl = req?.headers?.referer;
     const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
 
-    const searchOperatorAttribute = getSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE);
+    const searchOperatorAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
 
     const { searchText } = req.body;
 
@@ -56,7 +56,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             id: 'searchText',
         });
 
-        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, {
+        updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             errors,
             selectedOperators: searchOperatorAttribute?.selectedOperators || [],
         });
@@ -70,7 +70,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 id: 'searchText',
             });
 
-            updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, {
+            updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
                 errors,
                 selectedOperators: searchOperatorAttribute?.selectedOperators || [],
             });
@@ -83,7 +83,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const mergedArray = selectedOperators.concat(currentSelectedOperators);
 
-        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, {
+        updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: mergedArray,
             errors,
         });
@@ -99,14 +99,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 errorMessage: 'Search requires a minimum of three characters',
                 id: 'searchText',
             });
-            updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, {
+            updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
                 errors,
                 selectedOperators: searchOperatorAttribute?.selectedOperators || [],
             });
             redirectTo(res, '/searchOperators');
         }
 
-        updateSessionAttribute(req, SEARCH_OPERATOR_ATTRIBUTE, {
+        updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             errors,
             selectedOperators: searchOperatorAttribute?.selectedOperators || [],
         });

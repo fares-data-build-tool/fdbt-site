@@ -32,7 +32,9 @@ import {
     FARE_STAGES_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
-    SEARCH_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTI_OPERATOR_SERVICES_ATTRIBUTE,
+    COMPLETED_SERVICES_OPERATORS,
 } from '../constants/index';
 import {
     InputMethodInfo,
@@ -53,6 +55,7 @@ import {
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
     ProductDate,
+    MultiOperatorInfo,
 } from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -84,6 +87,7 @@ import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api
 import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 import { SearchOperators } from '../pages/api/searchOperators';
+import { MultiOperatorInfoWithErrors } from '../pages/api/multipleOperatorsServiceList';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -125,7 +129,9 @@ type SessionAttributeTypes = {
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
-    [SEARCH_OPERATOR_ATTRIBUTE]: SearchOperators;
+    [MULTIPLE_OPERATOR_ATTRIBUTE]: SearchOperators;
+    [MULTI_OPERATOR_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
+    [COMPLETED_SERVICES_OPERATORS]: string[] | undefined;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

@@ -308,3 +308,8 @@ export interface S3NetexFile {
     signedUrl: string;
     fileSize: number;
 }
+
+export interface MultiOperatorInfo {
+    nocCode: string;
+    services: string[];
+}

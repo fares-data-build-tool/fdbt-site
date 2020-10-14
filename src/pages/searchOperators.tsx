@@ -6,7 +6,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
-import { SEARCH_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
 import { getSearchOperators, OperatorNameType } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
 
@@ -156,7 +156,7 @@ const SearchOperators = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SearchOperatorProps }> => {
     const nocCode = getAndValidateNoc(ctx);
 
-    const searchOperatorsAttribute = getSessionAttribute(ctx.req, SEARCH_OPERATOR_ATTRIBUTE);
+    const searchOperatorsAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
 
     if (!searchOperatorsAttribute) {
         return {

@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import searchOperators, { SearchOperators } from '../../../src/pages/api/searchOperators';
 import * as session from '../../../src/utils/sessions';
-import { SEARCH_OPERATOR_ATTRIBUTE } from '../../../src/constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../../src/constants';
 
 jest.mock('../../../src/utils/sessions.ts');
 
@@ -33,7 +33,7 @@ describe('searchOperators', () => {
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
-            SEARCH_OPERATOR_ATTRIBUTE,
+            MULTIPLE_OPERATOR_ATTRIBUTE,
             expectedSessionAttributeCall,
         );
 
@@ -51,7 +51,7 @@ describe('searchOperators', () => {
 
         searchOperators(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SEARCH_OPERATOR_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             errors: [],
             selectedOperators: [],
         });
@@ -83,7 +83,7 @@ describe('searchOperators', () => {
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
             req,
-            SEARCH_OPERATOR_ATTRIBUTE,
+            MULTIPLE_OPERATOR_ATTRIBUTE,
             expectedSessionAttributeCall,
         );
 
@@ -110,7 +110,7 @@ describe('searchOperators', () => {
             },
         ];
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SEARCH_OPERATOR_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: mockArray,
             errors: [],
         });
@@ -129,7 +129,7 @@ describe('searchOperators', () => {
                 'Manchester Community Transport 2': 'MCTR2',
             },
             session: {
-                [SEARCH_OPERATOR_ATTRIBUTE]: {
+                [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                     selectedOperators: [
                         {
                             operatorPublicName: 'Manchester Community Transport',
@@ -153,7 +153,7 @@ describe('searchOperators', () => {
             },
         ];
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, SEARCH_OPERATOR_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: mockArray,
             errors: [],
         });

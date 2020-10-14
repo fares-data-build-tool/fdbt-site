@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
 import { getSearchOperators, OperatorNameType } from '../../src/data/auroradb';
 import SearchOperators, { getServerSideProps } from '../../src/pages/searchOperators';
-import { SEARCH_OPERATOR_ATTRIBUTE } from '../../src/constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants';
 
 jest.mock('../../src/data/auroradb');
 
@@ -77,7 +77,7 @@ describe('pages', () => {
     describe('getServerSideProps', () => {
         it('should return expected props to the page when the page is first visited by the user', async () => {
             (getSearchOperators as jest.Mock).mockImplementation(() => []);
-            const ctx = getMockContext({ session: { [SEARCH_OPERATOR_ATTRIBUTE]: { errors: [] } } });
+            const ctx = getMockContext({ session: { [MULTIPLE_OPERATOR_ATTRIBUTE]: { errors: [] } } });
             const result = await getServerSideProps(ctx);
 
             expect(result.props.errors.length).toBe(0);
