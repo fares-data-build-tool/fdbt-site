@@ -58,6 +58,7 @@ const TicketRepresentation = ({
                                         name="ticketType"
                                         type="radio"
                                         value="multipleServices"
+                                        disabled={fareType === 'multiOp'}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="set-of-services">
                                         A ticket for a set of services
