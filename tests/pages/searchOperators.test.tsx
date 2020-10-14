@@ -215,36 +215,6 @@ describe('pages', () => {
 
                 expect(result).toEqual(mockProps);
             });
-
-            // it('should remove the users operator from the returned results', async () => {
-            //     const ctx = getMockContext({
-            //         cookies: { operator: { operator: { operatorPublicName: 'Blackpool Transport' }, noc: 'TEST' } },
-            //         body: null,
-            //         uuid: {},
-            //         mockWriteHeadFn: jest.fn(),
-            //         mockEndFn: jest.fn(),
-            //         isLoggedin: true,
-            //         query: '/searchOperators?searchOperator=Black',
-            //     });
-            //     const forgotPasswordSubmitSpy = jest.spyOn(aurora, 'getSearchOperators');
-            //     forgotPasswordSubmitSpy.mockImplementation().mockResolvedValue([
-            //         {
-            //             operatorPublicName: 'Blackburn Transport',
-            //             nocCode: 'BLACKB',
-            //         },
-            //         {
-            //             operatorPublicName: 'Blackpool Transport',
-            //             nocCode: 'TEST',
-            //         },
-            //         {
-            //             operatorPublicName: 'Blackwell Transport',
-            //             nocCode: 'BLACKW',
-            //         },
-            //     ]);
-            //     await expect(getServerSideProps(ctx)).resolves.toBe({
-            //         props: { errors: [], operators: [], searchText: '' },
-            //     });
-            // });
         });
     });
 });
