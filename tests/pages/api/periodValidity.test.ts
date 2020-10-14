@@ -12,7 +12,7 @@ describe('periodValidity', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to selectSalesOfferPackage page if all is valid', () => {
+    it('correctly generates product info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to /ticketConfirmation if all is valid', () => {
         const mockProductInfo: ProductData = {
             products: [
                 {
