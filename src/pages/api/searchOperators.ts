@@ -40,7 +40,6 @@ export const isSearchInputValid = (searchText: string): boolean => {
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const errors: ErrorInfo[] = [];
-
         const {
             search,
             searchText,
@@ -64,16 +63,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 const rawList: string[] =
                     typeof operatorsToRemove === 'string' ? [operatorsToRemove] : operatorsToRemove;
                 selectedOperators = removeListFromSelectedOperators(rawList, selectedOperators);
-                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
             }
         } else if (addOperators) {
             if (!operatorsToAdd) {
+                const previousSearch = req.headers.referer?.split('?searchOperator=')[1] || '';
                 errors.push({ errorMessage: 'Select at least one operator to add', id: addOperatorsErrorId });
-            } else {
-                const rawList: string[] = typeof operatorsToAdd === 'string' ? [operatorsToAdd] : operatorsToAdd;
-                selectedOperators = addListToSelectedOperators(rawList, selectedOperators);
-                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
+                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
+                redirectTo(res, `/searchOperators?searchOperator=${previousSearch}`);
+                return;
             }
+            const rawList: string[] = typeof operatorsToAdd === 'string' ? [operatorsToAdd] : operatorsToAdd;
+            selectedOperators = addListToSelectedOperators(rawList, selectedOperators);
         } else if (search) {
             const refinedSearch = removeExcessWhiteSpace(searchText);
             if (refinedSearch.length < 3) {
@@ -81,7 +81,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     errorMessage: 'Search requires a minimum of three characters',
                     id: searchInputId,
                 });
-            } else if (refinedSearch.length >= 3 && !isSearchInputValid(refinedSearch)) {
+            } else if (!isSearchInputValid(refinedSearch)) {
                 errors.push({
                     errorMessage: 'Search must only include alphanumeric characters, hyphens or colons',
                     id: searchInputId,
@@ -100,10 +100,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 });
             }
             if (operatorsToAdd) {
+                const previousSearch = req.headers.referer?.split('?searchOperator=')[1] || '';
                 errors.push({
                     errorMessage: "Click the 'Add Operator(s)' button to add operators.",
                     id: addOperatorsErrorId,
                 });
+                updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators, errors });
+                redirectTo(res, `/searchOperators?searchOperator=${previousSearch}`);
+                return;
             }
         }
 
