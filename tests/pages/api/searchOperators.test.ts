@@ -1,8 +1,8 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import searchOperators, {
     MultipleOperatorsAttributeWithErrors,
-    removeListFromSelectedOperators,
-    addListToSelectedOperators,
+    removeOperatorsFromPreviouslySelectedOperators,
+    addOperatorsToPreviouslySelectedOperators,
     isSearchInputValid,
     MultipleOperatorsAttribute,
 } from '../../../src/pages/api/searchOperators';
@@ -17,7 +17,7 @@ describe('searchOperators', () => {
         jest.resetAllMocks();
     });
 
-    describe('removeListFromSelectedOperators', () => {
+    describe('removeOperatorsFromPreviouslySelectedOperators', () => {
         it('should remove operators from the list of selected operators', () => {
             const mockOperatorToRemove = ['BLAC#Blackpool Transport'];
             const expectedUpdatedList: Operator[] = [
@@ -28,12 +28,15 @@ describe('searchOperators', () => {
                 ...expectedUpdatedList,
                 { operatorPublicName: 'Blackpool Transport', nocCode: 'BLAC' },
             ];
-            const updatedList = removeListFromSelectedOperators(mockOperatorToRemove, mockSelectedOperators);
+            const updatedList = removeOperatorsFromPreviouslySelectedOperators(
+                mockOperatorToRemove,
+                mockSelectedOperators,
+            );
             expect(updatedList).toEqual(expectedUpdatedList);
         });
     });
 
-    describe('addListToSelectedOperators', () => {
+    describe('addOperatorsToPreviouslySelectedOperators', () => {
         it('should add operators to the list of selected operators', () => {
             const mockOperatorsToAdd = ['BLAC#Blackpool Transport', "WBTR#Warrington's Own Buses"];
             const mockSelectedOperators: Operator[] = [
@@ -45,7 +48,7 @@ describe('searchOperators', () => {
                 { operatorPublicName: "Warrington's Own Buses", nocCode: 'WBTR' },
                 { operatorPublicName: 'Blackpool Transport', nocCode: 'BLAC' },
             ];
-            const updatedList = addListToSelectedOperators(mockOperatorsToAdd, mockSelectedOperators);
+            const updatedList = addOperatorsToPreviouslySelectedOperators(mockOperatorsToAdd, mockSelectedOperators);
             expect(updatedList).toEqual(expectedUpdatedList);
         });
     });

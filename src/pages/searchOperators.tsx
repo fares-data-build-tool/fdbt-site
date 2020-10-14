@@ -11,6 +11,7 @@ import { isSearchOperatorAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSearchOperators, Operator } from '../data/auroradb';
 import { getAndValidateNoc } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
+import { isSearchInputValid } from './api/searchOperators';
 
 const title = 'Search Operators - Fares Data Build Tool';
 const description = 'Search Operators page for the Fares Data Build Tool';
@@ -258,23 +259,27 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     id: 'search-input',
                 },
             ];
-        } else if (searchText.length >= 3) {
-            const results = await getSearchOperators(searchText, nocCode);
-            const cookies = parseCookies(ctx);
-            const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
-            results.forEach(operator => {
-                if (operator.operatorPublicName !== operatorName) {
-                    searchResults.push(operator);
-                }
+        } else if (!isSearchInputValid(searchText)) {
+            errors.push({
+                errorMessage: 'Search must only include alphanumeric characters, hyphens or colons',
+                id: searchInputId,
             });
-            if (searchResults.length === 0) {
-                errors = [
-                    {
-                        errorMessage: `No operators found for '${searchText}'. Try another search term.`,
-                        id: 'search-input',
-                    },
-                ];
+        }
+        const results = await getSearchOperators(searchText, nocCode);
+        const cookies = parseCookies(ctx);
+        const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
+        results.forEach(operator => {
+            if (operator.operatorPublicName !== operatorName) {
+                searchResults.push(operator);
             }
+        });
+        if (searchResults.length === 0) {
+            errors = [
+                {
+                    errorMessage: `No operators found for '${searchText}'. Try another search term.`,
+                    id: 'search-input',
+                },
+            ];
         }
     }
 

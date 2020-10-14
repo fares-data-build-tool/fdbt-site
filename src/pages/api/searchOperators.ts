@@ -16,13 +16,19 @@ export interface MultipleOperatorsAttributeWithErrors extends MultipleOperatorsA
     errors: ErrorInfo[];
 }
 
-export const removeListFromSelectedOperators = (rawList: string[], selectedOperators: Operator[]): Operator[] => {
+export const removeOperatorsFromPreviouslySelectedOperators = (
+    rawList: string[],
+    selectedOperators: Operator[],
+): Operator[] => {
     const listToRemove = new Set(rawList.map(item => item.split('#')[0]));
     const updatedList = selectedOperators.filter(operator => !listToRemove.has(operator.nocCode));
     return updatedList;
 };
 
-export const addListToSelectedOperators = (rawList: string[], selectedOperators: Operator[]): Operator[] => {
+export const addOperatorsToPreviouslySelectedOperators = (
+    rawList: string[],
+    selectedOperators: Operator[],
+): Operator[] => {
     const formattedRawList = rawList.map(item => ({
         nocCode: item.split('#')[0],
         operatorPublicName: item.split('#')[1],
@@ -62,7 +68,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             } else {
                 const rawList: string[] =
                     typeof operatorsToRemove === 'string' ? [operatorsToRemove] : operatorsToRemove;
-                selectedOperators = removeListFromSelectedOperators(rawList, selectedOperators);
+                selectedOperators = removeOperatorsFromPreviouslySelectedOperators(rawList, selectedOperators);
             }
         } else if (addOperators) {
             if (!operatorsToAdd) {
@@ -73,7 +79,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 return;
             }
             const rawList: string[] = typeof operatorsToAdd === 'string' ? [operatorsToAdd] : operatorsToAdd;
-            selectedOperators = addListToSelectedOperators(rawList, selectedOperators);
+            selectedOperators = addOperatorsToPreviouslySelectedOperators(rawList, selectedOperators);
         } else if (search) {
             const refinedSearch = removeExcessWhiteSpace(searchText);
             if (refinedSearch.length < 3) {
