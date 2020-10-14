@@ -103,7 +103,7 @@ const FareTypePage = ({ operator, errors = [], csrfToken }: FareTypeProps & Cust
                                             id="fare-type-multi-operator"
                                             name="fareType"
                                             type="radio"
-                                            value="multiOp"
+                                            value="multiOperator"
                                         />
                                         <label
                                             className="govuk-label govuk-radios__label"

@@ -131,7 +131,7 @@ describe('apiUtils', () => {
                 body: {},
                 uuid: {},
                 mockWriteHeadFn: writeHeadMock,
-                session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOp' } },
+                session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' } },
             });
             redirectOnFareType(req, res);
             expect(writeHeadMock).toBeCalledWith(302, {

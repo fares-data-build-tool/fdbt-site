@@ -121,7 +121,7 @@ exports[`pages fareType should render correctly 1`] = `
                 id="fare-type-multi-operator"
                 name="fareType"
                 type="radio"
-                value="multiOp"
+                value="multiOperator"
               />
               <label
                 className="govuk-label govuk-radios__label"
@@ -286,7 +286,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
                 id="fare-type-multi-operator"
                 name="fareType"
                 type="radio"
-                value="multiOp"
+                value="multiOperator"
               />
               <label
                 className="govuk-label govuk-radios__label"

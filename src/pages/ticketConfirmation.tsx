@@ -164,10 +164,10 @@ export const buildFareTypeProps = (
             nonCircularMatchedFareStages: matchedFareStages,
         };
     }
-    if (fareType === 'period') {
+    if (fareType === 'period' || fareType === 'multiOperator') {
         const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
         const services = serviceInformation ? serviceInformation.selectedServices : [];
-        const zone = services.length > 0;
+        const zone = services.length === 0;
         const numberOfProducts = Number(
             (getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute)
                 .numberOfProductsInput,
