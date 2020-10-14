@@ -7,7 +7,7 @@ import searchOperators, {
     MultipleOperatorsAttribute,
 } from '../../../src/pages/api/searchOperators';
 import * as session from '../../../src/utils/sessions';
-import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../../src/constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants';
 import { Operator } from '../../../src/data/auroradb';
 
 describe('searchOperators', () => {
@@ -312,4 +312,68 @@ describe('searchOperators', () => {
             Location: '/searchOperators',
         });
     });
+
+    it.each([
+        ['/howManyProducts', 'geoZone'],
+        ['/multipleOperatorsServiceList', 'multipleServices'],
+    ])(
+        'should redirect to %s when the user has successfully selected operators for a %s multi op ticket',
+        (redirect, ticketType) => {
+            const { req, res } = getMockRequestAndResponse({
+                body: {
+                    continueButtonClick: 'Continue',
+                    searchText: '',
+                },
+                session: {
+                    [MULTIPLE_OPERATOR_ATTRIBUTE]: {
+                        selectedOperators: [
+                            {
+                                nocCode: 'MCTR',
+                                operatorPublicName: 'Manchester Community Transport',
+                            },
+                            {
+                                nocCode: 'MCTR2',
+                                operatorPublicName: 'Manchester Community Transport 2',
+                            },
+                            {
+                                nocCode: 'MCTR3',
+                                operatorPublicName: 'Manchester Community Transport 3',
+                            },
+                        ],
+                    },
+                    [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                        name: ticketType,
+                    },
+                },
+            });
+
+            const expectedSessionAttributeCall: MultipleOperatorsAttribute = {
+                selectedOperators: [
+                    {
+                        nocCode: 'MCTR',
+                        operatorPublicName: 'Manchester Community Transport',
+                    },
+                    {
+                        nocCode: 'MCTR2',
+                        operatorPublicName: 'Manchester Community Transport 2',
+                    },
+                    {
+                        nocCode: 'MCTR3',
+                        operatorPublicName: 'Manchester Community Transport 3',
+                    },
+                ],
+            };
+
+            searchOperators(req, res);
+
+            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+                req,
+                MULTIPLE_OPERATOR_ATTRIBUTE,
+                expectedSessionAttributeCall,
+            );
+            expect(res.writeHead).toBeCalledWith(302, {
+                Location: redirect,
+            });
+        },
+    );
 });

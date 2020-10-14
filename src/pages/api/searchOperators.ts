@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import uniqBy from 'lodash/uniqBy';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants';
+import { ErrorInfo, NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
@@ -126,8 +126,18 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
 
         if (continueButtonClick) {
-            redirectTo(res, '/nextPage');
-            return;
+            const ticketType = (getSessionAttribute(
+                req,
+                TICKET_REPRESENTATION_ATTRIBUTE,
+            ) as TicketRepresentationAttribute).name;
+            if (ticketType === 'geoZone') {
+                redirectTo(res, '/howManyProducts');
+                return;
+            }
+            if (ticketType === 'multipleServices') {
+                redirectTo(res, '/multipleOperatorsServiceList');
+                return;
+            }
         }
 
         redirectTo(res, '/searchOperators');
