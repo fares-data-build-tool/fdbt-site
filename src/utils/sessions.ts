@@ -1,3 +1,25 @@
+import {
+    MultiOperatorInfoWithErrors,
+    InputMethodInfo,
+    ErrorInfo,
+    IncomingMessageWithSession,
+    ProductInfo,
+    ProductData,
+    ProductInfoWithErrors,
+    GroupDefinition,
+    TimeRestriction,
+    CompanionInfo,
+    DaysValidInfo,
+    Journey,
+    JourneyWithErrors,
+    TicketRepresentationAttribute,
+    TicketRepresentationAttributeWithErrors,
+    SalesOfferPackage,
+    ProductWithSalesOfferPackages,
+    ReturnPeriodValidity,
+    ProductDate,
+    MultiOperatorInfo,
+} from '../interfaces/index';
 import { FaresInformation } from '../pages/api/priceEntry';
 import {
     DAYS_VALID_ATTRIBUTE,
@@ -33,28 +55,8 @@ import {
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
-    COMPLETED_SERVICES_OPERATORS_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
 } from '../constants/index';
-import {
-    InputMethodInfo,
-    ErrorInfo,
-    IncomingMessageWithSession,
-    ProductInfo,
-    ProductData,
-    ProductInfoWithErrors,
-    GroupDefinition,
-    TimeRestriction,
-    CompanionInfo,
-    DaysValidInfo,
-    Journey,
-    JourneyWithErrors,
-    TicketRepresentationAttribute,
-    TicketRepresentationAttributeWithErrors,
-    SalesOfferPackage,
-    ProductWithSalesOfferPackages,
-    ReturnPeriodValidity,
-    ProductDate,
-} from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -127,7 +129,7 @@ type SessionAttributeTypes = {
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
-    [COMPLETED_SERVICES_OPERATORS_ATTRIBUTE]: string[] | undefined;
+    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

@@ -94,7 +94,7 @@ export const PRODUCT_DATE_ATTRIBUTE = 'fdbt-product-date-attribute';
 
 export const MULTIPLE_OPERATOR_ATTRIBUTE = 'fdbt-multiple-operator-attribute';
 
-export const COMPLETED_SERVICES_OPERATORS_ATTRIBUTE = 'fdbt-completed-services-attribute';
+export const MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE = 'fdbt-multiple-operators-services-attribute';
 
 // Other
 

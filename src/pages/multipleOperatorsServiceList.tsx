@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react';
-import { getSessionAttribute } from '../utils/sessions';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, COMPLETED_SERVICES_OPERATORS_ATTRIBUTE } from '../constants';
-import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../constants';
+import { isMultiOperatorInfoWithErrors } from '../interfaces/typeGuards';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { ServiceType, getServicesByNocCode } from '../data/auroradb';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { CustomAppProps, ErrorInfo, NextPageContextWithSession, MultiOperatorInfo } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
+import { MultipleOperatorsAttribute } from './api/searchOperators';
 
 const pageTitle = 'Multiple Operators Service List - Fares Data Build Tool';
 const pageDescription = 'Multiple Operators Service List selection page of the Fares Data Build Tool';
@@ -21,6 +22,7 @@ export interface MultipleOperatorsServiceListProps {
     buttonText: string;
     errors: ErrorInfo[];
     operatorName: string;
+    nocCode: string;
 }
 
 const MultipleOperatorsServiceList = ({
@@ -29,6 +31,7 @@ const MultipleOperatorsServiceList = ({
     csrfToken,
     errors,
     operatorName,
+    nocCode,
 }: MultipleOperatorsServiceListProps & CustomAppProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/multipleOperatorsServiceList" method="post" csrfToken={csrfToken}>
@@ -76,7 +79,7 @@ const MultipleOperatorsServiceList = ({
                                             <input
                                                 className="govuk-checkboxes__input"
                                                 id={`checkbox-${index}`}
-                                                name={`${lineName}#${serviceCode}#${startDate}`}
+                                                name={`${nocCode}#${lineName}#${serviceCode}#${startDate}`}
                                                 type="checkbox"
                                                 value={checkBoxValues}
                                                 defaultChecked={checked}
@@ -103,28 +106,46 @@ const MultipleOperatorsServiceList = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: MultipleOperatorsServiceListProps }> => {
-    const multiOperatorInfo = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
-    const operatorsFound = [
-        { operatorPublicName: 'Blackpool', nocCode: 'BLAC' },
-        { operatorPublicName: 'Warrington', nocCode: 'WBTR' },
-    ];
-    const completedOperators = getSessionAttribute(ctx.req, COMPLETED_SERVICES_OPERATORS_ATTRIBUTE);
+    const searchedOperators = (getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
+        .selectedOperators;
 
-    let operatorToUse;
+    const completedOperatorInfo = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
 
-    if (!completedOperators) {
-        [operatorToUse] = operatorsFound;
-    } else {
-        operatorToUse = operatorsFound.forEach(service =>
-            completedOperators.find(operator => operator !== service.nocCode),
-        );
+    let doneOperators: MultiOperatorInfo[] = [];
+
+    if (isMultiOperatorInfoWithErrors(completedOperatorInfo)) {
+        doneOperators = completedOperatorInfo.multiOperatorInfo;
+    } else if (completedOperatorInfo) {
+        doneOperators = completedOperatorInfo;
     }
 
-    if (operatorsFound.length === 0 || !operatorToUse) {
-        throw new Error('Necessary list of operators not found to show multipleOperatorsServiceList page');
+    let [operatorToUse] = searchedOperators;
+    if (doneOperators.length > 0) {
+        const searchedOperatorsNocs = searchedOperators.map(operator => operator.nocCode);
+        const doneOperatorsNocs = doneOperators.map(operator => operator.nocCode);
+        const result = searchedOperatorsNocs.find(searchedNoc => {
+            return !doneOperatorsNocs.includes(searchedNoc);
+        });
+        if (!result) {
+            updateSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
+        }
+        const foundOperator = searchedOperators.find(operator => operator.nocCode === result);
+        if (!foundOperator) {
+            updateSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
+        } else {
+            operatorToUse = foundOperator;
+        }
+    }
+
+    if (!operatorToUse) {
+        throw new Error('Necessary operator not found to show multipleOperatorsServiceList page');
     }
 
     const services = await getServicesByNocCode(operatorToUse.nocCode);
+
+    if (!services) {
+        throw new Error(`No services found for ${operatorToUse.nocCode}`);
+    }
 
     const { selectAll } = ctx.query;
 
@@ -139,8 +160,9 @@ export const getServerSideProps = async (
         props: {
             serviceList,
             buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
-            errors: isMultipleOperatorAttributeWithErrors(multiOperatorInfo) ? multiOperatorInfo.errors : [],
+            errors: isMultiOperatorInfoWithErrors(completedOperatorInfo) ? completedOperatorInfo.errors : [],
             operatorName: operatorToUse.operatorPublicName,
+            nocCode: operatorToUse.nocCode,
         },
     };
 };

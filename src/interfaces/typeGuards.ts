@@ -20,6 +20,8 @@ import {
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ProductDate,
+    MultiOperatorInfoWithErrors,
+    MultiOperatorInfo,
 } from './index';
 
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
@@ -173,3 +175,7 @@ export const isMultipleOperatorAttributeWithErrors = (
     searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,
 ): searchOperator is MultipleOperatorsAttributeWithErrors =>
     searchOperator !== undefined && (searchOperator as MultipleOperatorsAttributeWithErrors).errors !== undefined;
+export const isMultiOperatorInfoWithErrors = (
+    multiOperatorInfo: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined,
+): multiOperatorInfo is MultiOperatorInfoWithErrors =>
+    multiOperatorInfo !== undefined && (multiOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;

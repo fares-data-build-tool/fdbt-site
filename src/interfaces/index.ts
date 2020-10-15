@@ -313,3 +313,8 @@ export interface MultiOperatorInfo {
     nocCode: string;
     services: string[];
 }
+
+export interface MultiOperatorInfoWithErrors {
+    multiOperatorInfo: MultiOperatorInfo[];
+    errors: ErrorInfo[];
+}
