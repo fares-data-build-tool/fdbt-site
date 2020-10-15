@@ -1596,7 +1596,7 @@ export const expectedCircularReturnTicket: ReturnTicket = {
 
 export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {
     operatorName: 'test',
-    type: 'periodGeoZone',
+    type: 'period',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
@@ -1635,7 +1635,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
 
 export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {
     operatorName: 'test',
-    type: 'multiOperatorGeoZone',
+    type: 'multiOperator',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
@@ -1675,7 +1675,7 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: PeriodGeoZo
 
 export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMultipleServicesTicket = {
     operatorName: 'test',
-    type: 'periodMultipleServices',
+    type: 'period',
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',

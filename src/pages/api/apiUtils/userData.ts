@@ -2,14 +2,12 @@ import Cookies from 'cookies';
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import isArray from 'lodash/isArray';
-import upperFirst from 'lodash/upperFirst';
 import {
     isProductWithSalesOfferPackages,
     isSalesOfferPackageWithErrors,
     isSalesOfferPackages,
     isFareType,
     isPassengerType,
-    isTicketRepresentation,
     isTicketPeriodAttribute,
 } from '../../../interfaces/typeGuards';
 import {
@@ -39,7 +37,6 @@ import {
     OPERATOR_COOKIE,
     PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
@@ -256,14 +253,12 @@ export const getPeriodGeoZoneTicketJson = async (
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-    const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
     const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
 
     if (
         !nocCode ||
         !isPassengerType(passengerTypeAttribute) ||
-        !isTicketRepresentation(ticketRepresentation) ||
         !operatorCookie ||
         !idToken ||
         !fareZoneAttribute ||
@@ -324,7 +319,7 @@ export const getPeriodGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: `${fareType}${upperFirst(ticketRepresentation.name)}`,
+        type: fareType,
         ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
@@ -357,13 +352,11 @@ export const getPeriodMultipleServicesTicketJson = (
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
     const timeRestriction = getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-    const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
     const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
     if (
         !nocCode ||
         !isPassengerType(passengerTypeAttribute) ||
-        !isTicketRepresentation(ticketRepresentation) ||
         !operatorCookie ||
         !idToken ||
         !serviceListAttribute ||
@@ -429,7 +422,7 @@ export const getPeriodMultipleServicesTicketJson = (
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: `${fareType}${upperFirst(ticketRepresentation.name)}`,
+        type: fareType,
         ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
