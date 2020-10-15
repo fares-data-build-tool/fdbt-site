@@ -14,7 +14,7 @@ import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
 import {
     getSingleTicketJson,
     getReturnTicketJson,
-    getPeriodGeoZoneTicketJson,
+    getGeoZoneTicketJson,
     getPeriodMultipleServicesTicketJson,
     getFlatFareTicketJson,
     putUserDataInS3,
@@ -77,7 +77,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             if (ticketType === 'geoZone') {
-                userDataJson = await getPeriodGeoZoneTicketJson(req, res);
+                userDataJson = await getGeoZoneTicketJson(req, res);
             } else if (ticketType === 'multipleServices') {
                 userDataJson = getPeriodMultipleServicesTicketJson(req, res);
             }

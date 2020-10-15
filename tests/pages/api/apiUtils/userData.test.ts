@@ -18,7 +18,7 @@ import {
 import {
     getSingleTicketJson,
     getReturnTicketJson,
-    getPeriodGeoZoneTicketJson,
+    getGeoZoneTicketJson,
     getPeriodMultipleServicesTicketJson,
     getFlatFareTicketJson,
     getProductsAndSalesOfferPackages,
@@ -138,7 +138,7 @@ describe('getReturnTicketJson', () => {
     });
 });
 
-describe('getPeriodGeoZoneTicketJson', () => {
+describe('getGeoZoneTicketJson', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
@@ -227,7 +227,7 @@ describe('getPeriodGeoZoneTicketJson', () => {
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
-        const result = await getPeriodGeoZoneTicketJson(req, res);
+        const result = await getGeoZoneTicketJson(req, res);
         expect(result).toEqual(expectedJson);
     });
 });

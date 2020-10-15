@@ -44,6 +44,7 @@ import {
     SalesOfferPackage,
     ProductDetails,
     TimeRestriction,
+    MultiOperatorGeoZoneTicket,
 } from '../../src/interfaces';
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
@@ -1633,7 +1634,7 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
     ],
 };
 
-export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {
+export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperatorGeoZoneTicket = {
     operatorName: 'test',
     type: 'multiOperator',
     nocCode: 'TEST',

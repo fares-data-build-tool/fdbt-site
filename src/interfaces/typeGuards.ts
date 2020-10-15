@@ -10,7 +10,7 @@ import {
     PointToPointTicket,
     PeriodMultipleServicesTicket,
     FlatFareTicket,
-    PeriodGeoZoneTicket,
+    GeoZoneTicket,
     InputMethodInfo,
     ErrorInfo,
     Journey,
@@ -43,8 +43,8 @@ export const isMultipleServicesTicket = (
 export const isPointToPointTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PointToPointTicket =>
     (ticket as PointToPointTicket).lineName !== undefined;
 
-export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is PeriodGeoZoneTicket =>
-    (ticket as PeriodGeoZoneTicket).zoneName !== undefined;
+export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is GeoZoneTicket =>
+    (ticket as GeoZoneTicket).zoneName !== undefined;
 
 export const isFareTypeAttributeWithErrors = (
     fareTypeAttribute: FareType | FareTypeWithErrors,

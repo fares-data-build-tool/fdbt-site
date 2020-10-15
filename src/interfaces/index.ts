@@ -173,7 +173,6 @@ export interface BaseTicket {
     uuid: string;
     timeRestriction?: TimeRestriction;
     ticketPeriod: TicketPeriod;
-    additionalNocs?: string[];
 }
 
 export interface TicketPeriod {
@@ -227,6 +226,12 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     zoneName: string;
     stops: Stop[];
 }
+
+export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
+    additionalNocs: string[];
+}
+
+export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];

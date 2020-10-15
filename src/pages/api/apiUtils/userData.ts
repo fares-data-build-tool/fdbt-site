@@ -15,7 +15,7 @@ import {
     CognitoIdToken,
     FlatFareTicket,
     NextApiRequestWithSession,
-    PeriodGeoZoneTicket,
+    GeoZoneTicket,
     PeriodMultipleServicesTicket,
     Product,
     ProductData,
@@ -113,7 +113,7 @@ export const getProductsAndSalesOfferPackages = (
 };
 
 export const putUserDataInS3 = async (
-    data: SingleTicket | ReturnTicket | PeriodGeoZoneTicket | PeriodMultipleServicesTicket | FlatFareTicket,
+    data: SingleTicket | ReturnTicket | GeoZoneTicket | PeriodMultipleServicesTicket | FlatFareTicket,
     uuid: string,
 ): Promise<void> => {
     await putStringInS3(
@@ -232,10 +232,10 @@ const isPeriodProductDetails = (product: Product): product is ProductDetails =>
     (product as ProductDetails)?.productDuration !== undefined &&
     (product as ProductDetails)?.productValidity !== undefined;
 
-export const getPeriodGeoZoneTicketJson = async (
+export const getGeoZoneTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): Promise<PeriodGeoZoneTicket> => {
+): Promise<GeoZoneTicket> => {
     const isProductData = (
         periodExpiryAttributeInfo: ProductData | PeriodExpiryWithErrors,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
