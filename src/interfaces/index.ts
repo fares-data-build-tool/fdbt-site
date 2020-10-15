@@ -161,7 +161,6 @@ export interface TimeRestriction {
 }
 
 export interface BaseTicket {
-    timeRestriction?: TimeRestriction;
     nocCode: string;
     type: string;
     passengerType: string;
@@ -172,17 +171,14 @@ export interface BaseTicket {
     proofDocuments?: string[];
     email: string;
     uuid: string;
-    ticketPeriod: ProductDate;
-}
-
-export interface ProductDate {
-    startDate?: string;
-    endDate?: string;
+    timeRestriction?: TimeRestriction;
+    ticketPeriod: TicketPeriod;
+    additionalNocs?: string[];
 }
 
 export interface TicketPeriod {
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;

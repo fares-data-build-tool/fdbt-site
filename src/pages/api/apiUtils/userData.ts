@@ -10,7 +10,7 @@ import {
     isFareType,
     isPassengerType,
     isTicketRepresentation,
-    isProductDateAttribute,
+    isTicketPeriodAttribute,
 } from '../../../interfaces/typeGuards';
 import {
     ProductWithSalesOfferPackages,
@@ -49,6 +49,7 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../../../constants';
 
 import { PeriodExpiryWithErrors } from '../periodValidity';
@@ -61,6 +62,7 @@ import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { MultipleProductAttribute } from '../multipleProductValidity';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
+import { FareType } from '../fareType';
 
 export const generateSalesOfferPackages = (entry: string[]): SalesOfferPackage[] => {
     const salesOfferPackageList: SalesOfferPackage[] = [];
@@ -147,7 +149,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
         !isSalesOfferPackages(salesOfferPackages) ||
-        !isProductDateAttribute(productDateAttribute)
+        !isTicketPeriodAttribute(productDateAttribute)
     ) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
@@ -199,7 +201,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !isMatchingInfo(matchingAttributeInfo) ||
         !isSalesOfferPackages(salesOfferPackages) ||
         isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
-        !isProductDateAttribute(productDateAttribute)
+        !isTicketPeriodAttribute(productDateAttribute)
     ) {
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
@@ -247,6 +249,7 @@ export const getPeriodGeoZoneTicketJson = async (
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
+    const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
     const fareZoneAttribute = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
@@ -255,6 +258,7 @@ export const getPeriodGeoZoneTicketJson = async (
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
     const productDateAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
+    const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
 
     if (
         !nocCode ||
@@ -266,7 +270,7 @@ export const getPeriodGeoZoneTicketJson = async (
         isFareZoneAttributeWithErrors(fareZoneAttribute) ||
         isSalesOfferPackageWithErrors(salesOfferPackages) ||
         !salesOfferPackages ||
-        !isProductDateAttribute(productDateAttribute)
+        !isTicketPeriodAttribute(productDateAttribute)
     ) {
         throw new Error(
             'Could not create period geo zone ticket json. Necessary cookies and session objects not found.',
@@ -277,6 +281,11 @@ export const getPeriodGeoZoneTicketJson = async (
     const operatorObject = JSON.parse(operatorCookie);
     const atcoCodes: string[] = await getCsvZoneUploadData(uuid);
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+
+    const additionalNocs =
+        fareType === 'multiOperator' && multiOpAttribute
+            ? multiOpAttribute.selectedOperators.map(operator => operator.nocCode)
+            : undefined;
 
     if (zoneStops.length === 0) {
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
@@ -312,9 +321,10 @@ export const getPeriodGeoZoneTicketJson = async (
     }
 
     return {
+        ...(additionalNocs && { additionalNocs }),
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: `period${upperFirst(ticketRepresentation.name)}`,
+        type: `${fareType}${upperFirst(ticketRepresentation.name)}`,
         ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
@@ -340,6 +350,7 @@ export const getPeriodMultipleServicesTicketJson = (
     const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
     const idToken = unescapeAndDecodeCookie(cookies, ID_TOKEN_COOKIE);
 
+    const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE);
@@ -359,7 +370,7 @@ export const getPeriodMultipleServicesTicketJson = (
         isServiceListAttributeWithErrors(serviceListAttribute) ||
         isSalesOfferPackageWithErrors(salesOfferPackages) ||
         !salesOfferPackages ||
-        !isProductDateAttribute(productDateAttribute)
+        !isTicketPeriodAttribute(productDateAttribute)
     ) {
         throw new Error(
             'Could not create period multiple services ticket json. Necessary cookies and session objects not found.',
@@ -418,7 +429,7 @@ export const getPeriodMultipleServicesTicketJson = (
     return {
         ...(timeRestriction && { timeRestriction }),
         nocCode,
-        type: `period${upperFirst(ticketRepresentation.name)}`,
+        type: `${fareType}${upperFirst(ticketRepresentation.name)}`,
         ...passengerTypeAttribute,
         email: decodedIdToken.email,
         uuid,
@@ -459,7 +470,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         !productDetailsAttributeInfo ||
         !isProductData(productDetailsAttributeInfo) ||
         !isSalesOfferPackages(salesOfferPackages) ||
-        !isProductDateAttribute(productDateAttribute)
+        !isTicketPeriodAttribute(productDateAttribute)
     ) {
         throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
     }
