@@ -1164,7 +1164,7 @@ export const mockTimeRestriction: TimeRestriction = {
     validDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
 };
 
-export const expectedMatchingJsonSingle: SingleTicket = {
+export const expectedSingleTicket: SingleTicket = {
     type: 'single',
     lineName: '215',
     nocCode: 'DCCL',
@@ -1297,7 +1297,7 @@ export const expectedMatchingJsonSingle: SingleTicket = {
     ],
 };
 
-export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
+export const expectedNonCircularReturnTicket: ReturnTicket = {
     type: 'return',
     passengerType: 'Adult',
     lineName: '215',
@@ -1460,7 +1460,7 @@ export const expectedMatchingJsonReturnNonCircular: ReturnTicket = {
     ],
 };
 
-export const expectedMatchingJsonReturnCircular: ReturnTicket = {
+export const expectedCircularReturnTicket: ReturnTicket = {
     type: 'return',
     lineName: '215',
     passengerType: 'Adult',
@@ -1594,7 +1594,7 @@ export const expectedMatchingJsonReturnCircular: ReturnTicket = {
     ],
 };
 
-export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket = {
+export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {
     operatorName: 'test',
     type: 'periodGeoZone',
     nocCode: 'TEST',
@@ -1633,7 +1633,47 @@ export const expectedMultiProductUploadJsonWithZoneUpload: PeriodGeoZoneTicket =
     ],
 };
 
-export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleServicesTicket = {
+export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicket = {
+    operatorName: 'test',
+    type: 'multiOperatorGeoZone',
+    nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    zoneName: 'Green Lane Shops',
+    stops: zoneStops,
+    passengerType: 'Adult',
+    timeRestriction: mockTimeRestriction,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1',
+            productValidity: '24hr',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28',
+            productValidity: 'endOfCalendarDay',
+            salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
+        },
+    ],
+    additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
+};
+
+export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMultipleServicesTicket = {
     operatorName: 'test',
     type: 'periodMultipleServices',
     nocCode: 'TEST',
@@ -1690,7 +1730,7 @@ export const expectedMultiProductUploadJsonWithSelectedServices: PeriodMultipleS
     ],
 };
 
-export const expectedFlatFareProductUploadJson: FlatFareTicket = {
+export const expectedFlatFareTicket: FlatFareTicket = {
     operatorName: 'test',
     passengerType: 'Adult',
     type: 'flatFare',
