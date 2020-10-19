@@ -160,6 +160,7 @@ export const isPeriodTicketProps = (
 export const isFlatFareTicketProps = (
     props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
 ): props is FlatFareTicketProps => (props as FlatFareTicketProps).productName !== undefined;
+
 export const isProductDateAttributeWithErrors = (
     productDates: ProductDate | ProductDatesWithErrors | undefined,
 ): productDates is ProductDatesWithErrors =>
@@ -171,10 +172,12 @@ export const isProductDateAttribute = (
     productDates !== undefined &&
     (productDates as ProductDate).startDate !== undefined &&
     (productDates as ProductDate).endDate !== undefined;
+
 export const isMultipleOperatorAttributeWithErrors = (
     searchOperator: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors | undefined,
 ): searchOperator is MultipleOperatorsAttributeWithErrors =>
     searchOperator !== undefined && (searchOperator as MultipleOperatorsAttributeWithErrors).errors !== undefined;
+
 export const isMultiOperatorInfoWithErrors = (
     multiOperatorInfo: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined,
 ): multiOperatorInfo is MultiOperatorInfoWithErrors =>

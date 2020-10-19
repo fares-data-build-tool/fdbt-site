@@ -144,7 +144,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
         Array [
           Object {
             "errorMessage": "Choose at least one service from the list",
-            "id": "service-list-error",
+            "id": "checkbox-0",
           },
         ]
       }
@@ -193,7 +193,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
             Array [
               Object {
                 "errorMessage": "Choose at least one service from the list",
-                "id": "service-list-error",
+                "id": "checkbox-0",
               },
             ]
           }

@@ -34,23 +34,23 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
             return;
         }
-        const data = getSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
-        let dataToReAdd: MultiOperatorInfo[] = [];
-        if (isMultiOperatorInfoWithErrors(data)) {
-            dataToReAdd = data.multiOperatorInfo;
-        } else if (data) {
-            dataToReAdd = data;
+        const multiOpDataOnSession = getSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
+        let multiOpDataToReAddToSession: MultiOperatorInfo[] = [];
+        if (isMultiOperatorInfoWithErrors(multiOpDataOnSession)) {
+            multiOpDataToReAddToSession = multiOpDataOnSession.multiOperatorInfo;
+        } else if (multiOpDataOnSession) {
+            multiOpDataToReAddToSession = multiOpDataOnSession;
         }
         if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
-                multiOperatorInfo: dataToReAdd,
+                multiOperatorInfo: multiOpDataToReAddToSession,
                 errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
             });
             redirectTo(res, `${redirectUrl}?selectAll=false`);
             return;
         }
 
-        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, dataToReAdd);
+        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, multiOpDataToReAddToSession);
 
         const selectedServices: string[] = [];
         const requestBody: { [key: string]: string | string[] } = req.body;
@@ -77,17 +77,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('Could not find NOC code from request');
         }
 
-        const arrayToAdd: MultiOperatorInfo[] = [];
+        const newListOfMultiOperatorsData: MultiOperatorInfo[] = [];
         const multiOperatorData: MultiOperatorInfo = {
             nocCode: currentNocCode,
             services: selectedServices,
         };
-        arrayToAdd.push(multiOperatorData);
-        dataToReAdd.forEach(pieceOfData => arrayToAdd.push(pieceOfData));
-        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, arrayToAdd);
+        newListOfMultiOperatorsData.push(multiOperatorData);
+        multiOpDataToReAddToSession.forEach(operatorData => newListOfMultiOperatorsData.push(operatorData));
+        updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, newListOfMultiOperatorsData);
         const numberOfOperators = (getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
             .selectedOperators.length;
-        if (arrayToAdd.length !== numberOfOperators) {
+        if (newListOfMultiOperatorsData.length !== numberOfOperators) {
             redirectTo(res, '/multipleOperatorsServiceList');
             return;
         }

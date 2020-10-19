@@ -40,7 +40,7 @@ describe('pages', () => {
         const mockError: ErrorInfo[] = [
             {
                 errorMessage: 'Choose at least one service from the list',
-                id: 'service-list-error',
+                id: 'checkbox-0',
             },
         ];
 
@@ -123,6 +123,7 @@ describe('pages', () => {
                 expect(result.props.operatorName).toBe('Test1' || 'Test2' || 'Test3');
                 expect(result.props.nocCode).toBe('N1' || 'N2' || 'N3');
             });
+
             it('should return expected props to the page when the page is visited by the user for a second time', async () => {
                 const ctx = getMockContext({
                     session: {
@@ -152,6 +153,7 @@ describe('pages', () => {
                 expect(result.props.operatorName).toBe('Test2' || 'Test3');
                 expect(result.props.nocCode).toBe('N2' || 'N3');
             });
+
             it('should return expected props to the page when the page is visited by the user for the third time', async () => {
                 const ctx = getMockContext({
                     session: {
@@ -185,6 +187,7 @@ describe('pages', () => {
                 expect(result.props.operatorName).toBe('Test3');
                 expect(result.props.nocCode).toBe('N3');
             });
+
             it('should return expected props to the page when the page is visited by the user for the fourth time having finished all their operators', async () => {
                 const ctx = getMockContext({
                     session: {
@@ -222,6 +225,7 @@ describe('pages', () => {
                 expect(result.props.operatorName).toBe('Test1' || 'Test2' || 'Test3');
                 expect(result.props.nocCode).toBe('N1' || 'N2' || 'N3');
             });
+
             it('should return expected props to the page when the page is visited by the user with errors on the session attribute', async () => {
                 const ctx = getMockContext({
                     session: {
@@ -244,8 +248,7 @@ describe('pages', () => {
                     },
                 });
                 const result = await getServerSideProps(ctx);
-                expect(result.props.errors.length).toBe(1);
-                expect(result.props.errors[0]).toStrictEqual(mockError[0]);
+                expect(result.props.errors).toStrictEqual(mockError);
             });
         });
     });
