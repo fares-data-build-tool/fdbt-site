@@ -3,7 +3,6 @@ import isArray from 'lodash/isArray';
 import { MultipleOperatorsAttribute } from './searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/index';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
-
 import { redirectTo, redirectToError } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -14,6 +13,33 @@ const errorId = 'checkbox-0';
 export interface MultiOperatorInfoWithErrors {
     errors: ErrorInfo[];
 }
+
+export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
+    [key: string]: string | string[];
+}): { selectedServices: string[]; nocCode: string } => {
+    let nocCode = '';
+    const selectedServices: string[] = [];
+    Object.entries(requestBody).forEach(entry => {
+        const nocCodeLineNameServiceCodeStartDate = entry[0];
+        const description = entry[1];
+        let serviceDescription: string;
+        if (isArray(description)) {
+            [serviceDescription] = description;
+        } else {
+            serviceDescription = description;
+        }
+        [nocCode] = nocCodeLineNameServiceCodeStartDate.split('#');
+        const splitStrings = nocCodeLineNameServiceCodeStartDate.split('#');
+        delete splitStrings[0];
+        const lineNameServiceCodeStartDate = splitStrings.join('#').substring(1);
+        const servicesData = `${lineNameServiceCodeStartDate}#${serviceDescription}`;
+        selectedServices.push(servicesData);
+    });
+    return {
+        selectedServices,
+        nocCode,
+    };
+};
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/multipleOperatorsServiceList';
@@ -52,34 +78,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, multiOpDataToReAddToSession);
 
-        const selectedServices: string[] = [];
         const requestBody: { [key: string]: string | string[] } = req.body;
-        let currentNocCode = '';
 
-        Object.entries(requestBody).forEach(entry => {
-            const nocCodeLineNameServiceCodeStartDate = entry[0];
-            const description = entry[1];
-            let serviceDescription: string;
-            if (isArray(description)) {
-                [serviceDescription] = description;
-            } else {
-                serviceDescription = description;
-            }
-            [currentNocCode] = nocCodeLineNameServiceCodeStartDate.split('#');
-            const splitStrings = nocCodeLineNameServiceCodeStartDate.split('#');
-            delete splitStrings[0];
-            const lineNameServiceCodeStartDate = splitStrings.join('#').substring(1);
-            const servicesData = `${lineNameServiceCodeStartDate}#${serviceDescription}`;
-            selectedServices.push(servicesData);
-        });
+        const { selectedServices, nocCode } = getSelectedServicesAndNocCodeFromRequest(requestBody);
 
-        if (currentNocCode === '') {
+        if (nocCode === '') {
             throw new Error('Could not find NOC code from request');
         }
 
         const newListOfMultiOperatorsData: MultiOperatorInfo[] = [];
         const multiOperatorData: MultiOperatorInfo = {
-            nocCode: currentNocCode,
+            nocCode,
             services: selectedServices,
         };
         newListOfMultiOperatorsData.push(multiOperatorData);
@@ -95,7 +104,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         redirectTo(res, '/howManyProducts');
         return;
     } catch (error) {
-        const message = 'There was a problem processing the selected services from the servicesList page:';
-        redirectToError(res, message, 'api.serviceList', error);
+        const message =
+            'There was a problem processing the selected services from the multipleOperatorsServicesList page:';
+        redirectToError(res, message, 'api.multipleOperatorsServiceList', error);
     }
 };
