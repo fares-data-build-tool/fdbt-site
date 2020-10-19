@@ -17,8 +17,8 @@ import {
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
     ReturnPeriodValidity,
-    ProductDate,
     MultiOperatorInfo,
+    TicketPeriod,
 } from '../interfaces/index';
 import { FaresInformation } from '../pages/api/priceEntry';
 import {
@@ -84,7 +84,7 @@ import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerTy
 import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
 import { ServiceWithErrors, Service } from '../pages/api/service';
 import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { ProductDatesWithErrors } from '../pages/api/productDateInformation';
+import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 
@@ -127,7 +127,7 @@ type SessionAttributeTypes = {
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;
     [FARE_STAGES_ATTRIBUTE]: FareStagesAttribute | FareStagesAttributeWithErrors;
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
-    [PRODUCT_DATE_ATTRIBUTE]: ProductDate | ProductDatesWithErrors;
+    [PRODUCT_DATE_ATTRIBUTE]: TicketPeriod | TicketPeriodWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined;
 };
