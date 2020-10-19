@@ -40,7 +40,19 @@ exports[`CookieBanner should render correctly 1`] = `
           </p>
         </div>
         <div
-          className="cookie-banner__button"
+          className="cookie-banner__button govuk-grid-column-full govuk-grid-column-one-half-from-desktop"
+        >
+          <button
+            className="govuk-button cookie-banner__button--inline"
+            id="accept-all-cookies-link"
+            onClick={[Function]}
+            type="submit"
+          >
+            Accept all cookies
+          </button>
+        </div>
+        <div
+          className="cookie-banner__button govuk-grid-column-full govuk-grid-column-one-half-from-desktop"
         >
           <a
             className="govuk-button cookie-banner__button--inline"
