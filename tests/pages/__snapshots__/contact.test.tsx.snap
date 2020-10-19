@@ -55,6 +55,22 @@ exports[`contact should render correctly 1`] = `
           fdbt-support@infinityworks.com
         </a>
       </p>
+      <h3
+        className="govuk-heading-s"
+      >
+        Related services
+      </h3>
+      <p
+        className="govuk-body"
+      >
+        If your query relates to the use of the Bus Open Data Service go 
+        <a
+          href="https://publish.bus-data.dft.gov.uk/"
+        >
+          here
+        </a>
+         to view their contact details.
+      </p>
     </div>
     <div
       className="govuk-grid-column-one-third"

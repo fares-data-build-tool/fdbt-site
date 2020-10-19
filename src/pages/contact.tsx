@@ -28,6 +28,11 @@ const Contact = (): ReactElement => {
                         If you have any suggestions, comments or criticisms, please send an email to:&nbsp;
                         <a href="mailto:fdbt-support@infinityworks.com">fdbt-support@infinityworks.com</a>
                     </p>
+                    <h3 className="govuk-heading-s">Related services</h3>
+                    <p className="govuk-body">
+                        If your query relates to the use of the Bus Open Data Service go&nbsp;
+                        <a href="https://publish.bus-data.dft.gov.uk/">here</a>&nbsp;to view their contact details.
+                    </p>
                 </div>
                 <div className="govuk-grid-column-one-third">
                     <h2 className="govuk-heading-m">Fares Data Build Tool</h2>
