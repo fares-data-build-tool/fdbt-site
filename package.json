@@ -14,7 +14,8 @@
         "build": "npm run build:next && npm run build:server",
         "start": "NODE_ENV=production PORT=80 node dist/server/index.js",
         "lint": "eslint . --ext .ts,.tsx",
-        "lint:fix": "eslint --fix . --ext .ts,.tsx"
+        "lint:fix": "eslint --fix . --ext .ts,.tsx",
+        "postshrinkwrap": "npx --quiet npm-force-resolutions && npm install --no-package-lock --no-audit --no-fund --no-progress --silent && npx prettier --write ./package-lock.json"
     },
     "jest": {
         "collectCoverageFrom": [
