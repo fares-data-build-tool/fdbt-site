@@ -24,7 +24,7 @@ const Footer: FC = () => (
                         </li>
                         <li className="govuk-footer__inline-list-item">
                             <a className="govuk-footer__link" href="/accessibility">
-                                Accessibility statement
+                                Accessibility
                             </a>
                         </li>
                         <li className="govuk-footer__inline-list-item">
