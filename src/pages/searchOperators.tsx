@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
-import TwoThirdsLayout from '../layout/Layout';
+import { BaseLayout } from '../layout/Layout';
 import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
@@ -210,27 +210,38 @@ const SearchOperators = ({
     const selectedOperatorsToDisplay = selectedOperators.length > 0;
     const searchResultsToDisplay = searchResults.length > 0 || errors.find(err => err.id === addOperatorsErrorId);
     return (
-        <TwoThirdsLayout title={title} description={description}>
-            <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                <>
-                    <ErrorSummary errors={errors} />
-                    {selectedOperatorsToDisplay ? showSelectedOperators(selectedOperators, errors) : null}
-                    {renderSearchBox(selectedOperatorsToDisplay, errors)}
-                    {searchResultsToDisplay ? showSearchResults(searchText, searchResults, errors) : null}
-                    {selectedOperatorsToDisplay ? (
-                        <div>
-                            <input
-                                type="submit"
-                                value="Continue"
-                                name="continueButtonClick"
-                                id="continue-button"
-                                className="govuk-button"
-                            />
-                        </div>
-                    ) : null}
-                </>
-            </CsrfForm>
-        </TwoThirdsLayout>
+        <BaseLayout title={title} description={description}>
+            <div className="govuk-grid-row">
+                <div className="govuk-grid-column-two-thirds">
+                    <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
+                        <>
+                            <ErrorSummary errors={errors} />
+                            {selectedOperatorsToDisplay ? showSelectedOperators(selectedOperators, errors) : null}
+                            {renderSearchBox(selectedOperatorsToDisplay, errors)}
+                            {searchResultsToDisplay ? showSearchResults(searchText, searchResults, errors) : null}
+                            {selectedOperatorsToDisplay ? (
+                                <div>
+                                    <input
+                                        type="submit"
+                                        value="Continue"
+                                        name="continueButtonClick"
+                                        id="continue-button"
+                                        className="govuk-button"
+                                    />
+                                </div>
+                            ) : null}
+                        </>
+                    </CsrfForm>
+                </div>
+                <div className="govuk-grid-column-one-third">
+                    <h3 className="govuk-heading-s">What is a National Operator Code (NOC)?</h3>
+                    <p className="govuk-body">
+                        A National Operator Code (NOC) is a unique identifier given to every bus operator in England. No
+                        two operators can have the same NOC.
+                    </p>
+                </div>
+            </div>
+        </BaseLayout>
     );
 };
 
