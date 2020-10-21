@@ -13,10 +13,10 @@ const Accessibility = (): ReactElement => {
                 main GOV.UK website.
             </p>
             <p className="govuk-body">
-                This page only contains information about the Fares Data Build Tool service, available at
-                https://fares-data.dft.gov.uk
+                This page only contains information about the Fares Data Build Tool service, available at&nbsp;
+                <a href="https://fares-data.dft.gov.uk">https://fares-data.dft.gov.uk</a>.
             </p>
-            <h3 className="govuk-heading-s">Using this service</h3>
+            <h2 className="govuk-heading-m">Using this service</h2>
             <p className="govuk-body">
                 This service is run by the Department for Transport. We want as many people as possible to be able to
                 use this service. For example, that means you should be able to:
@@ -39,23 +39,23 @@ const Accessibility = (): ReactElement => {
                 </a>
                 &nbsp;has advice on making your device easier to use if you have a disability.
             </p>
-            <h3 className="govuk-heading-s">How accessible this service is</h3>
+            <h2 className="govuk-heading-m">How accessible this service is</h2>
             <p className="govuk-body">
                 Some of the language and concepts used throughout this service are aimed at users within the transport
                 industry.
             </p>
             <p className="govuk-body">Some documents are in PDF format and are not accessible.</p>
-            <h3 className="govuk-heading-s">Feedback and contact information</h3>
+            <h2 className="govuk-heading-m">Feedback and contact information</h2>
             <p className="govuk-body">
-                If you have difficulty using this service, <a href="/contact">contact us</a>
+                If you have difficulty using this service, <a href="/contact">contact us</a>.
             </p>
-            <h3 className="govuk-heading-s">Reporting accessibility problems with this service</h3>
+            <h2 className="govuk-heading-m">Reporting accessibility problems with this service</h2>
             <p className="govuk-body">
                 We’re always looking to improve the accessibility of this service. If you find any problems that are not
                 listed on this page or think we’re not meeting accessibility requirements,&nbsp;
-                <a href="/contact">contact us</a>
+                <a href="/contact">contact us</a>.
             </p>
-            <h3 className="govuk-heading-s">Enforcement procedure</h3>
+            <h2 className="govuk-heading-m">Enforcement procedure</h2>
             <p className="govuk-body">
                 The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies
                 (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility
@@ -65,22 +65,22 @@ const Accessibility = (): ReactElement => {
                 </a>
                 .
             </p>
-            <h3 className="govuk-heading-s">Contacting us</h3>
+            <h2 className="govuk-heading-m">Contacting us</h2>
             <p className="govuk-body">
                 Find out how to <a href="/contact">contact us</a>.
             </p>
-            <h3 className="govuk-heading-s">Technical information about this website’s accessibility</h3>
+            <h2 className="govuk-heading-m">Technical information about this website’s accessibility</h2>
             <p className="govuk-body">
                 The Department for Transport is committed to making its websites accessible, in accordance with the
                 Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.
             </p>
-            <h3 className="govuk-heading-s">Compliance status</h3>
+            <h2 className="govuk-heading-m">Compliance status</h2>
             <p className="govuk-body">
                 This service is fully compliant with the&nbsp;
                 <a href="https://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines version 2.1 AA standard</a>
                 .
             </p>
-            <h3 className="govuk-heading-s"> Preparation of this accessibility statement</h3>
+            <h2 className="govuk-heading-m"> Preparation of this accessibility statement</h2>
             <p className="govuk-body">
                 This statement was prepared on 20 October 2020. It was last reviewed on 20 October 2020.
             </p>
