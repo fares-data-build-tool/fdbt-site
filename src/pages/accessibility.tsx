@@ -44,9 +44,7 @@ const Accessibility = (): ReactElement => {
                 Some of the language and concepts used throughout this service are aimed at users within the transport
                 industry.
             </p>
-            <ol className="govuk-list govuk-list--bullet">
-                <li>Some documents are in PDF format and are not accessible.</li>
-            </ol>
+            <p className="govuk-body">Some documents are in PDF format and are not accessible.</p>
             <h3 className="govuk-heading-s">Feedback and contact information</h3>
             <p className="govuk-body">If you have difficulty using this service, contact us by:</p>
             <ol className="govuk-list govuk-list--bullet">
