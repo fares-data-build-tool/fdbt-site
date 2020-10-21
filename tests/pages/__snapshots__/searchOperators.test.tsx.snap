@@ -87,9 +87,15 @@ exports[`pages searchOperator should render a selection error when the user trie
           >
             <p
               className="govuk-hint"
-              id="operator-hint-text"
+              id="traveline-hint-text"
             >
               Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+            </p>
+            <p
+              className="govuk-hint"
+              id="noc-hint-text"
+            >
+              You will see that all operator names are followed by a series of characters. These characters are the operator's National Operator Code (NOC).
             </p>
             <div
               className="govuk-checkboxes__item"
@@ -659,9 +665,15 @@ exports[`pages searchOperator should render the search input and search results 
           >
             <p
               className="govuk-hint"
-              id="operator-hint-text"
+              id="traveline-hint-text"
             >
               Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+            </p>
+            <p
+              className="govuk-hint"
+              id="noc-hint-text"
+            >
+              You will see that all operator names are followed by a series of characters. These characters are the operator's National Operator Code (NOC).
             </p>
             <div
               className="govuk-checkboxes__item"
@@ -881,9 +893,15 @@ exports[`pages searchOperator should render the search input, search results and
           >
             <p
               className="govuk-hint"
-              id="operator-hint-text"
+              id="traveline-hint-text"
             >
               Select the operators results and click add operator(s). This data is taken from the Traveline National Dataset.
+            </p>
+            <p
+              className="govuk-hint"
+              id="noc-hint-text"
+            >
+              You will see that all operator names are followed by a series of characters. These characters are the operator's National Operator Code (NOC).
             </p>
             <div
               className="govuk-checkboxes__item"

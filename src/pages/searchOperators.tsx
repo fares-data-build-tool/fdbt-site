@@ -155,9 +155,13 @@ export const showSearchResults = (searchText: string, searchResults: Operator[],
                 <FormElementWrapper errors={addOperatorsErrors} errorId={addOperatorsErrorId} errorClass="">
                     <>
                         <div className="govuk-checkboxes">
-                            <p className="govuk-hint" id="operator-hint-text">
+                            <p className="govuk-hint" id="traveline-hint-text">
                                 Select the operators results and click add operator(s). This data is taken from the
                                 Traveline National Dataset.
+                            </p>
+                            <p className="govuk-hint" id="noc-hint-text">
+                                You will see that all operator names are followed by a series of characters. These
+                                characters are the operator&apos;s National Operator Code (NOC).
                             </p>
                             {searchResults.map((operator, index) => {
                                 const { nocCode, operatorPublicName } = operator;
