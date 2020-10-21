@@ -46,17 +46,8 @@ const Accessibility = (): ReactElement => {
             </p>
             <p className="govuk-body">Some documents are in PDF format and are not accessible.</p>
             <h3 className="govuk-heading-s">Feedback and contact information</h3>
-            <p className="govuk-body">If you have difficulty using this service, contact us by:</p>
-            <ol className="govuk-list govuk-list--bullet">
-                <li>
-                    email: <a href="mailto:fdbt-support@infinityworks.com">fdbt-support@infinityworks.com</a>
-                </li>
-                <li>call: 0800 464 3290</li>
-            </ol>
             <p className="govuk-body">
-                As part of providing this service, we may need to send you messages or documents. We’ll ask you how you
-                want us to send messages or documents to you, but contact us if you need them in a different format. For
-                example large print, audio recording or braille.
+                If you have difficulty using this service, <a href="/contact">contact us</a>
             </p>
             <h3 className="govuk-heading-s">Reporting accessibility problems with this service</h3>
             <p className="govuk-body">
@@ -74,14 +65,7 @@ const Accessibility = (): ReactElement => {
                 </a>
                 .
             </p>
-            <h3 className="govuk-heading-s">Contacting us by phone or visiting us in person</h3>
-            <p className="govuk-body">
-                We provide a text relay service for people who are deaf, hearing impaired or have a speech impediment.
-            </p>
-            <p className="govuk-body">
-                Our offices have audio induction loops, or if you contact us before your visit we can arrange a British
-                Sign Language (BSL) interpreter to help you complete the service in person.
-            </p>
+            <h3 className="govuk-heading-s">Contacting us</h3>
             <p className="govuk-body">
                 Find out how to <a href="/contact">contact us</a>.
             </p>
