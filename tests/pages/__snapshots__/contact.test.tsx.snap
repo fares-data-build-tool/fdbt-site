@@ -24,7 +24,7 @@ exports[`contact should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        If you are experiencing technical issues, please contact the Create Fares Data Service team through the channels below
+        If you are experiencing technical issues, please contact the Create Fares Data team through the channels below
       </p>
       <h3
         className="govuk-heading-s"

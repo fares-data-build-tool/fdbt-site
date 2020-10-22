@@ -3,8 +3,8 @@ import { NextPageContextWithSession, CustomAppProps } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators } from '../utils';
 
-const title = 'Create Fares Data Service';
-const description = 'Create Fares Data Service is a service that allows you to generate data in NeTEx format';
+const title = 'Create Fares Data';
+const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
 interface HomeProps {
     multipleOperators: boolean;

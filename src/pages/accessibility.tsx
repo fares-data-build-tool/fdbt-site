@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { TwoThirdsLayout } from '../layout/Layout';
 
-const title = 'Accessibility - Create Fares Data';
+const title = 'Accessibility - Create Fares Data Service';
 const description = 'Accessibility page for the Create Fares Data Service';
 
 const Accessibility = (): ReactElement => {
@@ -13,7 +13,7 @@ const Accessibility = (): ReactElement => {
                 main GOV.UK website.
             </p>
             <p className="govuk-body">
-                This page only contains information about the Create Fares Data Service service, available at&nbsp;
+                This page only contains information about the Create Fares Data Service, available at&nbsp;
                 <a href="https://fares-data.dft.gov.uk">https://fares-data.dft.gov.uk</a>.
             </p>
             <h2 className="govuk-heading-m">Using this service</h2>

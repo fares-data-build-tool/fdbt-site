@@ -21,7 +21,7 @@ exports[`pages requestAccess should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        The Create Fares Data Service is not open to public registration.
+        The Create fares data service is not open to public registration.
       </p>
       <p
         className="govuk-body"
@@ -33,7 +33,7 @@ exports[`pages requestAccess should render correctly 1`] = `
           href="/contact"
           id="access_link"
         >
-          Create Fares Data support
+          Create fares data support
         </a>
          
         to register.

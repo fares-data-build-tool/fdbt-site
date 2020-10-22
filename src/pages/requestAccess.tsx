@@ -11,11 +11,11 @@ const RequestAccess = (): ReactElement => (
                 <h1 className="govuk-heading-l" id="request-access-page-heading">
                     Request Access
                 </h1>
-                <p className="govuk-body">The Create Fares Data Service is not open to public registration.</p>
+                <p className="govuk-body">The Create fares data service is not open to public registration.</p>
                 <p className="govuk-body">
                     Please contact{' '}
                     <a className="govuk-link" id="access_link" href="/contact">
-                        Create Fares Data support
+                        Create fares data support
                     </a>{' '}
                     to register.
                 </p>

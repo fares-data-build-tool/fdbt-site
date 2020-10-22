@@ -12,8 +12,8 @@ const Contact = (): ReactElement => {
                     <h1 className="govuk-heading-l">Contact the Create Fares Data Service team</h1>
                     <h2 className="govuk-heading-m">Feedback and support</h2>
                     <p className="govuk-body">
-                        If you are experiencing technical issues, please contact the Create Fares Data Service team
-                        through the channels below
+                        If you are experiencing technical issues, please contact the Create Fares Data team through the
+                        channels below
                     </p>
                     <h3 className="govuk-heading-s">By phone</h3>
                     <p className="govuk-body">
