@@ -82,7 +82,7 @@ exports[`pages howManyProducts should render correctly for non multi op 1`] = `
           className="govuk-heading-l"
           id="page-heading"
         >
-          How many period tickets do you have for the provided geographical zone?
+          How many period tickets do you have for this geographic zone?
         </h1>
       </label>
       <div

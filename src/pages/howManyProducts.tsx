@@ -72,8 +72,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const ticketType = (getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute)
         .name;
 
-    let pageHeading = `How many period tickets do you have for the ${
-        ticketType === 'geoZone' ? 'provided geographical zone' : `selected services`
+    let pageHeading = `How many period tickets do you have for ${
+        ticketType === 'geoZone' ? 'this geographic zone' : `the selected services`
     }?`;
     if (fareType === 'multiOperator') {
         pageHeading =

@@ -7,7 +7,7 @@ describe('pages', () => {
     describe('howManyProducts', () => {
         const multiOpPageHeading =
             'How many multi operator tickets do you have for the selected operators and/or selected services?';
-        const nonMultiOpGeoZonePageHeading = 'How many period tickets do you have for the provided geographical zone?';
+        const nonMultiOpGeoZonePageHeading = 'How many period tickets do you have for this geographic zone?';
         const nonMultiOpSelectedServicesPageHeading = 'How many period tickets do you have for the selected services?';
         const errorCases: ErrorInfo[][] = [
             [{ id: 'how-many-products-error', errorMessage: 'Enter a whole number between 1 and 10', userInput: '0' }],
