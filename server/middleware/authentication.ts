@@ -31,6 +31,7 @@ const setCookieOnResponseObject = (
     req: Req,
     res: Res,
     lifetime?: number,
+    httpOnly = true,
 ): void => {
     const cookies = new Cookies(req, res);
     // From docs: All cookies are httponly by default, and cookies sent over SSL are secure by
@@ -40,7 +41,7 @@ const setCookieOnResponseObject = (
         sameSite: 'strict',
         secure: process.env.NODE_ENV !== 'development',
         maxAge: lifetime,
-        httpOnly: true,
+        httpOnly,
     });
 };
 
@@ -87,13 +88,14 @@ export const setDisableAuthCookies = (server: Express): void => {
             if (!disableAuthCookie || disableAuthCookie === 'false') {
                 const cookiePolicy: CookiePolicy = { essential: true, usage: true };
 
-                setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInMilliseconds);
+                setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInMilliseconds, false);
                 setCookieOnResponseObject(
                     COOKIES_POLICY_COOKIE,
                     JSON.stringify(cookiePolicy),
                     req,
                     res,
                     oneYearInMilliseconds,
+                    false,
                 );
                 setCookieOnResponseObject(DISABLE_AUTH_COOKIE, 'true', req, res);
                 setCookieOnResponseObject(

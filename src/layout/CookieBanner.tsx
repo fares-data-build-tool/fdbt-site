@@ -1,6 +1,12 @@
-import React, { FC } from 'react';
+import Cookies, { CookieSetOptions } from 'universal-cookie';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInMilliseconds } from '../constants';
 
-const CookieBanner: FC = () => (
+interface CookieBannerMessageProps {
+    handleClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export const CookieBannerMessage = ({ handleClick }: CookieBannerMessageProps): ReactElement => (
     <div id="global-cookie-message" className="cookie-banner" role="region" aria-label="cookie banner">
         <div className="govuk-width-container">
             <div className="govuk-grid-row">
@@ -16,6 +22,18 @@ const CookieBanner: FC = () => (
                             work as well as possible and to improve the service.
                         </p>
                     </div>
+                    {handleClick && (
+                        <div className="cookie-banner__button cookie-banner__accept-all">
+                            <button
+                                className="govuk-button cookie-banner__button--inline"
+                                type="button"
+                                onClick={handleClick}
+                            >
+                                Accept All
+                            </button>
+                        </div>
+                    )}
+
                     <div className="cookie-banner__button">
                         <a
                             id="set-cookie-preferences-link"
@@ -31,5 +49,65 @@ const CookieBanner: FC = () => (
         </div>
     </div>
 );
+
+const CookieBanner = (): ReactElement | null => {
+    const [cookiesAccepted, setCookiesAccepted] = useState(false);
+    const [hideBanner, setHideBanner] = useState(true);
+
+    useEffect(() => {
+        const cookies = new Cookies();
+        const cookiePreferences = cookies.get(COOKIE_PREFERENCES_COOKIE);
+
+        if (!cookiePreferences || cookiePreferences === 'false') {
+            setHideBanner(false);
+        }
+    });
+
+    const handleAcceptAllClick = (): void => {
+        const cookies = new Cookies();
+        const cookieOptions: CookieSetOptions = {
+            maxAge: oneYearInMilliseconds,
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development',
+            path: '/',
+        };
+
+        cookies.set(COOKIE_PREFERENCES_COOKIE, 'true', { ...cookieOptions });
+        cookies.set(COOKIES_POLICY_COOKIE, JSON.stringify({ essential: true, usage: true }), {
+            ...cookieOptions,
+        });
+
+        setCookiesAccepted(true);
+    };
+
+    const handleHideClick = (): void => {
+        setHideBanner(true);
+    };
+
+    if (hideBanner) {
+        return null;
+    }
+
+    if (cookiesAccepted) {
+        return (
+            <div id="global-cookie-message" className="cookie-banner" role="region" aria-label="cookie banner">
+                <div className="govuk-width-container">
+                    <p role="alert">
+                        You’ve accepted all cookies. You can{' '}
+                        <a className="govuk-link" href="/cookies">
+                            change your cookie settings
+                        </a>{' '}
+                        at any time.
+                    </p>
+                    <button className="govuk-link cookie-banner__hide" type="button" onClick={handleHideClick}>
+                        Hide
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    return <CookieBannerMessage handleClick={handleAcceptAllClick} />;
+};
 
 export default CookieBanner;

@@ -18,8 +18,6 @@ export const COOKIES_POLICY_COOKIE = 'fdbt-cookies-policy';
 
 export const COOKIE_PREFERENCES_COOKIE = 'fdbt-cookie-preferences-set';
 
-export const COOKIE_SETTINGS_SAVED_COOKIE = 'fdbt-cookie-settings-saved';
-
 // Links
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
