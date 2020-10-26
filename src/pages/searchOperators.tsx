@@ -39,7 +39,7 @@ export const showSelectedOperators = (selectedOperators: Operator[], errors: Err
             <fieldset className="govuk-fieldset">
                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 className="govuk-fieldset__heading" id="selected-operators">
-                        Confirm selected operators
+                        Here&apos;s what you have added
                     </h1>
                 </legend>
                 <fieldset className="govuk-fieldset">

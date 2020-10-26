@@ -196,7 +196,7 @@ exports[`pages searchOperator should render a selection error when the user trie
                 className="govuk-fieldset__heading"
                 id="selected-operators"
               >
-                Confirm selected operators
+                Here's what you have added
               </h1>
             </legend>
             <fieldset
@@ -578,7 +578,7 @@ exports[`pages searchOperator should render the search input and a list of selec
                 className="govuk-fieldset__heading"
                 id="selected-operators"
               >
-                Confirm selected operators
+                Here's what you have added
               </h1>
             </legend>
             <fieldset
@@ -952,7 +952,7 @@ exports[`pages searchOperator should render the search input, search results and
                 className="govuk-fieldset__heading"
                 id="selected-operators"
               >
-                Confirm selected operators
+                Here's what you have added
               </h1>
             </legend>
             <fieldset
