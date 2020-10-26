@@ -117,7 +117,7 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
 };
 
 export const getNocFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
-    getAttributeFromIdToken(req, res, 'custom:noc');
+    getAttributeFromIdToken(req, res, 'custom:noc') || null;
 
 export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): string => {
     const idTokenNoc = getNocFromIdToken(req, res);
@@ -131,6 +131,29 @@ export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): st
     }
 
     throw new Error('invalid noc set');
+};
+
+export const getSchemeOpFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
+    getAttributeFromIdToken(req, res, 'custom:schemeOperator') || null;
+
+export const getAndValidateSchemeOp = (req: NextApiRequest, res: NextApiResponse): string | null => {
+    const idTokenSchemeOp = getSchemeOpFromIdToken(req, res);
+    const operatorCookie = unescapeAndDecodeCookie(new Cookies(req, res), OPERATOR_COOKIE);
+    const cookieSchemeOp = JSON.parse(operatorCookie).schemeOperator;
+
+    if (
+        !cookieSchemeOp ||
+        !idTokenSchemeOp ||
+        (cookieSchemeOp && idTokenSchemeOp && cookieSchemeOp !== idTokenSchemeOp)
+    ) {
+        throw new Error('invalid scheme operator name set');
+    }
+
+    if (!cookieSchemeOp && !idTokenSchemeOp) {
+        return null;
+    }
+
+    return cookieSchemeOp;
 };
 
 export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {

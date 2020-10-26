@@ -282,7 +282,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
         const results = await getSearchOperators(searchText, nocCode);
         const cookies = parseCookies(ctx);
-        const operatorName: string = JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName;
+        const operatorName: string =
+            JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName ||
+            JSON.parse(cookies[OPERATOR_COOKIE]).schemeOperator;
         results.forEach(operator => {
             if (operator.operatorPublicName !== operatorName) {
                 searchResults.push(operator);

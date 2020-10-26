@@ -163,7 +163,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     ) {
         throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }
-    const { operator } = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
+    const operator = operatorInfo.operator.operatorPublicName || operatorInfo.schemeOperator;
 
     const multipleProducts: Product[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
@@ -181,7 +182,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     return {
         props: {
-            operator: operator.operatorPublicName,
+            operator,
             passengerType: passengerTypeAttribute.passengerType,
             numberOfProducts,
             multipleProducts,

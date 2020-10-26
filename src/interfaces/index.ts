@@ -71,7 +71,7 @@ export interface CognitoIdToken {
     aud: string;
     email_verified: boolean;
     event_id: string;
-    'custom:noc': string;
+    'custom:noc'?: string;
     token_use: string;
     auth_time: number;
     iss: string;
@@ -79,7 +79,8 @@ export interface CognitoIdToken {
     exp: number;
     iat: number;
     email: string;
-    'custom:contactable': string;
+    'custom:contactable'?: string;
+    'custom:schemeOperator'?: string;
 }
 
 export interface CustomAppProps extends AppInitialProps {

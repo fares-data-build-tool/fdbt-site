@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
-import { checkIfMultipleOperators } from '../utils';
+import { checkIfMultipleOperators, getAndValidateSchemeOp } from '../utils';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
 interface StartProps {
-    multipleOperators: boolean;
+    redirect: string;
 }
 
-const Start = ({ multipleOperators }: StartProps & CustomAppProps): ReactElement => (
+const Start = ({ redirect }: StartProps & CustomAppProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
 
@@ -35,7 +35,7 @@ const Start = ({ multipleOperators }: StartProps & CustomAppProps): ReactElement
         </p>
 
         <a
-            href={multipleOperators ? '/multipleOperators' : '/fareType'}
+            href={redirect}
             role="button"
             draggable="false"
             className="govuk-button govuk-button--start"
@@ -58,8 +58,14 @@ const Start = ({ multipleOperators }: StartProps & CustomAppProps): ReactElement
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StartProps } => ({
-    props: { multipleOperators: checkIfMultipleOperators(ctx) },
-});
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StartProps } => {
+    const schemeOpName = getAndValidateSchemeOp(ctx);
+    const multipleOperators = checkIfMultipleOperators(ctx);
+    let redirect = multipleOperators ? '/multipleOperators' : '/fareType';
+    if (schemeOpName) {
+        redirect = '/passengerType';
+    }
+    return { props: { redirect } };
+};
 
 export default Start;

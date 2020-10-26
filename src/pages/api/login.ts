@@ -44,10 +44,16 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
                 const decodedIdToken = decode(idToken) as CognitoIdToken;
                 const nocCode = decodedIdToken['custom:noc'];
-                if (nocCode.split('|').length === 1) {
+                const schemeOpName = decodedIdToken['custom:schemeOperator'];
+                if (nocCode && nocCode.split('|').length === 1) {
                     const operatorName = await getOperatorNameByNocCode(nocCode);
                     const operatorCookieValue = JSON.stringify({ operator: operatorName, noc: nocCode });
                     setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
+                } else if (schemeOpName) {
+                    const operatorCookieValue = JSON.stringify({ schemeOperator: schemeOpName });
+                    setCookieOnResponseObject(OPERATOR_COOKIE, operatorCookieValue, req, res);
+                } else if (!nocCode && !schemeOpName) {
+                    throw new Error('Could not extract the user nocCode or schemeOperatorName');
                 }
 
                 setCookieOnResponseObject(ID_TOKEN_COOKIE, idToken, req, res);

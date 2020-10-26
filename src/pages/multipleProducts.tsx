@@ -90,7 +90,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const numberOfProductsToDisplay = numberOfProductsAttribute.numberOfProductsInput;
-    const { operator } = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
+    const operator = operatorInfo.operator.operatorPublicName || operatorInfo.schemeOperator;
 
     if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
         const { errors } = multiProductAttribute;
@@ -98,7 +99,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         return {
             props: {
                 numberOfProductsToDisplay,
-                operator: operator.operatorPublicName,
+                operator,
                 passengerType: passengerTypeAttribute.passengerType,
                 errors,
                 userInput: multiProductAttribute.products,
@@ -109,7 +110,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     return {
         props: {
             numberOfProductsToDisplay,
-            operator: operator.operatorPublicName,
+            operator,
             passengerType: passengerTypeAttribute.passengerType,
             userInput: [],
         },

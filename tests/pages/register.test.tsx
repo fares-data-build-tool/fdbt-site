@@ -31,10 +31,7 @@ describe('pages', () => {
                 <Register
                     regKey="abcdefg"
                     errors={[
-                        {
-                            errorMessage: 'Enter valid nocCode',
-                            id: 'nocCode',
-                        },
+                        { userInput: '', errorMessage: 'Password must be at least 8 characters long', id: 'password' },
                         { userInput: 'test@tfn.com', errorMessage: '', id: 'email' },
                     ]}
                     csrfToken=""

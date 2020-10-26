@@ -52,7 +52,7 @@ exports[`pages operator should render correctly 1`] = `
     className="govuk-button govuk-button--start"
     data-module="govuk-button"
     draggable="false"
-    href="/multipleOperators"
+    href="/fareType"
     id="start-now-button"
     role="button"
   >

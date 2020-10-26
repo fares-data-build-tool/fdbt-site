@@ -136,7 +136,8 @@ export const getAttributeFromIdToken = <T extends keyof CognitoIdToken>(
     return decodedIdToken[attribute] ?? null;
 };
 
-export const getNocFromIdToken = (ctx: NextPageContext): string | null => getAttributeFromIdToken(ctx, 'custom:noc');
+export const getNocFromIdToken = (ctx: NextPageContext): string | null =>
+    getAttributeFromIdToken(ctx, 'custom:noc') || null;
 
 export const getAndValidateNoc = (ctx: NextPageContext): string => {
     const idTokenNoc = getNocFromIdToken(ctx);
@@ -149,6 +150,28 @@ export const getAndValidateNoc = (ctx: NextPageContext): string => {
     }
 
     throw new Error('invalid NOC set');
+};
+
+export const getSchemeOpFromIdToken = (ctx: NextPageContext): string | null =>
+    getAttributeFromIdToken(ctx, 'custom:schemeOperator') || null;
+
+export const getAndValidateSchemeOp = (ctx: NextPageContext): string | null => {
+    const idTokenSchemeOp = getSchemeOpFromIdToken(ctx);
+    const cookieSchemeOp = getCookieValue(ctx, OPERATOR_COOKIE, 'schemeOperator');
+
+    if (!cookieSchemeOp && !idTokenSchemeOp) {
+        return null;
+    }
+
+    if (
+        !cookieSchemeOp ||
+        !idTokenSchemeOp ||
+        (cookieSchemeOp && idTokenSchemeOp && cookieSchemeOp !== idTokenSchemeOp)
+    ) {
+        throw new Error('invalid scheme operator name set');
+    }
+
+    return cookieSchemeOp;
 };
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {

@@ -194,7 +194,8 @@ export const getBasePeriodTicketAttributes = (
         throw new Error(`Could not create ${ticketType} ticket json. BasePeriodTicket attributes could not be found.`);
     }
 
-    const { operator } = JSON.parse(operatorCookie);
+    const operatorInfo = JSON.parse(operatorCookie);
+    const operatorName = operatorInfo.operator?.operatorPublicName || operatorInfo.schemeOperator;
 
     let productDetailsList: ProductDetails[];
 
@@ -225,7 +226,7 @@ export const getBasePeriodTicketAttributes = (
 
     return {
         ...baseTicketAttributes,
-        operatorName: operator?.operatorPublicName,
+        operatorName,
         products: productDetailsList,
     };
 };
