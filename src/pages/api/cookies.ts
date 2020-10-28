@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInMilliseconds } from '../../constants';
+import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInSeconds } from '../../constants';
 import { NextApiRequestWithSession, CookiePolicy } from '../../interfaces';
 import { redirectTo, redirectToError, setCookieOnResponseObject } from './apiUtils';
 
@@ -14,13 +14,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const cookiePolicy: CookiePolicy = { essential: true, usage: tracking === 'on' || false };
 
-        setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInMilliseconds, false);
+        setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInSeconds, false);
         setCookieOnResponseObject(
             COOKIES_POLICY_COOKIE,
             JSON.stringify(cookiePolicy),
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
             false,
         );
 

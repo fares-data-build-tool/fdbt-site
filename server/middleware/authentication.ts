@@ -10,7 +10,7 @@ import {
     OPERATOR_COOKIE,
     COOKIE_PREFERENCES_COOKIE,
     COOKIES_POLICY_COOKIE,
-    oneYearInMilliseconds,
+    oneYearInSeconds,
 } from '../../src/constants';
 import { CognitoIdToken, CookiePolicy } from '../../src/interfaces';
 import { globalSignOut, initiateRefreshAuth } from '../../src/data/cognito';
@@ -88,13 +88,13 @@ export const setDisableAuthCookies = (server: Express): void => {
             if (!disableAuthCookie || disableAuthCookie === 'false') {
                 const cookiePolicy: CookiePolicy = { essential: true, usage: true };
 
-                setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInMilliseconds, false);
+                setCookieOnResponseObject(COOKIE_PREFERENCES_COOKIE, 'true', req, res, oneYearInSeconds, false);
                 setCookieOnResponseObject(
                     COOKIES_POLICY_COOKIE,
                     JSON.stringify(cookiePolicy),
                     req,
                     res,
-                    oneYearInMilliseconds,
+                    oneYearInSeconds,
                     false,
                 );
                 setCookieOnResponseObject(DISABLE_AUTH_COOKIE, 'true', req, res);

@@ -1,6 +1,6 @@
 import Cookies, { CookieSetOptions } from 'universal-cookie';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInMilliseconds } from '../constants';
+import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInSeconds } from '../constants';
 
 interface CookieBannerMessageProps {
     handleClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -26,6 +26,7 @@ export const CookieBannerMessage = ({ handleClick }: CookieBannerMessageProps): 
                         <div className="cookie-banner__button cookie-banner__accept-all">
                             <button
                                 className="govuk-button cookie-banner__button--inline"
+                                id="accept-all-button"
                                 type="button"
                                 onClick={handleClick}
                             >
@@ -66,7 +67,7 @@ const CookieBanner = (): ReactElement | null => {
     const handleAcceptAllClick = (): void => {
         const cookies = new Cookies();
         const cookieOptions: CookieSetOptions = {
-            maxAge: oneYearInMilliseconds,
+            maxAge: oneYearInSeconds,
             sameSite: 'strict',
             secure: process.env.NODE_ENV !== 'development',
             path: '/',
@@ -90,7 +91,7 @@ const CookieBanner = (): ReactElement | null => {
 
     if (cookiesAccepted) {
         return (
-            <div id="global-cookie-message" className="cookie-banner" role="region" aria-label="cookie banner">
+            <div id="cookies-accepted-message" className="cookie-banner" role="region" aria-label="cookie banner">
                 <div className="govuk-width-container">
                     <p role="alert">
                         You’ve accepted all cookies. You can{' '}

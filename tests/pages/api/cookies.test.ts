@@ -1,7 +1,7 @@
 import cookies from '../../../src/pages/api/cookies';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInMilliseconds } from '../../../src/constants';
+import { COOKIES_POLICY_COOKIE, COOKIE_PREFERENCES_COOKIE, oneYearInSeconds } from '../../../src/constants';
 import { CookiePolicy } from '../../../src/interfaces';
 
 describe('cookies', () => {
@@ -33,7 +33,7 @@ describe('cookies', () => {
             'true',
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
             false,
         );
         expect(setCookieSpy).toHaveBeenNthCalledWith(
@@ -42,7 +42,7 @@ describe('cookies', () => {
             JSON.stringify(mockCookiePolicy),
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
             false,
         );
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies?settingsSaved=true' });
@@ -63,7 +63,7 @@ describe('cookies', () => {
             'true',
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
             false,
         );
         expect(setCookieSpy).toHaveBeenNthCalledWith(
@@ -72,7 +72,7 @@ describe('cookies', () => {
             JSON.stringify(mockCookiePolicy),
             req,
             res,
-            oneYearInMilliseconds,
+            oneYearInSeconds,
             false,
         );
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/cookies?settingsSaved=true' });

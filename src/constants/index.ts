@@ -96,7 +96,7 @@ export const MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE = 'fdbt-multiple-operators-se
 
 // Other
 
-export const oneYearInMilliseconds = 31556952000;
+export const oneYearInSeconds = 31556952;
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',
