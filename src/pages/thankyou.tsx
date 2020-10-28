@@ -3,7 +3,12 @@ import { parseCookies } from 'nookies';
 import { decode } from 'jsonwebtoken';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK, ID_TOKEN_COOKIE, INTERNAL_NOC } from '../constants';
-import { getUuidFromCookies, getAttributeFromIdToken, deleteAllCookiesOnServerSide } from '../utils';
+import {
+    getUuidFromCookies,
+    getAttributeFromIdToken,
+    deleteAllCookiesOnServerSide,
+    getAndValidateSchemeOpRegion,
+} from '../utils';
 import { CognitoIdToken, NextPageContextWithSession } from '../interfaces';
 import logger from '../utils/logger';
 import { destroySession } from '../utils/sessions';
@@ -50,9 +55,13 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
     const uuid = getUuidFromCookies(ctx);
-    const noc = getAttributeFromIdToken(ctx, 'custom:noc');
+    const schemeOp = !!getAndValidateSchemeOpRegion(ctx);
+    let nocCode = null;
+    if (!schemeOp) {
+        nocCode = getAttributeFromIdToken(ctx, 'custom:noc');
+    }
 
-    if (noc !== INTERNAL_NOC) {
+    if ((nocCode && nocCode !== INTERNAL_NOC) || schemeOp) {
         logger.info('', { context: 'pages.thankyou', message: 'transaction complete', uuid });
     }
 

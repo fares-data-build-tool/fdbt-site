@@ -7,8 +7,8 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_COOKIE } from '../constants';
-import { getSearchOperators, Operator } from '../data/auroradb';
-import { getAndValidateNoc } from '../utils';
+import { getSearchOperatorsBySchemeOp, getSearchOperatorsOnNoc, Operator } from '../data/auroradb';
+import { getAndValidateNoc, getAndValidateSchemeOpRegion } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';
 import { isSearchInputValid } from './api/searchOperators';
 import { isMultipleOperatorAttributeWithErrors } from '../interfaces/typeGuards';
@@ -246,7 +246,11 @@ const SearchOperators = ({
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SearchOperatorProps }> => {
-    const nocCode = getAndValidateNoc(ctx);
+    let nocCode = null;
+    const schemeOpRegionCode = getAndValidateSchemeOpRegion(ctx);
+    if (!schemeOpRegionCode) {
+        nocCode = getAndValidateNoc(ctx);
+    }
 
     let errors: ErrorInfo[] = [];
     let searchText = '';
@@ -280,13 +284,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 id: searchInputId,
             });
         }
-        const results = await getSearchOperators(searchText, nocCode);
-        const cookies = parseCookies(ctx);
-        const operatorName: string =
-            JSON.parse(cookies[OPERATOR_COOKIE]).operator.operatorPublicName ||
-            JSON.parse(cookies[OPERATOR_COOKIE]).schemeOperator;
+        const results: Operator[] = nocCode
+            ? await getSearchOperatorsOnNoc(searchText, nocCode)
+            : await getSearchOperatorsBySchemeOp(searchText, schemeOpRegionCode as string);
+        const operatorCookie = JSON.parse(parseCookies(ctx)[OPERATOR_COOKIE]);
+        const operatorName: string = operatorCookie?.operatorPublicName
+            ? operatorCookie?.operatorPublicName
+            : operatorCookie?.schemeOperatorName;
         results.forEach(operator => {
-            if (operator.operatorPublicName !== operatorName) {
+            if (operator && operator.operatorPublicName && operator.operatorPublicName !== operatorName) {
                 searchResults.push(operator);
             }
         });

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
-import { checkIfMultipleOperators, getAndValidateSchemeOp } from '../utils';
+import { getRedirectAndSetStateOnStartPage } from '../utils';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
@@ -59,12 +59,7 @@ const Start = ({ redirect }: StartProps & CustomAppProps): ReactElement => (
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: StartProps } => {
-    const schemeOpName = getAndValidateSchemeOp(ctx);
-    const multipleOperators = checkIfMultipleOperators(ctx);
-    let redirect = multipleOperators ? '/multipleOperators' : '/fareType';
-    if (schemeOpName) {
-        redirect = '/passengerType';
-    }
+    const redirect = getRedirectAndSetStateOnStartPage(ctx);
     return { props: { redirect } };
 };
 

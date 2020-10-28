@@ -71,7 +71,7 @@ export interface CognitoIdToken {
     aud: string;
     email_verified: boolean;
     event_id: string;
-    'custom:noc'?: string;
+    'custom:noc': string;
     token_use: string;
     auth_time: number;
     iss: string;
@@ -79,8 +79,9 @@ export interface CognitoIdToken {
     exp: number;
     iat: number;
     email: string;
-    'custom:contactable'?: string;
-    'custom:schemeOperator'?: string;
+    'custom:contactable': string;
+    'custom:schemeOperator': string;
+    'custom:schemeRegionCode': string;
 }
 
 export interface CustomAppProps extends AppInitialProps {
@@ -249,6 +250,27 @@ export interface FlatFareTicket extends BaseTicket {
     operatorName: string;
     products: FlatFareProductDetails[];
     selectedServices: SelectedService[];
+}
+
+export interface SchemeOperatorTicket {
+    schemeOperatorName: string;
+    schemeOperatorRegionCode: string;
+    type: string;
+    passengerType: string;
+    ageRange?: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string;
+    proofDocuments?: string[];
+    email: string;
+    uuid: string;
+    timeRestriction?: TimeRestriction;
+    ticketPeriod: TicketPeriod;
+    operatorName: string;
+    products: ProductDetails[];
+    zoneName: string;
+    stops: Stop[];
+    additionalNocs: string[];
 }
 
 export interface SelectedService {

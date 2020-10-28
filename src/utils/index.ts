@@ -11,9 +11,12 @@ import {
     COOKIES_POLICY_COOKIE,
     COOKIE_PREFERENCES_COOKIE,
     COOKIE_SETTINGS_SAVED_COOKIE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
 } from '../constants/index';
 import { Stop } from '../data/auroradb';
 import { ErrorInfo, CognitoIdToken, NextPageContextWithSession } from '../interfaces';
+import { updateSessionAttribute } from './sessions';
 
 export const getCookieValue = (ctx: NextPageContext, cookie: string, jsonAttribute = ''): string | null => {
     const cookies = parseCookies(ctx);
@@ -152,26 +155,26 @@ export const getAndValidateNoc = (ctx: NextPageContext): string => {
     throw new Error('invalid NOC set');
 };
 
-export const getSchemeOpFromIdToken = (ctx: NextPageContext): string | null =>
-    getAttributeFromIdToken(ctx, 'custom:schemeOperator') || null;
+export const getSchemeOpRegionFromIdToken = (ctx: NextPageContext): string | null =>
+    getAttributeFromIdToken(ctx, 'custom:schemeRegionCode') || null;
 
-export const getAndValidateSchemeOp = (ctx: NextPageContext): string | null => {
-    const idTokenSchemeOp = getSchemeOpFromIdToken(ctx);
-    const cookieSchemeOp = getCookieValue(ctx, OPERATOR_COOKIE, 'schemeOperator');
+export const getAndValidateSchemeOpRegion = (ctx: NextPageContext): string | null => {
+    const idTokenSchemeOpRegion = getSchemeOpRegionFromIdToken(ctx);
+    const cookieSchemeOpRegion = getCookieValue(ctx, OPERATOR_COOKIE, 'schemeOperatorRegionCode');
 
-    if (!cookieSchemeOp && !idTokenSchemeOp) {
+    if (!cookieSchemeOpRegion && !idTokenSchemeOpRegion) {
         return null;
     }
 
     if (
-        !cookieSchemeOp ||
-        !idTokenSchemeOp ||
-        (cookieSchemeOp && idTokenSchemeOp && cookieSchemeOp !== idTokenSchemeOp)
+        !cookieSchemeOpRegion ||
+        !idTokenSchemeOpRegion ||
+        (cookieSchemeOpRegion && idTokenSchemeOpRegion && cookieSchemeOpRegion !== idTokenSchemeOpRegion)
     ) {
-        throw new Error('invalid scheme operator name set');
+        throw new Error('invalid scheme operator region code set');
     }
 
-    return cookieSchemeOp;
+    return cookieSchemeOpRegion;
 };
 
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
@@ -191,4 +194,16 @@ export const checkIfMultipleOperators = (ctx: NextPageContextWithSession): boole
         nocs = databaseNocs.split('|');
     }
     return nocs?.length > 1;
+};
+
+export const getRedirectAndSetStateOnStartPage = (ctx: NextPageContextWithSession): string => {
+    const schemeOpRegion = getAndValidateSchemeOpRegion(ctx);
+    const multipleOperators = checkIfMultipleOperators(ctx);
+    let redirect = multipleOperators ? '/multipleOperators' : '/fareType';
+    if (schemeOpRegion) {
+        updateSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE, { fareType: 'multiOperator' });
+        updateSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE, { name: 'geoZone' });
+        redirect = '/passengerType';
+    }
+    return redirect;
 };

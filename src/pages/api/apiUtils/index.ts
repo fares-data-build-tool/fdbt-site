@@ -133,27 +133,27 @@ export const getAndValidateNoc = (req: NextApiRequest, res: NextApiResponse): st
     throw new Error('invalid noc set');
 };
 
-export const getSchemeOpFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
-    getAttributeFromIdToken(req, res, 'custom:schemeOperator') || null;
+export const getSchemeOpRegionFromIdToken = (req: NextApiRequest, res: NextApiResponse): string | null =>
+    getAttributeFromIdToken(req, res, 'custom:schemeRegionCode') || null;
 
-export const getAndValidateSchemeOp = (req: NextApiRequest, res: NextApiResponse): string | null => {
-    const idTokenSchemeOp = getSchemeOpFromIdToken(req, res);
+export const getAndValidateSchemeOpRegion = (req: NextApiRequest, res: NextApiResponse): string | null => {
+    const idTokenSchemeOpRegion = getSchemeOpRegionFromIdToken(req, res);
     const operatorCookie = unescapeAndDecodeCookie(new Cookies(req, res), OPERATOR_COOKIE);
-    const cookieSchemeOp = JSON.parse(operatorCookie).schemeOperator;
+    const cookieSchemeOpRegion = JSON.parse(operatorCookie).schemeOperatorRegionCode;
 
     if (
-        !cookieSchemeOp ||
-        !idTokenSchemeOp ||
-        (cookieSchemeOp && idTokenSchemeOp && cookieSchemeOp !== idTokenSchemeOp)
+        !cookieSchemeOpRegion ||
+        !idTokenSchemeOpRegion ||
+        (cookieSchemeOpRegion && idTokenSchemeOpRegion && cookieSchemeOpRegion !== idTokenSchemeOpRegion)
     ) {
-        throw new Error('invalid scheme operator name set');
+        throw new Error('invalid scheme operator region code set');
     }
 
-    if (!cookieSchemeOp && !idTokenSchemeOp) {
+    if (!cookieSchemeOpRegion && !idTokenSchemeOpRegion) {
         return null;
     }
 
-    return cookieSchemeOp;
+    return cookieSchemeOpRegion;
 };
 
 export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {

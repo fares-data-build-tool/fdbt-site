@@ -159,7 +159,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     }
 
     const operatorTypeInfo = JSON.parse(operatorCookie);
-    const operator = operatorTypeInfo.operator.operatorPublicName || operatorTypeInfo.schemeOperator;
+    console.log({ operatorTypeInfo });
+    const operator = operatorTypeInfo?.operator?.operatorPublicName || operatorTypeInfo?.schemeOperatorName;
 
     if (fareZoneAttribute && !isFareZoneAttributeWithErrors(fareZoneAttribute)) {
         hintText = fareZoneAttribute.fareZoneName;

@@ -10,7 +10,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 
-import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie, getAndValidateSchemeOpRegion } from './apiUtils';
 import {
     getSingleTicketJson,
     getReturnTicketJson,
@@ -18,6 +18,7 @@ import {
     getMultipleServicesTicketJson,
     getFlatFareTicketJson,
     putUserDataInS3,
+    getSchemeOperatorJson,
 } from './apiUtils/userData';
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, TicketPeriod } from '../../interfaces';
@@ -63,6 +64,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         let userDataJson;
 
         const fareType = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType;
+
+        // THIS SECTION NEEDS CHANGING
+        const schemeOp = !!getAndValidateSchemeOpRegion(req, res);
+
+        if (schemeOp) {
+            userDataJson = getSchemeOperatorJson(req, res);
+            redirectTo(res, '/thankyou');
+            return;
+        }
 
         if (fareType === 'single') {
             userDataJson = getSingleTicketJson(req, res);

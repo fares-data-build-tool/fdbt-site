@@ -50,6 +50,7 @@ import {
     BasePeriodTicket,
     MultiOperatorMultipleServicesTicket,
     MultiOperatorInfo,
+    SchemeOperatorTicket,
 } from '../../../interfaces/index';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -116,16 +117,30 @@ export const getProductsAndSalesOfferPackages = (
     return productSOPList;
 };
 
+export const isSchemeOperatorTicket = (
+    data:
+        | SingleTicket
+        | ReturnTicket
+        | GeoZoneTicket
+        | PeriodMultipleServicesTicket
+        | FlatFareTicket
+        | SchemeOperatorTicket,
+): data is SchemeOperatorTicket => (data as SchemeOperatorTicket).schemeOperatorName !== undefined;
+
 export const putUserDataInS3 = async (
-    data: SingleTicket | ReturnTicket | GeoZoneTicket | PeriodMultipleServicesTicket | FlatFareTicket,
+    data:
+        | SingleTicket
+        | ReturnTicket
+        | GeoZoneTicket
+        | PeriodMultipleServicesTicket
+        | FlatFareTicket
+        | SchemeOperatorTicket,
     uuid: string,
 ): Promise<void> => {
-    await putStringInS3(
-        MATCHING_DATA_BUCKET_NAME,
-        `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`,
-        JSON.stringify(data),
-        'application/json; charset=utf-8',
-    );
+    const fileKey = !isSchemeOperatorTicket(data)
+        ? `${data.nocCode}/${data.type}/${uuid}_${Date.now()}.json`
+        : `${data.schemeOperatorRegionCode}/${data.schemeOperatorName}/${data.type}/${uuid}_${Date.now()}.json`;
+    await putStringInS3(MATCHING_DATA_BUCKET_NAME, fileKey, JSON.stringify(data), 'application/json; charset=utf-8');
 };
 
 export const getBaseTicketAttributes = (
@@ -439,4 +454,14 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
     };
+};
+
+export const getSchemeOperatorJson = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): SchemeOperatorTicket | null => {
+    if (req && res) {
+        return null;
+    }
+    return null;
 };
