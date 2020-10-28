@@ -14,12 +14,12 @@ export const CookieBannerMessage = ({ handleClick }: CookieBannerMessageProps): 
                     <div className="cookie-banner__message">
                         <h2 className="govuk-heading-m">Tell us whether you accept cookies</h2>
                         <p className="govuk-body">
-                            We use{' '}
+                            We use&nbsp;
                             <a className="govuk-link" href="/cookieDetails">
                                 cookies to collect information
-                            </a>{' '}
-                            about how you use the Create Fares Data Service. We use this information to make the website
-                            work as well as possible and to improve the service.
+                            </a>
+                            &nbsp; about how you use the Create Fares Data Service. We use this information to make the
+                            website work as well as possible and to improve the service.
                         </p>
                     </div>
                     {handleClick && (
