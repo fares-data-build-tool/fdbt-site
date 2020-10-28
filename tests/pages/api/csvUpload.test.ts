@@ -178,55 +178,49 @@ describe('csvUpload', () => {
         });
     });
 
-    it.each([
-        [csvData.testCsv, csvData.unprocessedObject.Body, csvData.processedObject.Body],
-        [csvData.testCsvWithEmptyLines, csvData.unprocessedObjectWithEmptyLines.Body, csvData.processedObject.Body],
-    ])(
-        'should put the unparsed data in s3 and the parsed data in s3',
-        async (csv, expectedUnprocessed, expectedProcessed) => {
-            const { req, res } = getMockRequestAndResponse({
-                cookieValues: {},
-                body: null,
-                uuid: {},
-            });
-            const file = {
-                'csv-upload': {
-                    size: 999,
-                    path: 'string',
-                    name: 'string',
-                    type: 'text/csv',
-                    toJSON(): string {
-                        return '';
-                    },
+    it('should put the unparsed data in s3 and the parsed data in s3', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+        });
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
                 },
-            };
+            },
+        };
 
-            getFormDataSpy.mockImplementation().mockResolvedValue({
-                files: file,
-                fileContents: csv,
-            });
+        getFormDataSpy.mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.testCsv,
+        });
 
-            jest.spyOn(fileUpload, 'containsViruses')
-                .mockImplementation()
-                .mockResolvedValue(false);
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
 
-            await csvUpload.default(req, res);
+        await csvUpload.default(req, res);
 
-            expect(s3.putStringInS3).toBeCalledWith(
-                'fdbt-raw-user-data-dev',
-                expect.any(String),
-                JSON.stringify(expectedUnprocessed),
-                'text/csv; charset=utf-8',
-            );
+        expect(s3.putStringInS3).toBeCalledWith(
+            'fdbt-raw-user-data-dev',
+            expect.any(String),
+            JSON.stringify(csvData.unprocessedObject.Body),
+            'text/csv; charset=utf-8',
+        );
 
-            expect(s3.putStringInS3).toBeCalledWith(
-                'fdbt-user-data-dev',
-                expect.any(String),
-                JSON.stringify(expectedProcessed),
-                'application/json; charset=utf-8',
-            );
-        },
-    );
+        expect(s3.putStringInS3).toBeCalledWith(
+            'fdbt-user-data-dev',
+            expect.any(String),
+            JSON.stringify(csvData.processedObject.Body),
+            'application/json; charset=utf-8',
+        );
+    });
 
     it('should return 302 redirect to /outboundMatching when the happy path is used', async () => {
         const { req, res } = getMockRequestAndResponse({

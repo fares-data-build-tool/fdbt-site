@@ -74,7 +74,7 @@ export const faresTriangleDataMapper = (
     for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
         const items = dataAsLines[rowNum].split(',');
         const trimmedItems = items.map(item => item.trim());
-        const stageName = trimmedItems[rowNum + 1];
+        const stageName = trimmedItems[rowNum];
 
         if (trimmedItems.every(item => item === '' || item === null)) {
             break;
@@ -88,7 +88,7 @@ export const faresTriangleDataMapper = (
         };
 
         for (let colNum = 0; colNum < rowNum; colNum += 1) {
-            const price = trimmedItems[colNum + 1];
+            const price = trimmedItems[colNum];
 
             // Check explicitly for number to account for invalid fare data
             if (price && !Number.isNaN(Number(price)) && stageName) {
@@ -161,7 +161,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (!fareTriangleData) {
                 return;
             }
-
             await putDataInS3(fareTriangleData, `${uuid}.json`, true);
 
             updateSessionAttribute(req, INPUT_METHOD_ATTRIBUTE, { inputMethod: 'csv' });
