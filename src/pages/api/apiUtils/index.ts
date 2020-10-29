@@ -158,6 +158,9 @@ export const getAndValidateSchemeOpRegion = (req: NextApiRequest, res: NextApiRe
     return cookieSchemeOpRegion;
 };
 
+export const isSchemeOperator = (req: NextApiRequest, res: NextApiResponse): boolean =>
+    !(!getAndValidateSchemeOpRegion(req, res) && !!getAndValidateNoc(req, res));
+
 export const signOutUser = async (username: string | null, req: Req, res: Res): Promise<void> => {
     if (username) {
         await globalSignOut(username);
