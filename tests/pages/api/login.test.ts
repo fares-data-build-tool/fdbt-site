@@ -17,7 +17,7 @@ const mockBaseOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthRe
 const mockSchemeOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
     AuthenticationResult: {
         IdToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJURVNUX1NDSEVNRSIsImN1c3RvbTpzY2hlbWVSZWdpb25Db2RlIjoiVEVTVF9SRUdJT04ifQ.CIfZetbXZeLRwK64vOFr7yTvNX9LgSk0Np153UGZ56U',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04ifQ.iZ-AJUm34FkHvXQ-zNoaqwAIT_LB708r1zj3xYvT3as',
         RefreshToken: 'eyJj',
     },
 };
@@ -109,8 +109,8 @@ describe('login', () => {
     it('should redirect when successfully signed in as a scheme operator', async () => {
         authSignInSpy.mockImplementation(() => Promise.resolve(mockSchemeOpAuthResponse));
         const mockOperatorCookie = {
-            operator: 'TEST_SCHEME',
-            region: 'TEST_REGION',
+            operator: 'SCHEME_OPERATOR',
+            region: 'SCHEME_REGION',
         };
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},

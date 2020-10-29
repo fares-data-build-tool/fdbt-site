@@ -1,6 +1,6 @@
 import MockReq from 'mock-req';
 import { NextPageContext } from 'next';
-import { getHost, formatStopName, getAttributeFromIdToken } from '../../src/utils';
+import { getHost, formatStopName, getAttributeFromIdToken, getAndValidateSchemeOpRegion } from '../../src/utils';
 import { Stop } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
 
@@ -104,6 +104,33 @@ describe('utils', () => {
             const email = getAttributeFromIdToken(ctx, 'custom:noc');
 
             expect(email).toBeNull();
+        });
+    });
+
+    describe('getAndValidateSchemeOpRegion', () => {
+        const mockSchemOpIdToken =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04ifQ.iZ-AJUm34FkHvXQ-zNoaqwAIT_LB708r1zj3xYvT3as';
+
+        it('should return the scheme operator region code when the logged in user is a scheme operator', () => {
+            const ctx = getMockContext({
+                cookies: {
+                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
+                    idToken: mockSchemOpIdToken,
+                },
+            });
+            const region = getAndValidateSchemeOpRegion(ctx);
+            expect(region).toBe('SCHEME_REGION');
+        });
+
+        it('should return null when the logged in user is not a scheme operator', () => {
+            const ctx = getMockContext();
+            const region = getAndValidateSchemeOpRegion(ctx);
+            expect(region).toEqual(null);
+        });
+
+        it('should throw an error when the idToken and OPERATOR_COOKIE do not match', () => {
+            const ctx = getMockContext({ cookies: { idToken: mockSchemOpIdToken } });
+            expect(() => getAndValidateSchemeOpRegion(ctx)).toThrow();
         });
     });
 });

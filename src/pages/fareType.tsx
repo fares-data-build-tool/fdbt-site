@@ -125,7 +125,7 @@ const FareTypePage = (props: FareTypeProps): ReactElement => {
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareTypeProps } => {
     const cookies = parseCookies(ctx);
     const csrfToken = getCsrfToken(ctx);
 

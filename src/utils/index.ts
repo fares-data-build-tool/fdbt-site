@@ -149,6 +149,28 @@ export const getAndValidateNoc = (ctx: NextPageContext): string => {
     throw new Error('invalid NOC set');
 };
 
+export const getSchemeOpRegionFromIdToken = (ctx: NextPageContext): string | null =>
+    getAttributeFromIdToken(ctx, 'custom:schemeRegionCode');
+
+export const getAndValidateSchemeOpRegion = (ctx: NextPageContext): string | null => {
+    const idTokenSchemeOpRegion = getSchemeOpRegionFromIdToken(ctx);
+    const cookieSchemeOpRegion = getCookieValue(ctx, OPERATOR_COOKIE, 'region');
+
+    if (!cookieSchemeOpRegion && !idTokenSchemeOpRegion) {
+        return null;
+    }
+
+    if (
+        !cookieSchemeOpRegion ||
+        !idTokenSchemeOpRegion ||
+        (cookieSchemeOpRegion && idTokenSchemeOpRegion && cookieSchemeOpRegion !== idTokenSchemeOpRegion)
+    ) {
+        throw new Error('invalid scheme operator region code set');
+    }
+
+    return cookieSchemeOpRegion;
+};
+
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];
     errors.forEach(error => {
