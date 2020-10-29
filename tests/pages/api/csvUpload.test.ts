@@ -222,7 +222,7 @@ describe('csvUpload', () => {
         );
     });
 
-    it('should return 302 redirect to /outboundMatching when the happy path is used', async () => {
+    it('should return 302 redirect to /outboundMatching when the happy path is used (ticketer format)', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -248,6 +248,46 @@ describe('csvUpload', () => {
         getFormDataSpy.mockImplementation().mockResolvedValue({
             files: file,
             fileContents: csvData.testCsv,
+        });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
+        await csvUpload.default(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/outboundMatching',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
+    });
+
+    it('should return 302 redirect to /outboundMatching when the happy path is used (non-ticketer format)', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+            session: {
+                [JOURNEY_ATTRIBUTE]: {
+                    outboundJourney: '13003921A#13003655B',
+                },
+            },
+        });
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        getFormDataSpy.mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.nonTicketerTestCsv,
         });
 
         jest.spyOn(fileUpload, 'containsViruses')

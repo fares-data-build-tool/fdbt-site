@@ -1,3 +1,13 @@
+export const nonTicketerTestCsv: string =
+    ',Acomb Green Lane,,,,,,,\n' +
+    'Mattison Way,110,Mattison Way,,,,,,\n' +
+    'Nursery Drive,110,110,Nursery Drive,,,,,\n' +
+    'Holl Bank/Beech Ave,110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    'Cambridge Street (York),170,170,110,110,Cambridge Street (York),,,\n' +
+    'Blossom Street,170,170,110,110,100,Blossom Street,,\n' +
+    'Rail Station (York),170,170,170,170,100,100,Rail Station (York),\n' +
+    'Piccadilly (York),170,170,170,170,100,100,100,Piccadilly (York)';
+
 export const testCsv: string =
     'Acomb Green Lane,,,,,,,\n' +
     '110,Mattison Way,,,,,,\n' +

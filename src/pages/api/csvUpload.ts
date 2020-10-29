@@ -46,6 +46,15 @@ export const setCsvUploadAttributeAndRedirect = (
 export const containsDuplicateFareStages = (fareStageNames: string[]): boolean =>
     uniq(fareStageNames).length !== fareStageNames.length;
 
+export const isNotTicketerFormat = (dataAsLines: string[]): boolean => {
+    const items = dataAsLines[0].split(',');
+    const trimmedItems = items.map(item => item.trim());
+    if (!trimmedItems[0] || trimmedItems[0] === '') {
+        return true;
+    }
+    return false;
+};
+
 export const faresTriangleDataMapper = (
     dataToMap: string,
     req: NextApiRequestWithSession,
@@ -74,7 +83,12 @@ export const faresTriangleDataMapper = (
     for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
         const items = dataAsLines[rowNum].split(',');
         const trimmedItems = items.map(item => item.trim());
-        const stageName = trimmedItems[rowNum];
+        let stageName = '';
+        if (isNotTicketerFormat(dataAsLines)) {
+            stageName = trimmedItems[rowNum + 1];
+        } else {
+            stageName = trimmedItems[rowNum];
+        }
 
         if (trimmedItems.every(item => item === '' || item === null)) {
             break;
@@ -88,7 +102,12 @@ export const faresTriangleDataMapper = (
         };
 
         for (let colNum = 0; colNum < rowNum; colNum += 1) {
-            const price = trimmedItems[colNum];
+            let price = '';
+            if (isNotTicketerFormat(dataAsLines)) {
+                price = trimmedItems[colNum + 1];
+            } else {
+                price = trimmedItems[colNum];
+            }
 
             // Check explicitly for number to account for invalid fare data
             if (price && !Number.isNaN(Number(price)) && stageName) {
@@ -136,7 +155,6 @@ export const faresTriangleDataMapper = (
         setCsvUploadAttributeAndRedirect(req, res, errors);
         return null;
     }
-
     return mappedFareTriangle;
 };
 
