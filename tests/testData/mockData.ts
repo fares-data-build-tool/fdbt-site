@@ -235,6 +235,9 @@ export const getMockContext = ({
     return ctx;
 };
 
+export const mockSchemOpIdToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04ifQ.iZ-AJUm34FkHvXQ-zNoaqwAIT_LB708r1zj3xYvT3as';
+
 export const mockMatchingFaresZones: MatchingFareZones = {
     'Acomb Green Lane': {
         name: 'Acomb Green Lane',
