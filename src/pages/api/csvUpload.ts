@@ -83,12 +83,7 @@ export const faresTriangleDataMapper = (
     for (let rowNum = 0; rowNum < dataAsLines.length; rowNum += 1) {
         const items = dataAsLines[rowNum].split(',');
         const trimmedItems = items.map(item => item.trim());
-        let stageName = '';
-        if (isNotTicketerFormat(dataAsLines)) {
-            stageName = trimmedItems[rowNum + 1];
-        } else {
-            stageName = trimmedItems[rowNum];
-        }
+        const stageName = isNotTicketerFormat(dataAsLines) ? trimmedItems[rowNum + 1] : trimmedItems[rowNum];
 
         if (trimmedItems.every(item => item === '' || item === null)) {
             break;
@@ -102,12 +97,7 @@ export const faresTriangleDataMapper = (
         };
 
         for (let colNum = 0; colNum < rowNum; colNum += 1) {
-            let price = '';
-            if (isNotTicketerFormat(dataAsLines)) {
-                price = trimmedItems[colNum + 1];
-            } else {
-                price = trimmedItems[colNum];
-            }
+            const price = isNotTicketerFormat(dataAsLines) ? trimmedItems[colNum + 1] : trimmedItems[colNum];
 
             // Check explicitly for number to account for invalid fare data
             if (price && !Number.isNaN(Number(price)) && stageName) {
