@@ -171,6 +171,9 @@ export const getAndValidateSchemeOpRegion = (ctx: NextPageContext): string | nul
     return cookieSchemeOpRegion;
 };
 
+export const isSchemeOperator = (ctx: NextPageContextWithSession): boolean =>
+    !(!getAndValidateSchemeOpRegion(ctx) && !!getAndValidateNoc(ctx));
+
 export const getErrorsByIds = (ids: string[], errors: ErrorInfo[]): ErrorInfo[] => {
     const compactErrors: ErrorInfo[] = [];
     errors.forEach(error => {
