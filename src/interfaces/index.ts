@@ -79,6 +79,8 @@ export interface CognitoIdToken {
     iat: number;
     email: string;
     'custom:contactable': string;
+    'custom:schemeOperator': string;
+    'custom:schemeRegionCode': string;
 }
 
 export interface Breadcrumb {
