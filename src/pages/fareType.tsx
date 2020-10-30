@@ -145,7 +145,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     }
     const operatorInfo = JSON.parse(operatorCookie);
     const operatorName = schemeOp ? operatorInfo.operator : operatorInfo.operator.operatorPublicName;
-    opIdentifier = schemeOp ? `${operatorName}#${opIdentifier}` : opIdentifier;
+    opIdentifier = schemeOp ? `${operatorName}` : opIdentifier;
     const uuid = buildUuid(opIdentifier);
     const cookieValue = JSON.stringify({ ...operatorInfo, uuid });
 

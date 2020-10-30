@@ -10,7 +10,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 
-import { redirectTo, redirectToError, getUuidFromCookie } from './apiUtils';
+import { redirectTo, redirectToError, getUuidFromCookie, isSchemeOperator } from './apiUtils';
 import {
     getSingleTicketJson,
     getReturnTicketJson,
@@ -18,6 +18,7 @@ import {
     getMultipleServicesTicketJson,
     getFlatFareTicketJson,
     putUserDataInS3,
+    getSchemeOperatorTicketJson,
 } from './apiUtils/userData';
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, TicketPeriod } from '../../interfaces';
@@ -59,30 +60,35 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const uuid = getUuidFromCookie(req, res);
+        const schemeOp = isSchemeOperator(req, res);
 
         let userDataJson;
 
         const fareType = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType;
 
-        if (fareType === 'single') {
-            userDataJson = getSingleTicketJson(req, res);
-        } else if (fareType === 'return') {
-            userDataJson = getReturnTicketJson(req, res);
-        } else if (fareType === 'period' || fareType === 'multiOperator') {
-            const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
-            const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
+        if (schemeOp) {
+            userDataJson = await getSchemeOperatorTicketJson(req, res);
+        } else if (!schemeOp) {
+            if (fareType === 'single') {
+                userDataJson = getSingleTicketJson(req, res);
+            } else if (fareType === 'return') {
+                userDataJson = getReturnTicketJson(req, res);
+            } else if (fareType === 'period' || fareType === 'multiOperator') {
+                const ticketRepresentation = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+                const ticketType = isTicketRepresentation(ticketRepresentation) ? ticketRepresentation.name : '';
 
-            if (ticketType !== 'geoZone' && ticketType !== 'multipleServices') {
-                throw new Error('No period type found to generate user data json.');
-            }
+                if (ticketType !== 'geoZone' && ticketType !== 'multipleServices') {
+                    throw new Error('No period type found to generate user data json.');
+                }
 
-            if (ticketType === 'geoZone') {
-                userDataJson = await getGeoZoneTicketJson(req, res);
-            } else if (ticketType === 'multipleServices') {
-                userDataJson = getMultipleServicesTicketJson(req, res);
+                if (ticketType === 'geoZone') {
+                    userDataJson = await getGeoZoneTicketJson(req, res);
+                } else if (ticketType === 'multipleServices') {
+                    userDataJson = getMultipleServicesTicketJson(req, res);
+                }
+            } else if (fareType === 'flatFare') {
+                userDataJson = getFlatFareTicketJson(req, res);
             }
-        } else if (fareType === 'flatFare') {
-            userDataJson = getFlatFareTicketJson(req, res);
         }
 
         if (userDataJson) {
