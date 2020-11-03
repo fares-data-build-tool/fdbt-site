@@ -227,19 +227,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }));
         }
 
+        const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+
         if (errors.length === 0) {
             if (!group) {
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, { passengerType, ...filteredReqBody });
             } else {
-                const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
                 const submittedPassengerType = passengerType;
 
                 if (selectedPassengerTypes) {
                     const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
-                        type => type === submittedPassengerType,
+                        type => type === filteredReqBody.groupPassengerType,
                     );
-
-                    (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.splice(index, 1);
 
                     const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
                     const { minNumber, maxNumber } = req.body;
@@ -254,25 +253,20 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         });
                     }
 
-                    companions.push({
+                    companions[index] = {
                         minNumber,
                         maxNumber,
                         ageRangeMin,
                         ageRangeMax,
                         proofDocuments,
-                        passengerType: submittedPassengerType,
-                    });
+                        passengerType: filteredReqBody.groupPassengerType || submittedPassengerType,
+                    };
 
                     updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
 
-                    if ((selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length > 0) {
+                    if (index < (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length - 1) {
                         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-                        redirectTo(
-                            res,
-                            `/definePassengerType?groupPassengerType=${
-                                (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[0]
-                            }`,
-                        );
+                        redirectTo(res, `/definePassengerType?n=${index + 1}`);
                     } else {
                         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
                         redirectTo(res, '/timeRestrictions');
@@ -287,7 +281,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, { errors, passengerType });
         if (group) {
-            redirectTo(res, `/definePassengerType?groupPassengerType=${passengerType}`);
+            const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
+                type => type === filteredReqBody.groupPassengerType,
+            );
+            redirectTo(res, `/definePassengerType?n=${index}`);
             return;
         }
         redirectTo(res, '/definePassengerType');

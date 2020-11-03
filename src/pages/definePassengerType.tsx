@@ -16,7 +16,11 @@ import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getCsrfToken, getErrorsByIds } from '../utils';
-import { isPassengerType, isPassengerTypeAttributeWithErrors } from '../interfaces/typeGuards';
+import {
+    isGroupPassengerTypesCollection,
+    isPassengerType,
+    isPassengerTypeAttributeWithErrors,
+} from '../interfaces/typeGuards';
 
 const title = 'Define Passenger Type - Create Fares Data Service';
 const description = 'Define Passenger Type page of the Create Fares Data Service';
@@ -259,10 +263,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const passengerTypeErrorsAttribute = getSessionAttribute(ctx.req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE);
 
-    if (
-        !passengerTypeAttribute ||
-        (!isPassengerType(passengerTypeAttribute) && (!ctx.query.groupPassengerType || !groupPassengerTypes))
-    ) {
+    if (!passengerTypeAttribute || !isPassengerType(passengerTypeAttribute)) {
         throw new Error('Failed to retrieve passenger type details for the define passenger type page');
     }
 
@@ -271,21 +272,28 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
             ? passengerTypeErrorsAttribute.errors
             : [];
 
-    let passengerType = ctx?.query?.groupPassengerType as string;
+    const passengerIndex = Number.parseInt(ctx?.query?.n as string, 10);
+    let { passengerType } = passengerTypeAttribute;
 
     let fieldsets: RadioConditionalInputFieldset[];
     let numberOfPassengerTypeFieldset: TextInputFieldset;
 
     const group =
         !!groupPassengerTypes &&
+        isPassengerType(passengerTypeAttribute) &&
         !isPassengerTypeAttributeWithErrors(passengerTypeAttribute) &&
         passengerTypeAttribute.passengerType === 'group';
 
-    if (!passengerType && isPassengerType(passengerTypeAttribute) && group) {
-        passengerType = passengerTypeAttribute.passengerType;
-    }
+    console.log(groupPassengerTypes);
 
-    if (group) {
+    if (group && isGroupPassengerTypesCollection(groupPassengerTypes)) {
+        console.log('HELLO');
+        if (!passengerIndex || passengerIndex >= groupPassengerTypes.passengerTypes.length) {
+            [passengerType] = groupPassengerTypes.passengerTypes;
+        } else {
+            passengerType = groupPassengerTypes.passengerTypes[passengerIndex];
+        }
+
         fieldsets = getFieldsets(errors, passengerType);
         numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType);
 

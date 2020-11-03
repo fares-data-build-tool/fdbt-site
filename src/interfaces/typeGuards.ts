@@ -31,6 +31,10 @@ import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api
 import { InputCheck } from '../pages/stageNames';
 import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
+import {
+    GroupPassengerTypesCollection,
+    GroupPassengerTypesCollectionWithErrors,
+} from '../pages/api/groupPassengerTypes';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -182,3 +186,8 @@ export const isMultiOperatorInfoWithErrors = (
     multiOperatorInfo: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined,
 ): multiOperatorInfo is MultiOperatorInfoWithErrors =>
     multiOperatorInfo !== undefined && (multiOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;
+
+export const isGroupPassengerTypesCollection = (
+    passengerTypes: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors | undefined,
+): passengerTypes is GroupPassengerTypesCollection =>
+    passengerTypes !== undefined && (passengerTypes as GroupPassengerTypesCollection).passengerTypes !== undefined;
