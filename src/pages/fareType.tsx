@@ -145,13 +145,13 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     }
     const operatorInfo = JSON.parse(operatorCookie);
     const operatorName = schemeOp ? operatorInfo.operator : operatorInfo.operator.operatorPublicName;
-    opIdentifier = schemeOp ? `${operatorName}` : opIdentifier;
+    opIdentifier = schemeOp ? operatorName : opIdentifier;
     const uuid = buildUuid(opIdentifier);
     const cookieValue = JSON.stringify({ ...operatorInfo, uuid });
 
     setCookieOnServerSide(ctx, OPERATOR_COOKIE, cookieValue);
 
-    if (schemeOp || (!schemeOp && opIdentifier !== INTERNAL_NOC)) {
+    if (schemeOp || opIdentifier !== INTERNAL_NOC) {
         logger.info('', {
             context: 'pages.fareType',
             message: 'transaction start',
