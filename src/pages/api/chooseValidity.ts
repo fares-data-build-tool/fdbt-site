@@ -51,21 +51,16 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 id: 'validity-units',
             });
         }
+        updateSessionAttribute(req, DURATION_VALID_ATTRIBUTE, {
+            amount: validityInput ?? '',
+            duration: duration ?? '',
+            errors: errorInfo,
+        });
         if (errorInfo.length > 0) {
-            updateSessionAttribute(req, DURATION_VALID_ATTRIBUTE, {
-                amount: validityInput ?? '',
-                duration: duration ?? '',
-                errors: errorInfo,
-            });
             redirectTo(res, '/chooseValidity');
             return;
         }
 
-        updateSessionAttribute(req, DURATION_VALID_ATTRIBUTE, {
-            amount: validityInput ?? '',
-            duration: duration ?? '',
-            errors: [],
-        });
         redirectTo(res, '/periodValidity');
     } catch (error) {
         const message = 'There was a problem inputting the amount of time the product is valid for:';
