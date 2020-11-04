@@ -6,7 +6,7 @@ import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     STAGE_NAMES_ATTRIBUTE,
-    DAYS_VALID_ATTRIBUTE,
+    TIME_PERIOD_VALID_ATTRIBUTE,
     SERVICE_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
@@ -109,7 +109,7 @@ export const getMockRequestAndResponse = ({
         [INPUT_METHOD_ATTRIBUTE]: { inputMethod: 'csv' },
         [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'Adult' },
         [DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: { passengerType: 'Adult' },
-        [DAYS_VALID_ATTRIBUTE]: { daysValid: '2', errors: [] },
+        [TIME_PERIOD_VALID_ATTRIBUTE]: { amount: '2', timePeriodType: 'day', errors: [] },
         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZone' },
         [FARE_STAGES_ATTRIBUTE]: { fareStages: 6 },
         [STAGE_NAMES_ATTRIBUTE]: ['Stage name one', 'Stage name two', 'Stage name three'],
