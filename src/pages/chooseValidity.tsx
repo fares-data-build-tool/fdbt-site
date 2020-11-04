@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { PRODUCT_DETAILS_ATTRIBUTE, TIME_PERIOD_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, DURATION_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
@@ -21,7 +21,7 @@ interface ValidityProps {
     amount: string;
     errors: ErrorInfo[];
     csrfToken: string;
-    timePeriodType: string;
+    duration: string;
 }
 
 const ChooseValidity = ({
@@ -30,7 +30,7 @@ const ChooseValidity = ({
     passengerType,
     amount,
     errors,
-    timePeriodType,
+    duration,
     csrfToken,
 }: ValidityProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
@@ -78,7 +78,7 @@ const ChooseValidity = ({
                                     className="govuk-select"
                                     id="validity-units"
                                     name="duration"
-                                    defaultValue={timePeriodType}
+                                    defaultValue={duration}
                                 >
                                     <option selected value="" disabled>
                                         Select a duration
@@ -100,7 +100,7 @@ const ChooseValidity = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ValidityProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const validityInfo = getSessionAttribute(ctx.req, TIME_PERIOD_VALID_ATTRIBUTE);
+    const validityInfo = getSessionAttribute(ctx.req, DURATION_VALID_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
     const productAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
@@ -113,15 +113,15 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
     }
 
     let amount;
-    let timePeriodType;
+    let duration;
 
     if (validityInfo) {
         if (validityInfo.amount) {
             amount = validityInfo.amount;
         }
 
-        if (validityInfo.timePeriodType) {
-            timePeriodType = validityInfo.timePeriodType;
+        if (validityInfo.duration) {
+            duration = validityInfo.duration;
         }
     }
 
@@ -132,7 +132,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
             passengerType: passengerTypeAttribute.passengerType,
             amount: amount ?? '',
             errors: validityInfo?.errors ?? [],
-            timePeriodType: timePeriodType ?? '',
+            duration: duration ?? '',
             csrfToken,
         },
     };

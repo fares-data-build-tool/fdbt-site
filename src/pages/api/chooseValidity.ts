@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { TIME_PERIOD_VALID_ATTRIBUTE } from '../../constants/index';
+import { DURATION_VALID_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid } from './apiUtils/validator';
 
@@ -21,50 +21,11 @@ export const isInvalidValidityNumber = (validityInput: number): boolean => {
     return false;
 };
 
-export const validityInputErrorCheck = (errorInfo: ErrorInfo[], validityInput: string): ErrorInfo[] => {
-    if (!validityInput) {
-        errorInfo.push({
-            errorMessage: 'The amount of time your product is valid for cannot be empty.',
-            id: 'validity',
-        });
-        return errorInfo;
+export const isInvalidInput = (validityInput: string): boolean => {
+    if (!validityInput || validityInput === '0' || isInvalidValidityNumber(Number(validityInput))) {
+        return true;
     }
-
-    if (validityInput === '0') {
-        errorInfo.push({
-            errorMessage: 'The amount of time your product is valid for cannot be 0.',
-            id: 'validity',
-        });
-        return errorInfo;
-    }
-
-    if (isInvalidValidityNumber(Number(validityInput))) {
-        errorInfo.push({
-            errorMessage:
-                'The amount of time your your product is valid for has to be a whole number between 1 and 1000.',
-            id: 'validity',
-        });
-        return errorInfo;
-    }
-
-    return errorInfo;
-};
-
-export const errorArrayCheckAndRedirect = (
-    errorInfo: ErrorInfo[],
-    validityInput: string,
-    duration: string,
-    req: NextApiRequestWithSession,
-    res: NextApiResponse,
-): void => {
-    if (errorInfo.length > 0) {
-        updateSessionAttribute(req, TIME_PERIOD_VALID_ATTRIBUTE, {
-            amount: validityInput ?? '',
-            timePeriodType: duration ?? '',
-            errors: errorInfo,
-        });
-        redirectTo(res, '/chooseValidity');
-    }
+    return false;
 };
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -76,7 +37,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { validityInput, duration } = req.body;
         const errorInfo: ErrorInfo[] = [];
 
-        errorInfo.concat(validityInputErrorCheck(errorInfo, validityInput));
+        if (isInvalidInput(validityInput)) {
+            errorInfo.push({
+                errorMessage:
+                    'The amount of time your product is valid for has to be a whole number between 1 and 1000.',
+                id: 'validity',
+            });
+        }
 
         if (!duration || duration !== ('day' || 'week' || 'month' || 'year')) {
             errorInfo.push({
@@ -84,11 +51,19 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 id: 'validity-units',
             });
         }
-        errorArrayCheckAndRedirect(errorInfo, validityInput, duration, req, res);
+        if (errorInfo.length > 0) {
+            updateSessionAttribute(req, DURATION_VALID_ATTRIBUTE, {
+                amount: validityInput ?? '',
+                duration: duration ?? '',
+                errors: errorInfo,
+            });
+            redirectTo(res, '/chooseValidity');
+            return;
+        }
 
-        updateSessionAttribute(req, TIME_PERIOD_VALID_ATTRIBUTE, {
+        updateSessionAttribute(req, DURATION_VALID_ATTRIBUTE, {
             amount: validityInput ?? '',
-            timePeriodType: duration ?? '',
+            duration: duration ?? '',
             errors: [],
         });
         redirectTo(res, '/periodValidity');

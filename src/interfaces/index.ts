@@ -23,9 +23,9 @@ export interface ProductInfo {
     productPrice: string;
 }
 
-export interface TimePeriodValidInfo {
+export interface DurationValidInfo {
     amount: string;
-    timePeriodType: string;
+    duration: string;
     errors: ErrorInfo[];
 }
 

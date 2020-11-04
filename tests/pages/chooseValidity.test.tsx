@@ -10,7 +10,7 @@ describe('Choose Validity Page', () => {
                 productPrice="£3.00"
                 passengerType="Adult"
                 amount=""
-                timePeriodType=""
+                duration=""
                 errors={[]}
                 csrfToken=""
             />,
@@ -24,7 +24,7 @@ describe('Choose Validity Page', () => {
                 productPrice="£3.00"
                 passengerType="Adult"
                 amount="2"
-                timePeriodType="day"
+                duration="day"
                 errors={[]}
                 csrfToken=""
             />,

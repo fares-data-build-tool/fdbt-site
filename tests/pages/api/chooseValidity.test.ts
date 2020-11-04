@@ -1,7 +1,7 @@
 import chooseValidity from '../../../src/pages/api/chooseValidity';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { TIME_PERIOD_VALID_ATTRIBUTE } from '../../../src/constants';
+import { DURATION_VALID_ATTRIBUTE } from '../../../src/constants';
 
 describe('chooseValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -43,9 +43,9 @@ describe('chooseValidity', () => {
         chooseValidity(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledTimes(1);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, TIME_PERIOD_VALID_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, DURATION_VALID_ATTRIBUTE, {
             amount: '6',
-            timePeriodType: 'day',
+            duration: 'day',
             errors: [],
         });
     });
