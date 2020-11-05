@@ -54,8 +54,6 @@ const MatchingBase = ({
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-
-        console.log('selectedOption======', selectedOption);
         setAutoPopulate(true);
     };
 

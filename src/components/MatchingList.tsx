@@ -3,8 +3,6 @@ import { FareStage, UserFareStages } from '../data/s3';
 import { Stop } from '../data/auroradb';
 import { formatStopName } from '../utils';
 import { SelectedValueType } from './MatchingBase';
-import { debuglog } from 'util';
-import { expectedMultiOperatorGeoZoneTicketWithMultipleProducts } from 'tests/testData/mockData';
 
 interface MatchingListProps {
     userFareStages: UserFareStages;
@@ -23,42 +21,38 @@ const getStopItems = (
     optionsToPopulate: SelectedValueType[],
     isAutoPopulate: boolean,
 ): ReactElement[] => {
-    console.log('selectedValueType', optionsToPopulate);
-    console.log('is auto popoulate', isAutoPopulate);
-    console.log('selected farestages', selectedFareStages);
+    // console.log('selectedValueType', optionsToPopulate);
+    // console.log('is auto popoulate', isAutoPopulate);
+    // console.log('selected farestages', selectedFareStages);
     const stopItems: ReactElement[] = stops.map((stop, index) => {
         let selectValue = '';
 
-        // if (!isAutoPopulate) {
-        userFareStages.fareStages.map((stage: FareStage) => {
-            const currentValue = JSON.stringify({ stop, stage: stage.stageName });
-
-            const isSelected = selectedFareStages.some(selectedObject => {
-                return selectedObject === currentValue;
-            });
-
-            console.log('is selected', isSelected);
-
-            if (isSelected) {
-                selectValue = currentValue;
+        if (isAutoPopulate) {
+            if (optionsToPopulate.length === 1) {
+                if (index > parseInt(optionsToPopulate[0].position, 10)) {
+                    const stageName = JSON.parse(optionsToPopulate[0].value).stage;
+                    selectValue = JSON.stringify({ stop, stage: stageName });
+                    console.log('select va', JSON.stringify(selectValue));
+                    console.log('typer', typeof selectValue);
+                }
             }
+        }
 
-            return null;
-        });
-        // } else {
-        // optionsToPopulate.map((option: SelectedValueType) => {
-        //     console.log('option', option.value);
-        //     const currentValue = JSON.stringify({ stop: option.value., stage: option.value });
-        //     selectValue = currentValue;
-        //
-        //     console.log('options', currentValue);
-        //
-        //     return null;
-        //
-        // });
-        // find the to and from for the first options list
-        // save index of the last and then resume to the next
-        // }
+        if (!isAutoPopulate) {
+            userFareStages.fareStages.map((stage: FareStage) => {
+                const currentValue = JSON.stringify({ stop, stage: stage.stageName });
+
+                const isSelected = selectedFareStages.some(selectedObject => {
+                    return selectedObject === currentValue;
+                });
+
+                if (isSelected) {
+                    selectValue = currentValue;
+                }
+
+                return null;
+            });
+        }
 
         return (
             <tr key={stop.atcoCode} className="govuk-table__row">
@@ -80,8 +74,15 @@ const getStopItems = (
                     >
                         <option value="notApplicable">Not Applicable</option>
                         {userFareStages.fareStages.map((stage: FareStage) => {
+                            console.log('selected value', selectValue);
+                            console.log('they equal', JSON.stringify({ stop, stage: stage.stageName }));
+                            // console.log('farestages loopp=', selectValue);
                             return (
-                                <option key={stage.stageName} value={JSON.stringify({ stop, stage: stage.stageName })}>
+                                <option
+                                    key={stage.stageName}
+                                    selected={selectValue === JSON.stringify({ stop, stage: stage.stageName })}
+                                    value={JSON.stringify({ stop, stage: stage.stageName })}
+                                >
                                     {stage.stageName}
                                 </option>
                             );
