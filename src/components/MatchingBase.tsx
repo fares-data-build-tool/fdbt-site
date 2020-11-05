@@ -110,8 +110,8 @@ const MatchingBase = ({
                                     stops={stops}
                                     selectedFareStages={selectedFareStages}
                                     selectOptionCallback={selectedValue}
-                                    // optionsToPopulate={selectedOption}
-                                    // isAutoPopulate={isAutoPopulate}
+                                    optionsToPopulate={selectedOption}
+                                    isAutoPopulate={isAutoPopulate}
                                 />
                             </FormElementWrapper>
                         </fieldset>

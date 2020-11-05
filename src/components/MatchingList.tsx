@@ -1,16 +1,18 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { FareStage, UserFareStages } from '../data/s3';
 import { Stop } from '../data/auroradb';
 import { formatStopName } from '../utils';
 import { SelectedValueType } from './MatchingBase';
+import { debuglog } from 'util';
+import { expectedMultiOperatorGeoZoneTicketWithMultipleProducts } from 'tests/testData/mockData';
 
 interface MatchingListProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     selectedFareStages: string[];
     selectOptionCallback: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    // optionsToPopulate: SelectedValueType[];
-    // isAutoPopulate: boolean;
+    optionsToPopulate: SelectedValueType[];
+    isAutoPopulate: boolean;
 }
 
 const getStopItems = (
@@ -18,14 +20,16 @@ const getStopItems = (
     stops: Stop[],
     selectedFareStages: string[],
     selectOptionCallback: (event: React.ChangeEvent<HTMLSelectElement>) => void,
-    // optionsToPopulate: SelectedValueType[],
-    // isAutoPopulate: boolean,
+    optionsToPopulate: SelectedValueType[],
+    isAutoPopulate: boolean,
 ): ReactElement[] => {
-    // console.log('selectedValueType', optionsToPopulate);
-    // console.log('is auto popoulate', isAutoPopulate);
+    console.log('selectedValueType', optionsToPopulate);
+    console.log('is auto popoulate', isAutoPopulate);
+    console.log('selected farestages', selectedFareStages);
     const stopItems: ReactElement[] = stops.map((stop, index) => {
         let selectValue = '';
 
+        // if (!isAutoPopulate) {
         userFareStages.fareStages.map((stage: FareStage) => {
             const currentValue = JSON.stringify({ stop, stage: stage.stageName });
 
@@ -33,12 +37,28 @@ const getStopItems = (
                 return selectedObject === currentValue;
             });
 
+            console.log('is selected', isSelected);
+
             if (isSelected) {
                 selectValue = currentValue;
             }
 
             return null;
         });
+        // } else {
+        // optionsToPopulate.map((option: SelectedValueType) => {
+        //     console.log('option', option.value);
+        //     const currentValue = JSON.stringify({ stop: option.value., stage: option.value });
+        //     selectValue = currentValue;
+        //
+        //     console.log('options', currentValue);
+        //
+        //     return null;
+        //
+        // });
+        // find the to and from for the first options list
+        // save index of the last and then resume to the next
+        // }
 
         return (
             <tr key={stop.atcoCode} className="govuk-table__row">
@@ -49,6 +69,7 @@ const getStopItems = (
                     {stop.naptanCode}
                 </td>
                 <td className="govuk-table__cell stage-cell">
+                    {/* eslint-disable-next-line jsx-a11y/no-onchange */}
                     <select
                         className="govuk-select farestage-select"
                         id={`option-${index}`}
@@ -78,8 +99,8 @@ const MatchingList = ({
     stops,
     selectedFareStages,
     selectOptionCallback,
-    // optionsToPopulate,
-    // isAutoPopulate,
+    optionsToPopulate,
+    isAutoPopulate,
 }: MatchingListProps): ReactElement => (
     <table className="govuk-table">
         <thead className="govuk-table__head">
@@ -101,8 +122,8 @@ const MatchingList = ({
                 stops,
                 selectedFareStages,
                 selectOptionCallback,
-                // optionsToPopulate,
-                // isAutoPopulate,
+                optionsToPopulate,
+                isAutoPopulate,
             )}
         </tbody>
     </table>
