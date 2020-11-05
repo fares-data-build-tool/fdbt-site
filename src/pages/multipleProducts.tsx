@@ -99,7 +99,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     if (isBaseMultipleProductAttributeWithErrors(multiProductAttribute) && multiProductAttribute.errors.length > 0) {
         const { errors } = multiProductAttribute;
-
         return {
             props: {
                 numberOfProductsToDisplay,
