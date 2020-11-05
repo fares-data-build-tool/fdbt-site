@@ -19,7 +19,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
             {`Enter details for product ${index + 1}`}
         </legend>
         <div className="flex-container">
-            <div className="govuk-grid-column-one-quarter">
+            <div className="govuk-grid-column-one-half">
                 <FormGroupWrapper errors={errors} errorId={`multiple-product-name-${index}`}>
                     <>
                         <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
@@ -54,7 +54,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                         <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${index +
                                 1}`}</span>
-                            <span aria-hidden>Product Price, in pounds</span>
+                            <span aria-hidden>Price, in pounds</span>
                         </label>
                         <span className="govuk-hint" id={`product-price-hint-${index}`}>
                             For example, 2.99
@@ -89,10 +89,10 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                         <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
                             <span className="govuk-visually-hidden">{`Product Duration amount - Product ${index +
                                 1}`}</span>
-                            <span aria-hidden>Product Duration</span>
+                            <span aria-hidden>Duration</span>
                         </label>
                         <span className="govuk-hint" id={`product-duration-hint-${index}`}>
-                            Enter a whole number
+                            Enter a number
                         </span>
 
                         <FormElementWrapper
