@@ -28,6 +28,9 @@ export const isInvalidInput = (validityInput: string): boolean => {
     return false;
 };
 
+export const isValidInputDuration = (durationInput: string): boolean =>
+    ['day', 'week', 'month', 'year'].includes(durationInput);
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {
@@ -45,7 +48,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             });
         }
 
-        if (!duration || duration !== ('day' || 'week' || 'month' || 'year')) {
+        if (!duration || !isValidInputDuration(duration)) {
             errorInfo.push({
                 errorMessage: 'The type of duration is needed. Choose one of the options.',
                 id: 'validity-units',
