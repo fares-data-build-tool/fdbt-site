@@ -1,15 +1,28 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { FareStage, UserFareStages } from '../data/s3';
 import { Stop } from '../data/auroradb';
 import { formatStopName } from '../utils';
+import { SelectedValueType } from './MatchingBase';
 
 interface MatchingListProps {
     userFareStages: UserFareStages;
     stops: Stop[];
     selectedFareStages: string[];
+    selectOptionCallback: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    // optionsToPopulate: SelectedValueType[];
+    // isAutoPopulate: boolean;
 }
 
-const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFareStages: string[]): ReactElement[] => {
+const getStopItems = (
+    userFareStages: UserFareStages,
+    stops: Stop[],
+    selectedFareStages: string[],
+    selectOptionCallback: (event: React.ChangeEvent<HTMLSelectElement>) => void,
+    // optionsToPopulate: SelectedValueType[],
+    // isAutoPopulate: boolean,
+): ReactElement[] => {
+    // console.log('selectedValueType', optionsToPopulate);
+    // console.log('is auto popoulate', isAutoPopulate);
     const stopItems: ReactElement[] = stops.map((stop, index) => {
         let selectValue = '';
 
@@ -42,8 +55,9 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
                         name={`option-${index}`}
                         defaultValue={selectValue}
                         aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
+                        onChange={selectOptionCallback}
                     >
-                        <option value="">Not Applicable</option>
+                        <option value="notApplicable">Not Applicable</option>
                         {userFareStages.fareStages.map((stage: FareStage) => {
                             return (
                                 <option key={stage.stageName} value={JSON.stringify({ stop, stage: stage.stageName })}>
@@ -59,7 +73,14 @@ const getStopItems = (userFareStages: UserFareStages, stops: Stop[], selectedFar
     return stopItems;
 };
 
-const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingListProps): ReactElement => (
+const MatchingList = ({
+    userFareStages,
+    stops,
+    selectedFareStages,
+    selectOptionCallback,
+    // optionsToPopulate,
+    // isAutoPopulate,
+}: MatchingListProps): ReactElement => (
     <table className="govuk-table">
         <thead className="govuk-table__head">
             <tr className="govuk-table__row">
@@ -74,7 +95,16 @@ const MatchingList = ({ userFareStages, stops, selectedFareStages }: MatchingLis
                 </th>
             </tr>
         </thead>
-        <tbody className="govuk-table__body">{getStopItems(userFareStages, stops, selectedFareStages)}</tbody>
+        <tbody className="govuk-table__body">
+            {getStopItems(
+                userFareStages,
+                stops,
+                selectedFareStages,
+                selectOptionCallback,
+                // optionsToPopulate,
+                // isAutoPopulate,
+            )}
+        </tbody>
     </table>
 );
 

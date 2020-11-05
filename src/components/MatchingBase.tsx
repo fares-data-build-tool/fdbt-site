@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState, useCallback, useEffect } from 'react';
 import ErrorSummary from './ErrorSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -23,6 +23,12 @@ interface MatchingBaseProps {
     csrfToken: string;
 }
 
+export type SelectedValueType = {
+    id: string;
+    value: string;
+    position: string;
+};
+
 const MatchingBase = ({
     userFareStages,
     stops,
@@ -38,6 +44,45 @@ const MatchingBase = ({
     csrfToken,
 }: MatchingBaseProps): ReactElement => {
     const errors: ErrorInfo[] = [];
+
+    const [selectedOption, setSelectedOption] = useState<SelectedValueType[]>([]);
+    const [isAutoPopulate, setAutoPopulate] = useState(false);
+
+    // useEffect(() => {
+    //     console.log('selected options use effect', selectedOption);
+    // }, [selectedOption]);
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+
+        console.log('selectedOption======', selectedOption);
+        setAutoPopulate(true);
+    };
+
+    const selectedValue = useCallback(
+        (event: React.ChangeEvent<HTMLSelectElement>): void => {
+            if (event.target.value === 'notApplicable') {
+                const index = selectedOption.findIndex(option => {
+                    return option.id === event.target.id;
+                });
+
+                selectedOption.splice(index, 1);
+                setSelectedOption(selectedOption);
+            } else {
+                const valueSelected: SelectedValueType = {
+                    id: event.target.id,
+                    value: event.target.value,
+                    position: event.target.id.split('-')[1],
+                };
+                setSelectedOption(
+                    [...selectedOption, valueSelected].sort((a, b) => {
+                        return parseFloat(a.position) - parseFloat(b.position);
+                    }),
+                );
+            }
+        },
+        [selectedOption],
+    );
 
     if (error) {
         errors.push({ errorMessage: 'Ensure each fare stage is assigned at least once.', id: 'option-0' });
@@ -64,6 +109,9 @@ const MatchingBase = ({
                                     userFareStages={userFareStages}
                                     stops={stops}
                                     selectedFareStages={selectedFareStages}
+                                    selectOptionCallback={selectedValue}
+                                    // optionsToPopulate={selectedOption}
+                                    // isAutoPopulate={isAutoPopulate}
                                 />
                             </FormElementWrapper>
                         </fieldset>
@@ -72,6 +120,9 @@ const MatchingBase = ({
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
                     <input type="submit" value="Continue" id="submit-button" className="govuk-button" />
+                    <button className="govuk-link" type="button" onClick={handleClick}>
+                        Auto-complete remaining fare stages
+                    </button>
                 </>
             </CsrfForm>
         </FullColumnLayout>
