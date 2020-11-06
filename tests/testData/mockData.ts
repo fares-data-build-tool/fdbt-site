@@ -3467,7 +3467,7 @@ export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
     },
     {
         name: 'Time restrictions',
-        link: '/timeRestrictions',
+        link: '/defineTimeRestrictions',
         show: true,
     },
     {
@@ -3520,7 +3520,7 @@ export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[]
     },
     {
         name: 'Time restrictions',
-        link: '/timeRestrictions',
+        link: '/defineTimeRestrictions',
         show: true,
     },
     {
@@ -3593,7 +3593,7 @@ export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] =
     },
     {
         name: 'Time restrictions',
-        link: '/timeRestrictions',
+        link: '/defineTimeRestrictions',
         show: true,
     },
     {
@@ -3654,7 +3654,7 @@ export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Brea
     },
     {
         name: 'Time restrictions',
-        link: '/timeRestrictions',
+        link: '/defineTimeRestrictions',
         show: true,
     },
     {
@@ -3707,7 +3707,7 @@ export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] 
     },
     {
         name: 'Time restrictions',
-        link: '/timeRestrictions',
+        link: '/defineTimeRestrictions',
         show: true,
     },
     {

@@ -161,9 +161,7 @@ export interface BaseGroupTicket {
 }
 
 export interface TimeRestriction {
-    startTime?: string;
-    endTime?: string;
-    validDays?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
+    validDays: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
 }
 
 export interface SchemeOperatorTicket {
