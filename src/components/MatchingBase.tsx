@@ -8,6 +8,7 @@ import { Stop } from '../data/auroradb';
 import { BasicService, ErrorInfo } from '../interfaces';
 import CsrfForm from './CsrfForm';
 import { formatStopName } from '../utils';
+import { Console } from 'winston/lib/winston/transports';
 
 interface MatchingBaseProps {
     userFareStages: UserFareStages;
@@ -29,6 +30,7 @@ interface StopItem {
     stopName: string;
     atcoCode: string;
     naptanCode: string;
+    stopData: string;
     dropdownValue: string;
     dropdownOptions: {
         key: string;
@@ -46,7 +48,7 @@ const getDefaultStopItems = (
         stops.map((stop, index) => {
             let dropdownValue = '';
             userFareStages.fareStages.forEach((stage: FareStage) => {
-                const currentValue = JSON.stringify({ stop, stage: stage.stageName });
+                const currentValue = stage.stageName;
 
                 const isSelected = selectedFareStages.some(selectedObject => {
                     return selectedObject === currentValue;
@@ -65,9 +67,10 @@ const getDefaultStopItems = (
                 atcoCode: stop.atcoCode,
                 naptanCode: stop.naptanCode,
                 dropdownValue,
+                stopData: JSON.stringify(stop),
                 dropdownOptions: userFareStages.fareStages.map((stage: FareStage) => ({
                     key: stage.stageName,
-                    value: JSON.stringify({ stop, stage: stage.stageName }),
+                    value: stage.stageName,
                     display: stage.stageName,
                 })),
             };
@@ -100,7 +103,11 @@ const MatchingBase = ({
             [...stopItems].map(item => {
                 if (item.index === dropdownIndex) {
                     const updatedItem = { ...item, dropdownValue };
-                    updateSelections([...selections, updatedItem].sort((a, b) => a.index - b.index));
+
+                    if (updatedItem.dropdownValue !== '') {
+                        updateSelections([...selections, updatedItem].sort((a, b) => a.index - b.index));
+                    }
+
                     return updatedItem;
                 }
                 return item;
@@ -118,42 +125,51 @@ const MatchingBase = ({
     const handleAutoPopulateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         event.preventDefault();
         const numberOfSelections = selections.length;
+
         if (numberOfSelections === 1) {
+            console.log('HE:L');
+
             const selection = selections[0];
+            console.log('====================================');
+            console.log(selection);
+            console.log('====================================');
             const updatedItems = new Set(
                 [...stopItems].map(item => {
-                    if (item.index >= selection.index) {
+                    if (item.index >= selection.index && item.dropdownValue === '') {
+                        console.log('INNNNN');
                         return {
                             ...item,
                             dropdownValue: selection.dropdownValue,
                         };
                     }
+                    updateSelections([]);
                     return item;
                 }),
             );
             updateStopItems(updatedItems);
         } else if (numberOfSelections > 1) {
-            const collectedItems: StopItem[] = [];
-            for (let i = 0; i < numberOfSelections - 1; i += 1) {
+            const collectedItems: StopItem[] = [...stopItems];
+            for (let i = 0; i < numberOfSelections; i += 1) {
                 const currentSelection = selections[i];
                 const nextSelection = selections[i + 1];
-                [...stopItems].forEach(item => {
-                    if (item.index < currentSelection.index) {
-                        collectedItems.push(item);
-                    } else if (item.index >= currentSelection.index && item.index < nextSelection.index) {
-                        collectedItems.push({
-                            ...item,
+                console.log(currentSelection);
+
+                console.log([...collectedItems]);
+
+                for (
+                    let j = currentSelection.index;
+                    j < (nextSelection ? nextSelection.index : stopItems.size);
+                    j += 1
+                ) {
+                    if (collectedItems[j].dropdownValue === '') {
+                        collectedItems[j] = {
+                            ...collectedItems[j],
                             dropdownValue: currentSelection.dropdownValue,
-                        });
+                        };
                     }
-                });
-            }
-            const finalSelection = selections[numberOfSelections - 1];
-            [...stopItems].forEach(item => {
-                if (item.index >= finalSelection.index) {
-                    collectedItems.push({ ...item, dropdownValue: finalSelection.dropdownValue });
                 }
-            });
+            }
+
             const updatedItems = new Set(collectedItems);
             updateStopItems(updatedItems);
             updateSelections([]);
@@ -163,8 +179,6 @@ const MatchingBase = ({
     if (error) {
         errors.push({ errorMessage: 'Ensure each fare stage is assigned at least once.', id: 'option-0' });
     }
-
-    console.log({ stopItems });
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -241,6 +255,11 @@ const MatchingBase = ({
                                                             );
                                                         })}
                                                     </select>
+                                                    <input
+                                                        type="hidden"
+                                                        name={`option-${item.index}`}
+                                                        value={item.stopData}
+                                                    />
                                                 </td>
                                             </tr>
                                         ))}
