@@ -1,12 +1,13 @@
-import React, { ReactElement } from 'react';
+/* eslint-disable jsx-a11y/no-onchange */
+import React, { ReactElement, useState } from 'react';
 import ErrorSummary from './ErrorSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
-import MatchingList from './MatchingList';
-import { UserFareStages } from '../data/s3';
+import { FareStage, UserFareStages } from '../data/s3';
 import { Stop } from '../data/auroradb';
 import { BasicService, ErrorInfo } from '../interfaces';
 import CsrfForm from './CsrfForm';
+import { formatStopName } from '../utils';
 
 interface MatchingBaseProps {
     userFareStages: UserFareStages;
@@ -22,6 +23,58 @@ interface MatchingBaseProps {
     apiEndpoint: string;
     csrfToken: string;
 }
+
+interface StopItem {
+    index: number;
+    stopName: string;
+    atcoCode: string;
+    naptanCode: string;
+    dropdownValue: string;
+    dropdownOptions: {
+        key: string;
+        value: string;
+        display: string;
+    }[];
+}
+
+const getDefaultStopItems = (
+    userFareStages: UserFareStages,
+    stops: Stop[],
+    selectedFareStages: string[],
+): Set<StopItem> => {
+    const items = new Set(
+        stops.map((stop, index) => {
+            let dropdownValue = '';
+            userFareStages.fareStages.forEach((stage: FareStage) => {
+                const currentValue = JSON.stringify({ stop, stage: stage.stageName });
+
+                const isSelected = selectedFareStages.some(selectedObject => {
+                    return selectedObject === currentValue;
+                });
+
+                if (isSelected) {
+                    dropdownValue = currentValue;
+                }
+
+                return null;
+            });
+
+            return {
+                index,
+                stopName: formatStopName(stop),
+                atcoCode: stop.atcoCode,
+                naptanCode: stop.naptanCode,
+                dropdownValue,
+                dropdownOptions: userFareStages.fareStages.map((stage: FareStage) => ({
+                    key: stage.stageName,
+                    value: JSON.stringify({ stop, stage: stage.stageName }),
+                    display: stage.stageName,
+                })),
+            };
+        }),
+    );
+    return items;
+};
 
 const MatchingBase = ({
     userFareStages,
@@ -39,9 +92,79 @@ const MatchingBase = ({
 }: MatchingBaseProps): ReactElement => {
     const errors: ErrorInfo[] = [];
 
+    const [selections, updateSelections] = useState<StopItem[]>([]);
+    const [stopItems, updateStopItems] = useState(getDefaultStopItems(userFareStages, stops, selectedFareStages));
+
+    const handleDropdownSelection = (dropdownIndex: number, dropdownValue: string): void => {
+        const updatedItems = new Set(
+            [...stopItems].map(item => {
+                if (item.index === dropdownIndex) {
+                    const updatedItem = { ...item, dropdownValue };
+                    updateSelections([...selections, updatedItem].sort((a, b) => a.index - b.index));
+                    return updatedItem;
+                }
+                return item;
+            }),
+        );
+        updateStopItems(updatedItems);
+    };
+
+    const handleResetButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+        event.preventDefault();
+        const updatedItems = new Set([...stopItems].map(item => ({ ...item, dropdownValue: '' })));
+        updateStopItems(updatedItems);
+    };
+
+    const handleAutoPopulateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+        event.preventDefault();
+        const numberOfSelections = selections.length;
+        if (numberOfSelections === 1) {
+            const selection = selections[0];
+            const updatedItems = new Set(
+                [...stopItems].map(item => {
+                    if (item.index >= selection.index) {
+                        return {
+                            ...item,
+                            dropdownValue: selection.dropdownValue,
+                        };
+                    }
+                    return item;
+                }),
+            );
+            updateStopItems(updatedItems);
+        } else if (numberOfSelections > 1) {
+            const collectedItems: StopItem[] = [];
+            for (let i = 0; i < numberOfSelections - 1; i += 1) {
+                const currentSelection = selections[i];
+                const nextSelection = selections[i + 1];
+                [...stopItems].forEach(item => {
+                    if (item.index < currentSelection.index) {
+                        collectedItems.push(item);
+                    } else if (item.index >= currentSelection.index && item.index < nextSelection.index) {
+                        collectedItems.push({
+                            ...item,
+                            dropdownValue: currentSelection.dropdownValue,
+                        });
+                    }
+                });
+            }
+            const finalSelection = selections[numberOfSelections - 1];
+            [...stopItems].forEach(item => {
+                if (item.index >= finalSelection.index) {
+                    collectedItems.push({ ...item, dropdownValue: finalSelection.dropdownValue });
+                }
+            });
+            const updatedItems = new Set(collectedItems);
+            updateStopItems(updatedItems);
+            updateSelections([]);
+        }
+    };
+
     if (error) {
         errors.push({ errorMessage: 'Ensure each fare stage is assigned at least once.', id: 'option-0' });
     }
+
+    console.log({ stopItems });
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -60,11 +183,69 @@ const MatchingBase = ({
                                 {travelineHintText}
                             </span>
                             <FormElementWrapper errors={errors} errorId="option-0" errorClass="">
-                                <MatchingList
-                                    userFareStages={userFareStages}
-                                    stops={stops}
-                                    selectedFareStages={selectedFareStages}
-                                />
+                                <table className="govuk-table">
+                                    <thead className="govuk-table__head">
+                                        <tr className="govuk-table__row">
+                                            <th
+                                                scope="col"
+                                                className="govuk-table__header govuk-!-width-one-half"
+                                                id="stop-name-header"
+                                            >
+                                                Stop name
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="govuk-table__header govuk-!-width-one-quarter"
+                                                id="naptan-code-header"
+                                            >
+                                                Naptan code
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="govuk-table__header govuk-!-width-one-quarter"
+                                                id="fare-stage-header"
+                                            >
+                                                Fare stage
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="govuk-table__body">
+                                        {[...stopItems].map(item => (
+                                            <tr key={item.atcoCode} className="govuk-table__row">
+                                                <td className="govuk-table__cell stop-cell" id={`stop-${item.index}`}>
+                                                    {item.stopName}
+                                                </td>
+                                                <td
+                                                    className="govuk-table__cell naptan-cell"
+                                                    id={`naptan-${item.index}`}
+                                                >
+                                                    {item.naptanCode}
+                                                </td>
+                                                <td className="govuk-table__cell stage-cell">
+                                                    <select
+                                                        className="govuk-select farestage-select"
+                                                        id={`option-${item.index}`}
+                                                        name={`option-${item.index}`}
+                                                        value={item.dropdownValue}
+                                                        aria-labelledby={`stop-name-header stop-${item.index} naptan-code-header naptan-${item.index}`}
+                                                        onChange={(e): void =>
+                                                            handleDropdownSelection(item.index, e.target.value)
+                                                        }
+                                                    >
+                                                        <option value="">Not Applicable</option>
+                                                        {item.dropdownOptions.map(option => {
+                                                            return (
+                                                                <option key={option.key} value={option.value}>
+                                                                    {option.display}
+                                                                </option>
+                                                            );
+                                                        })}
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </FormElementWrapper>
                         </fieldset>
                     </div>
@@ -72,6 +253,20 @@ const MatchingBase = ({
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
                     <input type="submit" value="Continue" id="submit-button" className="govuk-button" />
+                    <button
+                        type="button"
+                        className="govuk-button govuk-button--secondary"
+                        onClick={(e): void => handleResetButtonClick(e)}
+                    >
+                        Reset All Fare Stages
+                    </button>
+                    <button
+                        type="button"
+                        className="govuk-button govuk-button--secondary"
+                        onClick={(e): void => handleAutoPopulateClick(e)}
+                    >
+                        Auto-populate Fare Stages
+                    </button>
                 </>
             </CsrfForm>
         </FullColumnLayout>
