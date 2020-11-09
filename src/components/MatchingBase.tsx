@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import ErrorSummary from './ErrorSummary';
 import FormElementWrapper from './FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
@@ -48,15 +48,10 @@ const MatchingBase = ({
     const [selectedOption, setSelectedOption] = useState<SelectedValueType[]>([]);
     const [isAutoPopulate, setAutoPopulate] = useState(false);
 
-    const handleAutoPopulate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        event.preventDefault();
-        console.log('handle auto event');
-        setAutoPopulate(true);
-    };
-
     const onChangeSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-        console.log('target value', event.target);
+        setAutoPopulate(false);
         if (event.target.value === 'notApplicable') {
+            console.log('not applicable');
             const index = selectedOption.findIndex(option => {
                 return option.id === event.target.id;
             });
@@ -69,6 +64,13 @@ const MatchingBase = ({
                 value: event.target.value,
                 position: event.target.id.split('-')[1],
             };
+
+            console.log(
+                'value selected',
+                [...selectedOption, valueSelected].sort((a, b) => {
+                    return parseFloat(a.position) - parseFloat(b.position);
+                }),
+            );
             setSelectedOption(
                 [...selectedOption, valueSelected].sort((a, b) => {
                     return parseFloat(a.position) - parseFloat(b.position);
@@ -81,21 +83,40 @@ const MatchingBase = ({
         const stopItems: ReactElement[] = stops.map((stop, index) => {
             let selectValue = '';
 
-            userFareStages.fareStages.map((stage: FareStage) => {
-                const currentValue = JSON.stringify({ stop, stage: stage.stageName });
-
-                const isSelected = selectedFareStages.some(selectedObject => {
-                    return selectedObject === currentValue;
-                });
-
-                if (isSelected) {
-                    selectValue = currentValue;
+            if (isAutoPopulate) {
+                if (selectedOption.length === 1) {
+                    if (index > parseInt(selectedOption[0].position, 10)) {
+                        const stageName = JSON.parse(selectedOption[0].value).stage;
+                        selectValue = JSON.stringify({ stop, stage: stageName });
+                    }
+                } else if (selectedOption.length > 1) {
+                    if (
+                        index > parseInt(selectedOption[0].position, 10) &&
+                        index < parseInt(selectedOption[1].position, 10)
+                    ) {
+                        const stageName = JSON.parse(selectedOption[0].value).stage;
+                        selectValue = JSON.stringify({ stop, stage: stageName });
+                    } else if (index > parseInt(selectedOption[1].position, 10)) {
+                        const stageName = JSON.parse(selectedOption[1].value).stage;
+                        selectValue = JSON.stringify({ stop, stage: stageName });
+                    }
                 }
+            } else {
+                userFareStages.fareStages.map((stage: FareStage) => {
+                    const currentValue = JSON.stringify({ stop, stage: stage.stageName });
 
-                return null;
-            });
+                    const isSelected = selectedFareStages.some(selectedObject => {
+                        return selectedObject === currentValue;
+                    });
 
-            console.log('selectValue', selectValue);
+                    if (isSelected) {
+                        selectValue = currentValue;
+                    }
+
+                    return null;
+                });
+            }
+
             return (
                 <tr key={stop.atcoCode} className="govuk-table__row">
                     <td className="govuk-table__cell stop-cell" id={`stop-${index}`}>
@@ -105,19 +126,21 @@ const MatchingBase = ({
                         {stop.naptanCode}
                     </td>
                     <td className="govuk-table__cell stage-cell">
+                        {/* eslint-disable-next-line jsx-a11y/no-onchange */}
                         <select
                             className="govuk-select farestage-select"
                             id={`option-${index}`}
                             name={`option-${index}`}
                             defaultValue={selectValue}
                             aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
-                            onBlur={onChangeSelection}
+                            onChange={onChangeSelection}
                         >
                             <option value="">Not Applicable</option>
                             {userFareStages.fareStages.map((stage: FareStage) => {
                                 return (
                                     <option
                                         key={stage.stageName}
+                                        selected={selectValue === JSON.stringify({ stop, stage: stage.stageName })}
                                         value={JSON.stringify({ stop, stage: stage.stageName })}
                                     >
                                         {stage.stageName}
@@ -129,7 +152,14 @@ const MatchingBase = ({
                 </tr>
             );
         });
+
+        console.log('stopotems');
         return stopItems;
+    };
+    const handleAutoPopulate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+        event.preventDefault();
+        console.log('handle auto event');
+        setAutoPopulate(true);
     };
 
     if (error) {
