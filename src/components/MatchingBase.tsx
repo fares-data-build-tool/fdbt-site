@@ -47,9 +47,11 @@ const MatchingBase = ({
 
     const [selectedOption, setSelectedOption] = useState<SelectedValueType[]>([]);
     const [isAutoPopulate, setAutoPopulate] = useState(false);
+    const [isOptionSelected, setOptionSelected] = useState(false);
 
     const onChangeSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setAutoPopulate(false);
+        setOptionSelected(true);
         if (event.target.value === 'notApplicable') {
             console.log('not applicable');
             const index = selectedOption.findIndex(option => {
@@ -80,42 +82,54 @@ const MatchingBase = ({
     };
 
     const getStopItems = (): ReactElement[] => {
+        console.log('bloody stop items', selectedOption);
+        let currentArrayIndex = 0;
         const stopItems: ReactElement[] = stops.map((stop, index) => {
             let selectValue = '';
 
             if (isAutoPopulate) {
+                console.log('lets autopopulate');
                 if (selectedOption.length === 1) {
                     if (index > parseInt(selectedOption[0].position, 10)) {
                         const stageName = JSON.parse(selectedOption[0].value).stage;
                         selectValue = JSON.stringify({ stop, stage: stageName });
                     }
                 } else if (selectedOption.length > 1) {
-                    if (
-                        index > parseInt(selectedOption[0].position, 10) &&
-                        index < parseInt(selectedOption[1].position, 10)
-                    ) {
-                        const stageName = JSON.parse(selectedOption[0].value).stage;
-                        selectValue = JSON.stringify({ stop, stage: stageName });
-                    } else if (index > parseInt(selectedOption[1].position, 10)) {
-                        const stageName = JSON.parse(selectedOption[1].value).stage;
+                    if (currentArrayIndex + 1 < selectedOption.length) {
+                        console.log('yoyo', selectedOption);
+                        if (
+                            index > parseInt(selectedOption[currentArrayIndex].position, 10) && //[0]
+                            index < parseInt(selectedOption[currentArrayIndex + 1].position, 10) //[1]
+                        ) {
+                            const stageName = JSON.parse(selectedOption[currentArrayIndex].value).stage;
+                            selectValue = JSON.stringify({ stop, stage: stageName });
+                            currentArrayIndex += 1;
+                        }
+                    } else {
+                        console.log('final arraay', currentArrayIndex);
+                        const stageName = JSON.parse(selectedOption[currentArrayIndex - 1].value).stage;
                         selectValue = JSON.stringify({ stop, stage: stageName });
                     }
                 }
-            } else {
-                userFareStages.fareStages.map((stage: FareStage) => {
-                    const currentValue = JSON.stringify({ stop, stage: stage.stageName });
 
-                    const isSelected = selectedFareStages.some(selectedObject => {
-                        return selectedObject === currentValue;
-                    });
-
-                    if (isSelected) {
-                        selectValue = currentValue;
-                    }
-
-                    return null;
-                });
+                // } else {
+                //     // console.log('should be here');
+                //     // userFareStages.fareStages.map((stage: FareStage) => {
+                //     //     const currentValue = JSON.stringify({ stop, stage: stage.stageName });
+                //     //
+                //     //     const isSelected = selectedFareStages.some(selectedObject => {
+                //     //         return selectedObject === currentValue;
+                //     //     });
+                //     //
+                //     //     if (isSelected) {
+                //     //         selectValue = currentValue;
+                //     //     }
+                //     //
+                //     //     return null;
+                //     // });
             }
+
+            console.log('select valie', selectValue);
 
             return (
                 <tr key={stop.atcoCode} className="govuk-table__row">
