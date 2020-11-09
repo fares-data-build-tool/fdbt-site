@@ -31,7 +31,6 @@ export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZ
     bodyValues.forEach((stopSelection: string) => {
         const stageName = stopSelection[0];
         if (stageName && typeof stageName === 'string' && isArray(stopSelection)) {
-            console.log(stopSelection);
             const stop = JSON.parse(stopSelection[1]);
 
             if (matchingFareZones[stageName]) {
@@ -45,12 +44,6 @@ export const getMatchingFareZonesFromForm = (req: NextApiRequest): MatchingFareZ
             }
         }
     });
-
-    console.log(matchingFareZones);
-
-    if (Object.keys(matchingFareZones).length === 0) {
-        throw new Error('No Stops allocated to fare stages');
-    }
 
     return matchingFareZones;
 };

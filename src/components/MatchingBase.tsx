@@ -8,7 +8,6 @@ import { Stop } from '../data/auroradb';
 import { BasicService, ErrorInfo } from '../interfaces';
 import CsrfForm from './CsrfForm';
 import { formatStopName } from '../utils';
-import { Console } from 'winston/lib/winston/transports';
 
 interface MatchingBaseProps {
     userFareStages: UserFareStages;
@@ -32,11 +31,7 @@ interface StopItem {
     naptanCode: string;
     stopData: string;
     dropdownValue: string;
-    dropdownOptions: {
-        key: string;
-        value: string;
-        display: string;
-    }[];
+    dropdownOptions: string[];
 }
 
 const getDefaultStopItems = (
@@ -68,16 +63,34 @@ const getDefaultStopItems = (
                 naptanCode: stop.naptanCode,
                 dropdownValue,
                 stopData: JSON.stringify(stop),
-                dropdownOptions: userFareStages.fareStages.map((stage: FareStage) => ({
-                    key: stage.stageName,
-                    value: stage.stageName,
-                    display: stage.stageName,
-                })),
+                dropdownOptions: userFareStages.fareStages.map((stage: FareStage) => stage.stageName),
             };
         }),
     );
     return items;
 };
+
+const renderResetAndAutoPopulateButtons = (
+    handleResetButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    handleAutoPopulateClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+): ReactElement => (
+    <div className="reset-autopopulate-buttons">
+        <button
+            type="button"
+            className="govuk-button govuk-button--secondary"
+            onClick={(e): void => handleResetButtonClick(e)}
+        >
+            Reset All Fare Stages
+        </button>
+        <button
+            type="button"
+            className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+            onClick={(e): void => handleAutoPopulateClick(e)}
+        >
+            Auto-populate Fare Stages
+        </button>
+    </div>
+);
 
 const MatchingBase = ({
     userFareStages,
@@ -97,6 +110,7 @@ const MatchingBase = ({
 
     const [selections, updateSelections] = useState<StopItem[]>([]);
     const [stopItems, updateStopItems] = useState(getDefaultStopItems(userFareStages, stops, selectedFareStages));
+    const [javascriptButtonClick, updateJavascriptButtonClick] = useState(false);
 
     const handleDropdownSelection = (dropdownIndex: number, dropdownValue: string): void => {
         const updatedItems = new Set(
@@ -120,6 +134,8 @@ const MatchingBase = ({
         event.preventDefault();
         const updatedItems = new Set([...stopItems].map(item => ({ ...item, dropdownValue: '' })));
         updateStopItems(updatedItems);
+        updateSelections([]);
+        updateJavascriptButtonClick(true);
     };
 
     const handleAutoPopulateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
@@ -127,16 +143,10 @@ const MatchingBase = ({
         const numberOfSelections = selections.length;
 
         if (numberOfSelections === 1) {
-            console.log('HE:L');
-
             const selection = selections[0];
-            console.log('====================================');
-            console.log(selection);
-            console.log('====================================');
             const updatedItems = new Set(
                 [...stopItems].map(item => {
                     if (item.index >= selection.index && item.dropdownValue === '') {
-                        console.log('INNNNN');
                         return {
                             ...item,
                             dropdownValue: selection.dropdownValue,
@@ -152,10 +162,6 @@ const MatchingBase = ({
             for (let i = 0; i < numberOfSelections; i += 1) {
                 const currentSelection = selections[i];
                 const nextSelection = selections[i + 1];
-                console.log(currentSelection);
-
-                console.log([...collectedItems]);
-
                 for (
                     let j = currentSelection.index;
                     j < (nextSelection ? nextSelection.index : stopItems.size);
@@ -173,6 +179,7 @@ const MatchingBase = ({
             const updatedItems = new Set(collectedItems);
             updateStopItems(updatedItems);
             updateSelections([]);
+            updateJavascriptButtonClick(true);
         }
     };
 
@@ -246,14 +253,15 @@ const MatchingBase = ({
                                                             handleDropdownSelection(item.index, e.target.value)
                                                         }
                                                     >
-                                                        <option value="">Not Applicable</option>
+                                                        <option value="">Select a Fare Stage</option>
                                                         {item.dropdownOptions.map(option => {
                                                             return (
-                                                                <option key={option.key} value={option.value}>
-                                                                    {option.display}
+                                                                <option key={option} value={option}>
+                                                                    {option}
                                                                 </option>
                                                             );
                                                         })}
+                                                        <option value="notApplicable">Not Applicable</option>
                                                     </select>
                                                     <input
                                                         type="hidden"
@@ -268,24 +276,12 @@ const MatchingBase = ({
                             </FormElementWrapper>
                         </fieldset>
                     </div>
-
+                    {selections.length > 0 || javascriptButtonClick || selectedFareStages.length > 0
+                        ? renderResetAndAutoPopulateButtons(handleResetButtonClick, handleAutoPopulateClick)
+                        : null}
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
                     <input type="submit" value="Continue" id="submit-button" className="govuk-button" />
-                    <button
-                        type="button"
-                        className="govuk-button govuk-button--secondary"
-                        onClick={(e): void => handleResetButtonClick(e)}
-                    >
-                        Reset All Fare Stages
-                    </button>
-                    <button
-                        type="button"
-                        className="govuk-button govuk-button--secondary"
-                        onClick={(e): void => handleAutoPopulateClick(e)}
-                    >
-                        Auto-populate Fare Stages
-                    </button>
                 </>
             </CsrfForm>
         </FullColumnLayout>

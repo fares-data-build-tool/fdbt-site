@@ -10,15 +10,14 @@ exports[`Help should render the Help component 1`] = `
   <p
     className="govuk-body"
   >
-    If you are having problems, please contact the Create Fares Data Service via the link below:
-    <p>
-      <a
-        className="govuk-link govuk-!-font-size-19"
-        href="/contact"
-      >
-        Contact Us
-      </a>
-    </p>
+    If you are having problems, please contact the Create Fares Data Service via the link:
+     
+    <a
+      className="govuk-link govuk-!-font-size-19"
+      href="/contact"
+    >
+      Contact Us
+    </a>
   </p>
 </div>
 `;
