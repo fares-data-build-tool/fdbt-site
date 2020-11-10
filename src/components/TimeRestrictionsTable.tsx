@@ -12,9 +12,9 @@ const TimeRestrictionsTable = ({ chosenDays, errors }: TimeRestrictionsTableProp
     return (
         <>
             {chosenDays.map((chosenDay, index) => (
-                <div className="flex-container" key={chosenDay}>
-                    <div className="day-label govuk-body">{startCase(chosenDay)}</div>
-                    <div className="">
+                <div className="flex-container time-restrictions-table" key={chosenDay}>
+                    <div className="day-label govuk-body govuk-grid-column-one-quarter">{startCase(chosenDay)}</div>
+                    <div className="govuk-grid-column-one-quarter">
                         <FormGroupWrapper errors={errors} errorId={`start-time-${chosenDay}`}>
                             <FormElementWrapper
                                 errors={errors}
@@ -46,7 +46,7 @@ const TimeRestrictionsTable = ({ chosenDays, errors }: TimeRestrictionsTableProp
                             </FormElementWrapper>
                         </FormGroupWrapper>
                     </div>
-                    <div className="">
+                    <div className="govuk-grid-column-one-quarter">
                         <FormGroupWrapper errors={errors} errorId={`end-time-${chosenDay}`}>
                             <FormElementWrapper
                                 errors={errors}

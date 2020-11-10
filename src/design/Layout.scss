@@ -314,11 +314,20 @@ svg:not(:root) {
     margin-right: 10px;
 }
 
-.day-label {
-    align-self: center;
-    margin-bottom: 0px!important;
+.time-restrictions-table {
+    &.flex-container {
+        margin-bottom: 20px;
+    }
+
+    .day-label {
+        margin-bottom: 8px !important;
+    }
+
+    .govuk-form-group {
+        margin-bottom: 0;
+    }
 }
 
 .continue-button-placement {
-    margin-top: 30px!important;
+    margin-top: 30px !important;
 }
