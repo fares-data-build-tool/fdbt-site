@@ -14,7 +14,7 @@ interface MatchingBaseProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
-    selectedFareStages: string[];
+    selectedFareStages: string[][];
     title: string;
     description: string;
     hintText: string;
@@ -24,7 +24,7 @@ interface MatchingBaseProps {
     csrfToken: string;
 }
 
-interface StopItem {
+export interface StopItem {
     index: number;
     stopName: string;
     atcoCode: string;
@@ -34,26 +34,18 @@ interface StopItem {
     dropdownOptions: string[];
 }
 
-const getDefaultStopItems = (
+export const getDefaultStopItems = (
     userFareStages: UserFareStages,
     stops: Stop[],
-    selectedFareStages: string[],
+    selectedFareStages: string[][],
 ): Set<StopItem> => {
     const items = new Set(
         stops.map((stop, index) => {
             let dropdownValue = '';
-            userFareStages.fareStages.forEach((stage: FareStage) => {
-                const currentValue = stage.stageName;
-
-                const isSelected = selectedFareStages.some(selectedObject => {
-                    return selectedObject === currentValue;
-                });
-
-                if (isSelected) {
-                    dropdownValue = currentValue;
+            selectedFareStages.forEach(selectedObject => {
+                if (selectedObject[0].toString() !== '' && selectedObject[1] === JSON.stringify(stop)) {
+                    dropdownValue = selectedObject[0].toString();
                 }
-
-                return null;
             });
 
             return {
@@ -70,12 +62,13 @@ const getDefaultStopItems = (
     return items;
 };
 
-const renderResetAndAutoPopulateButtons = (
+export const renderResetAndAutoPopulateButtons = (
     handleResetButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
     handleAutoPopulateClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 ): ReactElement => (
     <div className="reset-autopopulate-buttons">
         <button
+            id="reset-all-fare-stages-button"
             type="button"
             className="govuk-button govuk-button--secondary"
             onClick={(e): void => handleResetButtonClick(e)}
@@ -83,6 +76,7 @@ const renderResetAndAutoPopulateButtons = (
             Reset All Fare Stages
         </button>
         <button
+            id="auto-populate-fares-stages-button"
             type="button"
             className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
             onClick={(e): void => handleAutoPopulateClick(e)}

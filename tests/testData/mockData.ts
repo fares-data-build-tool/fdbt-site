@@ -902,8 +902,23 @@ export const zoneStops: Stop[] = [
     },
 ];
 
-export const selectedFareStages: string[] = [
-    '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
+export const selectedFareStages: string[][] = [
+    [
+        'Acomb Green Lane',
+        '{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"}',
+    ],
+    [
+        'Acomb Green Lane',
+        '{"stopName":"Park","naptanCode":"duratgwg","atcoCode":"13003625C","localityCode":"E0010170","localityName":"Deneside","parentLocalityName":"IW Test","indicator":"E-bound","street":"The Avenue"}',
+    ],
+    [
+        'Holl Bank/Beech Ave',
+        '{"stopName":"Vane Terrace - Castlereagh","naptanCode":"duratgdt","atcoCode":"13003609E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Vane Terrace"}',
+    ],
+    [
+        'Holl Bank/Beech Ave',
+        '{"stopName":"New Tempest Road - York House","naptanCode":"duratgjt","atcoCode":"13003611B","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"NE-bound","street":"Tempest Road"}',
+    ],
 ];
 
 export const service: BasicService = {
