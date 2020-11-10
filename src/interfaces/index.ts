@@ -161,7 +161,7 @@ export interface BaseGroupTicket {
 }
 
 export interface TimeRestriction {
-    validDays: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
+    validDays: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday' | 'bankHoliday')[];
 }
 
 export interface SchemeOperatorTicket {
@@ -353,4 +353,10 @@ export interface MultiOperatorInfo {
 export interface MultiOperatorInfoWithErrors {
     multiOperatorInfo: MultiOperatorInfo[];
     errors: ErrorInfo[];
+}
+
+export interface FullTimeRestriction {
+    day: string;
+    startTime: string;
+    endTime: string;
 }

@@ -73,6 +73,11 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         name: 'validDays',
                         label: 'Sunday',
                     },
+                    {
+                        id: 'bankHoliday',
+                        name: 'validDays',
+                        label: 'Bank holiday',
+                    },
                 ],
                 inputErrors: getErrorsByIds(['monday'], errors),
             },
@@ -100,7 +105,7 @@ const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTim
                 <ErrorSummary errors={errors} />
                 <div>
                     <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
-                        Are there time restrictions on your ticket(s)?
+                        Are there time restrictions on your ticket?
                     </h1>
                     <span className="govuk-hint" id="define-time-restrictions-hint">
                         We need to know if your ticket(s) will have any time restrictions, for example select yes if

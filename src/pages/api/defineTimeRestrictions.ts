@@ -63,8 +63,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             } else {
                 timeRestrictionsDefinition.validDays.push(validDays);
             }
+            updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
+            redirectTo(res, '/chooseTimeRestrictions');
+            return;
         }
-
         updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
         redirectTo(res, '/fareConfirmation');
         return;

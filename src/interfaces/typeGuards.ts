@@ -22,6 +22,7 @@ import {
     TicketPeriod,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
+    FullTimeRestriction,
 } from './index';
 
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
@@ -182,3 +183,8 @@ export const isMultiOperatorInfoWithErrors = (
     multiOperatorInfo: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined,
 ): multiOperatorInfo is MultiOperatorInfoWithErrors =>
     multiOperatorInfo !== undefined && (multiOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;
+
+export const isFullTimeRestrictionsAttribute = (
+    fullTimeRestrictions: FullTimeRestriction[] | ErrorInfo[],
+): fullTimeRestrictions is FullTimeRestriction[] =>
+    fullTimeRestrictions !== undefined && (fullTimeRestrictions[0] as FullTimeRestriction).day !== undefined;
