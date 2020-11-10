@@ -72,13 +72,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const errors: ErrorInfo[] = collectErrors(inputs);
 
+        updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, { fullTimeRestrictions: inputs, errors });
+
         if (errors.length > 0) {
-            updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, errors);
             redirectTo(res, '/chooseTimeRestrictions');
             return;
         }
 
-        updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, inputs);
         redirectTo(res, '/fareConfirmation');
     } catch (error) {
         const message = 'There was a problem with the user selecting their time restriction times:';

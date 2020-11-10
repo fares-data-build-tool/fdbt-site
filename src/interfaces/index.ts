@@ -360,3 +360,13 @@ export interface FullTimeRestriction {
     startTime: string;
     endTime: string;
 }
+
+export interface FullTimeRestrictionAttribute {
+    fullTimeRestrictions: FullTimeRestriction[];
+    errors: ErrorInfo[];
+}
+
+export interface TimeInput {
+    timeInput: string;
+    day: string;
+}

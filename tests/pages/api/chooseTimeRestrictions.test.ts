@@ -1,4 +1,4 @@
-import { collectErrors, isValidTime } from '../../../src/pages/api/chooseTimeRestrictions';
+import { collectErrors, isValidTime, collectInputsFromRequest } from '../../../src/pages/api/chooseTimeRestrictions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('changePassword', () => {
@@ -31,12 +31,29 @@ describe('changePassword', () => {
         it('should pull all inputs and put them in new format', () => {
             const { req } = getMockRequestAndResponse({
                 cookieValues: {},
-                body: {},
+                body: {
+                    startTimemonday: '0200',
+                    endTimemonday: '2120',
+                    startTimetuesday: '0200',
+                    endTimetuesday: '2120',
+                    startTimebankHoliday: '0200',
+                    endTimebankHoliday: '2120',
+                    startTimefriday: '0200',
+                    endTimefriday: '2120',
+                },
             });
+            const validDays = ['monday', 'tuesday', 'bankHoliday', 'friday'];
+            const result = collectInputsFromRequest(req, validDays);
+            expect(result).toStrictEqual([
+                { day: 'monday', endTime: '2120', startTime: '0200' },
+                { day: 'tuesday', endTime: '2120', startTime: '0200' },
+                { day: 'bankHoliday', endTime: '2120', startTime: '0200' },
+                { day: 'friday', endTime: '2120', startTime: '0200' },
+            ]);
         });
     });
 
-    describe.only('collectErrors', () => {
+    describe('collectErrors', () => {
         it('should return an array of errors for some incorrect inputs', () => {
             const inputs = [
                 {

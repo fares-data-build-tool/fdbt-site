@@ -2,23 +2,30 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, NextPageContextWithSession, TimeRestriction } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, TimeRestriction, TimeInput } from '../interfaces';
 import TimeRestrictionsTable from '../components/TimeRestrictionsTable';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../constants';
-import { isFullTimeRestrictionsAttribute } from '../interfaces/typeGuards';
 
 const title = 'Choose time restrictions - Create Fares Data Service ';
 const description = 'Choose time restrictions page of the Create Fares Data Service';
 
-type ChooseTimeRestrictionsProps = {
+interface ChooseTimeRestrictionsProps {
     chosenDays: string[];
     errors: ErrorInfo[];
     csrfToken: string;
-};
+    startTimeInputs: TimeInput[];
+    endTimeInputs: TimeInput[];
+}
 
-const ChooseTimeRestrictions = ({ chosenDays, errors = [], csrfToken }: ChooseTimeRestrictionsProps): ReactElement => {
+const ChooseTimeRestrictions = ({
+    chosenDays,
+    errors,
+    startTimeInputs,
+    endTimeInputs,
+    csrfToken,
+}: ChooseTimeRestrictionsProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/chooseTimeRestrictions" method="post" csrfToken={csrfToken}>
@@ -35,7 +42,12 @@ const ChooseTimeRestrictions = ({ chosenDays, errors = [], csrfToken }: ChooseTi
                         <div className="govuk-inset-text">
                             Enter times in 2400 format. For example 0900 is 9am, 1730 is 5:30pm.
                         </div>
-                        <TimeRestrictionsTable chosenDays={chosenDays} errors={errors} />
+                        <TimeRestrictionsTable
+                            chosenDays={chosenDays}
+                            errors={errors}
+                            startTimeInputs={startTimeInputs}
+                            endTimeInputs={endTimeInputs}
+                        />
                     </fieldset>
                     <input
                         type="submit"
@@ -61,10 +73,18 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
     const chosenDays = chosenDaysAttribute.validDays;
     const errors: ErrorInfo[] = [];
     const fullTimeRestrictionsAttribute = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
-    if (fullTimeRestrictionsAttribute && !isFullTimeRestrictionsAttribute(fullTimeRestrictionsAttribute)) {
-        fullTimeRestrictionsAttribute.forEach(error => errors.push(error));
+    if (fullTimeRestrictionsAttribute && fullTimeRestrictionsAttribute.errors.length > 0) {
+        fullTimeRestrictionsAttribute.errors.forEach(error => errors.push(error));
     }
-    return { props: { chosenDays, errors, csrfToken } };
+    const startTimeInputs: TimeInput[] = [];
+    const endTimeInputs: TimeInput[] = [];
+    if (fullTimeRestrictionsAttribute && fullTimeRestrictionsAttribute.fullTimeRestrictions.length > 0) {
+        fullTimeRestrictionsAttribute.fullTimeRestrictions.forEach(fullTimeRestriction => {
+            startTimeInputs.push({ timeInput: fullTimeRestriction.startTime, day: fullTimeRestriction.day });
+            endTimeInputs.push({ timeInput: fullTimeRestriction.endTime, day: fullTimeRestriction.day });
+        });
+    }
+    return { props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs } };
 };
 
 export default ChooseTimeRestrictions;

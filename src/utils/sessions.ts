@@ -1,5 +1,4 @@
 import {
-    FullTimeRestriction,
     MultiOperatorInfoWithErrors,
     InputMethodInfo,
     ErrorInfo,
@@ -20,6 +19,7 @@ import {
     ReturnPeriodValidity,
     MultiOperatorInfo,
     TicketPeriod,
+    FullTimeRestrictionAttribute,
 } from '../interfaces/index';
 
 import { FaresInformation } from '../pages/api/priceEntry';
@@ -130,7 +130,7 @@ type SessionAttributeTypes = {
     [PRODUCT_DATE_ATTRIBUTE]: TicketPeriod | TicketPeriodWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
-    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestriction[] | ErrorInfo[];
+    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

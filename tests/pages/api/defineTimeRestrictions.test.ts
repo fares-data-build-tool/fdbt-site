@@ -1,5 +1,5 @@
 import * as sessions from '../../../src/utils/sessions';
-import { getMockRequestAndResponse, mockTimeRestrictionsInputErrors } from '../../testData/mockData';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
 import { TimeRestriction } from '../../../src/interfaces';
 import defineTimeRestrictions from '../../../src/pages/api/defineTimeRestrictions';
@@ -59,40 +59,28 @@ describe('defineTimeRestrictions', () => {
             mockAttributeValue,
         );
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/fareConfirmation',
+            Location: '/chooseTimeRestrictions',
         });
     });
 
-    it.each([
-        [
-            {
+    it('should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect to itself (i.e. /defineTimeRestrictions) when errors are present due to saying there are valid days but not providing any', () => {
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
                 validDaysSelected: 'Yes',
             },
-            {
-                validDaysSelected: 'Yes',
-
-                errors: mockTimeRestrictionsInputErrors,
-            },
-        ],
-    ])(
-        'should set the TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE and redirect to itself (i.e. /defineTimeRestrictions) when errors are present due to %s',
-        (mockUserInput, mockAttributeValue) => {
-            const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
-            const { req, res } = getMockRequestAndResponse({
-                cookieValues: {},
-                body: mockUserInput,
-                uuid: {},
-                mockWriteHeadFn: writeHeadMock,
-            });
-            defineTimeRestrictions(req, res);
-            expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-                req,
-                TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
-                mockAttributeValue,
-            );
-            expect(writeHeadMock).toBeCalledWith(302, {
-                Location: '/defineTimeRestrictions',
-            });
-        },
-    );
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        defineTimeRestrictions(req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, {
+            validDays: undefined,
+            validDaysSelected: 'Yes',
+            errors: [{ errorMessage: 'Select at least one day', id: 'monday' }],
+        });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/defineTimeRestrictions',
+        });
+    });
 });

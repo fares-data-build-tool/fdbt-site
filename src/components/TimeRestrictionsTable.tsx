@@ -1,14 +1,24 @@
 import React, { ReactElement } from 'react';
 import startCase from 'lodash/startCase';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
-import { ErrorInfo } from '../interfaces';
+import { ErrorInfo, TimeInput } from '../interfaces';
 
 interface TimeRestrictionsTableProps {
     chosenDays: string[];
     errors: ErrorInfo[];
+    startTimeInputs: TimeInput[];
+    endTimeInputs: TimeInput[];
 }
 
-const TimeRestrictionsTable = ({ chosenDays, errors }: TimeRestrictionsTableProps): ReactElement => {
+const findCorrectDefaultValue = (inputs: TimeInput[], chosenDay: string): string =>
+    inputs.find(input => input.day === chosenDay && input.timeInput)?.timeInput ?? '';
+
+const TimeRestrictionsTable = ({
+    chosenDays,
+    errors,
+    startTimeInputs,
+    endTimeInputs,
+}: TimeRestrictionsTableProps): ReactElement => {
     return (
         <>
             {chosenDays.map((chosenDay, index) => (
@@ -34,13 +44,7 @@ const TimeRestrictionsTable = ({ chosenDays, errors }: TimeRestrictionsTableProp
                                         name={`startTime${chosenDay}`}
                                         aria-describedby="time-restrictions-hint"
                                         type="text"
-                                        defaultValue={
-                                            errors.length > 0 &&
-                                            errors[index] &&
-                                            errors[index].id === `start-time-${chosenDay}`
-                                                ? errors[index].userInput
-                                                : ''
-                                        }
+                                        defaultValue={findCorrectDefaultValue(startTimeInputs, chosenDay)}
                                     />
                                 </>
                             </FormElementWrapper>
@@ -66,13 +70,7 @@ const TimeRestrictionsTable = ({ chosenDays, errors }: TimeRestrictionsTableProp
                                         name={`endTime${chosenDay}`}
                                         aria-describedby="time-restrictions-hint"
                                         type="text"
-                                        defaultValue={
-                                            errors.length > 0 &&
-                                            errors[index] &&
-                                            errors[index].id === `end-time-${chosenDay}`
-                                                ? errors[index].userInput
-                                                : ''
-                                        }
+                                        defaultValue={findCorrectDefaultValue(endTimeInputs, chosenDay)}
                                     />
                                 </>
                             </FormElementWrapper>
