@@ -126,7 +126,6 @@ const MatchingBase = ({
 
     const handleResetButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         event.preventDefault();
-        console.log('stop items', stopItems);
         const updatedItems = new Set([...stopItems].map(item => ({ ...item, dropdownValue: '' })));
         updateStopItems(updatedItems);
         updateSelections([]);
