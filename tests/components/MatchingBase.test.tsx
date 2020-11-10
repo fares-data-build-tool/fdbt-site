@@ -1,79 +1,72 @@
 import {
-    // mount,
+    mount,
     shallow,
     //   ShallowWrapper
 } from 'enzyme';
-// import React from 'react';
-import {
-    // MatchingBase,
+import React from 'react';
+import MatchingBase, {
     getDefaultStopItems,
     StopItem,
     renderResetAndAutoPopulateButtons,
 } from '../../src/components/MatchingBase';
-import {
-    userFareStages,
-    selectedFareStages,
-    zoneStops,
-    // service
-} from '../testData/mockData';
-
-// const mockStopItems = new Set([
-//     {
-//         index: expect.any(Number),
-//         stopName: expect.any(String),
-//         atcoCode: expect.any(String),
-//         naptanCode: expect.any(String),
-//         dropdownValue: expect.any(String),
-//         stopData: expect.any(String),
-//         dropdownOptions: expect.any(Array),
-//     },
-//     {
-//         index: expect.any(Number),
-//         stopName: expect.any(String),
-//         atcoCode: expect.any(String),
-//         naptanCode: expect.any(String),
-//         dropdownValue: expect.any(String),
-//         stopData: expect.any(String),
-//         dropdownOptions: expect.any(Array),
-//     },
-//     {
-//         index: expect.any(Number),
-//         stopName: expect.any(String),
-//         atcoCode: expect.any(String),
-//         naptanCode: expect.any(String),
-//         dropdownValue: expect.any(String),
-//         stopData: expect.any(String),
-//         dropdownOptions: expect.any(Array),
-//     },
-//     {
-//         index: expect.any(Number),
-//         stopName: expect.any(String),
-//         atcoCode: expect.any(String),
-//         naptanCode: expect.any(String),
-//         dropdownValue: expect.any(String),
-//         stopData: expect.any(String),
-//         dropdownOptions: expect.any(Array),
-//     },
-//     {
-//         index: expect.any(Number),
-//         stopName: expect.any(String),
-//         atcoCode: expect.any(String),
-//         naptanCode: expect.any(String),
-//         dropdownValue: expect.any(String),
-//         stopData: expect.any(String),
-//         dropdownOptions: expect.any(Array),
-//     },
-// ]);
+import { userFareStages, selectedFareStages, zoneStops, service } from '../testData/mockData';
 
 describe('MatchingBase', () => {
-    // const baseProps = {
-    //     title: 'Matching - Create Fares Data Service',
-    //     description: 'Matching page of the Create Fares Data Service',
-    //     hintText: 'Select a fare stage for each stop.',
-    //     travelineHintText: 'This data has been taken from the Traveline National Dataset and NaPTAN database.',
-    //     heading: 'Match stops to fares stages',
-    //     apiEndpoint: '/api/matching',
-    // };
+    const mockStopItems = new Set([
+        {
+            index: expect.any(Number),
+            stopName: expect.any(String),
+            atcoCode: expect.any(String),
+            naptanCode: expect.any(String),
+            dropdownValue: expect.any(String),
+            stopData: expect.any(String),
+            dropdownOptions: expect.any(Array),
+        },
+        {
+            index: expect.any(Number),
+            stopName: expect.any(String),
+            atcoCode: expect.any(String),
+            naptanCode: expect.any(String),
+            dropdownValue: expect.any(String),
+            stopData: expect.any(String),
+            dropdownOptions: expect.any(Array),
+        },
+        {
+            index: expect.any(Number),
+            stopName: expect.any(String),
+            atcoCode: expect.any(String),
+            naptanCode: expect.any(String),
+            dropdownValue: expect.any(String),
+            stopData: expect.any(String),
+            dropdownOptions: expect.any(Array),
+        },
+        {
+            index: expect.any(Number),
+            stopName: expect.any(String),
+            atcoCode: expect.any(String),
+            naptanCode: expect.any(String),
+            dropdownValue: expect.any(String),
+            stopData: expect.any(String),
+            dropdownOptions: expect.any(Array),
+        },
+        {
+            index: expect.any(Number),
+            stopName: expect.any(String),
+            atcoCode: expect.any(String),
+            naptanCode: expect.any(String),
+            dropdownValue: expect.any(String),
+            stopData: expect.any(String),
+            dropdownOptions: expect.any(Array),
+        },
+    ]);
+    const baseProps = {
+        title: 'Matching - Create Fares Data Service',
+        description: 'Matching page of the Create Fares Data Service',
+        hintText: 'Select a fare stage for each stop.',
+        travelineHintText: 'This data has been taken from the Traveline National Dataset and NaPTAN database.',
+        heading: 'Match stops to fares stages',
+        apiEndpoint: '/api/matching',
+    };
 
     describe('getDefaultStopItems', () => {
         it('should return an array of stop items each with a default dropdown value when there are no selectedFareStages', () => {
@@ -106,31 +99,54 @@ describe('MatchingBase', () => {
         });
     });
 
-    // describe('javascript functionality', () => {
-    //     let wrapper;
-    //     const mockSetState = jest.fn();
-    //     jest.mock('react', () => ({ useState: (initialState: unknown): unknown => [initialState, mockSetState] }));
-    //     const mockEvent = { preventDefault: jest.fn() } as unknown;
+    describe('javascript functionality', () => {
+        //let wrapper: any;
+        const mockSetState = jest.fn();
+        jest.mock('react', () => ({ useState: (initialState: unknown): unknown => [initialState, mockSetState] }));
+        const mockEvent = { preventDefault: jest.fn() } as unknown;
 
-    //     beforeEach(() => {
-    //         wrapper = mount(
-    //             <MatchingBase
-    //                 userFareStages={userFareStages}
-    //                 stops={zoneStops}
-    //                 service={service}
-    //                 error={false}
-    //                 selectedFareStages={selectedFareStages}
-    //                 csrfToken=""
-    //                 // eslint-disable-next-line react/jsx-props-no-spreading
-    //                 {...baseProps}
-    //             />,
-    //         ).instance();
-    //         wrapper.setState({ stopItems: mockStopItems });
-    //     });
+        // beforeEach(() => {
+        //     wrapper = mount(
+        //         <MatchingBase
+        //             userFareStages={userFareStages}
+        //             stops={zoneStops}
+        //             service={[]}
+        //             error={false}
+        //             selectedFareStages={selectedFareStages}
+        //             csrfToken=""
+        //             // eslint-disable-next-line react/jsx-props-no-spreading
+        //             {...baseProps}
+        //         />,
+        //     ).instance();
+        //     wrapper.setState({ stopItems: mockStopItems });
+        // });
 
-    //     afterEach(() => {
-    //         jest.clearAllMocks();
-    //     });
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it.only('should update the stopItems, selections and javascriptButtonClick state variables when the reset button is clicked', () => {
+            const wrapper = mount(
+                <MatchingBase
+                    userFareStages={userFareStages}
+                    stops={zoneStops}
+                    service={service}
+                    error={false}
+                    selectedFareStages={selectedFareStages}
+                    csrfToken=""
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...baseProps}
+                />,
+            );
+            wrapper.setState({ stopItems: mockStopItems });
+            console.log('wrapper', wrapper.debug());
+            wrapper
+                .find('#reset-all-fare-stages-button')
+                .props()
+                .onClick(mockEvent);
+            expect(mockSetState).toHaveBeenCalledTimes(3);
+        });
+    });
 
     //     describe('resetButtonClick', () => {
     //         it('should update the stopItems, selections and javascriptButtonClick state variables when the reset button is clicked', () => {
