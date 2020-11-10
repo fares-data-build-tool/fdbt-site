@@ -64,7 +64,7 @@ export const getDefaultStopItems = (
 
 export const renderResetAndAutoPopulateButtons = (
     handleResetButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-    handleAutoPopulateClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    handleAutoPopulateButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 ): ReactElement => (
     <div className="reset-autopopulate-buttons">
         <button
@@ -79,7 +79,7 @@ export const renderResetAndAutoPopulateButtons = (
             id="auto-populate-fares-stages-button"
             type="button"
             className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
-            onClick={(e): void => handleAutoPopulateClick(e)}
+            onClick={(e): void => handleAutoPopulateButtonClick(e)}
         >
             Auto-populate Fare Stages
         </button>
@@ -132,7 +132,7 @@ const MatchingBase = ({
         updateJavascriptButtonClick(true);
     };
 
-    const handleAutoPopulateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    const handleAutoPopulateButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         event.preventDefault();
         const numberOfSelections = selections.length;
 
@@ -271,7 +271,7 @@ const MatchingBase = ({
                         </fieldset>
                     </div>
                     {selections.length > 0 || javascriptButtonClick || selectedFareStages.length > 0
-                        ? renderResetAndAutoPopulateButtons(handleResetButtonClick, handleAutoPopulateClick)
+                        ? renderResetAndAutoPopulateButtons(handleResetButtonClick, handleAutoPopulateButtonClick)
                         : null}
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
