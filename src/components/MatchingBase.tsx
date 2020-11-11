@@ -173,8 +173,8 @@ const MatchingBase = ({
             const updatedItems = new Set(collectedItems);
             updateStopItems(updatedItems);
             updateSelections([]);
-            updateJavascriptButtonClick(true);
         }
+        updateJavascriptButtonClick(true);
     };
 
     if (error) {
@@ -247,7 +247,9 @@ const MatchingBase = ({
                                                             handleDropdownSelection(item.index, e.target.value)
                                                         }
                                                     >
-                                                        <option value="">Select a Fare Stage</option>
+                                                        <option value="" disabled>
+                                                            Select a Fare Stage
+                                                        </option>
                                                         {item.dropdownOptions.map(option => {
                                                             return (
                                                                 <option key={option} value={option}>
