@@ -193,7 +193,7 @@ describe('productDataInformation', () => {
                 startDateYear: '',
                 endDateDay: '04',
                 endDateMonth: '11',
-                endDateYear: '3020',
+                endDateYear: '4020',
                 productDates: 'Yes',
             },
             mockWriteHeadFn: writeHeadMock,
