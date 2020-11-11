@@ -109,9 +109,10 @@ describe('MatchingBase', () => {
 
         describe('resetButtonClick', () => {
             it('should update the state such that each dropdown on the page has its value reset to an empty string', () => {
-                // NEED TO MOCK THE stopItems STATE VARIABLE HERE
-                // AND ADD AN EXPECT() ON THE VALUES OF EACH DROPDOWN BEFORE THE ONCLICK IS EXECUTED
-
+                const dropdownValues = wrapper.find('select').map(item => item.prop('value'));
+                expect(dropdownValues).toContainEqual(
+                    expect.stringMatching('' || 'Acomb Green Lane' || 'Holl Bank/Beech Ave'),
+                );
                 (wrapper.find('#reset-all-fare-stages-button').prop('onClick') as Function)(mockMouseEvent);
                 wrapper.find('select').forEach(item => {
                     expect(item.prop('value')).toEqual('');
