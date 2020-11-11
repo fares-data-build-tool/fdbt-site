@@ -2,6 +2,24 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
+import {
+    FullTimeRestriction,
+    ErrorInfo,
+    Breadcrumb,
+    NextPageContextWithSession,
+    BasicService,
+    SingleTicket,
+    ReturnTicket,
+    PeriodGeoZoneTicket,
+    Stop,
+    PeriodMultipleServicesTicket,
+    FlatFareTicket,
+    SalesOfferPackage,
+    ProductDetails,
+    MultiOperatorGeoZoneTicket,
+    MultiOperatorMultipleServicesTicket,
+    SchemeOperatorTicket,
+} from '../../src/interfaces/index';
 import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -29,24 +47,7 @@ import { UserFareStages } from '../../src/data/s3';
 
 import { MultiProduct } from '../../src/pages/api/multipleProducts';
 import { RadioConditionalInputFieldset } from '../../src/components/RadioConditionalInput';
-import {
-    ErrorInfo,
-    Breadcrumb,
-    NextPageContextWithSession,
-    BasicService,
-    SingleTicket,
-    ReturnTicket,
-    PeriodGeoZoneTicket,
-    Stop,
-    PeriodMultipleServicesTicket,
-    FlatFareTicket,
-    SalesOfferPackage,
-    ProductDetails,
-    TimeRestriction,
-    MultiOperatorGeoZoneTicket,
-    MultiOperatorMultipleServicesTicket,
-    SchemeOperatorTicket,
-} from '../../src/interfaces';
+
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
@@ -1160,9 +1161,28 @@ export const expectedProductDetailsArray: ProductDetails[] = [
     },
 ];
 
-export const mockTimeRestriction: TimeRestriction = {
-    validDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'bankHoliday'],
-};
+export const mockTimeRestriction: FullTimeRestriction[] = [
+    {
+        day: 'monday',
+        startTime: '0900',
+        endTime: '',
+    },
+    {
+        day: 'tuesday',
+        startTime: '',
+        endTime: '1800',
+    },
+    {
+        day: 'bank holiday',
+        startTime: '0900',
+        endTime: '1750',
+    },
+    {
+        day: 'friday',
+        startTime: '',
+        endTime: '',
+    },
+];
 
 export const expectedSingleTicket: SingleTicket = {
     type: 'single',
@@ -1896,6 +1916,7 @@ export const expectedFlatFareTicket: FlatFareTicket = {
             serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
         },
     ],
+    timeRestriction: [],
 };
 
 export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {

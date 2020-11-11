@@ -1,4 +1,5 @@
 import {
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
@@ -91,10 +92,35 @@ describe('getSingleTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         const result = getSingleTicketJson(req, res);
-        expect(result).toEqual(expectedSingleTicket);
+        expect(result).toStrictEqual(expectedSingleTicket);
     });
 });
 
@@ -117,10 +143,35 @@ describe('getReturnTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         const result = getReturnTicketJson(req, res);
-        expect(result).toEqual(expectedNonCircularReturnTicket);
+        expect(result).toStrictEqual(expectedNonCircularReturnTicket);
     });
     it('should return a ReturnTicket object for a circular journey', () => {
         const { req, res } = getMockRequestAndResponse({
@@ -137,10 +188,35 @@ describe('getReturnTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         const result = getReturnTicketJson(req, res);
-        expect(result).toEqual(expectedCircularReturnTicket);
+        expect(result).toStrictEqual(expectedCircularReturnTicket);
     });
 });
 
@@ -230,11 +306,36 @@ describe('getGeoZoneTicketJson', () => {
                 ...(fareType === 'multiOperator' && {
                     [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
                 }),
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
         const result = await getGeoZoneTicketJson(req, res);
-        expect(result).toEqual(expectedJson);
+        expect(result).toStrictEqual(expectedJson);
     });
 });
 
@@ -286,10 +387,35 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                     startDate: '2020-12-17T09:30:46.0Z',
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         const result = getMultipleServicesTicketJson(req, res);
-        expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
+        expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
     });
 
     it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', () => {
@@ -365,10 +491,35 @@ describe('getPeriodMulipleServicesTicketJson', () => {
                         ],
                     },
                 ],
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         const result = getMultipleServicesTicketJson(req, res);
-        expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators);
+        expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators);
     });
 });
 
@@ -480,6 +631,31 @@ describe('getSchemeOperatorTicketJson', () => {
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
                 [MULTIPLE_OPERATOR_ATTRIBUTE]: { selectedOperators: mockMultiOpSelectedOperators },
+                [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: {
+                    fullTimeRestrictions: [
+                        {
+                            day: 'monday',
+                            startTime: '0900',
+                            endTime: '',
+                        },
+                        {
+                            day: 'tuesday',
+                            startTime: '',
+                            endTime: '1800',
+                        },
+                        {
+                            day: 'bank holiday',
+                            startTime: '0900',
+                            endTime: '1750',
+                        },
+                        {
+                            day: 'friday',
+                            startTime: '',
+                            endTime: '',
+                        },
+                    ],
+                    errors: [],
+                },
             },
         });
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
