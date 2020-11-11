@@ -49,25 +49,9 @@ describe('MatchingBase', () => {
     });
 
     describe('javascript functionality', () => {
-        let wrapper: ShallowWrapper;
         const mockSetState = jest.fn();
         jest.mock('react', () => ({ useState: (initialState: unknown): unknown => [initialState, mockSetState] }));
         const mockMouseEvent = ({ preventDefault: jest.fn() } as unknown) as React.MouseEvent;
-
-        beforeEach(() => {
-            wrapper = shallow(
-                <MatchingBase
-                    userFareStages={userFareStages}
-                    stops={zoneStops}
-                    service={service}
-                    error={false}
-                    selectedFareStages={selectedFareStages}
-                    csrfToken=""
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...baseProps}
-                />,
-            );
-        });
 
         afterEach(() => {
             jest.clearAllMocks();
@@ -93,6 +77,19 @@ describe('MatchingBase', () => {
         });
 
         describe('dropdownSelection', () => {
+            const wrapper = shallow(
+                <MatchingBase
+                    userFareStages={userFareStages}
+                    stops={zoneStops}
+                    service={service}
+                    error={false}
+                    selectedFareStages={[]}
+                    csrfToken=""
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...baseProps}
+                />,
+            );
+
             it('should update the state such that the dropdown that has been clicked has its value updated to the selected value', () => {
                 const mockDropdownInfo = {
                     index: 5,
@@ -108,6 +105,19 @@ describe('MatchingBase', () => {
         });
 
         describe('resetButtonClick', () => {
+            const wrapper = shallow(
+                <MatchingBase
+                    userFareStages={userFareStages}
+                    stops={zoneStops}
+                    service={service}
+                    error={false}
+                    selectedFareStages={selectedFareStages}
+                    csrfToken=""
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...baseProps}
+                />,
+            );
+
             it('should update the state such that each dropdown on the page has its value reset to an empty string', () => {
                 const dropdownValues = wrapper.find('select').map(item => item.prop('value'));
                 expect(dropdownValues).toContainEqual(
