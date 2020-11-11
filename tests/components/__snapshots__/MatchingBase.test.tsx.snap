@@ -6,7 +6,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
 >
   <button
     className="govuk-button govuk-button--secondary"
-    id="reset-all-fare-stages-button"
+    id="bottom-reset-all-fare-stages-button"
     onClick={[Function]}
     type="button"
   >
@@ -14,7 +14,7 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
   </button>
   <button
     className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
-    id="auto-populate-fares-stages-button"
+    id="bottom-auto-populate-fares-stages-button"
     onClick={[Function]}
     type="button"
   >

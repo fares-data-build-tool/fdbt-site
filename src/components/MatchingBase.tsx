@@ -65,10 +65,11 @@ export const getDefaultStopItems = (
 export const renderResetAndAutoPopulateButtons = (
     handleResetButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
     handleAutoPopulateButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    location: string,
 ): ReactElement => (
     <div className="reset-autopopulate-buttons">
         <button
-            id="reset-all-fare-stages-button"
+            id={`${location}-reset-all-fare-stages-button`}
             type="button"
             className="govuk-button govuk-button--secondary"
             onClick={(e): void => handleResetButtonClick(e)}
@@ -76,7 +77,7 @@ export const renderResetAndAutoPopulateButtons = (
             Reset All Fare Stages
         </button>
         <button
-            id="auto-populate-fares-stages-button"
+            id={`${location}-auto-populate-fares-stages-button`}
             type="button"
             className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
             onClick={(e): void => handleAutoPopulateButtonClick(e)}
@@ -197,6 +198,13 @@ const MatchingBase = ({
                             <span className="govuk-hint" id="traveline-hint">
                                 {travelineHintText}
                             </span>
+                            {selections.length > 0 || javascriptButtonClick || selectedFareStages.length > 0
+                                ? renderResetAndAutoPopulateButtons(
+                                      handleResetButtonClick,
+                                      handleAutoPopulateButtonClick,
+                                      'top',
+                                  )
+                                : null}
                             <FormElementWrapper errors={errors} errorId="option-0" errorClass="">
                                 <table className="govuk-table">
                                     <thead className="govuk-table__head">
@@ -273,7 +281,11 @@ const MatchingBase = ({
                         </fieldset>
                     </div>
                     {selections.length > 0 || javascriptButtonClick || selectedFareStages.length > 0
-                        ? renderResetAndAutoPopulateButtons(handleResetButtonClick, handleAutoPopulateButtonClick)
+                        ? renderResetAndAutoPopulateButtons(
+                              handleResetButtonClick,
+                              handleAutoPopulateButtonClick,
+                              'bottom',
+                          )
                         : null}
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />

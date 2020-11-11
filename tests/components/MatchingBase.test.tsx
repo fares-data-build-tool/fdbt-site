@@ -42,7 +42,7 @@ describe('MatchingBase', () => {
         describe('renderResetAndAutoPopulateButtons', () => {
             it('should render the reset and auto populate buttons on the page', () => {
                 const mockFn = jest.fn();
-                const wrapper = shallow(renderResetAndAutoPopulateButtons(mockFn, mockFn));
+                const wrapper = shallow(renderResetAndAutoPopulateButtons(mockFn, mockFn, 'bottom'));
                 expect(wrapper).toMatchSnapshot();
             });
         });
@@ -70,8 +70,8 @@ describe('MatchingBase', () => {
                     {...baseProps}
                 />,
             );
-            const resetButton = matchBase.find('#reset-all-fare-stages-button');
-            const autoPopulateButton = matchBase.find('#auto-populate-fares-stages-button');
+            const resetButton = matchBase.find('#bottom-reset-all-fare-stages-button');
+            const autoPopulateButton = matchBase.find('#bottom-auto-populate-fares-stages-button');
             expect(resetButton).toHaveLength(0);
             expect(autoPopulateButton).toHaveLength(0);
         });
@@ -123,7 +123,7 @@ describe('MatchingBase', () => {
                 expect(dropdownValues).toContainEqual(
                     expect.stringMatching('' || 'Acomb Green Lane' || 'Holl Bank/Beech Ave'),
                 );
-                (wrapper.find('#reset-all-fare-stages-button').prop('onClick') as Function)(mockMouseEvent);
+                (wrapper.find('#bottom-reset-all-fare-stages-button').prop('onClick') as Function)(mockMouseEvent);
                 wrapper.find('select').forEach(item => {
                     expect(item.prop('value')).toEqual('');
                 });
@@ -155,7 +155,7 @@ describe('MatchingBase', () => {
                         value: 'Acomb Green Lane',
                     },
                 });
-                (matchingBaseWrapper.find('#auto-populate-fares-stages-button').prop('onClick') as Function)(
+                (matchingBaseWrapper.find('#bottom-auto-populate-fares-stages-button').prop('onClick') as Function)(
                     mockMouseEvent,
                 );
                 matchingBaseWrapper.update();
@@ -187,7 +187,7 @@ describe('MatchingBase', () => {
                         },
                     });
                 });
-                (matchingBaseWrapper.find('#auto-populate-fares-stages-button').prop('onClick') as Function)(
+                (matchingBaseWrapper.find('#bottom-auto-populate-fares-stages-button').prop('onClick') as Function)(
                     mockMouseEvent,
                 );
                 matchingBaseWrapper.update();
