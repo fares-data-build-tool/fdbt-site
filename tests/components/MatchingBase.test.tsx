@@ -121,28 +121,78 @@ describe('MatchingBase', () => {
         });
 
         describe('autoPopulateButtonClick', () => {
-            // NEED TO MOCK THE selections STATE VARIABLE HERE TO HAVE (i) ONE (ii) TWO (iii) TEN SELECTIONS MADE
-            // AND AMEND THE EXPECT() TO CHECK THAT ALL VALUES WITHIN A RANGE OF THE INDEX HAVE CHANGED
+            let matchingBaseWrapper: ShallowWrapper;
+
+            beforeEach(() => {
+                matchingBaseWrapper = shallow(
+                    <MatchingBase
+                        userFareStages={userFareStages}
+                        stops={zoneStops}
+                        service={service}
+                        error={false}
+                        selectedFareStages={[]}
+                        csrfToken=""
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        {...baseProps}
+                    />,
+                );
+            });
 
             it('should update the state such that each dropdown below the one selected has its value updated to the selected value', () => {
-                (wrapper.find('#auto-populate-fares-stages-button').prop('onClick') as Function)(mockMouseEvent);
-                // wrapper.find('select').forEach(item => {
-                //     expect(item.prop('value')).toEqual('');
-                // });
+                const optionIndex = 5;
+                (matchingBaseWrapper.find(`#option-${optionIndex}`).prop('onChange') as Function)({
+                    target: {
+                        value: 'Acomb Green Lane',
+                    },
+                });
+                (matchingBaseWrapper.find('#auto-populate-fares-stages-button').prop('onClick') as Function)(
+                    mockMouseEvent,
+                );
+                matchingBaseWrapper.update();
+                matchingBaseWrapper.find('select').forEach(item => {
+                    const itemIndex = Number(item.prop('id')?.split('-')[1]);
+                    if (itemIndex < optionIndex) {
+                        expect(item.prop('value')).toEqual('');
+                    } else if (itemIndex >= optionIndex) {
+                        expect(item.prop('value')).toEqual('Acomb Green Lane');
+                    }
+                });
             });
 
-            it('should update the state such that the dropdowns below the selected values have their value updated correctly for 2 selections', () => {
-                (wrapper.find('#auto-populate-fares-stages-button').prop('onClick') as Function)(mockMouseEvent);
-                // wrapper.find('select').forEach(item => {
-                //     expect(item.prop('value')).toEqual('');
-                // });
-            });
-
-            it('should update the state such that the dropdowns below the selected values have their value updated correctly for 10 selections', () => {
-                (wrapper.find('#auto-populate-fares-stages-button').prop('onClick') as Function)(mockMouseEvent);
-                // wrapper.find('select').forEach(item => {
-                //     expect(item.prop('value')).toEqual('');
-                // });
+            it('should update the state such that the dropdowns below the selected values have their value updated correctly for >1 selections', () => {
+                const mockDropdownInfo = [
+                    {
+                        index: 5,
+                        value: 'Acomb Green Lane',
+                    },
+                    {
+                        index: 9,
+                        value: 'Holl Bank/Beech Ave',
+                    },
+                ];
+                mockDropdownInfo.forEach(selection => {
+                    (matchingBaseWrapper.find(`#option-${selection.index}`).prop('onChange') as Function)({
+                        target: {
+                            value: selection.value,
+                        },
+                    });
+                });
+                (matchingBaseWrapper.find('#auto-populate-fares-stages-button').prop('onClick') as Function)(
+                    mockMouseEvent,
+                );
+                matchingBaseWrapper.update();
+                matchingBaseWrapper.find('select').forEach(item => {
+                    const firstSelectionIndex = mockDropdownInfo[0].index;
+                    const secondSelectionIndex = mockDropdownInfo[1].index;
+                    const itemIndex = Number(item.prop('id')?.split('-')[1]);
+                    if (itemIndex < firstSelectionIndex) {
+                        expect(item.prop('value')).toEqual('');
+                    } else if (itemIndex >= firstSelectionIndex && itemIndex < secondSelectionIndex) {
+                        expect(item.prop('value')).toEqual('Acomb Green Lane');
+                    } else if (itemIndex > secondSelectionIndex) {
+                        expect(item.prop('value')).toEqual('Holl Bank/Beech Ave');
+                    }
+                });
             });
         });
     });
