@@ -29,7 +29,7 @@ describe('validator', () => {
             expect(removeExcessWhiteSpace(input)).toBe(expected);
         });
         it('should return an empty string if input is undefined', () => {
-            const input = '';
+            const input = undefined;
             const expected = '';
 
             expect(removeExcessWhiteSpace(input)).toBe(expected);
