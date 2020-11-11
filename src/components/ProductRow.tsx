@@ -121,7 +121,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                                 1}`}</span>
                             <span aria-hidden>Duration Type</span>
                         </label>
-                        <span className="govuk-hint" id={`product-duration-hint-${index}`}>
+                        <span className="govuk-hint" id={`product-duration-units-hint-${index}`}>
                             For example, days
                         </span>
                         <FormElementWrapper
