@@ -74,7 +74,22 @@ describe('MatchingBase', () => {
         });
 
         it('should not render the reset or autopopulate buttons on initial render', () => {
-            // NEED A TEST TO CHECK THAT THE BUTTONS ARE NOT RENDERED ON INITIAL STATE
+            const matchBase = shallow(
+                <MatchingBase
+                    userFareStages={userFareStages}
+                    stops={zoneStops}
+                    service={service}
+                    error={false}
+                    selectedFareStages={[]}
+                    csrfToken=""
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...baseProps}
+                />,
+            );
+            const resetButton = matchBase.find('#reset-all-fare-stages-button');
+            const autoPopulateButton = matchBase.find('#auto-populate-fares-stages-button');
+            expect(resetButton).toHaveLength(0);
+            expect(autoPopulateButton).toHaveLength(0);
         });
 
         describe('dropdownSelection', () => {
