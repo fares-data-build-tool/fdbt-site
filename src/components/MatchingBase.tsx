@@ -105,7 +105,6 @@ const MatchingBase = ({
 
     const [selections, updateSelections] = useState<StopItem[]>([]);
     const [stopItems, updateStopItems] = useState(getDefaultStopItems(userFareStages, stops, selectedFareStages));
-    const [javascriptButtonClick, updateJavascriptButtonClick] = useState(false);
 
     const handleDropdownSelection = (dropdownIndex: number, dropdownValue: string): void => {
         const updatedItems = new Set(
@@ -130,7 +129,6 @@ const MatchingBase = ({
         const updatedItems = new Set([...stopItems].map(item => ({ ...item, dropdownValue: '' })));
         updateStopItems(updatedItems);
         updateSelections([]);
-        updateJavascriptButtonClick(true);
     };
 
     const handleAutoPopulateButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
@@ -175,7 +173,6 @@ const MatchingBase = ({
             updateStopItems(updatedItems);
             updateSelections([]);
         }
-        updateJavascriptButtonClick(true);
     };
 
     if (error) {
@@ -195,16 +192,20 @@ const MatchingBase = ({
                             <span className="govuk-hint" id="match-fares-hint">
                                 {hintText}
                             </span>
+                            <span className="govuk-hint" id="auto-populate-hint">
+                                To assist you with completing this section we have included an auto-complete feature.
+                                Assign <b>each</b> fare stage to the <b>first</b> bus stop in the stage and then select
+                                the auto-complete button to fill in the gaps. You can also manually match individual
+                                stops to fare stages at any point.
+                            </span>
                             <span className="govuk-hint" id="traveline-hint">
                                 {travelineHintText}
                             </span>
-                            {selections.length > 0 || javascriptButtonClick || selectedFareStages.length > 0
-                                ? renderResetAndAutoPopulateButtons(
-                                      handleResetButtonClick,
-                                      handleAutoPopulateButtonClick,
-                                      'top',
-                                  )
-                                : null}
+                            {renderResetAndAutoPopulateButtons(
+                                handleResetButtonClick,
+                                handleAutoPopulateButtonClick,
+                                'top',
+                            )}
                             <FormElementWrapper errors={errors} errorId="option-0" errorClass="">
                                 <table className="govuk-table">
                                     <thead className="govuk-table__head">
@@ -280,13 +281,7 @@ const MatchingBase = ({
                             </FormElementWrapper>
                         </fieldset>
                     </div>
-                    {selections.length > 0 || javascriptButtonClick || selectedFareStages.length > 0
-                        ? renderResetAndAutoPopulateButtons(
-                              handleResetButtonClick,
-                              handleAutoPopulateButtonClick,
-                              'bottom',
-                          )
-                        : null}
+                    {renderResetAndAutoPopulateButtons(handleResetButtonClick, handleAutoPopulateButtonClick, 'bottom')}
                     <input type="hidden" name="service" value={JSON.stringify(service)} />
                     <input type="hidden" name="userfarestages" value={JSON.stringify(userFareStages)} />
                     <input type="submit" value="Continue" id="submit-button" className="govuk-button" />

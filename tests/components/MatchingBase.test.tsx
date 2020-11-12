@@ -57,25 +57,6 @@ describe('MatchingBase', () => {
             jest.clearAllMocks();
         });
 
-        it('should not render the reset or autopopulate buttons on initial render', () => {
-            const matchBase = shallow(
-                <MatchingBase
-                    userFareStages={userFareStages}
-                    stops={zoneStops}
-                    service={service}
-                    error={false}
-                    selectedFareStages={[]}
-                    csrfToken=""
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...baseProps}
-                />,
-            );
-            const resetButton = matchBase.find('#bottom-reset-all-fare-stages-button');
-            const autoPopulateButton = matchBase.find('#bottom-auto-populate-fares-stages-button');
-            expect(resetButton).toHaveLength(0);
-            expect(autoPopulateButton).toHaveLength(0);
-        });
-
         describe('dropdownSelection', () => {
             const wrapper = shallow(
                 <MatchingBase
