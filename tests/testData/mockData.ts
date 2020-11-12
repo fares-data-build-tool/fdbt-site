@@ -3,9 +3,9 @@ import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
 import {
+    FullTimeRestrictionAttribute,
     FullTimeRestriction,
     ErrorInfo,
-    Breadcrumb,
     NextPageContextWithSession,
     BasicService,
     SingleTicket,
@@ -903,8 +903,23 @@ export const zoneStops: Stop[] = [
     },
 ];
 
-export const selectedFareStages: string[] = [
-    '{"stop":{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"},"stage":"Acomb Green Lane"}',
+export const selectedFareStages: string[][] = [
+    [
+        'Acomb Green Lane',
+        '{"stopName":"Sophia Street","naptanCode":"durgapwp","atcoCode":"13003661E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Sophia Street"}',
+    ],
+    [
+        'Acomb Green Lane',
+        '{"stopName":"Park","naptanCode":"duratgwg","atcoCode":"13003625C","localityCode":"E0010170","localityName":"Deneside","parentLocalityName":"IW Test","indicator":"E-bound","street":"The Avenue"}',
+    ],
+    [
+        'Holl Bank/Beech Ave',
+        '{"stopName":"Vane Terrace - Castlereagh","naptanCode":"duratgdt","atcoCode":"13003609E","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"S-bound","street":"Vane Terrace"}',
+    ],
+    [
+        'Holl Bank/Beech Ave',
+        '{"stopName":"New Tempest Road - York House","naptanCode":"duratgjt","atcoCode":"13003611B","localityCode":"E0045957","localityName":"Seaham","parentLocalityName":"IW Test","indicator":"NE-bound","street":"Tempest Road"}',
+    ],
 ];
 
 export const service: BasicService = {
@@ -1148,14 +1163,14 @@ export const expectedProductDetailsArray: ProductDetails[] = [
     {
         productName: 'Product',
         productPrice: '2.99',
-        productDuration: '1',
+        productDuration: '1 week',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
     },
     {
         productName: 'Product Two',
         productPrice: '7.99',
-        productDuration: '7',
+        productDuration: '7 days',
         productValidity: '24hr',
         salesOfferPackages: [defaultSalesOfferPackageTwo],
     },
@@ -1632,21 +1647,21 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1671,21 +1686,21 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1709,21 +1724,21 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1766,21 +1781,21 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 year',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 months',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1937,21 +1952,21 @@ export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
         {
             productName: 'Weekly Ticket',
             productPrice: '50',
-            productDuration: '5',
+            productDuration: '5 weeks',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Day Ticket',
             productPrice: '2.50',
-            productDuration: '1',
+            productDuration: '1 month',
             productValidity: '24hr',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
         {
             productName: 'Monthly Ticket',
             productPrice: '200',
-            productDuration: '28',
+            productDuration: '28 years',
             productValidity: 'endOfCalendarDay',
             salesOfferPackages: [defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo],
         },
@@ -1968,6 +1983,8 @@ export const multipleProducts: MultiProduct[] = [
         productPriceId: 'product-price-1',
         productDuration: '66.5',
         productDurationId: 'product-duration-1',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
         productDurationError: 'Product duration must be a whole number',
     },
     {
@@ -1978,6 +1995,8 @@ export const multipleProducts: MultiProduct[] = [
         productPriceError: 'Product price must be a valid price',
         productDuration: '7',
         productDurationId: 'product-duration-2',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -1989,6 +2008,8 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productPriceId: 'product-price-1',
         productDuration: '66',
         productDurationId: 'product-duration-1',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'Super ticket',
@@ -1997,6 +2018,8 @@ export const multipleProductsWithoutErrors: MultiProduct[] = [
         productPriceId: 'product-price-2',
         productDuration: '7',
         productDurationId: 'product-duration-2',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2008,6 +2031,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '66',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'zero duration',
@@ -2016,6 +2041,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '0',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'negative duration',
@@ -2024,6 +2051,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '-1',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'empty duration',
@@ -2032,6 +2061,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'non-numeric duration',
@@ -2040,6 +2071,8 @@ export const invalidDurationProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: 'ddd',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2051,6 +2084,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'empty price',
@@ -2059,6 +2094,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'negative price',
@@ -2067,6 +2104,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'non-numeric / invalid price',
@@ -2075,6 +2114,8 @@ export const invalidPriceProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2086,6 +2127,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: '',
@@ -2094,6 +2137,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'S',
@@ -2102,6 +2147,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName:
@@ -2111,6 +2158,8 @@ export const invalidNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -2122,6 +2171,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2130,6 +2181,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
     {
         productName: 'Super Saver Bus Ticket',
@@ -2138,6 +2191,8 @@ export const duplicateNameProducts: MultiProduct[] = [
         productPriceId: '.',
         productDuration: '.',
         productDurationId: '.',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-1',
     },
 ];
 
@@ -3225,319 +3280,28 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
     radioError: [{ errorMessage: 'Choose one of the options below', id: 'return-validity-defined' }],
 };
 
-export const mockBreadCrumbList: Breadcrumb[] = [
-    { name: 'Home', link: '/', show: true },
-    { name: 'Select Fare Type', link: '/fareType', show: true },
-    { name: 'Select Passenger Type', link: '/passengerType', show: true },
-    { name: 'Select Service', link: '/service', show: true },
-];
-
-export const mockFromHomeBreadcrumbs: Breadcrumb[] = [];
-
-export const mockSingleAdultCsvUploadFromMatchingBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Passenger type details',
-        link: '/definePassengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/defineTimeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Service',
-        link: '/service',
-        show: true,
-    },
-    {
-        name: 'Direction',
-        link: '/singleDirection',
-        show: true,
-    },
-    {
-        name: 'Input method',
-        link: '/inputMethod',
-        show: true,
-    },
-    {
-        name: 'Upload CSV',
-        link: '/csvUpload',
-        show: true,
-    },
-    {
-        name: 'Match stops',
-        link: '/matching',
-        show: true,
-    },
-];
-
-export const mockReturnAnyoneManualFromOutboundMatchingBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/defineTimeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Service',
-        link: '/service',
-        show: true,
-    },
-    {
-        name: 'Direction',
-        link: '/returnDirection',
-        show: true,
-    },
-    {
-        name: 'Input method',
-        link: '/inputMethod',
-        show: true,
-    },
-    {
-        name: 'Stage count check',
-        link: '/howManyStages',
-        show: true,
-    },
-    {
-        name: 'Number of stages',
-        link: '/chooseStages',
-        show: true,
-    },
-    {
-        name: 'Stage names',
-        link: '/stageNames',
-        show: true,
-    },
-    {
-        name: 'Stage prices',
-        link: '/priceEntry',
-        show: true,
-    },
-    {
-        name: 'Outbound stops',
-        link: '/outboundMatching',
-        show: true,
-    },
-];
-
-export const mockPeriodGeoZoneSeniorFromCsvZoneUploadBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Passenger type details',
-        link: '/definePassengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/defineTimeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Period type',
-        link: '/periodType',
-        show: true,
-    },
-    {
-        name: 'Upload CSV',
-        link: '/csvZoneUpload',
-        show: true,
-    },
-];
-
-export const mockFlatFareStudentFromDefinePassengerTypeBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Passenger type details',
-        link: '/definePassengerType',
-        show: true,
-    },
-];
-
-export const mockMultiServicesAnyoneFromMultipleProductValidityBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/defineTimeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Period type',
-        link: '/periodType',
-        show: true,
-    },
-    {
-        name: 'Services',
-        link: '/serviceList',
-        show: true,
-    },
-    {
-        name: 'Number of products',
-        link: '/howManyProducts',
-        show: true,
-    },
-    {
-        name: 'Product details',
-        link: '/multipleProducts',
-        show: true,
-    },
-    {
-        name: 'Product period validity',
-        link: '/multipleProductValidity',
-        show: true,
-    },
-];
-
-export const mockMultiServicesAnyoneFromPeriodValidityBreadcrumbs: Breadcrumb[] = [
-    {
-        name: 'Home',
-        link: '/home',
-        show: true,
-    },
-    {
-        name: 'Fare type',
-        link: '/fareType',
-        show: true,
-    },
-    {
-        name: 'Passenger type',
-        link: '/passengerType',
-        show: true,
-    },
-    {
-        name: 'Time restrictions',
-        link: '/defineTimeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Time restrictions details',
-        link: '/defineTimeRestrictions',
-        show: true,
-    },
-    {
-        name: 'Product Date Information',
-        link: '/productDateInformation',
-        show: true,
-    },
-    {
-        name: 'Period type',
-        link: '/periodType',
-        show: true,
-    },
-    {
-        name: 'Services',
-        link: '/serviceList',
-        show: true,
-    },
-    {
-        name: 'Number of products',
-        link: '/howManyProducts',
-        show: true,
-    },
-    {
-        name: 'Product details',
-        link: '/productDetails',
-        show: true,
-    },
-    {
-        name: 'Days valid',
-        link: '/chooseValidity',
-        show: true,
-    },
-    {
-        name: 'Product period validity',
-        link: '/periodValidity',
-        show: true,
-    },
-];
+export const mockFullTimeRestrictions: FullTimeRestrictionAttribute = {
+    fullTimeRestrictions: [
+        {
+            day: 'monday',
+            startTime: '0900',
+            endTime: '',
+        },
+        {
+            day: 'tuesday',
+            startTime: '',
+            endTime: '1800',
+        },
+        {
+            day: 'bank holiday',
+            startTime: '0900',
+            endTime: '1750',
+        },
+        {
+            day: 'friday',
+            startTime: '',
+            endTime: '',
+        },
+    ],
+    errors: [],
+};

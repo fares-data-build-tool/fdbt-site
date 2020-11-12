@@ -1,7 +1,12 @@
+/* eslint-disable no-else-return */
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import { redirectToError, redirectTo } from './apiUtils/index';
-import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../constants/index';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+} from '../../constants/index';
 import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, TimeRestriction } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -66,6 +71,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
             redirectTo(res, '/chooseTimeRestrictions');
             return;
+        } else {
+            updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, { fullTimeRestrictions: [], errors: [] });
         }
         updateSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, timeRestrictionsDefinition);
         redirectTo(res, '/fareConfirmation');
