@@ -203,6 +203,14 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     stops: Stop[];
 }
 
+export interface Product {
+    productName: string;
+    productPrice: string;
+    productDuration?: string;
+    productValidity?: string;
+    productDurationUnits?: string;
+}
+
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
     additionalNocs: string[];
 }
@@ -346,13 +354,6 @@ export interface ProductWithSalesOfferPackages extends BaseProduct {
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
-}
-
-export interface Product {
-    productName: string;
-    productPrice: string;
-    productDuration?: string;
-    productValidity?: string;
 }
 
 export interface ProductData {
