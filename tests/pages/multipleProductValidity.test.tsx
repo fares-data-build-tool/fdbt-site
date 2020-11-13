@@ -58,7 +58,7 @@ describe('pages', () => {
             expect(wrapper).toMatchSnapshot();
         });
 
-        it('renders 2 radio buttons per product', () => {
+        it.only('renders dropdown for product validtity per product', () => {
             const wrapper = shallow(
                 <MultiProductValidity
                     operatorName="Infinity Line"
@@ -69,7 +69,7 @@ describe('pages', () => {
                     csrfToken=""
                 />,
             );
-            expect(wrapper.find('.govuk-radios__item')).toHaveLength(4);
+            expect(wrapper.find('.govuk-select')).toHaveLength(2);
         });
 
         describe('getServerSideProps', () => {

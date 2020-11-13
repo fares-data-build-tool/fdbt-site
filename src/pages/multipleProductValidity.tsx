@@ -95,46 +95,19 @@ const MultipleProductValidity = ({
                                             }`}
                                         </td>
                                         <td className="govuk-table__cell">
-                                            <span className="govuk-radios validity-select-wrapper">
-                                                <span className="govuk-radios__item">
-                                                    <input
-                                                        className="govuk-radios__input"
-                                                        id={`twenty-four-hours-row-${index}`}
-                                                        name={`validity-row${index}`}
-                                                        type="radio"
-                                                        aria-describedby="24hr-validity-type-hint"
-                                                        value="24hr"
-                                                    />
-                                                    <label
-                                                        className="govuk-label govuk-radios__label"
-                                                        htmlFor={`twenty-four-hours-row-${index}`}
-                                                    >
-                                                        <span className="govuk-visually-hidden">
-                                                            When does the product expire? - {product.productName} -{' '}
-                                                        </span>
-                                                        24 hour
-                                                    </label>
-                                                </span>
-                                                <span className="govuk-radios__item">
-                                                    <input
-                                                        className="govuk-radios__input"
-                                                        id={`calendar-day-row-${index}`}
-                                                        name={`validity-row${index}`}
-                                                        type="radio"
-                                                        aria-describedby="calendar-validity-type-hint"
-                                                        value="endOfCalendarDay"
-                                                    />
-                                                    <label
-                                                        className="govuk-label govuk-radios__label"
-                                                        htmlFor={`calendar-day-row-${index}`}
-                                                    >
-                                                        <span className="govuk-visually-hidden">
-                                                            When does the product expire? - {product.productName} -{' '}
-                                                        </span>
-                                                        Calendar
-                                                    </label>
-                                                </span>
-                                            </span>
+                                            <select
+                                                className="govuk-select farestage-select"
+                                                id={`option-${index}`}
+                                                name={`option-${index}`}
+                                                aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
+                                            >
+                                                <option selected value="" disabled>
+                                                    Select validity
+                                                </option>
+                                                <option value="24hr">24hr</option>
+                                                <option value="endOfCalendarDay">Calendar day</option>
+                                                <option value="serviceDay">Service day</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 ))}

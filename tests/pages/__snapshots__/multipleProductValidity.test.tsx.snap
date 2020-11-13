@@ -118,62 +118,35 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               <td
                 className="govuk-table__cell"
               >
-                <span
-                  className="govuk-radios validity-select-wrapper"
+                <select
+                  aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
+                  className="govuk-select farestage-select"
+                  id="option-0"
+                  name="option-0"
                 >
-                  <span
-                    className="govuk-radios__item"
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
                   >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
+                    Select validity
+                  </option>
+                  <option
+                    value="24hr"
                   >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    Calendar day
+                  </option>
+                  <option
+                    value="serviceDay"
+                  >
+                    Service day
+                  </option>
+                </select>
               </td>
             </tr>
             <tr
@@ -199,62 +172,35 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               <td
                 className="govuk-table__cell"
               >
-                <span
-                  className="govuk-radios validity-select-wrapper"
+                <select
+                  aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
+                  className="govuk-select farestage-select"
+                  id="option-1"
+                  name="option-1"
                 >
-                  <span
-                    className="govuk-radios__item"
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
                   >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
+                    Select validity
+                  </option>
+                  <option
+                    value="24hr"
                   >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    Calendar day
+                  </option>
+                  <option
+                    value="serviceDay"
+                  >
+                    Service day
+                  </option>
+                </select>
               </td>
             </tr>
           </tbody>
@@ -410,62 +356,35 @@ exports[`pages multipleProductValidity should render error messaging when errors
               <td
                 className="govuk-table__cell"
               >
-                <span
-                  className="govuk-radios validity-select-wrapper"
+                <select
+                  aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
+                  className="govuk-select farestage-select"
+                  id="option-0"
+                  name="option-0"
                 >
-                  <span
-                    className="govuk-radios__item"
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
                   >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
+                    Select validity
+                  </option>
+                  <option
+                    value="24hr"
                   >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-0"
-                      name="validity-row0"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-0"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Weekly Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    Calendar day
+                  </option>
+                  <option
+                    value="serviceDay"
+                  >
+                    Service day
+                  </option>
+                </select>
               </td>
             </tr>
             <tr
@@ -491,62 +410,35 @@ exports[`pages multipleProductValidity should render error messaging when errors
               <td
                 className="govuk-table__cell"
               >
-                <span
-                  className="govuk-radios validity-select-wrapper"
+                <select
+                  aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
+                  className="govuk-select farestage-select"
+                  id="option-1"
+                  name="option-1"
                 >
-                  <span
-                    className="govuk-radios__item"
+                  <option
+                    disabled={true}
+                    selected={true}
+                    value=""
                   >
-                    <input
-                      aria-describedby="24hr-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="twenty-four-hours-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="24hr"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="twenty-four-hours-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      24 hour
-                    </label>
-                  </span>
-                  <span
-                    className="govuk-radios__item"
+                    Select validity
+                  </option>
+                  <option
+                    value="24hr"
                   >
-                    <input
-                      aria-describedby="calendar-validity-type-hint"
-                      className="govuk-radios__input"
-                      id="calendar-day-row-1"
-                      name="validity-row1"
-                      type="radio"
-                      value="endOfCalendarDay"
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor="calendar-day-row-1"
-                    >
-                      <span
-                        className="govuk-visually-hidden"
-                      >
-                        When does the product expire? - 
-                        Day Ticket
-                         -
-                         
-                      </span>
-                      Calendar
-                    </label>
-                  </span>
-                </span>
+                    24hr
+                  </option>
+                  <option
+                    value="endOfCalendarDay"
+                  >
+                    Calendar day
+                  </option>
+                  <option
+                    value="serviceDay"
+                  >
+                    Service day
+                  </option>
+                </select>
               </td>
             </tr>
           </tbody>
