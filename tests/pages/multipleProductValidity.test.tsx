@@ -28,13 +28,12 @@ describe('pages', () => {
         it('should render correctly', () => {
             const wrapper = shallow(
                 <MultiProductValidity
-                    operator="Infinity Line"
+                    operatorName="Infinity Line"
                     passengerType="Adult"
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -43,7 +42,7 @@ describe('pages', () => {
         it('should render error messaging when errors are passed', () => {
             const wrapper = shallow(
                 <MultiProductValidity
-                    operator="Infinity Line"
+                    operatorName="Infinity Line"
                     passengerType="Adult"
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
@@ -54,7 +53,6 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -63,13 +61,12 @@ describe('pages', () => {
         it('renders 2 radio buttons per product', () => {
             const wrapper = shallow(
                 <MultiProductValidity
-                    operator="Infinity Line"
+                    operatorName="Infinity Line"
                     passengerType="Adult"
                     numberOfProducts="2"
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper.find('.govuk-radios__item')).toHaveLength(4);
@@ -85,7 +82,7 @@ describe('pages', () => {
                 const result = getServerSideProps(ctx);
 
                 expect(result.props.numberOfProducts).toBe('2');
-                expect(result.props.operator).toBe('test');
+                expect(result.props.operatorName).toBe('test');
                 expect(result.props.multipleProducts[0].productName).toBe('Weekly Ticket');
                 expect(result.props.multipleProducts[0].productPrice).toBe('50');
                 expect(result.props.multipleProducts[0].productDuration).toBe('5');

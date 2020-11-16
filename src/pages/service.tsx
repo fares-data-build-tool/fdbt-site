@@ -1,19 +1,19 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
 import { getServicesByNocCode, ServiceType } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
-import { getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'Service - Fares Data Build Tool';
-const description = 'Service selection page of the Fares Data Build Tool';
+const title = 'Service - Create Fares Data Service';
+const description = 'Service selection page of the Create Fares Data Service';
 const errorId = 'service';
 
 type ServiceProps = {
@@ -21,15 +21,10 @@ type ServiceProps = {
     passengerType: string;
     services: ServiceType[];
     error: ErrorInfo[];
+    csrfToken: string;
 };
 
-const Service = ({
-    operator,
-    passengerType,
-    services,
-    error,
-    csrfToken,
-}: ServiceProps & CustomAppProps): ReactElement => (
+const Service = ({ operator, passengerType, services, error, csrfToken }: ServiceProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
         <CsrfForm action="/api/service" method="post" csrfToken={csrfToken}>
             <>
@@ -61,7 +56,8 @@ const Service = ({
                         </select>
                     </FormElementWrapper>
                     <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the Traveline National Dataset
+                        This data is taken from the Traveline National Dataset (TNDS). If any of your services are not
+                        listed, contact your local transport authority for further advice.
                     </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -71,6 +67,7 @@ const Service = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
 
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
@@ -102,6 +99,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             passengerType: passengerTypeAttribute.passengerType,
             services,
             error,
+            csrfToken,
         },
     };
 };

@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react';
 import { parseCookies } from 'nookies';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
-import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
+import { BasicService, NextPageContextWithSession } from '../interfaces/index';
 import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
-import { getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import { getSessionAttribute } from '../utils/sessions';
 import { MatchingWithErrors, MatchingInfo } from '../interfaces/matchingInterface';
 import { isService, isJourney } from '../interfaces/typeGuards';
 
-const title = 'Matching - Fares Data Build Tool';
-const description = 'Matching page of the Fares Data Build Tool';
+const title = 'Matching - Create Fares Data Service';
+const description = 'Matching page of the Create Fares Data Service';
 const heading = 'Match stops to fares stages';
 const hintText = 'Select a fare stage for each stop.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
@@ -23,7 +23,8 @@ interface MatchingProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
-    selectedFareStages: string[];
+    selectedFareStages: string[][];
+    csrfToken: string;
 }
 
 const Matching = ({
@@ -33,7 +34,7 @@ const Matching = ({
     error,
     selectedFareStages,
     csrfToken,
-}: MatchingProps & CustomAppProps): ReactElement => (
+}: MatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -55,6 +56,7 @@ export const isMatchingWithErrors = (
 ): matchingAttribute is MatchingWithErrors => (matchingAttribute as MatchingWithErrors)?.error;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
@@ -107,6 +109,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 matchingAttribute && isMatchingWithErrors(matchingAttribute)
                     ? matchingAttribute.selectedFareStages
                     : [],
+            csrfToken,
         },
     };
 };

@@ -2,9 +2,9 @@
 
 exports[`pages multipleProductValidity should render correctly 1`] = `
 <Component
-  description="Multiple Product Validity selection page of the Fares Data Build Tool"
+  description="Multiple Product Validity selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Multiple Product Validity - Fares Data Build Tool"
+  title="Multiple Product Validity - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/multipleProductValidity"
@@ -113,7 +113,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               <td
                 className="govuk-table__cell"
               >
-                5 days
+                5 undefineds
               </td>
               <td
                 className="govuk-table__cell"
@@ -194,7 +194,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
               <td
                 className="govuk-table__cell"
               >
-                1 day
+                1 undefined
               </td>
               <td
                 className="govuk-table__cell"
@@ -273,7 +273,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
 
 exports[`pages multipleProductValidity should render error messaging when errors are passed 1`] = `
 <Component
-  description="Multiple Product Validity selection page of the Fares Data Build Tool"
+  description="Multiple Product Validity selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -282,7 +282,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
       },
     ]
   }
-  title="Multiple Product Validity - Fares Data Build Tool"
+  title="Multiple Product Validity - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/multipleProductValidity"
@@ -405,7 +405,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
               <td
                 className="govuk-table__cell"
               >
-                5 days
+                5 undefineds
               </td>
               <td
                 className="govuk-table__cell"
@@ -486,7 +486,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
               <td
                 className="govuk-table__cell"
               >
-                1 day
+                1 undefined
               </td>
               <td
                 className="govuk-table__cell"

@@ -2,9 +2,9 @@
 
 exports[`pages service should render correctly 1`] = `
 <Component
-  description="Service selection page of the Fares Data Build Tool"
+  description="Service selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Service - Fares Data Build Tool"
+  title="Service - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/service"
@@ -85,7 +85,7 @@ exports[`pages service should render correctly 1`] = `
         className="govuk-hint hint-text"
         id="traveline-hint"
       >
-        This data is taken from the Traveline National Dataset
+        This data is taken from the Traveline National Dataset (TNDS). If any of your services are not listed, contact your local transport authority for further advice.
       </span>
     </div>
     <input

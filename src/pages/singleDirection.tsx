@@ -6,15 +6,15 @@ import { OPERATOR_COOKIE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_A
 import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
-import { getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isJourney, isPassengerType, isService } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 
-const title = 'Single Direction - Fares Data Build Tool';
-const description = 'Single Direction selection page of the Fares Data Build Tool';
+const title = 'Single Direction - Create Fares Data Service';
+const description = 'Single Direction selection page of the Create Fares Data Service';
 
 interface DirectionProps {
     operator: string;
@@ -22,6 +22,7 @@ interface DirectionProps {
     lineName: string;
     service: Service;
     error: ErrorInfo[];
+    csrfToken: string;
 }
 
 const SingleDirection = ({
@@ -31,7 +32,7 @@ const SingleDirection = ({
     service,
     error,
     csrfToken,
-}: DirectionProps & CustomAppProps): ReactElement => (
+}: DirectionProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
         <CsrfForm action="/api/singleDirection" method="post" csrfToken={csrfToken}>
             <>
@@ -55,8 +56,13 @@ const SingleDirection = ({
                         hideLabel
                         errors={error}
                     />
-                    <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the Traveline National Dataset
+                    <span className="govuk-hint hint-text" id="traveline-main-hint">
+                        This data is taken from the Traveline National Dataset (TNDS) and should include all of your
+                        registered routes for this service
+                    </span>
+                    <span className="govuk-hint hint-text" id="traveline-sub-hint">
+                        If you have route variations within your fares triangle, you are only required to upload one
+                        complete triangle that includes all of the potential stops
                     </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -66,6 +72,7 @@ const SingleDirection = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
 
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
@@ -108,6 +115,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             lineName,
             service,
             error: (isJourney(journeyAttribute) && journeyAttribute.errors) || [],
+            csrfToken,
         },
     };
 };

@@ -1,23 +1,27 @@
 import React, { ReactElement } from 'react';
+import lowercase from 'lodash/lowerCase';
 import TwoThirdsLayout from '../layout/Layout';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, TicketRepresentationAttribute } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { NumberOfProductsAttributeWithErrors, NumberOfProductsAttribute } from './api/howManyProducts';
 import { getSessionAttribute } from '../utils/sessions';
 import { FareType } from './api/fareType';
+import { getCsrfToken } from '../utils';
 
-const title = 'How Many Products - Fares Data Build Tool';
-const description = 'How Many Products entry page of the Fares Data Build Tool';
+const title = 'How Many Products - Create Fares Data Service';
+const description = 'How Many Products entry page of the Create Fares Data Service';
 
-interface HowManyProductProps {
+interface HowManyProductsProps {
     errors: ErrorInfo[];
-    multiOperator: boolean;
+    fareType: string;
+    pageHeading: string;
+    csrfToken: string;
 }
 
-const HowManyProducts = ({ errors, multiOperator, csrfToken }: HowManyProductProps & CustomAppProps): ReactElement => (
+const HowManyProducts = ({ errors, fareType, pageHeading, csrfToken }: HowManyProductsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/howManyProducts" method="post" csrfToken={csrfToken}>
             <>
@@ -25,15 +29,11 @@ const HowManyProducts = ({ errors, multiOperator, csrfToken }: HowManyProductPro
                 <div className={`govuk-form-group${errors.length > 0 ? ' govuk-form-group--error' : ''}`}>
                     <label htmlFor="number-of-products">
                         <h1 className="govuk-heading-l" id="page-heading">
-                            {multiOperator
-                                ? `How many multi operator tickets do you have for the selected operator(s) and/or service(s)?`
-                                : `How many period tickets do you have for the selected services?`}
+                            {pageHeading}
                         </h1>
                     </label>
                     <div className="govuk-hint" id="number-of-products-hint">
-                        {multiOperator
-                            ? `Enter the number of multi operator tickets below. Up to a maximum of 5 at once.`
-                            : `Enter the number of period tickets below. Up to a maximum of 5 at once.`}
+                        {`Enter the number of ${lowercase(fareType)} tickets below. Up to a maximum of 5 at once.`}
                     </div>
                     <FormElementWrapper errors={errors} errorId="number-of-products" errorClass="govuk-input--error">
                         <input
@@ -63,14 +63,26 @@ export const isNumberOfProductsAttribute = (
     !!numberOfProductsAttribute &&
     (numberOfProductsAttribute as NumberOfProductsAttribute).numberOfProductsInput !== undefined;
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: HowManyProductsProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const numberOfProductsAttribute = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE);
+    const ticketType = (getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute)
+        .name;
+
+    let pageHeading = `How many period tickets do you have for ${
+        ticketType === 'geoZone' ? 'this geographic zone' : `the selected services`
+    }?`;
+    if (fareType === 'multiOperator') {
+        pageHeading =
+            'How many multi operator tickets do you have for the selected operators and/or selected services?';
+    }
     const errors: ErrorInfo[] =
         numberOfProductsAttribute && isNumberOfProductsAttributeWithErrors(numberOfProductsAttribute)
             ? numberOfProductsAttribute.errors
             : [];
-    return { props: { errors, multiOperator: fareType === 'multiOperator' } };
+
+    return { props: { errors, fareType, pageHeading, csrfToken } };
 };
 
 export default HowManyProducts;

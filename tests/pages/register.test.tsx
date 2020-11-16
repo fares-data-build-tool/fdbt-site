@@ -5,7 +5,7 @@ import Register from '../../src/pages/register';
 describe('pages', () => {
     describe('register', () => {
         it('should render correctly', () => {
-            const tree = shallow(<Register regKey="abcdefg" errors={[]} csrfToken="" pageProps={[]} />);
+            const tree = shallow(<Register regKey="abcdefg" errors={[]} csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -20,7 +20,6 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -32,13 +31,12 @@ describe('pages', () => {
                     regKey="abcdefg"
                     errors={[
                         {
-                            errorMessage: 'Enter valid nocCode',
-                            id: 'nocCode',
+                            errorMessage: 'Password must be at least 8 characters long',
+                            id: 'password',
                         },
                         { userInput: 'test@tfn.com', errorMessage: '', id: 'email' },
                     ]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();

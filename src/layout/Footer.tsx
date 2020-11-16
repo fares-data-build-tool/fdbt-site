@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { ReactElement } from 'react';
 
-const Footer: FC = () => (
+const Footer = (): ReactElement => (
     <footer className="govuk-footer " role="contentinfo">
         <div className="govuk-width-container ">
             <div className="govuk-footer__meta">
@@ -20,6 +20,11 @@ const Footer: FC = () => (
                         <li className="govuk-footer__inline-list-item">
                             <a className="govuk-footer__link" href="/contact">
                                 Contact
+                            </a>
+                        </li>
+                        <li className="govuk-footer__inline-list-item">
+                            <a className="govuk-footer__link" href="/accessibility">
+                                Accessibility
                             </a>
                         </li>
                         <li className="govuk-footer__inline-list-item">

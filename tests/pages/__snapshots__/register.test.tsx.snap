@@ -2,9 +2,9 @@
 
 exports[`pages register should render correctly 1`] = `
 <Component
-  description="Create Account page of the Fares data build tool"
+  description="Register page of the Create Fares Data Service"
   errors={Array []}
-  title="Create Account - Fares data build tool"
+  title="Register - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -120,32 +120,6 @@ exports[`pages register should render correctly 1`] = `
                 type="password"
               />
             </div>
-            <div
-              className="govuk-form-group"
-            >
-              <label
-                className="govuk-label"
-                htmlFor="noc-code"
-                id="noc-code-label"
-              >
-                Enter National Operator Code
-              </label>
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId="noc-code"
-                errors={Array []}
-              >
-                <input
-                  aria-describedby="noc-code-label"
-                  className="govuk-input"
-                  defaultValue=""
-                  id="noc-code"
-                  name="nocCode"
-                  spellCheck="false"
-                  type="text"
-                />
-              </FormElementWrapper>
-            </div>
             <p
               className="govuk-body govuk-!-margin-top-5"
             >
@@ -225,7 +199,7 @@ exports[`pages register should render correctly 1`] = `
 
 exports[`pages register should render error messaging when errors are passed 1`] = `
 <Component
-  description="Create Account page of the Fares data build tool"
+  description="Register page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -234,7 +208,7 @@ exports[`pages register should render error messaging when errors are passed 1`]
       },
     ]
   }
-  title="Create Account - Fares data build tool"
+  title="Register - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -371,39 +345,6 @@ exports[`pages register should render error messaging when errors are passed 1`]
                 type="password"
               />
             </div>
-            <div
-              className="govuk-form-group"
-            >
-              <label
-                className="govuk-label"
-                htmlFor="noc-code"
-                id="noc-code-label"
-              >
-                Enter National Operator Code
-              </label>
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId="noc-code"
-                errors={
-                  Array [
-                    Object {
-                      "errorMessage": "Enter an email address in the correct format, like name@example.com",
-                      "id": "email",
-                    },
-                  ]
-                }
-              >
-                <input
-                  aria-describedby="noc-code-label"
-                  className="govuk-input"
-                  defaultValue=""
-                  id="noc-code"
-                  name="nocCode"
-                  spellCheck="false"
-                  type="text"
-                />
-              </FormElementWrapper>
-            </div>
             <p
               className="govuk-body govuk-!-margin-top-5"
             >
@@ -483,12 +424,12 @@ exports[`pages register should render error messaging when errors are passed 1`]
 
 exports[`pages register should store email if entered correctly but other fields fail validation 1`] = `
 <Component
-  description="Create Account page of the Fares data build tool"
+  description="Register page of the Create Fares Data Service"
   errors={
     Array [
       Object {
-        "errorMessage": "Enter valid nocCode",
-        "id": "nocCode",
+        "errorMessage": "Password must be at least 8 characters long",
+        "id": "password",
       },
       Object {
         "errorMessage": "",
@@ -497,7 +438,7 @@ exports[`pages register should store email if entered correctly but other fields
       },
     ]
   }
-  title="Create Account - Fares data build tool"
+  title="Register - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
@@ -514,8 +455,8 @@ exports[`pages register should store email if entered correctly but other fields
           errors={
             Array [
               Object {
-                "errorMessage": "Enter valid nocCode",
-                "id": "nocCode",
+                "errorMessage": "Password must be at least 8 characters long",
+                "id": "password",
               },
               Object {
                 "errorMessage": "",
@@ -563,8 +504,8 @@ exports[`pages register should store email if entered correctly but other fields
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "Enter valid nocCode",
-                      "id": "nocCode",
+                      "errorMessage": "Password must be at least 8 characters long",
+                      "id": "password",
                     },
                     Object {
                       "errorMessage": "",
@@ -607,8 +548,8 @@ exports[`pages register should store email if entered correctly but other fields
                 errors={
                   Array [
                     Object {
-                      "errorMessage": "Enter valid nocCode",
-                      "id": "nocCode",
+                      "errorMessage": "Password must be at least 8 characters long",
+                      "id": "password",
                     },
                     Object {
                       "errorMessage": "",
@@ -648,44 +589,6 @@ exports[`pages register should store email if entered correctly but other fields
                 spellCheck="false"
                 type="password"
               />
-            </div>
-            <div
-              className="govuk-form-group"
-            >
-              <label
-                className="govuk-label"
-                htmlFor="noc-code"
-                id="noc-code-label"
-              >
-                Enter National Operator Code
-              </label>
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId="noc-code"
-                errors={
-                  Array [
-                    Object {
-                      "errorMessage": "Enter valid nocCode",
-                      "id": "nocCode",
-                    },
-                    Object {
-                      "errorMessage": "",
-                      "id": "email",
-                      "userInput": "test@tfn.com",
-                    },
-                  ]
-                }
-              >
-                <input
-                  aria-describedby="noc-code-label"
-                  className="govuk-input"
-                  defaultValue=""
-                  id="noc-code"
-                  name="nocCode"
-                  spellCheck="false"
-                  type="text"
-                />
-              </FormElementWrapper>
             </div>
             <p
               className="govuk-body govuk-!-margin-top-5"

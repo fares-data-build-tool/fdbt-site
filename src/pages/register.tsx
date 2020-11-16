@@ -5,27 +5,26 @@ import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { USER_COOKIE } from '../constants';
-import { ErrorInfo, CustomAppProps } from '../interfaces';
+import { ErrorInfo } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
+import { getCsrfToken } from '../utils';
 
-const title = 'Create Account - Fares data build tool';
-const description = 'Create Account page of the Fares data build tool';
+const title = 'Register - Create Fares Data Service';
+const description = 'Register page of the Create Fares Data Service';
 
 interface RegisterProps {
     errors: ErrorInfo[];
     regKey: string;
+    csrfToken: string;
 }
 
-const Register = ({ errors, regKey, csrfToken }: RegisterProps & CustomAppProps): ReactElement => {
+const Register = ({ errors, regKey, csrfToken }: RegisterProps): ReactElement => {
     let email = '';
-    let nocCode = '';
 
     errors?.forEach((input: ErrorInfo) => {
         if (input.id === 'email') {
             email = input.userInput ?? '';
-        } else if (input.id === 'nocCode') {
-            nocCode = input.userInput ?? '';
         }
     });
 
@@ -108,26 +107,6 @@ const Register = ({ errors, regKey, csrfToken }: RegisterProps & CustomAppProps)
                                             autoComplete="new-password"
                                         />
                                     </div>
-                                    <div className="govuk-form-group">
-                                        <label className="govuk-label" htmlFor="noc-code" id="noc-code-label">
-                                            Enter National Operator Code
-                                        </label>
-                                        <FormElementWrapper
-                                            errors={errors}
-                                            errorId="noc-code"
-                                            errorClass="govuk-input--error"
-                                        >
-                                            <input
-                                                className="govuk-input"
-                                                id="noc-code"
-                                                name="nocCode"
-                                                type="text"
-                                                aria-describedby="noc-code-label"
-                                                spellCheck="false"
-                                                defaultValue={nocCode}
-                                            />
-                                        </FormElementWrapper>
-                                    </div>
                                     <p className="govuk-body govuk-!-margin-top-5">
                                         By using this website, you agree to the&nbsp;
                                         <a href="https://www.gov.uk/help/privacy-notice" className="govuk-link">
@@ -183,7 +162,8 @@ const Register = ({ errors, regKey, csrfToken }: RegisterProps & CustomAppProps)
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
+export const getServerSideProps = (ctx: NextPageContext): { props: RegisterProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const userCookie = cookies[USER_COOKIE];
 
@@ -199,10 +179,10 @@ export const getServerSideProps = (ctx: NextPageContext): {} => {
         const userCookieParsed = JSON.parse(userCookie);
         const { inputChecks } = userCookieParsed;
 
-        return { props: { errors: inputChecks, regKey: key } };
+        return { props: { errors: inputChecks, regKey: key as string, csrfToken } };
     }
 
-    return { props: { errors, regKey: key } };
+    return { props: { errors, regKey: key as string, csrfToken } };
 };
 
 export default Register;

@@ -14,7 +14,8 @@
         "build": "npm run build:next && npm run build:server",
         "start": "NODE_ENV=production PORT=80 node dist/server/index.js",
         "lint": "eslint . --ext .ts,.tsx",
-        "lint:fix": "eslint --fix . --ext .ts,.tsx"
+        "lint:fix": "eslint --fix . --ext .ts,.tsx",
+        "postshrinkwrap": "npx --quiet npm-force-resolutions && npm install --no-package-lock --no-audit --no-fund --no-progress --silent && npx prettier --write ./package-lock.json"
     },
     "jest": {
         "collectCoverageFrom": [
@@ -63,10 +64,16 @@
         "nookies": "^2.3.0",
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
+        "react-portal": "^4.2.1",
+        "universal-cookie": "^4.0.4",
         "uuid": "^7.0.2",
         "winston": "^3.3.3",
         "yup": "^0.29.0",
         "zxcvbn": "^4.4.2"
+    },
+    "resolutions": {
+        "node-fetch": "^2.6.1",
+        "object-path": "^0.11.5"
     },
     "devDependencies": {
         "@babel/core": "^7.10.0",
@@ -90,6 +97,7 @@
         "@types/node": "^13.13.6",
         "@types/nookies": "^2.0.3",
         "@types/react": "^16.9.35",
+        "@types/react-portal": "^4.0.2",
         "@types/sinon": "^7.5.2",
         "@types/uuid": "^7.0.3",
         "@types/yup": "^0.29.0",

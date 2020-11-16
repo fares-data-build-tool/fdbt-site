@@ -10,16 +10,16 @@ import {
     FARE_TYPE_ATTRIBUTE,
 } from '../constants';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import { SalesOfferPackage, CustomAppProps, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
-import { getAndValidateNoc } from '../utils';
+import { SalesOfferPackage, ErrorInfo, NextPageContextWithSession, ProductInfo } from '../interfaces';
+import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { Product } from './api/multipleProductValidity';
 import { isProductInfo, isProductData } from './productDetails';
 import { removeAllWhiteSpace } from './api/apiUtils/validator';
 
-const pageTitle = 'Select Sales Offer Package - Fares Data Build Tool';
-const pageDescription = 'Sales Offer Package selection page of the Fares Data Build Tool';
+const pageTitle = 'Select Sales Offer Package - Create Fares Data Service';
+const pageDescription = 'Sales Offer Package selection page of the Create Fares Data Service';
 
 export const defaultSalesOfferPackageOne: SalesOfferPackage = {
     name: 'Onboard (cash)',
@@ -56,10 +56,12 @@ export const defaultSalesOfferPackageFour: SalesOfferPackage = {
 };
 
 export interface SelectSalesOfferPackageProps {
+    schemeOp: boolean;
     selected?: { [key: string]: string[] };
     productNamesList: string[];
     salesOfferPackagesList: SalesOfferPackage[];
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
 const generateCheckbox = (
@@ -136,12 +138,13 @@ const createSalesOffer = (
     ));
 
 const SelectSalesOfferPackage = ({
+    schemeOp,
     selected,
     productNamesList,
     salesOfferPackagesList,
     csrfToken,
     errors,
-}: SelectSalesOfferPackageProps & CustomAppProps): ReactElement => {
+}: SelectSalesOfferPackageProps): ReactElement => {
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
             <CsrfForm action="/api/selectSalesOfferPackage" method="post" csrfToken={csrfToken}>
@@ -164,16 +167,18 @@ const SelectSalesOfferPackage = ({
                     </div>
                     {createSalesOffer(salesOfferPackagesList, productNamesList, selected, errors)}
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
-                    <a
-                        href="/salesOfferPackages"
-                        role="button"
-                        draggable="false"
-                        className="govuk-button govuk-button--secondary create-new-sop-button"
-                        data-module="govuk-button"
-                        id="create-new-button"
-                    >
-                        Create New Sales Offer Package
-                    </a>
+                    {schemeOp ? null : (
+                        <a
+                            href="/salesOfferPackages"
+                            role="button"
+                            draggable="false"
+                            className="govuk-button govuk-button--secondary create-new-sop-button"
+                            data-module="govuk-button"
+                            id="create-new-button"
+                        >
+                            Create New Sales Offer Package
+                        </a>
+                    )}
                 </>
             </CsrfForm>
         </FullColumnLayout>
@@ -183,13 +188,15 @@ const SelectSalesOfferPackage = ({
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: SelectSalesOfferPackageProps }> => {
-    const nocCode = getAndValidateNoc(ctx);
+    const csrfToken = getCsrfToken(ctx);
+    const schemeOp = isSchemeOperator(ctx);
+    const nocCode = schemeOp ? null : getAndValidateNoc(ctx);
 
-    if (!nocCode) {
+    if (!schemeOp && !nocCode) {
         throw new Error('Necessary nocCode from ID Token cookie not found to show selectSalesOfferPackageProps page');
     }
 
-    const salesOfferPackagesList = await getSalesOfferPackagesByNocCode(nocCode);
+    const salesOfferPackagesList = nocCode ? await getSalesOfferPackagesByNocCode(nocCode) : [];
     salesOfferPackagesList.unshift(
         defaultSalesOfferPackageOne,
         defaultSalesOfferPackageTwo,
@@ -231,19 +238,23 @@ export const getServerSideProps = async (
     ) {
         return {
             props: {
+                schemeOp,
                 selected: salesOfferPackageAttribute.selected || '',
                 productNamesList: productNames,
                 salesOfferPackagesList,
                 errors: salesOfferPackageAttribute.errors,
+                csrfToken,
             },
         };
     }
 
     return {
         props: {
+            schemeOp,
             productNamesList: productNames,
             salesOfferPackagesList,
             errors: [],
+            csrfToken,
         },
     };
 };

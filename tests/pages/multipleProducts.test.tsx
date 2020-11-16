@@ -10,12 +10,11 @@ describe('pages', () => {
             const wrapper = shallow(
                 <MultipleProducts
                     numberOfProductsToDisplay="2"
-                    operator="Infinity Line"
+                    operatorName="Infinity Line"
                     passengerType="Adult"
                     errors={[]}
                     userInput={[]}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -44,7 +43,7 @@ describe('pages', () => {
                 const result = getServerSideProps(ctx);
 
                 expect(result.props.numberOfProductsToDisplay).toBe('2');
-                expect(result.props.operator).toBe('BLP');
+                expect(result.props.operatorName).toBe('BLP');
                 expect(result.props.passengerType).toBe('Adult');
             });
 

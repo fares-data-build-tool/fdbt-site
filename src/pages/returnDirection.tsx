@@ -4,16 +4,16 @@ import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../co
 import { getServiceByNocCodeAndLineName, RawService, Service } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import ErrorSummary from '../components/ErrorSummary';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { getAndValidateNoc } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { isFareType, isJourney, isService } from '../interfaces/typeGuards';
 
-const title = 'Return Direction - Fares Data Build Tool';
-const description = 'Return Direction selection page of the Fares Data Build Tool';
+const title = 'Return Direction - Create Fares Data Service';
+const description = 'Return Direction selection page of the Create Fares Data Service';
 
 export const inboundErrorId = 'inbound-journey';
 export const outboundErrorId = 'outbound-journey';
@@ -21,8 +21,9 @@ export const outboundErrorId = 'outbound-journey';
 interface DirectionProps {
     service: Service;
     errors: ErrorInfo[];
-    outboundJourney: string;
-    inboundJourney: string;
+    outboundJourney?: string;
+    inboundJourney?: string;
+    csrfToken: string;
 }
 
 const ReturnDirection = ({
@@ -31,7 +32,7 @@ const ReturnDirection = ({
     outboundJourney,
     inboundJourney,
     csrfToken,
-}: DirectionProps & CustomAppProps): ReactElement => (
+}: DirectionProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/returnDirection" method="post" csrfToken={csrfToken}>
             <>
@@ -63,8 +64,13 @@ const ReturnDirection = ({
                                 errors={errors}
                             />
                         </div>
-                        <span className="govuk-hint hint-text" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset
+                        <span className="govuk-hint hint-text" id="traveline-main-hint">
+                            This data is taken from the Traveline National Dataset (TNDS) and should include all of your
+                            registered routes for this service
+                        </span>
+                        <span className="govuk-hint hint-text" id="traveline-sub-hint">
+                            If you have route variations within your fares triangle, you are only required to upload one
+                            complete triangle that includes all of the potential stops
                         </span>
                     </fieldset>
                 </div>
@@ -74,7 +80,8 @@ const ReturnDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const serviceAttribute = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
@@ -129,6 +136,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 errors,
                 outboundJourney,
                 inboundJourney,
+                csrfToken,
             },
         };
     }
@@ -137,6 +145,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             service,
             errors: [],
+            csrfToken,
         },
     };
 };

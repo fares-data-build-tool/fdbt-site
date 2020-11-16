@@ -1,8 +1,31 @@
+import {
+    MultiOperatorInfoWithErrors,
+    InputMethodInfo,
+    ErrorInfo,
+    IncomingMessageWithSession,
+    ProductInfo,
+    ProductData,
+    ProductInfoWithErrors,
+    GroupDefinition,
+    TimeRestriction,
+    CompanionInfo,
+    DurationValidInfo,
+    Journey,
+    JourneyWithErrors,
+    TicketRepresentationAttribute,
+    TicketRepresentationAttributeWithErrors,
+    SalesOfferPackage,
+    ProductWithSalesOfferPackages,
+    ReturnPeriodValidity,
+    MultiOperatorInfo,
+    TicketPeriod,
+    FullTimeRestrictionAttribute,
+} from '../interfaces/index';
+
 import { FaresInformation } from '../pages/api/priceEntry';
 import {
-    DAYS_VALID_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
-    TIME_RESTRICTIONS_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SOP_ATTRIBUTE,
     SOP_INFO_ATTRIBUTE,
@@ -33,27 +56,9 @@ import {
     PRODUCT_DATE_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
 } from '../constants/index';
-import {
-    InputMethodInfo,
-    ErrorInfo,
-    IncomingMessageWithSession,
-    ProductInfo,
-    ProductData,
-    ProductInfoWithErrors,
-    GroupDefinition,
-    TimeRestriction,
-    CompanionInfo,
-    DaysValidInfo,
-    Journey,
-    JourneyWithErrors,
-    TicketRepresentationAttribute,
-    TicketRepresentationAttributeWithErrors,
-    SalesOfferPackage,
-    ProductWithSalesOfferPackages,
-    ReturnPeriodValidity,
-    TicketPeriod,
-} from '../interfaces';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
 import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
@@ -67,7 +72,6 @@ import {
 } from '../pages/api/groupPassengerTypes';
 import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
 import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
-import { TimeRestrictionsAttributeWithErrors, TimeRestrictionsAttribute } from '../pages/api/timeRestrictions';
 import { InputCheck } from '../pages/stageNames';
 import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
@@ -87,7 +91,7 @@ import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
-    [DAYS_VALID_ATTRIBUTE]: DaysValidInfo;
+    [DURATION_VALID_ATTRIBUTE]: DurationValidInfo;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
     [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
@@ -105,7 +109,6 @@ type SessionAttributeTypes = {
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
-    [TIME_RESTRICTIONS_ATTRIBUTE]: TimeRestrictionsAttribute | TimeRestrictionsAttributeWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
@@ -126,6 +129,8 @@ type SessionAttributeTypes = {
     [RETURN_VALIDITY_ATTRIBUTE]: ReturnPeriodValidity | ReturnPeriodValidityWithErrors;
     [PRODUCT_DATE_ATTRIBUTE]: TicketPeriod | TicketPeriodWithErrors;
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
+    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
+    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;

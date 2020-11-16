@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react';
-import { NextPageContextWithSession, CustomAppProps } from '../interfaces';
+import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators } from '../utils';
 
-const title = 'Fares Data Build Tool';
-const description = 'Fares Data Build Tool is a service that allows you to generate data in NeTEx format';
+const title = 'Create Fares Data';
+const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
 interface HomeProps {
     multipleOperators: boolean;
 }
 
-const Home = ({ multipleOperators }: HomeProps & CustomAppProps): ReactElement => (
+const Home = ({ multipleOperators }: HomeProps): ReactElement => (
     <BaseLayout title={title} description={description}>
-        <h1 className="govuk-heading-xl">Fares Data Build Tool</h1>
+        <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
                 <div>

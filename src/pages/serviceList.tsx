@@ -4,15 +4,15 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
 import { SERVICE_LIST_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants';
 import { ServiceType, getServicesByNocCode } from '../data/auroradb';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { getAndValidateNoc } from '../utils';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { ServiceListAttribute, ServiceListAttributeWithErrors } from './api/serviceList';
 import { FareType } from './api/fareType';
 
-const pageTitle = 'Service List - Fares Data Build Tool';
-const pageDescription = 'Service List selection page of the Fares Data Build Tool';
+const pageTitle = 'Service List - Create Fares Data Service';
+const pageDescription = 'Service List selection page of the Create Fares Data Service';
 
 export interface ServicesInfo extends ServiceType {
     checked?: boolean;
@@ -23,15 +23,10 @@ export interface ServiceListProps {
     buttonText: string;
     errors: ErrorInfo[];
     multiOperator: boolean;
+    csrfToken: string;
 }
 
-const ServiceList = ({
-    serviceList,
-    buttonText,
-    csrfToken,
-    errors,
-    multiOperator,
-}: ServiceListProps & CustomAppProps): ReactElement => (
+const ServiceList = ({ serviceList, buttonText, csrfToken, errors, multiOperator }: ServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
             <>
@@ -110,6 +105,7 @@ export const isServiceListAttributeWithErrors = (
     (serviceListAttribute as ServiceListAttributeWithErrors).errors !== undefined;
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceListProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
@@ -140,6 +136,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     ? serviceListAttribute.errors
                     : [],
             multiOperator,
+            csrfToken,
         },
     };
 };

@@ -41,7 +41,6 @@ describe('Inbound Matching Page', () => {
                 error={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
-                pageProps={[]}
             />,
         );
     });
@@ -63,16 +62,14 @@ describe('Inbound Matching Page', () => {
                 error={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
-                pageProps={[]}
             />,
         );
-
         expect(
             mountedWrapper
                 .find('.farestage-select')
                 .first()
                 .find('option'),
-        ).toHaveLength(9);
+        ).toHaveLength(10);
     });
 
     describe('getServerSideProps', () => {

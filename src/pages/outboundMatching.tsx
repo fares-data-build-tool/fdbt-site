@@ -5,15 +5,15 @@ import { JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE, OPERATOR_COOKIE, SERVICE_ATTRIBU
 import { getUserFareStages, UserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';
-import { BasicService, CustomAppProps, NextPageContextWithSession } from '../interfaces/index';
-import { getAndValidateNoc } from '../utils';
+import { BasicService, NextPageContextWithSession } from '../interfaces/index';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { isMatchingWithErrors } from './matching';
 import { isJourney, isService } from '../interfaces/typeGuards';
 
 const heading = 'Outbound - Match stops to fare stages';
-const title = 'Outbound Matching - Fares Data Build Tool';
-const description = 'Outbound Matching page of the Fares Data Build Tool';
+const title = 'Outbound Matching - Create Fares Data Service';
+const description = 'Outbound Matching page of the Create Fares Data Service';
 const hintText = 'Select a fare stage for each stop on the outbound journey.';
 const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/outboundMatching';
@@ -23,7 +23,8 @@ interface MatchingProps {
     stops: Stop[];
     service: BasicService;
     error: boolean;
-    selectedFareStages: string[];
+    selectedFareStages: string[][];
+    csrfToken: string;
 }
 
 const OutboundMatching = ({
@@ -33,7 +34,7 @@ const OutboundMatching = ({
     error,
     csrfToken,
     selectedFareStages,
-}: MatchingProps & CustomAppProps): ReactElement => (
+}: MatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
         stops={stops}
@@ -51,6 +52,7 @@ const OutboundMatching = ({
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
     const nocCode = getAndValidateNoc(ctx);
@@ -100,6 +102,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 matchingAttribute && isMatchingWithErrors(matchingAttribute)
                     ? matchingAttribute.selectedFareStages
                     : [],
+            csrfToken,
         },
     };
 };

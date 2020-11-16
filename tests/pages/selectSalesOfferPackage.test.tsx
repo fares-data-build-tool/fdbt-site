@@ -17,6 +17,7 @@ jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
     const selectSalesOfferPackagePropsInfoNoError: SelectSalesOfferPackageProps = {
+        schemeOp: false,
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
             defaultSalesOfferPackageTwo,
@@ -25,9 +26,11 @@ describe('pages', () => {
         ],
         errors: [],
         productNamesList: [],
+        csrfToken: '',
     };
 
     const selectSalesOfferPackagePropsInfoWithError: SelectSalesOfferPackageProps = {
+        schemeOp: false,
         productNamesList: [],
         salesOfferPackagesList: [
             defaultSalesOfferPackageOne,
@@ -36,17 +39,18 @@ describe('pages', () => {
             defaultSalesOfferPackageFour,
         ],
         errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
+        csrfToken: '',
     };
 
     describe('selectSalesOfferPackage', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
+                    schemeOp={selectSalesOfferPackagePropsInfoNoError.schemeOp}
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
                     productNamesList={[]}
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
-                    pageProps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -55,11 +59,24 @@ describe('pages', () => {
         it('should render an error when an error message is passed through to props', () => {
             const tree = shallow(
                 <SelectSalesOfferPackage
+                    schemeOp={selectSalesOfferPackagePropsInfoWithError.schemeOp}
                     salesOfferPackagesList={selectSalesOfferPackagePropsInfoWithError.salesOfferPackagesList}
                     productNamesList={[]}
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
-                    pageProps={[]}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it("should not render the 'Create New Sales Offer Package' button for a scheme operator user", () => {
+            const tree = shallow(
+                <SelectSalesOfferPackage
+                    schemeOp
+                    salesOfferPackagesList={selectSalesOfferPackagePropsInfoNoError.salesOfferPackagesList}
+                    productNamesList={[]}
+                    errors={selectSalesOfferPackagePropsInfoNoError.errors}
+                    csrfToken=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -125,7 +142,7 @@ describe('pages', () => {
                 },
             );
 
-            it('should throw an error when necessary nocCode is invalid', async () => {
+            it('should throw an error when necessary nocCode is invalid, when the user is not a scheme operator', async () => {
                 const ctx = getMockContext({
                     cookies: { operator: null },
                     body: null,

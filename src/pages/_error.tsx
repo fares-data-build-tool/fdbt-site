@@ -3,8 +3,8 @@ import { NextPageContext } from 'next';
 import TwoThirdsLayout from '../layout/Layout';
 import { FEEDBACK_LINK } from '../constants';
 
-const title = 'Error - Fares Data Build Tool';
-const description = 'Error page of the Fares Data Build Tool';
+const title = 'Error - Create Fares Data Service';
+const description = 'Error page of the Create Fares Data Service';
 
 interface ErrorProps {
     statusCode: number;
@@ -47,8 +47,8 @@ const Error = ({ statusCode }: ErrorProps): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContext): {} => {
-    return { props: { statusCode: ctx.res?.statusCode } };
+export const getStaticProps = (ctx: NextPageContext): {} => {
+    return { props: { statusCode: ctx.res?.statusCode ?? 500 } };
 };
 
 export default Error;

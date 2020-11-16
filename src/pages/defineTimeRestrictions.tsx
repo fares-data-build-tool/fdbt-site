@@ -2,67 +2,28 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput, { RadioConditionalInputFieldset } from '../components/RadioConditionalInput';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession, TimeRestriction } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, TimeRestriction } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants';
 import { TimeRestrictionsDefinitionWithErrors } from './api/defineTimeRestrictions';
-import { getErrorsByIds } from '../utils';
+import { getCsrfToken, getErrorsByIds } from '../utils';
 
-const title = 'Define Time Restrictions - Fares Data Build Tool';
-const description = 'Define Time Restrictions page of the Fares Data Build Tool';
+const title = 'Define Time Restrictions - Create Fares Data Service';
+const description = 'Define Time Restrictions page of the Create Fares Data Service';
 
 export interface DefineTimeRestrictionsProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
+    csrfToken: string;
 }
 
 export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
-    const timeRestrictionsFieldset: RadioConditionalInputFieldset = {
-        heading: {
-            id: 'define-time-restrictions',
-            content: 'Is there a start and end time to this ticket?',
-        },
-        radios: [
-            {
-                id: 'time-restriction-required',
-                name: 'timeRestriction',
-                value: 'Yes',
-                dataAriaControls: 'time-restriction-required-conditional',
-                label: 'Yes',
-                hint: {
-                    id: 'define-time-restriction-hint',
-                    content: 'Enter a start and end time in 24 hour format, for example, 0900 or 2300',
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'start-time',
-                        name: 'startTime',
-                        label: 'Start Time',
-                    },
-                    {
-                        id: 'end-time',
-                        name: 'endTime',
-                        label: 'End Time',
-                    },
-                ],
-                inputErrors: getErrorsByIds(['start-time', 'end-time'], errors),
-            },
-            {
-                id: 'time-restriction-not-required',
-                name: 'timeRestriction',
-                value: 'No',
-                label: 'No',
-            },
-        ],
-        radioError: getErrorsByIds(['time-restriction-required'], errors),
-    };
-
     const validDaysFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days?',
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
         },
         radios: [
             {
@@ -112,6 +73,11 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         name: 'validDays',
                         label: 'Sunday',
                     },
+                    {
+                        id: 'bankHoliday',
+                        name: 'validDays',
+                        label: 'Bank holiday',
+                    },
                 ],
                 inputErrors: getErrorsByIds(['monday'], errors),
             },
@@ -124,7 +90,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         ],
         radioError: getErrorsByIds(['valid-days-required'], errors),
     };
-    return [timeRestrictionsFieldset, validDaysFieldset];
+    return [validDaysFieldset];
 };
 
 export const isTimeRestrictionsDefinitionWithErrors = (
@@ -132,25 +98,19 @@ export const isTimeRestrictionsDefinitionWithErrors = (
 ): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
     (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
 
-const DefineTimeRestrictions = ({
-    errors = [],
-    fieldsets,
-    csrfToken,
-}: DefineTimeRestrictionsProps & CustomAppProps): ReactElement => (
+const DefineTimeRestrictions = ({ errors = [], fieldsets, csrfToken }: DefineTimeRestrictionsProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/defineTimeRestrictions" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
                 <div>
                     <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
-                        Tell us more about the time restrictions
+                        Are there time restrictions on your ticket?
                     </h1>
                     <span className="govuk-hint" id="define-time-restrictions-hint">
-                        The following two questions will provide us with all the information we need for time
-                        restrictions
+                        We need to know if your ticket(s) will have any time restrictions, for example select yes if
+                        your ticket(s) can only be used on a certain day or during a certain time period
                     </span>
-                    <br />
-                    <br />
                     {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
@@ -162,6 +122,7 @@ const DefineTimeRestrictions = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefineTimeRestrictionsProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
 
     let errors: ErrorInfo[] = [];
@@ -170,7 +131,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
     }
 
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
-    return { props: { errors, fieldsets } };
+    return { props: { errors, fieldsets, csrfToken } };
 };
 
 export default DefineTimeRestrictions;

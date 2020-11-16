@@ -1,25 +1,22 @@
 import { parseCookies } from 'nookies';
 import React, { ReactElement } from 'react';
-import { COOKIES_POLICY_COOKIE, COOKIE_SETTINGS_SAVED_COOKIE } from '../constants';
-import { deleteCookieOnServerSide } from '../utils';
+import { COOKIES_POLICY_COOKIE } from '../constants';
+import { getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { NextPageContextWithSession } from '../interfaces';
 import { TwoThirdsLayout } from '../layout/Layout';
 
-const title = 'Cookies on the Fares Data Build Tool';
-const description = 'Cookies Preferences page of the Fares Data Build Tool';
+const title = 'Cookies - Create Fares Data Service';
+const description = 'Cookies Preferences page of the Create Fares Data Service';
 
 export interface CookiePreferencesProps {
     settingsSaved: boolean;
     trackingDefaultValue: 'on' | 'off';
+    csrfToken: string;
 }
 
-const Cookies = ({
-    settingsSaved,
-    trackingDefaultValue,
-    csrfToken,
-}: CookiePreferencesProps & CustomAppProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description}>
+const Cookies = ({ settingsSaved, trackingDefaultValue, csrfToken }: CookiePreferencesProps): ReactElement => (
+    <TwoThirdsLayout title={title} description={description} hideCookieBanner>
         {settingsSaved ? (
             <div className="cookie-settings__confirmation">
                 <h2 className="govuk-heading-m">Your cookie settings were saved</h2>
@@ -30,14 +27,14 @@ const Cookies = ({
             </div>
         ) : null}
         <div className="govuk-!-margin-bottom-8">
-            <h1 className="govuk-heading-l">Cookies on the Fares Data Build Tool</h1>
+            <h1 className="govuk-heading-l">Cookies on the Create Fares Data Service</h1>
         </div>
         <p className="govuk-body">
             Cookies are files saved on your phone, tablet or computer when you visit a website.
         </p>
         <p className="govuk-body">
-            We use cookies to store information about how you use the Fares Data Build Tool website, such as the pages
-            you visit.
+            We use cookies to store information about how you use the Create Fares Data website, such as the pages you
+            visit.
         </p>
         <h2 className="govuk-heading-m govuk-!-margin-bottom-3">Cookie Settings</h2>
         <div className="cookie-settings__form-wrapper">
@@ -63,8 +60,8 @@ const Cookies = ({
                                 <ul className="govuk-list govuk-list--bullet govuk-hint">
                                     <li>how you got to the site</li>
                                     <li>
-                                        the pages you visit on the Fares Data Build Tool, and how long you spend on each
-                                        page
+                                        the pages you visit on the Create Fares Data Service, and how long you spend on
+                                        each page
                                     </li>
                                     <li>what you click on while you&apos;re visiting the site</li>
                                 </ul>
@@ -128,17 +125,16 @@ const Cookies = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CookiePreferencesProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
-    deleteCookieOnServerSide(ctx, COOKIE_SETTINGS_SAVED_COOKIE);
 
-    const settingsSaved = cookies[COOKIE_SETTINGS_SAVED_COOKIE]
-        ? JSON.parse(cookies[COOKIE_SETTINGS_SAVED_COOKIE])
-        : false;
+    const settingsSaved = (ctx.query?.settingsSaved ?? 'false') === 'true';
+
     const tracking = cookies[COOKIES_POLICY_COOKIE] ? JSON.parse(cookies[COOKIES_POLICY_COOKIE]).usage : false;
 
-    const trackingDefaultValue = !!settingsSaved && !!tracking ? 'on' : 'off';
+    const trackingDefaultValue = tracking ? 'on' : 'off';
 
-    return { props: { settingsSaved, trackingDefaultValue } };
+    return { props: { settingsSaved, trackingDefaultValue, csrfToken } };
 };
 
 export default Cookies;

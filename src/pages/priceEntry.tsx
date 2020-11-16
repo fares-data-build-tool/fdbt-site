@@ -4,17 +4,19 @@ import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
 import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
 import CsrfForm from '../components/CsrfForm';
-import { CustomAppProps, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { FaresInformation } from './api/priceEntry';
 import { isInputCheck } from '../interfaces/typeGuards';
+import { getCsrfToken } from '../utils';
 
-const title = 'Price Entry Fares Triangle - Fares Data Build Tool';
-const description = 'Price Entry page of the Fares Data Build Tool';
+const title = 'Price Entry - Create Fares Data Service';
+const description = 'Price Entry page of the Create Fares Data Service';
 
 interface PriceEntryProps {
     stageNamesArray: string[];
     faresInformation?: FaresInformation;
     errors?: ErrorInfo[];
+    csrfToken: string;
 }
 
 export const getDefaultValue = (fareInformation: FaresInformation, rowStage: string, columnStage: string): string => {
@@ -77,7 +79,7 @@ const PriceEntry = ({
     csrfToken,
     faresInformation = { inputs: [], errorInformation: [] },
     errors = [],
-}: PriceEntryProps & CustomAppProps): ReactElement => (
+}: PriceEntryProps): ReactElement => (
     <FullColumnLayout title={title} description={description}>
         <CsrfForm action="/api/priceEntry" method="post" csrfToken={csrfToken}>
             <>
@@ -95,17 +97,16 @@ const PriceEntry = ({
                     </span>
                     {errors.length > 0 ? createErrorSpans(errors) : null}
 
-                    <div className="fare-triangle-container" role="table">
-                        <div className="fare-triangle" role="rowgroup">
+                    <div className="fare-triangle-container">
+                        <div className="fare-triangle">
                             {stageNamesArray.map((rowStage, rowIndex) => (
-                                <div id={`row-${rowIndex}`} className="fare-triangle-row" role="row" key={rowStage}>
-                                    <span className="govuk-heading-s fare-triangle-label-left" role="rowheader">
+                                <div id={`row-${rowIndex}`} className="fare-triangle-row" key={rowStage}>
+                                    <span className="govuk-heading-s fare-triangle-label-left">
                                         <span>{rowIndex > 0 ? rowStage : null}</span>
                                     </span>
                                     {stageNamesArray.slice(0, rowIndex).map(columnStage => (
                                         <React.Fragment key={columnStage}>
                                             <span
-                                                role="cell"
                                                 className={`fare-triangle-input ${
                                                     rowIndex % 2 === 0
                                                         ? 'fare-triangle-input-white'
@@ -133,11 +134,7 @@ const PriceEntry = ({
                                             </label>
                                         </React.Fragment>
                                     ))}
-                                    <div
-                                        role="columnheader"
-                                        aria-sort="none"
-                                        className="govuk-heading-s fare-triangle-label-right"
-                                    >
+                                    <div aria-sort="none" className="govuk-heading-s fare-triangle-label-right">
                                         {rowStage}
                                     </div>
                                 </div>
@@ -152,6 +149,7 @@ const PriceEntry = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PriceEntryProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const stageNamesInfo = getSessionAttribute(ctx.req, STAGE_NAMES_ATTRIBUTE);
 
     if (!stageNamesInfo || stageNamesInfo.length === 0 || isInputCheck(stageNamesInfo)) {
@@ -180,11 +178,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
                     errorInformation: priceEntryInfo.errorInformation,
                 },
                 errors: filteredErrors,
+                csrfToken,
             },
         };
     }
 
-    return { props: { stageNamesArray } };
+    return { props: { stageNamesArray, csrfToken } };
 };
 
 export default PriceEntry;

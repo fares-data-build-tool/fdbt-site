@@ -18,8 +18,6 @@ export const COOKIES_POLICY_COOKIE = 'fdbt-cookies-policy';
 
 export const COOKIE_PREFERENCES_COOKIE = 'fdbt-cookie-preferences-set';
 
-export const COOKIE_SETTINGS_SAVED_COOKIE = 'fdbt-cookie-settings-saved';
-
 // Links
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
@@ -42,7 +40,7 @@ export const FARE_STAGES_ATTRIBUTE = 'fdbt-fare-stages';
 
 export const STAGE_NAMES_ATTRIBUTE = 'fdbt-stage-names';
 
-export const DAYS_VALID_ATTRIBUTE = 'fdbt-days-valid';
+export const DURATION_VALID_ATTRIBUTE = 'fdbt-duration-valid';
 
 export const PRODUCT_DETAILS_ATTRIBUTE = 'fdbt-product-details';
 
@@ -84,8 +82,6 @@ export const GROUP_PASSENGER_INFO_ATTRIBUTE = 'fdbt-group-passenger-info';
 
 export const GROUP_DEFINITION_ATTRIBUTE = 'fdbt-group-definition';
 
-export const TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-time-restrictions';
-
 export const TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE = 'fdbt-time-restrictions-definition';
 
 export const RETURN_VALIDITY_ATTRIBUTE = 'fdbt-return-validity';
@@ -94,9 +90,13 @@ export const PRODUCT_DATE_ATTRIBUTE = 'fdbt-product-date-attribute';
 
 export const MULTIPLE_OPERATOR_ATTRIBUTE = 'fdbt-multiple-operator-attribute';
 
+export const MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE = 'fdbt-multiple-operators-services-attribute';
+
+export const FULL_TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-full-time-restrictions-attribute';
+
 // Other
 
-export const oneYearInMilliseconds = 31556952000;
+export const oneYearInSeconds = 31556952;
 
 export const ALLOWED_CSV_FILE_TYPES = [
     'text/plain',

@@ -8,7 +8,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
@@ -17,28 +17,30 @@ import { isPassengerType } from '../interfaces/typeGuards';
 import { isNumberOfProductsAttribute } from './howManyProducts';
 import { isBaseMultipleProductAttributeWithErrors } from './multipleProducts';
 import { Product } from './api/multipleProductValidity';
+import { getCsrfToken, isSchemeOperator } from '../utils';
 
-const title = 'Multiple Product Validity - Fares Data Build Tool';
-const description = 'Multiple Product Validity selection page of the Fares Data Build Tool';
+const title = 'Multiple Product Validity - Create Fares Data Service';
+const description = 'Multiple Product Validity selection page of the Create Fares Data Service';
 
 const errorId = 'twenty-four-hours-row-0';
 
 interface MultipleProductValidityProps {
-    operator: string;
+    operatorName: string;
     passengerType: string;
     numberOfProducts: string;
     multipleProducts: Product[];
     errors: ErrorInfo[];
+    csrfToken: string;
 }
 
 const MultipleProductValidity = ({
-    operator,
+    operatorName,
     passengerType,
     numberOfProducts,
     multipleProducts,
     errors,
     csrfToken,
-}: MultipleProductValidityProps & CustomAppProps): ReactElement => (
+}: MultipleProductValidityProps): ReactElement => (
     <FullColumnLayout title={title} description={description} errors={errors}>
         <CsrfForm
             action="/api/multipleProductValidity"
@@ -53,7 +55,7 @@ const MultipleProductValidity = ({
                         When does the product expire?
                     </h1>
                     <span className="govuk-hint" id="operator-products-hint">
-                        {operator} - {numberOfProducts} products - {upperFirst(passengerType)}
+                        {operatorName} - {numberOfProducts} products - {upperFirst(passengerType)}
                     </span>
                     <span className="govuk-hint" id="multiple-product-validity-page-hint">
                         We need to know the time that this product would be valid until
@@ -88,7 +90,7 @@ const MultipleProductValidity = ({
                                         <td className="govuk-table__cell">{product.productName}</td>
                                         <td className="govuk-table__cell">£{product.productPrice}</td>
                                         <td className="govuk-table__cell">
-                                            {`${product.productDuration} day${
+                                            {`${product.productDuration} ${product.productDurationUnits}${
                                                 Number(product.productDuration) > 1 ? 's' : ''
                                             }`}
                                         </td>
@@ -147,6 +149,7 @@ const MultipleProductValidity = ({
 );
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const cookies = parseCookies(ctx);
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
@@ -164,6 +167,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
         throw new Error('Necessary cookies/session not found to display the multiple product validity page');
     }
     const { operator } = JSON.parse(operatorCookie);
+    const operatorName = isSchemeOperator(ctx) ? operator : operator.operatorPublicName;
 
     const multipleProducts: Product[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
@@ -181,11 +185,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
 
     return {
         props: {
-            operator: operator.operatorPublicName,
+            operatorName,
             passengerType: passengerTypeAttribute.passengerType,
             numberOfProducts,
             multipleProducts,
             errors,
+            csrfToken,
         },
     };
 };

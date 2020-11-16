@@ -3,14 +3,15 @@ import InsetText from '../components/InsetText';
 import { getSessionAttribute } from '../utils/sessions';
 import TwoThirdsLayout from '../layout/Layout';
 import { PASSENGER_TYPES_LIST, GROUP_PASSENGER_TYPES_ATTRIBUTE } from '../constants';
-import { ErrorInfo, CustomAppProps, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { GroupPassengerTypesCollectionWithErrors, GroupPassengerTypesCollection } from './api/groupPassengerTypes';
+import { getCsrfToken } from '../utils';
 
-const title = 'Define Group Passengers - Fares Data Build Tool';
-const description = 'Group Passengers selection page of the Fares Data Build Tool';
+const title = 'Define Group Passengers - Create Fares Data Service';
+const description = 'Group Passengers selection page of the Create Fares Data Service';
 
 export type PassengerAttributes = {
     passengerTypeDisplay: string;
@@ -25,11 +26,12 @@ const isGroupPassengerWithErrors = (
 
 interface PassengerTypeProps {
     groupPassengerInfo: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
+    csrfToken: string;
 }
 
 const insetText = 'More passenger types will become available soon';
 
-const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypeProps & CustomAppProps): ReactElement => {
+const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypeProps): ReactElement => {
     const errors: ErrorInfo[] = isGroupPassengerWithErrors(groupPassengerInfo) ? groupPassengerInfo.errors : [];
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -44,7 +46,8 @@ const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypePro
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="passenger-type-hint">
-                                Relate the ticket(s) to a passenger type
+                                Select the passenger types included in your group ticket. Select the ‘Anyone’ option if
+                                your group contains more than two of the below choices.
                             </span>
                             <FormElementWrapper
                                 errors={errors}
@@ -84,6 +87,7 @@ const GroupPassengerTypes = ({ groupPassengerInfo, csrfToken }: PassengerTypePro
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PassengerTypeProps } => {
+    const csrfToken = getCsrfToken(ctx);
     const groupPassengerTypesAttribute = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
 
     const defaultGroupPassengerInfo: GroupPassengerTypesCollection = {
@@ -93,6 +97,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pa
     return {
         props: {
             groupPassengerInfo: groupPassengerTypesAttribute || defaultGroupPassengerInfo,
+            csrfToken,
         },
     };
 };

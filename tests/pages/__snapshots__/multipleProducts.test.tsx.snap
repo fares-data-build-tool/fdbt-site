@@ -2,9 +2,9 @@
 
 exports[`pages multipleProduct should render correctly 1`] = `
 <Component
-  description="Multiple Product entry page of the Fares Data Build Tool"
+  description="Multiple Product entry page of the Create Fares Data Service"
   errors={Array []}
-  title="Multiple Product - Fares Data Build Tool"
+  title="Multiple Product - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/multipleProducts"
@@ -33,7 +33,7 @@ exports[`pages multipleProduct should render correctly 1`] = `
     <div
       className="govuk-inset-text"
     >
-      For example, Super Saver ticket - 4.95 - 2
+      For example, Super Saver ticket - 4.95 - 2 - Days
     </div>
     <div
       className="govuk-grid-row"
