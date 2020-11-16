@@ -45,7 +45,7 @@ const MultipleProductValidity = ({
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const id = event.target.id.toString();
         const index = id.split('-')[1];
-        const idToShow = `input-date-end-${index}`;
+        const idToShow = `validity-end-time-${index}`;
 
         const element = document.getElementById(idToShow);
 
@@ -112,40 +112,49 @@ const MultipleProductValidity = ({
                                     </tr>
                                 </thead>
                                 <tbody className="govuk-table__body">
-                                    {multipleProducts.map((product, index) => (
-                                        <tr className="govuk-table__row" key={product.productNameId}>
-                                            <td className="govuk-table__cell">{product.productName}</td>
-                                            <td className="govuk-table__cell">£{product.productPrice}</td>
-                                            <td className="govuk-table__cell">
-                                                {`${product.productDuration} ${product.productDurationUnits}${
-                                                    Number(product.productDuration) > 1 ? 's' : ''
-                                                }`}
-                                            </td>
-                                            <td className="govuk-table__cell">
-                                                {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-                                                <select
-                                                    className="govuk-select farestage-select"
-                                                    id={`option-${index}`}
-                                                    name={`option-${index}`}
-                                                    aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
-                                                    onChange={handleSelection}
-                                                >
-                                                    <option selected value="" disabled>
-                                                        Select an expiry
-                                                    </option>
-                                                    <option value="24hr">24hr</option>
-                                                    <option value="endOfCalendarDay">Calendar day</option>
-                                                    <option value="serviceDay">Service day</option>
-                                                </select>
-                                            </td>
-                                            <td className="govuk-table__cell">
-                                                <input
-                                                    id={`input-date-end-${index}`}
-                                                    className="inputHidden govuk-input govuk-input--width-4"
-                                                />
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {multipleProducts.map((product, index) => {
+                                        return (
+                                            <tr className="govuk-table__row" key={product.productNameId}>
+                                                <td className="govuk-table__cell">{product.productName}</td>
+                                                <td className="govuk-table__cell">£{product.productPrice}</td>
+                                                <td className="govuk-table__cell">
+                                                    {`${product.productDuration} ${product.productDurationUnits}${
+                                                        Number(product.productDuration) > 1 ? 's' : ''
+                                                    }`}
+                                                </td>
+                                                <td className="govuk-table__cell">
+                                                    {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+                                                    <select
+                                                        className="govuk-select farestage-select"
+                                                        id={`option-${index}`}
+                                                        name={`validity-option-${index}`}
+                                                        aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
+                                                        onChange={handleSelection}
+                                                        defaultValue={product.productExpiry}
+                                                    >
+                                                        <option selected value="" disabled>
+                                                            Select an expiry
+                                                        </option>
+                                                        <option value="24hr">24hr</option>
+                                                        <option value="endOfCalendarDay">Calendar day</option>
+                                                        <option value="serviceDay">Service day</option>
+                                                    </select>
+                                                </td>
+                                                <td className="govuk-table__cell">
+                                                    <input
+                                                        id={`validity-end-time-${index}`}
+                                                        className={`${
+                                                            product.productExpiry === 'serviceDay'
+                                                                ? 'inputVisible'
+                                                                : 'inputHidden'
+                                                        } govuk-input govuk-input--width-4`}
+                                                        name={`validity-end-time-${index}`}
+                                                        defaultValue={product.serviceEndTime || ''}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </FormElementWrapper>

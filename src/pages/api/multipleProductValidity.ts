@@ -19,14 +19,22 @@ export interface Product {
     productValidity?: string;
     productValidityError?: string;
     productDurationUnits?: string;
+    productExpiry?: string;
+    serviceEndTime?: string;
 }
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
-    let validity = req.body[`validity-row${index}`];
+    const validity = req.body[`validity-option-${index}`];
+    const validityEndTime = req.body[`validity-end-time-${index}`];
     let error = '';
-    if (!validity) {
-        validity = '';
-        error = 'Select one of the two validity options';
+
+    if (!validity || (validity === 'serviceDay' && validityEndTime === '')) {
+        if (!validity) {
+            error = 'Select one of the two validity options';
+        } else if (validity === 'serviceDay' && validityEndTime === '') {
+            error = 'Specify an end time for service day';
+        }
+
         return {
             productName: rawProduct.productName,
             productNameId: rawProduct.productNameId,
@@ -34,17 +42,20 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productPriceId: rawProduct.productPriceId,
             productDuration: rawProduct.productDuration,
             productDurationId: rawProduct.productDurationId,
-            productValidity: validity,
             productValidityError: error,
             productDurationUnits: rawProduct.productDurationUnits,
+            productExpiry: validity,
+            serviceEndTime: validityEndTime,
         };
     }
+
     return {
         productName: rawProduct.productName,
         productPrice: rawProduct.productPrice,
         productDuration: rawProduct.productDuration,
-        productValidity: validity,
         productDurationUnits: rawProduct.productDurationUnits,
+        productExpiry: validity,
+        serviceEndTime: validityEndTime,
     };
 };
 
