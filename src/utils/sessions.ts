@@ -58,6 +58,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    TERM_TIME_ATTRIBUTE,
 } from '../constants/index';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -88,6 +89,8 @@ import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api
 import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
+import { TermTimeAttributeWithErrors } from '../pages/termTime';
+import { TermTimeAttribute } from '../pages/api/termTime';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -131,6 +134,7 @@ type SessionAttributeTypes = {
     [MULTIPLE_OPERATOR_ATTRIBUTE]: MultipleOperatorsAttribute | MultipleOperatorsAttributeWithErrors;
     [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: MultiOperatorInfo[] | MultiOperatorInfoWithErrors;
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
+    [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | TermTimeAttributeWithErrors;
 };
 
 type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;
