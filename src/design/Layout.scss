@@ -310,6 +310,14 @@ svg:not(:root) {
     }
 }
 
+.inputVisible {
+    display: block;
+}
+
+.inputHidden {
+    display: none;
+}
+
 .text-input-margin {
     margin-right: 10px;
 }
