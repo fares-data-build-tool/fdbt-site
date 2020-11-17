@@ -294,7 +294,7 @@ export const buildTicketConfirmationElements = (
                     },
                     {
                         name: `Product - ${product.productName}`,
-                        content: `Validity - ${startCase(product.productValidity)}`,
+                        content: `Validity - ${startCase(product.productValidity)} - ${product.serviceEndTime}`,
                         href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
                     },
                 );
@@ -315,7 +315,9 @@ export const buildTicketConfirmationElements = (
                 },
                 {
                     name: `Product - ${fareTypeProps.products.productName}`,
-                    content: `Validity - ${startCase(fareTypeProps.products.productValidity)}`,
+                    content: `Validity - ${startCase(fareTypeProps.products.productValidity)} - ${
+                        fareTypeProps.products.serviceEndTime
+                    }`,
                     href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
                 },
             );
