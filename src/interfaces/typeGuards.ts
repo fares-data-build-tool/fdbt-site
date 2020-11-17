@@ -34,6 +34,8 @@ import { InputCheck } from '../pages/stageNames';
 import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 import { TermTimeAttributeWithErrors } from '../pages/termTime';
+import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
+import { validFareTypes } from '../constants';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -55,9 +57,15 @@ export const isFareTypeAttributeWithErrors = (
     fareTypeAttribute: FareType | FareTypeWithErrors,
 ): fareTypeAttribute is FareTypeWithErrors => (fareTypeAttribute as FareTypeWithErrors).errors !== undefined;
 
-export const isFareType = (fareType: FareType | FareTypeWithErrors | undefined): fareType is FareType => {
-    return fareType !== undefined && (fareType as FareType).fareType !== undefined;
-};
+export const isFareType = (fareType: FareType | FareTypeWithErrors | undefined): fareType is FareType =>
+    fareType !== undefined &&
+    (fareType as FareType).fareType !== undefined &&
+    validFareTypes.includes((fareType as FareType).fareType);
+
+export const isSchoolFareType = (
+    schoolFareType: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute> | undefined,
+): schoolFareType is SchoolFareTypeAttribute =>
+    schoolFareType !== undefined && (schoolFareType as SchoolFareTypeAttribute).schoolFareType !== undefined;
 
 export const inputMethodErrorsExist = (
     inputMethodAttribute: InputMethodInfo | ErrorInfo | undefined,
