@@ -18,20 +18,27 @@ export interface Product {
     productDurationId?: string;
     productValidity?: string;
     productValidityError?: string;
+    productValidityId?: string;
     productDurationUnits?: string;
     serviceEndTime?: string;
 }
+
+export const isValidInputValidity = (durationInput: string): boolean =>
+    ['24hr', 'endOfCalendarDay', 'serviceDay'].includes(durationInput);
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     const validity = req.body[`validity-option-${index}`];
     const validityEndTime = req.body[`validity-end-time-${index}`];
     let error = '';
+    let errorId = '';
 
     if (!validity || (validity === 'serviceDay' && validityEndTime === '')) {
         if (!validity) {
             error = 'Select one of the three validity options';
+            errorId = `validity-option-${index}`;
         } else if (validity === 'serviceDay' && validityEndTime === '') {
             error = 'Specify an end time for service day';
+            errorId = `validity-end-time-${index}`;
         }
 
         return {
@@ -42,9 +49,10 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productDuration: rawProduct.productDuration,
             productDurationId: rawProduct.productDurationId,
             productValidityError: error,
+            productValidityId: errorId,
             productDurationUnits: rawProduct.productDurationUnits,
             productValidity: validity,
-            serviceEndTime: validityEndTime,
+            serviceEndTime: validity === 'serviceDay' ? validityEndTime : '',
         };
     }
 
@@ -54,7 +62,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
         productDuration: rawProduct.productDuration,
         productDurationUnits: rawProduct.productDurationUnits,
         productValidity: validity,
-        serviceEndTime: validityEndTime,
+        serviceEndTime: validity === 'serviceDay' ? validityEndTime : '',
     };
 };
 

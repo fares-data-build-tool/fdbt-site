@@ -22,8 +22,6 @@ import { getCsrfToken, isSchemeOperator } from '../utils';
 const title = 'Multiple Product Validity - Create Fares Data Service';
 const description = 'Multiple Product Validity selection page of the Create Fares Data Service';
 
-const errorId = 'twenty-four-hours-row-0';
-
 interface MultipleProductValidityProps {
     operatorName: string;
     passengerType: string;
@@ -44,7 +42,7 @@ const MultipleProductValidity = ({
     const [showEndTimeColumn, setShowEndTimeColumn] = useState(false);
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const id = event.target.id.toString();
-        const index = id.split('-')[1];
+        const index = id.split('-')[2];
         const idToShow = `validity-end-time-${index}`;
 
         const element = document.getElementById(idToShow);
@@ -92,45 +90,49 @@ const MultipleProductValidity = ({
                             End of service day means a ticket is valid beyond midnight and expires in line with the end
                             of your service day
                         </span>
-                        <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                            <table className="govuk-table multiple-product-validity-table">
-                                <thead className="govuk-table__head">
-                                    <tr className="govuk-table__row">
+                        <table className="govuk-table multiple-product-validity-table">
+                            <thead className="govuk-table__head">
+                                <tr className="govuk-table__row">
+                                    <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
+                                        Name
+                                    </th>
+                                    <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
+                                        Price
+                                    </th>
+                                    <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
+                                        Duration
+                                    </th>
+                                    <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
+                                        Expiry
+                                    </th>
+                                    {showEndTimeColumn && (
                                         <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
-                                            Name
+                                            End time for Service day
                                         </th>
-                                        <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
-                                            Price
-                                        </th>
-                                        <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
-                                            Duration
-                                        </th>
-                                        <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
-                                            Expiry
-                                        </th>
-                                        {showEndTimeColumn && (
-                                            <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
-                                                End time for Service day
-                                            </th>
-                                        )}
-                                    </tr>
-                                </thead>
-                                <tbody className="govuk-table__body">
-                                    {multipleProducts.map((product, index) => {
-                                        return (
-                                            <tr className="govuk-table__row" key={product.productNameId}>
-                                                <td className="govuk-table__cell">{product.productName}</td>
-                                                <td className="govuk-table__cell">£{product.productPrice}</td>
-                                                <td className="govuk-table__cell">
-                                                    {`${product.productDuration} ${product.productDurationUnits}${
-                                                        Number(product.productDuration) > 1 ? 's' : ''
-                                                    }`}
-                                                </td>
-                                                <td className="govuk-table__cell">
-                                                    {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+                                    )}
+                                </tr>
+                            </thead>
+                            <tbody className="govuk-table__body">
+                                {multipleProducts.map((product, index) => {
+                                    return (
+                                        <tr className="govuk-table__row" key={product.productNameId}>
+                                            <td className="govuk-table__cell">{product.productName}</td>
+                                            <td className="govuk-table__cell">£{product.productPrice}</td>
+                                            <td className="govuk-table__cell">
+                                                {`${product.productDuration} ${product.productDurationUnits}${
+                                                    Number(product.productDuration) > 1 ? 's' : ''
+                                                }`}
+                                            </td>
+                                            <td className="govuk-table__cell">
+                                                <FormElementWrapper
+                                                    errors={errors}
+                                                    errorId={`validity-option-${index}`}
+                                                    errorClass="govuk-select--error"
+                                                    hideText
+                                                >
                                                     <select
                                                         className="govuk-select farestage-select"
-                                                        id={`option-${index}`}
+                                                        id={`validity-option-${index}`}
                                                         name={`validity-option-${index}`}
                                                         aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
                                                         onChange={handleSelection}
@@ -143,8 +145,15 @@ const MultipleProductValidity = ({
                                                         <option value="endOfCalendarDay">Calendar day</option>
                                                         <option value="serviceDay">End of service day</option>
                                                     </select>
-                                                </td>
-                                                <td className="govuk-table__cell">
+                                                </FormElementWrapper>
+                                            </td>
+                                            <td className="govuk-table__cell">
+                                                <FormElementWrapper
+                                                    errors={errors}
+                                                    errorId={`validity-end-time-${index}`}
+                                                    errorClass="govuk-select--error"
+                                                    hideText
+                                                >
                                                     <input
                                                         id={`validity-end-time-${index}`}
                                                         className={`${
@@ -155,13 +164,13 @@ const MultipleProductValidity = ({
                                                         name={`validity-end-time-${index}`}
                                                         defaultValue={product.serviceEndTime || ''}
                                                     />
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        </FormElementWrapper>
+                                                </FormElementWrapper>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
@@ -195,15 +204,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
 
     const errors: ErrorInfo[] = [];
-    const productWithErrors = multipleProducts.find(el => el.productValidityError);
+    multipleProducts.forEach(el => {
+        const { productValidityError, productValidityId } = el;
 
-    if (productWithErrors) {
-        const error: ErrorInfo = {
-            errorMessage: productWithErrors.productValidityError ?? '',
-            id: errorId,
-        };
-        errors.push(error);
-    }
+        if (productValidityError && productValidityId) {
+            errors.push({
+                errorMessage: productValidityError,
+                id: productValidityId,
+            });
+        }
+    });
 
     return {
         props: {
