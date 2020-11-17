@@ -130,7 +130,7 @@ const MultipleProductValidity = ({
                                                         name={`validity-option-${index}`}
                                                         aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
                                                         onChange={handleSelection}
-                                                        defaultValue={product.productExpiry}
+                                                        defaultValue={product.productValidity}
                                                     >
                                                         <option selected value="" disabled>
                                                             Select an expiry
@@ -144,7 +144,7 @@ const MultipleProductValidity = ({
                                                     <input
                                                         id={`validity-end-time-${index}`}
                                                         className={`${
-                                                            product.productExpiry === 'serviceDay'
+                                                            product.productValidity === 'serviceDay'
                                                                 ? 'inputVisible'
                                                                 : 'inputHidden'
                                                         } govuk-input govuk-input--width-4`}

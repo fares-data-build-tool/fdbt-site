@@ -19,7 +19,6 @@ export interface Product {
     productValidity?: string;
     productValidityError?: string;
     productDurationUnits?: string;
-    productExpiry?: string;
     serviceEndTime?: string;
 }
 
@@ -44,7 +43,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productDurationId: rawProduct.productDurationId,
             productValidityError: error,
             productDurationUnits: rawProduct.productDurationUnits,
-            productExpiry: validity,
+            productValidity: validity,
             serviceEndTime: validityEndTime,
         };
     }
@@ -54,7 +53,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
         productPrice: rawProduct.productPrice,
         productDuration: rawProduct.productDuration,
         productDurationUnits: rawProduct.productDurationUnits,
-        productExpiry: validity,
+        productValidity: validity,
         serviceEndTime: validityEndTime,
     };
 };
