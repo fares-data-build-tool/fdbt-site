@@ -29,7 +29,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
 
     if (!validity || (validity === 'serviceDay' && validityEndTime === '')) {
         if (!validity) {
-            error = 'Select one of the two validity options';
+            error = 'Select one of the three validity options';
         } else if (validity === 'serviceDay' && validityEndTime === '') {
             error = 'Specify an end time for service day';
         }

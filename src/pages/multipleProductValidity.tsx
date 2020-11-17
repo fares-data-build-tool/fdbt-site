@@ -88,6 +88,10 @@ const MultipleProductValidity = ({
                             Calendar day means a ticket purchased at 3pm would be valid until midnight on its day of
                             expiry
                         </span>
+                        <span className="govuk-hint" id="end-service-day-validity-type-hint">
+                            End of service day means a ticket is valid beyond midnight and expires in line with the end
+                            of your service day
+                        </span>
                         <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                             <table className="govuk-table multiple-product-validity-table">
                                 <thead className="govuk-table__head">
@@ -137,7 +141,7 @@ const MultipleProductValidity = ({
                                                         </option>
                                                         <option value="24hr">24hr</option>
                                                         <option value="endOfCalendarDay">Calendar day</option>
-                                                        <option value="serviceDay">Service day</option>
+                                                        <option value="serviceDay">End of Service day</option>
                                                     </select>
                                                 </td>
                                                 <td className="govuk-table__cell">
