@@ -22,6 +22,7 @@ import {
     TicketPeriod,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
+    TermTimeAttribute,
     WithErrors,
 } from './index';
 
@@ -32,6 +33,7 @@ import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api
 import { InputCheck } from '../pages/stageNames';
 import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
+import { TermTimeAttributeWithErrors } from '../pages/termTime';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
 
@@ -183,6 +185,11 @@ export const isMultiOperatorInfoWithErrors = (
     multiOperatorInfo: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined,
 ): multiOperatorInfo is MultiOperatorInfoWithErrors =>
     multiOperatorInfo !== undefined && (multiOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;
+
+export const isTermTimeAttributeWithErrors = (
+    termTime: undefined | TermTimeAttribute | TermTimeAttributeWithErrors,
+): termTime is TermTimeAttributeWithErrors =>
+    !!termTime && (termTime as TermTimeAttributeWithErrors).errors !== undefined;
 
 export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
     !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;

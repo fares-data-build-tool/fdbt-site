@@ -67,6 +67,10 @@ export interface MultiOperatorInfo {
     services: string[];
 }
 
+export interface TermTimeAttribute {
+    termTime: boolean;
+}
+
 export type WithErrors<T> = {
     errors: ErrorInfo[];
 } & T;
