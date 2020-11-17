@@ -12,13 +12,25 @@ describe('termTime', () => {
         jest.resetAllMocks();
     });
 
-    it('should successfully redirect to /schoolFareType when a radio button is selected', () => {
+    it('should successfully redirect to /schoolFareType when No radio button is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: { termTime: 'No' },
             mockWriteHeadFn: writeHeadMock,
         });
         termTime(req, res);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, TERM_TIME_ATTRIBUTE, { termTime: false });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/schoolFareType',
+        });
+    });
+
+    it('should successfully redirect to /schoolFareType when Yes radio button is selected', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { termTime: 'Yes' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        termTime(req, res);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TERM_TIME_ATTRIBUTE, { termTime: true });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/schoolFareType',
         });
