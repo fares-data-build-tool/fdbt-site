@@ -20,6 +20,7 @@ import {
     MultiOperatorInfo,
     TicketPeriod,
     FullTimeRestrictionAttribute,
+    TermTimeAttribute,
 } from '../interfaces/index';
 
 import { FaresInformation } from '../pages/api/priceEntry';
@@ -90,7 +91,6 @@ import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 import { TermTimeAttributeWithErrors } from '../pages/termTime';
-import { TermTimeAttribute } from '../pages/api/termTime';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];

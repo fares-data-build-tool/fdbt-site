@@ -5,10 +5,6 @@ import { isSessionValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
 
-export interface TermTimeAttribute {
-    termTime: boolean;
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (!isSessionValid(req, res)) {

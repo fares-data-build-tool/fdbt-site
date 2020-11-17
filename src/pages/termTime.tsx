@@ -7,7 +7,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
-import { TermTimeAttribute } from './api/termTime';
+import { isTermTimeAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Term Time - Create Fares Data Service';
 const description = 'Term Time selection page of the Create Fares Data Service';
@@ -73,11 +73,6 @@ const TermTime = ({ errors, csrfToken }: TermTimeProps): ReactElement => (
         </CsrfForm>
     </TwoThirdsLayout>
 );
-
-const isTermTimeAttributeWithErrors = (
-    termTime: undefined | TermTimeAttribute | TermTimeAttributeWithErrors,
-): termTime is TermTimeAttributeWithErrors =>
-    !!termTime && (termTime as TermTimeAttributeWithErrors).errors !== undefined;
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: TermTimeProps } => {
     const csrfToken = getCsrfToken(ctx);
