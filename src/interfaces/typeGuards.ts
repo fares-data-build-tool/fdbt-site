@@ -22,6 +22,7 @@ import {
     TicketPeriod,
     MultiOperatorInfo,
     MultiOperatorInfoWithErrors,
+    WithErrors,
 } from './index';
 
 import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
@@ -182,3 +183,6 @@ export const isMultiOperatorInfoWithErrors = (
     multiOperatorInfo: MultiOperatorInfo[] | MultiOperatorInfoWithErrors | undefined,
 ): multiOperatorInfo is MultiOperatorInfoWithErrors =>
     multiOperatorInfo !== undefined && (multiOperatorInfo as MultiOperatorInfoWithErrors).errors !== undefined;
+
+export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
+    !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;

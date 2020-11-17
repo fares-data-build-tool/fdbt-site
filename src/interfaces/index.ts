@@ -67,6 +67,10 @@ export interface MultiOperatorInfo {
     services: string[];
 }
 
+export type WithErrors<T> = {
+    errors: ErrorInfo[];
+} & T;
+
 // Miscellaneous
 
 export type PassengerAttributes = {

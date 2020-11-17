@@ -25,11 +25,11 @@ const description = 'Fare Type selection page of the Create Fares Data Service';
 
 const errorId = 'fare-type-single';
 
-type FareTypeProps = {
+interface FareTypeProps {
     operatorName: string;
     errors: ErrorInfo[];
     csrfToken: string;
-};
+}
 
 export const buildUuid = (noc: string): string => {
     const uuid = uuidv4();
@@ -68,7 +68,7 @@ const radioProps: FareTypeRadioProps = {
     ],
 };
 
-const FareTypePage = ({ operatorName, errors = [], csrfToken }: FareTypeProps): ReactElement => {
+const FareType = ({ operatorName, errors = [], csrfToken }: FareTypeProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -109,7 +109,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     const operatorCookie = cookies[OPERATOR_COOKIE];
 
     if (!operatorCookie || !opIdentifier) {
-        throw new Error('Necessary data not found to show faretype page');
+        throw new Error('Could not extract the necessary operator info for the fareType page.');
     }
     const operatorInfo = JSON.parse(operatorCookie);
     const operatorName = schemeOp ? operatorInfo.operator : operatorInfo.operator.operatorPublicName;
@@ -140,4 +140,4 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     return { props: { operatorName, errors, csrfToken } };
 };
 
-export default FareTypePage;
+export default FareType;
