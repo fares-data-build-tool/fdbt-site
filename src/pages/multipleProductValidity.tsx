@@ -141,7 +141,7 @@ const MultipleProductValidity = ({
                                                         </option>
                                                         <option value="24hr">24hr</option>
                                                         <option value="endOfCalendarDay">Calendar day</option>
-                                                        <option value="serviceDay">End of Service day</option>
+                                                        <option value="serviceDay">End of service day</option>
                                                     </select>
                                                 </td>
                                                 <td className="govuk-table__cell">
