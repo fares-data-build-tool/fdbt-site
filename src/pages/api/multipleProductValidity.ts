@@ -7,6 +7,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 
 export interface MultipleProductAttribute {
     products: Product[];
+    showEndTimeColumn?: boolean;
 }
 
 export interface Product {
@@ -81,7 +82,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const rawProducts: Product[] = multiProductAttribute.products;
         const products: Product[] = rawProducts.map((rawProduct, i) => addErrorsIfInvalid(req, rawProduct, i));
 
-        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { products });
+        updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
+            products,
+            showEndTimeColumn: req.body.showEndColumn || false,
+        });
 
         if (products.some(el => el.productValidityError)) {
             redirectTo(res, '/multipleProductValidity');

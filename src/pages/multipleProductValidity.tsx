@@ -29,6 +29,7 @@ interface MultipleProductValidityProps {
     multipleProducts: Product[];
     errors: ErrorInfo[];
     csrfToken: string;
+    showEndTimeColumn: boolean;
 }
 
 const MultipleProductValidity = ({
@@ -38,8 +39,10 @@ const MultipleProductValidity = ({
     multipleProducts,
     errors,
     csrfToken,
+    showEndTimeColumn,
 }: MultipleProductValidityProps): ReactElement => {
-    const [showEndTimeColumn, setShowEndTimeColumn] = useState(false);
+    const [showColumn, setShowEndTimeColumn] = useState(Boolean(JSON.parse(showEndTimeColumn.toString())));
+
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const id = event.target.id.toString();
         const index = id.split('-')[2];
@@ -105,7 +108,7 @@ const MultipleProductValidity = ({
                                     <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
                                         Expiry
                                     </th>
-                                    {showEndTimeColumn && (
+                                    {showColumn && (
                                         <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
                                             End time for Service day
                                         </th>
@@ -171,6 +174,7 @@ const MultipleProductValidity = ({
                                 })}
                             </tbody>
                         </table>
+                        <input hidden defaultValue={showColumn.toString()} name="showEndColumn" />
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
@@ -203,6 +207,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const multipleProducts: Product[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
 
+    const { showEndTimeColumn } = multipleProductAttribute;
     const errors: ErrorInfo[] = [];
     multipleProducts.forEach(el => {
         const { productValidityError, productValidityId } = el;
@@ -223,6 +228,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             multipleProducts,
             errors,
             csrfToken,
+            showEndTimeColumn: showEndTimeColumn || false,
         },
     };
 };
