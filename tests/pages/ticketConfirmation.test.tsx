@@ -24,6 +24,7 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly for return tickets', () => {
             const tree = shallow(
                 <TicketConfirmation
@@ -58,6 +59,7 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly for period and multiOperator tickets', () => {
             const tree = shallow(
                 <TicketConfirmation
@@ -91,6 +93,7 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly for flat fare tickets', () => {
             const tree = shallow(
                 <TicketConfirmation
@@ -140,6 +143,7 @@ describe('pages', () => {
             ];
             expect(result).toStrictEqual(expectedResult);
         });
+
         it('builds confirmation elements for return tickets', () => {
             const result = buildTicketConfirmationElements({
                 service: '2B',
@@ -199,6 +203,7 @@ describe('pages', () => {
             ];
             expect(result).toStrictEqual(expectedResult);
         });
+
         it('builds confirmation elements for period and multiOperator tickets', () => {
             const result = buildTicketConfirmationElements({
                 services: ['2A', '7F', '200'],
@@ -254,6 +259,7 @@ describe('pages', () => {
             ];
             expect(result).toStrictEqual(expectedResult);
         });
+
         it('builds confirmation elements for flat fare tickets', () => {
             const result = buildTicketConfirmationElements({
                 services: ['2A', '7F', '200'],
