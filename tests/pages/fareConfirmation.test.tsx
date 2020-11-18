@@ -4,7 +4,7 @@ import FareConfirmation, { buildFareConfirmationElements } from '../../src/pages
 
 describe('pages', () => {
     describe('fareConfirmation', () => {
-        it('should render correctly', () => {
+        it('should render correctly for non school tickets', () => {
             const tree = shallow(
                 <FareConfirmation
                     fareType="single"
@@ -16,6 +16,8 @@ describe('pages', () => {
                         proof: 'yes',
                         proofDocuments: ['membership card'],
                     }}
+                    schoolFareType=""
+                    termTime=""
                     fullTimeRestrictions={[
                         {
                             day: 'thursday',
@@ -38,9 +40,29 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
+
+        it('should render correctly for school tickets', () => {
+            const tree = shallow(
+                <FareConfirmation
+                    fareType="schoolService"
+                    passengerType={{
+                        passengerType: 'schoolPupil',
+                        ageRange: 'yes',
+                        ageRangeMax: '18',
+                        proof: 'yes',
+                        proofDocuments: ['Student Card'],
+                    }}
+                    schoolFareType="single"
+                    termTime="true"
+                    fullTimeRestrictions={[]}
+                    csrfToken=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
     });
     describe('buildFareConfirmationElements', () => {
-        it('should create confirmation elements for the fare information', () => {
+        it('should create confirmation elements for non school tickets', () => {
             const result = buildFareConfirmationElements(
                 'return',
                 {
@@ -51,6 +73,8 @@ describe('pages', () => {
                     proof: 'yes',
                     proofDocuments: ['membership card'],
                 },
+                '',
+                '',
                 [
                     {
                         day: 'wednesday',
@@ -96,6 +120,45 @@ describe('pages', () => {
                     content: 'Start time: N/A End time: N/A',
                     href: 'defineTimeRestrictions',
                     name: 'Time Restrictions - Friday',
+                },
+            ]);
+        });
+        it('should create confirmation elements for school tickets', () => {
+            const result = buildFareConfirmationElements(
+                'schoolService',
+                {
+                    passengerType: 'schoolPupil',
+                    ageRange: 'yes',
+                    ageRangeMax: '18',
+                    proof: 'yes',
+                    proofDocuments: ['Student Card'],
+                },
+                'single',
+                'true',
+                [],
+            );
+            expect(result).toStrictEqual([
+                { content: 'School Service', href: 'fareType', name: 'Fare Type' },
+                { content: 'School Pupil', href: 'passengerType', name: 'Passenger Type' },
+                {
+                    content: 'Minimum Age: No details entered Maximum Age: 18',
+                    href: 'definePassengerType',
+                    name: 'Passenger Information - Age Range',
+                },
+                {
+                    content: 'Student Card',
+                    href: 'definePassengerType',
+                    name: 'Passenger Information - Proof Documents',
+                },
+                {
+                    content: 'Yes',
+                    href: 'termTime',
+                    name: 'Only Valid During Term Times',
+                },
+                {
+                    content: 'Single',
+                    href: 'schoolFareType',
+                    name: 'School Ticket Fare Type',
                 },
             ]);
         });

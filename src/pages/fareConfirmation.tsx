@@ -1,6 +1,12 @@
 import React, { ReactElement } from 'react';
 import startCase from 'lodash/startCase';
-import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../constants';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TERM_TIME_ATTRIBUTE,
+} from '../constants';
 import { NextPageContextWithSession, FullTimeRestriction } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -16,6 +22,8 @@ const description = 'Fare Confirmation page of the Create Fares Data Service';
 type FareConfirmationProps = {
     fareType: string;
     passengerType: PassengerType;
+    schoolFareType: string;
+    termTime: string;
     fullTimeRestrictions: FullTimeRestriction[];
     csrfToken: string;
 };
@@ -23,6 +31,8 @@ type FareConfirmationProps = {
 export const buildFareConfirmationElements = (
     fareType: string,
     passengerType: PassengerType,
+    schoolFareType: string,
+    termTime: string,
     fullTimeRestrictions: FullTimeRestriction[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
@@ -37,6 +47,7 @@ export const buildFareConfirmationElements = (
             href: 'passengerType',
         },
     ];
+
     if (passengerType.ageRange && (passengerType.ageRangeMin || passengerType.ageRangeMax)) {
         confirmationElements.push({
             name: 'Passenger Information - Age Range',
@@ -52,6 +63,7 @@ export const buildFareConfirmationElements = (
             href: 'definePassengerType',
         });
     }
+
     if (passengerType.proof && passengerType.proofDocuments) {
         confirmationElements.push({
             name: 'Passenger Information - Proof Documents',
@@ -64,6 +76,24 @@ export const buildFareConfirmationElements = (
             content: 'No details entered',
             href: 'definePassengerType',
         });
+    }
+
+    if (fareType === 'schoolService') {
+        if (termTime !== '') {
+            confirmationElements.push({
+                name: 'Only Valid During Term Times',
+                content: termTime === 'true' ? 'Yes' : 'No',
+                href: 'termTime',
+            });
+        }
+
+        if (schoolFareType !== '') {
+            confirmationElements.push({
+                name: 'School Ticket Fare Type',
+                content: startCase(schoolFareType),
+                href: 'schoolFareType',
+            });
+        }
     }
 
     if (fullTimeRestrictions.length > 0) {
@@ -80,10 +110,12 @@ export const buildFareConfirmationElements = (
 };
 
 const FareConfirmation = ({
-    csrfToken,
     fareType,
     passengerType,
+    schoolFareType,
+    termTime,
     fullTimeRestrictions,
+    csrfToken,
 }: FareConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/fareConfirmation" method="post" csrfToken={csrfToken}>
@@ -91,7 +123,13 @@ const FareConfirmation = ({
                 <h1 className="govuk-heading-l">Check your answers before sending your fares information</h1>
                 <ConfirmationTable
                     header="Fare Information"
-                    confirmationElements={buildFareConfirmationElements(fareType, passengerType, fullTimeRestrictions)}
+                    confirmationElements={buildFareConfirmationElements(
+                        fareType,
+                        passengerType,
+                        schoolFareType,
+                        termTime,
+                        fullTimeRestrictions,
+                    )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
@@ -101,18 +139,27 @@ const FareConfirmation = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: FareConfirmationProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const fareTypeInfo = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-    const passengerTypeInfo = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+    const termTimeAttribute = getSessionAttribute(ctx.req, TERM_TIME_ATTRIBUTE);
     const fullTimeRestrictionsAttribute = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
 
-    if (!passengerTypeInfo || isPassengerTypeAttributeWithErrors(passengerTypeInfo) || !isFareType(fareTypeInfo)) {
-        throw new Error('User has reached fare confirmation page with incorrect passenger type info.');
+    if (
+        !passengerTypeAttribute ||
+        isPassengerTypeAttributeWithErrors(passengerTypeAttribute) ||
+        !isFareType(fareTypeAttribute) ||
+        (fareTypeAttribute.fareType === 'schoolService' && (!schoolFareTypeAttribute || !termTimeAttribute))
+    ) {
+        throw new Error('Could not extract the correct attributes for the user journey.');
     }
 
     return {
         props: {
-            fareType: fareTypeInfo.fareType,
-            passengerType: passengerTypeInfo,
+            fareType: fareTypeAttribute.fareType,
+            passengerType: passengerTypeAttribute,
+            schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
+            termTime: termTimeAttribute?.termTime.toString() || '',
             fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
             csrfToken,
         },
