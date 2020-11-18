@@ -10,10 +10,11 @@ export interface FareTypeRadioProps {
     otherFares?: FareTypeRadio[];
 }
 
-const FareTypeRadios = ({ standardFares, otherFares }: FareTypeRadioProps): ReactElement => {
+const FareTypeRadios = ({ standardFares, otherFares = [] }: FareTypeRadioProps): ReactElement => {
+    const showHeadings = standardFares.length > 0 && otherFares.length > 0;
     return (
         <>
-            {standardFares && otherFares && otherFares.length > 0 ? (
+            {showHeadings ? (
                 <h2 className="govuk-heading-m govuk-!-margin-top-5" id="standard-fares-heading">
                     Standard Fares
                 </h2>
@@ -36,7 +37,7 @@ const FareTypeRadios = ({ standardFares, otherFares }: FareTypeRadioProps): Reac
                         </label>
                     </div>
                 ))}
-                {otherFares && otherFares.length > 0 ? (
+                {showHeadings ? (
                     <>
                         <h2 className="govuk-heading-m govuk-!-margin-top-5" id="other-fares-heading">
                             Other Fares
