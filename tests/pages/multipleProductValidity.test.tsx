@@ -34,6 +34,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
+                    showEndTimeColumn={false}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -53,6 +54,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
+                    showEndTimeColumn={false}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -67,6 +69,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
+                    showEndTimeColumn={false}
                 />,
             );
             expect(wrapper.find('.govuk-select')).toHaveLength(2);

@@ -21,18 +21,19 @@ describe('multipleProductValidity', () => {
                 productPriceId: '',
                 productDuration: '3',
                 productDurationId: '',
+                serviceEndTime: '',
             };
             const result = addErrorsIfInvalid(req, product, userInputIndex);
 
             expect(result.productValidity).toBe('');
-            expect(result.productValidityError).toBe('Select one of the two validity options');
+            expect(result.productValidityError).toBe('Select one of the three validity options');
         });
 
         it('does not add errors to correct data', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
-                    'validity-row0': 'endOfCalendarDay',
-                    'validity-row1': '24hr',
+                    'validity-option-0': 'endOfCalendarDay',
+                    'validity-option-1': '24hr',
                 },
             });
 
@@ -44,11 +45,12 @@ describe('multipleProductValidity', () => {
                 productPriceId: '',
                 productDuration: '30',
                 productDurationId: '',
+                productValidity: 'endOfCalendarDay',
             };
             const result = addErrorsIfInvalid(req, product, userInputIndex);
 
             expect(result.productValidity).toBe('endOfCalendarDay');
-            expect(result.productValidityError).toBe(undefined);
+            expect(result.productValidityError).toBe('');
         });
     });
 
@@ -65,10 +67,10 @@ describe('multipleProductValidity', () => {
         });
     });
 
-    it('redirects to selectSalesOfferPackage page if all valid', () => {
+    it.only('redirects to selectSalesOfferPackage page if all valid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
-            body: { 'validity-row0': '24hr', 'validity-row1': '24hr', 'validity-row2': 'endOfCalendarDay' },
+            body: { 'validity-option-0': '24hr', 'validity-option-1': '24hr', 'validity-option-2': 'endOfCalendarDay' },
             mockWriteHeadFn: writeHeadMock,
         });
         multipleProductValidity(req, res);

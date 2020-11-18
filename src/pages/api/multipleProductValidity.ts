@@ -46,7 +46,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             errorId = `validity-end-time-${index}`;
         }
 
-        if (validityEndTime !== '' && !isValidTime(validityEndTime)) {
+        if (validityEndTime && !isValidTime(validityEndTime)) {
             if (validityEndTime === '2400') {
                 error = '2400 is not a valid input. Use 0000.';
                 errorId = `validity-end-time-${index}`;
@@ -66,7 +66,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productValidityError: error,
             productValidityId: errorId,
             productDurationUnits: rawProduct.productDurationUnits,
-            productValidity: validity,
+            productValidity: validity || '',
             serviceEndTime: validity === 'serviceDay' ? validityEndTime : '',
         };
     }

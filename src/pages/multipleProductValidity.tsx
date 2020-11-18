@@ -133,21 +133,26 @@ const MultipleProductValidity = ({
                                                     errorClass="govuk-select--error"
                                                     hideText
                                                 >
-                                                    <select
-                                                        className="govuk-select farestage-select"
-                                                        id={`validity-option-${index}`}
-                                                        name={`validity-option-${index}`}
-                                                        aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
-                                                        onChange={handleSelection}
-                                                        defaultValue={product.productValidity}
-                                                    >
-                                                        <option selected value="" disabled>
-                                                            Select an expiry
-                                                        </option>
-                                                        <option value="24hr">24hr</option>
-                                                        <option value="endOfCalendarDay">End of calendar day</option>
-                                                        <option value="serviceDay">End of service day</option>
-                                                    </select>
+                                                    <>
+                                                        {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+                                                        <select
+                                                            className="govuk-select farestage-select"
+                                                            id={`validity-option-${index}`}
+                                                            name={`validity-option-${index}`}
+                                                            aria-labelledby={`stop-name-header stop-${index} naptan-code-header naptan-${index}`}
+                                                            onChange={handleSelection}
+                                                            defaultValue={product.productValidity}
+                                                        >
+                                                            <option selected value="" disabled>
+                                                                Select an expiry
+                                                            </option>
+                                                            <option value="24hr">24hr</option>
+                                                            <option value="endOfCalendarDay">
+                                                                End of calendar day
+                                                            </option>
+                                                            <option value="serviceDay">End of service day</option>
+                                                        </select>
+                                                    </>
                                                 </FormElementWrapper>
                                             </td>
                                             <td className="govuk-table__cell">
