@@ -355,7 +355,7 @@ export const mockMatchingFaresZones: MatchingFareZones = {
     },
 };
 
-export const mockOutBoundMatchingFaresZones: MatchingFareZones = {
+export const mockOutboundMatchingFaresZones: MatchingFareZones = {
     'Acomb Green Lane': {
         name: 'Acomb Green Lane',
         stops: [

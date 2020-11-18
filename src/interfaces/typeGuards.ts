@@ -155,22 +155,6 @@ export const isSalesOfferPackages = (
     salesOfferPackageInfo !== undefined &&
     (salesOfferPackageInfo as SalesOfferPackage[])[0].ticketFormats !== undefined;
 
-export const isSingleTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is SingleTicketProps => (props as SingleTicketProps).journeyDirection !== undefined;
-
-export const isReturnTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is ReturnTicketProps => (props as ReturnTicketProps).circular !== undefined;
-
-export const isPeriodTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is PeriodTicketProps => (props as PeriodTicketProps).zone !== undefined;
-
-export const isFlatFareTicketProps = (
-    props: SingleTicketProps | ReturnTicketProps | PeriodTicketProps | FlatFareTicketProps,
-): props is FlatFareTicketProps => (props as FlatFareTicketProps).productName !== undefined;
-
 export const isTicketPeriodAttributeWithErrors = (
     productDates: TicketPeriod | TicketPeriodWithErrors | undefined,
 ): productDates is TicketPeriodWithErrors =>
