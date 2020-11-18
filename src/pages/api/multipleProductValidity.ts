@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isSessionValid } from './apiUtils/validator';
+import { isSessionValid, isValidTime } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
@@ -33,13 +33,27 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
     let error = '';
     let errorId = '';
 
-    if (!validity || (validity === 'serviceDay' && validityEndTime === '')) {
+    if (
+        !validity ||
+        (validity === 'serviceDay' && validityEndTime === '') ||
+        (validityEndTime !== '' && !isValidTime(validityEndTime))
+    ) {
         if (!validity) {
             error = 'Select one of the three validity options';
             errorId = `validity-option-${index}`;
         } else if (validity === 'serviceDay' && validityEndTime === '') {
             error = 'Specify an end time for service day';
             errorId = `validity-end-time-${index}`;
+        }
+
+        if (validityEndTime !== '' && !isValidTime(validityEndTime)) {
+            if (validityEndTime === '2400') {
+                error = '2400 is not a valid input. Use 0000.';
+                errorId = `validity-end-time-${index}`;
+            } else {
+                error = 'Time must be in 2400 format';
+                errorId = `validity-end-time-${index}`;
+            }
         }
 
         return {

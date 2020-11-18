@@ -110,7 +110,7 @@ const MultipleProductValidity = ({
                                     </th>
                                     {showColumn && (
                                         <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
-                                            End time for Service day
+                                            End time for service day (24hr format)
                                         </th>
                                     )}
                                 </tr>
@@ -145,7 +145,7 @@ const MultipleProductValidity = ({
                                                             Select an expiry
                                                         </option>
                                                         <option value="24hr">24hr</option>
-                                                        <option value="endOfCalendarDay">Calendar day</option>
+                                                        <option value="endOfCalendarDay">End of calendar day</option>
                                                         <option value="serviceDay">End of service day</option>
                                                     </select>
                                                 </FormElementWrapper>
