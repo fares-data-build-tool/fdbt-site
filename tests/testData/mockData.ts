@@ -1205,6 +1205,7 @@ export const expectedSingleTicket: SingleTicket = {
     nocCode: 'DCCL',
     passengerType: 'Adult',
     operatorShortName: 'DCC',
+    termTime: true,
     serviceDescription: 'Worthing - Seaham - Crawley',
     email: 'test@example.com',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
@@ -1715,6 +1716,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: 'Adult',
+    termTime: false,
     timeRestriction: mockTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -1772,6 +1774,7 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
     passengerType: 'Adult',
+    termTime: false,
     timeRestriction: mockTimeRestriction,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
@@ -1900,6 +1903,7 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     nocCode: 'TEST',
     uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
     email: 'test@example.com',
+    termTime: false,
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
