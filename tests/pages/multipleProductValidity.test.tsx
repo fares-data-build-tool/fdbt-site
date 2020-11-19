@@ -90,6 +90,32 @@ describe('pages', () => {
             expect(wrapper.find('.govuk-table__header')).toHaveLength(5);
         });
 
+        it('should call the handleSelection function on change of expiry dropdown value', () => {
+            const mockSetState = jest.fn();
+            jest.mock('react', () => ({ useState: (initialState: unknown): unknown => [initialState, mockSetState] }));
+            const mockChangeEvent = ({
+                target: { id: 'validity-option-0' },
+                currentTarget: { value: 'serviceDay' },
+            } as unknown) as React.ChangeEvent;
+            const wrapper = shallow(
+                <MultiProductValidity
+                    operatorName="Infinity Line"
+                    passengerType="Adult"
+                    numberOfProducts="2"
+                    multipleProducts={multipleProducts}
+                    errors={[]}
+                    csrfToken=""
+                    endTimesList={['validity-option-0']}
+                />,
+            );
+
+            (wrapper.find(`#validity-option-0`).prop('onChange') as Function)(mockChangeEvent);
+
+            const input = wrapper.find('#validity-end-time-0').prop('className');
+
+            expect(input).toEqual(expect.stringContaining('inputVisible'));
+        });
+
         describe('getServerSideProps', () => {
             it('should return number of products to display, name of operator and products if they are set in the cookie', () => {
                 const ctx = getMockContext({
