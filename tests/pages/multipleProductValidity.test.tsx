@@ -34,7 +34,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    showEndTimeColumn={false}
+                    endTimesList={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -54,7 +54,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    showEndTimeColumn={false}
+                    endTimesList={[]}
                 />,
             );
             expect(wrapper).toMatchSnapshot();
@@ -69,7 +69,7 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    showEndTimeColumn={false}
+                    endTimesList={[]}
                 />,
             );
             expect(wrapper.find('.govuk-select')).toHaveLength(2);
@@ -84,56 +84,11 @@ describe('pages', () => {
                     multipleProducts={multipleProducts}
                     errors={[]}
                     csrfToken=""
-                    showEndTimeColumn
+                    endTimesList={['validity-option-0']}
                 />,
             );
             expect(wrapper.find('.govuk-table__header')).toHaveLength(5);
         });
-
-        // it.only('calls the handler when selecting an option on the dropdown', () => {
-        //     jest.mock('react-dom');
-        //     // document.getElementById = jest.fn().mockImplementation((id) => (id === 'articleList' ? 'articleList-dom' : null));
-        //     document.getElementById = jest.fn().mockImplementation(id => console.log('yoyo', id));
-        //
-        //     const wrapper = mount(
-        //         <MultiProductValidity
-        //             operatorName="Infinity Line"
-        //             passengerType="Adult"
-        //             numberOfProducts="2"
-        //             multipleProducts={multipleProducts}
-        //             errors={[]}
-        //             csrfToken=""
-        //             showEndTimeColumn={false}
-        //         />,
-        //     );
-        //
-        //    // console.log('wrapper', wrapper.debug());
-        //
-        //     (wrapper.find(`#validity-option-0`).prop('onChange') as Function)({
-        //         target: {
-        //             value: 'serviceDay',
-        //             id: 'validity-option-0',
-        //         },
-        //     });
-        //
-        //     // const dropDown = wrapper.find('#validity-option-0');
-        //     // dropDown.simulate('change', { value: ['24hr'], id: 'validity-option-0' });
-        //
-        //     // wrapper.update();
-        //
-        //     const endOfServiceDay = wrapper.find('#validity-end-time-0');
-        //
-        //     console.log('end', endOfServiceDay.debug());
-        //
-        //     //chwck to see if inout shown
-        //
-        //     //change again and see if class is hidden
-        //
-        //     // console.log('wrapper', wrapper.debug());
-        //
-        //     // wrapper.find(Dropdown).simulate('change', '', { value: ['val'] })
-        //     // expect(mockMyEventHandler).toHaveBeenCalledWith(['val'])
-        // });
 
         describe('getServerSideProps', () => {
             it('should return number of products to display, name of operator and products if they are set in the cookie', () => {

@@ -7,7 +7,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 
 export interface MultipleProductAttribute {
     products: Product[];
-    showEndTimeColumn?: boolean;
+    endTimesList?: string[];
 }
 
 export interface Product {
@@ -98,7 +98,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
             products,
-            showEndTimeColumn: req.body.showEndColumn || false,
+            endTimesList: (req.body.listofEndTimes && req.body.listOfEndTimes.split(',')) || [],
         });
 
         if (products.some(el => el.productValidityError)) {

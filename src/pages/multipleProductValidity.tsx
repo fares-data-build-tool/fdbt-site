@@ -29,7 +29,7 @@ interface MultipleProductValidityProps {
     multipleProducts: Product[];
     errors: ErrorInfo[];
     csrfToken: string;
-    showEndTimeColumn: boolean;
+    endTimesList: string[];
 }
 
 const MultipleProductValidity = ({
@@ -39,27 +39,21 @@ const MultipleProductValidity = ({
     multipleProducts,
     errors,
     csrfToken,
-    showEndTimeColumn,
+    endTimesList,
 }: MultipleProductValidityProps): ReactElement => {
-    const [showColumn, setShowEndTimeColumn] = useState(Boolean(JSON.parse(showEndTimeColumn.toString())));
+    const [listOfEndTimes, setListOfEndTimes] = useState(endTimesList || []);
 
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const id = event.target.id.toString();
         const index = id.split('-')[2];
         const idToShow = `validity-end-time-${index}`;
 
-        const element = document.getElementById(idToShow);
-
-        if (element) {
-            if (event.currentTarget.value === 'serviceDay') {
-                element.classList.remove('inputHidden');
-                element.classList.add('inputVisible');
-            } else {
-                element.classList.add('inputHidden');
-                element.classList.remove('inputVisible');
-            }
+        if (event.currentTarget.value === 'serviceDay') {
+            setListOfEndTimes([...listOfEndTimes, idToShow]);
+        } else {
+            const removedItems = listOfEndTimes.filter(obj => obj !== idToShow);
+            setListOfEndTimes([...removedItems]);
         }
-        setShowEndTimeColumn(document.getElementsByClassName('inputVisible').length > 0);
     };
 
     return (
@@ -108,7 +102,7 @@ const MultipleProductValidity = ({
                                     <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
                                         Expiry
                                     </th>
-                                    {showColumn && (
+                                    {listOfEndTimes.length > 0 && (
                                         <th scope="col" className="govuk-table__header govuk-!-width-one-fifth">
                                             End time for service day (24hr format)
                                         </th>
@@ -165,7 +159,7 @@ const MultipleProductValidity = ({
                                                     <input
                                                         id={`validity-end-time-${index}`}
                                                         className={`${
-                                                            product.productValidity === 'serviceDay'
+                                                            listOfEndTimes.includes(`validity-end-time-${index}`)
                                                                 ? 'inputVisible'
                                                                 : 'inputHidden'
                                                         } govuk-input govuk-input--width-4`}
@@ -179,7 +173,7 @@ const MultipleProductValidity = ({
                                 })}
                             </tbody>
                         </table>
-                        <input hidden defaultValue={showColumn.toString()} name="showEndColumn" />
+                        <input hidden defaultValue={listOfEndTimes.toString()} name="listOfEndTimes" />
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
@@ -212,7 +206,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const multipleProducts: Product[] = multipleProductAttribute.products;
     const numberOfProducts = numberOfProductsAttribute.numberOfProductsInput;
 
-    const { showEndTimeColumn } = multipleProductAttribute;
+    const { endTimesList } = multipleProductAttribute;
     const errors: ErrorInfo[] = [];
     multipleProducts.forEach(el => {
         const { productValidityError, productValidityId } = el;
@@ -233,7 +227,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             multipleProducts,
             errors,
             csrfToken,
-            showEndTimeColumn: showEndTimeColumn || false,
+            endTimesList: endTimesList || [],
         },
     };
 };

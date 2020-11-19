@@ -20,7 +20,7 @@ import { NumberOfProductsAttribute } from './howManyProducts';
 
 export interface BaseMultipleProductAttribute {
     products: MultiProduct[];
-    showEndTimeColumn?: boolean;
+    endTimesList?: string[];
 }
 
 export interface BaseMultipleProductAttributeWithErrors {

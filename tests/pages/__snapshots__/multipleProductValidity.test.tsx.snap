@@ -257,9 +257,9 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
         </tbody>
       </table>
       <input
-        defaultValue="false"
+        defaultValue=""
         hidden={true}
-        name="showEndColumn"
+        name="listOfEndTimes"
       />
     </div>
     <input
@@ -571,9 +571,9 @@ exports[`pages multipleProductValidity should render error messaging when errors
         </tbody>
       </table>
       <input
-        defaultValue="false"
+        defaultValue=""
         hidden={true}
-        name="showEndColumn"
+        name="listOfEndTimes"
       />
     </div>
     <input
