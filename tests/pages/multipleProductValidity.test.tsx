@@ -60,7 +60,7 @@ describe('pages', () => {
             expect(wrapper).toMatchSnapshot();
         });
 
-        it.only('renders dropdown for product validtity per product', () => {
+        it('renders dropdown for product validity per product', () => {
             const wrapper = shallow(
                 <MultiProductValidity
                     operatorName="Infinity Line"
@@ -74,6 +74,66 @@ describe('pages', () => {
             );
             expect(wrapper.find('.govuk-select')).toHaveLength(2);
         });
+
+        it('show the service end time column', () => {
+            const wrapper = shallow(
+                <MultiProductValidity
+                    operatorName="Infinity Line"
+                    passengerType="Adult"
+                    numberOfProducts="2"
+                    multipleProducts={multipleProducts}
+                    errors={[]}
+                    csrfToken=""
+                    showEndTimeColumn
+                />,
+            );
+            expect(wrapper.find('.govuk-table__header')).toHaveLength(5);
+        });
+
+        // it.only('calls the handler when selecting an option on the dropdown', () => {
+        //     jest.mock('react-dom');
+        //     // document.getElementById = jest.fn().mockImplementation((id) => (id === 'articleList' ? 'articleList-dom' : null));
+        //     document.getElementById = jest.fn().mockImplementation(id => console.log('yoyo', id));
+        //
+        //     const wrapper = mount(
+        //         <MultiProductValidity
+        //             operatorName="Infinity Line"
+        //             passengerType="Adult"
+        //             numberOfProducts="2"
+        //             multipleProducts={multipleProducts}
+        //             errors={[]}
+        //             csrfToken=""
+        //             showEndTimeColumn={false}
+        //         />,
+        //     );
+        //
+        //    // console.log('wrapper', wrapper.debug());
+        //
+        //     (wrapper.find(`#validity-option-0`).prop('onChange') as Function)({
+        //         target: {
+        //             value: 'serviceDay',
+        //             id: 'validity-option-0',
+        //         },
+        //     });
+        //
+        //     // const dropDown = wrapper.find('#validity-option-0');
+        //     // dropDown.simulate('change', { value: ['24hr'], id: 'validity-option-0' });
+        //
+        //     // wrapper.update();
+        //
+        //     const endOfServiceDay = wrapper.find('#validity-end-time-0');
+        //
+        //     console.log('end', endOfServiceDay.debug());
+        //
+        //     //chwck to see if inout shown
+        //
+        //     //change again and see if class is hidden
+        //
+        //     // console.log('wrapper', wrapper.debug());
+        //
+        //     // wrapper.find(Dropdown).simulate('change', '', { value: ['val'] })
+        //     // expect(mockMyEventHandler).toHaveBeenCalledWith(['val'])
+        // });
 
         describe('getServerSideProps', () => {
             it('should return number of products to display, name of operator and products if they are set in the cookie', () => {
@@ -116,7 +176,8 @@ describe('pages', () => {
                                     productPriceId: 'multipleProductPriceInput0',
                                     productDuration: '3',
                                     productDurationId: 'multipleProductDurationInput0',
-                                    productValidity: '',
+                                    productValidity: undefined,
+                                    productValidityId: 'validity-option-0',
                                     productValidityError: 'Select one of the two validity options',
                                 },
                                 {
@@ -136,7 +197,7 @@ describe('pages', () => {
                 expect(result.props.multipleProducts.length).toBe(2);
                 expect(result.props.errors.length).toBe(1);
                 expect(result.props.errors[0].errorMessage).toBe('Select one of the two validity options');
-                expect(result.props.errors[0].id).toBe('twenty-four-hours-row-0');
+                expect(result.props.errors[0].id).toBe('validity-option-0');
             });
         });
     });

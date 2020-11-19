@@ -36,7 +36,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
     if (
         !validity ||
         (validity === 'serviceDay' && validityEndTime === '') ||
-        (validityEndTime !== '' && !isValidTime(validityEndTime))
+        (validity === 'serviceDay' && validityEndTime !== '' && !isValidTime(validityEndTime))
     ) {
         if (!validity) {
             error = 'Select one of the three validity options';
@@ -46,7 +46,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             errorId = `validity-end-time-${index}`;
         }
 
-        if (validityEndTime && !isValidTime(validityEndTime)) {
+        if (validity === 'serviceDay' && validityEndTime && !isValidTime(validityEndTime)) {
             if (validityEndTime === '2400') {
                 error = '2400 is not a valid input. Use 0000.';
                 errorId = `validity-end-time-${index}`;

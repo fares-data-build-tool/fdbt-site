@@ -33,7 +33,6 @@ describe('multipleProductValidity', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
                     'validity-option-0': 'endOfCalendarDay',
-                    'validity-option-1': '24hr',
                 },
             });
 
@@ -50,7 +49,79 @@ describe('multipleProductValidity', () => {
             const result = addErrorsIfInvalid(req, product, userInputIndex);
 
             expect(result.productValidity).toBe('endOfCalendarDay');
-            expect(result.productValidityError).toBe('');
+            expect(result.productValidityError).toBe(undefined);
+        });
+
+        it('add error when service day is selected but no end time entered', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'serviceDay',
+                    'validity-end-time-0': '',
+                },
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'serviceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('serviceDay');
+            expect(result.productValidityError).toBe('Specify an end time for service day');
+        });
+
+        it('add error when validity end time is entered incorrectly', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'serviceDay',
+                    'validity-end-time-0': '2400',
+                },
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'serviceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('serviceDay');
+            expect(result.productValidityError).toBe('2400 is not a valid input. Use 0000.');
+        });
+
+        it('add error when validity end time is has invalid characters', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'serviceDay',
+                    'validity-end-time-0': '140a',
+                },
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'serviceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('serviceDay');
+            expect(result.productValidityError).toBe('Time must be in 2400 format');
         });
     });
 
@@ -67,7 +138,7 @@ describe('multipleProductValidity', () => {
         });
     });
 
-    it.only('redirects to selectSalesOfferPackage page if all valid', () => {
+    it('redirects to selectSalesOfferPackage page if all valid', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
             body: { 'validity-option-0': '24hr', 'validity-option-1': '24hr', 'validity-option-2': 'endOfCalendarDay' },
