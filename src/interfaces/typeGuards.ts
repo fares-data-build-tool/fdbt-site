@@ -1,9 +1,3 @@
-import {
-    SingleTicketProps,
-    ReturnTicketProps,
-    PeriodTicketProps,
-    FlatFareTicketProps,
-} from '../pages/ticketConfirmation';
 import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
 import {
     PeriodTicket,

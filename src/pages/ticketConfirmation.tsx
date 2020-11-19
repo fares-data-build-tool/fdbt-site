@@ -58,10 +58,6 @@ export const buildMatchedFareStages = (matchingFareZones: MatchingFareZones): Ma
 export const buildSingleTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     const { service } = getSessionAttribute(ctx.req, SERVICE_ATTRIBUTE) as Service;
-    const journeyDirection = (getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE) as Journey).directionJourneyPattern;
-    if (!journeyDirection) {
-        throw new Error('User has no journey direction information.');
-    }
     const matchedFareStages: MatchedFareStages[] = buildMatchedFareStages(
         (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo).matchingFareZones,
     );
@@ -97,7 +93,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
     const { outboundJourney } = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE) as Journey;
     const validity = getSessionAttribute(ctx.req, RETURN_VALIDITY_ATTRIBUTE) as ReturnPeriodValidity;
 
-    const circular = !(!outboundJourney && !inboundJourney);
+    const circular = !outboundJourney && !inboundJourney;
 
     confirmationElements.push({
         name: 'Service',
@@ -105,7 +101,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
         href: 'service',
     });
 
-    if (circular) {
+    if (!circular) {
         const outboundMatchingFareZones = (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo)
             .matchingFareZones;
         const { inboundMatchingFareZones } = getSessionAttribute(
@@ -130,7 +126,7 @@ export const buildReturnTicketConfirmationElements = (ctx: NextPageContextWithSe
                 href: 'inboundMatching',
             });
         });
-    } else if (!circular) {
+    } else if (circular) {
         const nonCircularMatchedFareStages = buildMatchedFareStages(
             (getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE) as MatchingInfo).matchingFareZones,
         );

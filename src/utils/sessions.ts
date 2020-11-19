@@ -140,7 +140,9 @@ type SessionAttributeTypes = {
     [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;
 };
 
-type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes ? SessionAttributeTypes[T] : string;
+export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
+    ? SessionAttributeTypes[T]
+    : string;
 
 export const getSessionAttribute = <T extends string>(
     req: IncomingMessageWithSession,

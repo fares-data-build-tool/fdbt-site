@@ -8,6 +8,7 @@ import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/index';
 
 import { redirectTo, redirectToError, getUuidFromCookie, isSchemeOperator } from './apiUtils';
@@ -23,6 +24,7 @@ import {
 import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, TicketPeriod } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { SchoolFareTypeAttribute } from './schoolFareType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -79,6 +81,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
         } else if (fareType === 'flatFare') {
             userDataJson = getFlatFareTicketJson(req, res);
+        } else if (fareType === 'schoolService') {
+            const { schoolFareType } = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+            if (schoolFareType === 'single') {
+                userDataJson = getSingleTicketJson(req, res);
+            } else if (schoolFareType === 'period') {
+                userDataJson = getMultipleServicesTicketJson(req, res);
+            } else if (schoolFareType === 'flatFare') {
+                userDataJson = getFlatFareTicketJson(req, res);
+            }
         }
 
         if (userDataJson) {

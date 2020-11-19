@@ -138,6 +138,7 @@ describe('getReturnTicketJson', () => {
         const result = getReturnTicketJson(req, res);
         expect(result).toStrictEqual(expectedNonCircularReturnTicket);
     });
+
     it('should return a ReturnTicket object for a circular journey', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
