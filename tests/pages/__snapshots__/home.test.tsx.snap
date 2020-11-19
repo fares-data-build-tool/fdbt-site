@@ -78,6 +78,7 @@ exports[`pages home page should render correctly 1`] = `
         >
           If your query relates to the use of the Bus Open Data Service go 
           <a
+            aria-label="go to the bus open data service"
             href="https://publish.bus-data.dft.gov.uk/"
           >
             here
@@ -184,6 +185,7 @@ exports[`pages home page should render correctly with no multiple operators 1`] 
         >
           If your query relates to the use of the Bus Open Data Service go 
           <a
+            aria-label="go to the bus open data service"
             href="https://publish.bus-data.dft.gov.uk/"
           >
             here

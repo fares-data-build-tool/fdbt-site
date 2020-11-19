@@ -58,12 +58,12 @@ exports[`pages thankyou should render correctly 1`] = `
   <p
     className="govuk-body"
   >
-    You now have two options; you can create another fare using this service or go straight to the Bus Open Data Service (BODS) to upload your NeTEx file.
+    You now have two options; you can add another fare using this service, or you can continue to the Bus Open Data Service (BODS) to upload your NeTEx file.
   </p>
   <p
     className="govuk-body"
   >
-    If you would like to provide feedback on this service, please click
+    If you would like to provide feedback on this service, please click 
     <a
       aria-label="Provide feedback on this service"
       className="govuk-link"

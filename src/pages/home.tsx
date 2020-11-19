@@ -48,7 +48,10 @@ const Home = ({ multipleOperators }: HomeProps): ReactElement => (
                     <h2 className="govuk-heading-s govuk-!-margin-top-3">Related services</h2>
                     <p className="govuk-body">
                         If your query relates to the use of the Bus Open Data Service go&nbsp;
-                        <a href="https://publish.bus-data.dft.gov.uk/">here</a>&nbsp;to view their contact details.
+                        <a href="https://publish.bus-data.dft.gov.uk/" aria-label="go to the bus open data service">
+                            here
+                        </a>
+                        &nbsp;to view their contact details.
                     </p>
                 </div>
             </div>

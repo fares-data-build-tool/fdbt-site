@@ -37,11 +37,11 @@ const ThankYou = ({ uuid, emailAddress }: ThankYouProps): ReactElement => (
         <p className="govuk-body">You will be contacted should there be a problem with your upload.</p>
         <h2 className="govuk-heading-m">Your options</h2>
         <p className="govuk-body">
-            You now have two options; you can create another fare using this service or go straight to the Bus Open Data
-            Service (BODS) to upload your NeTEx file.
+            You now have two options; you can add another fare using this service, or you can continue to the Bus Open
+            Data Service (BODS) to upload your NeTEx file.
         </p>
         <p className="govuk-body">
-            If you would like to provide feedback on this service, please click
+            If you would like to provide feedback on this service, please click&nbsp;
             <a href={FEEDBACK_LINK} className="govuk-link" aria-label="Provide feedback on this service">
                 here
             </a>

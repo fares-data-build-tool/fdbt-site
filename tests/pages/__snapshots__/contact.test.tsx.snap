@@ -66,6 +66,7 @@ exports[`contact should render correctly 1`] = `
       >
         If your query relates to the use of the Bus Open Data Service go 
         <a
+          aria-label="go to the bus open data service"
           href="https://publish.bus-data.dft.gov.uk/"
         >
           here
