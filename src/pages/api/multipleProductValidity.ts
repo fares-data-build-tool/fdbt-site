@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isSessionValid, isValidTime } from './apiUtils/validator';
+import { isSessionValid, isValidTime, removeExcessWhiteSpace } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
@@ -29,7 +29,7 @@ export const isValidInputValidity = (durationInput: string): boolean =>
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     const validity = req.body[`validity-option-${index}`];
-    const validityEndTime = req.body[`validity-end-time-${index}`];
+    const validityEndTime = removeExcessWhiteSpace(req.body[`validity-end-time-${index}`]);
     let error = '';
     let errorId = '';
 

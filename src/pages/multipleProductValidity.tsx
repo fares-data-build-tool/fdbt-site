@@ -41,7 +41,6 @@ const MultipleProductValidity = ({
     csrfToken,
     endTimesList,
 }: MultipleProductValidityProps): ReactElement => {
-    console.log('end times list', endTimesList);
     const [listOfEndTimes, setListOfEndTimes] = useState(endTimesList || []);
 
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {

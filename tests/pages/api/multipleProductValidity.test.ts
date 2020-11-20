@@ -100,6 +100,30 @@ describe('multipleProductValidity', () => {
             expect(result.productValidityError).toBe('2400 is not a valid input. Use 0000.');
         });
 
+        it('should not error if there is whitespace in the time', () => {
+            const { req } = getMockRequestAndResponse({
+                body: {
+                    'validity-option-0': 'endOfServiceDay',
+                    'validity-end-time-0': ' 1200',
+                },
+            });
+
+            const userInputIndex = 0;
+            const product: Product = {
+                productName: 'best ticket',
+                productNameId: '',
+                productPrice: '30.90',
+                productPriceId: '',
+                productDuration: '30',
+                productDurationId: '',
+                productValidity: 'endOfServiceDay',
+            };
+            const result = addErrorsIfInvalid(req, product, userInputIndex);
+
+            expect(result.productValidity).toBe('endOfServiceDay');
+            expect(result.productValidityError).toBe(undefined);
+        });
+
         it('add error when validity end time is has invalid characters', () => {
             const { req } = getMockRequestAndResponse({
                 body: {
