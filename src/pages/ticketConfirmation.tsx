@@ -210,7 +210,9 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             },
             {
                 name: `Product - ${product.productName}`,
-                content: `Validity - ${startCase(product.productValidity)}`,
+                content: `Validity - ${startCase(product.productValidity)}${
+                    product.serviceEndTime ? ` - ${product.serviceEndTime}` : ''
+                }`,
                 href: numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
             },
         );
