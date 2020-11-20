@@ -10,11 +10,12 @@ import {
     REFRESH_TOKEN_COOKIE,
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../constants';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
-import { getSessionAttribute } from '../../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../../utils/sessions';
 import { isFareType } from '../../../interfaces/typeGuards';
 import { SchoolFareTypeAttribute } from '../schoolFareType';
 
@@ -100,6 +101,7 @@ export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: Ne
                 redirectTo(res, '/service');
                 return;
             case 'period':
+                updateSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE, { name: 'multipleServices' });
                 redirectTo(res, '/serviceList');
                 return;
             case 'flatFare':

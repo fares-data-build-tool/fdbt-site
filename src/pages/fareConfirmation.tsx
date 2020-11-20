@@ -167,9 +167,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
         props: {
             fareType: fareTypeAttribute.fareType,
             passengerType: passengerTypeAttribute,
-            schoolFareType: schoolFareTypeAttribute.schoolFareType || '',
-            termTime: termTimeAttribute.termTime.toString() || '',
-            fullTimeRestrictions: fullTimeRestrictionsAttribute.fullTimeRestrictions || [],
+            schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
+            termTime: termTimeAttribute?.termTime.toString() || '',
+            fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
             csrfToken,
         },
     };

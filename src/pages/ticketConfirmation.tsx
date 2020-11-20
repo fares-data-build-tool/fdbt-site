@@ -186,6 +186,14 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     }
 
     const addProduct = (product: Product): void => {
+        const productDurationText = `Duration - ${
+            product.productDurationUnits
+                ? `${product.productDuration} ${product.productDurationUnits}${
+                      product.productDuration === '1' ? '' : 's'
+                  }`
+                : `${product.productDuration}`
+        }`;
+
         if (!product.productDuration || !product.productValidity) {
             throw new Error('User has no product duration and/or validity information.');
         }
@@ -197,9 +205,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             },
             {
                 name: `Product - ${product.productName}`,
-                content: `Duration - ${product.productDuration} ${product.productDurationUnits}${
-                    product.productDuration === '1' ? '' : 's'
-                }`,
+                content: productDurationText,
                 href: numberOfProducts > 1 ? 'multipleProducts' : 'chooseValidity',
             },
             {

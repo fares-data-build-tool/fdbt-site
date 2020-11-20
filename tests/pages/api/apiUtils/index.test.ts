@@ -15,10 +15,16 @@ import {
 import * as apiUtils from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../../testData/mockData';
-import { FARE_TYPE_ATTRIBUTE, SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../../../src/constants';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../../../../src/constants';
+import * as sessions from '../../../../src/utils/sessions';
 
 describe('apiUtils', () => {
     const writeHeadMock = jest.fn();
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     beforeEach(() => {
         jest.spyOn(s3, 'putStringInS3');
@@ -144,6 +150,20 @@ describe('apiUtils', () => {
             });
         });
 
+        it('should update the TICKET_REPRESENTATION_ATTRIBUTE when the period ticket option is selected', () => {
+            const { req, res } = getMockRequestAndResponse({
+                mockWriteHeadFn: writeHeadMock,
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
+                },
+            });
+            redirectOnSchoolFareType(req, res);
+            expect(updateSessionAttributeSpy).toBeCalledWith(req, TICKET_REPRESENTATION_ATTRIBUTE, {
+                name: 'multipleServices',
+            });
+        });
+
         it('should throw error if unexpected fare type is selected', () => {
             const { req, res } = getMockRequestAndResponse({
                 mockWriteHeadFn: writeHeadMock,
@@ -152,7 +172,6 @@ describe('apiUtils', () => {
                     [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'roundandaround' },
                 },
             });
-
             expect(() => {
                 redirectOnFareType(req, res);
             }).toThrowError(new Error('Did not receive an expected schoolFareType.'));
