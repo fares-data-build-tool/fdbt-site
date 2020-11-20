@@ -7,7 +7,12 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
 } from '../constants';
-import { NextPageContextWithSession, FullTimeRestriction } from '../interfaces';
+import {
+    NextPageContextWithSession,
+    FullTimeRestriction,
+    TermTimeAttribute,
+    FullTimeRestrictionAttribute,
+} from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable, { ConfirmationElement } from '../components/ConfirmationTable';
@@ -15,6 +20,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
 import { PassengerType } from './api/passengerType';
 import { getCsrfToken } from '../utils';
+import { SchoolFareTypeAttribute } from './api/schoolFareType';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
@@ -44,7 +50,7 @@ export const buildFareConfirmationElements = (
         {
             name: 'Passenger Type',
             content: startCase(passengerType.passengerType),
-            href: 'passengerType',
+            href: fareType === 'schoolService' ? '' : 'passengerType',
         },
     ];
 
@@ -141,15 +147,18 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
     const csrfToken = getCsrfToken(ctx);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
-    const termTimeAttribute = getSessionAttribute(ctx.req, TERM_TIME_ATTRIBUTE);
-    const fullTimeRestrictionsAttribute = getSessionAttribute(ctx.req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+    const termTimeAttribute = getSessionAttribute(ctx.req, TERM_TIME_ATTRIBUTE) as TermTimeAttribute;
+    const fullTimeRestrictionsAttribute = getSessionAttribute(
+        ctx.req,
+        FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    ) as FullTimeRestrictionAttribute;
 
     if (
         !passengerTypeAttribute ||
         isPassengerTypeAttributeWithErrors(passengerTypeAttribute) ||
         !isFareType(fareTypeAttribute) ||
-        (fareTypeAttribute.fareType === 'schoolService' && (!schoolFareTypeAttribute || !termTimeAttribute))
+        (fareTypeAttribute.fareType === 'schoolService' && !schoolFareTypeAttribute)
     ) {
         throw new Error('Could not extract the correct attributes for the user journey.');
     }
@@ -158,9 +167,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
         props: {
             fareType: fareTypeAttribute.fareType,
             passengerType: passengerTypeAttribute,
-            schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
-            termTime: termTimeAttribute?.termTime.toString() || '',
-            fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
+            schoolFareType: schoolFareTypeAttribute.schoolFareType || '',
+            termTime: termTimeAttribute.termTime.toString() || '',
+            fullTimeRestrictions: fullTimeRestrictionsAttribute.fullTimeRestrictions || [],
             csrfToken,
         },
     };

@@ -15,7 +15,8 @@ import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../i
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
 import { getSessionAttribute } from '../../../utils/sessions';
-import { isFareType, isSchoolFareType } from '../../../interfaces/typeGuards';
+import { isFareType } from '../../../interfaces/typeGuards';
+import { SchoolFareTypeAttribute } from '../schoolFareType';
 
 type Req = NextApiRequest | Request;
 type Res = NextApiResponse | Response;
@@ -74,10 +75,26 @@ export const redirectToError = (
     redirectTo(res, '/error');
 };
 
-export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
-    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+export const getFareTypeFromFromAttributes = (req: NextApiRequestWithSession): string => {
+    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
-    if (isSchoolFareType(schoolFareTypeAttribute)) {
+    if (
+        !isFareType(fareTypeAttribute) ||
+        (fareTypeAttribute.fareType === 'schoolService' && !schoolFareTypeAttribute)
+    ) {
+        throw new Error('Incorrect fare type session attributes found.');
+    }
+
+    return fareTypeAttribute.fareType === 'schoolService'
+        ? schoolFareTypeAttribute.schoolFareType
+        : fareTypeAttribute.fareType;
+};
+
+export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+
+    if (schoolFareTypeAttribute) {
         switch (schoolFareTypeAttribute.schoolFareType) {
             case 'single':
                 redirectTo(res, '/service');

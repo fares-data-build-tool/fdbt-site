@@ -10,6 +10,7 @@ import {
     getAndValidateSchemeOpRegion,
     isSchemeOperator,
     redirectOnSchoolFareType,
+    getFareTypeFromFromAttributes,
 } from '../../../../src/pages/api/apiUtils';
 import * as apiUtils from '../../../../src/pages/api/apiUtils';
 import * as s3 from '../../../../src/data/s3';
@@ -76,6 +77,51 @@ describe('apiUtils', () => {
             });
             const result = getUuidFromCookie(req, res);
             expect(result).toBe('780e3459-6305-4ae5-9082-b925b92cb46c');
+        });
+    });
+
+    describe('getFareTypeFromFromAttributes', () => {
+        it("should return the fare type from the FARE_TYPE_ATTRIBUTE when fareType is not 'schoolService'", () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'single' },
+                },
+            });
+            const fareType = getFareTypeFromFromAttributes(req);
+            expect(fareType).toBe('single');
+        });
+
+        it("should return the fare type from the SCHOOL_FARE_TYPE_ATTRIBUTE when fareType is 'schoolService'", () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'flatFare' },
+                },
+            });
+            const fareType = getFareTypeFromFromAttributes(req);
+            expect(fareType).toBe('flatFare');
+        });
+
+        it('should throw an error when the fare type is not a valid fare type', () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'FAKE FARE TYPE' },
+                },
+            });
+            expect(() => getFareTypeFromFromAttributes(req)).toThrowError(
+                'Incorrect fare type session attributes found.',
+            );
+        });
+
+        it("should throw an error when the fare type is 'schoolService', but there is no SCHOOL_FARE_TYPE_ATTRIBUTE", () => {
+            const { req } = getMockRequestAndResponse({
+                session: {
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                },
+            });
+            expect(() => getFareTypeFromFromAttributes(req)).toThrowError(
+                'Incorrect fare type session attributes found.',
+            );
         });
     });
 

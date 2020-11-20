@@ -21,13 +21,14 @@ import {
     PERIOD_EXPIRY_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants';
-import { isFareType, isSchoolFareType } from '../interfaces/typeGuards';
+import { isFareType } from '../interfaces/typeGuards';
 import { Service } from './api/service';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
 import { MultipleProductAttribute } from './api/multipleProductValidity';
 import { getCsrfToken } from '../utils';
+import { SchoolFareTypeAttribute } from './api/schoolFareType';
 
 const title = 'Ticket Confirmation - Create Fares Data Service';
 const description = 'Ticket Confirmation page of the Create Fares Data Service';
@@ -245,10 +246,10 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
 };
 
 export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
-    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
     let confirmationElements: ConfirmationElement[];
 
-    if (isSchoolFareType(schoolFareTypeAttribute)) {
+    if (schoolFareTypeAttribute) {
         switch (schoolFareTypeAttribute.schoolFareType) {
             case 'single':
                 confirmationElements = buildSingleTicketConfirmationElements(ctx);
