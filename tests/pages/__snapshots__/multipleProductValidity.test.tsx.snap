@@ -150,7 +150,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                     End of calendar day
                   </option>
                   <option
-                    value="serviceDay"
+                    value="endOfServiceDay"
                   >
                     End of service day
                   </option>
@@ -229,7 +229,7 @@ exports[`pages multipleProductValidity should render correctly 1`] = `
                     End of calendar day
                   </option>
                   <option
-                    value="serviceDay"
+                    value="endOfServiceDay"
                   >
                     End of service day
                   </option>
@@ -443,7 +443,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                     End of calendar day
                   </option>
                   <option
-                    value="serviceDay"
+                    value="endOfServiceDay"
                   >
                     End of service day
                   </option>
@@ -536,7 +536,7 @@ exports[`pages multipleProductValidity should render error messaging when errors
                     End of calendar day
                   </option>
                   <option
-                    value="serviceDay"
+                    value="endOfServiceDay"
                   >
                     End of service day
                   </option>

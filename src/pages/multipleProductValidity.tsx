@@ -41,6 +41,7 @@ const MultipleProductValidity = ({
     csrfToken,
     endTimesList,
 }: MultipleProductValidityProps): ReactElement => {
+    console.log('end times list', endTimesList);
     const [listOfEndTimes, setListOfEndTimes] = useState(endTimesList || []);
 
     const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -48,7 +49,7 @@ const MultipleProductValidity = ({
         const index = id.split('-')[2];
         const idToShow = `validity-end-time-${index}`;
 
-        if (event.currentTarget.value === 'serviceDay') {
+        if (event.currentTarget.value === 'endOfServiceDay') {
             setListOfEndTimes([...listOfEndTimes, idToShow]);
         } else {
             const removedItems = listOfEndTimes.filter(obj => obj !== idToShow);
@@ -144,7 +145,7 @@ const MultipleProductValidity = ({
                                                             <option value="endOfCalendarDay">
                                                                 End of calendar day
                                                             </option>
-                                                            <option value="serviceDay">End of service day</option>
+                                                            <option value="endOfServiceDay">End of service day</option>
                                                         </select>
                                                     </>
                                                 </FormElementWrapper>

@@ -25,7 +25,7 @@ export interface Product {
 }
 
 export const isValidInputValidity = (durationInput: string): boolean =>
-    ['24hr', 'endOfCalendarDay', 'serviceDay'].includes(durationInput);
+    ['24hr', 'endOfCalendarDay', 'endOfServiceDay'].includes(durationInput);
 
 export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, index: number): Product => {
     const validity = req.body[`validity-option-${index}`];
@@ -35,18 +35,18 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
 
     if (
         !validity ||
-        (validity === 'serviceDay' && validityEndTime === '') ||
-        (validity === 'serviceDay' && validityEndTime !== '' && !isValidTime(validityEndTime))
+        (validity === 'endOfServiceDay' && validityEndTime === '') ||
+        (validity === 'endOfServiceDay' && validityEndTime !== '' && !isValidTime(validityEndTime))
     ) {
         if (!validity) {
-            error = 'Select one of the three validity options';
+            error = 'Select one of the three expiry options';
             errorId = `validity-option-${index}`;
-        } else if (validity === 'serviceDay' && validityEndTime === '') {
+        } else if (validity === 'endOfServiceDay' && validityEndTime === '') {
             error = 'Specify an end time for service day';
             errorId = `validity-end-time-${index}`;
         }
 
-        if (validity === 'serviceDay' && validityEndTime && !isValidTime(validityEndTime)) {
+        if (validity === 'endOfServiceDay' && validityEndTime && !isValidTime(validityEndTime)) {
             if (validityEndTime === '2400') {
                 error = '2400 is not a valid input. Use 0000.';
                 errorId = `validity-end-time-${index}`;
@@ -67,7 +67,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
             productValidityId: errorId,
             productDurationUnits: rawProduct.productDurationUnits,
             productValidity: validity || '',
-            serviceEndTime: validity === 'serviceDay' ? validityEndTime : '',
+            serviceEndTime: validity === 'endOfServiceDay' ? validityEndTime : '',
         };
     }
 
@@ -77,7 +77,7 @@ export const addErrorsIfInvalid = (req: NextApiRequest, rawProduct: Product, ind
         productDuration: rawProduct.productDuration,
         productDurationUnits: rawProduct.productDurationUnits,
         productValidity: validity,
-        serviceEndTime: validity === 'serviceDay' ? validityEndTime : '',
+        serviceEndTime: validity === 'endOfServiceDay' ? validityEndTime : '',
     };
 };
 
@@ -98,7 +98,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, {
             products,
-            endTimesList: (req.body.listofEndTimes && req.body.listOfEndTimes.split(',')) || [],
+            endTimesList: req.body && req.body.listOfEndTimes !== '' ? req.body.listOfEndTimes.split(',') : [],
         });
 
         if (products.some(el => el.productValidityError)) {

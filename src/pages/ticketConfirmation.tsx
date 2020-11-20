@@ -296,11 +296,9 @@ export const buildTicketConfirmationElements = (
                     },
                     {
                         name: `Product - ${product.productName}`,
-                        content: removeExcessWhiteSpace(
-                            `Validity - ${startCase(product.productValidity)} ${
-                                product.serviceEndTime ? `- ${product.serviceEndTime}` : ''
-                            }`,
-                        ),
+                        content: `Validity - ${startCase(product.productValidity)}${
+                            product.serviceEndTime ? ` - ${product.serviceEndTime}` : ''
+                        }`,
                         href: fareTypeProps.numberOfProducts > 1 ? 'multipleProductValidity' : 'periodValidity',
                     },
                 );

@@ -95,7 +95,7 @@ describe('pages', () => {
             jest.mock('react', () => ({ useState: (initialState: unknown): unknown => [initialState, mockSetState] }));
             const mockChangeEvent = ({
                 target: { id: 'validity-option-0' },
-                currentTarget: { value: 'serviceDay' },
+                currentTarget: { value: 'endOfServiceDay' },
             } as unknown) as React.ChangeEvent;
             const wrapper = shallow(
                 <MultiProductValidity
