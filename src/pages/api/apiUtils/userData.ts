@@ -47,6 +47,7 @@ import {
     RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../../constants/index';
 
 import {
@@ -148,6 +149,7 @@ export const getBaseTicketAttributes = (
 
     const nocCode = getAndValidateNoc(req, res);
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
     const uuid = getUuidFromCookie(req, res);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
@@ -156,6 +158,7 @@ export const getBaseTicketAttributes = (
     if (
         !nocCode ||
         !isFareType(fareTypeAttribute) ||
+        (isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'schoolService' && !schoolFareTypeAttribute) ||
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
@@ -169,7 +172,10 @@ export const getBaseTicketAttributes = (
 
     return {
         nocCode,
-        type: fareType,
+        type:
+            fareType === 'schoolService' && schoolFareTypeAttribute?.schoolFareType
+                ? schoolFareTypeAttribute?.schoolFareType
+                : fareType,
         ...passengerTypeAttribute,
         email,
         uuid,
