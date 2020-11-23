@@ -1,4 +1,15 @@
 import {
+    isTermTime,
+    getSingleTicketJson,
+    getReturnTicketJson,
+    getGeoZoneTicketJson,
+    getMultipleServicesTicketJson,
+    getFlatFareTicketJson,
+    getProductsAndSalesOfferPackages,
+    getSchemeOperatorTicketJson,
+} from '../../../../src/pages/api/apiUtils/userData';
+import {
+    TERM_TIME_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
@@ -18,15 +29,7 @@ import {
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageTwo,
 } from '../../../../src/pages/selectSalesOfferPackage';
-import {
-    getSingleTicketJson,
-    getReturnTicketJson,
-    getGeoZoneTicketJson,
-    getMultipleServicesTicketJson,
-    getFlatFareTicketJson,
-    getProductsAndSalesOfferPackages,
-    getSchemeOperatorTicketJson,
-} from '../../../../src/pages/api/apiUtils/userData';
+
 import {
     getMockRequestAndResponse,
     expectedSingleTicket,
@@ -34,7 +37,7 @@ import {
     service,
     mockMatchingFaresZones,
     expectedNonCircularReturnTicket,
-    mockOutBoundMatchingFaresZones,
+    mockOutboundMatchingFaresZones,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     zoneStops,
     expectedFlatFareTicket,
@@ -90,6 +93,25 @@ describe('getProductsAndSalesOfferPackages', () => {
     });
 });
 
+describe('isTermTime', () => {
+    it('should return true if term time is true', () => {
+        const { req } = getMockRequestAndResponse({
+            session: {
+                [TERM_TIME_ATTRIBUTE]: { termTime: true },
+            },
+        });
+        expect(isTermTime(req)).toBeTruthy();
+    });
+    it('should return false if term time is false', () => {
+        const { req } = getMockRequestAndResponse({
+            session: {
+                [TERM_TIME_ATTRIBUTE]: { termTime: false },
+            },
+        });
+        expect(isTermTime(req)).toBeFalsy();
+    });
+});
+
 describe('getSingleTicketJson', () => {
     it('should return a SingleTicket object', () => {
         const { req, res } = getMockRequestAndResponse({
@@ -106,6 +128,7 @@ describe('getSingleTicketJson', () => {
                     endDate: '2020-12-18T09:30:46.0Z',
                 },
                 [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictions,
+                [TERM_TIME_ATTRIBUTE]: { termTime: true },
             },
         });
         const result = getSingleTicketJson(req, res);
@@ -120,7 +143,7 @@ describe('getReturnTicketJson', () => {
                 [MATCHING_ATTRIBUTE]: {
                     service,
                     userFareStages,
-                    matchingFareZones: mockOutBoundMatchingFaresZones,
+                    matchingFareZones: mockOutboundMatchingFaresZones,
                 },
                 [INBOUND_MATCHING_ATTRIBUTE]: {
                     inboundUserFareStages: userFareStages,
@@ -138,6 +161,7 @@ describe('getReturnTicketJson', () => {
         const result = getReturnTicketJson(req, res);
         expect(result).toStrictEqual(expectedNonCircularReturnTicket);
     });
+
     it('should return a ReturnTicket object for a circular journey', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
