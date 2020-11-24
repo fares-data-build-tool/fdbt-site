@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { NextApiResponse } from 'next';
 import { setFeedbackMailOptions, createMailTransporter } from './apiUtils/feedbackEmailer';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
@@ -10,6 +9,7 @@ import {
     hearAboutUsFeedbackQuestion,
     generalFeedbackQuestion,
 } from '../../constants';
+import logger from '../../utils/logger';
 
 export const buildFeedbackForEmail = (req: NextApiRequestWithSession): Feedback[] => {
     const { body } = req;
@@ -72,11 +72,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const mailOptions = setFeedbackMailOptions(noc, feedback);
 
         if (process.env.NODE_ENV !== 'production') {
-            console.info('mailOptions', mailOptions);
+            logger.info('mailOptions', {
+                context: 'api.feedback',
+                message: mailOptions,
+            });
         } else {
             const mailTransporter = createMailTransporter();
             await mailTransporter.sendMail(mailOptions);
-            console.info(`Email sent.`);
+            logger.info('', {
+                context: 'api.feedback',
+                message: 'Email sent.',
+            });
         }
 
         redirectTo(res, '/feedback?feedbackSubmitted=true');
