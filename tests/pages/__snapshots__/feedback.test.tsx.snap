@@ -23,7 +23,47 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
       Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
     </span>
     <div
-      className="govuk-!-padding-bottom-3 govuk-!-padding-top-3"
+      className="govuk-!-padding-top-3"
+    >
+      <fieldset
+        aria-describedby="hear-about-service-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="hear-about-service-header"
+        >
+          How did you hear about our service?
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="hear-about-service-question"
+          name="hearAboutServiceQuestion"
+          rows={3}
+        />
+      </fieldset>
+    </div>
+    <div>
+      <fieldset
+        aria-describedby="general-feedback-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="general-feedback-header"
+        >
+          Please let us know any feedback or suggestions for improvement you may have
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="general-feedback-question"
+          name="generalFeedbackQuestion"
+          rows={6}
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-3"
     >
       <fieldset
         aria-describedby="contact-header"
@@ -77,7 +117,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
       </fieldset>
     </div>
     <div
-      className="govuk-!-padding-bottom-3 govuk-!-padding-top-3"
+      className="govuk-!-padding-bottom-6"
     >
       <fieldset
         aria-describedby="problem-header"
@@ -128,48 +168,6 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
             </label>
           </div>
         </div>
-      </fieldset>
-    </div>
-    <div
-      className="govuk-!-padding-top-3"
-    >
-      <fieldset
-        aria-describedby="hear-about-service-header"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--m"
-          id="hear-about-service-header"
-        >
-          How did you hear about our service?
-        </legend>
-        <textarea
-          className="govuk-textarea"
-          id="hear-about-service-question"
-          name="hearAboutServiceQuestion"
-          rows={3}
-        />
-      </fieldset>
-    </div>
-    <div
-      className="govuk-!-padding-bottom-3"
-    >
-      <fieldset
-        aria-describedby="general-feedback-header"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--m"
-          id="general-feedback-header"
-        >
-          Please let us know any feedback or suggestions for improvement you may have
-        </legend>
-        <textarea
-          className="govuk-textarea"
-          id="general-feedback-question"
-          name="generalFeedbackQuestion"
-          rows={6}
-        />
       </fieldset>
     </div>
     <input
@@ -229,7 +227,47 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 2`]
       Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
     </span>
     <div
-      className="govuk-!-padding-bottom-3 govuk-!-padding-top-3"
+      className="govuk-!-padding-top-3"
+    >
+      <fieldset
+        aria-describedby="hear-about-service-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="hear-about-service-header"
+        >
+          How did you hear about our service?
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="hear-about-service-question"
+          name="hearAboutServiceQuestion"
+          rows={3}
+        />
+      </fieldset>
+    </div>
+    <div>
+      <fieldset
+        aria-describedby="general-feedback-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="general-feedback-header"
+        >
+          Please let us know any feedback or suggestions for improvement you may have
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="general-feedback-question"
+          name="generalFeedbackQuestion"
+          rows={6}
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-3"
     >
       <fieldset
         aria-describedby="contact-header"
@@ -283,7 +321,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 2`]
       </fieldset>
     </div>
     <div
-      className="govuk-!-padding-bottom-3 govuk-!-padding-top-3"
+      className="govuk-!-padding-bottom-6"
     >
       <fieldset
         aria-describedby="problem-header"
@@ -334,48 +372,6 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 2`]
             </label>
           </div>
         </div>
-      </fieldset>
-    </div>
-    <div
-      className="govuk-!-padding-top-3"
-    >
-      <fieldset
-        aria-describedby="hear-about-service-header"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--m"
-          id="hear-about-service-header"
-        >
-          How did you hear about our service?
-        </legend>
-        <textarea
-          className="govuk-textarea"
-          id="hear-about-service-question"
-          name="hearAboutServiceQuestion"
-          rows={3}
-        />
-      </fieldset>
-    </div>
-    <div
-      className="govuk-!-padding-bottom-3"
-    >
-      <fieldset
-        aria-describedby="general-feedback-header"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--m"
-          id="general-feedback-header"
-        >
-          Please let us know any feedback or suggestions for improvement you may have
-        </legend>
-        <textarea
-          className="govuk-textarea"
-          id="general-feedback-question"
-          name="generalFeedbackQuestion"
-          rows={6}
-        />
       </fieldset>
     </div>
     <input
@@ -435,7 +431,47 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 3`]
       Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
     </span>
     <div
-      className="govuk-!-padding-bottom-3 govuk-!-padding-top-3"
+      className="govuk-!-padding-top-3"
+    >
+      <fieldset
+        aria-describedby="hear-about-service-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="hear-about-service-header"
+        >
+          How did you hear about our service?
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="hear-about-service-question"
+          name="hearAboutServiceQuestion"
+          rows={3}
+        />
+      </fieldset>
+    </div>
+    <div>
+      <fieldset
+        aria-describedby="general-feedback-header"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          id="general-feedback-header"
+        >
+          Please let us know any feedback or suggestions for improvement you may have
+        </legend>
+        <textarea
+          className="govuk-textarea"
+          id="general-feedback-question"
+          name="generalFeedbackQuestion"
+          rows={6}
+        />
+      </fieldset>
+    </div>
+    <div
+      className="govuk-!-padding-bottom-3"
     >
       <fieldset
         aria-describedby="contact-header"
@@ -489,7 +525,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 3`]
       </fieldset>
     </div>
     <div
-      className="govuk-!-padding-bottom-3 govuk-!-padding-top-3"
+      className="govuk-!-padding-bottom-6"
     >
       <fieldset
         aria-describedby="problem-header"
@@ -540,48 +576,6 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 3`]
             </label>
           </div>
         </div>
-      </fieldset>
-    </div>
-    <div
-      className="govuk-!-padding-top-3"
-    >
-      <fieldset
-        aria-describedby="hear-about-service-header"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--m"
-          id="hear-about-service-header"
-        >
-          How did you hear about our service?
-        </legend>
-        <textarea
-          className="govuk-textarea"
-          id="hear-about-service-question"
-          name="hearAboutServiceQuestion"
-          rows={3}
-        />
-      </fieldset>
-    </div>
-    <div
-      className="govuk-!-padding-bottom-3"
-    >
-      <fieldset
-        aria-describedby="general-feedback-header"
-        className="govuk-fieldset"
-      >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--m"
-          id="general-feedback-header"
-        >
-          Please let us know any feedback or suggestions for improvement you may have
-        </legend>
-        <textarea
-          className="govuk-textarea"
-          id="general-feedback-question"
-          name="generalFeedbackQuestion"
-          rows={6}
-        />
       </fieldset>
     </div>
     <input

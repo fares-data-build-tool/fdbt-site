@@ -42,7 +42,42 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                     Thank you for providing helpful feedback and comments. Answer any questions which apply to your
                     experience using Create Fares Data, and be as specific as possible
                 </span>
-                <div className="govuk-!-padding-bottom-3 govuk-!-padding-top-3">
+
+                <div className="govuk-!-padding-top-3">
+                    <fieldset className="govuk-fieldset" aria-describedby="hear-about-service-header">
+                        <legend
+                            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+                            id="hear-about-service-header"
+                        >
+                            {hearAboutUsFeedbackQuestion}
+                        </legend>
+                        <textarea
+                            className="govuk-textarea"
+                            id="hear-about-service-question"
+                            name="hearAboutServiceQuestion"
+                            rows={3}
+                        />
+                    </fieldset>
+                </div>
+
+                <div>
+                    <fieldset className="govuk-fieldset" aria-describedby="general-feedback-header">
+                        <legend
+                            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+                            id="general-feedback-header"
+                        >
+                            {generalFeedbackQuestion}
+                        </legend>
+                        <textarea
+                            className="govuk-textarea"
+                            id="general-feedback-question"
+                            name="generalFeedbackQuestion"
+                            rows={6}
+                        />
+                    </fieldset>
+                </div>
+
+                <div className="govuk-!-padding-bottom-3">
                     <fieldset className="govuk-fieldset" aria-describedby="contact-header">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m" id="contact-header">
                             {contactFeedbackQuestion}
@@ -76,7 +111,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                     </fieldset>
                 </div>
 
-                <div className="govuk-!-padding-bottom-3 govuk-!-padding-top-3">
+                <div className="govuk-!-padding-bottom-6">
                     <fieldset className="govuk-fieldset" aria-describedby="problem-header">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m" id="problem-header">
                             {solveFeedbackQuestion}
@@ -107,40 +142,6 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                                 </label>
                             </div>
                         </div>
-                    </fieldset>
-                </div>
-
-                <div className="govuk-!-padding-top-3">
-                    <fieldset className="govuk-fieldset" aria-describedby="hear-about-service-header">
-                        <legend
-                            className="govuk-fieldset__legend govuk-fieldset__legend--m"
-                            id="hear-about-service-header"
-                        >
-                            {hearAboutUsFeedbackQuestion}
-                        </legend>
-                        <textarea
-                            className="govuk-textarea"
-                            id="hear-about-service-question"
-                            name="hearAboutServiceQuestion"
-                            rows={3}
-                        />
-                    </fieldset>
-                </div>
-
-                <div className="govuk-!-padding-bottom-3">
-                    <fieldset className="govuk-fieldset" aria-describedby="general-feedback-header">
-                        <legend
-                            className="govuk-fieldset__legend govuk-fieldset__legend--m"
-                            id="general-feedback-header"
-                        >
-                            {generalFeedbackQuestion}
-                        </legend>
-                        <textarea
-                            className="govuk-textarea"
-                            id="general-feedback-question"
-                            name="generalFeedbackQuestion"
-                            rows={6}
-                        />
                     </fieldset>
                 </div>
 

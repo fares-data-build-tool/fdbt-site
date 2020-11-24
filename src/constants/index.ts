@@ -22,7 +22,7 @@ export const COOKIE_PREFERENCES_COOKIE = 'fdbt-cookie-preferences-set';
 
 export const GOVUK_LINK = 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 
-export const FEEDBACK_LINK = 'mailto:fdbt@transportforthenorth.com?bcc=tfn-feedback@infinityworks.com';
+export const FEEDBACK_LINK = '/feedback';
 
 // Session Attributes
 

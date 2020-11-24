@@ -71,7 +71,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const noc: string = getAndValidateSchemeOpRegion(req, res) || getAndValidateNoc(req, res);
         const mailOptions = setFeedbackMailOptions(noc, feedback);
 
-        if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+        if (process.env.NODE_ENV !== 'production') {
             console.info('mailOptions', mailOptions);
         } else {
             const mailTransporter = createMailTransporter();
