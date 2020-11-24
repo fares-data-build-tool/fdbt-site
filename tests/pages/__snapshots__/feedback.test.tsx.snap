@@ -18,9 +18,8 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
     </h1>
     <span
       className="govuk-hint"
-      id="number-of-stages-hint"
     >
-      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
+      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using the Create Fares Data service, and be as specific as possible
     </span>
     <div
       className="govuk-!-padding-top-3"
@@ -174,7 +173,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Continue"
+      value="Submit"
     />
   </CsrfForm>
 </Component>
@@ -222,9 +221,8 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 2`]
     </h1>
     <span
       className="govuk-hint"
-      id="number-of-stages-hint"
     >
-      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
+      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using the Create Fares Data service, and be as specific as possible
     </span>
     <div
       className="govuk-!-padding-top-3"
@@ -378,7 +376,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 2`]
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Continue"
+      value="Submit"
     />
   </CsrfForm>
 </Component>
@@ -426,9 +424,8 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 3`]
     </h1>
     <span
       className="govuk-hint"
-      id="number-of-stages-hint"
     >
-      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using Create Fares Data, and be as specific as possible
+      Thank you for providing helpful feedback and comments. Answer any questions which apply to your experience using the Create Fares Data service, and be as specific as possible
     </span>
     <div
       className="govuk-!-padding-top-3"
@@ -582,7 +579,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 3`]
       className="govuk-button"
       id="continue-button"
       type="submit"
-      value="Continue"
+      value="Submit"
     />
   </CsrfForm>
 </Component>

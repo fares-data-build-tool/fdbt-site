@@ -38,9 +38,9 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
             <>
                 {feedbackSubmitted !== 'false' ? createFeedbackBox(feedbackSubmitted) : null}
                 <h1 className="govuk-heading-l">Help us improve the Create Fares Data service </h1>
-                <span className="govuk-hint" id="number-of-stages-hint">
+                <span className="govuk-hint">
                     Thank you for providing helpful feedback and comments. Answer any questions which apply to your
-                    experience using Create Fares Data, and be as specific as possible
+                    experience using the Create Fares Data service, and be as specific as possible
                 </span>
 
                 <div className="govuk-!-padding-top-3">
@@ -145,7 +145,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                     </fieldset>
                 </div>
 
-                <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
+                <input type="submit" value="Submit" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
     </TwoThirdsLayout>
