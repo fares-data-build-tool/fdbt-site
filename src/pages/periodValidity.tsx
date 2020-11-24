@@ -7,7 +7,8 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { PeriodExpiryWithErrors } from './api/periodValidity';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, getErrorsByIds } from '../utils';
+import RadioConditionalInput, { RadioConditionalInputFieldset } from 'src/components/RadioConditionalInput';
 
 const title = 'Period Validity - Create Fares Data Service';
 const description = 'Period Validity selection page of the Create Fares Data Service';
@@ -16,6 +17,7 @@ const errorId = 'period-end-calendar';
 
 type PeriodValidityProps = {
     errors?: ErrorInfo[];
+    fieldsets: RadioConditionalInputFieldset[];
     csrfToken: string;
 };
 
@@ -24,7 +26,42 @@ const isPeriodExpiryWithErrors = (
 ): periodExpiryAttribute is PeriodExpiryWithErrors =>
     (periodExpiryAttribute as PeriodExpiryWithErrors)?.errorMessage !== undefined;
 
-const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps): ReactElement => {
+export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
+    const periodValidityFieldSet: RadioConditionalInputFieldset = {
+        heading: {
+            id: 'period-validity',
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
+        },
+        radios: [
+            {
+                id: 'period-end-of-service',
+                name: 'endOfServiceDay',
+                value: 'endOfServiceDay',
+                dataAriaControls: 'period-validity-end-of-service-required-conditional',
+                label: 'End of service day',
+                hint: {
+                    id: 'end-of-service-day-hint',
+                    content:
+                        'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'service-end-time',
+                        name: 'serviceEndTime',
+                        label: 'End time',
+                    },
+                ],
+                inputErrors: getErrorsByIds(['period-end-of-service'], errors),
+            },
+        ],
+        radioError: getErrorsByIds(['period-end-of-service'], errors),
+    };
+    return [periodValidityFieldSet];
+};
+
+const PeriodValidity = ({ errors = [], fieldsets, csrfToken }: PeriodValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/periodValidity" method="post" csrfToken={csrfToken}>
@@ -89,6 +126,9 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps): ReactE
                                     </div>
                                 </div>
                             </FormElementWrapper>
+                            {fieldsets.map(fieldset => {
+                                return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
+                            })}
                         </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -99,14 +139,18 @@ const PeriodValidity = ({ errors = [], csrfToken }: PeriodValidityProps): ReactE
 };
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: PeriodValidityProps } => {
+    const errors: ErrorInfo[] = [];
     const csrfToken = getCsrfToken(ctx);
     const periodExpiryAttribute = getSessionAttribute(ctx.req, PERIOD_EXPIRY_ATTRIBUTE);
 
     if (periodExpiryAttribute && isPeriodExpiryWithErrors(periodExpiryAttribute)) {
         const { errorMessage } = periodExpiryAttribute;
-        return { props: { errors: [{ errorMessage, id: errorId }], csrfToken } };
+        const fieldsets: RadioConditionalInputFieldset[] = getFieldsets([{ errorMessage, id: errorId }]);
+        return { props: { errors: [{ errorMessage, id: errorId }], fieldsets, csrfToken } };
     }
-    return { props: { csrfToken } };
+
+    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
+    return { props: { csrfToken, fieldsets } };
 };
 
 export default PeriodValidity;

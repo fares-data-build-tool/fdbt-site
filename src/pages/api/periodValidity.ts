@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DURATION_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
+import { isSessionValid, isValidTime } from './apiUtils/validator';
 import { NextApiRequestWithSession, ProductData } from '../../interfaces';
 import { isProductInfo } from '../productDetails';
 
@@ -16,11 +16,29 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             throw new Error('session is invalid.');
         }
 
-        if (req.body.periodValid) {
-            const { periodValid } = req.body;
+        console.log('req', req.body);
+
+        if (req.body.periodValid || req.body.endofServiceDay !== '') {
+            const { periodValid, endofServiceDay, serviceEndTime } = req.body;
 
             const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
+            const periodExpiryAttributeError: PeriodExpiryWithErrors = { errorMessage: '' };
+
+            if (endofServiceDay !== '') {
+                if (serviceEndTime === '') {
+                    periodExpiryAttributeError.errorMessage = 'Specify an end time for service day';
+                } else if (!isValidTime(serviceEndTime)) {
+                    if (serviceEndTime === '2400') {
+                        periodExpiryAttributeError.errorMessage = '2400 is not a valid input. Use 0000.';
+                    } else {
+                        periodExpiryAttributeError.errorMessage = 'Time must be in 2400 format';
+                    }
+                }
+
+                updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeError);
+                redirectTo(res, '/periodValidity');
+            }
 
             if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
                 throw new Error('Necessary session data not found for period validity API');
