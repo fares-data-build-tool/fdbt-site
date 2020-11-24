@@ -18,15 +18,18 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         console.log('req', req.body);
 
-        if (req.body.periodValid || req.body.endofServiceDay !== '') {
-            const { periodValid, endofServiceDay, serviceEndTime } = req.body;
+        if (req.body.periodValid) {
+            const { periodValid, serviceEndTime } = req.body;
 
             const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
             const periodExpiryAttributeError: PeriodExpiryWithErrors = { errorMessage: '' };
 
-            if (endofServiceDay !== '') {
+            console.log('period', periodValid);
+            if (periodValid === 'endOfServiceDay') {
+                console.log('abcdef');
                 if (serviceEndTime === '') {
+                    console.log('get here');
                     periodExpiryAttributeError.errorMessage = 'Specify an end time for service day';
                 } else if (!isValidTime(serviceEndTime)) {
                     if (serviceEndTime === '2400') {
@@ -38,6 +41,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
                 updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeError);
                 redirectTo(res, '/periodValidity');
+                return;
             }
 
             if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
@@ -49,6 +53,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 daysValidInfo.amount === '1' ? '' : 's'
             }`;
 
+            console.log('hey');
+
             const periodExpiryAttributeValue: ProductData = {
                 products: [
                     {
@@ -56,6 +62,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                         productPrice,
                         productDuration: timePeriodValid,
                         productValidity: periodValid,
+                        serviceEndTime: serviceEndTime || '',
                     },
                 ],
             };

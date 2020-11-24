@@ -35,15 +35,41 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         },
         radios: [
             {
+                id: 'period-end-calendar',
+                name: 'periodValid',
+                value: 'endOfCalendarDay',
+                label: ' At the end of a calendar day',
+                radioButtonHint: {
+                    id: 'period-end-calendar-hint',
+                    content:
+                        ' For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+                },
+            },
+            {
+                id: 'period-twenty-four-hours',
+                name: 'periodValid',
+                value: '24hr',
+                label: 'At the end of a 24 hour period from purchase',
+                radioButtonHint: {
+                    id: 'period-twenty-four-hours-hint',
+                    content:
+                        'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+                },
+            },
+            {
                 id: 'period-end-of-service',
-                name: 'endOfServiceDay',
+                name: 'periodValid',
                 value: 'endOfServiceDay',
                 dataAriaControls: 'period-validity-end-of-service-required-conditional',
                 label: 'End of service day',
-                hint: {
-                    id: 'end-of-service-day-hint',
+                radioButtonHint: {
+                    id: 'period-end-of-service-hint',
                     content:
                         'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
+                },
+                inputHint: {
+                    id: 'end-of-service-day-hint',
+                    content: '',
                 },
                 inputType: 'text',
                 inputs: [
@@ -77,55 +103,6 @@ const PeriodValidity = ({ errors = [], fieldsets, csrfToken }: PeriodValidityPro
                             <span className="govuk-hint" id="period-validity-hint">
                                 We need to know the time that this product would be valid until
                             </span>
-                            <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <div className="govuk-radios">
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className={`govuk-radios__input ${
-                                                errors.length > 0 ? 'govuk-input--error' : ''
-                                            } `}
-                                            id="period-end-calendar"
-                                            name="periodValid"
-                                            type="radio"
-                                            value="endOfCalendarDay"
-                                        />
-                                        <label
-                                            className="govuk-label govuk-radios__label govuk-label--s"
-                                            htmlFor="period-end-calendar"
-                                        >
-                                            At the end of a calendar day
-                                        </label>
-                                        <span className="govuk-hint govuk-radios__hint" id="period-end-calendar-hint">
-                                            For example, a ticket purchased at 3pm would be valid until midnight on its
-                                            day of expiry
-                                        </span>
-                                    </div>
-                                    <div className="govuk-radios__item">
-                                        <input
-                                            className={`govuk-radios__input ${
-                                                errors.length > 0 ? 'govuk-input--error' : ''
-                                            } `}
-                                            id="period-twenty-four-hours"
-                                            name="periodValid"
-                                            type="radio"
-                                            value="24hr"
-                                        />
-                                        <label
-                                            className="govuk-label govuk-radios__label govuk-label--s"
-                                            htmlFor="period-twenty-four-hours"
-                                        >
-                                            At the end of a 24 hour period from purchase
-                                        </label>
-                                        <span
-                                            className="govuk-hint govuk-radios__hint"
-                                            id="period-twenty-four-hours-hint"
-                                        >
-                                            For example, a ticket purchased at 3pm will be valid until 3pm on its day of
-                                            expiry
-                                        </span>
-                                    </div>
-                                </div>
-                            </FormElementWrapper>
                             {fieldsets.map(fieldset => {
                                 return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                             })}

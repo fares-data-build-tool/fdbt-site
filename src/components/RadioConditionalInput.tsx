@@ -7,11 +7,15 @@ import { ProductDateInformation } from '../pages/api/productDateInformation';
 
 export interface RadioWithoutConditionals extends BaseReactElement {
     value: string;
+    radioButtonHint?: {
+        id: string;
+        content: string;
+    };
 }
 
 export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
     dataAriaControls: string;
-    hint: {
+    inputHint: {
         id: string;
         content: string;
     };
@@ -53,9 +57,9 @@ export const renderConditionalTextInput = (radio: RadioWithConditionalInputs): R
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                    {radio.hint.content}
+            <fieldset className="govuk-fieldset" aria-describedby={radio.inputHint.id}>
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.inputHint.id}>
+                    {radio.inputHint.content}
                 </legend>
                 {radio.inputs.map(input => {
                     const errorId = createErrorId(input, radio.inputErrors);
@@ -294,6 +298,7 @@ const renderConditionalDateInputs = (
 const renderConditionalRadioButton = (
     radio: RadioWithConditionalInputs,
     radioLabel: ReactElement,
+    radioButtonHint: ReactElement,
     dates?: ProductDateInformation,
 ): ReactElement => {
     const baseRadioInput = (
@@ -329,6 +334,7 @@ const renderConditionalRadioButton = (
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
+                {radioButtonHint}
             </div>
             {radio.inputType === 'date'
                 ? renderConditionalDateInputs(
@@ -350,7 +356,7 @@ const renderConditionalRadioButton = (
 const isRadioWithConditionalInputs = (
     radioButton: RadioWithConditionalInputs | RadioWithoutConditionals,
 ): radioButton is RadioWithConditionalInputs => {
-    return (radioButton as RadioWithConditionalInputs).hint !== undefined;
+    return (radioButton as RadioWithConditionalInputs).inputHint !== undefined;
 };
 
 const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformation): ReactElement => {
@@ -360,14 +366,21 @@ const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformation
         </label>
     );
 
+    const radioButtonHint: ReactElement = (
+        <span className="govuk-hint govuk-radios__hint" id="period-twenty-four-hours-hint">
+            For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry
+        </span>
+    );
+
     if (isRadioWithConditionalInputs(radio)) {
-        return renderConditionalRadioButton(radio, radioButtonLabel, dates);
+        return renderConditionalRadioButton(radio, radioButtonLabel, radioButtonHint, dates);
     }
 
     return (
         <div key={radio.id} className="govuk-radios__item">
             <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
             {radioButtonLabel}
+            {radioButtonHint}
         </div>
     );
 };
