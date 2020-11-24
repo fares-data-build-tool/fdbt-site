@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import periodValidity, { PeriodExpiryWithErrors } from '../../../src/pages/api/periodValidity';
-import { ProductData } from '../../../src/interfaces';
+import periodValidity from '../../../src/pages/api/periodValidity';
+import { ErrorInfo, ProductData } from '../../../src/interfaces';
 import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants';
 
 describe('periodValidity', () => {
@@ -20,6 +20,7 @@ describe('periodValidity', () => {
                     productPrice: '1234',
                     productDuration: '2 days',
                     productValidity: '24hr',
+                    serviceEndTime: '',
                 },
             ],
         };
@@ -36,9 +37,12 @@ describe('periodValidity', () => {
     });
 
     it('correctly generates period expiry error info, updates the PERIOD_EXPIRY_ATTRIBUTE and then redirects to periodValidity page when there is no period validity info', () => {
-        const mockPeriodExpiryAttributeError: PeriodExpiryWithErrors = {
-            errorMessage: 'Choose an option regarding your period ticket validity',
-        };
+        const errors: ErrorInfo[] = [
+            {
+                id: 'period-end-calendar',
+                errorMessage: 'Choose an option regarding your period ticket validity',
+            },
+        ];
 
         const { req, res } = getMockRequestAndResponse({
             cookieValues: { fareZoneName: null },
@@ -47,11 +51,7 @@ describe('periodValidity', () => {
         });
         periodValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
-            req,
-            PERIOD_EXPIRY_ATTRIBUTE,
-            mockPeriodExpiryAttributeError,
-        );
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });

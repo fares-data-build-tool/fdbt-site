@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import PeriodValidity from '../../src/pages/periodValidity';
+import { mockPeriodValidityFieldsets } from '../testData/mockData';
 
 describe('pages', () => {
     describe('periodValidity', () => {
         it('should render correctly', () => {
-            const tree = shallow(<PeriodValidity errors={[]} csrfToken="" />);
+            const tree = shallow(<PeriodValidity errors={[]} csrfToken="" fieldsets={mockPeriodValidityFieldsets} />);
             expect(tree).toMatchSnapshot();
         });
 
@@ -19,6 +20,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
+                    fieldsets={mockPeriodValidityFieldsets}
                 />,
             );
             expect(tree).toMatchSnapshot();

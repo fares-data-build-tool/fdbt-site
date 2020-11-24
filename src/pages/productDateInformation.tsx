@@ -36,7 +36,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 value: 'Yes',
                 dataAriaControls: 'product-dates-required-conditional',
                 label: 'Yes',
-                hint: {
+                inputHint: {
                     id: '',
                     content: '',
                 },

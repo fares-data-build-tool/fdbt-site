@@ -36,8 +36,8 @@ export const getFieldset = (errors: ErrorInfo[], amount: string, duration: strin
             value: 'Yes',
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
-            hint: {
-                id: 'define-return-validity-hint',
+            inputHint: {
+                id: 'define-return-validity-inputHint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',

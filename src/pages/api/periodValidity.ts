@@ -3,45 +3,42 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DURATION_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isSessionValid, isValidTime } from './apiUtils/validator';
-import { NextApiRequestWithSession, ProductData } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession, ProductData } from '../../interfaces';
 import { isProductInfo } from '../productDetails';
-
-export interface PeriodExpiryWithErrors {
-    errorMessage: string;
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const errors: ErrorInfo[] = [];
+
         if (!isSessionValid(req, res)) {
             throw new Error('session is invalid.');
         }
-
-        console.log('req', req.body);
 
         if (req.body.periodValid) {
             const { periodValid, serviceEndTime } = req.body;
 
             const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
-            const periodExpiryAttributeError: PeriodExpiryWithErrors = { errorMessage: '' };
 
-            console.log('period', periodValid);
             if (periodValid === 'endOfServiceDay') {
-                console.log('abcdef');
                 if (serviceEndTime === '') {
-                    console.log('get here');
-                    periodExpiryAttributeError.errorMessage = 'Specify an end time for service day';
+                    errors.push({ id: 'period-end-of-service', errorMessage: 'Specify an end time for service day' });
                 } else if (!isValidTime(serviceEndTime)) {
                     if (serviceEndTime === '2400') {
-                        periodExpiryAttributeError.errorMessage = '2400 is not a valid input. Use 0000.';
+                        errors.push({
+                            id: 'period-end-of-service',
+                            errorMessage: '2400 is not a valid input. Use 0000.',
+                        });
                     } else {
-                        periodExpiryAttributeError.errorMessage = 'Time must be in 2400 format';
+                        errors.push({ id: 'period-end-of-service', errorMessage: 'Time must be in 2400 format' });
                     }
                 }
 
-                updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeError);
-                redirectTo(res, '/periodValidity');
-                return;
+                if (errors.length > 0) {
+                    updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, { products: [], errors });
+                    redirectTo(res, '/periodValidity');
+                    return;
+                }
             }
 
             if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
@@ -52,8 +49,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             const timePeriodValid = `${daysValidInfo.amount} ${daysValidInfo.duration}${
                 daysValidInfo.amount === '1' ? '' : 's'
             }`;
-
-            console.log('hey');
 
             const periodExpiryAttributeValue: ProductData = {
                 products: [
@@ -71,10 +66,11 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             redirectTo(res, '/ticketConfirmation');
         } else {
-            const periodExpiryAttributeError: PeriodExpiryWithErrors = {
+            errors.push({
+                id: 'period-end-calendar',
                 errorMessage: 'Choose an option regarding your period ticket validity',
-            };
-            updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, periodExpiryAttributeError);
+            });
+            updateSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE, { products: [], errors });
             redirectTo(res, '/periodValidity');
         }
     } catch (error) {

@@ -61,12 +61,12 @@ exports[`pages productDateInformation it should render errors correctly when rad
               "radios": Array [
                 Object {
                   "dataAriaControls": "product-dates-required-conditional",
-                  "hint": Object {
+                  "id": "product-dates-required",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
                     "content": "",
                     "id": "",
                   },
-                  "id": "product-dates-required",
-                  "inputErrors": Array [],
                   "inputType": "date",
                   "inputs": Array [
                     Object {
@@ -161,12 +161,12 @@ exports[`pages productDateInformation it should render the product date informat
               "radios": Array [
                 Object {
                   "dataAriaControls": "product-dates-required-conditional",
-                  "hint": Object {
+                  "id": "product-dates-required",
+                  "inputErrors": Array [],
+                  "inputHint": Object {
                     "content": "",
                     "id": "",
                   },
-                  "id": "product-dates-required",
-                  "inputErrors": Array [],
                   "inputType": "date",
                   "inputs": Array [
                     Object {

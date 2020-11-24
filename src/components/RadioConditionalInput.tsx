@@ -100,9 +100,9 @@ const renderConditionalCheckbox = (radio: RadioWithConditionalInputs): ReactElem
             id={radio.dataAriaControls}
         >
             <div className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}>
-                <fieldset className="govuk-fieldset" aria-describedby={radio.hint.id}>
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                        {radio.hint.content}
+                <fieldset className="govuk-fieldset" aria-describedby={radio.inputHint.id}>
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.inputHint.id}>
+                        {radio.inputHint.content}
                     </legend>
                     <FormElementWrapper
                         errors={radio.inputErrors}
@@ -142,9 +142,9 @@ export const renderConditionalTextWithUnitsInput = (radio: RadioWithConditionalI
             className={`govuk-radios__conditional${error ? '' : ' govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            <fieldset className="govuk-fieldset" role="group" aria-describedby={radio.hint.id}>
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.hint.id}>
-                    {radio.hint.content}
+            <fieldset className="govuk-fieldset" role="group" aria-describedby={radio.inputHint.id}>
+                <legend className="govuk-fieldset__legend govuk-fieldset__legend--s" id={radio.inputHint.id}>
+                    {radio.inputHint.content}
                 </legend>
                 {radio.inputs.map(input => {
                     const errorId = createErrorId(input, radio.inputErrors);
