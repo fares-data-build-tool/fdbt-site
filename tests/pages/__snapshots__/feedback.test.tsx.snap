@@ -179,7 +179,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 1`]
 </Component>
 `;
 
-exports[`pages feedback should render correctly with feedbackSubmitted false 2`] = `
+exports[`pages feedback should render correctly with feedbackSubmitted not submitted 1`] = `
 <Component
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
@@ -191,18 +191,18 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 2`]
     method="post"
   >
     <div
-      className="information_box__success"
+      className="information_box__warning"
     >
       <h2
         className="govuk-heading-m"
       >
         Your feedback was 
-        submitted
+        not submitted
       </h2>
       <p
         className="govuk-body"
       >
-        Thank you for taking the time to improve the service
+        The feedback form was empty, at least one question has to be answered
       </p>
       <p
         className="govuk-body"
@@ -382,7 +382,7 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 2`]
 </Component>
 `;
 
-exports[`pages feedback should render correctly with feedbackSubmitted false 3`] = `
+exports[`pages feedback should render correctly with feedbackSubmitted submitted 1`] = `
 <Component
   description="Feedback page of the Create Fares Data Service"
   errors={Array []}
@@ -394,18 +394,18 @@ exports[`pages feedback should render correctly with feedbackSubmitted false 3`]
     method="post"
   >
     <div
-      className="information_box__warning"
+      className="information_box__success"
     >
       <h2
         className="govuk-heading-m"
       >
         Your feedback was 
-        not submitted
+        submitted
       </h2>
       <p
         className="govuk-body"
       >
-        The feedback form was empty, at least one question has to be answered
+        Thank you for taking the time to improve the service
       </p>
       <p
         className="govuk-body"

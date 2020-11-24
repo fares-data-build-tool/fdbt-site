@@ -8,11 +8,11 @@ describe('pages', () => {
             const tree = shallow(<Feedback feedbackSubmitted="false" csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
-        it('should render correctly with feedbackSubmitted false', () => {
+        it('should render correctly with feedbackSubmitted submitted', () => {
             const tree = shallow(<Feedback feedbackSubmitted="submitted" csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
-        it('should render correctly with feedbackSubmitted false', () => {
+        it('should render correctly with feedbackSubmitted not submitted', () => {
             const tree = shallow(<Feedback feedbackSubmitted="not submitted" csrfToken="" />);
             expect(tree).toMatchSnapshot();
         });
