@@ -3,6 +3,12 @@ import TwoThirdsLayout from '../layout/Layout';
 import { NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
+import {
+    contactFeedbackQuestion,
+    solveFeedbackQuestion,
+    hearAboutUsFeedbackQuestion,
+    generalFeedbackQuestion,
+} from '../constants';
 
 const title = 'Feedback - Create Fares Data Service';
 const description = 'Feedback page of the Create Fares Data Service';
@@ -39,7 +45,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                 <div className="govuk-!-padding-bottom-3 govuk-!-padding-top-3">
                     <fieldset className="govuk-fieldset" aria-describedby="contact-header">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m" id="contact-header">
-                            Did you contact us for assistance at any point?
+                            {contactFeedbackQuestion}
                         </legend>
                         <div className="govuk-radios" id="contact-radios">
                             <div className="govuk-radios__item">
@@ -73,7 +79,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                 <div className="govuk-!-padding-bottom-3 govuk-!-padding-top-3">
                     <fieldset className="govuk-fieldset" aria-describedby="problem-header">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m" id="problem-header">
-                            Did we solve your problem?
+                            {solveFeedbackQuestion}
                         </legend>
                         <div className="govuk-radios" id="problem-radios">
                             <div className="govuk-radios__item">
@@ -110,7 +116,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                             className="govuk-fieldset__legend govuk-fieldset__legend--m"
                             id="hear-about-service-header"
                         >
-                            How did you hear about our service?
+                            {hearAboutUsFeedbackQuestion}
                         </legend>
                         <textarea
                             className="govuk-textarea"
@@ -127,7 +133,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                             className="govuk-fieldset__legend govuk-fieldset__legend--m"
                             id="general-feedback-header"
                         >
-                            Please let us know any feedback or suggestions for improvement you may have
+                            {generalFeedbackQuestion}
                         </legend>
                         <textarea
                             className="govuk-textarea"

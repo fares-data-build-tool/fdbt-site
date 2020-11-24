@@ -4,17 +4,17 @@ import AWS from 'aws-sdk';
 import { Feedback } from '../../../interfaces';
 
 export const buildFeedbackContent = (feedbackQuestions: Feedback[]): string => {
-    let content = '';
+    const questionsAndAnswers = feedbackQuestions.map(question => {
+        return `Question: ${question.question}\nAnswer: ${question.answer}`;
+    });
 
-    feedbackQuestions.forEach(question => {
-        content = `${content} `
-    })
+    return questionsAndAnswers.join('\n');
 };
 
-export const setFeedbackMailOptions = (emailTo: string, nocCodeOfSender: string, feedback: Feedback): Mail.Options => {
+export const setFeedbackMailOptions = (nocCodeOfSender: string, feedback: Feedback[]): Mail.Options => {
     return {
         from: 'fdbt@transportforthenorth.com',
-        to: emailTo,
+        to: 'fdbt-support@infinityworks.com',
         subject: `Feedback received from ${nocCodeOfSender}`,
         text: buildFeedbackContent(feedback),
     };

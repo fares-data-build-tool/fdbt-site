@@ -1,7 +1,48 @@
+/* eslint-disable no-console */
 import { NextApiResponse } from 'next';
+import { setFeedbackMailOptions, createMailTransporter } from './apiUtils/feedbackEmailer';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
-import { redirectToError, redirectTo } from './apiUtils/index';
-import { NextApiRequestWithSession } from '../../interfaces';
+import { redirectToError, redirectTo, getAndValidateNoc, getAndValidateSchemeOpRegion } from './apiUtils/index';
+import { NextApiRequestWithSession, Feedback } from '../../interfaces';
+import {
+    contactFeedbackQuestion,
+    solveFeedbackQuestion,
+    hearAboutUsFeedbackQuestion,
+    generalFeedbackQuestion,
+} from '../../constants';
+
+export const buildFeedbackForEmail = (req: NextApiRequestWithSession): Feedback[] => {
+    const { body } = req;
+    const feedback: Feedback[] = [];
+    const refinedHearAboutServiceInput = removeExcessWhiteSpace(body.hearAboutService);
+    const refinedGeneralFeedbackInput = removeExcessWhiteSpace(body.generalFeedback);
+    if (body.contactQuestion) {
+        feedback.push({
+            question: contactFeedbackQuestion,
+            answer: body.contactQuestion,
+        });
+    }
+    if (body.problemQuestion) {
+        feedback.push({
+            question: solveFeedbackQuestion,
+            answer: body.problemQuestion,
+        });
+    }
+    if (refinedHearAboutServiceInput && refinedHearAboutServiceInput !== '') {
+        feedback.push({
+            question: hearAboutUsFeedbackQuestion,
+            answer: refinedHearAboutServiceInput,
+        });
+    }
+    if (refinedGeneralFeedbackInput && refinedGeneralFeedbackInput !== '') {
+        feedback.push({
+            question: generalFeedbackQuestion,
+            answer: refinedGeneralFeedbackInput,
+        });
+    }
+
+    return feedback;
+};
 
 export const requestIsEmpty = (req: NextApiRequestWithSession): boolean => {
     const { body } = req;
@@ -19,23 +60,22 @@ export const requestIsEmpty = (req: NextApiRequestWithSession): boolean => {
     return false;
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         if (requestIsEmpty(req)) {
             redirectTo(res, '/feedback?feedbackSubmitted=false');
             return;
         }
 
-        const mailOptions = setMailOptions(s3ObjectParams, pathToSavedNetex, matchingData);
+        const feedback: Feedback[] = buildFeedbackForEmail(req);
+        const noc: string = getAndValidateSchemeOpRegion(req, res) || getAndValidateNoc(req, res);
+        const mailOptions = setFeedbackMailOptions(noc, feedback);
 
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             console.info('mailOptions', mailOptions);
-        }
-
-        if (process.env.NODE_ENV !== 'development') {
+        } else {
             const mailTransporter = createMailTransporter();
             await mailTransporter.sendMail(mailOptions);
-
             console.info(`Email sent.`);
         }
 
