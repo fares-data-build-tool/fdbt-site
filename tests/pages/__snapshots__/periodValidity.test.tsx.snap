@@ -42,7 +42,8 @@ exports[`pages periodValidity should render correctly 1`] = `
             Object {
               "heading": Object {
                 "content": Any<String>,
-                "id": "define-passenger-age-range",
+                "hidden": true,
+                "id": "period-validity",
               },
               "radioError": Array [],
               "radios": Array [
@@ -61,7 +62,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "label": "At the end of a 24 hour period from purchase",
                   "name": "periodValid",
                   "radioButtonHint": Object {
-                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "content": "For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry",
                     "id": "period-twenty-four-hours-hint",
                   },
                   "value": "24hr",
@@ -93,7 +94,7 @@ exports[`pages periodValidity should render correctly 1`] = `
               ],
             }
           }
-          key="define-passenger-age-range"
+          key="period-validity"
         />
       </fieldset>
     </div>
@@ -163,7 +164,8 @@ exports[`pages periodValidity should render error messaging when errors are pass
             Object {
               "heading": Object {
                 "content": Any<String>,
-                "id": "define-passenger-age-range",
+                "hidden": true,
+                "id": "period-validity",
               },
               "radioError": Array [],
               "radios": Array [
@@ -182,7 +184,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "label": "At the end of a 24 hour period from purchase",
                   "name": "periodValid",
                   "radioButtonHint": Object {
-                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "content": "For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry",
                     "id": "period-twenty-four-hours-hint",
                   },
                   "value": "24hr",
@@ -214,7 +216,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
               ],
             }
           }
-          key="define-passenger-age-range"
+          key="period-validity"
         />
       </fieldset>
     </div>

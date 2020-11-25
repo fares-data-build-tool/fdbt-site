@@ -44,8 +44,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 label: 'At the end of a 24 hour period from purchase',
                 radioButtonHint: {
                     id: 'period-twenty-four-hours-hint',
-                    content:
-                        'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+                    content: 'For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry',
                 },
             },
             {

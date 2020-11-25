@@ -367,8 +367,8 @@ const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformation
     );
 
     const radioButtonHint: ReactElement = (
-        <span className="govuk-hint govuk-radios__hint" id="period-twenty-four-hours-hint">
-            For example, a ticket purchased at 3pm will be valid until 3pm on its day of expiry
+        <span className="govuk-hint govuk-radios__hint" id={radio.radioButtonHint?.id}>
+            {radio.radioButtonHint?.content}
         </span>
     );
 
