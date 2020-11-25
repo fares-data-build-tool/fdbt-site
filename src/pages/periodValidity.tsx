@@ -71,10 +71,10 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                         label: 'End time',
                     },
                 ],
-                inputErrors: getErrorsByIds(['period-end-of-service'], errors),
+                inputErrors: getErrorsByIds(['service-end-time'], errors),
             },
         ],
-        radioError: getErrorsByIds(['period-end-of-service'], errors),
+        radioError: getErrorsByIds(['period-end-calendar'], errors),
     };
     return [periodValidityFieldSet];
 };
