@@ -102,9 +102,8 @@ export const SCHOOL_FARE_TYPE_ATTRIBUTE = 'fdbt-school-fare-type';
 
 export const oneYearInSeconds = 31556952;
 
-export const ALLOWED_XSLX_FILE_TYPES = [
+export const ALLOWED_XLSX_FILE_TYPES = [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.ms-excel',
     'application/vnd.ms-excel',
 ];
 

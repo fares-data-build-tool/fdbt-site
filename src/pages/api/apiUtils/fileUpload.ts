@@ -5,7 +5,7 @@ import { NextApiRequest } from 'next';
 import fs from 'fs';
 import NodeClam from 'clamscan';
 import XLSX from 'xlsx';
-import { ALLOWED_XSLX_FILE_TYPES, ALLOWED_CSV_FILE_TYPES } from '../../../constants/index';
+import { ALLOWED_XLSX_FILE_TYPES, ALLOWED_CSV_FILE_TYPES } from '../../../constants/index';
 import logger from '../../../utils/logger';
 
 interface FileData {
@@ -39,7 +39,7 @@ export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
 
     if (ALLOWED_CSV_FILE_TYPES.includes(type)) {
         fileContents = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
-    } else if (ALLOWED_XSLX_FILE_TYPES.includes(type)) {
+    } else if (ALLOWED_XLSX_FILE_TYPES.includes(type)) {
         const workBook = XLSX.readFile(files['csv-upload'].path);
         const sheetName = workBook.SheetNames[0];
         fileContents = XLSX.utils.sheet_to_csv(workBook.Sheets[sheetName]);
@@ -77,7 +77,7 @@ export const validateFile = (fileData: formidable.File, fileContents: string): s
         return `The selected file must be smaller than 5MB`;
     }
 
-    if (!ALLOWED_CSV_FILE_TYPES.includes(type) && !ALLOWED_XSLX_FILE_TYPES.includes(type)) {
+    if (!ALLOWED_CSV_FILE_TYPES.includes(type) && !ALLOWED_XLSX_FILE_TYPES.includes(type)) {
         logger.warn('', { context: 'api.utils.validateFile', message: 'file not of allowed type', type });
 
         return 'The selected file must be a .csv or .xlsx';
