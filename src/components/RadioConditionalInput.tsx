@@ -298,7 +298,7 @@ const renderConditionalDateInputs = (
 const renderConditionalRadioButton = (
     radio: RadioWithConditionalInputs,
     radioLabel: ReactElement,
-    radioButtonHint: ReactElement,
+    radioButtonHint?: ReactElement,
     dates?: ProductDateInformation,
 ): ReactElement => {
     const baseRadioInput = (
@@ -334,7 +334,7 @@ const renderConditionalRadioButton = (
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
-                {radioButtonHint}
+                {radioButtonHint || null}
             </div>
             {radio.inputType === 'date'
                 ? renderConditionalDateInputs(
@@ -380,7 +380,7 @@ const renderRadioButtonSet = (radio: RadioButton, dates?: ProductDateInformation
         <div key={radio.id} className="govuk-radios__item">
             <input className="govuk-radios__input" id={radio.id} name={radio.name} type="radio" value={radio.value} />
             {radioButtonLabel}
-            {radioButtonHint}
+            {radio.radioButtonHint ? radioButtonHint : null}
         </div>
     );
 };

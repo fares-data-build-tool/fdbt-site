@@ -59,7 +59,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-age-range-inputHint',
+                    id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
                 inputType: 'text',
@@ -100,7 +100,7 @@ export const getFieldsets = (errors: ErrorInfo[], passengerType: string): RadioC
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-proof-inputHint',
+                    id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
                 inputType: 'checkbox',

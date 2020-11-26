@@ -2553,7 +2553,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-age-range-inputHint',
+                    id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
                 inputType: 'text',
@@ -2593,7 +2593,7 @@ export const mockDefinePassengerTypeFieldsets: RadioConditionalInputFieldset[] =
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-proof-inputHint',
+                    id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
                 inputType: 'checkbox',
@@ -2636,7 +2636,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-age-range-inputHint',
+                    id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
                 inputType: 'text',
@@ -2681,7 +2681,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioErrors: RadioConditionalIn
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-proof-inputHint',
+                    id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
                 inputType: 'checkbox',
@@ -2740,7 +2740,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-age-range-inputHint',
+                    id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
                 inputType: 'text',
@@ -2789,7 +2789,7 @@ export const mockDefinePassengerTypeFieldsetsWithInputErrors: RadioConditionalIn
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-proof-inputHint',
+                    id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
                 inputType: 'checkbox',
@@ -2847,7 +2847,7 @@ export const mockAdultServerSideProps: RadioConditionalInputFieldset[] = [
                 dataAriaControls: 'age-range-required-conditional',
                 inputHint: {
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
-                    id: 'define-passenger-age-range-inputHint',
+                    id: 'define-passenger-age-range-hint',
                 },
                 id: 'age-range-required',
                 inputErrors: [],
@@ -2879,7 +2879,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-age-range-inputHint',
+                    id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
                 inputType: 'text',
@@ -2928,7 +2928,7 @@ export const mockDefinePassengerTypeFieldsetsWithRadioAndInputErrors: RadioCondi
                 dataAriaControls: 'proof-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-proof-inputHint',
+                    id: 'define-passenger-proof-hint',
                     content: 'Select the applicable proof document(s).',
                 },
                 inputType: 'checkbox',
@@ -2971,7 +2971,7 @@ export const mockAdultDefinePassengerTypeFieldsetsWithRadioAndInputErrors: Radio
                 dataAriaControls: 'age-range-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'define-passenger-age-range-inputHint',
+                    id: 'define-passenger-age-range-hint',
                     content: 'Enter a minimum and/or maximum age for this passenger type.',
                 },
                 inputType: 'text',

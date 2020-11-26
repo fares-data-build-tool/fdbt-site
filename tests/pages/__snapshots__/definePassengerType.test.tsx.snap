@@ -107,7 +107,7 @@ exports[`pages definePassengerType should render correctly when on the group tic
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-inputHint",
+                  "id": "define-passenger-age-range-hint",
                 },
                 "inputType": "text",
                 "inputs": Array [
@@ -152,7 +152,7 @@ exports[`pages definePassengerType should render correctly when on the group tic
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-inputHint",
+                  "id": "define-passenger-proof-hint",
                 },
                 "inputType": "checkbox",
                 "inputs": Array [
@@ -247,7 +247,7 @@ exports[`pages definePassengerType should render correctly when on the non-group
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-inputHint",
+                  "id": "define-passenger-age-range-hint",
                 },
                 "inputType": "text",
                 "inputs": Array [
@@ -292,7 +292,7 @@ exports[`pages definePassengerType should render correctly when on the non-group
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-inputHint",
+                  "id": "define-passenger-proof-hint",
                 },
                 "inputType": "checkbox",
                 "inputs": Array [
@@ -426,7 +426,7 @@ exports[`pages definePassengerType should render errors correctly when input err
                 ],
                 "inputHint": Object {
                   "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-inputHint",
+                  "id": "define-passenger-age-range-hint",
                 },
                 "inputType": "text",
                 "inputs": Array [
@@ -476,7 +476,7 @@ exports[`pages definePassengerType should render errors correctly when input err
                 ],
                 "inputHint": Object {
                   "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-inputHint",
+                  "id": "define-passenger-proof-hint",
                 },
                 "inputType": "checkbox",
                 "inputs": Array [
@@ -598,7 +598,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Enter a minimum and/or maximum age for this passenger type.",
-                  "id": "define-passenger-age-range-inputHint",
+                  "id": "define-passenger-age-range-hint",
                 },
                 "inputType": "text",
                 "inputs": Array [
@@ -648,7 +648,7 @@ exports[`pages definePassengerType should render errors correctly when radio err
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Select the applicable proof document(s).",
-                  "id": "define-passenger-proof-inputHint",
+                  "id": "define-passenger-proof-hint",
                 },
                 "inputType": "checkbox",
                 "inputs": Array [

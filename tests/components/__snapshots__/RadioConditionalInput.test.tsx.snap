@@ -44,9 +44,6 @@ exports[`RadioConditionalInput should hide the radio button heading when the fie
           >
             Yes
           </label>
-          <span
-            className="govuk-hint govuk-radios__hint"
-          />
         </div>
         <div
           className="govuk-radios__item"
@@ -65,9 +62,6 @@ exports[`RadioConditionalInput should hide the radio button heading when the fie
           >
             No
           </label>
-          <span
-            className="govuk-hint govuk-radios__hint"
-          />
         </div>
       </div>
     </FormElementWrapper>
@@ -185,9 +179,6 @@ exports[`RadioConditionalInput should render a set of radio buttons with conditi
           >
             No
           </label>
-          <span
-            className="govuk-hint govuk-radios__hint"
-          />
         </div>
       </div>
     </FormElementWrapper>
@@ -241,9 +232,6 @@ exports[`RadioConditionalInput should render an ordinary set of radio buttons wh
           >
             Yes
           </label>
-          <span
-            className="govuk-hint govuk-radios__hint"
-          />
         </div>
         <div
           className="govuk-radios__item"
@@ -262,9 +250,6 @@ exports[`RadioConditionalInput should render an ordinary set of radio buttons wh
           >
             No
           </label>
-          <span
-            className="govuk-hint govuk-radios__hint"
-          />
         </div>
       </div>
     </FormElementWrapper>
