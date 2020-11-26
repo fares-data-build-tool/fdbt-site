@@ -66,7 +66,7 @@ describe('periodValidity', () => {
         ];
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareZoneName: null },
+            cookieValues: {},
             body: {
                 periodValid: 'endOfServiceDay',
                 serviceEndTime: '',

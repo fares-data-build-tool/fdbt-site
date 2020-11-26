@@ -113,12 +113,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pe
 
     if (isWithErrors(periodExpiryAttribute)) {
         errors = periodExpiryAttribute.errors;
-        const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
-        return { props: { errors, fieldsets, csrfToken } };
     }
 
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
-    return { props: { csrfToken, fieldsets } };
+    return { props: { errors, fieldsets, csrfToken } };
 };
 
 export default PeriodValidity;
