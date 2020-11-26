@@ -45,7 +45,7 @@ exports[`pages returnValidity should render the page correctly 1`] = `
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-inputHint",
+                  "id": "define-return-validity-hint",
                 },
                 "inputType": "textWithUnits",
                 "inputs": Array [
@@ -170,7 +170,7 @@ exports[`pages returnValidity should render the page with errors when both text 
                 ],
                 "inputHint": Object {
                   "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-inputHint",
+                  "id": "define-return-validity-hint",
                 },
                 "inputType": "textWithUnits",
                 "inputs": Array [
@@ -283,7 +283,7 @@ exports[`pages returnValidity should render the page with errors when only dropd
                 ],
                 "inputHint": Object {
                   "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-inputHint",
+                  "id": "define-return-validity-hint",
                 },
                 "inputType": "textWithUnits",
                 "inputs": Array [
@@ -396,7 +396,7 @@ exports[`pages returnValidity should render the page with errors when only text 
                 ],
                 "inputHint": Object {
                   "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-inputHint",
+                  "id": "define-return-validity-hint",
                 },
                 "inputType": "textWithUnits",
                 "inputs": Array [
@@ -509,7 +509,7 @@ exports[`pages returnValidity should render the page with errors when radio erro
                 "inputErrors": Array [],
                 "inputHint": Object {
                   "content": "Enter a number and select a duration from the dropdown",
-                  "id": "define-return-validity-inputHint",
+                  "id": "define-return-validity-hint",
                 },
                 "inputType": "textWithUnits",
                 "inputs": Array [

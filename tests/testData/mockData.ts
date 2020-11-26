@@ -3272,7 +3272,7 @@ export const mockReturnValidityFieldset: RadioConditionalInputFieldset = {
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
             inputHint: {
-                id: 'define-return-validity-inputHint',
+                id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
@@ -3317,7 +3317,7 @@ export const mockReturnValidityFieldsetWithTextInputErrors: RadioConditionalInpu
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
             inputHint: {
-                id: 'define-return-validity-inputHint',
+                id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
@@ -3362,7 +3362,7 @@ export const mockReturnValidityFieldsetWithDropdownInputErrors: RadioConditional
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
             inputHint: {
-                id: 'define-return-validity-inputHint',
+                id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
@@ -3409,7 +3409,7 @@ export const mockReturnValidityFieldsetWithTextAndDropdownInputErrors: RadioCond
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
             inputHint: {
-                id: 'define-return-validity-inputHint',
+                id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
@@ -3457,7 +3457,7 @@ export const mockReturnValidityFieldsetWithRadioErrors: RadioConditionalInputFie
             dataAriaControls: 'return-validity-defined-conditional',
             label: 'Yes',
             inputHint: {
-                id: 'define-return-validity-inputHint',
+                id: 'define-return-validity-hint',
                 content: 'Enter a number and select a duration from the dropdown',
             },
             inputType: 'textWithUnits',
