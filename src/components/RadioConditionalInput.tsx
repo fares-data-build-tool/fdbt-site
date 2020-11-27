@@ -347,7 +347,7 @@ const renderConditionalRadioButton = (
             <div className="govuk-radios__item">
                 {radio.inputErrors.length > 0 ? radioInputWithError : baseRadioInput}
                 {radioLabel}
-                {radioButtonHint || null}
+                {radio.radioButtonHint ? radioButtonHint : null}
             </div>
             {inputTypeMap[radio.inputType](radio)}
         </div>

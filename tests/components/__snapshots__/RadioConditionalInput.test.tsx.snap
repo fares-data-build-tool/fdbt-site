@@ -118,9 +118,6 @@ exports[`RadioConditionalInput should render a set of radio buttons with conditi
             >
               Yes
             </label>
-            <span
-              className="govuk-hint govuk-radios__hint"
-            />
           </div>
           <div
             className="govuk-radios__conditional govuk-radios__conditional--hidden"
