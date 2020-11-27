@@ -52,7 +52,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "label": " At the end of a calendar day",
                   "name": "periodValid",
                   "radioButtonHint": Object {
-                    "content": " For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
                     "id": "period-end-calendar-hint",
                   },
                   "value": "endOfCalendarDay",
@@ -72,7 +72,8 @@ exports[`pages periodValidity should render correctly 1`] = `
                   "id": "period-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {
-                    "content": "",
+                    "content": "Enter an end time for your service day",
+                    "hidden": true,
                     "id": "end-of-service-day-hint",
                   },
                   "inputType": "text",
@@ -174,7 +175,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "label": " At the end of a calendar day",
                   "name": "periodValid",
                   "radioButtonHint": Object {
-                    "content": " For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
+                    "content": "For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry",
                     "id": "period-end-calendar-hint",
                   },
                   "value": "endOfCalendarDay",
@@ -194,7 +195,8 @@ exports[`pages periodValidity should render error messaging when errors are pass
                   "id": "period-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {
-                    "content": "",
+                    "content": "Enter an end time for your service day",
+                    "hidden": true,
                     "id": "end-of-service-day-hint",
                   },
                   "inputType": "text",

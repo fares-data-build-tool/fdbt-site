@@ -2,7 +2,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import periodValidity from '../../../src/pages/api/periodValidity';
 import { ErrorInfo, ProductData } from '../../../src/interfaces';
-import { PERIOD_EXPIRY_ATTRIBUTE } from '../../../src/constants';
+import { PERIOD_EXPIRY_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../../src/constants';
 
 describe('periodValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -26,7 +26,9 @@ describe('periodValidity', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { selectedServices: null },
+            session: {
+                [SERVICE_LIST_ATTRIBUTE]: undefined,
+            },
             body: { periodValid: '24hr' },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -45,7 +47,6 @@ describe('periodValidity', () => {
         ];
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareZoneName: null },
             body: {},
             mockWriteHeadFn: writeHeadMock,
         });
@@ -66,7 +67,6 @@ describe('periodValidity', () => {
         ];
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: {},
             body: {
                 periodValid: 'endOfServiceDay',
                 serviceEndTime: '',
@@ -90,7 +90,6 @@ describe('periodValidity', () => {
         ];
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareZoneName: null },
             body: {
                 periodValid: 'endOfServiceDay',
                 serviceEndTime: '2400',
@@ -114,7 +113,6 @@ describe('periodValidity', () => {
         ];
 
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareZoneName: null },
             body: {
                 periodValid: 'endOfServiceDay',
                 serviceEndTime: 'abcd',

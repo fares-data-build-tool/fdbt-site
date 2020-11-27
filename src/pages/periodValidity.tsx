@@ -14,11 +14,11 @@ const description = 'Period Validity selection page of the Create Fares Data Ser
 
 type PeriodValidityProps = {
     errors?: ErrorInfo[];
-    fieldsets: RadioConditionalInputFieldset[];
+    fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
 };
 
-export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset[] => {
+export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
     const periodValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'period-validity',
@@ -34,7 +34,7 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 radioButtonHint: {
                     id: 'period-end-calendar-hint',
                     content:
-                        ' For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
+                        'For example, a ticket purchased at 3pm would be valid until midnight on its day of expiry',
                 },
             },
             {
@@ -60,7 +60,8 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
                 },
                 inputHint: {
                     id: 'end-of-service-day-hint',
-                    content: '',
+                    content: 'Enter an end time for your service day',
+                    hidden: true,
                 },
                 inputType: 'text',
                 inputs: [
@@ -75,10 +76,10 @@ export const getFieldsets = (errors: ErrorInfo[]): RadioConditionalInputFieldset
         ],
         radioError: getErrorsByIds(['period-end-calendar'], errors),
     };
-    return [periodValidityFieldSet];
+    return periodValidityFieldSet;
 };
 
-const PeriodValidity = ({ errors = [], fieldsets, csrfToken }: PeriodValidityProps): ReactElement => {
+const PeriodValidity = ({ errors = [], fieldset, csrfToken }: PeriodValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/periodValidity" method="post" csrfToken={csrfToken}>
@@ -94,9 +95,7 @@ const PeriodValidity = ({ errors = [], fieldsets, csrfToken }: PeriodValidityPro
                             <span className="govuk-hint" id="period-validity-hint">
                                 We need to know the time that this product would be valid until
                             </span>
-                            {fieldsets.map(fieldset => {
-                                return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
-                            })}
+                            <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
                         </fieldset>
                     </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -115,8 +114,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pe
         errors = periodExpiryAttribute.errors;
     }
 
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors);
-    return { props: { errors, fieldsets, csrfToken } };
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors);
+    return { props: { errors, fieldset, csrfToken } };
 };
 
 export default PeriodValidity;
