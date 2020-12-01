@@ -65,13 +65,7 @@ export interface SelectSalesOfferPackageProps {
     csrfToken: string;
 }
 
-export const formatSOPArray = (stringArray: string[]): string => {
-    let stringToReturn = '';
-    stringArray.forEach(string => {
-        stringToReturn = `${stringToReturn}${stringToReturn.length > 0 ? ',' : ''} ${startCase(string)}`;
-    });
-    return stringToReturn;
-};
+const formatSOPArray = (stringArray: string[]): string => stringArray.map(string => startCase(string)).join(', ');
 
 const generateCheckbox = (
     salesOfferPackagesList: SalesOfferPackage[],
@@ -80,10 +74,6 @@ const generateCheckbox = (
 ): ReactElement[] => {
     return salesOfferPackagesList.map((offer, index) => {
         const { name, description, purchaseLocations, paymentMethods, ticketFormats } = offer;
-        let modifiedDescription = description;
-        if (modifiedDescription.length > 200) {
-            modifiedDescription = `${description.substr(0, description.length - 10)}...`;
-        }
 
         const productNameIds = removeAllWhiteSpace(productName);
 
@@ -112,7 +102,7 @@ const generateCheckbox = (
                     defaultChecked={isSelectedOffer}
                 />
                 <label className="govuk-label govuk-checkboxes__label" htmlFor={`${productNameIds}-checkbox-${index}`}>
-                    <b>{name}</b> {description.length > 0 ? '-' : ''} {modifiedDescription}
+                    <b>{name}</b> {description.length > 0 ? '-' : ''} {description}
                 </label>
                 <span className="govuk-hint govuk-!-margin-left-3" id="sales-offer-package-hint">
                     Purchase locations: {formatSOPArray(purchaseLocations)}
