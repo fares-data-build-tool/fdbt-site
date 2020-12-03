@@ -11,13 +11,13 @@ const Privacy = (): ReactElement => {
             <p className="govuk-body">Last updated: 02/12/2020</p>
             <h2 className="govuk-heading-m">Who we are</h2>
             <p className="govuk-body">
-                The Create fares data service allows users to convert their fares information into a standardised format
-                called NeTEx, an XML data format. The tool provides a GDS-compliant web workflow which takes the user
-                through a series of questions, allowing them to define their fare structures for the products they
-                provide. The uploaded fares data is enriched with public reference data obtained from 3 sources - NOC,
-                NaPTAN and TNDS - and converted into the NeTEx format before being emailed to the user. The aim of the
-                tool is to integrate closely with the DfT BODS system where users will be able to upload their NeTEx for
-                public access. The service is provided by the Department for Transport.
+                The Create Fares Data service allows users to convert their fares information intoa format called NeTEx,
+                which is an XML-based data standard. The service provides an easy-to-use webflow that takes the user
+                through a series of questions, allowing them to define their fare prices and structures. In order to
+                make the process as simple as possible, we utilise data from Traveline National Dataset (TNDS), NaPTAN
+                dataset and National Operator Code database (NOC) to represent bus operator routes and services to the
+                user. The aim of the tool is to integrate closely with the Bus Open Data Service (BODS) in the
+                publication of fares data.
             </p>
             <h2 className="govuk-heading-m">What data we collect from you</h2>
             <p className="govuk-body">
