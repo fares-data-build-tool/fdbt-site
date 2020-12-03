@@ -8,15 +8,15 @@ const Privacy = (): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description}>
             <h1 className="govuk-heading-l">Privacy policy for the Create Fares Data Service</h1>
-            <p className="govuk-body">Last updated: 02/12/2020</p>
+            <p className="govuk-body">Last updated: 03/12/2020</p>
             <h2 className="govuk-heading-m">Who we are</h2>
             <p className="govuk-body">
-                The Create Fares Data service allows users to convert their fares information intoa format called NeTEx,
-                which is an XML-based data standard. The service provides an easy-to-use webflow that takes the user
-                through a series of questions, allowing them to define their fare prices and structures. In order to
-                make the process as simple as possible, we utilise data from Traveline National Dataset (TNDS), NaPTAN
-                dataset and National Operator Code database (NOC) to represent bus operator routes and services to the
-                user. The aim of the tool is to integrate closely with the Bus Open Data Service (BODS) in the
+                The Create Fares Data service allows users to convert their fares information into a format called
+                NeTEx, which is an XML-based data standard. The service provides an easy-to-use webflow that takes the
+                user through a series of questions, allowing them to define their fare prices and structures. In order
+                to make the process as simple as possible, we utilise data from Traveline National Dataset (TNDS),
+                NaPTAN dataset and National Operator Code (NOC) database to represent bus operator routes and services
+                to the user. The aim of the tool is to integrate closely with the Bus Open Data Service (BODS) in the
                 publication of fares data.
             </p>
             <h2 className="govuk-heading-m">What data we collect from you</h2>
@@ -26,7 +26,7 @@ const Privacy = (): ReactElement => {
                 you includes:
             </p>
             <ol className="govuk-list govuk-list--bullet">
-                <li>your questions, queries or feedback and email address if you contact GOV.UK</li>
+                <li>your questions, queries or feedback, and email address if you contact GOV.UK</li>
                 <li>your email address and subscription preferences when you sign up to our email alerts</li>
                 <li>your Internet Protocol (IP) address, and web browser version</li>
                 <li>information on how you use the site, using cookies and page tagging</li>
@@ -53,7 +53,7 @@ const Privacy = (): ReactElement => {
                 We will share your data if we are required to do so by law – for example, by court order, or to prevent
                 fraud or other crime. We use your data to calculate performance metrics to support continuous
                 improvement of the service. When you sign up, you can also opt in to be contacted to participate in user
-                research. If you change your mind later about this, please let us know by emailing us
+                research. If you change your mind later about this, please let us know by emailing us.
             </p>
             <p className="govuk-body">
                 We use Google Analytics software to collect information about how you use GOV.UK. This includes IP
