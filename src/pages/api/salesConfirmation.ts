@@ -69,7 +69,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             if (ticketType === 'geoZone') {
                 userDataJson = await getGeoZoneTicketJson(req, res);
-            } else if (ticketType === 'multipleServices') {
+            } else {
                 userDataJson = getMultipleServicesTicketJson(req, res);
             }
         } else if (fareType === 'flatFare') {
