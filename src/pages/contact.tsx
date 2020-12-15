@@ -1,6 +1,9 @@
 import React, { ReactElement } from 'react';
 import { SUPPORT_EMAIL_ADDRESS, SUPPORT_PHONE_NUMBER } from '../constants';
 import { BaseLayout } from '../layout/Layout';
+import FileAttachment from '../components/FileAttachment';
+import ServiceGuide from '../assets/files/Create-Fares-Data-Service-Guide.pdf';
+import ServiceGuideFrontPage from '../assets/images/service-guide-front-page.png';
 
 const title = 'Contact - Create Fares Data Service';
 const description = 'Contact page for the Create Fares Data Service';
@@ -40,7 +43,7 @@ const Contact = ({ supportEmail, supportPhone }: ContactProps): ReactElement => 
                         <a href="https://publish.bus-data.dft.gov.uk/" aria-label="go to the bus open data service">
                             here
                         </a>
-                        &nbsp;to view their contact details.
+                        &nbsp;to view their contact details
                     </p>
                     <h3 className="govuk-heading-s">Feedback</h3>
                     <p className="govuk-body">
@@ -56,6 +59,15 @@ const Contact = ({ supportEmail, supportPhone }: ContactProps): ReactElement => 
                         The Create Fares Data Service enables local bus operators in England to generate higher quality
                         fares information in an open data format
                     </p>
+                </div>
+                <div className="govuk-grid-column-one-third">
+                    <h2 className="govuk-heading-s">Help documents</h2>
+                    <FileAttachment
+                        displayName="Create fares data service guide"
+                        attachmentUrl={`${ServiceGuide}`}
+                        imageUrl={ServiceGuideFrontPage}
+                        size="8KB"
+                    />
                 </div>
             </div>
         </BaseLayout>

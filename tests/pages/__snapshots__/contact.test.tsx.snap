@@ -72,7 +72,7 @@ exports[`contact should render correctly 1`] = `
         >
           here
         </a>
-         to view their contact details.
+         to view their contact details
       </p>
       <h3
         className="govuk-heading-s"
@@ -104,6 +104,21 @@ exports[`contact should render correctly 1`] = `
       >
         The Create Fares Data Service enables local bus operators in England to generate higher quality fares information in an open data format
       </p>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h2
+        className="govuk-heading-s"
+      >
+        Help documents
+      </h2>
+      <FileAttachment
+        attachmentUrl="[object Object]"
+        displayName="Create fares data service guide"
+        imageUrl={Object {}}
+        size="8KB"
+      />
     </div>
   </div>
 </Component>
