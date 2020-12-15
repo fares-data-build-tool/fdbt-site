@@ -25,32 +25,25 @@ exports[`contact should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        If you are experiencing technical issues, please contact the Create Fares Data team through the channels below
+        If you are experiencing technical issues, or if you have any suggestions, comments or criticisms, please contact the Create Fares Data team through one of the channels below.
       </p>
-      <h3
-        className="govuk-heading-s"
-      >
-        By phone
-      </h3>
       <p
         className="govuk-body"
       >
-        Create Fares Data Service support line:
-        <br />
+        The Help Desk is available Monday to Friday, 9am to 5pm (excluding Bank Holidays in England and Wales, and the 24th of December).
+      </p>
+      <p
+        className="govuk-body"
+      >
+        The Help Desk can be contacted by telephone or email as follows.
+      </p>
+      <p
+        className="govuk-body"
+      >
         Telephone: 
         0800 123 1234
         <br />
-        Monday to Friday, 9:00am to 5:00pm
-      </p>
-      <h3
-        className="govuk-heading-s"
-      >
-        By email
-      </h3>
-      <p
-        className="govuk-body"
-      >
-        If you have any suggestions, comments or criticisms, please send an email to: 
+        Email: 
         <a
           href="mailto:mock-support-address@email.co.uk"
         >
@@ -95,7 +88,7 @@ exports[`contact should render correctly 1`] = `
       className="govuk-grid-column-one-third"
     >
       <h2
-        className="govuk-heading-m"
+        className="govuk-heading-s"
       >
         Create Fares Data Service
       </h2>
