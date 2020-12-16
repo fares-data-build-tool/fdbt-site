@@ -11,7 +11,6 @@ buckets
 .serverless_nextjs
 deploy
 
-coverage
 .vscode
 
 **/.DS_Store
