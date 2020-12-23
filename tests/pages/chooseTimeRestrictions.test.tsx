@@ -28,6 +28,7 @@ describe('pages', () => {
             );
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly with errors', () => {
             const tree = shallow(
                 <ChooseTimeRestrictions
