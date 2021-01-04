@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/fares-data-build-tool/fdbt-site.svg?style=svg)](https://circleci.com/gh/fares-data-build-tool/fdbt-site)
 
-This is the main site for the Create Fares Data Service. It is built using Next.js and deployed into AWS Fargate.
+This is the main site for the Create Fares Data Service. It is built using Next.js and deployed into AWS Fargate
 The site follows the gov.uk design system using govuk-frontend for styling.
 
 ## Running locally
