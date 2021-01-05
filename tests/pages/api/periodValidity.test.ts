@@ -20,7 +20,7 @@ describe('periodValidity', () => {
                     productPrice: '1234',
                     productDuration: '2 days',
                     productValidity: '24hr',
-                    serviceEndTime: '',
+                    productEndTime: '',
                 },
             ],
         };
@@ -69,7 +69,7 @@ describe('periodValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 periodValid: 'endOfServiceDay',
-                serviceEndTime: '',
+                productEndTime: '',
             },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -92,7 +92,7 @@ describe('periodValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 periodValid: 'endOfServiceDay',
-                serviceEndTime: '2400',
+                productEndTime: '2400',
             },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -115,7 +115,7 @@ describe('periodValidity', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 periodValid: 'endOfServiceDay',
-                serviceEndTime: 'abcd',
+                productEndTime: 'abcd',
             },
             mockWriteHeadFn: writeHeadMock,
         });

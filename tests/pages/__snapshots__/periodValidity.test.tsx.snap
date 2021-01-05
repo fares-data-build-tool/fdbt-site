@@ -81,7 +81,7 @@ exports[`pages periodValidity should render correctly 1`] = `
                     Object {
                       "id": "service-end-time",
                       "label": "End time",
-                      "name": "serviceEndTime",
+                      "name": "productEndTime",
                     },
                   ],
                   "label": "End of service day",
@@ -204,7 +204,7 @@ exports[`pages periodValidity should render error messaging when errors are pass
                     Object {
                       "id": "service-end-time",
                       "label": "End time",
-                      "name": "serviceEndTime",
+                      "name": "productEndTime",
                     },
                   ],
                   "label": "End of service day",

@@ -67,7 +67,7 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
                 inputs: [
                     {
                         id: 'service-end-time',
-                        name: 'serviceEndTime',
+                        name: 'productEndTime',
                         label: 'End time',
                     },
                 ],

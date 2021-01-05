@@ -1,4 +1,8 @@
-import { collectErrors, isValidTime, collectInputsFromRequest } from '../../../src/pages/api/chooseTimeRestrictions';
+import {
+    collectErrors,
+    isValid24hrTimeFormat,
+    collectInputsFromRequest,
+} from '../../../src/pages/api/chooseTimeRestrictions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('changePassword', () => {
@@ -6,24 +10,24 @@ describe('changePassword', () => {
         jest.resetAllMocks();
     });
 
-    describe('isValidTime', () => {
+    describe('isValid24hrTimeFormat', () => {
         it('should return true for a valid time in 2400 format', () => {
-            expect(isValidTime('0730')).toBe(true);
+            expect(isValid24hrTimeFormat('0730')).toBe(true);
         });
         it('should return false for 1 over the maximum value in 2400 format', () => {
-            expect(isValidTime('2400')).toBe(false);
+            expect(isValid24hrTimeFormat('2400')).toBe(false);
         });
         it('should return true for the maximum value in 2400 format', () => {
-            expect(isValidTime('2359')).toBe(true);
+            expect(isValid24hrTimeFormat('2359')).toBe(true);
         });
         it('should return true for the minumum value in 2400 format', () => {
-            expect(isValidTime('0000')).toBe(true);
+            expect(isValid24hrTimeFormat('0000')).toBe(true);
         });
         it('should return false for an invalid time in 2400 format', () => {
-            expect(isValidTime('7pm')).toBe(false);
+            expect(isValid24hrTimeFormat('7pm')).toBe(false);
         });
         it('should return false for a valid time format but ovre 2400', () => {
-            expect(isValidTime('2500')).toBe(false);
+            expect(isValid24hrTimeFormat('2500')).toBe(false);
         });
     });
 
