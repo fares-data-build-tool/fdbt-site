@@ -61,7 +61,7 @@ describe('periodValidity', () => {
     it('should redirect if the end of service day option selected and no time has been entered', () => {
         const errors: ErrorInfo[] = [
             {
-                id: 'service-end-time',
+                id: 'product-end-time',
                 errorMessage: 'Specify an end time for service day',
             },
         ];
@@ -84,7 +84,7 @@ describe('periodValidity', () => {
     it('should redirect and display error if the service end time has the incorrect time', () => {
         const errors: ErrorInfo[] = [
             {
-                id: 'service-end-time',
+                id: 'product-end-time',
                 errorMessage: '2400 is not a valid input. Use 0000.',
             },
         ];
@@ -107,7 +107,7 @@ describe('periodValidity', () => {
     it('should redirect and display error if invalid characters are entered for the service end time', () => {
         const errors: ErrorInfo[] = [
             {
-                id: 'service-end-time',
+                id: 'product-end-time',
                 errorMessage: 'Time must be in 2400 format',
             },
         ];

@@ -22,15 +22,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             if (periodValid === 'endOfServiceDay') {
                 if (productEndTime === '') {
-                    errors.push({ id: 'service-end-time', errorMessage: 'Specify an end time for service day' });
+                    errors.push({ id: 'product-end-time', errorMessage: 'Specify an end time for service day' });
                 } else if (!isValid24hrTimeFormat(productEndTime)) {
                     if (productEndTime === '2400') {
                         errors.push({
-                            id: 'service-end-time',
+                            id: 'product-end-time',
                             errorMessage: '2400 is not a valid input. Use 0000.',
                         });
                     } else {
-                        errors.push({ id: 'service-end-time', errorMessage: 'Time must be in 2400 format' });
+                        errors.push({ id: 'product-end-time', errorMessage: 'Time must be in 2400 format' });
                     }
                 }
 

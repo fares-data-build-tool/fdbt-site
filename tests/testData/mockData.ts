@@ -2484,14 +2484,14 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
+                    id: 'product-end-time',
                     name: 'productEndTime',
                     label: 'End time',
                 },
@@ -2541,14 +2541,14 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
+                    id: 'product-end-time',
                     name: 'productEndTime',
                     label: 'End time',
                 },
@@ -2603,14 +2603,14 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                     'For example, a ticket purchased at 3pm would be valid until the end of your service day on its day of expiry',
             },
             inputHint: {
-                id: 'end-of-service-day-hint',
+                id: 'product-end-time-hint',
                 content: 'Enter an end time for your service day',
                 hidden: true,
             },
             inputType: 'text',
             inputs: [
                 {
-                    id: 'service-end-time',
+                    id: 'product-end-time',
                     name: 'productEndTime',
                     label: 'End time',
                 },
@@ -2618,7 +2618,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
             inputErrors: [
                 {
                     errorMessage: 'Specify an end time for service day',
-                    id: 'service-end-time',
+                    id: 'product-end-time',
                 },
             ],
         },
