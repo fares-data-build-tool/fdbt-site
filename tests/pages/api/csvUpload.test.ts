@@ -305,7 +305,9 @@ describe('csvUpload', () => {
     });
 
     it('should throw an error if the fares triangle data has non-numerical prices', async () => {
-        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file must use the template' }];
+        const mockError: ErrorInfo[] = [
+            { id: 'csv-upload', errorMessage: 'The selected file contains an invalid price' },
+        ];
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -340,8 +342,48 @@ describe('csvUpload', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
     });
 
-    it('should return 302 redirect to /csvUpload with an error message if the fares triangle data has missing prices', async () => {
-        const mockError: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: 'The selected file must use the template' }];
+    it('should throw an error if the fares triangle data has decimal prices', async () => {
+        const mockError: ErrorInfo[] = [
+            {
+                id: 'csv-upload',
+                errorMessage: 'The selected file contains a decimal price, all prices must be in pence',
+            },
+        ];
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+        });
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        getFormDataSpy.mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.decimalPricesTestCsv,
+        });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
+        await csvUpload.default(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/csvUpload',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
+    });
+
+    it('should return 302 redirect to /matching if the fares triangle data has empty prices', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
@@ -371,9 +413,9 @@ describe('csvUpload', () => {
         await csvUpload.default(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/csvUpload',
+            Location: '/matching',
         });
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: [] });
     });
 
     it('should return 302 redirect to /csvUpload with an error message if the file contains a virus', async () => {

@@ -47,6 +47,16 @@ export const nonNumericPricesTestCsv: string =
     '170,170,170,170,100,100,Rail Station (York),\n' +
     '170,170,170,s,100,100,100,Piccadilly (York)';
 
+export const decimalPricesTestCsv: string =
+    'Acomb Green Lane,,,,,,,\n' +
+    '110,Mattison Way,,,,,,\n' +
+    '110,110,Nursery Drive,,,,,\n' +
+    '110,1.10,110,Holl Bank/Beech Ave,,,,\n' +
+    '170,110,110,110,Cambridge Street (York),,,\n' +
+    '170,170,120,110,100,Blossom Street,,\n' +
+    '170,170,170,170,100,100,Rail Station (York),\n' +
+    '170,170,170,100,100,100,100,Piccadilly (York)';
+
 export const missingPricesTestCsv: string =
     'Acomb Green Lane,,,,,,,\n' +
     '110,Mattison Way,,,,,,\n' +
