@@ -37,6 +37,7 @@ describe('pages', () => {
                     group={false}
                     errors={[]}
                     fieldsets={mockDefinePassengerTypeFieldsets}
+                    numberOfPassengerTypeFieldset={null}
                     passengerType="adult"
                     csrfToken=""
                 />,
@@ -64,6 +65,7 @@ describe('pages', () => {
                     group={false}
                     errors={mockCombinedErrorInfoForRadioErrors}
                     fieldsets={mockDefinePassengerTypeFieldsetsWithRadioErrors}
+                    numberOfPassengerTypeFieldset={null}
                     passengerType="infant"
                     csrfToken=""
                 />,
@@ -77,6 +79,7 @@ describe('pages', () => {
                     group={false}
                     errors={mockPassengerTypeInputErrors}
                     fieldsets={mockDefinePassengerTypeFieldsetsWithInputErrors}
+                    numberOfPassengerTypeFieldset={null}
                     passengerType="child"
                     csrfToken=""
                 />,
@@ -186,7 +189,7 @@ describe('pages', () => {
             });
 
             it.each([
-                ['non-group', {}, { group: false, numberOfPassengerTypeFieldset: undefined }],
+                ['non-group', {}, { group: false, numberOfPassengerTypeFieldset: null }],
                 [
                     'group',
                     {
