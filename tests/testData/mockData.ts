@@ -2404,6 +2404,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
                     id: 'service-end-time',
                     name: 'serviceEndTime',
                     label: 'End time',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [],
@@ -2461,6 +2462,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
                     id: 'service-end-time',
                     name: 'serviceEndTime',
                     label: 'End time',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [],
@@ -2523,6 +2525,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
                     id: 'service-end-time',
                     name: 'serviceEndTime',
                     label: 'End time',
+                    defaultValue: '',
                 },
             ],
             inputErrors: [
