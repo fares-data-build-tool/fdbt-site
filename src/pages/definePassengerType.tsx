@@ -40,7 +40,7 @@ export interface DefinePassengerTypeProps {
     group: boolean;
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
-    numberOfPassengerTypeFieldset: TextInputFieldset | null;
+    numberOfPassengerTypeFieldset?: TextInputFieldset;
     passengerType: string;
     csrfToken: string;
 }
@@ -292,7 +292,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         passengerType = passengerTypeAttribute.passengerType;
     }
 
-    let numberOfPassengerTypeFieldset = group ? getNumberOfPassengerTypeFieldset(errors, passengerType) : null;
+    let numberOfPassengerTypeFieldset = group ? getNumberOfPassengerTypeFieldset(errors, passengerType) : undefined;
 
     let passengerInfo;
     const groupPassengerInfo = getSessionAttribute(ctx.req, GROUP_PASSENGER_INFO_ATTRIBUTE);
