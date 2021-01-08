@@ -347,7 +347,14 @@ const renderConditionalRadioButton = (
     return (
         <div key={radio.id}>
             <div className="govuk-radios__item">
-                {radio.inputErrors.length > 0 ? checkedRadioInput : uncheckedRadioInput}
+                {radio.inputErrors.length > 0 ||
+                radio.inputs.some(
+                    input =>
+                        (input.defaultChecked === undefined && input.defaultValue !== '') ||
+                        (input.defaultValue === undefined && input.defaultChecked),
+                )
+                    ? checkedRadioInput
+                    : uncheckedRadioInput}
                 {radioLabel}
                 {radio.radioButtonHint ? radioButtonHint : null}
             </div>
