@@ -4,14 +4,14 @@ import { Stop, StopPoint } from '../../src/interfaces';
 describe('dataTransform', () => {
     describe('formatStopPoint', () => {
         const stopPoint: StopPoint = {
-            stopPointRef: '13003921A',
-            commonName: 'Estate (Hail and Ride) N/B',
+            stopPointRef: '12345678A',
+            commonName: 'Test Stop',
         };
 
-        it('should format stop point with locality name and common name', () => {
-            const expected = 'Test Town (Estate (Hail and Ride) N/B)';
+        it('should format stop point with locality name and common name if both are provided', () => {
+            const expected = 'Test Town (Test Stop)';
             const allFieldsStop: Stop = {
-                stopName: 'Test Stop',
+                stopName: 'Stop 1',
                 naptanCode: '12345',
                 atcoCode: 'gvgvxgasvx',
                 localityCode: 'GHS167',
@@ -20,14 +20,14 @@ describe('dataTransform', () => {
                 street: 'Test Street',
                 parentLocalityName: 'Another town',
             };
-            const stopPointDisplay: string = formatStopPoint(stopPoint, allFieldsStop);
+            const stopPointDisplay: string = formatStopPoint(allFieldsStop, stopPoint);
             expect(stopPointDisplay).toEqual(expected);
         });
 
-        it('should format stop point with common name but no locality name', () => {
-            const expected = 'Estate (Hail and Ride) N/B';
+        it('should format stop point with common name only when locality name not provided', () => {
+            const expected = 'Test Stop';
             const noLocalityNameStop: Stop = {
-                stopName: 'Test Stop',
+                stopName: 'Stop 1',
                 naptanCode: '12345',
                 atcoCode: 'gvgvxgasvx',
                 localityCode: 'GHS167',
@@ -36,7 +36,7 @@ describe('dataTransform', () => {
                 street: 'Test Street',
                 parentLocalityName: 'Another town',
             };
-            const stopPointDisplay: string = formatStopPoint(stopPoint, noLocalityNameStop);
+            const stopPointDisplay: string = formatStopPoint(noLocalityNameStop, stopPoint);
             expect(stopPointDisplay).toEqual(expected);
         });
     });

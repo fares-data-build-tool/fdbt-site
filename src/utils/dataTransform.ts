@@ -1,7 +1,7 @@
 import { Stop, StopPoint } from '../interfaces';
 import { batchGetStopsByAtcoCode, JourneyPattern, RawJourneyPattern, RawService } from '../data/auroradb';
 
-export const formatStopPoint = (stopPoint: StopPoint, stop: Stop): string =>
+export const formatStopPoint = (stop: Stop, stopPoint: StopPoint): string =>
     stop?.localityName ? `${stop.localityName} (${stopPoint.commonName})` : `${stopPoint.commonName}`;
 
 export const enrichJourneyPatternsWithNaptanInfo = async (
@@ -20,11 +20,11 @@ export const enrichJourneyPatternsWithNaptanInfo = async (
 
                 return {
                     startPoint: {
-                        Display: formatStopPoint(startPoint, startPointStop),
+                        Display: formatStopPoint(startPointStop, startPoint),
                         Id: startPoint.stopPointRef,
                     },
                     endPoint: {
-                        Display: formatStopPoint(endPoint, endPointStop),
+                        Display: formatStopPoint(endPointStop, endPoint),
                         Id: endPoint.stopPointRef,
                     },
                     stopList,
