@@ -224,6 +224,50 @@ describe('csvUpload', () => {
         );
     });
 
+    it('should correctly generate data with empty cells and spaces and upload it to S3', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+        });
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        getFormDataSpy.mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.validTestCsvWithEmptyCells,
+        });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
+        await csvUpload.default(req, res);
+
+        expect(s3.putStringInS3).toBeCalledWith(
+            'fdbt-raw-user-data-dev',
+            expect.any(String),
+            JSON.stringify(csvData.unprocessedObjectWithEmptyCells.Body),
+            'text/csv; charset=utf-8',
+        );
+
+        expect(s3.putStringInS3).toBeCalledWith(
+            'fdbt-user-data-dev',
+            expect.any(String),
+            JSON.stringify(csvData.processedObjectWithEmptyCells.Body),
+            'application/json; charset=utf-8',
+        );
+    });
+
     it('should return 302 redirect to /outboundMatching when the happy path is used (ticketer format)', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
