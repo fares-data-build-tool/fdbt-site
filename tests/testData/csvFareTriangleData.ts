@@ -17,6 +17,17 @@ export const testCsv: string =
     '170,170,110,110,100,Blossom Street,,\n' +
     '170,170,170,170,100,100,Rail Station (York),\n' +
     '170,170,170,170,100,100,100,Piccadilly (York)';
+
+export const noPricesTestCsv: string =
+    'Acomb Green Lane,,,,,,,\n' +
+    ',Mattison Way,,,,,,\n' +
+    ',,Nursery Drive,,,,,\n' +
+    ',,,Holl Bank/Beech Ave,,,,\n' +
+    ',,,,Cambridge Street (York),,,\n' +
+    ',,,,,Blossom Street,,\n' +
+    ',,,,,,Rail Station (York),\n' +
+    ',,,,,,,Piccadilly (York)';
+
 export const testCsvDuplicateFareStages: string =
     'Acomb Green Lane,,,,,,,\n' +
     '110,Mattison Way,,,,,,\n' +
@@ -56,6 +67,16 @@ export const decimalPricesTestCsv: string =
     '170,170,120,110,100,Blossom Street,,\n' +
     '170,170,170,170,100,100,Rail Station (York),\n' +
     '170,170,170,100,100,100,100,Piccadilly (York)';
+
+export const emptyStageNameTestCsv: string =
+    'Acomb Green Lane,,,,,,,\n' +
+    '110,Mattison Way,,,,,,\n' +
+    '110,110,Nursery Drive,,,,,\n' +
+    '110,110,110,Holl Bank/Beech Ave,,,,\n' +
+    '170,170,110,110,Cambridge Street (York),,,\n' +
+    '170,170,110,110,100,,,\n' +
+    '170,170,170,170,100,100,Rail Station (York),\n' +
+    '170,170,170,170,100,100,100,Piccadilly (York)';
 
 export const missingPricesTestCsv: string =
     'Acomb Green Lane,,,,,,,\n' +

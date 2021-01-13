@@ -383,6 +383,88 @@ describe('csvUpload', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
     });
 
+    it('should throw an error if there is an empty fare stage name', async () => {
+        const mockError: ErrorInfo[] = [
+            {
+                id: 'csv-upload',
+                errorMessage: 'Fare stage names must not be empty',
+            },
+        ];
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+        });
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        getFormDataSpy.mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.emptyStageNameTestCsv,
+        });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
+        await csvUpload.default(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/csvUpload',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
+    });
+
+    it('should throw an error if no prices are set', async () => {
+        const mockError: ErrorInfo[] = [
+            {
+                id: 'csv-upload',
+                errorMessage: 'At least one price must be set in the uploaded fares triangle',
+            },
+        ];
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+        });
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        getFormDataSpy.mockImplementation().mockResolvedValue({
+            files: file,
+            fileContents: csvData.noPricesTestCsv,
+        });
+
+        jest.spyOn(fileUpload, 'containsViruses')
+            .mockImplementation()
+            .mockResolvedValue(false);
+
+        await csvUpload.default(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/csvUpload',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CSV_UPLOAD_ATTRIBUTE, { errors: mockError });
+    });
+
     it('should return 302 redirect to /matching if the fares triangle data has empty prices', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},

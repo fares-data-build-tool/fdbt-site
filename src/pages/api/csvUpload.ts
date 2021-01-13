@@ -91,11 +91,23 @@ export const faresTriangleDataMapper = (
     }
 
     const notTicketerFormat = isNotTicketerFormat(fareStageLines);
+    let pricesSet = false;
 
     for (let rowNum = 0; rowNum < fareStageLines.length; rowNum += 1) {
         const items = fareStageLines[rowNum] || [];
         const trimmedItems = items.map(item => item.trim().replace(/^"(.*)"$/, '$1'));
         const stageName = notTicketerFormat ? trimmedItems[rowNum + 1] : trimmedItems[rowNum];
+
+        if (!stageName) {
+            logger.warn('', {
+                context: 'api.csvUpload',
+                message: `Empty fare stage name found in uploaded file`,
+            });
+            const errors: ErrorInfo[] = [{ id: errorId, errorMessage: 'Fare stage names must not be empty' }];
+            setCsvUploadAttributeAndRedirect(req, res, errors);
+
+            return null;
+        }
 
         if (trimmedItems.every(item => item === '' || item === null)) {
             break;
@@ -111,6 +123,8 @@ export const faresTriangleDataMapper = (
 
             // Check explicitly for number to account for invalid fare data
             if (price && stageName) {
+                pricesSet = true;
+
                 if (Number.isNaN(Number(price))) {
                     logger.warn('', {
                         context: 'api.csvUpload',
@@ -148,6 +162,19 @@ export const faresTriangleDataMapper = (
                 }
             }
         }
+    }
+
+    if (!pricesSet) {
+        logger.warn('', {
+            context: 'api.csvUpload',
+            message: 'No prices set in uploaded fares triangle',
+        });
+        const errors: ErrorInfo[] = [
+            { id: errorId, errorMessage: 'At least one price must be set in the uploaded fares triangle' },
+        ];
+        setCsvUploadAttributeAndRedirect(req, res, errors);
+
+        return null;
     }
 
     const mappedFareTriangle: UserFareStages = {
