@@ -192,7 +192,9 @@ export const numberOfPassengerTypeQuestion = (fieldset: TextInputFieldset): Reac
                 {fieldset.inputs.map(input => {
                     const errorId = createErrorId(input, fieldset.inputErrors);
                     const defaultValue =
-                        fieldset.inputErrors.find(inputError => inputError.id === input.id)?.userInput || '';
+                        fieldset.inputErrors.find(inputError => inputError.id === input.id)?.userInput ||
+                        fieldset.inputs.find(userInput => userInput.id === input.id)?.defaultValue ||
+                        '';
                     return (
                         <div
                             key={input.id}
@@ -299,6 +301,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     if (isWithErrors(passengerTypeErrorsAttribute)) {
         passengerInfo = passengerTypeErrorsAttribute;
+        numberOfPassengerTypeFieldset = getNumberOfPassengerTypeFieldset(errors, passengerType, passengerInfo);
     } else if (group) {
         if (!isWithErrors(passengerTypeErrorsAttribute) && groupPassengerInfo) {
             passengerInfo = groupPassengerInfo.find(info => info.passengerType === passengerType);
@@ -308,9 +311,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         passengerInfo = passengerTypeAttribute;
     }
 
-    const fieldsets = getFieldsets(errors, passengerType, passengerInfo);
+    const radioFieldsets = getFieldsets(errors, passengerType, passengerInfo);
 
-    return { props: { group, errors, fieldsets, numberOfPassengerTypeFieldset, passengerType, csrfToken } };
+    return {
+        props: { group, errors, fieldsets: radioFieldsets, numberOfPassengerTypeFieldset, passengerType, csrfToken },
+    };
 };
 
 export default DefinePassengerType;
