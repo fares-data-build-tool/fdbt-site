@@ -2008,6 +2008,18 @@ export const multipleProducts: MultiProduct[] = [
         productValidity: '',
         productValidityId: '',
     },
+    {
+        productName: 'Super Duper ticket',
+        productNameId: 'product-name-3',
+        productPrice: '3.50',
+        productPriceId: 'product-price-3',
+        productDuration: '7',
+        productDurationId: 'product-duration-3',
+        productDurationUnits: 'week',
+        productDurationUnitsId: 'product-duration-units-3',
+        productValidity: '',
+        productValidityId: '',
+    },
 ];
 
 export const multipleProductsWithErrors: MultiProductWithErrors[] = [
