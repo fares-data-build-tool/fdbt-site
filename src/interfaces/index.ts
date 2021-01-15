@@ -91,7 +91,8 @@ export interface BaseReactElement {
     id: string;
     name: string;
     label: string;
-    defaultValues?: string;
+    defaultValue?: string;
+    defaultChecked?: boolean;
     options?: string[];
 }
 
@@ -124,6 +125,11 @@ export interface Stop {
     qualifierName?: string;
     indicator?: string;
     street?: string;
+}
+
+export interface StopPoint {
+    stopPointRef: string;
+    commonName: string;
 }
 
 export interface S3NetexFile {
