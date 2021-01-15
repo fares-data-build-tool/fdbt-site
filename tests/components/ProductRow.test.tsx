@@ -11,7 +11,7 @@ describe('product row', () => {
 
     it('populates the default product name if entry present in userInput', () => {
         const wrapper = shallow(<ProductRow numberOfProductsToDisplay="3" errors={[]} userInput={multipleProducts} />);
-        expect(wrapper.find('#multiple-product-name-0').props().defaultValue).toBe('Best ticket');
+        expect(wrapper.find('#multiple-product-name-0').props().defaultValue).toBe(multipleProducts[0].productName);
     });
 
     it('leaves the product name field blank if entry not present in userInput', () => {
@@ -21,7 +21,7 @@ describe('product row', () => {
 
     it('populates the default product price if entry present in userInput', () => {
         const wrapper = shallow(<ProductRow numberOfProductsToDisplay="3" errors={[]} userInput={multipleProducts} />);
-        expect(wrapper.find('#multiple-product-price-0').props().defaultValue).toBe('3.50');
+        expect(wrapper.find('#multiple-product-price-0').props().defaultValue).toBe(multipleProducts[0].productPrice);
     });
 
     it('leaves the product price field blank if entry not present in userInput', () => {
@@ -31,7 +31,9 @@ describe('product row', () => {
 
     it('populates the default product duration if entry present in userInput', () => {
         const wrapper = shallow(<ProductRow numberOfProductsToDisplay="3" errors={[]} userInput={multipleProducts} />);
-        expect(wrapper.find('#multiple-product-duration-0').props().defaultValue).toBe('66');
+        expect(wrapper.find('#multiple-product-duration-0').props().defaultValue).toBe(
+            multipleProducts[0].productDuration,
+        );
     });
 
     it('leaves the product duration field blank if entry not present in userInput', () => {
@@ -41,7 +43,9 @@ describe('product row', () => {
 
     it('populates the default product duration units if entry present in userInput', () => {
         const wrapper = shallow(<ProductRow numberOfProductsToDisplay="3" errors={[]} userInput={multipleProducts} />);
-        expect(wrapper.find('#multiple-product-duration-units-0').props().defaultValue).toBe('week');
+        expect(wrapper.find('#multiple-product-duration-units-0').props().defaultValue).toBe(
+            multipleProducts[0].productDurationUnits,
+        );
     });
 
     it('leaves the product duration units field blank if entry not present in userInput', () => {
