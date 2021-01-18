@@ -235,36 +235,17 @@ describe('RadioConditionalInput', () => {
     });
 
     describe('conditionalRadioInputDefaultExists', () => {
-        it('should return true when text input has default value', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithTextInput)).toBeTruthy();
-        });
-
-        it('should return false when text input has no default value', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithEmptyTextInput)).toBeFalsy();
-        });
-
-        it('should return true when textWithUnits input has default value', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithTextWithUnitsInput)).toBeTruthy();
-        });
-
-        it('should return false when textWithUnits input has no default value', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithEmptyTextWithUnitsInput)).toBeFalsy();
-        });
-
-        it('should return true when date input has default value', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithDateInput)).toBeTruthy();
-        });
-
-        it('should return false when date input has no default value', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithEmptyDateInput)).toBeFalsy();
-        });
-
-        it('should return true when checkbox input is checked', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithCheckedCheckboxInput)).toBeTruthy();
-        });
-
-        it('should return false when checkbox input is unchecked', () => {
-            expect(conditionalRadioInputDefaultExists(conditionalRadioWithUncheckedCheckboxInput)).toBeFalsy();
+        it.each([
+            [true, 'text input has default value', conditionalRadioWithTextInput],
+            [false, 'text input has no default value', conditionalRadioWithEmptyTextInput],
+            [true, 'textWithUnits input has default value', conditionalRadioWithTextWithUnitsInput],
+            [false, 'textWithUnits input has no default value', conditionalRadioWithEmptyTextWithUnitsInput],
+            [true, 'date input has default value', conditionalRadioWithDateInput],
+            [false, 'date input has no default value', conditionalRadioWithEmptyDateInput],
+            [true, 'checkbox input is checked', conditionalRadioWithCheckedCheckboxInput],
+            [false, 'checkbox input is unchecked', conditionalRadioWithUncheckedCheckboxInput],
+        ])('should return %s when %s', (defaultExists, _case, conditionalRadioWithInput) => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithInput)).toBe(defaultExists);
         });
     });
 });
