@@ -1,11 +1,22 @@
 import { shallow } from 'enzyme';
 import React, { ReactElement } from 'react';
+import {
+    conditionalRadioWithCheckedCheckboxInput,
+    conditionalRadioWithDateInput,
+    conditionalRadioWithEmptyDateInput,
+    conditionalRadioWithEmptyTextInput,
+    conditionalRadioWithEmptyTextWithUnitsInput,
+    conditionalRadioWithTextInput,
+    conditionalRadioWithTextWithUnitsInput,
+    conditionalRadioWithUncheckedCheckboxInput,
+} from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
 import RadioConditionalInput, {
     RadioConditionalInputFieldset,
     renderConditionalTextInput,
     RadioWithConditionalInputs,
     renderConditionalTextWithUnitsInput,
+    conditionalRadioInputDefaultExists,
 } from '../../src/components/RadioConditionalInput';
 
 describe('RadioConditionalInput', () => {
@@ -220,6 +231,40 @@ describe('RadioConditionalInput', () => {
             expect(selectInputFormGroup.props.className).toEqual('govuk-form-group govuk-form-group--error');
             expect(textInputFormElementWrapper.props.errors).toBe(inputErrors);
             expect(selectInputFormElementWrapper.props.errors).toBe(inputErrors);
+        });
+    });
+
+    describe('conditionalRadioInputDefaultExists', () => {
+        it('should return true when text input has default value', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithTextInput)).toBeTruthy();
+        });
+
+        it('should return false when text input has no default value', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithEmptyTextInput)).toBeFalsy();
+        });
+
+        it('should return true when textWithUnits input has default value', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithTextWithUnitsInput)).toBeTruthy();
+        });
+
+        it('should return false when textWithUnits input has no default value', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithEmptyTextWithUnitsInput)).toBeFalsy();
+        });
+
+        it('should return true when date input has default value', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithDateInput)).toBeTruthy();
+        });
+
+        it('should return false when date input has no default value', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithEmptyDateInput)).toBeFalsy();
+        });
+
+        it('should return true when checkbox input is checked', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithCheckedCheckboxInput)).toBeTruthy();
+        });
+
+        it('should return false when checkbox input is unchecked', () => {
+            expect(conditionalRadioInputDefaultExists(conditionalRadioWithUncheckedCheckboxInput)).toBeFalsy();
         });
     });
 });
