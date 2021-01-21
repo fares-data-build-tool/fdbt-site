@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import register from '../../../src/pages/api/register';
+import register, { operatorHasTndsData } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -281,5 +281,63 @@ describe('register', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
         });
+    });
+});
+
+describe('operatorHasTndsData', () => {
+    const getServicesByNocCodeSpy = jest.spyOn(auroradb, 'getServicesByNocCode');
+    afterEach(() => {
+        getServicesByNocCodeSpy.mockReset();
+    });
+    it('returns the correct noc codes if all noc codes have no TNDS data', async () => {
+        getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
+        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        expect(result.nocsWithNoTnds.length).toBe(2);
+        expect(result.nocsWithNoTnds).toStrictEqual(['AAA', 'BBB']);
+    });
+
+    it('returns the correct noc codes if some noc codes have no TNDS data', async () => {
+        getServicesByNocCodeSpy
+            .mockImplementationOnce(() =>
+                Promise.resolve([
+                    {
+                        lineName: '2AC',
+                        startDate: '01012020',
+                        description: 'linename for service ',
+                        serviceCode: 'NW_05_BLAC_2C_1',
+                    },
+                ]),
+            )
+            .mockImplementationOnce(() => Promise.resolve([]));
+        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        expect(result.nocsWithNoTnds.length).toBe(1);
+        expect(result.nocsWithNoTnds).toStrictEqual(['BBB']);
+    });
+
+    it('returns a result with true if noc codes have TNDS data', async () => {
+        getServicesByNocCodeSpy
+            .mockImplementationOnce(() =>
+                Promise.resolve([
+                    {
+                        lineName: '2AC',
+                        startDate: '01012020',
+                        description: 'linename for service ',
+                        serviceCode: 'NW_05_BLAC_2C_1',
+                    },
+                ]),
+            )
+            .mockImplementationOnce(() =>
+                Promise.resolve([
+                    {
+                        lineName: '2AD',
+                        startDate: '03012020',
+                        description: 'another linename for service ',
+                        serviceCode: 'NW_05_BLAC_2C_1',
+                    },
+                ]),
+            );
+        const result = await operatorHasTndsData(['AAA', 'BBB']);
+        expect(result.nocsWithNoTnds.length).toBe(0);
+        expect(result.nocsWithNoTnds).toStrictEqual([]);
     });
 });
