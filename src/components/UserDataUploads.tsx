@@ -21,7 +21,7 @@ export interface UserDataUploadsProps {
     detailSummary?: string;
     detailBody?: ReactElement;
     showPriceOption?: boolean;
-    poundsOrPence: string | null;
+    poundsOrPence?: string | null;
     csrfToken: string;
 }
 

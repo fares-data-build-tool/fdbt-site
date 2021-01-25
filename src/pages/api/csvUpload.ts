@@ -156,11 +156,13 @@ export const faresTriangleDataMapper = (
                     return null;
                 }
 
-                if (fareTriangle.fareStages?.[colNum].prices?.[price]?.fareZones) {
-                    fareTriangle.fareStages[colNum].prices[price].fareZones.push(stageName);
+                const formattedPrice = isPence ? (parseFloat(price) / 100).toFixed(2) : parseFloat(price).toFixed(2);
+
+                if (fareTriangle.fareStages?.[colNum].prices?.[formattedPrice]?.fareZones) {
+                    fareTriangle.fareStages[colNum].prices[formattedPrice].fareZones.push(stageName);
                 } else {
-                    fareTriangle.fareStages[colNum].prices[price] = {
-                        price: isPence ? (parseFloat(price) / 100).toFixed(2) : parseFloat(price).toFixed(2),
+                    fareTriangle.fareStages[colNum].prices[formattedPrice] = {
+                        price: formattedPrice,
                         fareZones: [stageName],
                     };
                 }
