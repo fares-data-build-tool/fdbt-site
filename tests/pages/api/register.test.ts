@@ -292,8 +292,8 @@ describe('operatorHasTndsData', () => {
     it('returns the correct noc codes if all noc codes have no TNDS data', async () => {
         getServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
         const result = await operatorHasTndsData(['AAA', 'BBB']);
-        expect(result.nocsWithNoTnds.length).toBe(2);
-        expect(result.nocsWithNoTnds).toStrictEqual(['AAA', 'BBB']);
+        expect(result.length).toBe(2);
+        expect(result).toStrictEqual(['AAA', 'BBB']);
     });
 
     it('returns the correct noc codes if some noc codes have no TNDS data', async () => {
@@ -310,8 +310,8 @@ describe('operatorHasTndsData', () => {
             )
             .mockImplementationOnce(() => Promise.resolve([]));
         const result = await operatorHasTndsData(['AAA', 'BBB']);
-        expect(result.nocsWithNoTnds.length).toBe(1);
-        expect(result.nocsWithNoTnds).toStrictEqual(['BBB']);
+        expect(result.length).toBe(1);
+        expect(result).toStrictEqual(['BBB']);
     });
 
     it('returns a result with true if noc codes have TNDS data', async () => {
@@ -337,7 +337,7 @@ describe('operatorHasTndsData', () => {
                 ]),
             );
         const result = await operatorHasTndsData(['AAA', 'BBB']);
-        expect(result.nocsWithNoTnds.length).toBe(0);
-        expect(result.nocsWithNoTnds).toStrictEqual([]);
+        expect(result.length).toBe(0);
+        expect(result).toStrictEqual([]);
     });
 });

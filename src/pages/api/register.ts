@@ -1,15 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid, validatePassword } from './apiUtils';
 import { USER_COOKIE } from '../../constants';
-import { ErrorInfo, TndsCheckResult } from '../../interfaces';
+import { ErrorInfo } from '../../interfaces';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
 import { getServicesByNocCode } from '../../data/auroradb';
 
-export const operatorHasTndsData = async (nocs: string[]): Promise<TndsCheckResult> => {
-    const servicesFoundPromise = nocs.map((noc: string) => {
-        return getServicesByNocCode(noc);
-    });
+export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => {
+    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc));
 
     const servicesFound = await Promise.all(servicesFoundPromise);
 
@@ -22,9 +20,7 @@ export const operatorHasTndsData = async (nocs: string[]): Promise<TndsCheckResu
         })
         .filter(noc => noc);
 
-    return {
-        nocsWithNoTnds,
-    };
+    return nocsWithNoTnds;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -71,30 +67,27 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const parameters = JSON.parse(ChallengeParameters.userAttributes);
                 const cognitoNocs = (parameters['custom:noc'] as string | undefined)?.split('|');
 
-                let nocsWithNoTnds: string[] = [];
+                if (!cognitoNocs) {
+                    throw new Error('No NOCs returned from cognito');
+                }
 
-                if (cognitoNocs) {
-                    const tndsCheck = await operatorHasTndsData(cognitoNocs);
-                    nocsWithNoTnds = nocsWithNoTnds.concat(tndsCheck.nocsWithNoTnds);
+                const nocsWithNoTnds = await operatorHasTndsData(cognitoNocs);
 
-                    if (!(nocsWithNoTnds.length < cognitoNocs.length)) {
-                        const lengthCheck = cognitoNocs.length > 0;
-                        inputChecks.push({
-                            userInput: '',
-                            id: '',
-                            errorMessage: `There is no service data available for your National Operator Code${
-                                lengthCheck ? 's' : ''
-                            } (NOC).
+                if (!(nocsWithNoTnds.length < cognitoNocs.length)) {
+                    const lengthCheck = cognitoNocs.length > 0;
+                    inputChecks.push({
+                        userInput: '',
+                        id: '',
+                        errorMessage: `There is no service data available for your National Operator Code${
+                            lengthCheck ? 's' : ''
+                        } (NOC).
                             This service utilises the Traveline National Dataset (TNDS) to obtain operators' service data in order to help them create fares data. It appears there is no service data for your NOC${
                                 lengthCheck ? 's' : ''
                             } in the Traveline National Dataset. You will not be able to continue creating fares data without this.
                             Use the contact link in the footer if you have any questions.`,
-                        });
-                        setErrorsCookieAndRedirect(inputChecks, regKey);
-                        return;
-                    }
-                } else {
-                    throw new Error('No NOCs returned from cognito');
+                    });
+                    setErrorsCookieAndRedirect(inputChecks, regKey);
+                    return;
                 }
 
                 await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);

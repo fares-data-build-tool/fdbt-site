@@ -82,10 +82,6 @@ export type WithErrors<T> = {
 
 // Miscellaneous
 
-export interface TndsCheckResult {
-    nocsWithNoTnds: string[];
-}
-
 export type PassengerAttributes = {
     passengerTypeDisplay: string;
     passengerTypeValue: string;
