@@ -86,12 +86,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const { name } = JSON.parse(operatorCookie);
-
     const services = await getServicesByNocCode(nocCode);
 
-    const emptyservices = [];
-
-    if (emptyservices.length === 0) {
+    if (services.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/noServices');
         } else {
