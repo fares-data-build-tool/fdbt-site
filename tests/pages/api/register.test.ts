@@ -5,6 +5,7 @@ import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { USER_COOKIE } from '../../../src/constants';
+import { getServicesByNocCode } from '../../../src/data/auroradb';
 
 jest.mock('../../../src/data/auroradb.ts');
 
@@ -181,6 +182,28 @@ describe('register', () => {
         expect(authSignOutSpy).toHaveBeenCalled();
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/confirmRegistration',
+        });
+    });
+
+    it('should redirect when there are no services for the noc code', async () => {
+        (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
+
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                email: 'test@test.com',
+                password: 'chromosoneTelepathyDinosaur',
+                confirmPassword: 'chromosoneTelepathyDinosaur',
+                regKey: 'abcdefg',
+            },
+            uuid: '',
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await register(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/noServices',
         });
     });
 

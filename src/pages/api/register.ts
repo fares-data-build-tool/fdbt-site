@@ -74,19 +74,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const nocsWithNoTnds = await operatorHasTndsData(cognitoNocs);
 
                 if (!(nocsWithNoTnds.length < cognitoNocs.length)) {
-                    const lengthCheck = cognitoNocs.length > 0;
-                    inputChecks.push({
-                        userInput: '',
-                        id: '',
-                        errorMessage: `There is no service data available for your National Operator Code${
-                            lengthCheck ? 's' : ''
-                        } (NOC).
-                            This service utilises the Traveline National Dataset (TNDS) to obtain operators' service data in order to help them create fares data. It appears there is no service data for your NOC${
-                                lengthCheck ? 's' : ''
-                            } in the Traveline National Dataset. You will not be able to continue creating fares data without this.
-                            Use the contact link in the footer if you have any questions.`,
-                    });
-                    setErrorsCookieAndRedirect(inputChecks, regKey);
+                    redirectTo(res, '/noServices');
                     return;
                 }
 
