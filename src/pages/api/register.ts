@@ -71,11 +71,19 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                     throw new Error('No NOCs returned from cognito');
                 }
 
+                const isSchemeOperator = !!parameters['custom:schemeOperator'];
                 const nocsWithNoTnds = await operatorHasTndsData(cognitoNocs);
 
-                if (!(nocsWithNoTnds.length < cognitoNocs.length)) {
-                    redirectTo(res, '/noServices');
-                    return;
+                if (!isSchemeOperator) {
+                    if (!(nocsWithNoTnds.length < cognitoNocs.length)) {
+                        logger.warn('', {
+                            context: 'api.register',
+                            message: 'registration aborted, no TNDS data',
+                        });
+
+                        redirectTo(res, '/noServices');
+                        return;
+                    }
                 }
 
                 await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);
@@ -87,7 +95,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                     message: 'registration successful',
                 });
 
-                if (nocsWithNoTnds.length > 0) {
+                if (!isSchemeOperator && nocsWithNoTnds.length > 0) {
                     redirectTo(res, `/confirmRegistration?nocs=${nocsWithNoTnds.join('|')}`);
                     return;
                 }
