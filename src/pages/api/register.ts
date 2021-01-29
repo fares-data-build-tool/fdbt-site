@@ -74,16 +74,14 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
                 const isSchemeOperator = !!parameters['custom:schemeOperator'];
                 const nocsWithNoTnds = await operatorHasTndsData(cognitoNocs);
 
-                if (!isSchemeOperator) {
-                    if (!(nocsWithNoTnds.length < cognitoNocs.length)) {
-                        logger.warn('', {
-                            context: 'api.register',
-                            message: 'registration aborted, no TNDS data',
-                        });
+                if (!isSchemeOperator && !(nocsWithNoTnds.length < cognitoNocs.length)) {
+                    logger.warn('', {
+                        context: 'api.register',
+                        message: 'registration aborted, no TNDS data',
+                    });
 
-                        redirectTo(res, '/noServices');
-                        return;
-                    }
+                    redirectTo(res, '/noServices');
+                    return;
                 }
 
                 await respondToNewPasswordChallenge(ChallengeParameters.USER_ID_FOR_SRP, password, Session);
