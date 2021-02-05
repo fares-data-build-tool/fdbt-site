@@ -57,8 +57,7 @@ import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
 
 import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
-import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProducts';
-import { Operator } from '../../../../src/interfaces';
+import { Operator, MultipleProductAttribute } from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {

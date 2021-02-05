@@ -3,14 +3,12 @@ import csvParse from 'csv-parse/lib/sync';
 import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/index';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getUuidFromCookie, redirectToError, redirectTo } from './apiUtils';
-import { putDataInS3, UserFareZone } from '../../data/s3';
+import { putDataInS3 } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { isSessionValid } from './apiUtils/validator';
 import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-
-import { FareType } from './fareType';
+import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 
 export interface FareZone {
     fareZoneName: string;

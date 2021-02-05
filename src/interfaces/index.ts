@@ -1,6 +1,7 @@
 import { NextApiRequest, NextPageContext } from 'next';
 import { DocumentContext } from 'next/document';
-import { IncomingMessage } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
+import { ReactElement } from 'react';
 
 // Session Attributes and Cookies
 
@@ -82,10 +83,10 @@ export type WithErrors<T> = {
 
 // Miscellaneous
 
-export type PassengerAttributes = {
+export interface PassengerAttributes {
     passengerTypeDisplay: string;
     passengerTypeValue: string;
-};
+}
 
 export interface BaseReactElement {
     id: string;
@@ -97,9 +98,9 @@ export interface BaseReactElement {
 }
 
 export interface InputCheck {
-    id: string;
-    inputValue: string;
     error: string;
+    input: string;
+    id: string;
 }
 
 export interface ErrorInfo {
@@ -410,3 +411,310 @@ export interface TimeInput {
     day: string;
 }
 export interface ProductDetails extends Product, BaseProduct {}
+
+export interface ConfirmationElement {
+    name: string;
+    content: string;
+    href: string;
+}
+
+export interface FareTypeRadio {
+    fareType: string;
+    label: string;
+}
+export interface FareTypeRadioProps {
+    standardFares: FareTypeRadio[];
+    otherFares?: FareTypeRadio[];
+}
+
+export interface UserDataUploadsProps {
+    csvUploadApiRoute: string;
+    csvUploadHintText: string;
+    csvUploadTitle: string;
+    guidanceDocDisplayName: string;
+    guidanceDocAttachmentUrl: string;
+    guidanceDocSize: string;
+    csvTemplateDisplayName: string;
+    csvTemplateAttachmentUrl: string;
+    csvTemplateSize: string;
+    errors: ErrorInfo[];
+    detailSummary?: string;
+    detailBody?: ReactElement;
+    showPriceOption?: boolean;
+    poundsOrPence?: string | null;
+    csrfToken: string;
+}
+
+export interface RadioWithoutConditionals extends BaseReactElement {
+    value: string;
+    radioButtonHint?: {
+        id: string;
+        content: string;
+    };
+}
+
+export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
+    dataAriaControls: string;
+    inputHint: {
+        id: string;
+        content: string;
+        hidden?: boolean;
+    };
+    inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits';
+    inputs: BaseReactElement[];
+    inputErrors: ErrorInfo[];
+}
+
+export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
+
+export interface RadioConditionalInputFieldset {
+    heading: {
+        id: string;
+        content: string;
+        hidden?: boolean;
+    };
+    radios: RadioButton[];
+    radioError: ErrorInfo[];
+}
+
+export interface FareStage {
+    stageName: string;
+    prices: {
+        price: string;
+        fareZones: string[];
+    }[];
+}
+
+export interface UserFareStages {
+    fareStages: FareStage[];
+}
+
+export interface UserFareZone {
+    FareZoneName: string;
+    NaptanCodes: string;
+    AtcoCodes: string;
+}
+
+export interface GroupDefinitionWithErrors extends GroupDefinition {
+    errors: ErrorInfo[];
+}
+
+export interface NumberOfStagesAttributeWithError {
+    errors: ErrorInfo[];
+}
+
+export interface ServicesInfo extends ServiceType {
+    checked?: boolean;
+}
+
+export interface ReturnPeriodValidityWithErrors {
+    amount?: string;
+    typeOfDuration?: string;
+    errors: ErrorInfo[];
+}
+
+export interface FareStagesAttribute {
+    fareStages: string;
+}
+
+export interface FareStagesAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface CsvUploadAttributeWithErrors {
+    errors: ErrorInfo[];
+    poundsOrPence?: string;
+}
+
+export interface DefinePassengerTypeWithErrors extends CompanionInfo {
+    errors: ErrorInfo[];
+}
+
+export interface TimeRestrictionsDefinition extends TimeRestriction {
+    validDaysSelected?: string;
+}
+
+export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {
+    errors: ErrorInfo[];
+}
+
+export interface FareType {
+    fareType: string;
+}
+
+export interface FareTypeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface GroupPassengerTypesCollection {
+    passengerTypes: string[];
+}
+export interface GroupPassengerTypesCollectionWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface GroupTicketAttribute {
+    maxGroupSize: string;
+}
+
+export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
+    errors: ErrorInfo[];
+}
+
+export interface NumberOfProductsAttribute {
+    numberOfProductsInput: string;
+}
+
+export interface NumberOfProductsAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface MultipleProductAttribute {
+    products: MultiProduct[];
+}
+
+export interface MultipleProductAttributeWithErrors extends MultipleProductAttribute {
+    errors: ErrorInfo[];
+}
+
+export interface MultiProduct {
+    productName: string;
+    productNameId: string;
+    productPrice: string;
+    productPriceId: string;
+    productDuration: string;
+    productDurationId: string;
+    productDurationUnits: string;
+    productDurationUnitsId: string;
+    productValidity: string;
+    productValidityId: string;
+    productEndTime?: string;
+    productEndTimeId?: string;
+}
+
+export interface MultiProductWithErrors extends MultiProduct {
+    productNameError?: string;
+    productPriceError?: string;
+    productDurationError?: string;
+    productDurationUnitsError?: string;
+}
+
+export interface PassengerType {
+    passengerType: string;
+    ageRange?: string;
+    ageRangeMin?: string;
+    ageRangeMax?: string;
+    proof?: string;
+    proofDocuments?: string[];
+}
+
+export interface PassengerTypeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface FaresInput {
+    input: string;
+    locator: string;
+}
+
+export interface PriceEntryError {
+    input: string;
+    locator: string;
+}
+export interface FaresInformation {
+    inputs: FaresInput[];
+    errorInformation: PriceEntryError[];
+}
+
+export interface TicketPeriodWithErrors {
+    errors: ErrorInfo[];
+    dates: ProductDateInformation;
+}
+
+export interface ProductDateInformation {
+    startDateDay: string;
+    startDateMonth: string;
+    startDateYear: string;
+    endDateDay: string;
+    endDateMonth: string;
+    endDateYear: string;
+}
+
+export interface SchoolFareTypeAttribute {
+    schoolFareType: string;
+}
+
+export interface MultipleOperatorsAttribute {
+    selectedOperators: Operator[];
+}
+
+export interface MultipleOperatorsAttributeWithErrors extends MultipleOperatorsAttribute {
+    errors: ErrorInfo[];
+}
+
+export interface SelectSalesOfferPackageWithError {
+    errors: ErrorInfo[];
+    selected: { [key: string]: string[] };
+}
+
+export interface Service {
+    service: string;
+}
+
+export interface ServiceWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface ServiceListAttribute {
+    selectedServices: string[];
+}
+
+export interface ServiceListAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface ResponseWithLocals extends ServerResponse {
+    locals: {
+        nonce: string;
+        csrfToken: string;
+    };
+}
+
+// auroradb
+export interface ServiceType {
+    lineName: string;
+    startDate: string;
+    description: string;
+    serviceCode: string;
+}
+
+export interface JourneyPattern {
+    startPoint: {
+        Id: string;
+        Display: string;
+    };
+    endPoint: {
+        Id: string;
+        Display: string;
+    };
+    stopList: string[];
+}
+
+export interface RawJourneyPattern {
+    orderedStopPoints: {
+        stopPointRef: string;
+        commonName: string;
+    }[];
+}
+
+export interface ServiceDB {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: JourneyPattern[];
+}
+
+export interface RawService {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: RawJourneyPattern[];
+}

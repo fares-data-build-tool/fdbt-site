@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import UserDataUploadComponent, { UserDataUploadsProps } from '../components/UserDataUploads';
+import UserDataUploadComponent from '../components/UserDataUploads';
 import { FARE_ZONE_ATTRIBUTE } from '../constants';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
-import { NextPageContextWithSession, ErrorInfo } from '../interfaces';
+import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { FareZoneWithErrors, FareZone } from './api/csvZoneUpload';
 import { getCsrfToken } from '../utils';

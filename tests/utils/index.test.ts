@@ -7,7 +7,7 @@ import {
     getAndValidateSchemeOpRegion,
     isSchemeOperator,
 } from '../../src/utils';
-import { Stop } from '../../src/data/auroradb';
+import { Stop } from '../../src/interfaces';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 
 describe('index', () => {

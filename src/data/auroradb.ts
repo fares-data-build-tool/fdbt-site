@@ -4,28 +4,9 @@ import awsParamStore from 'aws-param-store';
 import logger from '../utils/logger';
 import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
 import { INTERNAL_NOC } from '../constants';
-import { Operator } from '../interfaces';
+import { Operator, ServiceType, RawService, Stop } from '../interfaces';
 
-export interface ServiceType {
-    lineName: string;
-    startDate: string;
-    description: string;
-    serviceCode: string;
-}
-
-export interface JourneyPattern {
-    startPoint: {
-        Id: string;
-        Display: string;
-    };
-    endPoint: {
-        Id: string;
-        Display: string;
-    };
-    stopList: string[];
-}
-
-export interface QueryData {
+interface QueryData {
     operatorShortName: string;
     serviceDescription: string;
     lineName: string;
@@ -35,12 +16,6 @@ export interface QueryData {
     toCommonName: string;
     journeyPatternId: string;
     order: string;
-}
-export interface RawJourneyPattern {
-    orderedStopPoints: {
-        stopPointRef: string;
-        commonName: string;
-    }[];
 }
 
 interface NaptanInfo {
@@ -57,35 +32,6 @@ interface NaptanInfo {
 interface NaptanAtcoCodes {
     naptanCode: string;
     atcoCode: string;
-}
-
-export interface Stop {
-    stopName: string;
-    naptanCode: string;
-    atcoCode: string;
-    localityCode: string;
-    localityName: string;
-    parentLocalityName: string;
-    indicator?: string;
-    street?: string;
-    qualifierName?: string;
-}
-
-export interface StopIdentifiers {
-    naptanCode: string | null;
-    atcoCode: string;
-}
-
-export interface Service {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: JourneyPattern[];
-}
-
-export interface RawService {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: RawJourneyPattern[];
 }
 
 interface RawSalesOfferPackage {
