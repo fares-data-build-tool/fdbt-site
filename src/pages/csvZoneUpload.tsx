@@ -6,7 +6,7 @@ import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
 import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
-import { FareZoneWithErrors, FareZone } from './api/csvZoneUpload';
+import { FareZoneWithErrors } from './api/csvZoneUpload';
 import { getCsrfToken } from '../utils';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
@@ -34,7 +34,7 @@ const CsvZoneUpload = (uploadProps: UserDataUploadsProps): ReactElement => (
 );
 
 export const isFareZoneAttributeWithErrors = (
-    fareZoneAttribute: FareZone | FareZoneWithErrors,
+    fareZoneAttribute: string | FareZoneWithErrors,
 ): fareZoneAttribute is FareZoneWithErrors => (fareZoneAttribute as FareZoneWithErrors).errors !== undefined;
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {

@@ -53,6 +53,9 @@ import {
     Service,
     ServiceListAttribute,
     ServiceListAttributeWithErrors,
+    SalesOfferPackageInfo,
+    SalesOfferPackageInfoWithErrors,
+    SalesOfferPackageWithErrors,
 } from '../interfaces';
 import {
     DURATION_VALID_ATTRIBUTE,
@@ -92,10 +95,8 @@ import {
     TERM_TIME_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/index';
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
-import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
-import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
+import { FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 
 interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -118,7 +119,7 @@ interface SessionAttributeTypes {
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
-    [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
+    [FARE_ZONE_ATTRIBUTE]: string | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
     [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;

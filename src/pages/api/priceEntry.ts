@@ -20,7 +20,7 @@ import { putStringInS3 } from '../../data/s3';
 import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
 import { isJourney } from '../../interfaces/typeGuards';
 
-interface FareTriangleData {
+interface ManualFareTriangleData {
     [stageName: string]: {
         [price: string]: {
             price: string;
@@ -54,7 +54,7 @@ export const inputsValidityCheck = (req: NextApiRequest): FaresInformation => {
 
 export const faresTriangleDataMapper = (req: NextApiRequest): UserFareStages => {
     const arrayOfFareItemArrays: string[][] = Object.entries(req.body);
-    const fareTriangle: FareTriangleData = {};
+    const fareTriangle: ManualFareTriangleData = {};
 
     for (let itemNum = 0; itemNum < arrayOfFareItemArrays.length; itemNum += 1) {
         const cellRef = arrayOfFareItemArrays[itemNum][0];

@@ -360,12 +360,22 @@ export interface BasicService {
     serviceDescription: string;
 }
 
-export interface SalesOfferPackage {
-    name: string;
-    description: string;
+export interface SalesOfferPackageInfo {
     purchaseLocations: string[];
     paymentMethods: string[];
     ticketFormats: string[];
+}
+
+export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
+    errors: ErrorInfo[];
+}
+export interface SalesOfferPackage extends SalesOfferPackageInfo {
+    name: string;
+    description: string;
+}
+
+export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
+    errors: ErrorInfo[];
 }
 
 export interface TicketPeriod {
