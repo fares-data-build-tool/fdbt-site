@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import startCase from 'lodash/startCase';
 import {
     FARE_TYPE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
+    GROUP_PASSENGER_INFO_ATTRIBUTE,
 } from '../constants';
 import {
     NextPageContextWithSession,
@@ -15,13 +15,14 @@ import {
     ConfirmationElement,
     PassengerType,
     SchoolFareTypeAttribute,
+    CompanionInfo,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerTypeAttributeWithErrors, isFareType } from '../interfaces/typeGuards';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, sentenceCaseString } from '../utils';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
@@ -29,6 +30,7 @@ const description = 'Fare Confirmation page of the Create Fares Data Service';
 interface FareConfirmationProps {
     fareType: string;
     passengerType: PassengerType;
+    groupPassengerInfo: CompanionInfo[];
     schoolFareType: string;
     termTime: string;
     fullTimeRestrictions: FullTimeRestriction[];
@@ -38,66 +40,100 @@ interface FareConfirmationProps {
 export const buildFareConfirmationElements = (
     fareType: string,
     passengerType: PassengerType,
+    groupPassengerInfo: CompanionInfo[],
     schoolFareType: string,
     termTime: string,
     fullTimeRestrictions: FullTimeRestriction[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
-            name: 'Fare Type',
-            content: startCase(fareType),
+            name: 'Fare type',
+            content: sentenceCaseString(fareType),
             href: 'fareType',
         },
         {
-            name: 'Passenger Type',
-            content: startCase(passengerType.passengerType),
+            name: 'Passenger type',
+            content: sentenceCaseString(passengerType.passengerType),
             href: fareType === 'schoolService' ? '' : 'passengerType',
         },
     ];
 
-    if (passengerType.ageRange && (passengerType.ageRangeMin || passengerType.ageRangeMax)) {
-        confirmationElements.push({
-            name: 'Passenger Information - Age Range',
-            content: `Minimum Age: ${
-                passengerType.ageRangeMin ? passengerType.ageRangeMin : 'No details entered'
-            } Maximum Age: ${passengerType.ageRangeMax ? passengerType.ageRangeMax : 'No details entered'}`,
-            href: 'definePassengerType',
+    if (passengerType.passengerType === 'group' && groupPassengerInfo.length > 0) {
+        groupPassengerInfo.forEach(passenger => {
+            if (passenger.ageRangeMin || passenger.ageRangeMax) {
+                confirmationElements.push({
+                    name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
+                    content: `Minimum age: ${passenger.ageRangeMin ? passenger.ageRangeMin : 'N/A'} Maximum age: ${
+                        passenger.ageRangeMax ? passenger.ageRangeMax : 'N/A'
+                    }`,
+                    href: 'definePassengerType',
+                });
+            } else {
+                confirmationElements.push({
+                    name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
+                    content: 'N/A',
+                    href: 'definePassengerType',
+                });
+            }
+            if (passenger.proofDocuments && passenger.proofDocuments.length > 0) {
+                confirmationElements.push({
+                    name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
+                    content: passenger.proofDocuments.map(proofDoc => sentenceCaseString(proofDoc)).join(', '),
+                    href: 'definePassengerType',
+                });
+            } else {
+                confirmationElements.push({
+                    name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
+                    content: 'N/A',
+                    href: 'definePassengerType',
+                });
+            }
         });
     } else {
-        confirmationElements.push({
-            name: 'Passenger Information - Age Range',
-            content: 'No details entered',
-            href: 'definePassengerType',
-        });
-    }
+        if (passengerType.ageRange && (passengerType.ageRangeMin || passengerType.ageRangeMax)) {
+            confirmationElements.push({
+                name: 'Passenger information - age range',
+                content: `Minimum age: ${passengerType.ageRangeMin ? passengerType.ageRangeMin : 'N/A'} Maximum age: ${
+                    passengerType.ageRangeMax ? passengerType.ageRangeMax : 'N/A'
+                }`,
+                href: 'definePassengerType',
+            });
+        } else {
+            confirmationElements.push({
+                name: 'Passenger information - age range',
+                content: 'N/A',
+                href: 'definePassengerType',
+            });
+        }
 
-    if (passengerType.proof && passengerType.proofDocuments) {
-        confirmationElements.push({
-            name: 'Passenger Information - Proof Documents',
-            content: passengerType.proofDocuments.map(proofDoc => startCase(proofDoc)).join(', '),
-            href: 'definePassengerType',
-        });
-    } else {
-        confirmationElements.push({
-            name: 'Passenger Information - Proof Documents',
-            content: 'No details entered',
-            href: 'definePassengerType',
-        });
+        if (passengerType.proof && passengerType.proofDocuments) {
+            confirmationElements.push({
+                name: 'Passenger information - proof documents',
+                content: passengerType.proofDocuments.map(proofDoc => sentenceCaseString(proofDoc)).join(', '),
+                href: 'definePassengerType',
+            });
+        } else {
+            confirmationElements.push({
+                name: 'Passenger information - proof documents',
+                content: 'N/A',
+                href: 'definePassengerType',
+            });
+        }
     }
 
     if (fareType === 'schoolService') {
         if (termTime !== '') {
             confirmationElements.push({
-                name: 'Only Valid During Term Times',
-                content: termTime === 'true' ? 'Yes' : 'No',
+                name: 'Only valid during term times',
+                content: termTime === 'true' ? 'yes' : 'no',
                 href: 'termTime',
             });
         }
 
         if (schoolFareType !== '') {
             confirmationElements.push({
-                name: 'School Ticket Fare Type',
-                content: startCase(schoolFareType),
+                name: 'School ticket fare type',
+                content: sentenceCaseString(schoolFareType),
                 href: 'schoolFareType',
             });
         }
@@ -106,7 +142,7 @@ export const buildFareConfirmationElements = (
     if (fullTimeRestrictions.length > 0) {
         fullTimeRestrictions.forEach(fullTimeRestriction => {
             confirmationElements.push({
-                name: `Time Restrictions - ${startCase(fullTimeRestriction.day)}`,
+                name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
                 content: `Start time: ${fullTimeRestriction.startTime ||
                     'N/A'} End time: ${fullTimeRestriction.endTime || 'N/A'}`,
                 href: 'defineTimeRestrictions',
@@ -119,6 +155,7 @@ export const buildFareConfirmationElements = (
 const FareConfirmation = ({
     fareType,
     passengerType,
+    groupPassengerInfo,
     schoolFareType,
     termTime,
     fullTimeRestrictions,
@@ -133,6 +170,7 @@ const FareConfirmation = ({
                     confirmationElements={buildFareConfirmationElements(
                         fareType,
                         passengerType,
+                        groupPassengerInfo,
                         schoolFareType,
                         termTime,
                         fullTimeRestrictions,
@@ -164,11 +202,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Fa
         throw new Error('Could not extract the correct attributes for the user journey.');
     }
 
+    const groupPassengerInfo = getSessionAttribute(ctx.req, GROUP_PASSENGER_INFO_ATTRIBUTE) || [];
+
     return {
         props: {
             fareType: fareTypeAttribute.fareType,
             passengerType: passengerTypeAttribute,
             schoolFareType: schoolFareTypeAttribute?.schoolFareType || '',
+            groupPassengerInfo,
             termTime: termTimeAttribute?.termTime.toString() || '',
             fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
             csrfToken,

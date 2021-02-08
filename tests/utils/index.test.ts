@@ -1,6 +1,7 @@
 import MockReq from 'mock-req';
 import { NextPageContext } from 'next';
 import {
+    sentenceCaseString,
     getHost,
     formatStopName,
     getAttributeFromIdToken,
@@ -153,6 +154,16 @@ describe('index', () => {
             const ctx = getMockContext();
             const res = isSchemeOperator(ctx);
             expect(res).toEqual(false);
+        });
+    });
+
+    describe('sentenceCaseString', () => {
+        it.each([
+            ['bankHoliday', 'Bank holiday'],
+            ['singleFareChildTicket', 'Single fare child ticket'],
+            ['default', 'Default'],
+        ])('should turn %s into %s', (input, expectedOutput) => {
+            expect(sentenceCaseString(input)).toBe(expectedOutput);
         });
     });
 });

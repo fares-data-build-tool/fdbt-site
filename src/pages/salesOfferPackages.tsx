@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import kebabCase from 'lodash/kebabCase';
-import startCase from 'lodash/startCase';
 import { BaseLayout } from '../layout/Layout';
 import { NextPageContextWithSession, SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
@@ -9,7 +8,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { SOP_INFO_ATTRIBUTE } from '../constants';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import SalesOfferPackageExplanation from '../components/SalesOfferPackageExplanation';
-import { getCsrfToken } from '../utils';
+import { getCsrfToken, sentenceCaseString } from '../utils';
 
 const title = 'Sales Offer Packages - Create Fares Data Service';
 const description = 'Sales Offer Packages page for the Create Fares Data Service';
@@ -105,7 +104,8 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${purchaseLocationId}`}
                                                         >
-                                                            {valuesMap[purchaseLocation] || startCase(purchaseLocation)}
+                                                            {valuesMap[purchaseLocation] ||
+                                                                sentenceCaseString(purchaseLocation)}
                                                         </label>
                                                     </div>
                                                 );
@@ -149,7 +149,8 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${paymentMethodId}`}
                                                         >
-                                                            {valuesMap[paymentMethod] || startCase(paymentMethod)}
+                                                            {valuesMap[paymentMethod] ||
+                                                                sentenceCaseString(paymentMethod)}
                                                         </label>
                                                     </div>
                                                 );
@@ -193,7 +194,7 @@ const SalesOfferPackages = ({ salesOfferPackage, csrfToken }: SalesOfferPackages
                                                             className="govuk-label govuk-checkboxes__label"
                                                             htmlFor={`checkbox-${index}-${ticketFormatId}`}
                                                         >
-                                                            {startCase(ticketFormat)}
+                                                            {sentenceCaseString(ticketFormat)}
                                                         </label>
                                                     </div>
                                                 );
