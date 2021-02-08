@@ -81,6 +81,89 @@ export type WithErrors<T> = {
     errors: ErrorInfo[];
 } & T;
 
+export interface UserDataUploadsProps {
+    csvUploadApiRoute: string;
+    csvUploadHintText: string;
+    csvUploadTitle: string;
+    guidanceDocDisplayName: string;
+    guidanceDocAttachmentUrl: string;
+    guidanceDocSize: string;
+    csvTemplateDisplayName: string;
+    csvTemplateAttachmentUrl: string;
+    csvTemplateSize: string;
+    errors: ErrorInfo[];
+    detailSummary?: string;
+    detailBody?: ReactElement;
+    showPriceOption?: boolean;
+    poundsOrPence?: string | null;
+    csrfToken: string;
+}
+
+export interface GroupDefinitionWithErrors extends GroupDefinition {
+    errors: ErrorInfo[];
+}
+
+export interface NumberOfStagesAttributeWithError {
+    errors: ErrorInfo[];
+}
+
+export interface FareStagesAttribute {
+    fareStages: string;
+}
+
+export interface FareStagesAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface CsvUploadAttributeWithErrors {
+    errors: ErrorInfo[];
+    poundsOrPence?: string;
+}
+
+export interface GroupTicketAttribute {
+    maxGroupSize: string;
+}
+
+export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
+    errors: ErrorInfo[];
+}
+
+export interface NumberOfProductsAttribute {
+    numberOfProductsInput: string;
+}
+
+export interface NumberOfProductsAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
+export interface MultipleProductAttribute {
+    products: MultiProduct[];
+}
+
+export interface MultipleProductAttributeWithErrors extends MultipleProductAttribute {
+    errors: ErrorInfo[];
+}
+
+export interface SchoolFareTypeAttribute {
+    schoolFareType: string;
+}
+
+export interface MultipleOperatorsAttribute {
+    selectedOperators: Operator[];
+}
+
+export interface MultipleOperatorsAttributeWithErrors extends MultipleOperatorsAttribute {
+    errors: ErrorInfo[];
+}
+
+export interface ServiceListAttribute {
+    selectedServices: string[];
+}
+
+export interface ServiceListAttributeWithErrors {
+    errors: ErrorInfo[];
+}
+
 // Miscellaneous
 
 export interface PassengerAttributes {
@@ -112,6 +195,18 @@ export interface ErrorInfo {
 export interface Feedback {
     question: string;
     answer: string;
+}
+
+export interface PriceEntryError {
+    input: string;
+    locator: string;
+}
+
+export interface ResponseWithLocals extends ServerResponse {
+    locals: {
+        nonce: string;
+        csrfToken: string;
+    };
 }
 
 // AWS and Reference Data (e.g. NOC, TNDS, NaPTAN datasets)
@@ -335,6 +430,12 @@ export interface ReturnPeriodValidity {
     typeOfDuration: string;
 }
 
+export interface ReturnPeriodValidityWithErrors {
+    amount?: string;
+    typeOfDuration?: string;
+    errors: ErrorInfo[];
+}
+
 export interface FareZone {
     name: string;
     stops: Stop[];
@@ -422,71 +523,6 @@ export interface TimeInput {
 }
 export interface ProductDetails extends Product, BaseProduct {}
 
-export interface ConfirmationElement {
-    name: string;
-    content: string;
-    href: string;
-}
-
-export interface FareTypeRadio {
-    fareType: string;
-    label: string;
-}
-export interface FareTypeRadioProps {
-    standardFares: FareTypeRadio[];
-    otherFares?: FareTypeRadio[];
-}
-
-export interface UserDataUploadsProps {
-    csvUploadApiRoute: string;
-    csvUploadHintText: string;
-    csvUploadTitle: string;
-    guidanceDocDisplayName: string;
-    guidanceDocAttachmentUrl: string;
-    guidanceDocSize: string;
-    csvTemplateDisplayName: string;
-    csvTemplateAttachmentUrl: string;
-    csvTemplateSize: string;
-    errors: ErrorInfo[];
-    detailSummary?: string;
-    detailBody?: ReactElement;
-    showPriceOption?: boolean;
-    poundsOrPence?: string | null;
-    csrfToken: string;
-}
-
-export interface RadioWithoutConditionals extends BaseReactElement {
-    value: string;
-    radioButtonHint?: {
-        id: string;
-        content: string;
-    };
-}
-
-export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
-    dataAriaControls: string;
-    inputHint: {
-        id: string;
-        content: string;
-        hidden?: boolean;
-    };
-    inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits';
-    inputs: BaseReactElement[];
-    inputErrors: ErrorInfo[];
-}
-
-export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
-
-export interface RadioConditionalInputFieldset {
-    heading: {
-        id: string;
-        content: string;
-        hidden?: boolean;
-    };
-    radios: RadioButton[];
-    radioError: ErrorInfo[];
-}
-
 export interface FareStage {
     stageName: string;
     prices: {
@@ -503,37 +539,6 @@ export interface UserFareZone {
     FareZoneName: string;
     NaptanCodes: string;
     AtcoCodes: string;
-}
-
-export interface GroupDefinitionWithErrors extends GroupDefinition {
-    errors: ErrorInfo[];
-}
-
-export interface NumberOfStagesAttributeWithError {
-    errors: ErrorInfo[];
-}
-
-export interface ServicesInfo extends ServiceType {
-    checked?: boolean;
-}
-
-export interface ReturnPeriodValidityWithErrors {
-    amount?: string;
-    typeOfDuration?: string;
-    errors: ErrorInfo[];
-}
-
-export interface FareStagesAttribute {
-    fareStages: string;
-}
-
-export interface FareStagesAttributeWithErrors {
-    errors: ErrorInfo[];
-}
-
-export interface CsvUploadAttributeWithErrors {
-    errors: ErrorInfo[];
-    poundsOrPence?: string;
 }
 
 export interface DefinePassengerTypeWithErrors extends CompanionInfo {
@@ -560,30 +565,6 @@ export interface GroupPassengerTypesCollection {
     passengerTypes: string[];
 }
 export interface GroupPassengerTypesCollectionWithErrors {
-    errors: ErrorInfo[];
-}
-
-export interface GroupTicketAttribute {
-    maxGroupSize: string;
-}
-
-export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
-    errors: ErrorInfo[];
-}
-
-export interface NumberOfProductsAttribute {
-    numberOfProductsInput: string;
-}
-
-export interface NumberOfProductsAttributeWithErrors {
-    errors: ErrorInfo[];
-}
-
-export interface MultipleProductAttribute {
-    products: MultiProduct[];
-}
-
-export interface MultipleProductAttributeWithErrors extends MultipleProductAttribute {
     errors: ErrorInfo[];
 }
 
@@ -627,10 +608,6 @@ export interface FaresInput {
     locator: string;
 }
 
-export interface PriceEntryError {
-    input: string;
-    locator: string;
-}
 export interface FaresInformation {
     inputs: FaresInput[];
     errorInformation: PriceEntryError[];
@@ -650,18 +627,6 @@ export interface ProductDateInformation {
     endDateYear: string;
 }
 
-export interface SchoolFareTypeAttribute {
-    schoolFareType: string;
-}
-
-export interface MultipleOperatorsAttribute {
-    selectedOperators: Operator[];
-}
-
-export interface MultipleOperatorsAttributeWithErrors extends MultipleOperatorsAttribute {
-    errors: ErrorInfo[];
-}
-
 export interface SelectSalesOfferPackageWithError {
     errors: ErrorInfo[];
     selected: { [key: string]: string[] };
@@ -675,27 +640,27 @@ export interface ServiceWithErrors {
     errors: ErrorInfo[];
 }
 
-export interface ServiceListAttribute {
-    selectedServices: string[];
-}
-
-export interface ServiceListAttributeWithErrors {
-    errors: ErrorInfo[];
-}
-
-export interface ResponseWithLocals extends ServerResponse {
-    locals: {
-        nonce: string;
-        csrfToken: string;
-    };
-}
-
-// auroradb
 export interface ServiceType {
     lineName: string;
     startDate: string;
     description: string;
     serviceCode: string;
+}
+
+export interface ServicesInfo extends ServiceType {
+    checked?: boolean;
+}
+
+export interface ServiceDB {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: JourneyPattern[];
+}
+
+export interface RawService {
+    serviceDescription: string;
+    operatorShortName: string;
+    journeyPatterns: RawJourneyPattern[];
 }
 
 export interface JourneyPattern {
@@ -717,14 +682,51 @@ export interface RawJourneyPattern {
     }[];
 }
 
-export interface ServiceDB {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: JourneyPattern[];
+// Components
+
+export interface ConfirmationElement {
+    name: string;
+    content: string;
+    href: string;
 }
 
-export interface RawService {
-    serviceDescription: string;
-    operatorShortName: string;
-    journeyPatterns: RawJourneyPattern[];
+export interface FareTypeRadio {
+    fareType: string;
+    label: string;
+}
+export interface FareTypeRadioProps {
+    standardFares: FareTypeRadio[];
+    otherFares?: FareTypeRadio[];
+}
+
+export interface RadioWithoutConditionals extends BaseReactElement {
+    value: string;
+    radioButtonHint?: {
+        id: string;
+        content: string;
+    };
+}
+
+export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
+    dataAriaControls: string;
+    inputHint: {
+        id: string;
+        content: string;
+        hidden?: boolean;
+    };
+    inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits';
+    inputs: BaseReactElement[];
+    inputErrors: ErrorInfo[];
+}
+
+export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
+
+export interface RadioConditionalInputFieldset {
+    heading: {
+        id: string;
+        content: string;
+        hidden?: boolean;
+    };
+    radios: RadioButton[];
+    radioError: ErrorInfo[];
 }
