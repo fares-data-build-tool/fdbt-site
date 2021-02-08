@@ -33,6 +33,7 @@ import {
     TimeRestrictionsDefinitionWithErrors,
     FareType,
     FareTypeWithErrors,
+    FareZoneWithErrors,
     GroupPassengerTypesCollection,
     GroupPassengerTypesCollectionWithErrors,
     GroupTicketAttribute,
@@ -96,7 +97,6 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/index';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
-import { FareZoneWithErrors } from '../pages/api/csvZoneUpload';
 
 interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];

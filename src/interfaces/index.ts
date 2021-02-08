@@ -442,6 +442,10 @@ export interface FareZone {
     prices: FareZonePrices[];
 }
 
+export interface FareZoneWithErrors {
+    errors: ErrorInfo[];
+}
+
 export interface FareZonePrices {
     price: string;
     fareZones: string[];
@@ -470,6 +474,7 @@ export interface SalesOfferPackageInfo {
 export interface SalesOfferPackageInfoWithErrors extends SalesOfferPackageInfo {
     errors: ErrorInfo[];
 }
+
 export interface SalesOfferPackage extends SalesOfferPackageInfo {
     name: string;
     description: string;

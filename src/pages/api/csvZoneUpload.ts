@@ -10,10 +10,6 @@ import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 
-export interface FareZone {
-    fareZoneName: string;
-}
-
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
 }
