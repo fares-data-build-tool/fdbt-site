@@ -2,9 +2,8 @@ import dateFormat from 'dateformat';
 import { createPool, Pool } from 'mysql2/promise';
 import awsParamStore from 'aws-param-store';
 import logger from '../utils/logger';
-import { SalesOfferPackage } from '../pages/api/describeSalesOfferPackage';
 import { INTERNAL_NOC } from '../constants';
-import { Operator, ServiceType, RawService, Stop } from '../interfaces';
+import { Operator, ServiceType, RawService, Stop, SalesOfferPackage } from '../interfaces';
 
 interface QueryData {
     operatorShortName: string;

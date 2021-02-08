@@ -256,7 +256,7 @@ describe('userData', () => {
                 session: {
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType },
-                    [FARE_ZONE_ATTRIBUTE]: { fareZoneName: 'Green Lane Shops' },
+                    [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {
@@ -519,7 +519,7 @@ describe('userData', () => {
                 session: {
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
-                    [FARE_ZONE_ATTRIBUTE]: { fareZoneName: 'Green Lane Shops' },
+                    [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {

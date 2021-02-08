@@ -178,7 +178,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
             const fareZoneName = userFareZones[0].FareZoneName;
             await putDataInS3(userFareZones, `${uuid}.json`, true);
-            updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, { fareZoneName });
+            updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
             if (fareType === 'multiOperator') {
                 redirectTo(res, '/searchOperators');

@@ -320,7 +320,7 @@ export const getGeoZoneTicketJson = async (
 
     return {
         ...basePeriodTicketAttributes,
-        zoneName: fareZoneAttribute.fareZoneName,
+        zoneName: fareZoneAttribute,
         stops: zoneStops,
         ...(additionalNocs && { additionalNocs }),
     };
@@ -534,7 +534,7 @@ export const getSchemeOperatorTicketJson = async (
                 : [],
         ticketPeriod: ticketPeriodAttribute,
         products: productDetailsList,
-        zoneName: fareZoneAttribute.fareZoneName,
+        zoneName: fareZoneAttribute,
         stops: zoneStops,
         additionalNocs,
     };
