@@ -15,7 +15,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         if (req.body.periodValid) {
-            const { periodValid, productEndTime } = req.body;
+            const { periodValid } = req.body;
+            let { productEndTime } = req.body;
 
             const daysValidInfo = getSessionAttribute(req, DURATION_VALID_ATTRIBUTE);
             const productDetailsAttribute = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
@@ -39,6 +40,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     redirectTo(res, '/periodValidity');
                     return;
                 }
+            } else {
+                productEndTime = '';
             }
 
             if (!isProductInfo(productDetailsAttribute) || !daysValidInfo) {
