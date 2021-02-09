@@ -172,12 +172,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 setFareZoneAttributeAndRedirect(req, res, errors);
                 return;
             }
-            const fareZoneName = userFareZones[0].FareZoneName.replace('/', '');
+            const fareZoneName = userFareZones[0].FareZoneName;
             const nocCode = getAndValidateNoc(req, res);
             if (!nocCode) {
                 throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
             }
-            await putDataInS3(userFareZones, `fare-zone/${nocCode}/${fareZoneName}-${uuid}.json`, true);
+            await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
             if (fareType === 'multiOperator') {
