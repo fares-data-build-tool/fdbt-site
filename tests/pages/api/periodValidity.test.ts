@@ -93,7 +93,10 @@ describe('periodValidity', () => {
         });
         periodValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, {
+            errors,
+            products: [{ productName: 'Product A', productEndTime: '', productPrice: '1234' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });
@@ -116,7 +119,10 @@ describe('periodValidity', () => {
         });
         periodValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, {
+            errors,
+            products: [{ productName: 'Product A', productEndTime: '2400', productPrice: '1234' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });
@@ -139,7 +145,10 @@ describe('periodValidity', () => {
         });
         periodValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, { errors, products: [] });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, PERIOD_EXPIRY_ATTRIBUTE, {
+            errors,
+            products: [{ productName: 'Product A', productEndTime: 'abcd', productPrice: '1234' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/periodValidity',
         });
