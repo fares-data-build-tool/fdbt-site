@@ -22,6 +22,8 @@ import {
     FullTimeRestrictionAttribute,
     TermTimeAttribute,
     WithErrors,
+    UserAttribute,
+    OperatorAttribute,
 } from '../interfaces/index';
 
 import { FaresInformation } from '../pages/api/priceEntry';
@@ -62,6 +64,9 @@ import {
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     TERM_TIME_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    FORGOT_PASSWORD_ATTRIBUTE,
+    USER_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
 } from '../constants/index';
 
 import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
@@ -91,6 +96,7 @@ import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
 import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
 import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
 import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
+import { ForgotPasswordAttribute } from '../pages/api/forgotPassword';
 
 type SessionAttributeTypes = {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
@@ -133,6 +139,9 @@ type SessionAttributeTypes = {
     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: FullTimeRestrictionAttribute;
     [TERM_TIME_ATTRIBUTE]: TermTimeAttribute | WithErrors<TermTimeAttribute>;
     [SCHOOL_FARE_TYPE_ATTRIBUTE]: SchoolFareTypeAttribute | WithErrors<SchoolFareTypeAttribute>;
+    [FORGOT_PASSWORD_ATTRIBUTE]: ForgotPasswordAttribute | WithErrors<ForgotPasswordAttribute>;
+    [USER_ATTRIBUTE]: UserAttribute | WithErrors<UserAttribute>;
+    [OPERATOR_ATTRIBUTE]: OperatorAttribute | WithErrors<OperatorAttribute>;
 };
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
@@ -149,11 +158,27 @@ export const updateSessionAttribute = <T extends string>(
     attributeName: T,
     attributeValue: SessionAttribute<T> | undefined,
 ): void => {
+    console.log(req.session);
     req.session[attributeName] = attributeValue;
 };
 
+export const regenerateSession = (req: IncomingMessageWithSession): void => {
+    const operatorAttribute = { ...getSessionAttribute(req, OPERATOR_ATTRIBUTE) };
+    console.log('1', req.session.id);
+
+    req.session.regenerate((err: Error) => {
+        if (err) {
+            throw new Error('Could not regenerate session');
+        }
+
+        updateSessionAttribute(req, OPERATOR_ATTRIBUTE, operatorAttribute);
+        console.log('2', req.session.id);
+        console.log(req.session);
+    });
+};
+
 export const destroySession = (req: IncomingMessageWithSession): void => {
-    req.session.destroy(err => {
+    req.session.destroy((err: Error) => {
         if (err) {
             throw new Error('Could not destroy session');
         }

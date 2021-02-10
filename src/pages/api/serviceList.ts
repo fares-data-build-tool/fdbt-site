@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 import { SERVICE_LIST_ATTRIBUTE } from '../../constants';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
@@ -21,10 +20,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const selectAllText = 'Select All Services';
 
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const fareType = getFareTypeFromFromAttributes(req);
 
         const refererUrl = req?.headers?.referer;

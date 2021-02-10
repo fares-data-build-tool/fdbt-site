@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils/index';
 import { PASSENGER_TYPE_ATTRIBUTE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
-import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -20,10 +19,6 @@ export interface PassengerTypeWithErrors {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map(type => type.passengerTypeValue);
 
         if (req.body.passengerType && passengerTypeValues.includes(req.body.passengerType)) {

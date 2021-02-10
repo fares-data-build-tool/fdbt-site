@@ -2,12 +2,7 @@ import { NextApiResponse } from 'next';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
 import { PRODUCT_DETAILS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
-import {
-    isSessionValid,
-    removeExcessWhiteSpace,
-    checkPriceIsValid,
-    checkProductNameIsValid,
-} from './apiUtils/validator';
+import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 const getProductDetails = (productDetailsNameInput: string, productDetailsPriceInput: string): ProductInfo => {
@@ -24,10 +19,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const errors: ErrorInfo[] = [];
 
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const fareType = getFareTypeFromFromAttributes(req);
 
         const { productDetailsNameInput, productDetailsPriceInput } = req.body;

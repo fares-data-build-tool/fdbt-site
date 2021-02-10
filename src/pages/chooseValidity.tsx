@@ -106,7 +106,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Va
     const productAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     if (!isProductInfo(productAttribute)) {
-        throw new Error('Failed to retrieve productCookie info for choose validity page.');
+        throw new Error('Failed to retrieve productAttribute info for choose validity page.');
     }
 
     if (!isPassengerType(passengerTypeAttribute)) {

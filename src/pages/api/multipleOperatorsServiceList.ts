@@ -4,7 +4,6 @@ import { MultipleOperatorsAttribute } from './searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/index';
 import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
 import { redirectTo, redirectToError } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, ErrorInfo, MultiOperatorInfo } from '../../interfaces';
 
@@ -46,10 +45,6 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const selectAllText = 'Select All Services';
 
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const refererUrl = req?.headers?.referer;
         const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
         const { selectAll } = req.body;

@@ -162,7 +162,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const stageNamesArray: string[] = stageNamesInfo;
 
     if (stageNamesArray.length === 0 && ctx.res) {
-        throw new Error('No stages in cookie data');
+        throw new Error('No stages in session data');
     }
 
     const priceEntryInfo = getSessionAttribute(ctx.req, PRICE_ENTRY_ATTRIBUTE);

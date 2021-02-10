@@ -2,12 +2,6 @@ import { PassengerAttributes } from '../interfaces/index';
 
 // Cookies
 
-export const OPERATOR_COOKIE = 'fdbt-operator';
-
-export const USER_COOKIE = 'fdbt-user';
-
-export const FORGOT_PASSWORD_COOKIE = 'fdbt-reset-password';
-
 export const ID_TOKEN_COOKIE = 'fdbt-id-token';
 
 export const REFRESH_TOKEN_COOKIE = 'fdbt-refresh-token';
@@ -17,6 +11,10 @@ export const DISABLE_AUTH_COOKIE = 'fdbt-disable-auth';
 export const COOKIES_POLICY_COOKIE = 'fdbt-cookies-policy';
 
 export const COOKIE_PREFERENCES_COOKIE = 'fdbt-cookie-preferences-set';
+
+export const CSRF_COOKIE = '_csrf';
+
+export const EXPRESS_SESSION_COOKIE = 'connect.sid';
 
 // Links
 
@@ -97,6 +95,12 @@ export const FULL_TIME_RESTRICTIONS_ATTRIBUTE = 'fdbt-full-time-restrictions-att
 export const TERM_TIME_ATTRIBUTE = 'fdbt-term-time';
 
 export const SCHOOL_FARE_TYPE_ATTRIBUTE = 'fdbt-school-fare-type';
+
+export const FORGOT_PASSWORD_ATTRIBUTE = 'fdbt-reset-password';
+
+export const USER_ATTRIBUTE = 'fdbt-user';
+
+export const OPERATOR_ATTRIBUTE = 'fdbt-operator';
 
 // Other
 

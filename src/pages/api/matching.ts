@@ -3,7 +3,6 @@ import { updateSessionAttribute, getSessionAttribute } from '../../utils/session
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { BasicService, NextApiRequestWithSession } from '../../interfaces';
 import { UserFareStages } from '../../data/s3';
-import { isSessionValid } from './apiUtils/validator';
 import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { MatchingWithErrors, MatchingInfo } from '../../interfaces/matchingInterface';
@@ -11,10 +10,6 @@ import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         if (!req.body.service || !req.body.userfarestages) {
             throw new Error('No service or userfarestages info found');
         }

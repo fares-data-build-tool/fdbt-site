@@ -70,17 +70,6 @@ describe('returnValidity', () => {
         });
     });
 
-    it('should throw an error and redirect to the error page when the session is invalid', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        await returnValidity(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
     it('should set the RETURN_VALIDITY_ATTRIBUTE and redirect to /selectSalesOfferPackage when no errors are found and validity info is entered', async () => {
         const mockPassengerTypeDetails = {
             amount: '6',

@@ -2,17 +2,13 @@ import { NextApiResponse } from 'next';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DURATION_VALID_ATTRIBUTE } from '../../constants';
 import { redirectToError, redirectTo } from './apiUtils';
-import { isSessionValid, isValid24hrTimeFormat } from './apiUtils/validator';
+import { isValid24hrTimeFormat } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, ProductData } from '../../interfaces';
 import { isProductInfo } from '../productDetails';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const errors: ErrorInfo[] = [];
-
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
 
         if (req.body.periodValid) {
             const { periodValid, productEndTime } = req.body;

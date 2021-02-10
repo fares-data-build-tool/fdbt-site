@@ -71,20 +71,6 @@ describe('howManyProducts', () => {
         });
     });
 
-    it('should return 302 redirect to /error when session is not valid', () => {
-        const mockWriteHeadFn = jest.fn();
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: {},
-            uuid: {},
-            mockWriteHeadFn,
-        });
-        howManyProducts(req, res);
-        expect(mockWriteHeadFn).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
     it('should set the NUMBER_OF_PRODUCTS_ATTRIBUTE when redirecting to /howManyProducts (i.e. itself) to allow errors to be displayed', () => {
         const mockBody = { numberOfProductsInput: '' };
         const { req, res } = getMockRequestAndResponse({

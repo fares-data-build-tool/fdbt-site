@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
@@ -23,10 +22,6 @@ export const getErrors = (inputAsNumber: number): ErrorInfo[] => {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const { numberOfProductsInput = '' } = req.body;
         const numberOfProducts = Number(numberOfProductsInput);
         const errors = getErrors(numberOfProducts);

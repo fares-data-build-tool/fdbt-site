@@ -43,7 +43,7 @@ describe('Choose Validity Page', () => {
         it('should throw an error if the PRODUCT_DETAILS_ATTRIBUTE cannot be found', () => {
             const ctx = getMockContext({ session: { [PRODUCT_DETAILS_ATTRIBUTE]: null } });
             expect(() => getServerSideProps(ctx)).toThrow(
-                'Failed to retrieve productCookie info for choose validity page.',
+                'Failed to retrieve productAttribute info for choose validity page.',
             );
         });
 

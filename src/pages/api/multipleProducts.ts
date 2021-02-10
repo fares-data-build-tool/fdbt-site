@@ -8,7 +8,6 @@ import {
 import { redirectToError, redirectTo } from './apiUtils';
 
 import {
-    isSessionValid,
     removeExcessWhiteSpace,
     checkProductNameIsValid,
     checkPriceIsValid,
@@ -48,7 +47,7 @@ export interface MultiProductWithErrors extends MultiProduct {
     productDurationUnitsError?: string;
 }
 
-export const getErrorsForCookie = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
+export const getErrorsForSession = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
 
     validationResult.forEach(product => {
@@ -174,9 +173,6 @@ export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduc
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
         const numberOfProducts = Number(
             (getSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute).numberOfProductsInput,
         );
@@ -211,7 +207,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const fullValidationResult = checkProductDurationTypesAreValid(productDurationResult);
 
         if (containsErrors(fullValidationResult)) {
-            const errors: ErrorInfo[] = getErrorsForCookie(fullValidationResult);
+            const errors: ErrorInfo[] = getErrorsForSession(fullValidationResult);
             updateSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE, { errors, products: multipleProducts });
             redirectTo(res, '/multipleProducts');
             return;

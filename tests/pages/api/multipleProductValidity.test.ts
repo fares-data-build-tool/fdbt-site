@@ -65,18 +65,4 @@ describe('multipleProductValidity', () => {
             errors: mockErrors,
         });
     });
-
-    it('should redirect to the error page if a required cookie is missing', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: { 'validity-row0': 'endOfCalendarDay' },
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        multipleProductValidity(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
 });

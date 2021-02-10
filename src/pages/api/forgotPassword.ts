@@ -1,15 +1,30 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { FORGOT_PASSWORD_COOKIE } from '../../constants/index';
-import { setCookieOnResponseObject, redirectTo, redirectToError, checkEmailValid } from './apiUtils';
+import { NextApiResponse } from 'next';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../../constants/index';
+import { redirectTo, redirectToError, checkEmailValid } from './apiUtils';
 import { forgotPassword } from '../../data/cognito';
+import { updateSessionAttribute } from '../../utils/sessions';
+import { NextApiRequestWithSession } from '../../interfaces';
 
-export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+export interface ForgotPasswordAttribute {
+    email: string;
+}
+
+const errorId = 'email';
+
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { email } = req.body;
 
         if (!email || !email.trim().length) {
-            const cookieContent = JSON.stringify({ email, error: 'Enter your email address' });
-            setCookieOnResponseObject(FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, {
+                email,
+                errors: [
+                    {
+                        errorMessage: 'Enter your email address',
+                        id: errorId,
+                    },
+                ],
+            });
             redirectTo(res, '/forgotPassword');
             return;
         }
@@ -17,15 +32,20 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         if (checkEmailValid(email)) {
             await forgotPassword(email);
 
-            const cookieContent = JSON.stringify({ email });
-            setCookieOnResponseObject(FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, {
+                email,
+            });
             redirectTo(res, '/resetConfirmation');
         } else {
-            const cookieContent = JSON.stringify({
+            updateSessionAttribute(req, FORGOT_PASSWORD_ATTRIBUTE, {
                 email,
-                error: 'Invalid email format - Enter a valid email address',
+                errors: [
+                    {
+                        errorMessage: 'Invalid email format - Enter a valid email address',
+                        id: errorId,
+                    },
+                ],
             });
-            setCookieOnResponseObject(FORGOT_PASSWORD_COOKIE, cookieContent, req, res);
             redirectTo(res, '/forgotPassword');
         }
     } catch (error) {

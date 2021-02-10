@@ -410,3 +410,15 @@ export interface TimeInput {
     day: string;
 }
 export interface ProductDetails extends Product, BaseProduct {}
+
+export interface UserAttribute {
+    redirectFrom?: string;
+}
+
+export interface OperatorAttribute {
+    name?: string;
+    region?: string;
+    nocCode?: string;
+    uuid?: string;
+    email?: string;
+}

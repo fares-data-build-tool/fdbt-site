@@ -2,7 +2,6 @@ import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { STAGE_NAMES_ATTRIBUTE } from '../../constants/index';
-import { isSessionValid } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
 import { InputCheck } from '../stageNames';
 
@@ -41,10 +40,6 @@ export const isStageNameValid = (req: NextApiRequestWithSession): InputCheck[] =
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         const stageNames: string[] = req.body.stageNameInput;
 
         if (!stageNames || stageNames.length === 0) {

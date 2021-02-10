@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { isSessionValid, removeAllWhiteSpace } from './apiUtils/validator';
+import { removeAllWhiteSpace } from './apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -58,9 +58,6 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
         const chosenDays = (getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE) as TimeRestriction)
             .validDays;
 

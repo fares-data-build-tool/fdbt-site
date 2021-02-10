@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
 import { getServicesByNocCode, ServiceType } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
-import { PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants';
 
 jest.mock('../../src/data/auroradb');
 
@@ -75,7 +75,7 @@ describe('pages', () => {
             expect(operatorServices.at(2).text()).toBe('Infinity Line - Start date 07/02/2020');
         });
 
-        it('returns operator value and list of services when operator cookie exists with NOCCode', async () => {
+        it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
             const ctx = getMockContext();
             const result = await getServerSideProps(ctx);
             expect(result).toEqual({
@@ -131,7 +131,7 @@ describe('pages', () => {
             const mockEndFn = jest.fn();
 
             const ctx = getMockContext({
-                cookies: { operator: null },
+                session: { [OPERATOR_ATTRIBUTE]: undefined },
                 body: null,
                 uuid: {},
                 mockWriteHeadFn,
@@ -156,7 +156,7 @@ describe('pages', () => {
             });
 
             await expect(getServerSideProps(ctx)).rejects.toThrow(
-                'Could not render the service selection page. Necessary cookies not found.',
+                'Could not render the service selection page. Necessary attributes not found.',
             );
         });
     });

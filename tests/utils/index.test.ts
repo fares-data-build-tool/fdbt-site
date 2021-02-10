@@ -11,6 +11,7 @@ import {
 
 import { Stop } from '../../src/data/auroradb';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
+import { OPERATOR_ATTRIBUTE } from '../../src/constants';
 
 describe('index', () => {
     describe('getHost', () => {
@@ -119,8 +120,10 @@ describe('index', () => {
         it('should return the scheme operator region code when the logged in user is a scheme operator', () => {
             const ctx = getMockContext({
                 cookies: {
-                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                     idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                 },
             });
             const region = getAndValidateSchemeOpRegion(ctx);
@@ -133,7 +136,7 @@ describe('index', () => {
             expect(region).toEqual(null);
         });
 
-        it('should throw an error when the idToken and OPERATOR_COOKIE do not match', () => {
+        it('should throw an error when the idToken and OPERATOR_ATTRIBUTE do not match', () => {
             const ctx = getMockContext({ cookies: { idToken: mockSchemOpIdToken } });
             expect(() => getAndValidateSchemeOpRegion(ctx)).toThrow();
         });
@@ -143,8 +146,10 @@ describe('index', () => {
         it('should return true when the user logged in is a scheme operator', () => {
             const ctx = getMockContext({
                 cookies: {
-                    operator: { operator: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                     idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: { name: 'SCHEME_OPERATOR', region: 'SCHEME_REGION' },
                 },
             });
             const res = isSchemeOperator(ctx);

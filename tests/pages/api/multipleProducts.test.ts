@@ -2,7 +2,7 @@ import multipleProduct, {
     checkProductPricesAreValid,
     checkProductDurationsAreValid,
     containsErrors,
-    getErrorsForCookie,
+    getErrorsForSession,
     checkProductNamesAreValid,
     checkProductDurationTypesAreValid,
 } from '../../../src/pages/api/multipleProducts';
@@ -124,14 +124,14 @@ describe('multipleProducts', () => {
         expect(writeHeadMock).toBeCalledWith(302, expectedLocation);
     });
 
-    describe('getErrorsForCookie', () => {
+    describe('getErrorsForSession', () => {
         it('returns an empty array if a product list has no errors', () => {
-            const errors = getErrorsForCookie(multipleProducts);
+            const errors = getErrorsForSession(multipleProducts);
             expect(errors).toEqual([]);
         });
 
         it('returns an error info array if a product list has errors', () => {
-            const errors = getErrorsForCookie(multipleProductsWithErrors);
+            const errors = getErrorsForSession(multipleProductsWithErrors);
             expect(errors.length).toBe(2);
         });
     });

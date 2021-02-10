@@ -59,16 +59,4 @@ describe('fareType', () => {
             Location: '/fareType',
         });
     });
-
-    it('should return 302 redirect to /error when session is not valid', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: null,
-            mockWriteHeadFn: writeHeadMock,
-        });
-        fareType(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
 });

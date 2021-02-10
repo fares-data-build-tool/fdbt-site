@@ -2,8 +2,6 @@ import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../constants/index';
-
-import { isSessionValid } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export interface FareType {
@@ -16,10 +14,6 @@ export interface FareTypeWithErrors {
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('session is invalid.');
-        }
-
         if (req.body.fareType) {
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType: req.body.fareType,

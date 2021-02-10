@@ -30,7 +30,7 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
-    OPERATOR_COOKIE,
+    OPERATOR_ATTRIBUTE,
 } from '../constants';
 import { isFareType } from '../interfaces/typeGuards';
 import { Service } from './api/service';
@@ -38,7 +38,7 @@ import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfa
 import { ServiceListAttribute } from './api/serviceList';
 import { NumberOfProductsAttribute } from './api/howManyProducts';
 import { MultipleProductAttribute, MultiProduct } from './api/multipleProducts';
-import { getCookieValue, getCsrfToken, sentenceCaseString } from '../utils';
+import { getCsrfToken, sentenceCaseString } from '../utils';
 import { SchoolFareTypeAttribute } from './api/schoolFareType';
 import { MultipleOperatorsAttribute } from './api/searchOperators';
 
@@ -195,8 +195,8 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             href: 'csvZoneUpload',
         });
     } else if (!zone) {
-        const opInfo = getCookieValue(ctx, OPERATOR_COOKIE);
-        const opName = opInfo ? `${JSON.parse(opInfo).name} ` : '';
+        const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
+        const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         confirmationElements.push({
             name: `${opName}${opName ? 's' : 'S'}ervices`,
             content: `${services.map(service => service.split('#')[0]).join(', ')}`,

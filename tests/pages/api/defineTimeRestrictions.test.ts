@@ -11,19 +11,6 @@ describe('defineTimeRestrictions', () => {
         jest.resetAllMocks();
     });
 
-    it('should throw an error and redirect to the error page when the session is invalid', () => {
-        const { req, res } = getMockRequestAndResponse({
-            cookieValues: { operator: null },
-            body: {},
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-        });
-        defineTimeRestrictions(req, res);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/error',
-        });
-    });
-
     it('should throw an error and redirect to the error page when the FARE_TYPE_ATTRIBUTE is missing', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
@@ -47,7 +34,6 @@ describe('defineTimeRestrictions', () => {
             validDays: ['tuesday'],
         };
         const { req, res } = getMockRequestAndResponse({
-            cookieValues: { fareType: 'single' },
             body: mockReqBody,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,

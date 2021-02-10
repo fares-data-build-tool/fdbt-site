@@ -2,7 +2,6 @@ import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/index';
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
-import { isSessionValid } from './apiUtils/validator';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
 import { isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -58,10 +57,6 @@ export const checkUserInput = async (
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        if (!isSessionValid(req, res)) {
-            throw new Error('Session is invalid.');
-        }
-
         const salesOfferPackageParams = getSessionAttribute(req, SOP_INFO_ATTRIBUTE);
         if (!salesOfferPackageParams || isSalesOfferPackageInfoWithErrors(salesOfferPackageParams)) {
             throw new Error('SOP_INFO_ATTRIBUTE is missing or in the wrong format');
