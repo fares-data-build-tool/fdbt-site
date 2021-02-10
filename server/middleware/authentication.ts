@@ -10,8 +10,8 @@ import {
     COOKIE_PREFERENCES_COOKIE,
     COOKIES_POLICY_COOKIE,
     oneYearInSeconds,
-    OPERATOR_ATTRIBUTE,
 } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { CognitoIdToken, CookiePolicy } from '../../src/interfaces';
 import { globalSignOut, initiateRefreshAuth } from '../../src/data/cognito';
 import logger from '../../src/utils/logger';

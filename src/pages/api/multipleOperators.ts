@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
-import { OPERATOR_ATTRIBUTE } from '../../constants';
+import { OPERATOR_ATTRIBUTE } from '../../constants/attributes';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {

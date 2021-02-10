@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { USER_ATTRIBUTE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants/attributes';
 import { NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 

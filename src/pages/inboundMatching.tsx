@@ -1,5 +1,10 @@
 import React, { ReactElement } from 'react';
-import { SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants';
+import {
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    INBOUND_MATCHING_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../constants/attributes';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../data/auroradb';
 import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';

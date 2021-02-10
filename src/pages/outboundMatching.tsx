@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { batchGetStopsByAtcoCode, getServiceByNocCodeAndLineName } from '../data/auroradb';
-import { JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants';
+import { JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants/attributes';
 import { getUserFareStages } from '../data/s3';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';
 import MatchingBase from '../components/MatchingBase';

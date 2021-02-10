@@ -2,7 +2,11 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import MultiProductValidity, { getServerSideProps } from '../../src/pages/multipleProductValidity';
 import { getMockContext } from '../testData/mockData';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants';
+import {
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('multipleProductValidity', () => {

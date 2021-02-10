@@ -5,7 +5,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSearchOperatorsByNocRegion, getSearchOperatorsBySchemeOpRegion } from '../data/auroradb';
 import { getAndValidateNoc, getAndValidateSchemeOpRegion, getCsrfToken, isSchemeOperator } from '../utils';
 import { removeExcessWhiteSpace } from './api/apiUtils/validator';

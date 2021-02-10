@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/index';
-import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession, MultiOperatorInfo, MultipleOperatorsAttribute } from '../../interfaces';
+import { isMultiOperatorInfoWithErrors } from '../../interfaces/typeGuards';
 
 const errorId = 'checkbox-0';
 

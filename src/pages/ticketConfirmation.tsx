@@ -39,7 +39,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import { isFareType } from '../interfaces/typeGuards';
 import { MatchingInfo, MatchingFareZones, InboundMatchingInfo } from '../interfaces/matchingInterface';
 import { getCsrfToken, sentenceCaseString } from '../utils';

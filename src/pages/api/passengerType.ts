@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils/index';
-import { PASSENGER_TYPE_ATTRIBUTE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
+import { PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
+import { PASSENGER_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 

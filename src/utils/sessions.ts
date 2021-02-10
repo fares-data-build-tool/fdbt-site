@@ -102,7 +102,10 @@ import {
     FORGOT_PASSWORD_ATTRIBUTE,
     USER_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
-} from '../constants/index';
+} from '../constants/attributes';
+
+import * as attributes from '../constants/attributes';
+
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
 
 interface SessionAttributeTypes {
@@ -169,14 +172,12 @@ export const updateSessionAttribute = <T extends string>(
 };
 
 export const regenerateSession = (req: IncomingMessageWithSession): void => {
-    const operatorAttribute = { ...getSessionAttribute(req, OPERATOR_ATTRIBUTE) };
+    const attributesList = Object.values(attributes) as string[];
 
-    req.session.regenerate((err: Error) => {
-        if (err) {
-            throw new Error('Could not regenerate session');
+    Object.keys(req.session).forEach(attribute => {
+        if (attributesList.includes(attribute) && attribute !== OPERATOR_ATTRIBUTE) {
+            updateSessionAttribute(req, attribute, undefined);
         }
-
-        updateSessionAttribute(req, OPERATOR_ATTRIBUTE, operatorAttribute);
     });
 };
 

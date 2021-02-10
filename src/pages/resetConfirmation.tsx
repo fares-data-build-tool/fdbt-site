@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from '../utils/sessions';
 import { NextPageContextWithSession } from '../interfaces';
 

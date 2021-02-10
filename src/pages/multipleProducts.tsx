@@ -6,7 +6,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';

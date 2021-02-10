@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { FORGOT_PASSWORD_ATTRIBUTE } from '../../constants/index';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError, checkEmailValid } from './apiUtils';
 import { forgotPassword } from '../../data/cognito';
 import { updateSessionAttribute } from '../../utils/sessions';

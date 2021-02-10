@@ -3,7 +3,7 @@ import { removeAllWhiteSpace } from './apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction } from '../../interfaces';
 import { redirectToError, redirectTo } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants';
+import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
 
 export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
 

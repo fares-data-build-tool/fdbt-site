@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
-import { SERVICE_LIST_ATTRIBUTE } from '../../constants';
+import { SERVICE_LIST_ATTRIBUTE } from '../../constants/attributes';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
 

@@ -10,7 +10,7 @@ import {
 } from '../../src/utils';
 import { Stop } from '../../src/interfaces';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
-import { OPERATOR_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('index', () => {
     describe('getHost', () => {

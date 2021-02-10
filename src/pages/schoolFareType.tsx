@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { SCHOOL_FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants';
+import { SCHOOL_FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';

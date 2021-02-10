@@ -1,7 +1,7 @@
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils/index';
 import chooseStages, { isInvalidFareStageNumber } from '../../../src/pages/api/chooseStages';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { FARE_STAGES_ATTRIBUTE } from '../../../src/constants';
+import { FARE_STAGES_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 
 describe('chooseStages', () => {

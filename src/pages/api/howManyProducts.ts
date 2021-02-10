@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';

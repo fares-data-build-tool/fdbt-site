@@ -5,7 +5,7 @@ import returnValidity, {
     formatRequestBody,
 } from '../../../src/pages/api/returnValidity';
 import * as sessions from '../../../src/utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../../../src/constants';
+import { RETURN_VALIDITY_ATTRIBUTE } from '../../../src/constants/attributes';
 import { ErrorInfo } from '../../../src/interfaces';
 
 describe('returnValidity', () => {

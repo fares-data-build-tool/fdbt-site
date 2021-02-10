@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces/index';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { DURATION_VALID_ATTRIBUTE } from '../../constants/index';
+import { DURATION_VALID_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
 
 export const isInvalidValidityNumber = (validityInput: number): boolean => {

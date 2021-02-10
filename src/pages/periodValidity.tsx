@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants';
+import { PERIOD_EXPIRY_ATTRIBUTE } from '../constants/attributes';
 import {
     ErrorInfo,
     NextPageContextWithSession,

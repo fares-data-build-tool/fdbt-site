@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import FareType, { buildUuid, getServerSideProps } from '../../src/pages/fareType';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { getServicesByNocCode } from '../../src/data/auroradb';
-import { OPERATOR_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb');
 

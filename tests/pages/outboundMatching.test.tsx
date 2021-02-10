@@ -13,7 +13,7 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import OutboundMatching, { getServerSideProps } from '../../src/pages/outboundMatching';
-import { JOURNEY_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants';
+import { JOURNEY_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');

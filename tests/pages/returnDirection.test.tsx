@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
 import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 

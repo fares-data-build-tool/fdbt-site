@@ -6,7 +6,6 @@ import { decode } from 'jsonwebtoken';
 import startCase from 'lodash/startCase';
 import toLower from 'lodash/toLower';
 import {
-    OPERATOR_ATTRIBUTE,
     ID_TOKEN_COOKIE,
     REFRESH_TOKEN_COOKIE,
     DISABLE_AUTH_COOKIE,
@@ -15,6 +14,7 @@ import {
     CSRF_COOKIE,
     EXPRESS_SESSION_COOKIE,
 } from '../constants/index';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from './sessions';
 import {
     ErrorInfo,

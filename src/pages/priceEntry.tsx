@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import ErrorSummary from '../components/ErrorSummary';
 import { FullColumnLayout } from '../layout/Layout';
-import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants';
+import { STAGE_NAMES_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../constants/attributes';
 import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, NextPageContextWithSession, FaresInformation } from '../interfaces';
 import { isInputCheck } from '../interfaces/typeGuards';

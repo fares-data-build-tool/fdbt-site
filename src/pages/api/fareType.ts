@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../constants/index';
+import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {

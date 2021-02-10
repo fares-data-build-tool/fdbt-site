@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
 import { BasicService, NextApiRequestWithSession, UserFareStages } from '../../interfaces';
-import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants';
+import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
 import { getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { MatchingWithErrors, MatchingInfo } from '../../interfaces/matchingInterface';
 import { isFareType } from '../../interfaces/typeGuards';

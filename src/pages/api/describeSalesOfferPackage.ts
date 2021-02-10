@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
-import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/index';
+import { SOP_ATTRIBUTE, SOP_INFO_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { NextApiRequestWithSession, ErrorInfo, SalesOfferPackage, SalesOfferPackageWithErrors } from '../../interfaces';
 import { isSalesOfferPackageWithErrors } from '../describeSalesOfferPackage';

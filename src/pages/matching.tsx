@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants/attributes';
 import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../data/auroradb';
 import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
 import { getUserFareStages } from '../data/s3';

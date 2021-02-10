@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import csvParse from 'csv-parse/lib/sync';
-import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/index';
+import { FARE_TYPE_ATTRIBUTE, FARE_ZONE_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getUuidFromSession, redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { putDataInS3 } from '../../data/s3';

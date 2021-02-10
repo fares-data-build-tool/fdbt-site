@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { FARE_STAGES_ATTRIBUTE } from '../../constants/index';
+import { FARE_STAGES_ATTRIBUTE } from '../../constants/attributes';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession, FareStagesAttributeWithErrors } from '../../interfaces';

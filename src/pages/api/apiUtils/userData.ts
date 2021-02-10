@@ -27,12 +27,12 @@ import {
     isSchemeOperatorTicket,
     MultipleProductAttribute,
 } from '../../../interfaces';
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
 import {
     TERM_TIME_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-    ID_TOKEN_COOKIE,
     INBOUND_MATCHING_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
@@ -41,14 +41,13 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
-    MATCHING_DATA_BUCKET_NAME,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
-} from '../../../constants/index';
+} from '../../../constants/attributes';
 
 import {
     isProductWithSalesOfferPackages,

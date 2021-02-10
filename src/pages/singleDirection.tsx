@@ -1,7 +1,12 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import {
+    OPERATOR_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    JOURNEY_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+} from '../constants/attributes';
 import { getServiceByNocCodeAndLineName } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';

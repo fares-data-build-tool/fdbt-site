@@ -3,7 +3,7 @@ import register, { operatorHasTndsData } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { USER_ATTRIBUTE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants/attributes';
 import { getServicesByNocCode } from '../../../src/data/auroradb';
 import * as sessions from '../../../src/utils/sessions';
 

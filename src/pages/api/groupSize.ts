@@ -1,12 +1,12 @@
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
 import {
-    NextApiRequestWithSession,
     ErrorInfo,
     GroupTicketAttribute,
     GroupTicketAttributeWithErrors,
+    NextApiRequestWithSession,
 } from '../../interfaces';
-import { GROUP_SIZE_ATTRIBUTE } from '../../constants';
+import { GROUP_SIZE_ATTRIBUTE } from '../../constants/attributes';
 import { removeAllWhiteSpace } from './apiUtils/validator';
 import { redirectToError, redirectTo } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';

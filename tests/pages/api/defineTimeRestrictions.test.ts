@@ -1,6 +1,6 @@
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../../../src/constants/attributes';
 import { TimeRestriction } from '../../../src/interfaces';
 import defineTimeRestrictions from '../../../src/pages/api/defineTimeRestrictions';
 

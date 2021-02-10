@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
 import SearchOperators, { getServerSideProps, SearchOperatorProps } from '../../src/pages/searchOperators';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants';
+import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo, Operator } from '../../src/interfaces';
 
 describe('pages', () => {

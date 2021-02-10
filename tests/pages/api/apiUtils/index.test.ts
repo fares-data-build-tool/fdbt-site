@@ -20,7 +20,7 @@ import {
     OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-} from '../../../../src/constants';
+} from '../../../../src/constants/attributes';
 import * as sessions from '../../../../src/utils/sessions';
 
 describe('apiUtils', () => {

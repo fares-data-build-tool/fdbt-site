@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { USER_ATTRIBUTE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';

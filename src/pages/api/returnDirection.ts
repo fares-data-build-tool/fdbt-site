@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { getUuidFromSession, redirectTo, redirectToError } from './apiUtils/index';
-import { JOURNEY_ATTRIBUTE } from '../../constants';
+import { JOURNEY_ATTRIBUTE } from '../../constants/attributes';
 import { inboundErrorId, outboundErrorId } from '../returnDirection';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';

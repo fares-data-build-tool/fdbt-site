@@ -1,5 +1,5 @@
 import * as sessions from '../../../src/utils/sessions';
-import { STAGE_NAMES_ATTRIBUTE } from '../../../src/constants';
+import { STAGE_NAMES_ATTRIBUTE } from '../../../src/constants/attributes';
 import stageNames, { isStageNameValid } from '../../../src/pages/api/stageNames';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 

@@ -4,7 +4,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-} from '../../constants/index';
+} from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
 
 import {

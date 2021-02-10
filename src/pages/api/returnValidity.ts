@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { redirectToError, redirectTo } from './apiUtils/index';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { RETURN_VALIDITY_ATTRIBUTE } from '../../constants';
+import { RETURN_VALIDITY_ATTRIBUTE } from '../../constants/attributes';
 
 const radioButtonError = 'Choose one of the options below';
 const textInputError = 'Enter a whole number greater than zero';

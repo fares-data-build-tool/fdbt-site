@@ -7,7 +7,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-} from '../../constants/index';
+} from '../../constants/attributes';
 
 import {
     redirectTo,

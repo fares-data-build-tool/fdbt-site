@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { isValid24hrTimeFormat, removeExcessWhiteSpace } from './apiUtils/validator';
 import { redirectTo, redirectToError } from './apiUtils';
 import { ErrorInfo, NextApiRequestWithSession, MultiProduct } from '../../interfaces';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/index';
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {

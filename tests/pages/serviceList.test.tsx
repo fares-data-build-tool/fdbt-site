@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import ServiceList, { getServerSideProps } from '../../src/pages/serviceList';
 import { getMockContext } from '../testData/mockData';
 import { getServicesByNocCode } from '../../src/data/auroradb';
-import { OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');

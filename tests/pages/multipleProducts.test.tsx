@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import MultipleProducts, { getServerSideProps } from '../../src/pages/multipleProducts';
 import { getMockContext } from '../testData/mockData';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('multipleProduct', () => {

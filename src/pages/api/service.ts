@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { getUuidFromSession, redirectToError, redirectTo } from './apiUtils/index';
-import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/index';
+import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType } from '../../interfaces/typeGuards';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';

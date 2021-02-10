@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { ProductInfo, ErrorInfo, NextApiRequestWithSession, Product, ProductData } from '../../interfaces';
-import { PRODUCT_DETAILS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import { removeExcessWhiteSpace, checkPriceIsValid, checkProductNameIsValid } from './apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 

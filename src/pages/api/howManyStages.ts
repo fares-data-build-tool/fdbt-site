@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo } from './apiUtils/index';
-import { NUMBER_OF_STAGES_ATTRIBUTE } from '../../constants/index';
+import { NUMBER_OF_STAGES_ATTRIBUTE } from '../../constants/attributes';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
 

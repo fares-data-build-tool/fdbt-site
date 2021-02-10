@@ -2,6 +2,26 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
+import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
+import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    STAGE_NAMES_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    INPUT_METHOD_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_STAGES_ATTRIBUTE,
+} from '../../src/constants/attributes';
+import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
+import { TextInputFieldset } from '../../src/pages/definePassengerType';
 import {
     FullTimeRestrictionAttribute,
     FullTimeRestriction,
@@ -22,33 +42,12 @@ import {
     RawService,
     ServiceDB,
     RadioWithConditionalInputs,
-    RadioConditionalInputFieldset,
     UserFareStages,
+    RadioConditionalInputFieldset,
     MultiProduct,
     MultiProductWithErrors,
 } from '../../src/interfaces';
 import { defaultSalesOfferPackageOne, defaultSalesOfferPackageTwo } from '../../src/pages/selectSalesOfferPackage';
-import {
-    SALES_OFFER_PACKAGES_ATTRIBUTE,
-    STAGE_NAMES_ATTRIBUTE,
-    DURATION_VALID_ATTRIBUTE,
-    SERVICE_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    OPERATOR_ATTRIBUTE,
-    PRODUCT_DETAILS_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
-    ID_TOKEN_COOKIE,
-    FARE_TYPE_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
-    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    FARE_STAGES_ATTRIBUTE,
-    COOKIES_POLICY_COOKIE,
-} from '../../src/constants/index';
-import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
-import { TextInputFieldset } from '../../src/pages/definePassengerType';
 
 interface GetMockContextInput {
     session?: { [key: string]: any };

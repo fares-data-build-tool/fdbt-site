@@ -3,7 +3,7 @@ import upperFirst from 'lodash/upperFirst';
 import { ErrorInfo, NextPageContextWithSession, ServiceType } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
 import { getServicesByNocCode } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';

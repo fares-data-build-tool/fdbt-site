@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, JOURNEY_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../constants/attributes';
 import { getServiceByNocCodeAndLineName } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import ErrorSummary from '../components/ErrorSummary';

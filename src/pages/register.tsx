@@ -6,7 +6,7 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { redirectTo } from './api/apiUtils';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
-import { USER_ATTRIBUTE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants/attributes';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 

@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import schoolFareType from '../../../src/pages/api/schoolFareType';
 import * as sessions from '../../../src/utils/sessions';
-import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { ErrorInfo } from '../../../src/interfaces';
 
 describe('schoolFareType', () => {

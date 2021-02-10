@@ -11,7 +11,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-} from '../../../src/constants';
+} from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 import { CompanionInfo, GroupPassengerTypesCollection, GroupTicketAttribute } from '../../../src/interfaces';
 

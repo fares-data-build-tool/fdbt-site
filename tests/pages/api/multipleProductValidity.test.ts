@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import multipleProductValidity from '../../../src/pages/api/multipleProductValidity';
 import * as sessions from '../../../src/utils/sessions';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants';
+import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('multipleProductValidity', () => {
     const writeHeadMock = jest.fn();

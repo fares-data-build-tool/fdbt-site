@@ -1,6 +1,6 @@
 import resetPassword from '../../../src/pages/api/resetPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { USER_ATTRIBUTE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as auth from '../../../src/data/cognito';
 import * as sessions from '../../../src/utils/sessions';
 

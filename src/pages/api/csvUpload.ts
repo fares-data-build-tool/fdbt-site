@@ -4,7 +4,7 @@ import Papa from 'papaparse';
 import { putDataInS3 } from '../../data/s3';
 import { NextApiRequestWithSession, ErrorInfo, UserFareStages } from '../../interfaces';
 import { redirectToError, redirectTo, getUuidFromSession } from './apiUtils';
-import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants';
+import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, CSV_UPLOAD_ATTRIBUTE } from '../../constants/attributes';
 import { getFormData, processFileUpload } from './apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';

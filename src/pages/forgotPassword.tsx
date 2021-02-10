@@ -6,7 +6,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../constants/attributes';
 import { isWithErrors } from '../interfaces/typeGuards';
 
 const title = 'Forgot Password - Create Fares Data Service';

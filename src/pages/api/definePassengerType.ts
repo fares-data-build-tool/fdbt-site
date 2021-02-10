@@ -10,7 +10,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-} from '../../constants/index';
+} from '../../constants/attributes';
 import {
     CompanionInfo,
     ErrorInfo,

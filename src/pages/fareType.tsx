@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
-import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, INTERNAL_NOC, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants';
+import { INTERNAL_NOC } from '../constants';
+import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';

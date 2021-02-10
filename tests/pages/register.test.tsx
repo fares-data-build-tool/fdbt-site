@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Register, { getServerSideProps } from '../../src/pages/register';
 import { getMockContext } from '../testData/mockData';
-import { USER_ATTRIBUTE } from '../../src/constants';
+import { USER_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo } from '../../src/interfaces';
 
 describe('pages', () => {

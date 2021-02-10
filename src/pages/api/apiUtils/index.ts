@@ -3,15 +3,13 @@ import zxcvbn from 'zxcvbn';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { decode } from 'jsonwebtoken';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../../constants';
 import {
     OPERATOR_ATTRIBUTE,
-    ID_TOKEN_COOKIE,
-    REFRESH_TOKEN_COOKIE,
     FARE_TYPE_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
-    DISABLE_AUTH_COOKIE,
-} from '../../../constants';
+} from '../../../constants/attributes';
 import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';

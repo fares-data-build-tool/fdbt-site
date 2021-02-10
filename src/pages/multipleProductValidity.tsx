@@ -7,7 +7,7 @@ import {
     OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';

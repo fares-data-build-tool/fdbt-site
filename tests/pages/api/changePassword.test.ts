@@ -1,7 +1,7 @@
 import changePassword from '../../../src/pages/api/changePassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
-import { USER_ATTRIBUTE } from '../../../src/constants';
+import { USER_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as auth from '../../../src/data/cognito';
 import * as sessions from '../../../src/utils/sessions';
 

@@ -1,7 +1,8 @@
 import { NextApiResponse } from 'next';
 import { decode } from 'jsonwebtoken';
 import { redirectTo, redirectToError, setCookieOnResponseObject, checkEmailValid } from './apiUtils';
-import { OPERATOR_ATTRIBUTE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
+import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
+import { OPERATOR_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, CognitoIdToken, NextApiRequestWithSession } from '../../interfaces';
 import { getOperatorNameByNocCode } from '../../data/auroradb';
 import { initiateAuth } from '../../data/cognito';

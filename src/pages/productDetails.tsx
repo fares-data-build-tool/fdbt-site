@@ -7,7 +7,7 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
-} from '../constants';
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, ProductData, ProductInfo, ProductInfoWithErrors } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';

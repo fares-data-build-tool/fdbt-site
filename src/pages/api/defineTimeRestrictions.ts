@@ -6,7 +6,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
-} from '../../constants/index';
+} from '../../constants/attributes';
 import { NextApiRequestWithSession, TimeRestriction, TimeRestrictionsDefinitionWithErrors } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { isFareType } from '../../interfaces/typeGuards';

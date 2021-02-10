@@ -6,7 +6,7 @@ import SalesConfirmation, {
     getServerSideProps,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants';
+import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('confirmation', () => {

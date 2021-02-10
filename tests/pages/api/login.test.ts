@@ -4,7 +4,7 @@ import login from '../../../src/pages/api/login';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { OPERATOR_ATTRIBUTE } from '../../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const mockBaseOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
     AuthenticationResult: {

@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError } from './apiUtils';
-import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants';
+import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 

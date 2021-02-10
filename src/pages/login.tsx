@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
-import { OPERATOR_ATTRIBUTE } from '../constants';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getCsrfToken } from '../utils/index';
 import CsrfForm from '../components/CsrfForm';

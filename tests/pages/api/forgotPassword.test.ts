@@ -2,7 +2,7 @@ import * as auth from '../../../src/data/cognito';
 import * as session from '../../../src/utils/sessions';
 import forgotPassword from '../../../src/pages/api/forgotPassword';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import { FORGOT_PASSWORD_ATTRIBUTE } from '../../../src/constants';
+import { FORGOT_PASSWORD_ATTRIBUTE } from '../../../src/constants/attributes';
 
 const writeHeadMock = jest.fn();
 const authSignInSpy = jest.spyOn(auth, 'forgotPassword');

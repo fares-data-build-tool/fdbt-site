@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import multipleOperators from '../../../src/pages/api/multipleOperators';
 import * as sessions from '../../../src/utils/sessions';
-import { OPERATOR_ATTRIBUTE } from '../../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('multipleOperators', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

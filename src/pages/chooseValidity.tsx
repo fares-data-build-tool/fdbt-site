@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
-import { PRODUCT_DETAILS_ATTRIBUTE, DURATION_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
+import { PRODUCT_DETAILS_ATTRIBUTE, DURATION_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants/attributes';
 import CsrfForm from '../components/CsrfForm';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';

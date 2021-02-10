@@ -26,7 +26,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
-} from '../../../../src/constants/index';
+} from '../../../../src/constants/attributes';
 import {
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageTwo,

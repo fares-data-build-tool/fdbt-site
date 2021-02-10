@@ -8,9 +8,9 @@ import {
     SelectSalesOfferPackageWithError,
 } from '../../interfaces';
 import { redirectTo, redirectToError } from './apiUtils';
-import { removeAllWhiteSpace } from './apiUtils/validator';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants';
+import { SALES_OFFER_PACKAGES_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { removeAllWhiteSpace } from './apiUtils/validator';
 
 interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: string[] };

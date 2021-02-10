@@ -1,7 +1,7 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import fareType from '../../../src/pages/api/fareType';
 import * as sessions from '../../../src/utils/sessions';
-import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants';
+import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { ErrorInfo } from '../../../src/interfaces';
 
 describe('fareType', () => {

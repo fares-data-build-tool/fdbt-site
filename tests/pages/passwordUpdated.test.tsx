@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import PasswordUpdated, { getServerSideProps } from '../../src/pages/passwordUpdated';
 import { getMockContext } from '../testData/mockData';
-import { USER_ATTRIBUTE } from '../../src/constants';
+import { USER_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('passwordUpdated', () => {
     it('should render correctly', () => {

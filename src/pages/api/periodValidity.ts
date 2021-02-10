@@ -1,6 +1,10 @@
 import { NextApiResponse } from 'next';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { PRODUCT_DETAILS_ATTRIBUTE, PERIOD_EXPIRY_ATTRIBUTE, DURATION_VALID_ATTRIBUTE } from '../../constants';
+import {
+    PRODUCT_DETAILS_ATTRIBUTE,
+    PERIOD_EXPIRY_ATTRIBUTE,
+    DURATION_VALID_ATTRIBUTE,
+} from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
 import { isValid24hrTimeFormat } from './apiUtils/validator';
 import { ErrorInfo, NextApiRequestWithSession, ProductData } from '../../interfaces';

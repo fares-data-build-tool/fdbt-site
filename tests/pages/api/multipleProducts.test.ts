@@ -17,7 +17,7 @@ import {
     multipleProductsWithErrors,
 } from '../../testData/mockData';
 import { setCookieOnResponseObject } from '../../../src/pages/api/apiUtils';
-import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants';
+import { NUMBER_OF_PRODUCTS_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('multipleProducts', () => {
     let writeHeadMock: jest.Mock;

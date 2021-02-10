@@ -1,24 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import isEmpty from 'lodash/isEmpty';
-import {
-    NextApiRequestWithSession,
-    UserFareStages,
-    FaresInput,
-    PriceEntryError,
-    FaresInformation,
-} from '../../interfaces';
+
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import {
-    JOURNEY_ATTRIBUTE,
-    INPUT_METHOD_ATTRIBUTE,
-    PRICE_ENTRY_ATTRIBUTE,
-    USER_DATA_BUCKET_NAME,
-} from '../../constants/index';
+import { JOURNEY_ATTRIBUTE, INPUT_METHOD_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE } from '../../constants/attributes';
+import { USER_DATA_BUCKET_NAME } from '../../constants';
 
 import { getUuidFromSession, redirectToError, redirectTo } from './apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { removeAllWhiteSpace } from './apiUtils/validator';
 import { isJourney } from '../../interfaces/typeGuards';
+import {
+    FaresInformation,
+    FaresInput,
+    NextApiRequestWithSession,
+    PriceEntryError,
+    UserFareStages,
+} from '../../interfaces';
 
 interface ManualFareTriangleData {
     [stageName: string]: {

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import isArray from 'lodash/isArray';
 import TwoThirdsLayout from '../layout/Layout';
-import { USER_ATTRIBUTE } from '../constants';
+import { USER_ATTRIBUTE } from '../constants/attributes';
 import { updateSessionAttribute } from '../utils/sessions';
 import { NextPageContextWithSession } from '../interfaces';
 

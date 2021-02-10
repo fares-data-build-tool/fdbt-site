@@ -2,7 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ChooseValidity, { getServerSideProps } from '../../src/pages/chooseValidity';
 import { getMockContext } from '../testData/mockData';
-import { DURATION_VALID_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, PRODUCT_DETAILS_ATTRIBUTE } from '../../src/constants';
+import {
+    DURATION_VALID_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    PRODUCT_DETAILS_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import { DurationValidInfo } from '../../src/interfaces';
 
 describe('Choose Validity Page', () => {

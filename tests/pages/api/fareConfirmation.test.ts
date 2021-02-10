@@ -1,7 +1,7 @@
 import fareConfirmation from '../../../src/pages/api/fareConfirmation';
 import * as apiUtils from '../../../src/pages/api/apiUtils';
 import { getMockRequestAndResponse, mockSchemOpIdToken } from '../../testData/mockData';
-import { OPERATOR_ATTRIBUTE } from '../../../src/constants';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('fareConfirmation', () => {
     const writeHeadMock = jest.fn();

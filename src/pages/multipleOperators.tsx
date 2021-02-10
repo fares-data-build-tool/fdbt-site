@@ -6,7 +6,7 @@ import { ErrorInfo, NextPageContextWithSession, Operator } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { batchGetOperatorNamesByNocCode } from '../data/auroradb';
-import { OPERATOR_ATTRIBUTE } from '../constants';
+import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from '../utils/sessions';
 import { isWithErrors } from '../interfaces/typeGuards';
 
