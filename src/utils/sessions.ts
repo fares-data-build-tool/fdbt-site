@@ -7,6 +7,7 @@ import {
     ProductData,
     ProductInfoWithErrors,
     GroupDefinition,
+    GroupDefinitionWithErrors,
     TimeRestriction,
     CompanionInfo,
     DurationValidInfo,
@@ -22,11 +23,45 @@ import {
     FullTimeRestrictionAttribute,
     TermTimeAttribute,
     WithErrors,
+    NumberOfStagesAttributeWithError,
+    ReturnPeriodValidityWithErrors,
+    InputCheck,
+    FareStagesAttribute,
+    FareStagesAttributeWithErrors,
+    CsvUploadAttributeWithErrors,
+    DefinePassengerTypeWithErrors,
+    TimeRestrictionsDefinitionWithErrors,
+    FareType,
+    FareTypeWithErrors,
+    FareZoneWithErrors,
+    GroupPassengerTypesCollection,
+    GroupPassengerTypesCollectionWithErrors,
+    GroupTicketAttribute,
+    GroupTicketAttributeWithErrors,
+    NumberOfProductsAttributeWithErrors,
+    NumberOfProductsAttribute,
+    MultipleProductAttribute,
+    MultipleProductAttributeWithErrors,
+    PassengerTypeWithErrors,
+    PassengerType,
+    FaresInformation,
+    TicketPeriodWithErrors,
+    SchoolFareTypeAttribute,
+    MultipleOperatorsAttribute,
+    MultipleOperatorsAttributeWithErrors,
+    SelectSalesOfferPackageWithError,
+    ServiceWithErrors,
+    Service,
+    ServiceListAttribute,
+    ServiceListAttributeWithErrors,
+    SalesOfferPackageInfo,
+    SalesOfferPackageInfoWithErrors,
+    SalesOfferPackageWithErrors,
     UserAttribute,
     OperatorAttribute,
-} from '../interfaces/index';
+    ForgotPasswordAttribute,
+} from '../interfaces';
 
-import { FaresInformation } from '../pages/api/priceEntry';
 import {
     DURATION_VALID_ATTRIBUTE,
     PRICE_ENTRY_ATTRIBUTE,
@@ -68,37 +103,9 @@ import {
     USER_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
 } from '../constants/index';
-
-import { SalesOfferPackageInfo, SalesOfferPackageInfoWithErrors } from '../pages/api/salesOfferPackages';
-import { SalesOfferPackageWithErrors } from '../pages/api/describeSalesOfferPackage';
 import { MatchingInfo, MatchingWithErrors, InboundMatchingInfo } from '../interfaces/matchingInterface';
-import { SelectSalesOfferPackageWithError } from '../pages/api/selectSalesOfferPackage';
-import { GroupTicketAttribute, GroupTicketAttributeWithErrors } from '../pages/api/groupSize';
-import {
-    GroupPassengerTypesCollection,
-    GroupPassengerTypesCollectionWithErrors,
-} from '../pages/api/groupPassengerTypes';
-import { GroupDefinitionWithErrors } from '../pages/definePassengerType';
-import { TimeRestrictionsDefinitionWithErrors } from '../pages/api/defineTimeRestrictions';
-import { InputCheck } from '../pages/stageNames';
-import { FareZone, FareZoneWithErrors } from '../pages/api/csvZoneUpload';
-import { CsvUploadAttributeWithErrors } from '../pages/api/csvUpload';
-import { ServiceListAttribute, ServiceListAttributeWithErrors } from '../pages/api/serviceList';
-import { NumberOfStagesAttributeWithError } from '../pages/howManyStages';
-import { MultipleProductAttribute, MultipleProductAttributeWithErrors } from '../pages/api/multipleProducts';
-import { NumberOfProductsAttribute, NumberOfProductsAttributeWithErrors } from '../pages/api/howManyProducts';
-import { FareType, FareTypeWithErrors } from '../pages/api/fareType';
-import { PassengerTypeWithErrors, PassengerType } from '../pages/api/passengerType';
-import { DefinePassengerTypeWithErrors } from '../pages/api/definePassengerType';
-import { ServiceWithErrors, Service } from '../pages/api/service';
-import { FareStagesAttribute, FareStagesAttributeWithErrors } from '../pages/api/chooseStages';
-import { TicketPeriodWithErrors } from '../pages/api/productDateInformation';
-import { ReturnPeriodValidityWithErrors } from '../pages/returnValidity';
-import { MultipleOperatorsAttribute, MultipleOperatorsAttributeWithErrors } from '../pages/api/searchOperators';
-import { SchoolFareTypeAttribute } from '../pages/api/schoolFareType';
-import { ForgotPasswordAttribute } from '../pages/api/forgotPassword';
 
-type SessionAttributeTypes = {
+interface SessionAttributeTypes {
     [STAGE_NAMES_ATTRIBUTE]: string[] | InputCheck[];
     [DURATION_VALID_ATTRIBUTE]: DurationValidInfo;
     [INPUT_METHOD_ATTRIBUTE]: InputMethodInfo | ErrorInfo;
@@ -119,7 +126,7 @@ type SessionAttributeTypes = {
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
     [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
-    [FARE_ZONE_ATTRIBUTE]: FareZone | FareZoneWithErrors;
+    [FARE_ZONE_ATTRIBUTE]: string | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
     [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
     [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
@@ -142,7 +149,7 @@ type SessionAttributeTypes = {
     [FORGOT_PASSWORD_ATTRIBUTE]: ForgotPasswordAttribute | WithErrors<ForgotPasswordAttribute>;
     [USER_ATTRIBUTE]: UserAttribute | WithErrors<UserAttribute>;
     [OPERATOR_ATTRIBUTE]: OperatorAttribute | WithErrors<OperatorAttribute>;
-};
+}
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
     ? SessionAttributeTypes[T]
@@ -158,13 +165,11 @@ export const updateSessionAttribute = <T extends string>(
     attributeName: T,
     attributeValue: SessionAttribute<T> | undefined,
 ): void => {
-    console.log(req.session);
     req.session[attributeName] = attributeValue;
 };
 
 export const regenerateSession = (req: IncomingMessageWithSession): void => {
     const operatorAttribute = { ...getSessionAttribute(req, OPERATOR_ATTRIBUTE) };
-    console.log('1', req.session.id);
 
     req.session.regenerate((err: Error) => {
         if (err) {
@@ -172,8 +177,6 @@ export const regenerateSession = (req: IncomingMessageWithSession): void => {
         }
 
         updateSessionAttribute(req, OPERATOR_ATTRIBUTE, operatorAttribute);
-        console.log('2', req.session.id);
-        console.log(req.session);
     });
 };
 

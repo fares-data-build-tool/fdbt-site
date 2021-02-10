@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ServiceType } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
-import { getServicesByNocCode, ServiceType } from '../data/auroradb';
+import { getServicesByNocCode } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -16,13 +16,13 @@ const title = 'Service - Create Fares Data Service';
 const description = 'Service selection page of the Create Fares Data Service';
 const errorId = 'service';
 
-type ServiceProps = {
+interface ServiceProps {
     operator: string;
     passengerType: string;
     services: ServiceType[];
     error: ErrorInfo[];
     csrfToken: string;
-};
+}
 
 const Service = ({ operator, passengerType, services, error, csrfToken }: ServiceProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>

@@ -1,11 +1,10 @@
 import { NextApiResponse } from 'next';
 import { redirectTo, redirectToError, getSelectedStages } from './apiUtils';
-import { UserFareStages } from '../../data/s3';
 import { MATCHING_ATTRIBUTE } from '../../constants';
 import { MatchingFareZones, MatchingInfo } from '../../interfaces/matchingInterface';
 import { getFareZones, getMatchingFareZonesFromForm, isFareStageUnassigned } from './apiUtils/matching';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession, BasicService } from '../../interfaces';
+import { NextApiRequestWithSession, BasicService, UserFareStages } from '../../interfaces';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

@@ -4,10 +4,6 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/index';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export interface SchoolFareTypeAttribute {
-    schoolFareType: string;
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (req.body.fareType) {

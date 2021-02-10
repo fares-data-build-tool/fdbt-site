@@ -3,17 +3,9 @@ import isArray from 'lodash/isArray';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from './apiUtils';
 import { SERVICE_LIST_ATTRIBUTE } from '../../constants';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { NextApiRequestWithSession, ErrorInfo } from '../../interfaces';
+import { NextApiRequestWithSession } from '../../interfaces';
 
 const errorId = 'checkbox-0';
-
-export interface ServiceListAttribute {
-    selectedServices: string[];
-}
-
-export interface ServiceListAttributeWithErrors {
-    errors: ErrorInfo[];
-}
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const redirectUrl = '/serviceList';

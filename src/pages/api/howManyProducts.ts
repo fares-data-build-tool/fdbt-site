@@ -4,14 +4,6 @@ import { redirectToError, redirectTo } from './apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export interface NumberOfProductsAttribute {
-    numberOfProductsInput: string;
-}
-
-export interface NumberOfProductsAttributeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export const getErrors = (inputAsNumber: number): ErrorInfo[] => {
     const errorMessage =
         Number.isNaN(inputAsNumber) || !Number.isInteger(inputAsNumber) || inputAsNumber > 10 || inputAsNumber < 1

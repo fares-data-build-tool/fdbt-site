@@ -4,19 +4,6 @@ import { PASSENGER_TYPE_ATTRIBUTE, PASSENGER_TYPES_WITH_GROUP } from '../../cons
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export interface PassengerType {
-    passengerType: string;
-    ageRange?: string;
-    ageRangeMin?: string;
-    ageRangeMax?: string;
-    proof?: string;
-    proofDocuments?: string[];
-}
-
-export interface PassengerTypeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const passengerTypeValues = PASSENGER_TYPES_WITH_GROUP.map(type => type.passengerTypeValue);

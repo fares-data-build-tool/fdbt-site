@@ -4,14 +4,6 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { FARE_TYPE_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../constants/index';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
-export interface FareType {
-    fareType: string;
-}
-
-export interface FareTypeWithErrors {
-    errors: ErrorInfo[];
-}
-
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         if (req.body.fareType) {

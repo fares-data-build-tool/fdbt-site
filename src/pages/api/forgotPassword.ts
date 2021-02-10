@@ -5,10 +5,6 @@ import { forgotPassword } from '../../data/cognito';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { NextApiRequestWithSession } from '../../interfaces';
 
-export interface ForgotPasswordAttribute {
-    email: string;
-}
-
 const errorId = 'email';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {

@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode, Stop } from '../data/auroradb';
-import { BasicService, NextPageContextWithSession } from '../interfaces/index';
 import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, MATCHING_ATTRIBUTE } from '../constants';
-import { getUserFareStages, UserFareStages } from '../data/s3';
+import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../data/auroradb';
+import { BasicService, NextPageContextWithSession, Stop, UserFareStages } from '../interfaces';
+import { getUserFareStages } from '../data/s3';
 import MatchingBase from '../components/MatchingBase';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getJourneysByStartAndEndPoint, getMasterStopList } from '../utils/dataTransform';

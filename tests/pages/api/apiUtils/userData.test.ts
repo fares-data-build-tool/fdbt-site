@@ -27,12 +27,10 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
 } from '../../../../src/constants/index';
-
 import {
     defaultSalesOfferPackageOne,
     defaultSalesOfferPackageTwo,
 } from '../../../../src/pages/selectSalesOfferPackage';
-
 import {
     getMockRequestAndResponse,
     expectedSingleTicket,
@@ -56,10 +54,7 @@ import {
 } from '../../../testData/mockData';
 import * as s3 from '../../../../src/data/s3';
 import * as auroradb from '../../../../src/data/auroradb';
-
-import { FareZone } from '../../../../src/pages/api/csvZoneUpload';
-import { MultipleProductAttribute } from '../../../../src/pages/api/multipleProducts';
-import { Operator } from '../../../../src/interfaces';
+import { Operator, MultipleProductAttribute } from '../../../../src/interfaces';
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -257,13 +252,12 @@ describe('userData', () => {
             ['period', expectedPeriodGeoZoneTicketWithMultipleProducts],
             ['multiOperator', expectedMultiOperatorGeoZoneTicketWithMultipleProducts],
         ])('should return a %s geoZoneTicket object', async (fareType, expectedJson) => {
-            const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 session: {
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType },
-                    [FARE_ZONE_ATTRIBUTE]: mockFareZoneAttribute,
+                    [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {
@@ -518,7 +512,6 @@ describe('userData', () => {
         });
 
         it('should return a SchemeOperatorTicket object', async () => {
-            const mockFareZoneAttribute: FareZone = { fareZoneName: 'Green Lane Shops' };
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {
                     idToken: mockSchemOpIdToken,
@@ -532,7 +525,7 @@ describe('userData', () => {
                     },
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
-                    [FARE_ZONE_ATTRIBUTE]: mockFareZoneAttribute,
+                    [FARE_ZONE_ATTRIBUTE]: 'Green Lane Shops',
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
                         products: [
                             {

@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import TwoThirdsLayout from '../layout/Layout';
 import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, JOURNEY_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../constants';
-import { getServiceByNocCodeAndLineName, Service, RawService } from '../data/auroradb';
+import { getServiceByNocCodeAndLineName } from '../data/auroradb';
 import DirectionDropdown from '../components/DirectionDropdown';
 import { enrichJourneyPatternsWithNaptanInfo } from '../utils/dataTransform';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ServiceDB, RawService } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -15,11 +15,11 @@ import { getSessionAttribute } from '../utils/sessions';
 const title = 'Single Direction - Create Fares Data Service';
 const description = 'Single Direction selection page of the Create Fares Data Service';
 
-interface DirectionProps {
+interface SingleDirectionProps {
     operator: string;
     passengerType: string;
     lineName: string;
-    service: Service;
+    service: ServiceDB;
     error: ErrorInfo[];
     csrfToken: string;
 }
@@ -31,7 +31,7 @@ const SingleDirection = ({
     service,
     error,
     csrfToken,
-}: DirectionProps): ReactElement => (
+}: SingleDirectionProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
         <CsrfForm action="/api/singleDirection" method="post" csrfToken={csrfToken}>
             <>
@@ -70,7 +70,7 @@ const SingleDirection = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: DirectionProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SingleDirectionProps }> => {
     const csrfToken = getCsrfToken(ctx);
 
     const journeyAttribute = getSessionAttribute(ctx.req, JOURNEY_ATTRIBUTE);
@@ -92,7 +92,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const lineName = serviceAttribute.service.split('#')[0];
 
     const rawService: RawService = await getServiceByNocCodeAndLineName(nocCode, lineName);
-    const service: Service = {
+    const service: ServiceDB = {
         ...rawService,
         journeyPatterns: await enrichJourneyPatternsWithNaptanInfo(rawService.journeyPatterns),
     };

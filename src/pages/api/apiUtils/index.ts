@@ -12,12 +12,11 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     DISABLE_AUTH_COOKIE,
 } from '../../../constants';
-import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession } from '../../../interfaces';
+import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../../interfaces';
 import { globalSignOut } from '../../../data/cognito';
 import logger from '../../../utils/logger';
 import { destroySession, getSessionAttribute, updateSessionAttribute } from '../../../utils/sessions';
 import { isFareType } from '../../../interfaces/typeGuards';
-import { SchoolFareTypeAttribute } from '../schoolFareType';
 
 export const setCookieOnResponseObject = (
     cookieName: string,

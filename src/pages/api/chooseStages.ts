@@ -2,15 +2,7 @@ import { NextApiResponse } from 'next';
 import { FARE_STAGES_ATTRIBUTE } from '../../constants/index';
 import { redirectTo, redirectToError } from './apiUtils';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-
-export interface FareStagesAttribute {
-    fareStages: string;
-}
-
-export interface FareStagesAttributeWithErrors {
-    errors: ErrorInfo[];
-}
+import { ErrorInfo, NextApiRequestWithSession, FareStagesAttributeWithErrors } from '../../interfaces';
 
 export const isInvalidFareStageNumber = (fareStageInput: string): FareStagesAttributeWithErrors => {
     const inputAsNumber = Number(fareStageInput);
