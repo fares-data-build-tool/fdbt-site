@@ -78,7 +78,7 @@ export const getFieldset = (
                         id: 'product-end-time',
                         name: 'productEndTime',
                         label: 'End time',
-                        defaultValue: periodExpiryAttribute?.products[0].productEndTime || '',
+                        defaultValue: periodExpiryAttribute?.products?.[0]?.productEndTime || '',
                     },
                 ],
                 inputErrors: getErrorsByIds(['product-end-time'], errors),
