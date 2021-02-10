@@ -66,26 +66,26 @@ export const buildFareConfirmationElements = (
                     content: `Minimum age: ${passenger.ageRangeMin ? passenger.ageRangeMin : 'N/A'} Maximum age: ${
                         passenger.ageRangeMax ? passenger.ageRangeMax : 'N/A'
                     }`,
-                    href: 'definePassengerType',
+                    href: `definePassengerType?groupPassengerType=${passenger.passengerType}`,
                 });
             } else {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - age range`,
                     content: 'N/A',
-                    href: 'definePassengerType',
+                    href: `definePassengerType?groupPassengerType=${passenger.passengerType}`,
                 });
             }
             if (passenger.proofDocuments && passenger.proofDocuments.length > 0) {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
                     content: passenger.proofDocuments.map(proofDoc => sentenceCaseString(proofDoc)).join(', '),
-                    href: 'definePassengerType',
+                    href: `definePassengerType?groupPassengerType=${passenger.passengerType}`,
                 });
             } else {
                 confirmationElements.push({
                     name: `${sentenceCaseString(passenger.passengerType)} passenger - proof documents`,
                     content: 'N/A',
-                    href: 'definePassengerType',
+                    href: `definePassengerType?groupPassengerType=${passenger.passengerType}`,
                 });
             }
         });
