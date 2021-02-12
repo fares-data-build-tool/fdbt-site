@@ -42,13 +42,13 @@ export const buildSalesConfirmationElements = (
             confirmationElements.push({
                 name: 'Product',
                 content: upperFirst(product.productName),
-                href: 'selectSalesOfferPackages',
+                href: 'selectSalesOfferPackage',
             });
             product.salesOfferPackages.forEach(sop => {
                 confirmationElements.push({
                     name: `${upperFirst(product.productName)} - Sales offer package`,
                     content: sop.name,
-                    href: 'selectSalesOfferPackages',
+                    href: 'selectSalesOfferPackage',
                 });
             });
         });
@@ -57,7 +57,7 @@ export const buildSalesConfirmationElements = (
             confirmationElements.push({
                 name: `Sales offer package ${index + 1} - ${sop.name}`,
                 content: sop.description || sop.name,
-                href: 'selectSalesOfferPackages',
+                href: 'selectSalesOfferPackage',
             });
         });
     }

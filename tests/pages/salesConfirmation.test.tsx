@@ -138,12 +138,12 @@ describe('pages', () => {
             expect(result).toStrictEqual([
                 {
                     content: 'my way of selling tickets',
-                    href: 'selectSalesOfferPackages',
+                    href: 'selectSalesOfferPackage',
                     name: 'Sales offer package 1 - A sales offer package',
                 },
                 {
                     content: 'another way of selling tickets',
-                    href: 'selectSalesOfferPackages',
+                    href: 'selectSalesOfferPackage',
                     name: 'Sales offer package 2 - Another sales offer package',
                 },
                 {
