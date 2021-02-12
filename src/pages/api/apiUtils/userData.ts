@@ -183,7 +183,7 @@ export const getBasePeriodTicketAttributes = (
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (!operatorAttribute || isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
+    if (!operatorAttribute?.name || isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
         throw new Error(`Could not create ${ticketType} ticket json. BasePeriodTicket attributes could not be found.`);
     }
 
@@ -218,7 +218,7 @@ export const getBasePeriodTicketAttributes = (
 
     return {
         ...baseTicketAttributes,
-        operatorName: name || '',
+        operatorName: name,
         products: productDetailsList,
     };
 };

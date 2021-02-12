@@ -42,8 +42,8 @@ import {
     RawService,
     ServiceDB,
     RadioWithConditionalInputs,
-    UserFareStages,
     RadioConditionalInputFieldset,
+    UserFareStages,
     MultiProduct,
     MultiProductWithErrors,
 } from '../../src/interfaces';

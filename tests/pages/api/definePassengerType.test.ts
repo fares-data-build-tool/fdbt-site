@@ -339,7 +339,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the PASSENGER_TYPE_ERRORS_ATTRIBUTE and redirect to /defineTimeRestrictions', async () => {
+    it('should set GROUP_PASSENGER_INFO_ATTRIBUTE with the second passenger type in the group, delete the DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE and redirect to /defineTimeRestrictions', async () => {
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [

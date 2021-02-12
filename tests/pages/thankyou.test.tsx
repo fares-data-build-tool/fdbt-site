@@ -48,6 +48,15 @@ describe('pages', () => {
                 body: null,
                 session: {
                     [OPERATOR_ATTRIBUTE]: operatorData,
+                    [FARE_TYPE_ATTRIBUTE]: {
+                        fareType: 'single',
+                    },
+                    [SERVICE_ATTRIBUTE]: {
+                        service: 'test',
+                    },
+                    [INPUT_METHOD_ATTRIBUTE]: {
+                        inputMethod: 'csv',
+                    },
                 },
             });
 
