@@ -1217,6 +1217,14 @@ export const expectedSingleTicket: SingleTicket = {
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1350,6 +1358,14 @@ export const expectedNonCircularReturnTicket: ReturnTicket = {
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1513,6 +1529,14 @@ export const expectedCircularReturnTicket: ReturnTicket = {
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1647,6 +1671,14 @@ export const expectedPeriodGeoZoneTicketWithMultipleProducts: PeriodGeoZoneTicke
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1686,6 +1718,14 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: MultiOperat
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1725,6 +1765,14 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProducts: PeriodMul
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1783,6 +1831,14 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1911,6 +1967,14 @@ export const expectedFlatFareTicket: FlatFareTicket = {
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {
@@ -1956,6 +2020,14 @@ export const expectedSchemeOperatorTicket: SchemeOperatorTicket = {
     ticketPeriod: {
         startDate: '2020-12-17T09:30:46.0Z',
         endDate: '2020-12-18T09:30:46.0Z',
+        dateInput: {
+            startDateDay: '17',
+            startDateMonth: '12',
+            startDateYear: '2020',
+            endDateDay: '18',
+            endDateMonth: '12',
+            endDateYear: '2020',
+        },
     },
     products: [
         {

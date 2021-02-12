@@ -119,6 +119,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
 
     let startDate = '';
     let endDate = '';
+    let dateInput = {
+        startDateDay: '',
+        startDateMonth: '',
+        startDateYear: '',
+        endDateDay: '',
+        endDateMonth: '',
+        endDateYear: '',
+    };
     let startDefault = false;
     let endDefault = false;
 
@@ -131,26 +139,29 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
             .toISOString();
         startDefault = true;
         endDefault = true;
-    } else if (!ticketDatingInfo.startDate || !ticketDatingInfo.endDate) {
-        if (!ticketDatingInfo.startDate) {
-            startDefault = true;
-            startDate = moment()
-                .add(1, 'hours')
-                .toISOString();
+    } else {
+        dateInput = ticketDatingInfo.dateInput;
+        if (!ticketDatingInfo.startDate || !ticketDatingInfo.endDate) {
+            if (!ticketDatingInfo.startDate) {
+                startDefault = true;
+                startDate = moment()
+                    .add(1, 'hours')
+                    .toISOString();
+            } else {
+                startDate = ticketDatingInfo.startDate;
+            }
+            if (!ticketDatingInfo.endDate) {
+                endDefault = true;
+                endDate = moment()
+                    .add(100, 'y')
+                    .toISOString();
+            } else {
+                endDate = ticketDatingInfo.endDate;
+            }
         } else {
             startDate = ticketDatingInfo.startDate;
-        }
-        if (!ticketDatingInfo.endDate) {
-            endDefault = true;
-            endDate = moment()
-                .add(100, 'y')
-                .toISOString();
-        } else {
             endDate = ticketDatingInfo.endDate;
         }
-    } else {
-        startDate = ticketDatingInfo.startDate;
-        endDate = ticketDatingInfo.endDate;
     }
 
     return {
@@ -160,6 +171,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
                 productDates: {
                     startDate,
                     endDate,
+                    dateInput,
                 },
                 startDefault,
                 endDefault,

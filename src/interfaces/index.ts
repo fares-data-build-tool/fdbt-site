@@ -487,6 +487,7 @@ export interface SalesOfferPackageWithErrors extends SalesOfferPackage {
 export interface TicketPeriod {
     startDate?: string;
     endDate?: string;
+    dateInput: ProductDateInformation;
 }
 
 export interface BaseProduct {

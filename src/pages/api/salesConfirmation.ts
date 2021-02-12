@@ -47,6 +47,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     : moment()
                           .add(100, 'y')
                           .toISOString(),
+            dateInput: productDating
+                ? productDating.dateInput
+                : {
+                      startDateDay: '',
+                      startDateMonth: '',
+                      startDateYear: '',
+                      endDateDay: '',
+                      endDateMonth: '',
+                      endDateYear: '',
+                  },
         });
 
         const uuid = getUuidFromCookie(req, res);
