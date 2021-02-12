@@ -140,28 +140,23 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Sa
         startDefault = true;
         endDefault = true;
     } else {
-        dateInput = ticketDatingInfo.dateInput;
-        if (!ticketDatingInfo.startDate || !ticketDatingInfo.endDate) {
-            if (!ticketDatingInfo.startDate) {
-                startDefault = true;
-                startDate = moment()
-                    .add(1, 'hours')
-                    .toISOString();
-            } else {
-                startDate = ticketDatingInfo.startDate;
-            }
-            if (!ticketDatingInfo.endDate) {
-                endDefault = true;
-                endDate = moment()
-                    .add(100, 'y')
-                    .toISOString();
-            } else {
-                endDate = ticketDatingInfo.endDate;
-            }
-        } else {
+        if (ticketDatingInfo.startDate) {
             startDate = ticketDatingInfo.startDate;
-            endDate = ticketDatingInfo.endDate;
+        } else {
+            startDefault = true;
+            startDate = moment()
+                .add(1, 'hours')
+                .toISOString();
         }
+        if (ticketDatingInfo.endDate) {
+            endDate = ticketDatingInfo.endDate;
+        } else {
+            endDefault = true;
+            endDate = moment()
+                .add(100, 'y')
+                .toISOString();
+        }
+        dateInput = ticketDatingInfo.dateInput;
     }
 
     return {
