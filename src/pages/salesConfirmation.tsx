@@ -6,7 +6,7 @@ import {
     NextPageContextWithSession,
     SalesOfferPackage,
     ProductWithSalesOfferPackages,
-    TicketPeriod,
+    TicketPeriodWithInput,
     ConfirmationElement,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
@@ -27,7 +27,7 @@ interface SalesConfirmationProps {
 }
 
 interface TicketDating {
-    productDates: TicketPeriod;
+    productDates: TicketPeriodWithInput;
     startDefault: boolean;
     endDefault: boolean;
 }

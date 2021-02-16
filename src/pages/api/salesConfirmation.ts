@@ -26,7 +26,7 @@ import {
     getSchemeOperatorTicketJson,
 } from './apiUtils/userData';
 import { isSessionValid } from './apiUtils/validator';
-import { NextApiRequestWithSession, TicketPeriod } from '../../interfaces';
+import { NextApiRequestWithSession, TicketPeriodWithInput } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -37,7 +37,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const fareType = getFareTypeFromFromAttributes(req);
 
-        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as TicketPeriod | undefined;
+        const productDating = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE) as TicketPeriodWithInput | undefined;
 
         updateSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE, {
             startDate: productDating && productDating.startDate ? productDating.startDate : moment().toISOString(),

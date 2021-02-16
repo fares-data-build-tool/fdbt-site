@@ -26,6 +26,8 @@ import {
     WithErrors,
     isSchemeOperatorTicket,
     MultipleProductAttribute,
+    TicketPeriod,
+    TicketPeriodWithInput,
 } from '../../../interfaces';
 import {
     TERM_TIME_ATTRIBUTE,
@@ -56,7 +58,7 @@ import {
     isSalesOfferPackages,
     isFareType,
     isPassengerType,
-    isTicketPeriodAttribute,
+    isTicketPeriodAttributeWithInput,
 } from '../../../interfaces/typeGuards';
 
 import { getCsvZoneUploadData, putStringInS3 } from '../../../data/s3';
@@ -115,6 +117,11 @@ export const putUserDataInS3 = async (data: Ticket, uuid: string): Promise<void>
     await putStringInS3(MATCHING_DATA_BUCKET_NAME, filePath, JSON.stringify(s3Data), 'application/json; charset=utf-8');
 };
 
+const getTicketPeriod = (ticketPeriodWithInput: TicketPeriodWithInput): TicketPeriod => ({
+    startDate: ticketPeriodWithInput.startDate,
+    endDate: ticketPeriodWithInput.endDate,
+});
+
 export const getBaseTicketAttributes = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
@@ -138,7 +145,7 @@ export const getBaseTicketAttributes = (
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttribute(ticketPeriodAttribute)
+        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute)
     ) {
         throw new Error(`Could not create ${ticketType} ticket json. BaseTicket attributes could not be found.`);
     }
@@ -159,7 +166,7 @@ export const getBaseTicketAttributes = (
             fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
                 ? fullTimeRestriction.fullTimeRestrictions
                 : [],
-        ticketPeriod: ticketPeriodAttribute,
+        ticketPeriod: getTicketPeriod(ticketPeriodAttribute),
     };
 };
 
@@ -468,7 +475,7 @@ export const getSchemeOperatorTicketJson = async (
         !isPassengerType(passengerTypeAttribute) ||
         !idToken ||
         !uuid ||
-        !isTicketPeriodAttribute(ticketPeriodAttribute) ||
+        !isTicketPeriodAttributeWithInput(ticketPeriodAttribute) ||
         isSalesOfferPackageWithErrors(salesOfferPackages) ||
         !salesOfferPackages ||
         !fareZoneName ||
@@ -534,7 +541,7 @@ export const getSchemeOperatorTicketJson = async (
             fullTimeRestriction && fullTimeRestriction.fullTimeRestrictions.length > 0
                 ? fullTimeRestriction.fullTimeRestrictions
                 : [],
-        ticketPeriod: ticketPeriodAttribute,
+        ticketPeriod: getTicketPeriod(ticketPeriodAttribute),
         products: productDetailsList,
         zoneName: fareZoneName,
         stops: zoneStops,
