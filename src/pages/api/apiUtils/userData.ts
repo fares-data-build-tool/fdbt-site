@@ -29,28 +29,27 @@ import {
     TicketPeriod,
     TicketPeriodWithInput,
 } from '../../../interfaces';
+import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
 import {
     TERM_TIME_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-    ID_TOKEN_COOKIE,
     INBOUND_MATCHING_ATTRIBUTE,
     MATCHING_ATTRIBUTE,
-    OPERATOR_COOKIE,
+    OPERATOR_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     PERIOD_EXPIRY_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
-    MATCHING_DATA_BUCKET_NAME,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     RETURN_VALIDITY_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
-} from '../../../constants/index';
+} from '../../../constants/attributes';
 
 import {
     isProductWithSalesOfferPackages,
@@ -66,7 +65,7 @@ import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../../
 import { getSessionAttribute } from '../../../utils/sessions';
 import { getFareZones } from './matching';
 import { batchGetStopsByAtcoCode } from '../../../data/auroradb';
-import { unescapeAndDecodeCookie, getUuidFromCookie, getAndValidateNoc } from '.';
+import { unescapeAndDecodeCookie, getUuidFromSession, getAndValidateNoc } from '.';
 import { isFareZoneAttributeWithErrors } from '../../csvZoneUpload';
 import { isServiceListAttributeWithErrors } from '../../serviceList';
 import { isReturnPeriodValidityWithErrors } from '../../returnValidity';
@@ -134,7 +133,7 @@ export const getBaseTicketAttributes = (
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
     const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-    const uuid = getUuidFromCookie(req, res);
+    const uuid = getUuidFromSession(req);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
     const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
 
@@ -183,8 +182,7 @@ export const getBasePeriodTicketAttributes = (
         periodExpiryAttributeInfo: ProductData | WithErrors<ProductData>,
     ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
-    const cookies = new Cookies(req, res);
-    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, ticketType);
 
@@ -192,11 +190,11 @@ export const getBasePeriodTicketAttributes = (
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
 
-    if (!operatorCookie || isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
+    if (!operatorAttribute?.name || isSalesOfferPackageWithErrors(salesOfferPackages) || !salesOfferPackages) {
         throw new Error(`Could not create ${ticketType} ticket json. BasePeriodTicket attributes could not be found.`);
     }
 
-    const { name } = JSON.parse(operatorCookie);
+    const { name } = operatorAttribute;
 
     let productDetailsList: ProductDetails[];
 
@@ -399,8 +397,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         productDetailsAttributeInfo: ProductData | ProductInfo,
     ): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
 
-    const cookies = new Cookies(req, res);
-    const operatorCookie = unescapeAndDecodeCookie(cookies, OPERATOR_COOKIE);
+    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
 
     const baseTicketAttributes: BaseTicket = getBaseTicketAttributes(req, res, 'flat fare');
 
@@ -409,7 +406,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
     const productDetailsAttributeInfo = getSessionAttribute(req, PRODUCT_DETAILS_ATTRIBUTE);
 
     if (
-        !operatorCookie ||
+        !operatorAttribute ||
         !serviceListAttribute ||
         isServiceListAttributeWithErrors(serviceListAttribute) ||
         !productDetailsAttributeInfo ||
@@ -419,7 +416,6 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
         throw new Error('Could not create flat fare ticket json. Necessary cookies and session objects not found.');
     }
 
-    const operatorObject = JSON.parse(operatorCookie);
     const { selectedServices } = serviceListAttribute;
     const formattedServiceInfo: SelectedService[] = selectedServices.map((selectedService: string) => {
         const service = selectedService.split('#');
@@ -441,7 +437,7 @@ export const getFlatFareTicketJson = (req: NextApiRequestWithSession, res: NextA
 
     return {
         ...baseTicketAttributes,
-        operatorName: operatorObject?.name,
+        operatorName: operatorAttribute?.name || '',
         products: productDetailsList,
         selectedServices: formattedServiceInfo,
         termTime: isTermTime(req),
@@ -461,7 +457,7 @@ export const getSchemeOperatorTicketJson = async (
 
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
     const passengerTypeAttribute = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
-    const uuid = getUuidFromCookie(req, res);
+    const uuid = getUuidFromSession(req);
     const fullTimeRestriction = getSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE);
     const ticketPeriodAttribute = getSessionAttribute(req, PRODUCT_DATE_ATTRIBUTE);
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
