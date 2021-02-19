@@ -511,10 +511,14 @@ export interface MultiOperatorInfoWithErrors {
     errors: ErrorInfo[];
 }
 
-export interface FullTimeRestriction {
-    day: string;
+export interface TimeBand {
     startTime: string;
     endTime: string;
+}
+
+export interface FullTimeRestriction {
+    day: string;
+    timeBands: TimeBand[];
 }
 
 export interface FullTimeRestrictionAttribute {

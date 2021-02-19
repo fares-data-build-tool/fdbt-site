@@ -17,6 +17,10 @@ interface ChooseTimeRestrictionsProps {
     csrfToken: string;
     startTimeInputs: TimeInput[];
     endTimeInputs: TimeInput[];
+    dayCounters: {
+        day: string;
+        counter: number;
+    }[];
 }
 
 const ChooseTimeRestrictions = ({
@@ -24,6 +28,7 @@ const ChooseTimeRestrictions = ({
     errors,
     startTimeInputs,
     endTimeInputs,
+    dayCounters,
     csrfToken,
 }: ChooseTimeRestrictionsProps): ReactElement => {
     return (
@@ -45,6 +50,7 @@ const ChooseTimeRestrictions = ({
                         errors={errors}
                         startTimeInputs={startTimeInputs}
                         endTimeInputs={endTimeInputs}
+                        dayCounters={dayCounters}
                     />
                     <input
                         type="submit"
@@ -74,6 +80,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
     const errors: ErrorInfo[] = [];
     const startTimeInputs: TimeInput[] = [];
     const endTimeInputs: TimeInput[] = [];
+    const dayCounters: {
+        day: string;
+        counter: number;
+    }[] = [];
 
     if (fullTimeRestrictionsAttribute) {
         if (fullTimeRestrictionsAttribute.errors.length > 0) {
@@ -82,12 +92,18 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ch
 
         if (fullTimeRestrictionsAttribute.fullTimeRestrictions.length > 0) {
             fullTimeRestrictionsAttribute.fullTimeRestrictions.forEach(fullTimeRestriction => {
-                startTimeInputs.push({ timeInput: fullTimeRestriction.startTime, day: fullTimeRestriction.day });
-                endTimeInputs.push({ timeInput: fullTimeRestriction.endTime, day: fullTimeRestriction.day });
+                fullTimeRestriction.timeBands.forEach(timeBand => {
+                    startTimeInputs.push({ timeInput: timeBand.startTime, day: fullTimeRestriction.day });
+                    endTimeInputs.push({ timeInput: timeBand.endTime, day: fullTimeRestriction.day });
+                });
+                dayCounters.push({
+                    day: fullTimeRestriction.day,
+                    counter: fullTimeRestriction.timeBands.length > 0 ? fullTimeRestriction.timeBands.length : 1,
+                });
             });
         }
     }
-    return { props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs } };
+    return { props: { chosenDays, errors, csrfToken, startTimeInputs, endTimeInputs, dayCounters } };
 };
 
 export default ChooseTimeRestrictions;

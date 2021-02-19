@@ -63,6 +63,7 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
           "tuesday",
         ]
       }
+      dayCounters={Array []}
       endTimeInputs={
         Array [
           Object {
@@ -149,6 +150,7 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
           "tuesday",
         ]
       }
+      dayCounters={Array []}
       endTimeInputs={Array []}
       errors={Array []}
       startTimeInputs={Array []}
@@ -200,6 +202,7 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
           "tuesday",
         ]
       }
+      dayCounters={Array []}
       endTimeInputs={
         Array [
           Object {
