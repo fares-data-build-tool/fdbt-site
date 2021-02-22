@@ -28,7 +28,7 @@ const ChooseTimeRestrictions = ({
     errors,
     startTimeInputs,
     endTimeInputs,
-    dayCounters,
+    dayCounters = [],
     csrfToken,
 }: ChooseTimeRestrictionsProps): ReactElement => {
     return (

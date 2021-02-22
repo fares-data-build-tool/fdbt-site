@@ -96,6 +96,14 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
                     },
                 );
             }
+
+            if (timeBand.endTime && !timeBand.startTime) {
+                errors.push({
+                    errorMessage: 'Start time is required if end time is provided',
+                    id: `start-time-${input.day}-${index}`,
+                    userInput: '',
+                });
+            }
         });
     });
     return errors;

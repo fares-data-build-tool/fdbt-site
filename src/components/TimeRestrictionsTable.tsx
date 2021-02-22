@@ -26,7 +26,7 @@ const TimeRestrictionsTable = ({
     errors,
     startTimeInputs,
     endTimeInputs,
-    dayCounters,
+    dayCounters = [],
 }: TimeRestrictionsTableProps): ReactElement => {
     const defaultState: { [key: string]: number } = {};
 
@@ -34,11 +34,9 @@ const TimeRestrictionsTable = ({
         defaultState[day] = 1;
     });
 
-    if (dayCounters && dayCounters.length > 0) {
-        dayCounters.forEach(dayCounter => {
-            defaultState[dayCounter.day] = dayCounter.counter;
-        });
-    }
+    dayCounters.forEach(dayCounter => {
+        defaultState[dayCounter.day] = dayCounter.counter;
+    });
 
     const [dayRowCount, updateDayRowCount] = useState(defaultState);
 

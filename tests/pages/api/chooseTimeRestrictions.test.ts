@@ -170,7 +170,7 @@ describe('chooseTimeRestrictions', () => {
             const result = collectErrors(inputs);
             expect(result).toStrictEqual([]);
         });
-        it('should return no errors for a mixture of empty inputs and valid inputs', () => {
+        it('should return errors for a mixture of empty inputs and valid inputs, according to endTime not being the only input', () => {
             const inputs = [
                 {
                     day: 'monday',
@@ -210,7 +210,13 @@ describe('chooseTimeRestrictions', () => {
                 },
             ];
             const result = collectErrors(inputs);
-            expect(result).toStrictEqual([]);
+            expect(result).toStrictEqual([
+                {
+                    errorMessage: 'Start time is required if end time is provided',
+                    id: 'start-time-tuesday-0',
+                    userInput: '',
+                },
+            ]);
         });
     });
 
