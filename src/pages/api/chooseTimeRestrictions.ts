@@ -77,6 +77,25 @@ export const collectErrors = (userInputs: FullTimeRestriction[]): ErrorInfo[] =>
                     });
                 }
             }
+
+            if (
+                isValid24hrTimeFormat(timeBand.startTime) &&
+                isValid24hrTimeFormat(timeBand.endTime) &&
+                timeBand.startTime === timeBand.endTime
+            ) {
+                errors.push(
+                    {
+                        errorMessage: 'Start time and end time cannot be the same',
+                        id: `start-time-${input.day}-${index}`,
+                        userInput: timeBand.startTime,
+                    },
+                    {
+                        errorMessage: 'Start time and end time cannot be the same',
+                        id: `end-time-${input.day}-${index}`,
+                        userInput: timeBand.endTime,
+                    },
+                );
+            }
         });
     });
     return errors;
@@ -98,7 +117,7 @@ export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]):
     return cleansedInputs.map(cleansedInput => {
         const timeBands: TimeBand[] = [];
         cleansedInput.timeBands.forEach(timeBand => {
-            if (timeBand.startTime && timeBand.endTime) {
+            if (timeBand.startTime || timeBand.endTime) {
                 timeBands.push(timeBand);
             }
         });
@@ -111,15 +130,12 @@ export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]):
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        console.log(req.body);
         const chosenDays = (getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE) as TimeRestriction)
             .validDays;
 
         const inputs = collectInputsFromRequest(req, chosenDays);
         const sanitisedInputs = removeDuplicateAndEmptyTimebands(inputs);
-
         const errors: ErrorInfo[] = collectErrors(sanitisedInputs);
-
         updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
             fullTimeRestrictions: sanitisedInputs,
             errors,

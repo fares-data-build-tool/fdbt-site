@@ -50,56 +50,69 @@ const TimeRestrictionsTable = ({
         }
     };
 
+    const getInputsForDay = (inputs: TimeInput[], day: string): TimeInput[] => {
+        const inputsForDay: TimeInput[] = [];
+        inputs.forEach(input => {
+            if (input.day === day) {
+                inputsForDay.push(input);
+            }
+        });
+        return inputsForDay;
+    };
+
     const getTimeRestrictionRows = (chosenDay: string): JSX.Element[] => {
         const rows = [];
+
+        const startInputsForDay = getInputsForDay(startTimeInputs, chosenDay);
+        const endInputsForDay = getInputsForDay(endTimeInputs, chosenDay);
 
         for (let i = 0; i < dayRowCount[chosenDay]; i += 1) {
             rows.push(
                 <div className="time-restriction-row" key={i}>
                     <div>
                         <FormGroupWrapper errors={errors} errorId={`start-time-${chosenDay}-${i}`}>
-                            <FormElementWrapper
-                                errors={errors}
-                                errorId={`start-time-${chosenDay}`}
-                                errorClass="govuk-input--error"
-                            >
-                                <>
-                                    <label className="govuk-label" htmlFor={`start-time-${chosenDay}`}>
-                                        Start time <span className="govuk-visually-hidden">for {chosenDay}</span>
-                                    </label>
+                            <>
+                                <label className="govuk-label" htmlFor={`start-time-${chosenDay}`}>
+                                    Start time <span className="govuk-visually-hidden">for {chosenDay}</span>
+                                </label>
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`start-time-${chosenDay}-${i}`}
+                                    errorClass="govuk-input--error"
+                                >
                                     <input
                                         className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
                                         id={`start-time-${chosenDay}-${i}`}
                                         name={`startTime${chosenDay}`}
                                         aria-describedby="time-restrictions-hint"
                                         type="text"
-                                        defaultValue={findCorrectDefaultValue(startTimeInputs, chosenDay, i)}
+                                        defaultValue={findCorrectDefaultValue(startInputsForDay, chosenDay, i)}
                                     />
-                                </>
-                            </FormElementWrapper>
+                                </FormElementWrapper>
+                            </>
                         </FormGroupWrapper>
                     </div>
                     <div>
                         <FormGroupWrapper errors={errors} errorId={`end-time-${chosenDay}-${i}`}>
-                            <FormElementWrapper
-                                errors={errors}
-                                errorId={`end-time-${chosenDay}`}
-                                errorClass="govuk-input--error"
-                            >
-                                <>
-                                    <label className="govuk-label" htmlFor={`end-time-${chosenDay}`}>
-                                        End time <span className="govuk-visually-hidden">for {chosenDay}</span>
-                                    </label>
+                            <>
+                                <label className="govuk-label" htmlFor={`end-time-${chosenDay}`}>
+                                    End time <span className="govuk-visually-hidden">for {chosenDay}</span>
+                                </label>
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`end-time-${chosenDay}-${i}`}
+                                    errorClass="govuk-input--error"
+                                >
                                     <input
                                         className="govuk-input govuk-input--width-5"
                                         id={`end-time-${chosenDay}-${i}`}
                                         name={`endTime${chosenDay}`}
                                         aria-describedby="time-restrictions-hint"
                                         type="text"
-                                        defaultValue={findCorrectDefaultValue(endTimeInputs, chosenDay, i)}
+                                        defaultValue={findCorrectDefaultValue(endInputsForDay, chosenDay, i)}
                                     />
-                                </>
-                            </FormElementWrapper>
+                                </FormElementWrapper>
+                            </>
                         </FormGroupWrapper>
                     </div>
                 </div>,
