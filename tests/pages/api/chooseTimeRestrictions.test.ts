@@ -1,5 +1,4 @@
 import chooseTimeRestrictions, {
-    removeEmptyTimeRestrictions,
     removeDuplicateAndEmptyTimebands,
     collectErrors,
     isValid24hrTimeFormat,
@@ -326,74 +325,6 @@ describe('chooseTimeRestrictions', () => {
                         {
                             startTime: '0930',
                             endTime: '1000',
-                        },
-                    ],
-                },
-            ]);
-        });
-    });
-
-    describe('removeEmptyTimeRestrictions', () => {
-        it('removes empty time restriction objects', () => {
-            const input = [
-                {
-                    day: 'monday',
-                    timeBands: [
-                        {
-                            startTime: '0900',
-                            endTime: '',
-                        },
-                    ],
-                },
-                {
-                    day: 'tuesday',
-                    timeBands: [
-                        {
-                            startTime: '',
-                            endTime: '1800',
-                        },
-                    ],
-                },
-                {
-                    day: 'bank holiday',
-                    timeBands: [
-                        {
-                            startTime: '0900',
-                            endTime: '1750',
-                        },
-                    ],
-                },
-                {
-                    day: 'friday',
-                    timeBands: [],
-                },
-            ];
-            const result = removeEmptyTimeRestrictions(input);
-            expect(result).toStrictEqual([
-                {
-                    day: 'monday',
-                    timeBands: [
-                        {
-                            endTime: '',
-                            startTime: '0900',
-                        },
-                    ],
-                },
-                {
-                    day: 'tuesday',
-                    timeBands: [
-                        {
-                            endTime: '1800',
-                            startTime: '',
-                        },
-                    ],
-                },
-                {
-                    day: 'bank holiday',
-                    timeBands: [
-                        {
-                            endTime: '1750',
-                            startTime: '0900',
                         },
                     ],
                 },
