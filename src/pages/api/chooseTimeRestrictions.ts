@@ -128,6 +128,18 @@ export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]):
     });
 };
 
+export const removeEmptyTimeRestrictions = (timeRestrictions: FullTimeRestriction[]): FullTimeRestriction[] => {
+    const refinedTimeRestrictions: FullTimeRestriction[] = [];
+
+    timeRestrictions.forEach(timeRestriction => {
+        if (timeRestriction.timeBands.length > 0) {
+            refinedTimeRestrictions.push(timeRestriction);
+        }
+    });
+
+    return refinedTimeRestrictions;
+};
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const chosenDays = (getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE) as TimeRestriction)
@@ -135,9 +147,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const inputs = collectInputsFromRequest(req, chosenDays);
         const sanitisedInputs = removeDuplicateAndEmptyTimebands(inputs);
+        const refinedTimeRestrictions = removeEmptyTimeRestrictions(sanitisedInputs);
         const errors: ErrorInfo[] = collectErrors(sanitisedInputs);
         updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
-            fullTimeRestrictions: sanitisedInputs,
+            fullTimeRestrictions: refinedTimeRestrictions,
             errors,
         });
 
