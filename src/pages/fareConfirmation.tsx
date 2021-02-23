@@ -149,6 +149,13 @@ export const buildFareConfirmationElements = (
                     href: 'defineTimeRestrictions',
                 });
             });
+            if (!fullTimeRestriction.timeBands || fullTimeRestriction.timeBands.length === 0) {
+                confirmationElements.push({
+                    name: `Time restrictions - ${sentenceCaseString(fullTimeRestriction.day)}`,
+                    content: 'N/A',
+                    href: 'defineTimeRestrictions',
+                });
+            }
         });
     }
     return confirmationElements;
