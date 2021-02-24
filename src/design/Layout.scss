@@ -341,10 +341,17 @@ svg:not(:root) {
 }
 
 .time-restrictions-button-placement[class] {
-    margin-top: auto;
-    margin-bottom: 0px;
-    max-height: 40px;
-    min-width: 125px;
+    display: none;
+}
+
+.js-enabled {
+    .time-restrictions-button-placement[class] {
+        display: block;
+        margin-top: auto;
+        margin-bottom: 0px;
+        max-height: 40px;
+        min-width: 125px;
+    }
 }
 
 .time-restriction-row {

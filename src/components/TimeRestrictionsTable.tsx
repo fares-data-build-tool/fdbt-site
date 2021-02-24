@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, Fragment } from 'react';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 import { ErrorInfo, TimeInput } from '../interfaces';
 import { sentenceCaseString } from '../utils';
@@ -14,12 +14,8 @@ interface TimeRestrictionsTableProps {
     }[];
 }
 
-const findCorrectDefaultValue = (inputs: TimeInput[], chosenDay: string, inputIndex: number): string => {
-    return (
-        inputs.find((input, index) => input.day === chosenDay && input.timeInput && index === inputIndex)?.timeInput ??
-        ''
-    );
-};
+const findCorrectDefaultValue = (inputs: TimeInput[], chosenDay: string, inputIndex: number): string =>
+    inputs.find((input, index) => input.day === chosenDay && input.timeInput && index === inputIndex)?.timeInput ?? '';
 
 const TimeRestrictionsTable = ({
     chosenDays,
@@ -123,23 +119,25 @@ const TimeRestrictionsTable = ({
     return (
         <>
             {chosenDays.map(chosenDay => (
-                <>
-                    <fieldset className="govuk-fieldset flex-container time-restrictions-table" key={chosenDay}>
+                <Fragment key={chosenDay}>
+                    <fieldset className="govuk-fieldset flex-container time-restrictions-table">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m day-label">
                             {sentenceCaseString(chosenDay)}
                         </legend>
                         <div>{getTimeRestrictionRows(chosenDay)}</div>
-                        <button
-                            id={`add-another-button-${chosenDay}`}
-                            type="button"
-                            className="govuk-button govuk-button--secondary govuk-!-margin-left-3 time-restrictions-button-placement"
-                            onClick={(): void => addTimeRestrictionRow(chosenDay)}
-                        >
-                            Add another
-                        </button>
+                        {dayRowCount[chosenDay] < 5 && (
+                            <button
+                                id={`add-another-button-${chosenDay}`}
+                                type="button"
+                                className="govuk-button govuk-button--secondary govuk-!-margin-left-3 time-restrictions-button-placement"
+                                onClick={(): void => addTimeRestrictionRow(chosenDay)}
+                            >
+                                Add another
+                            </button>
+                        )}
                     </fieldset>
                     <hr className="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
-                </>
+                </Fragment>
             ))}
         </>
     );
