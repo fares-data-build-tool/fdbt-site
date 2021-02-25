@@ -20,6 +20,7 @@ import {
     GroupPassengerTypesCollection,
 } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { removeAllWhiteSpace } from './apiUtils/validator';
 
 interface FilteredRequestBody {
     minNumber?: string;
@@ -146,7 +147,7 @@ export const formatRequestBody = (req: NextApiRequestWithSession): FilteredReque
     Object.entries(req.body).forEach(entry => {
         if (entry[0] === 'minNumber' || entry[0] === 'maxNumber') {
             const input = entry[1] as string;
-            const strippedInput = input.replace(/\s+/g, '');
+            const strippedInput = removeAllWhiteSpace(input);
             if (strippedInput === '') {
                 return;
             }
@@ -154,22 +155,20 @@ export const formatRequestBody = (req: NextApiRequestWithSession): FilteredReque
             return;
         }
         if (entry[0] === 'ageRangeMin' || entry[0] === 'ageRangeMax') {
-            if (req.body.ageRange === 'No') {
-                return;
+            if (req.body.ageRange === 'Yes') {
+                const input = entry[1] as string;
+                const strippedInput = removeAllWhiteSpace(input);
+                if (strippedInput === '') {
+                    return;
+                }
+                filteredReqBody[entry[0]] = strippedInput;
             }
-            const input = entry[1] as string;
-            const strippedInput = input.replace(/\s+/g, '');
-            if (strippedInput === '') {
-                return;
-            }
-            filteredReqBody[entry[0]] = strippedInput;
             return;
         }
         if (entry[0] === 'proofDocuments') {
-            if (req.body.proof === 'No') {
-                return;
+            if (req.body.proof === 'Yes') {
+                filteredReqBody[entry[0]] = !isArray(entry[1]) ? [entry[1] as string] : (entry[1] as string[]);
             }
-            filteredReqBody[entry[0]] = !isArray(entry[1]) ? [entry[1] as string] : (entry[1] as string[]);
             return;
         }
         filteredReqBody[entry[0]] = entry[1] as string;
