@@ -2,9 +2,10 @@ import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import { removeAllWhiteSpace } from './apiUtils/validator';
 import { NextApiRequestWithSession, TimeRestriction, ErrorInfo, FullTimeRestriction, TimeBand } from '../../interfaces';
-import { redirectToError, redirectTo } from './apiUtils';
+import { redirectToError, redirectTo, getAndValidateNoc } from './apiUtils';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE, FULL_TIME_RESTRICTIONS_ATTRIBUTE } from '../../constants/attributes';
+import { insertTimeRestriction } from '../../data/auroradb';
 
 export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);
 
@@ -138,6 +139,8 @@ export const removeDuplicateAndEmptyTimebands = (inputs: FullTimeRestriction[]):
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
+        const { timeRestrictionName } = req.body;
+        const refinedName = removeAllWhiteSpace(timeRestrictionName || '');
         const chosenDays = (getSessionAttribute(req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE) as TimeRestriction)
             .validDays;
 
@@ -148,6 +151,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             fullTimeRestrictions: sanitisedInputs,
             errors,
         });
+        if (errors.length === 0 && refinedName) {
+            const nocCode = getAndValidateNoc(req, res);
+            insertTimeRestriction(nocCode, sanitisedInputs, refinedName);
+        }
 
         if (errors.length > 0) {
             redirectTo(res, '/chooseTimeRestrictions');
