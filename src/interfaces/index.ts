@@ -563,7 +563,7 @@ export interface DefinePassengerTypeWithErrors extends CompanionInfo {
 }
 
 export interface TimeRestrictionsDefinition extends TimeRestriction {
-    validDaysSelected?: string;
+    timeRestrictionChoice?: string;
 }
 
 export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {

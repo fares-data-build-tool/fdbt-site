@@ -415,7 +415,36 @@ export const getTimeRestrictionByNocCode = async (nocCode: string): Promise<Prem
             })) || []
         );
     } catch (error) {
-        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getTimeRestrictionByNameAndNoc = async (
+    name: string,
+    nocCode: string,
+): Promise<PremadeTimeRestriction[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving time restriction for given name',
+        name,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM timeRestriction
+            WHERE name = ?
+            AND nocCode = ?
+        `;
+
+        const queryResults = await executeQuery<RawTimeRestriction[]>(queryInput, [name, nocCode]);
+
+        return queryResults.map(item => ({
+            name,
+            contents: JSON.parse(item.contents),
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve time restriction by name and nocCode from AuroraDB: ${error.stack}`);
     }
 };
 

@@ -309,7 +309,7 @@ const renderConditionalTimeRestrictionDropdown = (radio: RadioWithConditionalInp
                         errorId={error ? radio.inputErrors[0].id : ''}
                         errorClass=""
                     >
-                        <select className="govuk-select" id="service" name="service" defaultValue="">
+                        <select className="govuk-select" id="time-restriction" name="timeRestriction" defaultValue="">
                             <option value="" disabled>
                                 Select One
                             </option>
@@ -366,7 +366,7 @@ const renderConditionalRadioButton = (
             type="radio"
             value={radio.value}
             data-aria-controls={radio.dataAriaControls}
-            checked
+            defaultChecked
         />
     );
 
@@ -444,7 +444,9 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map(radio => renderRadioButtonSet(radio))}
+                        {fieldset.radios.map(radio => {
+                            return renderRadioButtonSet(radio);
+                        })}
                     </div>
                 </FormElementWrapper>
             </fieldset>

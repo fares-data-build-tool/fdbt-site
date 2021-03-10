@@ -39,7 +39,7 @@ export const getFieldsets = (
         radios: [
             {
                 id: 'valid-days-required',
-                name: 'validDaysSelected',
+                name: 'timeRestrictionChoice',
                 value: 'Yes',
                 dataAriaControls: 'valid-days-required-conditional',
                 label: 'Yes',
@@ -102,7 +102,7 @@ export const getFieldsets = (
             },
             {
                 id: 'valid-days-not-required',
-                name: 'validDaysSelected',
+                name: 'timeRestrictionChoice',
                 value: 'No',
                 label: 'No',
             },
@@ -110,18 +110,19 @@ export const getFieldsets = (
         radioError: getErrorsByIds(['valid-days-required'], errors),
     };
     if (premadeTimeRestrictions.length > 0) {
-        validDaysFieldset.radios.push({
+        validDaysFieldset.radios.splice(1, 0, {
             id: 'premade-time-restriction-yes',
-            name: 'validDaysSelected',
-            value: 'Yes',
+            name: 'timeRestrictionChoice',
+            value: 'Premade',
             label: 'Yes - Premade time restriction',
             inputHint: {
                 id: 'choose-time-restriction-hint',
                 content: 'Select premade time restriction to use',
             },
             inputType: 'dropdown',
+            dataAriaControls: 'premade-time-restriction',
             inputs: premadeTimeRestrictions,
-            inputErrors: [],
+            inputErrors: errors,
         });
     }
     return [validDaysFieldset];

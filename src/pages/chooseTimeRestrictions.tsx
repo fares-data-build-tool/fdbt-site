@@ -54,12 +54,9 @@ const ChooseTimeRestrictions = ({
                         endTimeInputs={endTimeInputs}
                         dayCounters={dayCounters}
                     />
-                    <label
-                        id="save-time-restriction-label"
-                        className="govuk-label govuk-checkboxes__label"
-                        htmlFor="save-time-restriction"
-                    >
+                    <label id="save-time-restriction-label" className="govuk-label" htmlFor="save-time-restriction">
                         If you want to save this time restriction for reuse on other products, provide a name below
+                        (optional)
                     </label>
                     <FormElementWrapper errors={errors} errorId="product-details-name" errorClass="govuk-input--error">
                         <input
