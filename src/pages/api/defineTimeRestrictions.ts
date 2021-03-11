@@ -32,7 +32,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const results = await getTimeRestrictionByNameAndNoc(timeRestriction, noc);
 
             if (results.length > 1 || results.length === 0) {
-                throw new Error('Either multiple or no results found for time restriction name');
+                throw new Error(
+                    `${results.length} results found - ${
+                        results.length > 0
+                            ? 'Multiple premade time restrictions with same name'
+                            : `No premade time restrictions saved under ${timeRestriction}`
+                    }`,
+                );
             }
 
             updateSessionAttribute(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
