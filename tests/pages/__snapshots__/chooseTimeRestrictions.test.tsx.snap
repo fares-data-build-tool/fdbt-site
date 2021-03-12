@@ -108,7 +108,9 @@ exports[`pages chooseTimeRestrictions should render correctly with errors 1`] = 
       htmlFor="save-time-restriction"
       id="save-time-restriction-label"
     >
-      If you want to save this time restriction for reuse on other products, provide a name below (optional)
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
     </label>
     <FormElementWrapper
       errorClass="govuk-input--error"
@@ -194,7 +196,9 @@ exports[`pages chooseTimeRestrictions should render correctly with no prior inpu
       htmlFor="save-time-restriction"
       id="save-time-restriction-label"
     >
-      If you want to save this time restriction for reuse on other products, provide a name below (optional)
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
     </label>
     <FormElementWrapper
       errorClass="govuk-input--error"
@@ -281,7 +285,9 @@ exports[`pages chooseTimeRestrictions should render correctly with prior inputs 
       htmlFor="save-time-restriction"
       id="save-time-restriction-label"
     >
-      If you want to save this time restriction for reuse on other products, provide a name below (optional)
+      <i>
+        Optional - if you want to save this time restriction for reuse on other products, provide a name below
+      </i>
     </label>
     <FormElementWrapper
       errorClass="govuk-input--error"
