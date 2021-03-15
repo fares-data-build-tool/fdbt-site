@@ -105,7 +105,7 @@ exports[`pages defineTimeRestrictions should render correctly when no errors are
                 "id": "premade-time-restriction-yes",
                 "inputErrors": Array [],
                 "inputHint": Object {
-                  "content": "Select premade time restriction to use",
+                  "content": "Select a saved time restriction to use",
                   "id": "choose-time-restriction-hint",
                 },
                 "inputType": "dropdown",

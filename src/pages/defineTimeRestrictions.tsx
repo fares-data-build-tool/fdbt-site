@@ -117,7 +117,7 @@ export const getFieldsets = (
             label: 'Yes - reuse a saved time restriction',
             inputHint: {
                 id: 'choose-time-restriction-hint',
-                content: 'Select premade time restriction to use',
+                content: 'Select a saved time restriction to use',
             },
             inputType: 'dropdown',
             dataAriaControls: 'premade-time-restriction',

@@ -3420,7 +3420,7 @@ export const mockDefineTimeRestrictionsFieldsets: RadioConditionalInputFieldset[
                 id: 'premade-time-restriction-yes',
                 inputErrors: [],
                 inputHint: {
-                    content: 'Select premade time restriction to use',
+                    content: 'Select a saved time restriction to use',
                     id: 'choose-time-restriction-hint',
                 },
                 inputType: 'dropdown',
