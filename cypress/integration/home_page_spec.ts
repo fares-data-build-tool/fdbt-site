@@ -12,6 +12,10 @@ export const clickElementById = (id: string): Cypress.Chainable<JQuery<HTMLEleme
 
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
+export const visitSite = (): Cypress.Chainable<Cypress.AUTWindow> => cy.visit('?disableAuth=true');
+
+export const startPageButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('start-now-button');
+
 export const continueButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('continue-button');
 
 export const completeGroupSizePage = (): string => {
@@ -156,7 +160,7 @@ export const completeGroupPassengerDetailsPages = (): void => {
 };
 
 export const randomlyDetermineUserType = (): void => {
-    const randomSelector = getRandomNumber(4, 4);
+    const randomSelector = getRandomNumber(1, 1);
 
     switch (randomSelector) {
         case 1: {
@@ -212,20 +216,27 @@ export const randomlyDecideTimeRestrictions = (): void => {
     } else {
         selectYesToTimeRestrictions();
 
+        const startTimes = ['0000', '0459', '0900'];
+        cy.get(`[id^=start-time-]`).each(input => {
+            cy.wrap(input).type(startTimes[getRandomNumber(0, 2)]);
+        });
 
+        const endTimes = ['1420', '1750', '2359'];
+        cy.get(`[id^=end-time-]`).each(input => {
+            cy.wrap(input).type(endTimes[getRandomNumber(0, 2)]);
+        });
     }
+    continueButtonClick();
 };
 
 describe('The Home Page', () => {
     it('successfully loads', () => {
-        cy.visit('?disableAuth=true');
-
-        clickElementById('start-now-button');
-
+        visitSite();
+        startPageButtonClick();
         clickElementById('fare-type-flatFare');
         continueButtonClick();
-
         randomlyDetermineUserType();
         randomlyDecideTimeRestrictions();
+        continueButtonClick();
     });
 });

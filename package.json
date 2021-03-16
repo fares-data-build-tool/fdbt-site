@@ -9,6 +9,7 @@
         "test:ci": "CI=true jest --silent -w 1 --forceExit",
         "test:updateSnapshots": "jest --updateSnapshot",
         "openCypress": "cypress open",
+        "cypress": "cypress run",
         "dev": "export NODE_ENV='development' && ts-node --project tsconfig.server.json server/index.ts",
         "build:next": "next build",
         "build:server": "tsc --project tsconfig.server.json",
