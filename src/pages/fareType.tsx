@@ -2,7 +2,12 @@ import React, { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import TwoThirdsLayout from '../layout/Layout';
 import { INTERNAL_NOC } from '../constants';
-import { FARE_TYPE_ATTRIBUTE, OPERATOR_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../constants/attributes';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, FareTypeRadioProps } from '../interfaces';
 import { isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import CsrfForm from '../components/CsrfForm';
@@ -98,32 +103,41 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
 
     const schemeOp = isSchemeOperator(ctx);
-    const opIdentifier = getAndValidateNoc(ctx);
+    const nocCode = getAndValidateNoc(ctx);
 
-    const services = await getServicesByNocCode(opIdentifier);
+    const bodsServices = await getServicesByNocCode(nocCode, 'bods');
+    const tndsServices = await getServicesByNocCode(nocCode, 'tnds');
 
-    if (!schemeOp && services.length === 0) {
+    if (!schemeOp && bodsServices.length === 0 && tndsServices.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/noServices');
         } else {
-            throw new Error(`No services found for NOC Code: ${opIdentifier}`);
+            throw new Error(`No services found for NOC Code: ${nocCode}`);
         }
+    }
+    const dataSouceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
+    if (!dataSouceAttribute) {
+        updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
+            source: bodsServices.length > 0 && tndsServices.length === 0 ? 'bods' : 'tnds',
+            hasBods: bodsServices.length > 0,
+            hasTnds: tndsServices.length > 0,
+        });
     }
 
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
 
-    if (!operatorAttribute || !opIdentifier) {
+    if (!operatorAttribute || !nocCode) {
         throw new Error('Could not extract the necessary operator info for the fareType page.');
     }
     const operatorName = operatorAttribute.name || '';
-    const uuid = buildUuid(opIdentifier);
+    const uuid = buildUuid(nocCode);
 
     updateSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE, {
         ...operatorAttribute,
         uuid,
     });
 
-    if (schemeOp || opIdentifier !== INTERNAL_NOC) {
+    if (schemeOp || nocCode !== INTERNAL_NOC) {
         logger.info('', {
             context: 'pages.fareType',
             message: 'transaction start',

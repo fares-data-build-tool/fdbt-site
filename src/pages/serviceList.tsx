@@ -110,7 +110,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
-    const services = await getServicesByNocCode(nocCode);
+    const services = await getServicesByNocCode(nocCode, 'tnds');
 
     const { selectAll } = ctx.query;
 

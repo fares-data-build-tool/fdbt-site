@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-import { getServiceByNocCodeAndLineName, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
+import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
 import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';
 import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
@@ -15,7 +15,7 @@ describe('pages', () => {
         ];
 
         beforeEach(() => {
-            (getServiceByNocCodeAndLineName as jest.Mock).mockImplementation(() => mockRawService);
+            (getServiceByNocCodeLineNameAndDataSource as jest.Mock).mockImplementation(() => mockRawService);
             (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
@@ -25,7 +25,14 @@ describe('pages', () => {
 
         it('should render correctly', () => {
             const tree = shallow(
-                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" csrfToken="" />,
+                <ReturnDirection
+                    service={mockService}
+                    errors={[]}
+                    inboundJourney=""
+                    outboundJourney=""
+                    csrfToken=""
+                    dataSource="bods"
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -38,6 +45,7 @@ describe('pages', () => {
                     inboundJourney=""
                     outboundJourney=""
                     csrfToken=""
+                    dataSource="bods"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -45,7 +53,14 @@ describe('pages', () => {
 
         it('shows a list of journey patterns for the service in each of the select boxes', () => {
             const wrapper = mount(
-                <ReturnDirection service={mockService} errors={[]} inboundJourney="" outboundJourney="" csrfToken="" />,
+                <ReturnDirection
+                    service={mockService}
+                    errors={[]}
+                    inboundJourney=""
+                    outboundJourney=""
+                    csrfToken=""
+                    dataSource="tnds"
+                />,
             );
 
             const serviceJourney = wrapper.find('.journey-option');
@@ -57,7 +72,9 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
-                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => mockRawService));
+                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
+                    () => mockRawService,
+                ));
 
                 const ctx = getMockContext();
 
@@ -73,7 +90,7 @@ describe('pages', () => {
             });
 
             it('removes journeys that have the same start and end points before rendering', async () => {
-                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(
+                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(
                     () => mockRawServiceWithDuplicates,
                 ));
 
@@ -91,7 +108,9 @@ describe('pages', () => {
             });
 
             it('throws an error if no journey patterns can be found', async () => {
-                (({ ...getServiceByNocCodeAndLineName } as jest.Mock).mockImplementation(() => Promise.resolve(null)));
+                (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(() =>
+                    Promise.resolve(null),
+                ));
                 const ctx = getMockContext();
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow();

@@ -20,16 +20,16 @@ jest.mock('../../src/data/s3.ts');
 
 describe('Inbound Matching Page', () => {
     let wrapper: any;
-    let getServiceByNocCodeAndLineNameSpy: any;
+    let getServiceByNocCodeLineNameAndDataSourceSpy: any;
     let batchGetStopsByAtcoCodeSpy: any;
     let getUserFareStagesSpy: any;
 
     beforeEach(() => {
-        getServiceByNocCodeAndLineNameSpy = jest.spyOn(auroradb, 'getServiceByNocCodeAndLineName');
+        getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByNocCodeLineNameAndDataSource');
         batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
         getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
-        getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
+        getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
         batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
@@ -105,7 +105,7 @@ describe('Inbound Matching Page', () => {
         });
 
         it('preserves the stops order', async () => {
-            getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawService));
+            getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
             batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
 
             const ctx = getMockContext({
@@ -123,7 +123,9 @@ describe('Inbound Matching Page', () => {
         });
 
         it('generates the correct list of master stops given journeys with duplicate start and end points', async () => {
-            getServiceByNocCodeAndLineNameSpy.mockImplementation(() => Promise.resolve(mockRawServiceWithDuplicates));
+            getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() =>
+                Promise.resolve(mockRawServiceWithDuplicates),
+            );
 
             const ctx = getMockContext({
                 session: {

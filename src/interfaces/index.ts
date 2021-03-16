@@ -763,3 +763,9 @@ export interface OperatorAttribute {
 export interface ForgotPasswordAttribute {
     email: string;
 }
+
+export interface TxcSourceAttribute {
+    source: 'tnds' | 'bods';
+    hasTnds: boolean;
+    hasBods: boolean;
+}

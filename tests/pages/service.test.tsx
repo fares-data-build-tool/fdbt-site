@@ -37,6 +37,11 @@ describe('pages', () => {
                     passengerType="Adult"
                     services={mockServices}
                     error={[]}
+                    dataSourceAttribute={{
+                        source: 'tnds',
+                        hasTnds: true,
+                        hasBods: false,
+                    }}
                     csrfToken=""
                 />,
             );
@@ -50,6 +55,11 @@ describe('pages', () => {
                     passengerType="Adult"
                     services={mockServices}
                     error={[]}
+                    dataSourceAttribute={{
+                        source: 'tnds',
+                        hasTnds: true,
+                        hasBods: false,
+                    }}
                     csrfToken=""
                 />,
             );
@@ -65,6 +75,11 @@ describe('pages', () => {
                     passengerType="Adult"
                     services={mockServices}
                     error={[]}
+                    dataSourceAttribute={{
+                        source: 'tnds',
+                        hasTnds: true,
+                        hasBods: false,
+                    }}
                     csrfToken=""
                 />,
             );

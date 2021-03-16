@@ -144,7 +144,7 @@ export const getServerSideProps = async (
         throw new Error('Necessary operator not found to show multipleOperatorsServiceList page');
     }
 
-    const services = await getServicesByNocCode(operatorToUse.nocCode);
+    const services = await getServicesByNocCode(operatorToUse.nocCode, 'tnds');
 
     if (!services) {
         throw new Error(`No services found for ${operatorToUse.nocCode}`);

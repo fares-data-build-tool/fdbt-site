@@ -8,7 +8,7 @@ import { getServicesByNocCode } from '../../data/auroradb';
 import { updateSessionAttribute } from '../../utils/sessions';
 
 export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => {
-    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc));
+    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc, 'tnds'));
 
     const servicesFound = await Promise.all(servicesFoundPromise);
 
@@ -22,6 +22,23 @@ export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => 
         .filter(noc => noc);
 
     return nocsWithNoTnds;
+};
+
+export const operatorHasBodsData = async (nocs: string[]): Promise<string[]> => {
+    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc, 'bods'));
+
+    const servicesFound = await Promise.all(servicesFoundPromise);
+
+    const nocsWithNoBods = nocs
+        .map((noc, index) => {
+            if (servicesFound[index].length === 0) {
+                return noc;
+            }
+            return '';
+        })
+        .filter(noc => noc);
+
+    return nocsWithNoBods;
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
