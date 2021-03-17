@@ -13,7 +13,6 @@ module.exports = {
         'plugin:jsx-a11y/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'eslint-config-prettier',
-        "plugin:cypress/recommended",
     ],
     globals: {
         Atomics: 'readonly',

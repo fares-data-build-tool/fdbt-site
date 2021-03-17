@@ -211,8 +211,6 @@ export const randomlyDecideTimeRestrictions = (): void => {
         clickElementById('valid-days-not-required');
     } else {
         selectYesToTimeRestrictions();
-
-
     }
 };
 
