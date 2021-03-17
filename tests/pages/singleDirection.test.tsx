@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import SingleDirection, { getServerSideProps } from '../../src/pages/singleDirection';
 import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { mockRawService, mockService, mockRawServiceWithDuplicates, getMockContext } from '../testData/mockData';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 
@@ -73,7 +73,15 @@ describe('pages', () => {
                     () => mockRawService,
                 ));
 
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 const result = await getServerSideProps(ctx);
 
@@ -85,7 +93,15 @@ describe('pages', () => {
                     () => mockRawServiceWithDuplicates,
                 ));
 
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 const result = await getServerSideProps(ctx);
                 expect(result.props.service).toEqual(mockService);

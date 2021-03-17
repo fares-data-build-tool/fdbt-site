@@ -13,7 +13,12 @@ import {
     selectedFareStages,
 } from '../testData/mockData';
 import Matching, { getServerSideProps } from '../../src/pages/matching';
-import { JOURNEY_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    JOURNEY_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    SERVICE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 jest.mock('../../src/data/s3.ts');
@@ -80,6 +85,11 @@ describe('Matching Page', () => {
                     [JOURNEY_ATTRIBUTE]: {
                         directionJourneyPattern: '13003921A#13003655B',
                     },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                 },
             });
 
@@ -114,6 +124,11 @@ describe('Matching Page', () => {
                     [JOURNEY_ATTRIBUTE]: {
                         directionJourneyPattern: '13003921A#13003655B',
                     },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                 },
             });
 
@@ -132,6 +147,11 @@ describe('Matching Page', () => {
                 session: {
                     [JOURNEY_ATTRIBUTE]: {
                         directionJourneyPattern: '13003655B#13003921A',
+                    },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
                     },
                 },
             });
@@ -165,6 +185,11 @@ describe('Matching Page', () => {
                     [JOURNEY_ATTRIBUTE]: {
                         directionJourneyPattern: '123ZZZ#13003921A',
                     },
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                 },
             });
 
@@ -177,6 +202,11 @@ describe('Matching Page', () => {
             const ctx = getMockContext({
                 session: {
                     [OPERATOR_ATTRIBUTE]: undefined,
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                 },
             });
 
@@ -187,6 +217,23 @@ describe('Matching Page', () => {
             const ctx = getMockContext({
                 session: {
                     [SERVICE_ATTRIBUTE]: undefined,
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
+                },
+            });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow(
+                'Necessary attributes not found to show matching page',
+            );
+        });
+
+        it('throws an error if txc source attribute not set', async () => {
+            const ctx = getMockContext({
+                session: {
+                    [TXC_SOURCE_ATTRIBUTE]: undefined,
                 },
             });
 

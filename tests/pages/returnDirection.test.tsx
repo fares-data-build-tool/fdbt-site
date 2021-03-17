@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { getServiceByNocCodeLineNameAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
 import { getMockContext, mockRawService, mockRawServiceWithDuplicates, mockService } from '../testData/mockData';
 import ReturnDirection, { getServerSideProps } from '../../src/pages/returnDirection';
-import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE } from '../../src/constants/attributes';
+import { OPERATOR_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
 
 jest.mock('../../src/data/auroradb.ts');
 
@@ -76,7 +76,15 @@ describe('pages', () => {
                     () => mockRawService,
                 ));
 
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 const result = await getServerSideProps(ctx);
 
@@ -85,6 +93,7 @@ describe('pages', () => {
                         errors: [],
                         service: mockService,
                         csrfToken: '',
+                        dataSource: 'bods',
                     },
                 });
             });
@@ -94,7 +103,15 @@ describe('pages', () => {
                     () => mockRawServiceWithDuplicates,
                 ));
 
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 const result = await getServerSideProps(ctx);
 
@@ -103,6 +120,7 @@ describe('pages', () => {
                         errors: [],
                         service: mockService,
                         csrfToken: '',
+                        dataSource: 'bods',
                     },
                 });
             });
@@ -111,7 +129,15 @@ describe('pages', () => {
                 (({ ...getServiceByNocCodeLineNameAndDataSource } as jest.Mock).mockImplementation(() =>
                     Promise.resolve(null),
                 ));
-                const ctx = getMockContext();
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow();
             });
@@ -120,6 +146,11 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     session: {
                         [SERVICE_ATTRIBUTE]: undefined,
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
                     },
                 });
 
@@ -129,9 +160,28 @@ describe('pages', () => {
             });
 
             it('throws an error if the noc is invalid', async () => {
-                const ctx = getMockContext({ session: { [OPERATOR_ATTRIBUTE]: undefined } });
+                const ctx = getMockContext({
+                    session: {
+                        [OPERATOR_ATTRIBUTE]: undefined,
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
 
                 await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
+            });
+
+            it('throws an error if txc source attribute not set', async () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TXC_SOURCE_ATTRIBUTE]: undefined,
+                    },
+                });
+
+                await expect(getServerSideProps(ctx)).rejects.toThrow("Cannot read property 'source' of undefined");
             });
         });
     });

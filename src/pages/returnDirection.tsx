@@ -73,9 +73,11 @@ const ReturnDirection = ({
                         </div>
                         <span className="govuk-hint hint-text" id="traveline-main-hint">
                             This data is taken from the{' '}
-                            {dataSource === 'bods'
-                                ? 'Bus Open Data Service (BODS)'
-                                : 'Traveline National Dataset (TNDS)'}{' '}
+                            <b>
+                                {dataSource === 'bods'
+                                    ? 'Bus Open Data Service (BODS)'
+                                    : 'Traveline National Dataset (TNDS)'}{' '}
+                            </b>
                             and should include all of your registered routes for this service
                         </span>
                         <span className="govuk-hint hint-text" id="traveline-sub-hint">

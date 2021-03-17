@@ -173,8 +173,10 @@ exports[`pages returnDirection should render correctly 1`] = `
         >
           This data is taken from the
            
-          Bus Open Data Service (BODS)
-           
+          <b>
+            Bus Open Data Service (BODS)
+             
+          </b>
           and should include all of your registered routes for this service
         </span>
         <span
@@ -412,8 +414,10 @@ exports[`pages returnDirection should render errors correctly 1`] = `
         >
           This data is taken from the
            
-          Bus Open Data Service (BODS)
-           
+          <b>
+            Bus Open Data Service (BODS)
+             
+          </b>
           and should include all of your registered routes for this service
         </span>
         <span

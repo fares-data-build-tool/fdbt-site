@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
 import { getServicesByNocCode } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
-import { OPERATOR_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE } from '../../src/constants/attributes';
+import { OPERATOR_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
 import { ServiceType } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
@@ -92,7 +92,15 @@ describe('pages', () => {
         });
 
         it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {
-            const ctx = getMockContext();
+            const ctx = getMockContext({
+                session: {
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
+                },
+            });
             const result = await getServerSideProps(ctx);
             expect(result).toEqual({
                 props: {
@@ -119,6 +127,11 @@ describe('pages', () => {
                             serviceCode: 'WY_13_IWBT_07_1',
                         },
                     ],
+                    dataSourceAttribute: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
                     csrfToken: '',
                 },
             });
@@ -132,6 +145,13 @@ describe('pages', () => {
 
             const ctx = getMockContext({
                 body: null,
+                session: {
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
+                },
                 uuid: {},
                 mockWriteHeadFn,
                 mockEndFn,
@@ -147,7 +167,14 @@ describe('pages', () => {
             const mockEndFn = jest.fn();
 
             const ctx = getMockContext({
-                session: { [OPERATOR_ATTRIBUTE]: undefined },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: undefined,
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'bods',
+                        hasBods: true,
+                        hasTnds: true,
+                    },
+                },
                 body: null,
                 uuid: {},
                 mockWriteHeadFn,
@@ -174,6 +201,16 @@ describe('pages', () => {
             await expect(getServerSideProps(ctx)).rejects.toThrow(
                 'Could not render the service selection page. Necessary attributes not found.',
             );
+        });
+
+        it('throws an error if txc source attribute not set', async () => {
+            const ctx = getMockContext({
+                session: {
+                    [TXC_SOURCE_ATTRIBUTE]: undefined,
+                },
+            });
+
+            await expect(getServerSideProps(ctx)).rejects.toThrow('Data source attribute not found');
         });
     });
 });

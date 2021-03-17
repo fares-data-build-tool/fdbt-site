@@ -70,11 +70,13 @@ const Service = ({
                     </FormElementWrapper>
                     <span className="govuk-hint hint-text" id="traveline-hint">
                         This data is taken from the{' '}
-                        {dataSourceAttribute.source === 'tnds'
-                            ? 'Traveline National Dataset (TNDS)'
-                            : 'Bus Open Data Service (BODS)'}
-                        . If any of your services are not listed, contact your local transport authority for further
-                        advice.
+                        <b>
+                            {dataSourceAttribute.source === 'tnds'
+                                ? 'Traveline National Dataset (TNDS)'
+                                : 'Bus Open Data Service (BODS)'}
+                        </b>
+                        . If the service you are looking for is not listed, contact the BODS help desk for advice{' '}
+                        <a href="/contact">here</a>
                     </span>
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
