@@ -18,6 +18,9 @@ export const startPageButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> =
 
 export const continueButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('continue-button');
 
+export const assertElementNotVisibleById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> =>
+    getElementById(id).should('not.be.visible');
+
 export const completeGroupSizePage = (): string => {
     const groupSize = getRandomNumber(1, 30).toString();
     getElementById('max-group-size').type(groupSize);
@@ -86,6 +89,8 @@ export const randomlyChooseAgeLimits = (): void => {
 };
 
 export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, adult: boolean): void => {
+    assertElementNotVisibleById('age-range-required-conditional');
+
     const firstRandomSelector = getRandomNumber(1, 4);
     const secondRandomSelector = getRandomNumber(1, 2);
 
@@ -160,7 +165,7 @@ export const completeGroupPassengerDetailsPages = (): void => {
 };
 
 export const randomlyDetermineUserType = (): void => {
-    const randomSelector = getRandomNumber(1, 1);
+    const randomSelector = getRandomNumber(1, 4);
 
     switch (randomSelector) {
         case 1: {
@@ -199,6 +204,8 @@ export const randomlyDetermineUserType = (): void => {
 };
 
 export const selectYesToTimeRestrictions = (): void => {
+    assertElementNotVisibleById('valid-days-required-conditional');
+    
     clickElementById('valid-days-required');
 
     const checkboxIds = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'bankHoliday'];
