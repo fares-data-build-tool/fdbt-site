@@ -13,7 +13,7 @@ describe('The Home Page', () => {
         getHomePage();
         stepsToSelectFlatFareServiceSelection();
         completeFlatFarePages(productName);
-            clickSelectedNumberOfCheckboxes(false);
+        clickSelectedNumberOfCheckboxes(false);
         continueButtonClick();
         completeProductDateInformationPage();
         continueButtonClick();
