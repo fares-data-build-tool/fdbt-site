@@ -19,9 +19,6 @@ module.exports = {
     },
     parser: '@typescript-eslint/parser',
     parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
-        },
         ecmaVersion: 2018,
         sourceType: 'module',
         project: `./tsconfig.json`,
@@ -29,5 +26,20 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     rules: {
         indent: [0, 4],
+        'import/extensions': [
+            'error',
+            'ignorePackages',
+            {
+                js: 'never',
+                ts: 'never',
+            },
+        ],
+    },
+    settings: {
+        'import/resolver': {
+            node: {
+                extensions: ['.js', '.ts'],
+            },
+        },
     },
 };

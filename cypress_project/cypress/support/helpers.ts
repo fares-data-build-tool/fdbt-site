@@ -2,17 +2,16 @@ export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
 };
 
-export const getElementById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> => {
-    return cy.get(`[id=${id}]`);
-};
+export const getElementById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> => cy.get(`[id=${id}]`);
 
-export const clickElementById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> => {
-    return getElementById(id).click();
-};
+export const clickElementById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> => getElementById(id).click();
 
 export const getRandomNumber = (min: number, max: number): number => Cypress._.random(min, max);
 
-export const visitSite = (): Cypress.Chainable<Cypress.AUTWindow> => cy.visit('?disableAuth=true');
+export const getHomePage = (): void => {
+    cy.clearCookies();
+    cy.visit('?disableAuth=true');
+};
 
 export const startPageButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('start-now-button');
 
@@ -205,7 +204,7 @@ export const randomlyDetermineUserType = (): void => {
 
 export const selectYesToTimeRestrictions = (): void => {
     assertElementNotVisibleById('valid-days-required-conditional');
-    
+
     clickElementById('valid-days-required');
 
     const checkboxIds = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'bankHoliday'];
@@ -224,26 +223,120 @@ export const randomlyDecideTimeRestrictions = (): void => {
         selectYesToTimeRestrictions();
 
         const startTimes = ['0000', '0459', '0900'];
-        cy.get(`[id^=start-time-]`).each(input => {
+        cy.get('[id^=start-time-]').each(input => {
             cy.wrap(input).type(startTimes[getRandomNumber(0, 2)]);
         });
 
         const endTimes = ['1420', '1750', '2359'];
-        cy.get(`[id^=end-time-]`).each(input => {
+        cy.get('[id^=end-time-]').each(input => {
             cy.wrap(input).type(endTimes[getRandomNumber(0, 2)]);
         });
     }
     continueButtonClick();
 };
 
-describe('The Home Page', () => {
-    it('successfully loads', () => {
-        visitSite();
-        startPageButtonClick();
-        clickElementById('fare-type-flatFare');
-        continueButtonClick();
-        randomlyDetermineUserType();
-        randomlyDecideTimeRestrictions();
-        continueButtonClick();
-    });
-});
+export const clickSelectedNumberOfCheckboxes = (selectAll: boolean): void => {
+    cy.get('[class=govuk-checkboxes__input]')
+        .its('length')
+        .then(numberOfCheckboxes => {
+            if (numberOfCheckboxes === 1) {
+                throw new Error('Must be more than one checkbox on the page');
+            }
+            cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+                if (selectAll || index === 0) {
+                    cy.wrap(checkbox).click();
+                } else {
+                    const randomSelector = getRandomNumber(0, 1);
+                    if (randomSelector === 0 && index !== numberOfCheckboxes - 1) {
+                        cy.wrap(checkbox).click();
+                    }
+                }
+            });
+        });
+};
+
+export const randomlyChooseAndSelectServices = (): void => {
+    const randomSelector = getRandomNumber(1, 5);
+    switch (randomSelector) {
+        case 1: {
+            // 1. Click Select All button and continue
+            clickElementById('select-all-button');
+            break;
+        }
+        case 2: {
+            // 2. Loop through checkboxes and click all, then continue
+            clickSelectedNumberOfCheckboxes(true);
+            break;
+        }
+        case 3: {
+            // 3. Loop through checkboxes and click random ones, then continue.
+            clickSelectedNumberOfCheckboxes(false);
+            break;
+        }
+        case 4: {
+            // 4. Click Select All button and then click random checkboxes to deselect, then
+            // continue
+            clickElementById('select-all-button');
+            clickSelectedNumberOfCheckboxes(false);
+            break;
+        }
+        case 5: {
+            // 5. Loop through checkboxes and click all and then click random checkboxes to
+            // deselect, then continue.
+            clickSelectedNumberOfCheckboxes(true);
+            clickSelectedNumberOfCheckboxes(false);
+            break;
+        }
+        default: {
+            throwInvalidRandomSelectorError();
+        }
+    }
+};
+
+export const completeProductDateInformationPage = (): void => {
+    assertElementNotVisibleById('product-dates-required-conditional');
+
+    if (getRandomNumber(0, 1) === 0) {
+        clickElementById('product-dates-information-not-required');
+    } else {
+        clickElementById('product-dates-required');
+        const randomSelector = getRandomNumber(1, 3);
+        switch (randomSelector) {
+            case 1: {
+                getElementById('start-date-day').type('13');
+                getElementById('start-date-month').type('10');
+                getElementById('start-date-year').type('2010');
+                break;
+            }
+            case 2: {
+                getElementById('start-date-day').type('13');
+                getElementById('start-date-month').type('10');
+                getElementById('start-date-year').type('2010');
+                getElementById('end-date-day').type('7');
+                getElementById('end-date-month').type('12');
+                getElementById('end-date-year').type('2025');
+                break;
+            }
+            case 3: {
+                getElementById('end-date-day').type('4');
+                getElementById('end-date-month').type('4');
+                getElementById('end-date-year').type('2030');
+                break;
+            }
+            default: {
+                throwInvalidRandomSelectorError();
+            }
+        }
+    }
+    continueButtonClick();
+};
+
+export const isUuidStringValid = (): void => {
+    getElementById('uuid-ref-number')
+        .invoke('text')
+        .then(rawUuid => {
+            const uuid = rawUuid.replace('Your reference number', '');
+            expect(uuid).to.contain('BLAC');
+            expect(uuid.length).to.equal(12);
+        });
+};

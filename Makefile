@@ -17,3 +17,19 @@ create-local-buckets:
 
 run-local:
 	export STAGE=dev && npm run dev
+
+# Cypress
+
+open-cypress:
+	cd cypress_project && npm run openCypress
+
+run-cypress-chrome:
+	cd cypress_project && BROWSER=chrome npm run runCypress
+
+run-cypress-firefox:
+	cd cypress_project && BROWSER=firefox npm run runCypress
+
+run-cypress-edge:
+	cd cypress_project && BROWSER=edge npm run runCypress
+
+run-cypress-all: run-cypress-chrome run-cypress-firefox run-cypress-edge
