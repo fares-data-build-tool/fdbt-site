@@ -98,7 +98,7 @@ const generateCheckbox = (
         }
 
         return (
-            <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
+            <div className="govuk-checkboxes__item govuk-!-margin-bottom-6" key={`checkbox-item-${name}`}>
                 <input
                     className="govuk-checkboxes__input"
                     id={`${productNameIds}-checkbox-${index}`}
@@ -136,7 +136,7 @@ const createSalesOffer = (
         <div className="sop-option">
             <FormGroupWrapper errorId={`${[removeAllWhiteSpace(productName)]}-checkbox-0`} errors={errors}>
                 <fieldset className="govuk-fieldset">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{`Select sales offer packages for ${productName}`}</legend>
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-5">{`Select sales offer packages for ${productName}`}</legend>
                     <FormElementWrapper
                         errors={errors}
                         errorId={`${removeAllWhiteSpace(productName)}-checkbox-0`}

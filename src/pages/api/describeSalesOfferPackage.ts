@@ -105,7 +105,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 ...salesOfferPackageInfo,
                 errors: [
                     {
-                        errorMessage: 'There is already a saved Sales Offer Package with this name',
+                        errorMessage: 'There is already a saved sales offer package with this name',
                         id: 'sop-name',
                         userInput: salesOfferPackageInfo.name,
                     },

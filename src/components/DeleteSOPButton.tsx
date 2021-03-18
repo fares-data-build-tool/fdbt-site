@@ -9,7 +9,7 @@ const DeleteSOPButton = ({ sopId, csrfToken }: DeleteSOPButtonProps): ReactEleme
     return (
         <button
             type="submit"
-            className="govuk-button govuk-button--secondary"
+            className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
             formAction={`/api/deleteSop?sopId=${sopId}&_csrf=${csrfToken}`}
             formMethod="post"
         >

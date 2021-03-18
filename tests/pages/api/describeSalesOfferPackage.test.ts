@@ -208,7 +208,7 @@ describe('describeSalesOfferPackage', () => {
             description: 'This is a sales offer package',
             errors: [
                 {
-                    errorMessage: 'There is already a saved Sales Offer Package with this name',
+                    errorMessage: 'There is already a saved sales offer package with this name',
                     id: 'sop-name',
                     userInput: 'Sales Offer Package',
                 },
