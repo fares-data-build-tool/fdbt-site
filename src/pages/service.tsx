@@ -9,7 +9,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServicesByNocCode } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -107,7 +107,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (!dataSourceAttribute) {
         throw new Error('Data source attribute not found');
     }
-    const services = await getServicesByNocCode(nocCode, dataSourceAttribute?.source);
+    const services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute?.source);
 
     if (services.length === 0) {
         if (ctx.res) {

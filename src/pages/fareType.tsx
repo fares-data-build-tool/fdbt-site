@@ -18,7 +18,7 @@ import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/inde
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
-import { getServicesByNocCode } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 
 const title = 'Fare Type - Create Fares Data Service ';
 const description = 'Fare Type selection page of the Create Fares Data Service';
@@ -105,8 +105,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const schemeOp = isSchemeOperator(ctx);
     const nocCode = getAndValidateNoc(ctx);
 
-    const bodsServices = await getServicesByNocCode(nocCode, 'bods');
-    const tndsServices = await getServicesByNocCode(nocCode, 'tnds');
+    const bodsServices = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
+    const tndsServices = await getServicesByNocCodeAndDataSource(nocCode, 'tnds');
 
     if (!schemeOp && bodsServices.length === 0 && tndsServices.length === 0) {
         if (ctx.res) {

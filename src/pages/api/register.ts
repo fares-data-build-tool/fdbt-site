@@ -4,11 +4,11 @@ import { USER_ATTRIBUTE } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { initiateAuth, globalSignOut, updateUserAttributes, respondToNewPasswordChallenge } from '../../data/cognito';
 import logger from '../../utils/logger';
-import { getServicesByNocCode } from '../../data/auroradb';
+import { getAllServicesByNocCode } from '../../data/auroradb';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => {
-    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc, 'tnds'));
+export const operatorHasServices = async (nocs: string[]): Promise<string[]> => {
+    const servicesFoundPromise = nocs.map((noc: string) => getAllServicesByNocCode(noc));
 
     const servicesFound = await Promise.all(servicesFoundPromise);
 
@@ -22,23 +22,6 @@ export const operatorHasTndsData = async (nocs: string[]): Promise<string[]> => 
         .filter(noc => noc);
 
     return nocsWithNoTnds;
-};
-
-export const operatorHasBodsData = async (nocs: string[]): Promise<string[]> => {
-    const servicesFoundPromise = nocs.map((noc: string) => getServicesByNocCode(noc, 'bods'));
-
-    const servicesFound = await Promise.all(servicesFoundPromise);
-
-    const nocsWithNoBods = nocs
-        .map((noc, index) => {
-            if (servicesFound[index].length === 0) {
-                return noc;
-            }
-            return '';
-        })
-        .filter(noc => noc);
-
-    return nocsWithNoBods;
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -91,7 +74,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 const isSchemeOperator = !!parameters['custom:schemeOperator'];
-                const nocsWithNoTnds = await operatorHasTndsData(cognitoNocs);
+                const nocsWithNoTnds = await operatorHasServices(cognitoNocs);
 
                 if (!isSchemeOperator && !(nocsWithNoTnds.length < cognitoNocs.length)) {
                     logger.warn('', {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
-import { getServicesByNocCode } from '../../src/data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
 import { ServiceType } from '../../src/interfaces';
@@ -27,7 +27,7 @@ const mockServices: ServiceType[] = [
 describe('pages', () => {
     describe('service', () => {
         beforeEach(() => {
-            (getServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
         });
 
         it('should render correctly', () => {
@@ -138,7 +138,7 @@ describe('pages', () => {
         });
 
         it('throws error if no services can be found', async () => {
-            (getServicesByNocCode as jest.Mock).mockImplementation(() => []);
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
 
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
