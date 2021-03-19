@@ -206,10 +206,8 @@ export const selectYesToTimeRestrictions = (): void => {
     assertElementNotVisibleById('valid-days-required-conditional');
 
     clickElementById('valid-days-required');
-
     const checkboxIds = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'bankHoliday'];
     const randomNumber = getRandomNumber(1, 8);
-
     for (let i = 0; i < randomNumber; i += 1) {
         clickElementById(checkboxIds[i]);
     }
@@ -217,7 +215,7 @@ export const selectYesToTimeRestrictions = (): void => {
 };
 
 export const randomlyDecideTimeRestrictions = (): void => {
-    if (getRandomNumber(2, 2) === 1) {
+    if (getRandomNumber(0, 1) === 0) {
         clickElementById('valid-days-not-required');
     } else {
         selectYesToTimeRestrictions();
@@ -236,6 +234,8 @@ export const randomlyDecideTimeRestrictions = (): void => {
 };
 
 export const clickSelectedNumberOfCheckboxes = (selectAll: boolean): void => {
+    // If selectAll is false we ensure at least one but not all boxes are checked
+
     cy.get('[class=govuk-checkboxes__input]')
         .its('length')
         .then(numberOfCheckboxes => {

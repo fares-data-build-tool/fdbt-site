@@ -7,8 +7,8 @@ import {
     isUuidStringValid,
 } from '../support/helpers';
 
-describe('The Home Page', () => {
-    it('successfully loads', () => {
+describe('The flat fare multiservice product journey', () => {
+    it('completes successfully', () => {
         getHomePage();
         stepsToSelectFlatFareServiceSelection();
         completeFlatFarePages('Flat Fare Test Product');
