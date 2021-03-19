@@ -44,6 +44,7 @@ interface NaptanAtcoCodes {
 interface RawSalesOfferPackage {
     name: string;
     description: string;
+    id: string;
     purchaseLocations: string;
     paymentMethods: string;
     ticketFormats: string;
@@ -355,7 +356,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
 
     try {
         const queryInput = `
-            SELECT name, description, purchaseLocations, paymentMethods, ticketFormats
+            SELECT id, name, description, purchaseLocations, paymentMethods, ticketFormats
             FROM salesOfferPackage
             WHERE nocCode = ?
         `;
@@ -364,6 +365,7 @@ export const getSalesOfferPackagesByNocCode = async (nocCode: string): Promise<S
 
         return (
             queryResults.map(item => ({
+                id: item.id,
                 name: item.name,
                 description: item.description,
                 purchaseLocations: item.purchaseLocations.split(','),
@@ -401,6 +403,24 @@ export const insertSalesOfferPackage = async (nocCode: string, salesOfferPackage
         ]);
     } catch (error) {
         throw new Error(`Could not insert sales offer package into the salesOfferPackage table. ${error.stack}`);
+    }
+};
+
+export const deleteSalesOfferPackageByNocCodeAndName = async (sopId: string, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting sales offer package for given name',
+        sopId,
+    });
+
+    const deleteQuery = `
+            DELETE FROM salesOfferPackage 
+            WHERE id = ?
+            AND nocCode = ?`;
+    try {
+        await executeQuery(deleteQuery, [sopId, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not delete sales offer package from the salesOfferPackage table. ${error.stack}`);
     }
 };
 
