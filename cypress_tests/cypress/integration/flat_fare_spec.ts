@@ -9,10 +9,9 @@ import {
 
 describe('The Home Page', () => {
     it('successfully loads', () => {
-        const productName = 'Flat Fare Test Product';
         getHomePage();
         stepsToSelectFlatFareServiceSelection();
-        completeFlatFarePages(productName);
+        completeFlatFarePages('Flat Fare Test Product');
         clickSelectedNumberOfCheckboxes(false);
         continueButtonClick();
         completeProductDateInformationPage();

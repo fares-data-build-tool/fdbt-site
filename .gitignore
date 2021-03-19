@@ -17,5 +17,5 @@ coverage
 **/.DS_Store
 
 # Cypress Outputs
-cypress_project/cypress/videos
-cypress_project/cypress/screenshots
+cypress_tests/cypress/videos
+cypress_tests/cypress/screenshots

@@ -21,15 +21,15 @@ run-local:
 # Cypress
 
 open-cypress:
-	cd cypress_project && npm run openCypress
+	cd cypress_tests && npm run openCypress
 
 run-cypress-chrome:
-	cd cypress_project && BROWSER=chrome npm run runCypress
+	cd cypress_tests && BROWSER=chrome npm run runCypress
 
 run-cypress-firefox:
-	cd cypress_project && BROWSER=firefox npm run runCypress
+	cd cypress_tests && BROWSER=firefox npm run runCypress
 
 run-cypress-edge:
-	cd cypress_project && BROWSER=edge npm run runCypress
+	cd cypress_tests && BROWSER=edge npm run runCypress
 
 run-cypress-all: run-cypress-chrome run-cypress-firefox run-cypress-edge
