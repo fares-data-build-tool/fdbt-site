@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import register, { operatorHasServices } from '../../../src/pages/api/register';
+import register, { nocsWithNoServices } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
@@ -307,14 +307,14 @@ describe('register', () => {
     });
 });
 
-describe('operatorHasServices', () => {
+describe('nocsWithNoServices', () => {
     const getAllServicesByNocCodeSpy = jest.spyOn(auroradb, 'getAllServicesByNocCode');
     afterEach(() => {
         getAllServicesByNocCodeSpy.mockReset();
     });
     it('returns the correct noc codes if all noc codes have no TNDS data', async () => {
         getAllServicesByNocCodeSpy.mockImplementation(() => Promise.resolve([]));
-        const result = await operatorHasServices(['AAA', 'BBB']);
+        const result = await nocsWithNoServices(['AAA', 'BBB']);
         expect(result.length).toBe(2);
         expect(result).toStrictEqual(['AAA', 'BBB']);
     });
@@ -332,7 +332,7 @@ describe('operatorHasServices', () => {
                 ]),
             )
             .mockImplementationOnce(() => Promise.resolve([]));
-        const result = await operatorHasServices(['AAA', 'BBB']);
+        const result = await nocsWithNoServices(['AAA', 'BBB']);
         expect(result.length).toBe(1);
         expect(result).toStrictEqual(['BBB']);
     });
@@ -359,7 +359,7 @@ describe('operatorHasServices', () => {
                     },
                 ]),
             );
-        const result = await operatorHasServices(['AAA', 'BBB']);
+        const result = await nocsWithNoServices(['AAA', 'BBB']);
         expect(result.length).toBe(0);
         expect(result).toStrictEqual([]);
     });

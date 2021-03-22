@@ -147,7 +147,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
 
     try {
         const queryInput = `
-            SELECT lineName, startDate, serviceDescription AS description, serviceCode
+            SELECT lineName, startDate, serviceDescription AS description, serviceCode, dataSource
             FROM txcOperatorLine
             WHERE nocCode = ?
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
@@ -161,6 +161,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
                 startDate: convertDateFormat(item.startDate),
                 description: item.description,
                 serviceCode: item.serviceCode,
+                dataSource: item.dataSource,
             })) || []
         );
     } catch (error) {
