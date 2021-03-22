@@ -45,15 +45,15 @@ export const randomlyChooseAProof = (): void => {
     const randomSelector = getRandomNumber(1, 3);
     switch (randomSelector) {
         case 1:
-            // 1. Membership card
+            cy.log('Membership card');
             clickElementById('membership-card');
             break;
         case 2:
-            // 2. Student card
+            cy.log('Student card');
             clickElementById('student-card');
             break;
         case 3:
-            // 3. Identity Document
+            cy.log('Identity Document');
             clickElementById('identity-document');
             break;
         default:
@@ -65,20 +65,20 @@ export const randomlyChooseAgeLimits = (): void => {
     const randomSelector = getRandomNumber(1, 4);
     switch (randomSelector) {
         case 1:
-            // 1. Max age, no min age
+            cy.log('Max age, no min age');
             getElementById('age-range-max').type('30');
             break;
         case 2:
-            // 2. Min age, no max age
+            cy.log('Min age, no max age');
             getElementById('age-range-min').type('12');
             break;
         case 3:
-            // 3. Max and min age, diff values
+            cy.log('Max and min age, diff values');
             getElementById('age-range-min').type('13');
             getElementById('age-range-max').type('18');
             break;
         case 4:
-            // 4. Max and min age, same values
+            cy.log('Max and min age, same values');
             getElementById('age-range-min').type('50');
             getElementById('age-range-max').type('50');
             break;
@@ -100,20 +100,20 @@ export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, 
     if (!adult) {
         switch (firstRandomSelector) {
             case 1:
-                // 1. No to both questions
+                cy.log('No to both questions');
                 clickElementById('age-range-not-required');
                 clickElementById('proof-not-required');
                 continueButtonClick();
                 break;
             case 2:
-                // 2. No to age limit, Yes to Proof
+                cy.log('No to age limit, Yes to Proof');
                 clickElementById('age-range-not-required');
                 clickElementById('proof-required');
                 randomlyChooseAProof();
                 continueButtonClick();
                 break;
             case 3:
-                // 3. Yes to age limit, Yes to Proof
+                cy.log('Yes to age limit, Yes to Proof');
                 clickElementById('age-range-required');
                 randomlyChooseAgeLimits();
                 clickElementById('proof-required');
@@ -121,7 +121,7 @@ export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, 
                 continueButtonClick();
                 break;
             case 4:
-                // 4. Yes to age limit, No to Proof
+                cy.log('Yes to age limit, No to Proof');
                 clickElementById('age-range-required');
                 randomlyChooseAgeLimits();
                 clickElementById('proof-not-required');
@@ -133,12 +133,12 @@ export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, 
     } else {
         switch (secondRandomSelector) {
             case 1:
-                // 1. No to age range
+                cy.log('No to age range');
                 clickElementById('age-range-not-required');
                 continueButtonClick();
                 break;
             case 2:
-                // 2. Yes to age range
+                cy.log('Yes to age range');
                 clickElementById('age-range-required');
                 randomlyChooseAgeLimits();
                 continueButtonClick();
@@ -168,27 +168,27 @@ export const randomlyDetermineUserType = (): void => {
 
     switch (randomSelector) {
         case 1: {
-            // Click Any and continue
+            cy.log('Click Any and continue');
             clickElementById('passenger-type-anyone');
             continueButtonClick();
             break;
         }
         case 2: {
-            // Click Group, complete following pages, and continue
+            cy.log('Click Group, complete following pages, and continue');
             clickElementById('passenger-type-group');
             continueButtonClick();
             completeGroupPassengerDetailsPages();
             break;
         }
         case 3: {
-            // Click Adult, complete following pages, and continue
+            cy.log('Click Adult, complete following pages, and continue');
             clickElementById('passenger-type-adult');
             continueButtonClick();
             completeUserDetailsPage(false, '0', true);
             break;
         }
         case 4: {
-            // Click a non-Any non-Group, complete the next page, and continue
+            cy.log('Click a non-Any non-Group, complete the next page, and continue');
             const otherPassengerTypes = ['child', 'infant', 'senior', 'student', 'youngPerson'];
             const randomPassengerType = otherPassengerTypes[getRandomNumber(0, 4)];
             clickElementById(`passenger-type-${randomPassengerType}`);
@@ -233,56 +233,45 @@ export const randomlyDecideTimeRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const clickSelectedNumberOfCheckboxes = (selectAll: boolean): void => {
-    // If selectAll is false we ensure at least one but not all boxes are checked
-
-    cy.get('[class=govuk-checkboxes__input]')
-        .its('length')
-        .then(numberOfCheckboxes => {
-            if (numberOfCheckboxes === 1) {
-                throw new Error('Must be more than one checkbox on the page');
+export const clickSelectedNumberOfCheckboxes = (clickAll: boolean): void => {
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
+        if (clickAll || index === 0) {
+            cy.wrap(checkbox).click();
+        } else {
+            const randomSelector = getRandomNumber(0, 1);
+            if (randomSelector === 0) {
+                cy.wrap(checkbox).click();
             }
-            cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
-                if (selectAll || index === 0) {
-                    cy.wrap(checkbox).click();
-                } else {
-                    const randomSelector = getRandomNumber(0, 1);
-                    if (randomSelector === 0 && index !== numberOfCheckboxes - 1) {
-                        cy.wrap(checkbox).click();
-                    }
-                }
-            });
-        });
+        }
+    });
 };
 
 export const randomlyChooseAndSelectServices = (): void => {
     const randomSelector = getRandomNumber(1, 5);
     switch (randomSelector) {
         case 1: {
-            // 1. Click Select All button and continue
+            cy.log('Click Select All button and continue');
             clickElementById('select-all-button');
             break;
         }
         case 2: {
-            // 2. Loop through checkboxes and click all, then continue
+            cy.log('Loop through checkboxes and click all, then continue');
             clickSelectedNumberOfCheckboxes(true);
             break;
         }
         case 3: {
-            // 3. Loop through checkboxes and click random ones, then continue.
+            cy.log('Loop through checkboxes and click random ones, then continue');
             clickSelectedNumberOfCheckboxes(false);
             break;
         }
         case 4: {
-            // 4. Click Select All button and then click random checkboxes to deselect, then
-            // continue
+            cy.log('Click Select All button and then click random checkboxes to deselect, then continue');
             clickElementById('select-all-button');
             clickSelectedNumberOfCheckboxes(false);
             break;
         }
         case 5: {
-            // 5. Loop through checkboxes and click all and then click random checkboxes to
-            // deselect, then continue.
+            cy.log('Loop through checkboxes and click all and then click random checkboxes to deselect, then continue');
             clickSelectedNumberOfCheckboxes(true);
             clickSelectedNumberOfCheckboxes(false);
             break;
