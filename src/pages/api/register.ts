@@ -7,7 +7,7 @@ import logger from '../../utils/logger';
 import { getAllServicesByNocCode } from '../../data/auroradb';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-export const operatorHasServices = async (nocs: string[]): Promise<string[]> => {
+export const nocsWithNoServices = async (nocs: string[]): Promise<string[]> => {
     const servicesFoundPromise = nocs.map((noc: string) => getAllServicesByNocCode(noc));
 
     const servicesFound = await Promise.all(servicesFoundPromise);
@@ -74,7 +74,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 const isSchemeOperator = !!parameters['custom:schemeOperator'];
-                const nocsWithNoTnds = await operatorHasServices(cognitoNocs);
+                const nocsWithNoTnds = await nocsWithNoServices(cognitoNocs);
 
                 if (!isSchemeOperator && !(nocsWithNoTnds.length < cognitoNocs.length)) {
                     logger.warn('', {

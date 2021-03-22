@@ -662,6 +662,7 @@ export interface ServiceType {
     startDate: string;
     description: string;
     serviceCode: string;
+    dataSource?: string;
 }
 
 export interface ServicesInfo extends ServiceType {

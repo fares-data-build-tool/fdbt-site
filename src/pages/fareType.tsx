@@ -18,7 +18,7 @@ import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/inde
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
-import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getAllServicesByNocCode } from '../data/auroradb';
 
 const title = 'Fare Type - Create Fares Data Service ';
 const description = 'Fare Type selection page of the Create Fares Data Service';
@@ -105,22 +105,25 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const schemeOp = isSchemeOperator(ctx);
     const nocCode = getAndValidateNoc(ctx);
 
-    const bodsServices = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
-    const tndsServices = await getServicesByNocCodeAndDataSource(nocCode, 'tnds');
+    const services = await getAllServicesByNocCode(nocCode);
+    const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
+    const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
 
-    if (!schemeOp && bodsServices.length === 0 && tndsServices.length === 0) {
+    if (!schemeOp && services.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/noServices');
         } else {
             throw new Error(`No services found for NOC Code: ${nocCode}`);
         }
     }
+
     const dataSouceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
+
     if (!dataSouceAttribute) {
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
-            source: bodsServices.length > 0 && tndsServices.length === 0 ? 'bods' : 'tnds',
-            hasBods: bodsServices.length > 0,
-            hasTnds: tndsServices.length > 0,
+            source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
+            hasBods: hasBodsServices,
+            hasTnds: hasTndsServices,
         });
     }
 
