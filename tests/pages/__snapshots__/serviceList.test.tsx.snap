@@ -65,7 +65,19 @@ exports[`pages serviceList should render an error when the error flag is set to 
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data is taken from the Traveline National Dataset.
+          This data is taken from the
+           
+          <b>
+            Bus Open Data Service (BODS)
+          </b>
+          . If the service you are looking for is not listed, contact the BODS help desk for advice
+           
+          <a
+            href="/contact"
+          >
+            here
+          </a>
+          .
         </span>
         <FormElementWrapper
           addFormGroupError={false}
@@ -154,7 +166,19 @@ exports[`pages serviceList should render correctly 1`] = `
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data is taken from the Traveline National Dataset.
+          This data is taken from the
+           
+          <b>
+            Traveline National Dataset (TNDS)
+          </b>
+          . If the service you are looking for is not listed, contact the BODS help desk for advice
+           
+          <a
+            href="/contact"
+          >
+            here
+          </a>
+          .
         </span>
         <FormElementWrapper
           addFormGroupError={false}
@@ -296,7 +320,19 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data is taken from the Traveline National Dataset.
+          This data is taken from the
+           
+          <b>
+            Traveline National Dataset (TNDS)
+          </b>
+          . If the service you are looking for is not listed, contact the BODS help desk for advice
+           
+          <a
+            href="/contact"
+          >
+            here
+          </a>
+          .
         </span>
         <FormElementWrapper
           addFormGroupError={false}

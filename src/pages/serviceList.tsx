@@ -63,7 +63,14 @@ const ServiceList = ({
                             className="govuk-button govuk-button--secondary"
                         />
                         <span className="govuk-hint" id="traveline-hint">
-                            This data is taken from the Traveline National Dataset.
+                            This data is taken from the{' '}
+                            <b>
+                                {dataSourceAttribute.source === 'tnds'
+                                    ? 'Traveline National Dataset (TNDS)'
+                                    : 'Bus Open Data Service (BODS)'}
+                            </b>
+                            . If the service you are looking for is not listed, contact the BODS help desk for advice{' '}
+                            <a href="/contact">here</a>.
                         </span>
                         <FormElementWrapper
                             errors={errors}
