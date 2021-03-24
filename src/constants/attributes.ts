@@ -79,3 +79,5 @@ export const USER_ATTRIBUTE = 'fdbt-user';
 export const OPERATOR_ATTRIBUTE = 'fdbt-operator';
 
 export const TXC_SOURCE_ATTRIBUTE = 'fdbt-txc-source';
+
+export const SAVE_OPERATOR_GROUP_ATTRIBUTE = 'fdbt-save-operator-group';

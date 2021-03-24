@@ -104,6 +104,7 @@ import {
     USER_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    SAVE_OPERATOR_GROUP_ATTRIBUTE,
 } from '../constants/attributes';
 
 import * as attributes from '../constants/attributes';
@@ -155,6 +156,7 @@ interface SessionAttributeTypes {
     [USER_ATTRIBUTE]: UserAttribute | WithErrors<UserAttribute>;
     [OPERATOR_ATTRIBUTE]: OperatorAttribute | WithErrors<OperatorAttribute>;
     [TXC_SOURCE_ATTRIBUTE]: TxcSourceAttribute;
+    [SAVE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

@@ -126,7 +126,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 return;
             }
             if (ticketType === 'multipleServices') {
-                redirectTo(res, '/multipleOperatorsServiceList');
+                redirectTo(res, '/saveOperatorGroup');
                 return;
             }
         }

@@ -68,6 +68,11 @@ export interface Operator {
     nocCode: string;
 }
 
+export interface OperatorGroup {
+    name: string;
+    operators: Operator[];
+}
+
 export interface MultiOperatorInfo {
     nocCode: string;
     services: string[];
