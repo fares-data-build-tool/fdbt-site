@@ -42,6 +42,7 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
                         id: 'operator-group-name-input',
                         name: 'groupName',
                         label: 'Operator group name',
+                        defaultValue: errors[0]?.userInput,
                     },
                 ],
                 inputErrors: getErrorsByIds(['operator-group-name-input'], errors),

@@ -4,10 +4,10 @@ import { NextApiRequestWithSession, MultipleOperatorsAttribute } from '../../int
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { SAVE_OPERATOR_GROUP_ATTRIBUTE, MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants/attributes';
 import { getOperatorGroupByNameAndNoc, insertOperatorGroup } from '../../data/auroradb';
+import { removeExcessWhiteSpace } from './apiUtils/validator';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        console.log(req.body);
         const { reuseGroup } = req.body;
         if (!reuseGroup) {
             updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, [
@@ -18,7 +18,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
         if (reuseGroup === 'yes') {
             const { groupName } = req.body;
-            if (!groupName) {
+            const refinedGroupName = removeExcessWhiteSpace(groupName);
+            if (!refinedGroupName) {
                 updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, [
                     { errorMessage: 'Provide a name for the operator group', id: 'operator-group-name-input' },
                 ]);
@@ -26,14 +27,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
             const noc = getAndValidateNoc(req, res);
-            const results = await getOperatorGroupByNameAndNoc(groupName, noc);
+            const results = await getOperatorGroupByNameAndNoc(refinedGroupName, noc);
             const nameIsNotUnique = results.length >= 1;
             if (nameIsNotUnique) {
                 updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, [
                     {
-                        errorMessage: `A saved operator group with name ${groupName} already exists, provide a unique name`,
+                        errorMessage: `A saved operator group with name ${refinedGroupName} already exists, provide a unique name`,
                         id: 'operator-group-name-input',
-                        userInput: groupName,
+                        userInput: refinedGroupName,
                     },
                 ]);
                 redirectTo(res, '/saveOperatorGroup');
@@ -41,7 +42,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
             const operators = (getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
                 .selectedOperators;
-            await insertOperatorGroup(noc, operators, groupName);
+            await insertOperatorGroup(noc, operators, refinedGroupName);
         }
         redirectTo(res, '/multipleOperatorsServiceList');
     } catch (error) {
