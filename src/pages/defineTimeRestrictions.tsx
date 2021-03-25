@@ -121,7 +121,11 @@ export const getFieldsets = (
             },
             inputType: 'dropdown',
             dataAriaControls: 'premade-time-restriction',
-            inputs: premadeTimeRestrictions,
+            inputs: premadeTimeRestrictions.map((premadeTimeRestriction, index) => ({
+                id: `premade-time-restriction-${index}`,
+                name: premadeTimeRestriction.name,
+                label: premadeTimeRestriction.name,
+            })),
             inputErrors: errors,
         });
     }

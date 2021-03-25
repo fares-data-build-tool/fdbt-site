@@ -3,7 +3,7 @@ import { getAndValidateNoc, redirectToError, redirectTo } from './apiUtils/index
 import { NextApiRequestWithSession, MultipleOperatorsAttribute } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { SAVE_OPERATOR_GROUP_ATTRIBUTE, MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants/attributes';
-import { getOperatorGroupByNameAndNoc, insertOperatorGroup } from '../../data/auroradb';
+import { getOperatorGroupsByNameAndNoc, insertOperatorGroup } from '../../data/auroradb';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -27,7 +27,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 return;
             }
             const noc = getAndValidateNoc(req, res);
-            const results = await getOperatorGroupByNameAndNoc(refinedGroupName, noc);
+            const results = await getOperatorGroupsByNameAndNoc(refinedGroupName, noc);
             const nameIsNotUnique = results.length >= 1;
             if (nameIsNotUnique) {
                 updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, [
@@ -44,6 +44,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 .selectedOperators;
             await insertOperatorGroup(noc, operators, refinedGroupName);
         }
+        updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
         redirectTo(res, '/multipleOperatorsServiceList');
     } catch (error) {
         const message = 'There was a problem saving the operator group:';

@@ -43,8 +43,8 @@ describe('saveOperatorGroup', () => {
     });
 
     it('should redirect back to saveOperatorGroup with errors if the user selects yes but their given operator group name already exists, and should NOT make an insert query to the DB', async () => {
-        const getOperatorGroupByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupByNameAndNoc');
-        getOperatorGroupByNameAndNocSpy.mockImplementation().mockResolvedValue([
+        const getOperatorGroupsByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc');
+        getOperatorGroupsByNameAndNocSpy.mockImplementation().mockResolvedValue([
             {
                 name: 'Best test group',
                 operators: [
@@ -71,13 +71,13 @@ describe('saveOperatorGroup', () => {
             },
         ]);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/saveOperatorGroup' });
-        expect(getOperatorGroupByNameAndNocSpy).toBeCalledWith('Best test group', 'TEST');
+        expect(getOperatorGroupsByNameAndNocSpy).toBeCalledWith('Best test group', 'TEST');
         expect(insertOperatorGroupSpy).toBeCalledTimes(0);
     });
 
     it('should insert the users operator group name with the operator list stored in the session and redirect on to multipleOperatorsServiceList', async () => {
-        const getOperatorGroupByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupByNameAndNoc');
-        getOperatorGroupByNameAndNocSpy.mockImplementation().mockResolvedValue([]);
+        const getOperatorGroupsByNameAndNocSpy = jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc');
+        getOperatorGroupsByNameAndNocSpy.mockImplementation().mockResolvedValue([]);
         const groupNameWithSpaces = '     Best test    group      ';
         const groupName = 'Best test group';
         const { req, res } = getMockRequestAndResponse({
@@ -95,9 +95,9 @@ describe('saveOperatorGroup', () => {
         });
         await saveOperatorGroup(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledTimes(0);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleOperatorsServiceList' });
-        expect(getOperatorGroupByNameAndNocSpy).toBeCalledWith('Best test group', 'TEST');
+        expect(getOperatorGroupsByNameAndNocSpy).toBeCalledWith('Best test group', 'TEST');
         expect(insertOperatorGroupSpy).toBeCalledWith(
             'TEST',
             [
@@ -116,7 +116,7 @@ describe('saveOperatorGroup', () => {
         });
         await saveOperatorGroup(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledTimes(0);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleOperatorsServiceList' });
         expect(insertOperatorGroupSpy).toBeCalledTimes(0);
     });

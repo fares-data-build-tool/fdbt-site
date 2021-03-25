@@ -122,7 +122,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 TICKET_REPRESENTATION_ATTRIBUTE,
             ) as TicketRepresentationAttribute).name;
             if (ticketType === 'geoZone') {
-                redirectTo(res, '/howManyProducts');
+                redirectTo(res, '/saveOperatorGroup');
                 return;
             }
             if (ticketType === 'multipleServices') {

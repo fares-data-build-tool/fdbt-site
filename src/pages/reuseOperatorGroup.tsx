@@ -8,16 +8,17 @@ import {
     RadioConditionalInputFieldset,
     TimeRestriction,
     TimeRestrictionsDefinitionWithErrors,
-    PremadeOperatorList,
+    OperatorGroup,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
-import { getCsrfToken, getErrorsByIds, getNocFromIdToken } from '../utils';
-import { getTimeRestrictionByNocCode } from '../data/auroradb';
+import { REUSE_OPERATOR_GROUP_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
+import { getAndValidateNoc, getCsrfToken, getErrorsByIds, getNocFromIdToken } from '../utils';
+import { getOperatorGroupsByNoc } from '../data/auroradb';
+import { redirectTo } from './api/apiUtils';
 
-const title = 'Define Time Restrictions - Create Fares Data Service';
-const description = 'Define Time Restrictions page of the Create Fares Data Service';
+const title = 'Reuse Operator Group - Create Fares Data Service';
+const description = 'Reuse Operator Group page of the Create Fares Data Service';
 
 interface DefineTimeRestrictionsProps {
     errors: ErrorInfo[];
@@ -25,10 +26,7 @@ interface DefineTimeRestrictionsProps {
     csrfToken: string;
 }
 
-export const getFieldsets = (
-    errors: ErrorInfo[],
-    // premadeOperatorLists: PremadeOperatorList[],
-): RadioConditionalInputFieldset[] => {
+export const getFieldsets = (errors: ErrorInfo[], operatorGroups: OperatorGroup[]): RadioConditionalInputFieldset[] => {
     const validDaysFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'define-valid-days',
@@ -48,7 +46,7 @@ export const getFieldsets = (
                 inputType: 'dropdown',
                 dataAriaControls: 'premade-time-restriction',
                 // inputs: premadeTimeRestrictions,
-                // inputs: premadeOperatorLists.map(premadeOperatorList => {{ id: premadeOperatorList.name, name: premadeOperatorList.name, label: 'Operator List 1' }}),
+                inputs: operatorGroups.map(operatorGroup => {{ id: operatorGroup.name, name: operatorGroup.name, label: 'Operator List 1' }}),
                 inputErrors: errors,
             },
             {
@@ -91,14 +89,18 @@ export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: DefineTimeRestrictionsProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const timeRestrictionsDefinition = getSessionAttribute(ctx.req, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE);
-    const noc = getNocFromIdToken(ctx);
-    const timeRestrictions = await getTimeRestrictionByNocCode(noc || '');
+    const noc = getAndValidateNoc(ctx);
+    const savedOperatorGroups = await getOperatorGroupsByNoc(noc);
 
-    let errors: ErrorInfo[] = [];
-    if (timeRestrictionsDefinition && isTimeRestrictionsDefinitionWithErrors(timeRestrictionsDefinition)) {
-        errors = timeRestrictionsDefinition.errors;
+    if (!savedOperatorGroups) {
+        if (ctx.res) {
+            redirectTo(ctx.res, '/searchOperators');
+        } else {
+            throw new Error('User has arrived at reuse operator group page with incorrect information.');
+        }
     }
+
+    const errors = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE) || [];
 
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(
         errors,
@@ -108,4 +110,4 @@ export const getServerSideProps = async (
     return { props: { errors, fieldsets, csrfToken } };
 };
 
-export default SavedOperators;
+export default ReuseOperatorGroup;
