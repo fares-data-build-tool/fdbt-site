@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, redirectToError, redirectTo } from './apiUtils/index';
-import { NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
-import { SAVE_OPERATOR_GROUP_ATTRIBUTE } from '../../constants/attributes';
-import { getOperatorGroupByNameAndNoc } from '../../data/auroradb';
+import { NextApiRequestWithSession, MultipleOperatorsAttribute } from '../../interfaces';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
+import { SAVE_OPERATOR_GROUP_ATTRIBUTE, MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants/attributes';
+import { getOperatorGroupByNameAndNoc, insertOperatorGroup } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -25,7 +25,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 redirectTo(res, '/saveOperatorGroup');
                 return;
             }
-            // DATABASE CALL TO CHECK NAME IS UNIQUE
             const noc = getAndValidateNoc(req, res);
             const results = await getOperatorGroupByNameAndNoc(groupName, noc);
             const nameIsNotUnique = results.length >= 1;
@@ -40,11 +39,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 redirectTo(res, '/saveOperatorGroup');
                 return;
             }
-            // DATABASE CALL TO ADD GROUP
-
-
-
-            
+            const operators = (getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute)
+                .selectedOperators;
+            await insertOperatorGroup(noc, operators, groupName);
         }
         redirectTo(res, '/multipleOperatorsServiceList');
     } catch (error) {
