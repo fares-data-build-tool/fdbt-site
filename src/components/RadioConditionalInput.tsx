@@ -310,8 +310,8 @@ const renderConditionalDropdown = (radio: RadioWithConditionalInputs): ReactElem
                     >
                         <select
                             className="govuk-select"
-                            id="conditional-dropdown"
-                            name="conditionalDropdown"
+                            id={radio.selectIdentifier || 'conditional-dropdown'}
+                            name={radio.selectIdentifier || 'conditional-dropdown'}
                             defaultValue=""
                         >
                             <option value="" disabled>
@@ -428,7 +428,7 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
     const radioError = fieldset.radioError.length > 0;
 
     return (
-        <div className={`govuk-form-group ${radioError ? 'govuk-form-group--error' : ''}`}>
+        <div className={`govuk-form-group ${radioError ? 'govuk-form-group--error' : ''}`} id="conditional-form-group">
             <fieldset className="govuk-fieldset" aria-describedby={fieldset.heading.id}>
                 <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2

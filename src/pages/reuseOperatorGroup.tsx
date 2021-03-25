@@ -8,50 +8,54 @@ import {
     RadioConditionalInputFieldset,
     TimeRestriction,
     TimeRestrictionsDefinitionWithErrors,
-    OperatorGroup,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
-import { REUSE_OPERATOR_GROUP_ATTRIBUTE, TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE } from '../constants/attributes';
-import { getAndValidateNoc, getCsrfToken, getErrorsByIds, getNocFromIdToken } from '../utils';
+import { REUSE_OPERATOR_GROUP_ATTRIBUTE } from '../constants/attributes';
+import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import { getOperatorGroupsByNoc } from '../data/auroradb';
 import { redirectTo } from './api/apiUtils';
 
 const title = 'Reuse Operator Group - Create Fares Data Service';
 const description = 'Reuse Operator Group page of the Create Fares Data Service';
 
-interface DefineTimeRestrictionsProps {
+interface ReuseOperatorGroupProps {
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
     csrfToken: string;
 }
 
-export const getFieldsets = (errors: ErrorInfo[], operatorGroups: OperatorGroup[]): RadioConditionalInputFieldset[] => {
+export const getFieldsets = (errors: ErrorInfo[], operatorGroupNames: string[]): RadioConditionalInputFieldset[] => {
     const validDaysFieldset: RadioConditionalInputFieldset = {
         heading: {
-            id: 'define-valid-days',
-            content: 'Is this ticket only valid on certain days or times?',
+            id: 'reuse-operator-group-heading',
+            content: 'Do you want to reuse a saved operator group?',
             hidden: true,
         },
         radios: [
             {
-                id: 'premade-time-restriction-yes',
-                name: 'timeRestrictionChoice',
-                value: 'Premade',
+                id: 'reuse-operator-group-yes',
+                name: 'reuseGroupChoice',
+                value: 'Yes',
                 label: 'Yes',
                 inputHint: {
                     id: 'choose-time-restriction-hint',
-                    content: 'Select a saved operator list',
+                    content: 'Select an operator group from the dropdown',
+                    hidden: true,
                 },
                 inputType: 'dropdown',
-                dataAriaControls: 'premade-time-restriction',
-                // inputs: premadeTimeRestrictions,
-                inputs: operatorGroups.map(operatorGroup => {{ id: operatorGroup.name, name: operatorGroup.name, label: 'Operator List 1' }}),
+                dataAriaControls: 'reuse-operator-group',
+                inputs: operatorGroupNames.map((operatorGroupName, index) => ({
+                    id: `operator-group-${index}`,
+                    name: operatorGroupName,
+                    label: operatorGroupName,
+                })),
                 inputErrors: errors,
+                selectIdentifier: 'premadeOperatorGroup',
             },
             {
-                id: 'valid-days-not-required',
-                name: 'timeRestrictionChoice',
+                id: 'reuse-operator-group-no',
+                name: 'reuseGroupChoice',
                 value: 'No',
                 label: 'No',
             },
@@ -66,15 +70,19 @@ export const isTimeRestrictionsDefinitionWithErrors = (
 ): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
     (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
 
-const SavedOperators = ({ errors = [], fieldsets, csrfToken }: DefineTimeRestrictionsProps): ReactElement => (
+const ReuseOperatorGroup = ({ errors = [], fieldsets, csrfToken }: ReuseOperatorGroupProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
-        <CsrfForm action="/api/savedOperators" method="post" csrfToken={csrfToken}>
+        <CsrfForm action="/api/reuseOperatorGroup" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
                 <div>
-                    <h1 className="govuk-heading-l" id="define-time-restrictions-page-heading">
+                    <h1 className="govuk-heading-l" id="reuse-operator-group-page-heading">
                         Would you like to reuse a saved list of operators that this ticket covers?
                     </h1>
+                    <span className="govuk-hint" id="reuse-operator-group-hint">
+                        You can reuse a saved operator group to save yourself time searching for each operator
+                        individually
+                    </span>
                     {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
@@ -87,12 +95,12 @@ const SavedOperators = ({ errors = [], fieldsets, csrfToken }: DefineTimeRestric
 
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
-): Promise<{ props: DefineTimeRestrictionsProps }> => {
+): Promise<{ props: ReuseOperatorGroupProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const noc = getAndValidateNoc(ctx);
     const savedOperatorGroups = await getOperatorGroupsByNoc(noc);
 
-    if (!savedOperatorGroups) {
+    if (savedOperatorGroups.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/searchOperators');
         } else {
@@ -101,12 +109,8 @@ export const getServerSideProps = async (
     }
 
     const errors = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE) || [];
-
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(
-        errors,
-        timeRestrictions,
-        // timeRestrictionsDefinition,
-    );
+    const operatorGroupNames = savedOperatorGroups.map(operatorGroup => operatorGroup.name);
+    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors, operatorGroupNames);
     return { props: { errors, fieldsets, csrfToken } };
 };
 

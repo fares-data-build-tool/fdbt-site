@@ -11,7 +11,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { reuseGroup } = req.body;
         if (!reuseGroup) {
             updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Choose one of the options below', id: 'yes-reuse' },
+                { errorMessage: 'Choose one of the options below', id: 'reuse-operator-group-yes' },
             ]);
             redirectTo(res, '/saveOperatorGroup');
             return;

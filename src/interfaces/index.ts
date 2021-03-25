@@ -741,6 +741,7 @@ export interface RadioWithConditionalInputs extends RadioWithoutConditionals {
     inputType: 'text' | 'checkbox' | 'date' | 'textWithUnits' | 'dropdown';
     inputs: BaseReactElement[] | PremadeTimeRestriction[];
     inputErrors: ErrorInfo[];
+    selectIdentifier?: string;
 }
 
 export type RadioButton = RadioWithoutConditionals | RadioWithConditionalInputs;
