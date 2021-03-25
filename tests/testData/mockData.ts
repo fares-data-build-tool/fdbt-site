@@ -2,7 +2,6 @@
 import React from 'react';
 import { mockRequest } from 'mock-req-res';
 import MockRes from 'mock-res';
-import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
 import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     STAGE_NAMES_ATTRIBUTE,
@@ -20,6 +19,8 @@ import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     FARE_STAGES_ATTRIBUTE,
 } from '../../src/constants/attributes';
+import { ID_TOKEN_COOKIE, COOKIES_POLICY_COOKIE } from '../../src/constants';
+
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { TextInputFieldset } from '../../src/pages/definePassengerType';
 import {
@@ -3901,4 +3902,116 @@ export const mockFullTimeRestrictions: FullTimeRestrictionAttribute = {
         },
     ],
     errors: [],
+};
+
+export const mockFieldSetForSaveOperatorGroup: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operators-hidden-heading',
+        content: 'Do you want to save your group of operators for later use?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'yes-reuse',
+            name: 'reuseGroup',
+            value: 'yes',
+            dataAriaControls: 'reuse-operators-required-conditional',
+            label: 'Yes',
+            inputHint: {
+                id: 'reuse-group-name-hint',
+                content: 'Provide a name to remember your group of operators by',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'operator-group-name-input',
+                    name: 'groupName',
+                    label: 'Operator group name',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+        { id: 'no-reuse', name: 'reuseGroup', value: 'no', label: 'No' },
+    ],
+    radioError: [],
+};
+
+export const mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operators-hidden-heading',
+        content: 'Do you want to save your group of operators for later use?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'yes-reuse',
+            name: 'reuseGroup',
+            value: 'yes',
+            dataAriaControls: 'reuse-operators-required-conditional',
+            label: 'Yes',
+            inputHint: {
+                id: 'reuse-group-name-hint',
+                content: 'Provide a name to remember your group of operators by',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'operator-group-name-input',
+                    name: 'groupName',
+                    label: 'Operator group name',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [],
+        },
+        { id: 'no-reuse', name: 'reuseGroup', value: 'no', label: 'No' },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the options below',
+            id: 'yes-reuse',
+        },
+    ],
+};
+
+export const mockFieldSetForSaveOperatorGroupWithErrorsIfNameMissing: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operators-hidden-heading',
+        content: 'Do you want to save your group of operators for later use?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'yes-reuse',
+            name: 'reuseGroup',
+            value: 'yes',
+            dataAriaControls: 'reuse-operators-required-conditional',
+            label: 'Yes',
+            inputHint: {
+                id: 'reuse-group-name-hint',
+                content: 'Provide a name to remember your group of operators by',
+                hidden: true,
+            },
+            inputType: 'text',
+            inputs: [
+                {
+                    id: 'operator-group-name-input',
+                    name: 'groupName',
+                    label: 'Operator group name',
+                    defaultValue: '',
+                },
+            ],
+            inputErrors: [
+                {
+                    errorMessage: 'Provide a name for the operator group',
+                    id: 'operator-group-name-input',
+                },
+            ],
+        },
+        { id: 'no-reuse', name: 'reuseGroup', value: 'no', label: 'No' },
+    ],
+    radioError: [],
 };

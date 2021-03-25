@@ -316,7 +316,7 @@ describe('searchOperators', () => {
 
     it.each([
         ['/howManyProducts', 'geoZone'],
-        ['/multipleOperatorsServiceList', 'multipleServices'],
+        ['/saveOperatorGroup', 'multipleServices'],
     ])(
         'should redirect to %s when the user has successfully selected operators for a %s multi op ticket',
         (redirect, ticketType) => {
