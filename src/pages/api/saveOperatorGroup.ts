@@ -1,8 +1,12 @@
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, redirectToError, redirectTo } from './apiUtils/index';
-import { NextApiRequestWithSession, MultipleOperatorsAttribute } from '../../interfaces';
+import { NextApiRequestWithSession, MultipleOperatorsAttribute, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
-import { SAVE_OPERATOR_GROUP_ATTRIBUTE, MULTIPLE_OPERATOR_ATTRIBUTE } from '../../constants/attributes';
+import {
+    SAVE_OPERATOR_GROUP_ATTRIBUTE,
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getOperatorGroupsByNameAndNoc, insertOperatorGroup } from '../../data/auroradb';
 import { removeExcessWhiteSpace } from './apiUtils/validator';
 
@@ -45,7 +49,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await insertOperatorGroup(noc, operators, refinedGroupName);
         }
         updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
-        redirectTo(res, '/multipleOperatorsServiceList');
+        const ticketRepresentation = (getSessionAttribute(
+            req,
+            TICKET_REPRESENTATION_ATTRIBUTE,
+        ) as TicketRepresentationAttribute).name;
+        redirectTo(
+            res,
+            ticketRepresentation === 'multipleServices' ? '/multipleOperatorsServiceList' : '/howManyProducts',
+        );
     } catch (error) {
         const message = 'There was a problem saving the operator group:';
         redirectToError(res, message, 'api.saveOperatorGroup', error);

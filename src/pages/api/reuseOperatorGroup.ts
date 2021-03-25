@@ -1,9 +1,13 @@
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
 import { getOperatorGroupsByNameAndNoc } from '../../data/auroradb';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, REUSE_OPERATOR_GROUP_ATTRIBUTE } from '../../constants/attributes';
-import { NextApiRequestWithSession } from '../../interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import {
+    MULTIPLE_OPERATOR_ATTRIBUTE,
+    REUSE_OPERATOR_GROUP_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
+} from '../../constants/attributes';
+import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces';
+import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -32,8 +36,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
         updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
-
-        redirectTo(res, '/multipleOperatorsServiceList');
+        const ticketRepresentation = (getSessionAttribute(
+            req,
+            TICKET_REPRESENTATION_ATTRIBUTE,
+        ) as TicketRepresentationAttribute).name;
+        redirectTo(
+            res,
+            ticketRepresentation === 'multipleServices' ? '/multipleOperatorsServiceList' : '/howManyProducts',
+        );
         return;
     } catch (error) {
         const message = 'There was a problem with the user selecting their premade operator group:';
