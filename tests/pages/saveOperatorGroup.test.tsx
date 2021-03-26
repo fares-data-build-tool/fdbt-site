@@ -20,7 +20,7 @@ describe('pages', () => {
         it('should render errors when user does not select a radio button', () => {
             const tree = shallow(
                 <SaveOperatorGroup
-                    errors={[{ errorMessage: 'Choose one of the options below', id: 'yes-reuse' }]}
+                    errors={[{ errorMessage: 'Choose one of the options below', id: 'yes-save' }]}
                     csrfToken=""
                     fieldset={mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected}
                 />,
@@ -49,7 +49,7 @@ describe('pages', () => {
             });
 
             it('should return fieldsets with radio errors when radio errors are passed', () => {
-                const radioErrors: ErrorInfo[] = [{ errorMessage: 'Choose one of the options below', id: 'yes-reuse' }];
+                const radioErrors: ErrorInfo[] = [{ errorMessage: 'Choose one of the options below', id: 'yes-save' }];
                 const fieldsets = getFieldset(radioErrors);
                 expect(fieldsets).toEqual(mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected);
             });

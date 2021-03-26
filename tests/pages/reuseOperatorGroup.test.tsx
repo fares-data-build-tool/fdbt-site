@@ -1,28 +1,28 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import {
-    mockFieldSetForSaveOperatorGroup,
-    mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected,
-    mockFieldSetForSaveOperatorGroupWithErrorsIfNameMissing,
+    mockFieldSetForReuseOperatorGroup,
+    mockFieldSetForReuseOperatorGroupWithErrorsIfRadioNotSelected,
+    mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
-import SaveOperatorGroup, { getFieldset } from '../../src/pages/saveOperatorGroup';
+import ReuseOperatorGroup, { getFieldsets } from '../../src/pages/reuseOperatorGroup';
 
 describe('pages', () => {
-    describe('saveOperatorGroup', () => {
+    describe('reuseOperatorGroup', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <SaveOperatorGroup errors={[]} csrfToken="" fieldset={mockFieldSetForSaveOperatorGroup} />,
+                <ReuseOperatorGroup errors={[]} csrfToken="" fieldset={mockFieldSetForReuseOperatorGroup} />,
             );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render errors when user does not select a radio button', () => {
             const tree = shallow(
-                <SaveOperatorGroup
-                    errors={[{ errorMessage: 'Choose one of the options below', id: 'yes-reuse' }]}
+                <ReuseOperatorGroup
+                    errors={[{ errorMessage: 'Choose one of the options below', id: 'conditional-form-group' }]}
                     csrfToken=""
-                    fieldset={mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected}
+                    fieldset={mockFieldSetForReuseOperatorGroupWithErrorsIfRadioNotSelected}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -30,12 +30,15 @@ describe('pages', () => {
 
         it('should render errors when user does not provide a group name', () => {
             const tree = shallow(
-                <SaveOperatorGroup
+                <ReuseOperatorGroup
                     errors={[
-                        { errorMessage: 'Provide a name for the operator group', id: 'operator-group-name-input' },
+                        {
+                            errorMessage: 'Choose a premade operator group from the options below',
+                            id: 'premadeOperatorGroup',
+                        },
                     ]}
                     csrfToken=""
-                    fieldset={mockFieldSetForSaveOperatorGroupWithErrorsIfNameMissing}
+                    fieldset={mockFieldSetForReuseOperatorGroupWithErrorsIfNameMissing}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -45,21 +48,26 @@ describe('pages', () => {
             it('should return fieldsets with no errors when no errors are passed', () => {
                 const emptyErrors: ErrorInfo[] = [];
                 const fieldsets = getFieldset(emptyErrors);
-                expect(fieldsets).toEqual(mockFieldSetForSaveOperatorGroup);
+                expect(fieldsets).toEqual(mockFieldSetForReuseOperatorGroup);
             });
 
             it('should return fieldsets with radio errors when radio errors are passed', () => {
-                const radioErrors: ErrorInfo[] = [{ errorMessage: 'Choose one of the options below', id: 'yes-reuse' }];
+                const radioErrors: ErrorInfo[] = [
+                    { errorMessage: 'Choose one of the options below', id: 'conditional-form-group' },
+                ];
                 const fieldsets = getFieldset(radioErrors);
-                expect(fieldsets).toEqual(mockFieldSetForSaveOperatorGroupWithErrorsIfRadioNotSelected);
+                expect(fieldsets).toEqual(mockFieldSetForReuseOperatorGroupWithErrorsIfRadioNotSelected);
             });
 
             it('should return fieldsets with input errors when input errors are passed', () => {
                 const inputErrors: ErrorInfo[] = [
-                    { errorMessage: 'Provide a name for the operator group', id: 'operator-group-name-input' },
+                    {
+                        errorMessage: 'Choose a premade operator group from the options below',
+                        id: 'premadeOperatorGroup',
+                    },
                 ];
                 const fieldsets = getFieldset(inputErrors);
-                expect(fieldsets).toEqual(mockFieldSetForSaveOperatorGroupWithErrorsIfNameMissing);
+                expect(fieldsets).toEqual(mockFieldSetForReuseOperatorGroupWithErrorsIfNameMissing);
             });
         });
     });

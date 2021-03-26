@@ -12,15 +12,15 @@ import { removeExcessWhiteSpace } from './apiUtils/validator';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { reuseGroup } = req.body;
-        if (!reuseGroup) {
+        const { saveGroup } = req.body;
+        if (!saveGroup) {
             updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Choose one of the options below', id: 'reuse-operator-group-yes' },
+                { errorMessage: 'Choose one of the options below', id: 'save-operator-group-yes' },
             ]);
             redirectTo(res, '/saveOperatorGroup');
             return;
         }
-        if (reuseGroup === 'yes') {
+        if (saveGroup === 'yes') {
             const { groupName } = req.body;
             const refinedGroupName = removeExcessWhiteSpace(groupName);
             if (!refinedGroupName) {

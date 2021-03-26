@@ -111,6 +111,10 @@ export const getServerSideProps = async (
     const errors = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE) || [];
     const operatorGroupNames = savedOperatorGroups.map(operatorGroup => operatorGroup.name);
     const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors, operatorGroupNames);
+    console.log(fieldsets);
+    fieldsets[0].radios.forEach(radio => {
+        console.log(radio);
+    });
     return { props: { errors, fieldsets, csrfToken } };
 };
 

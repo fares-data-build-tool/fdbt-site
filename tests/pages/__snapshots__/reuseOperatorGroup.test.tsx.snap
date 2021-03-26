@@ -98,8 +98,8 @@ exports[`pages saveOperatorGroup should render errors when user does not provide
   errors={
     Array [
       Object {
-        "errorMessage": "Provide a name for the operator group",
-        "id": "operator-group-name-input",
+        "errorMessage": "Choose a premade operator group from the options below",
+        "id": "premadeOperatorGroup",
       },
     ]
   }
@@ -114,8 +114,8 @@ exports[`pages saveOperatorGroup should render errors when user does not provide
       errors={
         Array [
           Object {
-            "errorMessage": "Provide a name for the operator group",
-            "id": "operator-group-name-input",
+            "errorMessage": "Choose a premade operator group from the options below",
+            "id": "premadeOperatorGroup",
           },
         ]
       }
@@ -210,7 +210,7 @@ exports[`pages saveOperatorGroup should render errors when user does not select 
     Array [
       Object {
         "errorMessage": "Choose one of the options below",
-        "id": "yes-save",
+        "id": "conditional-form-group",
       },
     ]
   }
@@ -226,7 +226,7 @@ exports[`pages saveOperatorGroup should render errors when user does not select 
         Array [
           Object {
             "errorMessage": "Choose one of the options below",
-            "id": "yes-save",
+            "id": "conditional-form-group",
           },
         ]
       }

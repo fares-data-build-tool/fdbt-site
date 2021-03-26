@@ -20,19 +20,19 @@ interface SaveOperatorGroupProps {
 export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset => {
     const periodValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
-            id: 'reuse-operators-hidden-heading',
+            id: 'save-operators-hidden-heading',
             content: 'Do you want to save your group of operators for later use?',
             hidden: true,
         },
         radios: [
             {
-                id: 'yes-reuse',
-                name: 'reuseGroup',
+                id: 'yes-save',
+                name: 'saveGroup',
                 value: 'yes',
-                dataAriaControls: 'reuse-operators-required-conditional',
+                dataAriaControls: 'save-operators-required-conditional',
                 label: 'Yes',
                 inputHint: {
-                    id: 'reuse-group-name-hint',
+                    id: 'save-group-name-hint',
                     content: 'Provide a name to remember your group of operators by',
                     hidden: true,
                 },
@@ -48,13 +48,13 @@ export const getFieldset = (errors: ErrorInfo[]): RadioConditionalInputFieldset 
                 inputErrors: getErrorsByIds(['operator-group-name-input'], errors),
             },
             {
-                id: 'no-reuse',
-                name: 'reuseGroup',
+                id: 'no-save',
+                name: 'saveGroup',
                 value: 'no',
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['yes-reuse'], errors),
+        radioError: getErrorsByIds(['yes-save'], errors),
     };
     return periodValidityFieldSet;
 };
