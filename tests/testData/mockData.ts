@@ -4055,5 +4055,110 @@ export const mockFieldSetForSaveOperatorGroupWithErrorsIfNameMissing: RadioCondi
 };
 
 export const mockFieldSetForReuseOperatorGroup: RadioConditionalInputFieldset = {
-    
+    heading: {
+        id: 'reuse-operator-group-heading',
+        content: 'Do you want to reuse a saved operator group?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'reuse-operator-group-yes',
+            name: 'reuseGroupChoice',
+            value: 'Yes',
+            label: 'Yes',
+            inputHint: {
+                id: 'choose-time-restriction-hint',
+                content: 'Select an operator group from the dropdown',
+                hidden: true,
+            },
+            inputType: 'dropdown',
+            dataAriaControls: 'reuse-operator-group',
+            inputs: [{ id: 'operator-group-0', name: 'Best Ops', label: 'Best Ops' }],
+            inputErrors: [],
+            selectIdentifier: 'premadeOperatorGroup',
+        },
+        {
+            id: 'reuse-operator-group-no',
+            name: 'reuseGroupChoice',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
+};
+
+export const mockFieldSetForReuseOperatorGroupWithErrorsIfRadioNotSelected: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operator-group-heading',
+        content: 'Do you want to reuse a saved operator group?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'reuse-operator-group-yes',
+            name: 'reuseGroupChoice',
+            value: 'Yes',
+            label: 'Yes',
+            inputHint: {
+                id: 'choose-time-restriction-hint',
+                content: 'Select an operator group from the dropdown',
+                hidden: true,
+            },
+            inputType: 'dropdown',
+            dataAriaControls: 'reuse-operator-group',
+            inputs: [{ id: 'operator-group-0', name: 'Best Ops', label: 'Best Ops' }],
+            inputErrors: [],
+            selectIdentifier: 'premadeOperatorGroup',
+        },
+        {
+            id: 'reuse-operator-group-no',
+            name: 'reuseGroupChoice',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [
+        {
+            errorMessage: 'Choose one of the options below',
+            id: 'conditional-form-group',
+        },
+    ],
+};
+
+export const mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected: RadioConditionalInputFieldset = {
+    heading: {
+        id: 'reuse-operator-group-heading',
+        content: 'Do you want to reuse a saved operator group?',
+        hidden: true,
+    },
+    radios: [
+        {
+            id: 'reuse-operator-group-yes',
+            name: 'reuseGroupChoice',
+            value: 'Yes',
+            label: 'Yes',
+            inputHint: {
+                id: 'choose-time-restriction-hint',
+                content: 'Select an operator group from the dropdown',
+                hidden: true,
+            },
+            inputType: 'dropdown',
+            dataAriaControls: 'reuse-operator-group',
+            inputs: [{ id: 'operator-group-0', name: 'Best Ops', label: 'Best Ops' }],
+            inputErrors: [
+                {
+                    errorMessage: 'Choose a premade operator group from the options below',
+                    id: 'premadeOperatorGroup',
+                },
+            ],
+            selectIdentifier: 'premadeOperatorGroup',
+        },
+        {
+            id: 'reuse-operator-group-no',
+            name: 'reuseGroupChoice',
+            value: 'No',
+            label: 'No',
+        },
+    ],
+    radioError: [],
 };

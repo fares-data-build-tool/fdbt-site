@@ -2,13 +2,7 @@ import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
 import RadioConditionalInput from '../components/RadioConditionalInput';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    RadioConditionalInputFieldset,
-    TimeRestriction,
-    TimeRestrictionsDefinitionWithErrors,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, RadioConditionalInputFieldset } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { REUSE_OPERATOR_GROUP_ATTRIBUTE } from '../constants/attributes';
@@ -21,11 +15,11 @@ const description = 'Reuse Operator Group page of the Create Fares Data Service'
 
 interface ReuseOperatorGroupProps {
     errors: ErrorInfo[];
-    fieldsets: RadioConditionalInputFieldset[];
+    fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
 }
 
-export const getFieldsets = (errors: ErrorInfo[], operatorGroupNames: string[]): RadioConditionalInputFieldset[] => {
+export const getFieldset = (errors: ErrorInfo[], operatorGroupNames: string[]): RadioConditionalInputFieldset => {
     const validDaysFieldset: RadioConditionalInputFieldset = {
         heading: {
             id: 'reuse-operator-group-heading',
@@ -50,7 +44,7 @@ export const getFieldsets = (errors: ErrorInfo[], operatorGroupNames: string[]):
                     name: operatorGroupName,
                     label: operatorGroupName,
                 })),
-                inputErrors: errors,
+                inputErrors: getErrorsByIds(['premadeOperatorGroup'], errors),
                 selectIdentifier: 'premadeOperatorGroup',
             },
             {
@@ -60,17 +54,12 @@ export const getFieldsets = (errors: ErrorInfo[], operatorGroupNames: string[]):
                 label: 'No',
             },
         ],
-        radioError: getErrorsByIds(['valid-days-required'], errors),
+        radioError: getErrorsByIds(['conditional-form-group'], errors),
     };
-    return [validDaysFieldset];
+    return validDaysFieldset;
 };
 
-export const isTimeRestrictionsDefinitionWithErrors = (
-    timeRestrictionsDefinition: TimeRestriction | TimeRestrictionsDefinitionWithErrors,
-): timeRestrictionsDefinition is TimeRestrictionsDefinitionWithErrors =>
-    (timeRestrictionsDefinition as TimeRestrictionsDefinitionWithErrors).errors !== undefined;
-
-const ReuseOperatorGroup = ({ errors = [], fieldsets, csrfToken }: ReuseOperatorGroupProps): ReactElement => (
+const ReuseOperatorGroup = ({ errors = [], fieldset, csrfToken }: ReuseOperatorGroupProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/reuseOperatorGroup" method="post" csrfToken={csrfToken}>
             <>
@@ -83,9 +72,7 @@ const ReuseOperatorGroup = ({ errors = [], fieldsets, csrfToken }: ReuseOperator
                         You can reuse a saved operator group to save yourself time searching for each operator
                         individually
                     </span>
-                    {fieldsets.map(fieldset => {
-                        return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
-                    })}
+                    <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
                 </div>
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
@@ -110,12 +97,8 @@ export const getServerSideProps = async (
 
     const errors = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE) || [];
     const operatorGroupNames = savedOperatorGroups.map(operatorGroup => operatorGroup.name);
-    const fieldsets: RadioConditionalInputFieldset[] = getFieldsets(errors, operatorGroupNames);
-    console.log(fieldsets);
-    fieldsets[0].radios.forEach(radio => {
-        console.log(radio);
-    });
-    return { props: { errors, fieldsets, csrfToken } };
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, operatorGroupNames);
+    return { props: { errors, fieldset, csrfToken } };
 };
 
 export default ReuseOperatorGroup;

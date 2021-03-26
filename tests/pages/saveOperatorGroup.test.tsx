@@ -43,8 +43,7 @@ describe('pages', () => {
 
         describe('getFieldset', () => {
             it('should return fieldsets with no errors when no errors are passed', () => {
-                const emptyErrors: ErrorInfo[] = [];
-                const fieldsets = getFieldset(emptyErrors);
+                const fieldsets = getFieldset([]);
                 expect(fieldsets).toEqual(mockFieldSetForSaveOperatorGroup);
             });
 

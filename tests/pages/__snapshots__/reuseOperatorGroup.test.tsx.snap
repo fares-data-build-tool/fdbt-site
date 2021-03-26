@@ -1,86 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages saveOperatorGroup should render correctly 1`] = `
+exports[`pages reuseOperatorGroup should render correctly 1`] = `
 <Component
-  description="Save Operator Group selection page of the Create Fares Data Service"
+  description="Reuse Operator Group page of the Create Fares Data Service"
   errors={Array []}
-  title="Save Operator Group - Create Fares Data Service"
+  title="Reuse Operator Group - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/saveOperatorGroup"
+    action="/api/reuseOperatorGroup"
     csrfToken=""
     method="post"
   >
     <ErrorSummary
       errors={Array []}
     />
-    <div
-      className="govuk-form-group "
-    >
-      <fieldset
-        aria-describedby="save-group-operator-page-heading"
-        className="govuk-fieldset"
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="reuse-operator-group-page-heading"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="save-group-operator-page-heading"
-          >
-            Do you want to save this group of operators for later use?
-          </h1>
-        </legend>
-        <span
-          className="govuk-hint"
-          id="save-group-operator-page-hint"
-        >
-          If you save the group, you can reuse them rather than searching next time
-        </span>
-        <RadioConditionalInput
-          fieldset={
-            Object {
-              "heading": Object {
-                "content": "Do you want to save your group of operators for later use?",
-                "hidden": true,
-                "id": "save-operators-hidden-heading",
-              },
-              "radioError": Array [],
-              "radios": Array [
-                Object {
-                  "dataAriaControls": "save-operators-required-conditional",
-                  "id": "yes-save",
-                  "inputErrors": Array [],
-                  "inputHint": Object {
-                    "content": "Provide a name to remember your group of operators by",
-                    "hidden": true,
-                    "id": "save-group-name-hint",
+        Would you like to reuse a saved list of operators that this ticket covers?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="reuse-operator-group-hint"
+      >
+        You can reuse a saved operator group to save yourself time searching for each operator individually
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Do you want to reuse a saved operator group?",
+              "hidden": true,
+              "id": "reuse-operator-group-heading",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "reuse-operator-group",
+                "id": "reuse-operator-group-yes",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select an operator group from the dropdown",
+                  "hidden": true,
+                  "id": "choose-time-restriction-hint",
+                },
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "id": "operator-group-0",
+                    "label": "Best Ops",
+                    "name": "Best Ops",
                   },
-                  "inputType": "text",
-                  "inputs": Array [
-                    Object {
-                      "defaultValue": "",
-                      "id": "operator-group-name-input",
-                      "label": "Operator group name",
-                      "name": "groupName",
-                    },
-                  ],
-                  "label": "Yes",
-                  "name": "saveGroup",
-                  "value": "yes",
-                },
-                Object {
-                  "id": "no-save",
-                  "label": "No",
-                  "name": "saveGroup",
-                  "value": "no",
-                },
-              ],
-            }
+                ],
+                "label": "Yes",
+                "name": "reuseGroupChoice",
+                "selectIdentifier": "premadeOperatorGroup",
+                "value": "Yes",
+              },
+              Object {
+                "id": "reuse-operator-group-no",
+                "label": "No",
+                "name": "reuseGroupChoice",
+                "value": "No",
+              },
+            ],
           }
-          key="save-operators-hidden-heading"
-        />
-      </fieldset>
+        }
+        key="reuse-operator-group-heading"
+      />
     </div>
     <input
       className="govuk-button"
@@ -92,9 +81,9 @@ exports[`pages saveOperatorGroup should render correctly 1`] = `
 </Component>
 `;
 
-exports[`pages saveOperatorGroup should render errors when user does not provide a group name 1`] = `
+exports[`pages reuseOperatorGroup should render errors when user does not provide a group name 1`] = `
 <Component
-  description="Save Operator Group selection page of the Create Fares Data Service"
+  description="Reuse Operator Group page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -103,10 +92,10 @@ exports[`pages saveOperatorGroup should render errors when user does not provide
       },
     ]
   }
-  title="Save Operator Group - Create Fares Data Service"
+  title="Reuse Operator Group - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/saveOperatorGroup"
+    action="/api/reuseOperatorGroup"
     csrfToken=""
     method="post"
   >
@@ -120,78 +109,67 @@ exports[`pages saveOperatorGroup should render errors when user does not provide
         ]
       }
     />
-    <div
-      className="govuk-form-group govuk-form-group--error"
-    >
-      <fieldset
-        aria-describedby="save-group-operator-page-heading"
-        className="govuk-fieldset"
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="reuse-operator-group-page-heading"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="save-group-operator-page-heading"
-          >
-            Do you want to save this group of operators for later use?
-          </h1>
-        </legend>
-        <span
-          className="govuk-hint"
-          id="save-group-operator-page-hint"
-        >
-          If you save the group, you can reuse them rather than searching next time
-        </span>
-        <RadioConditionalInput
-          fieldset={
-            Object {
-              "heading": Object {
-                "content": "Do you want to save your group of operators for later use?",
-                "hidden": true,
-                "id": "save-operators-hidden-heading",
-              },
-              "radioError": Array [],
-              "radios": Array [
-                Object {
-                  "dataAriaControls": "save-operators-required-conditional",
-                  "id": "yes-save",
-                  "inputErrors": Array [
-                    Object {
-                      "errorMessage": "Provide a name for the operator group",
-                      "id": "operator-group-name-input",
-                    },
-                  ],
-                  "inputHint": Object {
-                    "content": "Provide a name to remember your group of operators by",
-                    "hidden": true,
-                    "id": "save-group-name-hint",
+        Would you like to reuse a saved list of operators that this ticket covers?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="reuse-operator-group-hint"
+      >
+        You can reuse a saved operator group to save yourself time searching for each operator individually
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Do you want to reuse a saved operator group?",
+              "hidden": true,
+              "id": "reuse-operator-group-heading",
+            },
+            "radioError": Array [],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "reuse-operator-group",
+                "id": "reuse-operator-group-yes",
+                "inputErrors": Array [
+                  Object {
+                    "errorMessage": "Choose a premade operator group from the options below",
+                    "id": "premadeOperatorGroup",
                   },
-                  "inputType": "text",
-                  "inputs": Array [
-                    Object {
-                      "defaultValue": "",
-                      "id": "operator-group-name-input",
-                      "label": "Operator group name",
-                      "name": "groupName",
-                    },
-                  ],
-                  "label": "Yes",
-                  "name": "saveGroup",
-                  "value": "yes",
+                ],
+                "inputHint": Object {
+                  "content": "Select an operator group from the dropdown",
+                  "hidden": true,
+                  "id": "choose-time-restriction-hint",
                 },
-                Object {
-                  "id": "no-save",
-                  "label": "No",
-                  "name": "saveGroup",
-                  "value": "no",
-                },
-              ],
-            }
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "id": "operator-group-0",
+                    "label": "Best Ops",
+                    "name": "Best Ops",
+                  },
+                ],
+                "label": "Yes",
+                "name": "reuseGroupChoice",
+                "selectIdentifier": "premadeOperatorGroup",
+                "value": "Yes",
+              },
+              Object {
+                "id": "reuse-operator-group-no",
+                "label": "No",
+                "name": "reuseGroupChoice",
+                "value": "No",
+              },
+            ],
           }
-          key="save-operators-hidden-heading"
-        />
-      </fieldset>
+        }
+        key="reuse-operator-group-heading"
+      />
     </div>
     <input
       className="govuk-button"
@@ -203,9 +181,9 @@ exports[`pages saveOperatorGroup should render errors when user does not provide
 </Component>
 `;
 
-exports[`pages saveOperatorGroup should render errors when user does not select a radio button 1`] = `
+exports[`pages reuseOperatorGroup should render errors when user does not select a radio button 1`] = `
 <Component
-  description="Save Operator Group selection page of the Create Fares Data Service"
+  description="Reuse Operator Group page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -214,10 +192,10 @@ exports[`pages saveOperatorGroup should render errors when user does not select 
       },
     ]
   }
-  title="Save Operator Group - Create Fares Data Service"
+  title="Reuse Operator Group - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/saveOperatorGroup"
+    action="/api/reuseOperatorGroup"
     csrfToken=""
     method="post"
   >
@@ -231,78 +209,67 @@ exports[`pages saveOperatorGroup should render errors when user does not select 
         ]
       }
     />
-    <div
-      className="govuk-form-group govuk-form-group--error"
-    >
-      <fieldset
-        aria-describedby="save-group-operator-page-heading"
-        className="govuk-fieldset"
+    <div>
+      <h1
+        className="govuk-heading-l"
+        id="reuse-operator-group-page-heading"
       >
-        <legend
-          className="govuk-fieldset__legend govuk-fieldset__legend--l"
-        >
-          <h1
-            className="govuk-fieldset__heading"
-            id="save-group-operator-page-heading"
-          >
-            Do you want to save this group of operators for later use?
-          </h1>
-        </legend>
-        <span
-          className="govuk-hint"
-          id="save-group-operator-page-hint"
-        >
-          If you save the group, you can reuse them rather than searching next time
-        </span>
-        <RadioConditionalInput
-          fieldset={
-            Object {
-              "heading": Object {
-                "content": "Do you want to save your group of operators for later use?",
-                "hidden": true,
-                "id": "save-operators-hidden-heading",
+        Would you like to reuse a saved list of operators that this ticket covers?
+      </h1>
+      <span
+        className="govuk-hint"
+        id="reuse-operator-group-hint"
+      >
+        You can reuse a saved operator group to save yourself time searching for each operator individually
+      </span>
+      <RadioConditionalInput
+        fieldset={
+          Object {
+            "heading": Object {
+              "content": "Do you want to reuse a saved operator group?",
+              "hidden": true,
+              "id": "reuse-operator-group-heading",
+            },
+            "radioError": Array [
+              Object {
+                "errorMessage": "Choose one of the options below",
+                "id": "conditional-form-group",
               },
-              "radioError": Array [
-                Object {
-                  "errorMessage": "Choose one of the options below",
-                  "id": "yes-save",
+            ],
+            "radios": Array [
+              Object {
+                "dataAriaControls": "reuse-operator-group",
+                "id": "reuse-operator-group-yes",
+                "inputErrors": Array [],
+                "inputHint": Object {
+                  "content": "Select an operator group from the dropdown",
+                  "hidden": true,
+                  "id": "choose-time-restriction-hint",
                 },
-              ],
-              "radios": Array [
-                Object {
-                  "dataAriaControls": "save-operators-required-conditional",
-                  "id": "yes-save",
-                  "inputErrors": Array [],
-                  "inputHint": Object {
-                    "content": "Provide a name to remember your group of operators by",
-                    "hidden": true,
-                    "id": "save-group-name-hint",
+                "inputType": "dropdown",
+                "inputs": Array [
+                  Object {
+                    "id": "operator-group-0",
+                    "label": "Best Ops",
+                    "name": "Best Ops",
                   },
-                  "inputType": "text",
-                  "inputs": Array [
-                    Object {
-                      "defaultValue": "",
-                      "id": "operator-group-name-input",
-                      "label": "Operator group name",
-                      "name": "groupName",
-                    },
-                  ],
-                  "label": "Yes",
-                  "name": "saveGroup",
-                  "value": "yes",
-                },
-                Object {
-                  "id": "no-save",
-                  "label": "No",
-                  "name": "saveGroup",
-                  "value": "no",
-                },
-              ],
-            }
+                ],
+                "label": "Yes",
+                "name": "reuseGroupChoice",
+                "selectIdentifier": "premadeOperatorGroup",
+                "value": "Yes",
+              },
+              Object {
+                "id": "reuse-operator-group-no",
+                "label": "No",
+                "name": "reuseGroupChoice",
+                "value": "No",
+              },
+            ],
           }
-          key="save-operators-hidden-heading"
-        />
-      </fieldset>
+        }
+        key="reuse-operator-group-heading"
+      />
     </div>
     <input
       className="govuk-button"

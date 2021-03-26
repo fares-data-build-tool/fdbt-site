@@ -21,6 +21,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (reuseGroupChoice === 'No') {
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
             redirectTo(res, '/searchOperators');
             return;
         }

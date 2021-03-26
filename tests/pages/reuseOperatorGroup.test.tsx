@@ -4,9 +4,13 @@ import {
     mockFieldSetForReuseOperatorGroup,
     mockFieldSetForReuseOperatorGroupWithErrorsIfRadioNotSelected,
     mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected,
+    getMockContext,
 } from '../testData/mockData';
 import { ErrorInfo } from '../../src/interfaces';
-import ReuseOperatorGroup, { getFieldsets } from '../../src/pages/reuseOperatorGroup';
+import ReuseOperatorGroup, { getFieldset, getServerSideProps } from '../../src/pages/reuseOperatorGroup';
+import { getOperatorGroupsByNoc } from '../../src/data/auroradb';
+
+jest.mock('../../src/data/auroradb');
 
 describe('pages', () => {
     describe('reuseOperatorGroup', () => {
@@ -38,7 +42,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    fieldset={mockFieldSetForReuseOperatorGroupWithErrorsIfNameMissing}
+                    fieldset={mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -46,8 +50,7 @@ describe('pages', () => {
 
         describe('getFieldset', () => {
             it('should return fieldsets with no errors when no errors are passed', () => {
-                const emptyErrors: ErrorInfo[] = [];
-                const fieldsets = getFieldset(emptyErrors);
+                const fieldsets = getFieldset([], ['Best Ops']);
                 expect(fieldsets).toEqual(mockFieldSetForReuseOperatorGroup);
             });
 
@@ -55,7 +58,7 @@ describe('pages', () => {
                 const radioErrors: ErrorInfo[] = [
                     { errorMessage: 'Choose one of the options below', id: 'conditional-form-group' },
                 ];
-                const fieldsets = getFieldset(radioErrors);
+                const fieldsets = getFieldset(radioErrors, ['Best Ops']);
                 expect(fieldsets).toEqual(mockFieldSetForReuseOperatorGroupWithErrorsIfRadioNotSelected);
             });
 
@@ -66,8 +69,20 @@ describe('pages', () => {
                         id: 'premadeOperatorGroup',
                     },
                 ];
-                const fieldsets = getFieldset(inputErrors);
-                expect(fieldsets).toEqual(mockFieldSetForReuseOperatorGroupWithErrorsIfNameMissing);
+                const fieldsets = getFieldset(inputErrors, ['Best Ops']);
+                expect(fieldsets).toEqual(mockFieldSetForReuseOperatorGroupWithErrorsIfOptionNotSelected);
+            });
+        });
+
+        describe('getServerSideProps', () => {
+            it('redirects on to searchOperators if the user does not have any premade operator groups saved', async () => {
+                (getOperatorGroupsByNoc as jest.Mock).mockImplementation(() => []);
+                const writeHeadMock = jest.fn();
+                const mockContext = getMockContext({
+                    mockWriteHeadFn: writeHeadMock,
+                });
+                await getServerSideProps(mockContext);
+                expect(writeHeadMock).toBeCalledWith(302, { Location: '/searchOperators' });
             });
         });
     });
