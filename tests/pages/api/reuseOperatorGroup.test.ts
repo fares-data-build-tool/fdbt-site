@@ -66,13 +66,12 @@ describe('reuseOperatorGroup', () => {
         });
         await reuseOperatorGroup(req, res);
 
+        expect(getOperatorGroupsByNameAndNocSpy).toBeCalledWith('Best Ops', 'TEST');
         expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: testOperators,
         });
-        expect(updateSessionAttributeSpy).toBeCalledTimes(2);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/howManyProducts' });
-        expect(getOperatorGroupsByNameAndNocSpy).toBeCalledWith('Best Ops', 'TEST');
     });
 
     it('should do nothing but redirect on to searchOperators if no is selected', async () => {

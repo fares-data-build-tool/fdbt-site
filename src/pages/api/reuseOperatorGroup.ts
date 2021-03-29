@@ -25,6 +25,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/searchOperators');
             return;
         }
+
         if (!premadeOperatorGroup) {
             updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
                 { errorMessage: 'Choose a premade operator group from the options below', id: 'premadeOperatorGroup' },
@@ -32,11 +33,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }
+
         const noc = getAndValidateNoc(req, res);
         const selectedOperators = (await getOperatorGroupsByNameAndNoc(premadeOperatorGroup, noc))[0].operators;
-
         updateSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE, { selectedOperators });
         updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+
         const ticketRepresentation = (getSessionAttribute(
             req,
             TICKET_REPRESENTATION_ATTRIBUTE,

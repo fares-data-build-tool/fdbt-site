@@ -452,11 +452,11 @@ export const insertOperatorGroup = async (nocCode: string, operators: Operator[]
     }
 };
 
-export const getOperatorGroupsByNoc = async (noc: string): Promise<OperatorGroup[]> => {
+export const getOperatorGroupsByNoc = async (nocCode: string): Promise<OperatorGroup[]> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving operator groups for given noc',
-        noc,
+        message: 'retrieving operator groups for given nocCode',
+        nocCode,
     });
 
     try {
@@ -466,14 +466,14 @@ export const getOperatorGroupsByNoc = async (noc: string): Promise<OperatorGroup
             WHERE nocCode = ?
         `;
 
-        const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [noc]);
+        const queryResults = await executeQuery<RawOperatorGroup[]>(queryInput, [nocCode]);
 
         return queryResults.map(item => ({
             name: item.name,
             operators: JSON.parse(item.contents),
         }));
     } catch (error) {
-        throw new Error(`Could not retrieve operator group by noc from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve operator group by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 
