@@ -40,7 +40,12 @@ const ServiceList = ({
     dataSourceAttribute,
 }: ServiceListProps): ReactElement => (
     <FullColumnLayout title={pageTitle} description={pageDescription}>
-        <SwitchDataSource dataSourceAttribute={dataSourceAttribute} pageUrl="/serviceList" csrfToken={csrfToken} />
+        <SwitchDataSource
+            dataSourceAttribute={dataSourceAttribute}
+            pageUrl="/serviceList"
+            attributeVersion="baseOperator"
+            csrfToken={csrfToken}
+        />
         <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
             <>
                 <ErrorSummary errors={errors} />
@@ -82,15 +87,12 @@ const ServiceList = ({
                                 {serviceList.map((service, index) => {
                                     const { lineName, startDate, serviceCode, description, checked } = service;
 
-                                    let checkboxTitles =
+                                    const checkboxTitles =
                                         dataSourceAttribute.source === 'tnds'
                                             ? `${lineName} - ${description} (Start Date ${startDate})`
                                             : `${service.lineName} ${service.origin || 'N/A'} - ${service.destination ||
                                                   'N/A'} (Start date ${service.startDate})`;
 
-                                    if (checkboxTitles.length > 110) {
-                                        checkboxTitles = `${checkboxTitles.substr(0, checkboxTitles.length - 10)}...`;
-                                    }
                                     const checkBoxValues = `${description}`;
 
                                     return (
@@ -131,22 +133,20 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
-
-    const services = await getAllServicesByNocCode(nocCode);
-    const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
-    const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
-
-    if (services.length === 0) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/noServices');
-        } else {
-            throw new Error(`No services found for NOC Code: ${nocCode}`);
-        }
-    }
-
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
     if (!dataSourceAttribute) {
+        const services = await getAllServicesByNocCode(nocCode);
+        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
+        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
+
+        if (services.length === 0) {
+            if (ctx.res) {
+                redirectTo(ctx.res, '/noServices');
+            } else {
+                throw new Error(`No services found for NOC Code: ${nocCode}`);
+            }
+        }
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
@@ -157,7 +157,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const { selectAll } = ctx.query;
 
-    const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute?.source);
+    const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
     const serviceList: ServicesInfo[] = chosenDataSourceServices.map(service => {
         return {

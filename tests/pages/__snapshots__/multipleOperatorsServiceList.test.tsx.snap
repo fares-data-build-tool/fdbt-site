@@ -5,6 +5,18 @@ exports[`pages multipleOperatorsServiceList should render correctly 1`] = `
   description="Multiple Operators Service List selection page of the Create Fares Data Service"
   title="Multiple Operators Service List - Create Fares Data Service"
 >
+  <SwitchDataSource
+    attributeVersion="multiOperator"
+    csrfToken=""
+    dataSourceAttribute={
+      Object {
+        "hasBods": true,
+        "hasTnds": true,
+        "source": "tnds",
+      }
+    }
+    pageUrl="/multipleOperatorsServiceList"
+  />
   <CsrfForm
     action="/api/multipleOperatorsServiceList"
     csrfToken=""
@@ -134,6 +146,18 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
   description="Multiple Operators Service List selection page of the Create Fares Data Service"
   title="Multiple Operators Service List - Create Fares Data Service"
 >
+  <SwitchDataSource
+    attributeVersion="multiOperator"
+    csrfToken=""
+    dataSourceAttribute={
+      Object {
+        "hasBods": false,
+        "hasTnds": true,
+        "source": "tnds",
+      }
+    }
+    pageUrl="/multipleOperatorsServiceList"
+  />
   <CsrfForm
     action="/api/multipleOperatorsServiceList"
     csrfToken=""
