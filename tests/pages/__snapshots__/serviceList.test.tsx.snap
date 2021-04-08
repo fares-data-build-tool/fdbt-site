@@ -64,7 +64,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
         />
         <span
           className="govuk-hint"
-          id="traveline-hint"
+          id="txc-hint"
         >
           This data is taken from the
            
@@ -168,7 +168,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
         />
         <span
           className="govuk-hint"
-          id="traveline-hint"
+          id="txc-hint"
         >
           This data is taken from the
            
@@ -321,7 +321,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
         />
         <span
           className="govuk-hint"
-          id="traveline-hint"
+          id="txc-hint"
         >
           This data is taken from the
            
@@ -474,7 +474,7 @@ exports[`pages serviceList should render correctly with tnds data source 1`] = `
         />
         <span
           className="govuk-hint"
-          id="traveline-hint"
+          id="txc-hint"
         >
           This data is taken from the
            

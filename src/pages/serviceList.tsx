@@ -67,7 +67,7 @@ const ServiceList = ({
                             id="select-all-button"
                             className="govuk-button govuk-button--secondary"
                         />
-                        <span className="govuk-hint" id="traveline-hint">
+                        <span className="govuk-hint" id="txc-hint">
                             This data is taken from the{' '}
                             <b>
                                 {dataSourceAttribute.source === 'tnds'
