@@ -159,9 +159,6 @@ export const getServerSideProps = async (
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(operatorToUse.nocCode);
-        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
-        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
-
         if (services.length === 0) {
             if (ctx.res) {
                 redirectTo(ctx.res, '/noServices');
@@ -169,6 +166,8 @@ export const getServerSideProps = async (
                 throw new Error(`No services found for NOC Code: ${operatorToUse.nocCode}`);
             }
         }
+        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
+        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, MULTI_OP_TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,

@@ -137,9 +137,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(nocCode);
-        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
-        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
-
         if (services.length === 0) {
             if (ctx.res) {
                 redirectTo(ctx.res, '/noServices');
@@ -147,6 +144,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 throw new Error(`No services found for NOC Code: ${nocCode}`);
             }
         }
+        const hasBodsServices = services.some(service => service.dataSource && service.dataSource === 'bods');
+        const hasTndsServices = services.some(service => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices && !hasTndsServices ? 'bods' : 'tnds',
             hasBods: hasBodsServices,
