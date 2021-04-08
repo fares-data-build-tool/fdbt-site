@@ -596,18 +596,14 @@ export const getSearchOperatorsByNocRegion = async (searchText: string, nocCode:
         search: searchText,
     });
 
-    const nocCodeParameter = replaceInternalNocCode(nocCode);
-
     const searchQuery = `
         SELECT nocCode, operatorPublicName AS name FROM nocTable WHERE nocCode IN (
-                SELECT DISTINCT nocCode FROM txcOperatorLine WHERE dataSource = 'tnds' AND regionCode IN (
-                    SELECT DISTINCT regionCode FROM txcOperatorLine WHERE nocCode = ? AND dataSource = 'tnds'
-                )
+            SELECT DISTINCT nocCode FROM txcOperatorLine
         ) AND operatorPublicName LIKE ?
     `;
 
     try {
-        return await executeQuery<Operator[]>(searchQuery, [nocCodeParameter, `%${searchText}%`]);
+        return await executeQuery<Operator[]>(searchQuery, [`%${searchText}%`]);
     } catch (error) {
         throw new Error(`Could not retrieve operators from AuroraDB: ${error.stack}`);
     }
