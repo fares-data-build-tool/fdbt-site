@@ -13,6 +13,8 @@ export const getHomePage = (): void => {
     cy.visit('?disableAuth=true');
 };
 
+export const fareTypeToFareTypeIdMapper = (fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService' ): string => 'fare-type-' + fareType;
+
 export const startPageButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('start-now-button');
 
 export const continueButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('continue-button');
@@ -60,6 +62,18 @@ export const randomlyChooseAProof = (): void => {
             throwInvalidRandomSelectorError();
     }
 };
+
+export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
+    cy.get(`[id=${dropDownId}]`)
+   .find('option')
+   .then($elm => { 
+       const numberOfOptions = $elm.length;
+       const randomSelector = getRandomNumber(1, numberOfOptions - 1);
+       $elm.get(randomSelector).setAttribute('selected', "selected");
+    })
+   .parent()
+   .trigger('change');
+}
 
 export const randomlyChooseAgeLimits = (): void => {
     const randomSelector = getRandomNumber(1, 4);

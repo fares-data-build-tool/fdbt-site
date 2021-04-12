@@ -6,16 +6,22 @@ import {
     randomlyDecideTimeRestrictions,
     randomlyChooseAndSelectServices,
     getElementById,
+    getHomePage,
+    fareTypeToFareTypeIdMapper,
 } from './helpers';
 
-export const stepsToSelectFlatFareServiceSelection = (): void => {
-    startPageButtonClick();
-    clickElementById('fare-type-flatFare');
-    continueButtonClick();
+export const defineUserTypeAndTimeRestrictions = (): void => {
     randomlyDetermineUserType();
     randomlyDecideTimeRestrictions();
     continueButtonClick();
 };
+
+export const selectFareType = (fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService'): void => {
+    getHomePage();
+    startPageButtonClick();
+    clickElementById(fareTypeToFareTypeIdMapper(fareType));
+    continueButtonClick();
+}
 
 export const completeFlatFarePages = (productName: string): void => {
     randomlyChooseAndSelectServices();
@@ -25,3 +31,7 @@ export const completeFlatFarePages = (productName: string): void => {
     continueButtonClick();
     continueButtonClick();
 };
+
+export const completeSinglePages = (csvUpload: boolean): void => {
+
+}
