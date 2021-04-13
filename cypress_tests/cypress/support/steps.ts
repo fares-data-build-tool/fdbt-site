@@ -10,6 +10,9 @@ import {
     fareTypeToFareTypeIdMapper,
     selectRandomOptionFromDropDown,
     uploadFile,
+    submitButtonClick,
+    clickSelectedNumberOfCheckboxes,
+    completeProductDateInformationPage,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -41,14 +44,27 @@ export const completeServicePage = (): void => {
     continueButtonClick();
 };
 
-export const completeFareTrianglePages = (csvUpload: boolean): void => {
+const completeFareTrianglePages = (csvUpload: boolean): void => {
     clickElementById(csvUpload ? 'csv-upload' : 'manual-entry');
     continueButtonClick();
     if (csvUpload) {
         clickElementById('pence');
         uploadFile('csv-upload', 'fareTriangle.csv');
-        clickElementById('submit-button');
+        submitButtonClick();
     }
+};
+
+const completeMatchingPage = (): void => {
+    for (let i = 0; i < 4; i += 1) {
+        cy.get(`[id=option-${i}]`)
+            .find('option')
+            .then($elm => {
+                $elm.get(i + 1).setAttribute('selected', 'selected');
+            })
+            .parent()
+            .trigger('change');
+    }
+    submitButtonClick();
 };
 
 export const completeSinglePages = (csvUpload: boolean): void => {
@@ -56,5 +72,13 @@ export const completeSinglePages = (csvUpload: boolean): void => {
     selectRandomOptionFromDropDown('direction-journey-pattern');
     continueButtonClick();
     completeFareTrianglePages(csvUpload);
-    // completeMatchingPage();
+    completeMatchingPage();
+    continueButtonClick();
+};
+
+export const completeSalesPages = (): void => {
+    clickSelectedNumberOfCheckboxes(false);
+    continueButtonClick();
+    completeProductDateInformationPage();
+    continueButtonClick();
 };

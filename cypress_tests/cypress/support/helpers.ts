@@ -24,6 +24,8 @@ export const startPageButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> =
 
 export const continueButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('continue-button');
 
+export const submitButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('submit-button');
+
 export const assertElementNotVisibleById = (id: string): Cypress.Chainable<JQuery<HTMLElement>> =>
     getElementById(id).should('not.be.visible');
 
