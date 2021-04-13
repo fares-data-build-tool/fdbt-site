@@ -150,9 +150,9 @@ workflows:
           requires:
             - deploy-site-to-test
           context: tfn-fdbt-automation-test
-          filters:
-            branches:
-              only: develop
+          # filters:
+          #   branches:
+          #     only: develop
 
       - aws-ecs/deploy-service-update:
           requires:
