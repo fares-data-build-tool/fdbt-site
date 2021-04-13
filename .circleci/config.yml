@@ -20,7 +20,6 @@ jobs:
   run-ui-tests:
     docker:
       - image: circleci/node:12
-    executor: aws-cli/default
     steps:
       - aws-cli/setup:
           profile-name: default
