@@ -20,9 +20,13 @@ jobs:
   run-ui-tests:
     docker:
       - image: circleci/node:12
+    working_directory: ~/project
+    executor: aws-cli/default
     steps:
       - aws-cli/setup:
           profile-name: default
+      - attach_workspace:
+          at: ~/project
       - run:
           command: |
             ls
