@@ -148,7 +148,8 @@ workflows:
 
       - run-ui-tests:
           requires:
-            - deploy-site-to-test
+            - test-site
+            - lint-site
           context: tfn-fdbt-automation-test
           # filters:
           #   branches:
