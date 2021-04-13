@@ -26,6 +26,7 @@ jobs:
           profile-name: default
       - run:
           command: |
+            pwd
             ./run_tests_in_browserstack.sh
           no_output_timeout: 40m
   
@@ -147,10 +148,9 @@ workflows:
               only: develop
 
       - run-ui-tests:
-          requires:
-            - test-site
-            - lint-site
-          context: tfn-fdbt-automation-test
+        requires:
+            - checkout-repo  
+        context: tfn-fdbt-automation-test
           # filters:
           #   branches:
           #     only: develop

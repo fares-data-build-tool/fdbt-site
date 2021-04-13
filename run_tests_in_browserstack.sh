@@ -16,7 +16,6 @@ update_ip_set() {
 }
 
 run_ui_tests() {
-    pwd
     CYPRESS_BASE_URL=https://test.dft-cfd.infinityworks.com make run-cypress-all
 }
 
