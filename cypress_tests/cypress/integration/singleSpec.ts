@@ -1,10 +1,10 @@
-import { selectFareType, defineUserTypeAndTimeRestrictions } from '../support/steps';
+import { selectFareType, defineUserTypeAndTimeRestrictions, completeSinglePages } from '../support/steps';
 import { selectRandomOptionFromDropDown } from '../support/helpers';
 
 describe('The single faretype product journey', () => {
-    it('completes successfully', () => {
+    it('completes successfully for csv upload', () => {
         selectFareType('single');
         defineUserTypeAndTimeRestrictions();
-        selectRandomOptionFromDropDown('service');
+        completeSinglePages(true);
     });
 });

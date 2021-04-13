@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'cypress-file-upload';
+
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
 };
@@ -13,7 +16,9 @@ export const getHomePage = (): void => {
     cy.visit('?disableAuth=true');
 };
 
-export const fareTypeToFareTypeIdMapper = (fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService' ): string => 'fare-type-' + fareType;
+export const fareTypeToFareTypeIdMapper = (
+    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
+): string => `fare-type-${fareType}`;
 
 export const startPageButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('start-now-button');
 
@@ -65,15 +70,15 @@ export const randomlyChooseAProof = (): void => {
 
 export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     cy.get(`[id=${dropDownId}]`)
-   .find('option')
-   .then($elm => { 
-       const numberOfOptions = $elm.length;
-       const randomSelector = getRandomNumber(1, numberOfOptions - 1);
-       $elm.get(randomSelector).setAttribute('selected', "selected");
-    })
-   .parent()
-   .trigger('change');
-}
+        .find('option')
+        .then($elm => {
+            const numberOfOptions = $elm.length;
+            const randomSelector = getRandomNumber(1, numberOfOptions - 1);
+            $elm.get(randomSelector).setAttribute('selected', 'selected');
+        })
+        .parent()
+        .trigger('change');
+};
 
 export const randomlyChooseAgeLimits = (): void => {
     const randomSelector = getRandomNumber(1, 4);
@@ -342,4 +347,8 @@ export const isUuidStringValid = (): void => {
             expect(uuid).to.contain('BLAC');
             expect(uuid.length).to.equal(12);
         });
+};
+
+export const uploadFile = (elementId: string, fileName: string): void => {
+    getElementById(elementId).attachFile(fileName);
 };

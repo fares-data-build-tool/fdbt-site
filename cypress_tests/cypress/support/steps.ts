@@ -8,6 +8,8 @@ import {
     getElementById,
     getHomePage,
     fareTypeToFareTypeIdMapper,
+    selectRandomOptionFromDropDown,
+    uploadFile,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -16,12 +18,14 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const selectFareType = (fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService'): void => {
+export const selectFareType = (
+    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
+): void => {
     getHomePage();
     startPageButtonClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
-}
+};
 
 export const completeFlatFarePages = (productName: string): void => {
     randomlyChooseAndSelectServices();
@@ -32,6 +36,25 @@ export const completeFlatFarePages = (productName: string): void => {
     continueButtonClick();
 };
 
-export const completeSinglePages = (csvUpload: boolean): void => {
+export const completeServicePage = (): void => {
+    selectRandomOptionFromDropDown('service');
+    continueButtonClick();
+};
 
-}
+export const completeFareTrianglePages = (csvUpload: boolean): void => {
+    clickElementById(csvUpload ? 'csv-upload' : 'manual-entry');
+    continueButtonClick();
+    if (csvUpload) {
+        clickElementById('pence');
+        uploadFile('csv-upload', 'fareTriangle.csv');
+        clickElementById('submit-button');
+    }
+};
+
+export const completeSinglePages = (csvUpload: boolean): void => {
+    completeServicePage();
+    selectRandomOptionFromDropDown('direction-journey-pattern');
+    continueButtonClick();
+    completeFareTrianglePages(csvUpload);
+    // completeMatchingPage();
+};
