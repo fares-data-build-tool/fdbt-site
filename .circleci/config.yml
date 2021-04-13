@@ -26,8 +26,8 @@ jobs:
           profile-name: default
       - run:
           command: |
-            pwd
-            ./run_tests_in_browserstack.sh
+            ls
+            ./fdbt-site/run_tests_in_browserstack.sh
           no_output_timeout: 40m
   
   build-site:
