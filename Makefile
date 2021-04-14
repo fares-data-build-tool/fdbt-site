@@ -20,8 +20,8 @@ run-local:
 
 # Cypress
 
-install-cypress-deps:
-	cd cypress_tests && npm i
+install-cypress-deps-ci:
+	cd cypress_tests && npm ci
 
 open-cypress:
 	cd cypress_tests && npm run openCypress
