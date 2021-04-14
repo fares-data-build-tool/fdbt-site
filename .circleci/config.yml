@@ -29,7 +29,6 @@ jobs:
           at: ~/project
       - run:
           command: |
-            ls
             ~/project/run_tests_in_browserstack.sh
           no_output_timeout: 40m
   
