@@ -7,7 +7,7 @@
         "runCypress": "cypress run -b $BROWSER",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts",
-        "runBrowserstack": "CYPRESS_BASE_URL=https://test.dft-cfd.infinityworks.com browserstack-cypress run --sync"
+        "runBrowserstack": "browserstack-cypress run --sync --env host=https://test.dft-cfd.infinityworks.com"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^2.33.0",
