@@ -44,8 +44,9 @@ until [ "$n" -ge 5 ]; do
     sleep 5
 done
 
-npm install -g browserstack-cypress-cli
+echo hello
 make install-cypress-deps
+echo goodbye
 
 run_ui_tests
 
