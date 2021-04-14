@@ -44,9 +44,7 @@ until [ "$n" -ge 5 ]; do
     sleep 5
 done
 
-echo hello
-make install-cypress-deps
-echo goodbye
+make install-cypress-deps-ci
 
 run_ui_tests
 
