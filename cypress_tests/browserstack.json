@@ -1,8 +1,4 @@
 {
-    "auth": {
-        "username": "<Your BrowserStack username>",
-        "access_key": "<Your BrowserStack access key>"
-    },
     "browsers": [
         {
             "browser": "chrome",
@@ -30,11 +26,11 @@
         }
     ],
     "run_settings": {
-        "cypress_config_file": "/path/to/<cypress config file>.json",
-        "project_name": "project-name",
+        "cypress_config_file": "./cypress.json",
+        "project_name": "fdbt-site",
         "build_name": "build-name",
         "exclude": [],
-        "parallels": "Here goes the number of parallels you want to run",
+        "parallels": "3",
         "npm_dependencies": {},
         "package_config_options": {},
         "headless": true

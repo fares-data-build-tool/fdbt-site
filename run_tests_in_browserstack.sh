@@ -25,8 +25,7 @@ update_ip_set() {
 }
 
 run_ui_tests() {
-    make install-cypress-deps
-    CYPRESS_BASE_URL=https://test.dft-cfd.infinityworks.com make run-cypress-all
+    make run-cypress-browserstack
 }
 
 cleanup_ip_set() {
@@ -45,10 +44,8 @@ until [ "$n" -ge 5 ]; do
     sleep 5
 done
 
-wget https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
-unzip BrowserStackLocal-linux-x64.zip
-
-./BrowserStackLocal --key $BROWSERSTACK_KEY --daemon start --force-local
+npm install -g browserstack-cypress-cli
+make install-cypress-deps
 
 run_ui_tests
 
