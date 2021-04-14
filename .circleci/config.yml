@@ -30,7 +30,7 @@ jobs:
       - run:
           command: |
             ls
-            ./run_tests_in_browserstack.sh
+            ~/project/run_tests_in_browserstack.sh
           no_output_timeout: 40m
   
   build-site:
