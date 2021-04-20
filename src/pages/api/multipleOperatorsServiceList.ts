@@ -31,18 +31,14 @@ export const getSelectedServicesAndNocCodeFromRequest = (requestBody: {
         } else {
             serviceDescription = description;
         }
-        [nocCode] = nocCodeLineNameLineIdServiceCodeStartDate.split('#');
-        const splitStrings = nocCodeLineNameLineIdServiceCodeStartDate.split('#');
-        delete splitStrings[0];
-        const lineNameLineIdServiceCodeStartDate = splitStrings.join('#').substring(1);
-        const servicesData = `${lineNameLineIdServiceCodeStartDate}#${serviceDescription}`;
-        const splitServicesData = servicesData.split('#');
+        let splitStrings = [];
+        [nocCode, ...splitStrings] = nocCodeLineNameLineIdServiceCodeStartDate.split('#');
         selectedServices.push({
-            lineName: splitServicesData[0],
-            lineId: splitServicesData[1],
-            serviceCode: splitServicesData[2],
-            startDate: splitServicesData[3],
-            serviceDescription: splitServicesData[4],
+            lineName: splitStrings[0],
+            lineId: splitStrings[1],
+            serviceCode: splitStrings[2],
+            startDate: splitStrings[3],
+            serviceDescription,
         });
     });
     return {

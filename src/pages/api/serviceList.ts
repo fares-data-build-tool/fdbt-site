@@ -46,14 +46,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             } else {
                 serviceDescription = description;
             }
-            const data = `${lineNameLineIdServiceCodeStartDate}#${serviceDescription}`;
-            const splitData = data.split('#');
+            const splitData = lineNameLineIdServiceCodeStartDate.split('#');
             selectedServices.push({
                 lineName: splitData[0],
                 lineId: splitData[1],
                 serviceCode: splitData[2],
                 startDate: splitData[3],
-                serviceDescription: splitData[4],
+                serviceDescription,
             });
         });
 
