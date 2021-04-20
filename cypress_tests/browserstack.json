@@ -51,7 +51,8 @@
         "headless": true
     },
     "connection_settings": {
-        "local": true
+        "local": true,
+        "local_config_file": "./local.yml"
     },
     "disable_usage_reporting": false
 }
