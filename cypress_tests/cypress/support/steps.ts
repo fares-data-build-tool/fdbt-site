@@ -13,6 +13,8 @@ import {
     submitButtonClick,
     clickSelectedNumberOfCheckboxes,
     completeProductDateInformationPage,
+    getRandomNumber,
+    assertElementNotVisibleById,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -51,6 +53,19 @@ const completeFareTrianglePages = (csvUpload: boolean): void => {
         clickElementById('pence');
         uploadFile('csv-upload', 'fareTriangle.csv');
         submitButtonClick();
+    } else {
+        clickElementById('less-than-20-fare-stages');
+        continueButtonClick();
+        getElementById('fare-stages').type('3');
+        continueButtonClick();
+        getElementById('fare-stage-name-1').type('Shott Drive');
+        getElementById('fare-stage-name-2').type('The Stag pub');
+        getElementById('fare-stage-name-3').type('Frederick Drive');
+        continueButtonClick();
+        continueButtonClick();
+        getElementById('TheStagpub-ShottDrive').type('100');
+        getElementById('FrederickDrive-TheStagpub').type('150');
+        continueButtonClick();
     }
 };
 
@@ -73,6 +88,28 @@ export const completeSinglePages = (csvUpload: boolean): void => {
     continueButtonClick();
     completeFareTrianglePages(csvUpload);
     completeMatchingPage();
+    continueButtonClick();
+};
+
+export const completeReturnPages = (csvUpload: boolean): void => {
+    completeServicePage();
+    selectRandomOptionFromDropDown('outbound-journey');
+    selectRandomOptionFromDropDown('inbound-journey');
+    continueButtonClick();
+    completeFareTrianglePages(csvUpload);
+    completeMatchingPage();
+    completeMatchingPage();
+
+    assertElementNotVisibleById('return-validity-defined-conditional');
+    if (getRandomNumber(0, 1) === 0) {
+        clickElementById('return-validity-not-defined');
+    } else {
+        clickElementById('return-validity-defined');
+        getElementById('return-validity-amount').type(getRandomNumber(1, 100).toString());
+        selectRandomOptionFromDropDown('return-validity-units');
+    }
+
+    continueButtonClick();
     continueButtonClick();
 };
 

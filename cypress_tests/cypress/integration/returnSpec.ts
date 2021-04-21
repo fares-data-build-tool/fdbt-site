@@ -1,24 +1,24 @@
 import {
     selectFareType,
     defineUserTypeAndTimeRestrictions,
-    completeSinglePages,
     completeSalesPages,
+    completeReturnPages,
 } from '../support/steps';
 import { isUuidStringValid } from '../support/helpers';
 
-describe('The single faretype product journey', () => {
+describe('The return faretype product journey', () => {
     it('completes successfully for csv upload', () => {
-        selectFareType('single');
+        selectFareType('return');
         defineUserTypeAndTimeRestrictions();
-        completeSinglePages(true);
+        completeReturnPages(true);
         completeSalesPages();
         isUuidStringValid();
     });
 
     it('completes successfully for manual upload', () => {
-        selectFareType('single');
+        selectFareType('return');
         defineUserTypeAndTimeRestrictions();
-        completeSinglePages(false);
+        completeReturnPages(false);
         completeSalesPages();
         isUuidStringValid();
     });
