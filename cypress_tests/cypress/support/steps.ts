@@ -15,6 +15,7 @@ import {
     completeProductDateInformationPage,
     getRandomNumber,
     assertElementNotVisibleById,
+    randomlyChooseSingleProductPeriodValidity,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -117,5 +118,23 @@ export const completeSalesPages = (): void => {
     clickSelectedNumberOfCheckboxes(false);
     continueButtonClick();
     completeProductDateInformationPage();
+    continueButtonClick();
+};
+
+export const completePeriodGeoZonePages = (): void => {
+    clickElementById('geo-zone');
+    continueButtonClick();
+    uploadFile('csv-upload', 'fareZone.csv');
+    submitButtonClick();
+    getElementById('number-of-products').type('1');
+    continueButtonClick();
+    getElementById('product-details-name').type('Cypress period product');
+    getElementById('product-details-price').type('4.95');
+    continueButtonClick();
+    getElementById('validity').type('10');
+    selectRandomOptionFromDropDown('validity-units');
+    continueButtonClick();
+    randomlyChooseSingleProductPeriodValidity();
+    continueButtonClick();
     continueButtonClick();
 };

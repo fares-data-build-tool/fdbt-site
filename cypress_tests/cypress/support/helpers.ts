@@ -70,6 +70,27 @@ export const randomlyChooseAProof = (): void => {
     }
 };
 
+export const randomlyChooseSingleProductPeriodValidity = (): void => {
+    const randomSelector = getRandomNumber(1, 3);
+    switch (randomSelector) {
+        case 1:
+            cy.log('End of calendar day');
+            clickElementById('period-end-calendar');
+            break;
+        case 2:
+            cy.log('End of 24hr period');
+            clickElementById('period-twenty-four-hours');
+            break;
+        case 3:
+            cy.log('End of service day');
+            clickElementById('period-end-of-service');
+            getElementById('product-end-time').type('2100');
+            break;
+        default:
+            throwInvalidRandomSelectorError();
+    }
+};
+
 export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     cy.get(`[id=${dropDownId}]`)
         .find('option')
