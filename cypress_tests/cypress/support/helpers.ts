@@ -13,7 +13,7 @@ export const getRandomNumber = (min: number, max: number): number => Cypress._.r
 
 export const getHomePage = (): void => {
     cy.clearCookies();
-    cy.visit('https://test.dft-cfd.infinityworks.com?disableAuth=true');
+    cy.visit('?disableAuth=true');
 };
 
 export const fareTypeToFareTypeIdMapper = (

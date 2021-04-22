@@ -11,8 +11,7 @@ set -o errexit
 # Use the error status of the first failure, rather than that of the last item in a pipeline.
 set -o pipefail
 
-# This script will update the WAF with the IP of the CI box before installing the BrowserStack Local CLI
-# to setup a tunnel and then run the tests on the required browser
+# This script will update the WAF with the IP of the CI box and then run the tests on the required browser
 
 update_ip_set() {
     IP=$(wget -qO- http://checkip.amazonaws.com)
@@ -22,10 +21,6 @@ update_ip_set() {
     if [ -z "$NEXT_LOCK_TOKEN" ]; then
         return 1
     fi
-}
-
-run_ui_tests() {
-    make run-cypress-browserstack
 }
 
 cleanup_ip_set() {
@@ -46,6 +41,6 @@ done
 
 make install-cypress-deps-ci
 
-run_ui_tests
+make run-cypress-browserstack
 
 cleanup_ip_set
