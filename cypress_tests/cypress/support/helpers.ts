@@ -91,6 +91,26 @@ export const randomlyChooseSingleProductPeriodValidity = (): void => {
     }
 };
 
+export const selectOptionFromDropDownByIndex = (dropDownId: string, index: number): void => {
+    cy.get(`[id=${dropDownId}]`)
+        .find('option')
+        .then($elm => {
+            $elm.get(index).setAttribute('selected', 'selected');
+        })
+        .parent()
+        .trigger('change');
+};
+
+export const randomlyChooseMultipleProductPeriodValidity = (numberOfProducts: number): void => {
+    for (let i = 0; i < numberOfProducts; i += 1) {
+        const randomSelector = getRandomNumber(1, 3);
+        selectOptionFromDropDownByIndex(`validity-option-${i}`, randomSelector);
+        if (randomSelector === 3) {
+            getElementById(`validity-end-time-${i}`).type('1900');
+        }
+    }
+};
+
 export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     cy.get(`[id=${dropDownId}]`)
         .find('option')
@@ -286,6 +306,27 @@ export const clickSelectedNumberOfCheckboxes = (clickAll: boolean): void => {
             }
         }
     });
+};
+
+export const completeSalesOfferPackagesForMultipleProducts = (
+    numberOfProducts: number,
+    multiProductNamePrefix: string,
+): void => {
+    for (let i = 0; i < numberOfProducts; i += 1) {
+        const randomSalesOfferPackageIndex = getRandomNumber(0, 3);
+        getElementById(
+            `${multiProductNamePrefix.replace(' ', '').trim()}${i + 1}-checkbox-${randomSalesOfferPackageIndex}`,
+        ).click();
+        if (getRandomNumber(0, 1) === 1) {
+            getElementById(
+                `${multiProductNamePrefix.replace(' ', '').trim()}${i + 1}-checkbox-${
+                    randomSalesOfferPackageIndex === 3
+                        ? randomSalesOfferPackageIndex - 1
+                        : randomSalesOfferPackageIndex + 1
+                }`,
+            ).click();
+        }
+    }
 };
 
 export const randomlyChooseAndSelectServices = (): void => {
