@@ -29,6 +29,9 @@ jobs:
           at: ~/project
       - run:
           command: |
+            sudo apt-get install jq
+            cd cypress_tests
+            cat cypress.json | jq '.baseUrl = "${CYPRESS_BASE_URL}"' > cypress2.json && mv cypress2.json cypress.json
             ~/project/run_tests_in_browserstack.sh
           no_output_timeout: 40m
   
@@ -151,11 +154,11 @@ workflows:
 
       - run-ui-tests:
           requires:
-            - deploy-site-to-test
+            - checkout-repo
           context: tfn-fdbt-automation-test
-          filters:
-            branches:
-              only: develop
+          # filters:
+          #   branches:
+          #     only: develop
 
       - aws-ecs/deploy-service-update:
           requires:
