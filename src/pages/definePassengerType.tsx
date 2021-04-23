@@ -145,7 +145,7 @@ export const getFieldsets = (
 
     fieldsets.push(ageRangeFieldset);
 
-    if (!passengerType || (passengerType && passengerType !== 'adult')) {
+    if (!passengerType || (passengerType && passengerType !== 'adult' && passengerType !== 'anyone')) {
         fieldsets.push(proofRequiredFieldset);
     }
 

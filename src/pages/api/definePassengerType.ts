@@ -106,7 +106,7 @@ export const passengerTypeDetailsSchema = yup
             .oneOf(['Yes', 'No'])
             .required(radioButtonError),
         proof: yup.string().when('passengerType', {
-            is: passengerTypeValue => passengerTypeValue !== 'adult',
+            is: passengerTypeValue => !(passengerTypeValue === 'adult' || passengerTypeValue === 'anyone'),
             then: yup
                 .string()
                 .oneOf(['Yes', 'No'])
