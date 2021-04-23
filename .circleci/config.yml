@@ -155,11 +155,11 @@ workflows:
 
       - run-ui-tests:
           requires:
-            - checkout-repo
+            - deploy-site-to-test
           context: tfn-fdbt-automation-test
-          # filters:
-          #   branches:
-          #     only: develop
+          filters:
+            branches:
+              only: develop
 
       - aws-ecs/deploy-service-update:
           requires:
