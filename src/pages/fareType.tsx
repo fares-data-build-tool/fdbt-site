@@ -14,7 +14,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import FareTypeRadios from '../components/FareTypeRadios';
-import { getAndValidateNoc, getCsrfToken, isSchemeOperator } from '../utils/index';
+import { getAndValidateNoc, getCsrfToken, isSchemeOperator, getNocFromIdToken } from '../utils/index';
 import logger from '../utils/logger';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from './api/apiUtils';
@@ -103,6 +103,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
 
     const schemeOp = isSchemeOperator(ctx);
+    const idTokenNoc = getNocFromIdToken(ctx);
+    if (idTokenNoc && idTokenNoc.split('|').length > 1) {
+        if (ctx.res) {
+            redirectTo(ctx.res, '/multipleOperators');
+        }
+    }
     const nocCode = getAndValidateNoc(ctx);
 
     const services = await getAllServicesByNocCode(nocCode);
