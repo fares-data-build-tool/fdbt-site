@@ -104,25 +104,6 @@ export const setDisableAuthParameters = (server: Express): void => {
                 );
                 setCookieOnResponseObject(DISABLE_AUTH_COOKIE, 'true', req, res);
 
-                if (disableAuthQuery.includes('NOC_LIST')) {
-                    const nocs: string[] = disableAuthQuery.split('LIST_')[1].split('_');
-                    const jwtToken = sign(
-                        {
-                            'custom:noc': nocs.join('|'),
-                            email: 'test@example.com',
-                        },
-                        'test',
-                    );
-                    setCookieOnResponseObject(ID_TOKEN_COOKIE, jwtToken, req, res);
-
-                    if (req?.session && nocs.length === 1) {
-                        req.session[OPERATOR_ATTRIBUTE] = {
-                            name: 'Test Operator',
-                            nocCode: nocs[0],
-                        };
-                    }
-                }
-
                 if (disableAuthQuery === 'scheme') {
                     const jwtToken = sign(
                         {
@@ -142,7 +123,26 @@ export const setDisableAuthParameters = (server: Express): void => {
                             nocCode: 'TESTSE',
                         };
                     }
+                } else {
+                    const nocs: string[] = disableAuthQuery.split('_');
+                    const jwtToken = sign(
+                        {
+                            'custom:noc': nocs.join('|'),
+                            email: 'test@example.com',
+                        },
+                        'test',
+                    );
+                    setCookieOnResponseObject(ID_TOKEN_COOKIE, jwtToken, req, res);
+
+                    if (req?.session && nocs.length === 1) {
+                        req.session[OPERATOR_ATTRIBUTE] = {
+                            name: 'Test Operator',
+                            nocCode: nocs[0],
+                        };
+                    }
                 }
+
+                res.redirect('/home');
             }
         }
 
@@ -168,7 +168,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
 
     if (
         (process.env.NODE_ENV === 'development' || process.env.ALLOW_DISABLE_AUTH === '1') &&
-        (disableAuthCookie === 'true' || req.query.disableAuth === 'true')
+        (disableAuthCookie === 'true' || req.query.disableAuth)
     ) {
         next();
         return;

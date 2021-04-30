@@ -49,7 +49,6 @@
         "connect-dynamodb": "^2.0.4",
         "cookie-parser": "^1.4.5",
         "cookies": "^0.8.0",
-        "crypto-js": "^4.0.0",
         "csurf": "^1.11.0",
         "csv-parse": "^4.9.1",
         "dateformat": "^3.0.3",
