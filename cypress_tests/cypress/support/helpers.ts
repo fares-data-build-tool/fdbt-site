@@ -20,7 +20,7 @@ export const fareTypeToFareTypeIdMapper = (
     fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
 ): string => `fare-type-${fareType}`;
 
-export const startPageButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('start-now-button');
+export const startPageLinkClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('faretype-link');
 
 export const continueButtonClick = (): Cypress.Chainable<JQuery<HTMLElement>> => clickElementById('continue-button');
 
