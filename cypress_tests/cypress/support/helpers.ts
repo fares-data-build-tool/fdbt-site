@@ -94,11 +94,11 @@ export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, 
 
     assertElementNotVisibleById('age-range-required-conditional');
 
-    const firstRandomSelector = getRandomNumber(1, 4);
-    const secondRandomSelector = getRandomNumber(1, 2);
+    const firstRandomSelector = getRandomNumber(1, 2);
+    const secondRandomSelector = getRandomNumber(1, 4);
 
     if (passengerType === 'adult') {
-        switch (secondRandomSelector) {
+        switch (firstRandomSelector) {
             case 1:
                 cy.log('No to age range');
                 clickElementById('age-range-not-required');
@@ -114,7 +114,7 @@ export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, 
                 throwInvalidRandomSelectorError();
         }
     } else {
-        switch (firstRandomSelector) {
+        switch (secondRandomSelector) {
             case 1:
                 cy.log('No to both questions');
                 clickElementById('age-range-not-required');
