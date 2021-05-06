@@ -3,7 +3,7 @@ FROM node:14-alpine AS build
 WORKDIR /tmp
 
 COPY package*.json ./
-RUN apk add --no-cache git && npm install --ignore-scripts
+RUN apk add --no-cache git && npm ci --ignore-scripts
 
 COPY . .
 RUN npm run build
@@ -19,7 +19,7 @@ COPY supervisord.conf /etc/supervisor/
 
 RUN apk update && apk upgrade && \
     apk add --no-cache -t .clamv-run-deps openrc clamav clamav-daemon clamav-libunrar supervisor && \
-    npm install --ignore-scripts && \
+    npm ci --ignore-scripts && \
     mkdir /run/clamav && \
     chown clamav:clamav /run/clamav && \
     chmod 750 /run/clamav && \

@@ -47,7 +47,7 @@ jobs:
       - run:
           command: |
             echo "Starting build"
-            npm install
+            npm ci
             npm run build
       - persist_to_workspace:
           root: ~/project
@@ -165,14 +165,12 @@ workflows:
       - cypress/install:
           working_directory: cypress_tests
       - cypress/run:
-          requires: cypress/install
+          requires:
+            - cypress/install
           context: tfn-fdbt-automation-test
-          post-checkout:
-            - run: sudo apt-get install jq
-            - run: ~/project/run_tests_in_browserstack.sh
-          parallel: true
-          parallelism: 2
-          group: 2 machines
+          build: |
+            sudo apt-get install jq
+            ~/project/run_tests_in_browserstack.sh
           working_directory: cypress_tests
 
       - aws-ecs/deploy-service-update:
