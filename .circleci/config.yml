@@ -171,8 +171,8 @@ workflows:
             cd ..
             ~/project/run_tests_in_browserstack.sh
           parallel: true
-          parallelism: 2
-          group: 2 machines
+          parallelism: 3
+          group: 3 machines
           working_directory: cypress_tests
 
       - aws-ecs/deploy-service-update:
