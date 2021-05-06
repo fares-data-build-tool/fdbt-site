@@ -162,14 +162,17 @@ workflows:
       #       branches:
       #         only: develop
 
+      - cypress/install:
+          working_directory: cypress_tests
       - cypress/run:
+          requires: cypress/install
           context: tfn-fdbt-automation-test
           post-checkout:
             - run: sudo apt-get install jq
             - run: ~/project/run_tests_in_browserstack.sh
           parallel: true
-          parallelism: 3
-          group: 3 machines
+          parallelism: 2
+          group: 2 machines
           working_directory: cypress_tests
 
       - aws-ecs/deploy-service-update:
