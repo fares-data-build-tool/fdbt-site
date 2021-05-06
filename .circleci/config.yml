@@ -167,7 +167,24 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
+          executor: cypress/base:14.16.0
+          parallel: true
+          parallelism: 2
+          name: chrome on 2 machines
           context: tfn-fdbt-automation-test
+          browser: chrome
+          build: |
+            ~/project/run_tests_in_browserstack.sh
+          working_directory: cypress_tests
+      - cypress/run:
+          requires:
+            - cypress/install
+          executor: cypress/base:14.16.0
+          parallel: true
+          parallelism: 2
+          name: firefox on 2 machines
+          context: tfn-fdbt-automation-test
+          browser: firefox
           build: |
             ~/project/run_tests_in_browserstack.sh
           working_directory: cypress_tests
