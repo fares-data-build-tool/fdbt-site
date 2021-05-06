@@ -4,6 +4,7 @@ orbs:
   aws-cli: circleci/aws-cli@2.0.0
   aws-ecr: circleci/aws-ecr@6.15.3
   aws-ecs: circleci/aws-ecs@2.1.0
+  cypress: cypress-io/cypress@1.28.0
 
 jobs:
   checkout-repo:
@@ -35,7 +36,7 @@ jobs:
             cd ..
             ~/project/run_tests_in_browserstack.sh
           no_output_timeout: 40m
-  
+
   build-site:
     docker:
       - image: circleci/node:14
@@ -153,13 +154,26 @@ workflows:
             branches:
               only: develop
 
-      - run-ui-tests:
-          requires:
-            - deploy-site-to-test
+      # - run-ui-tests:
+      #     requires:
+      #       - deploy-site-to-test
+      #     context: tfn-fdbt-automation-test
+      #     filters:
+      #       branches:
+      #         only: develop
+
+      - cypress/run:
           context: tfn-fdbt-automation-test
-          filters:
-            branches:
-              only: develop
+          post-checkout: |
+            sudo apt-get install jq
+            cd cypress_tests
+            cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
+            cd ..
+            ~/project/run_tests_in_browserstack.sh
+          parallel: true
+          parallelism: 2
+          group: 2 machines
+          working_directory: cypress_tests
 
       - aws-ecs/deploy-service-update:
           requires:

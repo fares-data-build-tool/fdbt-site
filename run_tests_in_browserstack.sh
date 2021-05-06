@@ -39,8 +39,8 @@ until [ "$n" -ge 5 ]; do
     sleep 5
 done
 
-make install-cypress-deps-ci
+# make install-cypress-deps-ci
 
-make run-cypress-browserstack
+# make run-cypress-browserstack
 
-cleanup_ip_set
+# cleanup_ip_set
