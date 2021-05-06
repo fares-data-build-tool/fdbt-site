@@ -28,8 +28,12 @@ cleanup_ip_set() {
     aws wafv2 update-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses --lock-token $LOCK_TOKEN
 }
 
-apt update
-apt install jq unzip
+apt update -y
+apt install -y jq unzip
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
 
 n=0
 
