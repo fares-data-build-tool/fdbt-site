@@ -164,12 +164,13 @@ workflows:
 
       - cypress/run:
           context: tfn-fdbt-automation-test
-          post-checkout: |
-            sudo apt-get install jq
-            cd cypress_tests
-            cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
-            cd ..
-            ~/project/run_tests_in_browserstack.sh
+          post-checkout:
+            - run: |
+              sudo apt-get install jq
+              cd cypress_tests
+              cat cypress.json | jq  --arg BASE_URL "${CYPRESS_BASE_URL}" '.baseUrl = $BASE_URL' > cypress2.json && mv cypress2.json cypress.json
+              cd ..
+              ~/project/run_tests_in_browserstack.sh
           parallel: true
           parallelism: 3
           group: 3 machines
