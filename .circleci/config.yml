@@ -169,8 +169,6 @@ workflows:
             - cypress/install
           context: tfn-fdbt-automation-test
           build: |
-            apt update
-            apt install -y jq
             ~/project/run_tests_in_browserstack.sh
           working_directory: cypress_tests
 

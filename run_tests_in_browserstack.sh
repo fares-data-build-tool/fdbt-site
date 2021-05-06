@@ -28,8 +28,8 @@ cleanup_ip_set() {
     aws wafv2 update-ip-set --scope CLOUDFRONT --region us-east-1 --name $WAF_IPSET_NAME --id $WAF_IPSET_ID --addresses --lock-token $LOCK_TOKEN
 }
 
-sudo apt update
-sudo apt install jq unzip
+apt update
+apt install jq unzip
 
 n=0
 
