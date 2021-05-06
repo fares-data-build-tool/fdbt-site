@@ -165,7 +165,8 @@ workflows:
       - cypress/install:
           working_directory: cypress_tests
       - cypress/run:
-          requires: cypress/install
+          requires:
+            - cypress/install
           context: tfn-fdbt-automation-test
           post-checkout:
             - run: sudo apt-get install jq
