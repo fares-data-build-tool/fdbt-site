@@ -173,8 +173,6 @@ workflows:
           requires:
             - cypress/install
           executor: cypress-base
-          parallel: true
-          parallelism: 2
           name: chrome on 2 machines
           context: tfn-fdbt-automation-test
           browser: chrome
@@ -185,8 +183,6 @@ workflows:
           requires:
             - cypress/install
           executor: cypress-base
-          parallel: true
-          parallelism: 2
           name: firefox on 2 machines
           context: tfn-fdbt-automation-test
           browser: firefox
