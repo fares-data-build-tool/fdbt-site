@@ -412,13 +412,19 @@ export const completeProductDateInformationPage = (): void => {
     continueButtonClick();
 };
 
-export const isUuidStringValid = (): void => {
+export const isUuidStringValid = (isScheme: boolean = false): void => {
     getElementById('uuid-ref-number')
         .invoke('text')
         .then(rawUuid => {
             const uuid = rawUuid.replace('Your reference number', '');
-            expect(uuid).to.contain('BLAC');
-            expect(uuid.length).to.equal(12);
+
+            if (isScheme) {
+                expect(uuid).to.contain('TESTSE');
+                expect(uuid.length).to.equal(14);
+            } else {
+                expect(uuid).to.contain('BLAC');
+                expect(uuid.length).to.equal(12);
+            }
         });
 };
 

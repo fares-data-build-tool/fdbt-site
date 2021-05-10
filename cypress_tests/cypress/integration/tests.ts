@@ -142,7 +142,7 @@ describe('all user journeys for the create fares data service', () => {
             defineUserTypeAndTimeRestrictions();
             completeMultiOpGeoZonePages(true);
             completeSalesPages();
-            isUuidStringValid();
+            isUuidStringValid(true);
         });
 
         it('completes successfully for geozone and multiple products', () => {
@@ -152,7 +152,7 @@ describe('all user journeys for the create fares data service', () => {
             defineUserTypeAndTimeRestrictions();
             completeMultiOpGeoZonePages(true, numberOfProducts, multiProductNamePrefix);
             completeSalesPages(numberOfProducts, multiProductNamePrefix);
-            isUuidStringValid();
+            isUuidStringValid(true);
         });
     });
 });
