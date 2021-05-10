@@ -349,7 +349,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 };
 
 export const randomlyChooseAndSelectServices = (): void => {
-    const randomSelector = getRandomNumber(1, 3);
+    const randomSelector = getRandomNumber(1, 4);
     switch (randomSelector) {
         case 1: {
             cy.log('Click Select All button and continue');
