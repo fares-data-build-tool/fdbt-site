@@ -304,15 +304,25 @@ export const randomlyDecideTimeRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const clickSelectedNumberOfCheckboxes = (clickAll: boolean): void => {
-    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index) => {
-        if (clickAll || index === 0) {
-            cy.wrap(checkbox).check();
-        } else {
-            const randomSelector = getRandomNumber(0, 1);
-            if (randomSelector === 0) {
-                cy.wrap(checkbox).click();
-            }
+export const clickAllCheckboxes = (): void => {
+    cy.get('[class=govuk-checkboxes__input]').each(checkbox => {
+        cy.wrap(checkbox).click();
+    });
+};
+
+export const clickSomeCheckboxes = (): void => {
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
+        const numberOfCheckboxes = checkboxes.length;
+        if (numberOfCheckboxes === 1 || index !== numberOfCheckboxes - 1) {
+            cy.wrap(checkbox).click();
+        }
+    });
+};
+
+export const clickFirstCheckboxIfMultiple = (): void => {
+    cy.get('[class=govuk-checkboxes__input]').each((checkbox, index, checkboxes) => {
+        if (checkboxes.length > 1 && index === 0) {
+            cy.wrap(checkbox).click();
         }
     });
 };
@@ -339,7 +349,7 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 };
 
 export const randomlyChooseAndSelectServices = (): void => {
-    const randomSelector = getRandomNumber(1, 5);
+    const randomSelector = getRandomNumber(1, 3);
     switch (randomSelector) {
         case 1: {
             cy.log('Click Select All button and continue');
@@ -348,24 +358,18 @@ export const randomlyChooseAndSelectServices = (): void => {
         }
         case 2: {
             cy.log('Loop through checkboxes and click all, then continue');
-            clickSelectedNumberOfCheckboxes(true);
+            clickAllCheckboxes();
             break;
         }
         case 3: {
             cy.log('Loop through checkboxes and click random ones, then continue');
-            clickSelectedNumberOfCheckboxes(false);
+            clickSomeCheckboxes();
             break;
         }
         case 4: {
-            cy.log('Click Select All button and then click random checkboxes to deselect, then continue');
+            cy.log('Click Select All button and then click first checkbox to deselect, then continue');
             clickElementById('select-all-button');
-            clickSelectedNumberOfCheckboxes(false);
-            break;
-        }
-        case 5: {
-            cy.log('Loop through checkboxes and click all and then click random checkboxes to deselect, then continue');
-            clickSelectedNumberOfCheckboxes(true);
-            clickSelectedNumberOfCheckboxes(false);
+            clickFirstCheckboxIfMultiple();
             break;
         }
         default: {
@@ -412,7 +416,7 @@ export const completeProductDateInformationPage = (): void => {
     continueButtonClick();
 };
 
-export const isUuidStringValid = (isScheme: boolean = false): void => {
+export const isUuidStringValid = (isScheme = false): void => {
     getElementById('uuid-ref-number')
         .invoke('text')
         .then(rawUuid => {
@@ -482,7 +486,7 @@ export const completeOperatorSearch = (isMultiService: boolean): void => {
     continueButtonClick();
 
     if (isMultiService) {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i += 1) {
             randomlyChooseAndSelectServices();
             continueButtonClick();
         }

@@ -11,7 +11,6 @@ import {
     selectRandomOptionFromDropDown,
     uploadFile,
     submitButtonClick,
-    clickSelectedNumberOfCheckboxes,
     completeProductDateInformationPage,
     getRandomNumber,
     assertElementNotVisibleById,
@@ -19,6 +18,7 @@ import {
     completeSingleProduct,
     completeMultipleProducts,
     completeOperatorSearch,
+    clickSomeCheckboxes,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -126,7 +126,7 @@ export const completeSalesPages = (numberOfProducts?: number, multiProductNamePr
     if (numberOfProducts && multiProductNamePrefix) {
         completeSalesOfferPackagesForMultipleProducts(numberOfProducts, multiProductNamePrefix);
     } else {
-        clickSelectedNumberOfCheckboxes(false);
+        clickSomeCheckboxes();
     }
     continueButtonClick();
     completeProductDateInformationPage();
