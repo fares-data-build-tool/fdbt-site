@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { getAndValidateNoc, redirectToError, redirectTo } from './apiUtils/index';
+import { getAndValidateNoc, redirectToError, redirectTo, isSchemeOperator } from './apiUtils/index';
 import { NextApiRequestWithSession, MultipleOperatorsAttribute, TicketRepresentationAttribute } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import {
@@ -49,6 +49,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await insertOperatorGroup(noc, operators, refinedGroupName);
         }
         updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
+        if (isSchemeOperator(req, res)) {
+            redirectTo(res, '/multipleOperatorsServiceList');
+            return;
+        }
         const ticketRepresentation = (getSessionAttribute(
             req,
             TICKET_REPRESENTATION_ATTRIBUTE,
