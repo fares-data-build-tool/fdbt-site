@@ -1,4 +1,3 @@
-import { ID_TOKEN_COOKIE } from '../../../src/constants';
 import {
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
@@ -8,7 +7,7 @@ import * as auroradb from '../../../src/data/auroradb';
 import { TimeRestriction } from '../../../src/interfaces';
 import defineTimeRestrictions from '../../../src/pages/api/defineTimeRestrictions';
 import * as sessions from '../../../src/utils/sessions';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import { getMockRequestAndResponse, mockIdTokenMultiple } from '../../testData/mockData';
 
 describe('defineTimeRestrictions', () => {
     const writeHeadMock = jest.fn();
@@ -90,9 +89,7 @@ describe('defineTimeRestrictions', () => {
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             cookieValues: {
-                // 'TEST|HELLO' for the NOC code
-                idToken:
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVHxIRUxMTyJ9.O-E8cNzF8X0DVoUnKVKsg0ZSx88Yc3peOIpha7-BOWc',
+                idToken: mockIdTokenMultiple,
             },
             session: {
                 [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'HELLO', uuid: 'blah' },
