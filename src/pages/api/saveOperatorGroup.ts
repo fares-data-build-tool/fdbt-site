@@ -55,13 +55,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await insertOperatorGroup(noc, operators, refinedGroupName);
         }
         updateSessionAttribute(req, SAVE_OPERATOR_GROUP_ATTRIBUTE, []);
-        if (isSchemeOperator(req, res)) {
-            const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
-            if (fareType === 'flatFare') {
-                redirectTo(res, '/multipleOperatorsServiceList');
-                return;
-            }
-            redirectTo(res, '/howManyProducts');
+
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
+        if (isSchemeOperator(req, res) && fareType === 'flatFare') {
+            redirectTo(res, '/multipleOperatorsServiceList');
             return;
         }
         const ticketRepresentation = (getSessionAttribute(
