@@ -65,7 +65,7 @@ export const redirectToError = (
     context: string,
     error: Error,
 ): void => {
-    logger.error(message, { context, error });
+    logger.error(error.toString(), { context, message });
     redirectTo(res, '/error');
 };
 

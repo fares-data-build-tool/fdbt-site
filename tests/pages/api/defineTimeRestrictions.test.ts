@@ -1,12 +1,14 @@
-import * as sessions from '../../../src/utils/sessions';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import { ID_TOKEN_COOKIE } from '../../../src/constants';
 import {
-    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     FULL_TIME_RESTRICTIONS_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
 } from '../../../src/constants/attributes';
+import * as auroradb from '../../../src/data/auroradb';
 import { TimeRestriction } from '../../../src/interfaces';
 import defineTimeRestrictions from '../../../src/pages/api/defineTimeRestrictions';
-import * as auroradb from '../../../src/data/auroradb';
+import * as sessions from '../../../src/utils/sessions';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('defineTimeRestrictions', () => {
     const writeHeadMock = jest.fn();
@@ -87,6 +89,14 @@ describe('defineTimeRestrictions', () => {
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            cookieValues: {
+                // 'TEST|HELLO' for the NOC code
+                idToken:
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVHxIRUxMTyJ9.O-E8cNzF8X0DVoUnKVKsg0ZSx88Yc3peOIpha7-BOWc',
+            },
+            session: {
+                [OPERATOR_ATTRIBUTE]: { name: 'test', nocCode: 'HELLO', uuid: 'blah' },
+            },
         });
         await defineTimeRestrictions(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, FULL_TIME_RESTRICTIONS_ATTRIBUTE, {
@@ -106,6 +116,8 @@ describe('defineTimeRestrictions', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/fareConfirmation',
         });
+
+        expect(getTimeRestrictionByNameAndNocSpy).toBeCalledWith('My time restriction', 'HELLO');
     });
 
     it('redirect back to defineTimeRestrictions with errors if user does not select a premade time restriction but chose premade radio button', async () => {
