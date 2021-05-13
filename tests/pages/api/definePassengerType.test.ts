@@ -1,3 +1,4 @@
+import * as auroradb from '../../../src/data/auroradb';
 import definePassengerType, {
     passengerTypeDetailsSchema,
     formatRequestBody,
@@ -19,9 +20,9 @@ describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
-    afterEach(() => {
-        jest.resetAllMocks();
-    });
+    afterEach(jest.resetAllMocks);
+
+    beforeEach(() => jest.spyOn(auroradb, 'upsertPassengerType'));
 
     describe('passengerTypeDetailsSchema', () => {
         it.each([
@@ -432,5 +433,25 @@ describe('definePassengerType', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/defineTimeRestrictions',
         });
+    });
+
+    it('should save the passenger types', async () => {
+        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
+
+        const mockPassengerTypeDetails = {
+            passengerType: 'adult',
+            ageRange: 'Yes',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
+            proof: 'Yes',
+            proofDocuments: ['Membership Card', 'Student Card'],
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await definePassengerType(req, res);
+        expect(upsertPassengerTypeSpy).toBeCalledWith('TEST', mockPassengerTypeDetails, 'adult');
     });
 });
