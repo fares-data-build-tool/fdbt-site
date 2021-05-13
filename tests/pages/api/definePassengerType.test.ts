@@ -1,20 +1,20 @@
-import * as auroradb from '../../../src/data/auroradb';
-import definePassengerType, {
-    passengerTypeDetailsSchema,
-    formatRequestBody,
-    getErrorIdFromValidityError,
-} from '../../../src/pages/api/definePassengerType';
-import { getMockRequestAndResponse } from '../../testData/mockData';
 import {
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
-import * as sessions from '../../../src/utils/sessions';
+import * as auroradb from '../../../src/data/auroradb';
 import { CompanionInfo, GroupPassengerTypesCollection, GroupTicketAttribute } from '../../../src/interfaces';
+import definePassengerType, {
+    formatRequestBody,
+    getErrorIdFromValidityError,
+    passengerTypeDetailsSchema,
+} from '../../../src/pages/api/definePassengerType';
+import * as sessions from '../../../src/utils/sessions';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
@@ -457,16 +457,43 @@ describe('definePassengerType', () => {
 
     it('should not save the passenger types for groups', async () => {
         const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
+        const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
+        const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
+            {
+                minNumber: '2',
+                maxNumber: '10',
+                ageRangeMin: '5',
+                ageRangeMax: '10',
+                proofDocuments: ['Membership Card', 'Student Card'],
+                passengerType: 'adult',
+            },
+        ];
 
         const mockPassengerTypeDetails = {
-            passengerType: 'group',
+            passengerType: 'child',
+            ageRange: 'Yes',
+            ageRangeMin: '5',
+            ageRangeMax: '10',
+            minNumber: '2',
+            maxNumber: '10',
+            proof: 'Yes',
+            proofDocuments: 'Membership Card',
         };
+
         const { req, res } = getMockRequestAndResponse({
             body: mockPassengerTypeDetails,
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
+            session: {
+                [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
+                [GROUP_PASSENGER_TYPES_ATTRIBUTE]: groupPassengerTypesAttribute,
+                [GROUP_SIZE_ATTRIBUTE]: groupSizeAttribute,
+                [GROUP_PASSENGER_INFO_ATTRIBUTE]: mockPreviousPassengerTypeDetails,
+            },
         });
         await definePassengerType(req, res);
         expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, expect.anything());
     });
 });
