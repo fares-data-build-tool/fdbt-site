@@ -435,7 +435,7 @@ describe('definePassengerType', () => {
         });
     });
 
-    it('should save the passenger types', async () => {
+    it('should save the passenger types for non-groups', async () => {
         const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
 
         const mockPassengerTypeDetails = {
@@ -453,5 +453,20 @@ describe('definePassengerType', () => {
         });
         await definePassengerType(req, res);
         expect(upsertPassengerTypeSpy).toBeCalledWith('TEST', mockPassengerTypeDetails, 'adult');
+    });
+
+    it('should not save the passenger types for groups', async () => {
+        const upsertPassengerTypeSpy = jest.spyOn(auroradb, 'upsertPassengerType');
+
+        const mockPassengerTypeDetails = {
+            passengerType: 'group',
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: mockPassengerTypeDetails,
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await definePassengerType(req, res);
+        expect(upsertPassengerTypeSpy).not.toBeCalled();
     });
 });
