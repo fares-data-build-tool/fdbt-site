@@ -29,16 +29,12 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
 
 export const selectFareType = (
     fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
+    isScheme: boolean,
 ): void => {
-    getHomePage(false);
+    getHomePage(isScheme);
     startPageLinkClick();
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
-};
-
-export const startSchemeJourney = (): void => {
-    getHomePage(true);
-    startPageLinkClick();
 };
 
 export const completeFlatFarePages = (productName: string): void => {
