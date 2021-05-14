@@ -39,9 +39,10 @@ interface DefinePassengerTypeProps {
     group: boolean;
     errors: ErrorInfo[];
     fieldsets: RadioConditionalInputFieldset[];
-    numberOfPassengerTypeFieldset?: TextInputFieldset;
     passengerType: string;
     csrfToken: string;
+    isLast?: boolean;
+    numberOfPassengerTypeFieldset?: TextInputFieldset;
 }
 
 export const getFieldsets = (
@@ -236,6 +237,7 @@ const DefinePassengerType = ({
     numberOfPassengerTypeFieldset,
     csrfToken,
     passengerType,
+    isLast,
 }: DefinePassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <CsrfForm action="/api/definePassengerType" method="post" csrfToken={csrfToken}>
@@ -260,7 +262,35 @@ const DefinePassengerType = ({
                     {fieldsets.map(fieldset => {
                         return <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />;
                     })}
+                    {isLast && (
+                        <div className="govuk-form-group">
+                            <label
+                                id="save-time-restriction-label"
+                                className="govuk-label"
+                                htmlFor="time-restrictions-name"
+                            >
+                                <i>
+                                    Optional - if you want to save this passenger group for reuse on other products,
+                                    provide a name below
+                                </i>
+                            </label>
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId="passenger-type-name"
+                                errorClass="govuk-input--error"
+                            >
+                                <input
+                                    className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+                                    id="passenger-type-name"
+                                    name="passengerTypeName"
+                                    type="text"
+                                    maxLength={50}
+                                />
+                            </FormElementWrapper>
+                        </div>
+                    )}
                 </div>
+
                 <input value={passengerType} type="hidden" name="passengerType" />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
@@ -283,7 +313,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     const errors: ErrorInfo[] = isWithErrors(passengerTypeErrorsAttribute) ? passengerTypeErrorsAttribute.errors : [];
 
-    let passengerType = ctx?.query?.groupPassengerType as string;
+    let passengerType = ctx?.query?.groupPassengerType as string | undefined;
 
     const group =
         !!groupPassengerTypes &&
@@ -316,21 +346,22 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     const radioFieldsets = getFieldsets(errors, passengerType, passengerInfo);
 
-    if (numberOfPassengerTypeFieldset) {
-        return {
-            props: {
-                group,
-                errors,
-                fieldsets: radioFieldsets,
-                numberOfPassengerTypeFieldset,
-                passengerType,
-                csrfToken,
-            },
-        };
+    let isLast;
+    if (group && groupPassengerInfo) {
+        const groupInfo = groupPassengerInfo.find(info => info.passengerType === passengerType);
+        isLast = groupInfo && groupPassengerInfo.indexOf(groupInfo) === groupPassengerInfo.length - 1;
     }
 
     return {
-        props: { group, errors, fieldsets: radioFieldsets, passengerType, csrfToken },
+        props: {
+            group,
+            errors,
+            fieldsets: radioFieldsets,
+            passengerType,
+            csrfToken,
+            ...(numberOfPassengerTypeFieldset !== undefined ? { numberOfPassengerTypeFieldset } : {}),
+            ...(isLast !== undefined ? { isLast } : {}),
+        },
     };
 };
 

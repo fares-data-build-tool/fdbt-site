@@ -1,26 +1,26 @@
+import isArray from 'lodash/isArray';
 import { NextApiResponse } from 'next';
 import * as yup from 'yup';
-import isArray from 'lodash/isArray';
-import { upsertPassengerType } from '../../data/auroradb';
-import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
-import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
 import {
+    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
+import { insertPassengerType, upsertPassengerType } from '../../data/auroradb';
 import {
     CompanionInfo,
-    ErrorInfo,
-    NextApiRequestWithSession,
     DefinePassengerTypeWithErrors,
+    ErrorInfo,
     FareType,
     GroupPassengerTypesCollection,
+    NextApiRequestWithSession,
 } from '../../interfaces';
+import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
 import { removeAllWhiteSpace } from './apiUtils/validator';
 
 interface FilteredRequestBody {
@@ -209,7 +209,7 @@ export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession,
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { passengerType } = req.body;
+        const { passengerType, passengerTypeName } = req.body;
         const passengerInfo = getSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE);
         const groupPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
         const groupSize = getSessionAttribute(req, GROUP_SIZE_ATTRIBUTE);
@@ -278,6 +278,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     const companionToAdd: CompanionInfo = {
                         minNumber,
                         maxNumber,
+                        passengerTypeName,
                         passengerType: submittedPassengerType,
                     };
 
@@ -303,6 +304,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             }`,
                         );
                     } else {
+                        const trimmedName = passengerTypeName?.trim();
+                        if (trimmedName) {
+                            await insertPassengerType(getAndValidateNoc(req, res), companions, trimmedName, true);
+                        }
+
                         redirectTo(res, '/defineTimeRestrictions');
                     }
                 }

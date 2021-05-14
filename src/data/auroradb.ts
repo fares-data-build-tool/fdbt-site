@@ -4,6 +4,7 @@ import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { INTERNAL_NOC } from '../constants';
 import {
+    CompanionInfo,
     FullTimeRestriction,
     Operator,
     OperatorGroup,
@@ -614,6 +615,20 @@ export const getSearchOperatorsBySearchText = async (searchText: string): Promis
     }
 };
 
+export const insertPassengerType = async (
+    nocCode: string,
+    passengerType: PassengerType | CompanionInfo[],
+    name: string,
+    isGroup: boolean,
+): Promise<void> => {
+    const contents = JSON.stringify(passengerType);
+
+    const insertQuery = `INSERT INTO passengerType (contents, isGroup, name, nocCode)
+                         VALUES (?, ?, ?, ?)`;
+
+    await executeQuery(insertQuery, [contents, isGroup, name, nocCode]);
+};
+
 export const upsertPassengerType = async (
     nocCode: string,
     passengerType: PassengerType,
@@ -634,16 +649,11 @@ export const upsertPassengerType = async (
                                  isGroup  = ?
                              WHERE name = ?
                                AND nocCode = ?`;
-        const values = [contents, false, name, nocCode];
-        const meta = await executeQuery<ResultSetHeader>(updateQuery, values);
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, false, name, nocCode]);
         if (meta.affectedRows > 1) {
             throw Error(`Updated too many rows when updating passenger type ${meta}`);
         } else if (meta.affectedRows === 0) {
-            const insertQuery = `INSERT INTO passengerType
-                                     (contents, isGroup, name, nocCode)
-                                 VALUES (?, ?, ?, ?)`;
-
-            await executeQuery(insertQuery, values);
+            await insertPassengerType(nocCode, passengerType, name, false);
         }
     } catch (error) {
         throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
