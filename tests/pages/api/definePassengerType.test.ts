@@ -465,7 +465,6 @@ describe('definePassengerType', () => {
                 maxNumber: '10',
                 ageRangeMin: '5',
                 ageRangeMax: '10',
-                proofDocuments: ['Membership Card', 'Student Card'],
                 passengerType: 'adult',
             },
         ];
