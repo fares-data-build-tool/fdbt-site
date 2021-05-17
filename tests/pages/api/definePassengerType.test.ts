@@ -23,6 +23,7 @@ describe('definePassengerType', () => {
     afterEach(jest.resetAllMocks);
 
     beforeEach(() => jest.spyOn(auroradb, 'upsertPassengerType'));
+    beforeEach(() => jest.spyOn(auroradb, 'getPassengerTypeByNameAndNocCode'));
 
     describe('passengerTypeDetailsSchema', () => {
         it.each([
