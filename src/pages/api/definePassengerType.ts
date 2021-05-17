@@ -9,7 +9,7 @@ import {
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
-import { insertPassengerType, upsertPassengerType } from '../../data/auroradb';
+import { getPassengerTypeByNameAndNocCode, insertPassengerType, upsertPassengerType } from '../../data/auroradb';
 import {
     CompanionInfo,
     DefinePassengerTypeWithErrors,
@@ -21,7 +21,7 @@ import {
 import { isPassengerTypeAttributeWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { getAndValidateNoc, redirectTo, redirectToError } from './apiUtils/index';
-import { removeAllWhiteSpace } from './apiUtils/validator';
+import { removeAllWhiteSpace, removeExcessWhiteSpace } from './apiUtils/validator';
 
 interface FilteredRequestBody {
     minNumber?: string;
@@ -201,7 +201,7 @@ export const getErrorIdFromValidityError = (errorPath: string): string => {
     }
 };
 
-export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession, passengerType: string) => {
+export const getPassengerTypeRedirectLocation = (req: NextApiRequestWithSession, passengerType: string): string => {
     const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
     return passengerType === 'schoolPupil' && fareType === 'schoolService' ? '/termTime' : '/defineTimeRestrictions';
@@ -243,77 +243,90 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length === 0) {
+            const noc = getAndValidateNoc(req, res);
             if (!group) {
                 const filteredPassengerType = { passengerType, ...filteredReqBody };
                 updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, filteredPassengerType);
                 updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
 
-                const noc = getAndValidateNoc(req, res);
                 await upsertPassengerType(noc, filteredPassengerType, filteredPassengerType.passengerType);
 
                 const redirectLocation = getPassengerTypeRedirectLocation(req, passengerType);
                 redirectTo(res, redirectLocation);
-            } else {
-                const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
-                const submittedPassengerType = passengerType;
+                return;
+            }
 
-                if (selectedPassengerTypes) {
-                    const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
-                        type => type === filteredReqBody.groupPassengerType,
+            const selectedPassengerTypes = getSessionAttribute(req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+            const submittedPassengerType = passengerType;
+
+            if (selectedPassengerTypes) {
+                const index = (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.findIndex(
+                    type => type === filteredReqBody.groupPassengerType,
+                );
+
+                const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
+                const { minNumber, maxNumber } = req.body;
+
+                const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
+
+                const companions: CompanionInfo[] = [];
+
+                if (sessionGroup) {
+                    sessionGroup.forEach(companion => {
+                        companions.push(companion);
+                    });
+                }
+
+                const companionToAdd: CompanionInfo = {
+                    minNumber,
+                    maxNumber,
+                    passengerTypeName,
+                    passengerType: submittedPassengerType,
+                };
+
+                if (filteredReqBody.ageRange === 'Yes') {
+                    companionToAdd.ageRangeMax = ageRangeMax;
+                    companionToAdd.ageRangeMin = ageRangeMin;
+                }
+
+                if (filteredReqBody.proof === 'Yes') {
+                    companionToAdd.proofDocuments = proofDocuments;
+                }
+
+                companions[index] = companionToAdd;
+
+                updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
+                updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
+
+                if (index < (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length - 1) {
+                    redirectTo(
+                        res,
+                        `/definePassengerType?groupPassengerType=${
+                            (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[index + 1]
+                        }`,
                     );
+                } else {
+                    const trimmedName = removeExcessWhiteSpace(passengerTypeName);
+                    if (trimmedName) {
+                        const existingType = await getPassengerTypeByNameAndNocCode(noc, trimmedName, true);
 
-                    const { ageRangeMin, ageRangeMax, proofDocuments } = filteredReqBody;
-                    const { minNumber, maxNumber } = req.body;
-
-                    const sessionGroup = getSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE);
-
-                    const companions: CompanionInfo[] = [];
-
-                    if (sessionGroup) {
-                        sessionGroup.forEach(companion => {
-                            companions.push(companion);
-                        });
-                    }
-
-                    const companionToAdd: CompanionInfo = {
-                        minNumber,
-                        maxNumber,
-                        passengerTypeName,
-                        passengerType: submittedPassengerType,
-                    };
-
-                    if (filteredReqBody.ageRange === 'Yes') {
-                        companionToAdd.ageRangeMax = ageRangeMax;
-                        companionToAdd.ageRangeMin = ageRangeMin;
-                    }
-
-                    if (filteredReqBody.proof === 'Yes') {
-                        companionToAdd.proofDocuments = proofDocuments;
-                    }
-
-                    companions[index] = companionToAdd;
-
-                    updateSessionAttribute(req, GROUP_PASSENGER_INFO_ATTRIBUTE, companions);
-                    updateSessionAttribute(req, DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-
-                    if (index < (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes.length - 1) {
-                        redirectTo(
-                            res,
-                            `/definePassengerType?groupPassengerType=${
-                                (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[index + 1]
-                            }`,
-                        );
-                    } else {
-                        const trimmedName = passengerTypeName?.trim();
-                        if (trimmedName) {
-                            await insertPassengerType(getAndValidateNoc(req, res), companions, trimmedName, true);
+                        if (existingType) {
+                            errors.push({
+                                errorMessage: `You already have a passenger type named ${trimmedName}. Choose another name.`,
+                                id: 'passenger-type-name',
+                                userInput: trimmedName,
+                            });
+                        } else {
+                            await insertPassengerType(noc, companions, trimmedName, true);
                         }
+                    }
 
+                    if (!errors.length) {
                         redirectTo(res, '/defineTimeRestrictions');
+                        return;
                     }
                 }
             }
-            return;
         }
 
         const sessionInfo: DefinePassengerTypeWithErrors = {

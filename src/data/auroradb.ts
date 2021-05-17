@@ -663,6 +663,7 @@ export const upsertPassengerType = async (
 export const getPassengerTypeByNameAndNocCode = async (
     nocCode: string,
     name: string,
+    group: boolean,
 ): Promise<PassengerType | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -677,10 +678,10 @@ export const getPassengerTypeByNameAndNocCode = async (
             FROM passengerType
             WHERE nocCode = ?
             AND name = ?
-            AND isGroup = false
+            AND isGroup = ?
         `;
 
-        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode, name]);
+        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode, name, group]);
         if (queryResults.length > 1) {
             throw new Error("Didn't expect more than one passenger type with same name and NOC");
         }
