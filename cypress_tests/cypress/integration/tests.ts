@@ -53,7 +53,7 @@ describe('all user journeys for the create fares data service', () => {
         it('completes successfully', () => {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
-            completeFlatFarePages('Flat Fare Test Product');
+            completeFlatFarePages('Flat Fare Test Product', false);
             completeSalesPages();
             isUuidStringValid();
         });
@@ -154,8 +154,12 @@ describe('all user journeys for the create fares data service', () => {
             isUuidStringValid(true);
         });
 
-        // it('completes successfully for flat fare', () => {
-
-        // });
+        it('completes successfully for flat fare', () => {
+            selectFareType('flatFare', true);
+            defineUserTypeAndTimeRestrictions();
+            completeFlatFarePages('Scheme Flat Fare Test Product', true);
+            completeSalesPages();
+            isUuidStringValid(true);
+        });
     });
 });

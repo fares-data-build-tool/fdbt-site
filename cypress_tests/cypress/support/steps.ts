@@ -37,9 +37,13 @@ export const selectFareType = (
     continueButtonClick();
 };
 
-export const completeFlatFarePages = (productName: string): void => {
-    randomlyChooseAndSelectServices();
-    continueButtonClick();
+export const completeFlatFarePages = (productName: string, isScheme: boolean): void => {
+    if (isScheme) {
+        completeOperatorSearch(true);
+    } else {
+        randomlyChooseAndSelectServices();
+        continueButtonClick();
+    }
     getElementById('product-details-name').type(productName);
     getElementById('product-details-price').type('50.50');
     continueButtonClick();

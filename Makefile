@@ -37,5 +37,6 @@ run-cypress-edge:
 
 run-cypress-all: run-cypress-chrome run-cypress-firefox run-cypress-edge
 
+
 run-cypress-browserstack:
 	cd cypress_tests && npm run runBrowserstack
