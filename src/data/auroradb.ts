@@ -656,7 +656,7 @@ export const getPassengerTypeByNameAndNocCode = async (
 ): Promise<PassengerType | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving passenger types for given noc',
+        message: 'retrieving passenger types for given noc and name',
         nocCode,
         name,
     });
