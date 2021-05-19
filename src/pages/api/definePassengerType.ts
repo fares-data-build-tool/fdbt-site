@@ -306,26 +306,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         }`,
                     );
                     return;
-                } else {
-                    const trimmedName = removeExcessWhiteSpace(passengerTypeName);
-                    if (trimmedName) {
-                        const existingType = await getPassengerTypeByNameAndNocCode(noc, trimmedName, true);
+                }
 
-                        if (existingType) {
-                            errors.push({
-                                errorMessage: `You already have a passenger type named ${trimmedName}. Choose another name.`,
-                                id: 'passenger-type-name',
-                                userInput: trimmedName,
-                            });
-                        } else {
-                            await insertPassengerType(noc, companions, trimmedName, true);
-                        }
-                    }
+                const trimmedName = removeExcessWhiteSpace(passengerTypeName);
+                if (trimmedName) {
+                    const existingType = await getPassengerTypeByNameAndNocCode(noc, trimmedName, true);
 
-                    if (!errors.length) {
-                        redirectTo(res, '/defineTimeRestrictions');
-                        return;
+                    if (existingType) {
+                        errors.push({
+                            errorMessage: `You already have a passenger type named ${trimmedName}. Choose another name.`,
+                            id: 'passenger-type-name',
+                            userInput: trimmedName,
+                        });
+                    } else {
+                        await insertPassengerType(noc, companions, trimmedName, true);
                     }
+                }
+
+                if (!errors.length) {
+                    redirectTo(res, '/defineTimeRestrictions');
+                    return;
                 }
             }
         }
