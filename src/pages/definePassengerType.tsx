@@ -1,27 +1,27 @@
-import React, { ReactElement } from 'react';
 import lowerCase from 'lodash/lowerCase';
-import TwoThirdsLayout from '../layout/Layout';
+import React, { ReactElement } from 'react';
+import CsrfForm from '../components/CsrfForm';
+import ErrorSummary from '../components/ErrorSummary';
+import FormElementWrapper from '../components/FormElementWrapper';
+import RadioConditionalInput, { createErrorId } from '../components/RadioConditionalInput';
 import {
-    GROUP_PASSENGER_TYPES_ATTRIBUTE,
-    PASSENGER_TYPE_ATTRIBUTE,
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
+    GROUP_PASSENGER_TYPES_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
-import ErrorSummary from '../components/ErrorSummary';
-import RadioConditionalInput, { createErrorId } from '../components/RadioConditionalInput';
 import {
     BaseReactElement,
     CompanionInfo,
     ErrorInfo,
     NextPageContextWithSession,
-    RadioConditionalInputFieldset,
     PassengerType,
+    RadioConditionalInputFieldset,
 } from '../interfaces';
-import CsrfForm from '../components/CsrfForm';
-import { getSessionAttribute } from '../utils/sessions';
-import FormElementWrapper from '../components/FormElementWrapper';
-import { getCsrfToken, getErrorsByIds } from '../utils';
 import { isPassengerType, isPassengerTypeAttributeWithErrors, isWithErrors } from '../interfaces/typeGuards';
+import TwoThirdsLayout from '../layout/Layout';
+import { getCsrfToken, getErrorsByIds } from '../utils';
+import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Define Passenger Type - Create Fares Data Service';
 const description = 'Define Passenger Type page of the Create Fares Data Service';
@@ -346,11 +346,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
 
     const radioFieldsets = getFieldsets(errors, passengerType, passengerInfo);
 
-    let isLast;
-    if (group && groupPassengerInfo) {
-        const groupInfo = groupPassengerInfo.find(info => info.passengerType === passengerType);
-        isLast = groupInfo && groupPassengerInfo.indexOf(groupInfo) === groupPassengerInfo.length - 1;
-    }
+    const selectedPassengerTypes = getSessionAttribute(ctx.req, GROUP_PASSENGER_TYPES_ATTRIBUTE);
+
+    const isLast =
+        group &&
+        selectedPassengerTypes &&
+        'passengerTypes' in selectedPassengerTypes &&
+        selectedPassengerTypes.passengerTypes.indexOf(passengerType) ===
+            selectedPassengerTypes.passengerTypes.length - 1;
 
     return {
         props: {

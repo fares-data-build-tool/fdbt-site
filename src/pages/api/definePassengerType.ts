@@ -305,6 +305,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                             (selectedPassengerTypes as GroupPassengerTypesCollection).passengerTypes[index + 1]
                         }`,
                     );
+                    return;
                 } else {
                     const trimmedName = removeExcessWhiteSpace(passengerTypeName);
                     if (trimmedName) {
