@@ -10,6 +10,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (fareType) {
             if (fareType === 'carnet') {
                 updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, true);
+                updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, undefined);
                 redirectTo(res, '/carnetFareType');
                 return;
             }
