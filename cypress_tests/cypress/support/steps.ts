@@ -19,12 +19,22 @@ import {
     completeMultipleProducts,
     completeOperatorSearch,
     clickSomeCheckboxes,
+    randomlyChooseASchoolProof,
+    randomlyDecideTermRestrictions,
+    randomlyChooseSchoolAgeLimits,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
     randomlyDetermineUserType();
     randomlyDecideTimeRestrictions();
     continueButtonClick();
+};
+
+export const defineSchoolUserAndRestrictions = (): void => {
+    randomlyChooseSchoolAgeLimits();
+    randomlyChooseASchoolProof();
+    continueButtonClick();
+    randomlyDecideTermRestrictions();
 };
 
 export const selectFareType = (
@@ -36,9 +46,19 @@ export const selectFareType = (
     continueButtonClick();
 };
 
+export const selectScoolFareType = (
+    fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
+): void => {
+    clickElementById(fareTypeToFareTypeIdMapper(fareType));
+    continueButtonClick();
+};
 export const startSchemeJourney = (): void => {
     getHomePage(true);
     startPageLinkClick();
+};
+
+export const clickContinue = (): void => {
+    continueButtonClick();
 };
 
 export const completeFlatFarePages = (productName: string): void => {
