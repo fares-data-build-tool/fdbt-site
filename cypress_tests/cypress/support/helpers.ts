@@ -86,7 +86,7 @@ export const completeUserDetailsPage = (group: boolean, maxGroupNumber: string, 
     // Once we leave the passenger types page,
     // check if we have skipped the defining passenger types page due to a saved config
     cy.url()
-        .should('not.match', /\/passengerType/)
+        .should('not.match', /\/passengerType/) // This is bassicly a wait to ensure we're on the correct page
         .then((url: string) => {
             if (!url.includes('definePassengerType')) {
                 cy.log(`Skipped defining passenger types as probably reusing a saved one ${url}`);
@@ -480,7 +480,7 @@ export const completeMultipleProducts = (numberOfProducts?: number, multiProduct
 
 export const completeOperatorSearch = (isMultiService: boolean): void => {
     cy.url()
-        .should('match', /\/[searchOperators|reuseOperatorGroup]/)
+        .should('match', /\/[searchOperators|reuseOperatorGroup]/) // This is bassicly a wait to ensure we're on the correct page
         .then((url: string) => {
             if (url.includes('reuseOperatorGroup')) {
                 clickElementById('reuse-operator-group-no');
