@@ -41,7 +41,7 @@ describe('pages', () => {
             expect(tree).toMatchSnapshot();
         });
 
-        it('should render correctly for a ticket', () => {
+        it('should render correctly for a carnet ticket', () => {
             const tree = shallow(
                 <FareConfirmation
                     fareType="single"

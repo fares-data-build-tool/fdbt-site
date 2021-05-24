@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages fareConfirmation should render correctly for a ticket 1`] = `
+exports[`pages fareConfirmation should render correctly for a carnet ticket 1`] = `
 <Component
   description="Fare Confirmation page of the Create Fares Data Service"
   errors={Array []}
