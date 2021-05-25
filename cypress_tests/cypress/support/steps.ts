@@ -51,14 +51,11 @@ export const selectScoolFareType = (
 ): void => {
     clickElementById(fareTypeToFareTypeIdMapper(fareType));
     continueButtonClick();
+    continueButtonClick();
 };
 export const startSchemeJourney = (): void => {
     getHomePage(true);
     startPageLinkClick();
-};
-
-export const clickContinue = (): void => {
-    continueButtonClick();
 };
 
 export const completeFlatFarePages = (productName: string): void => {

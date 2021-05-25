@@ -12,7 +12,6 @@ import {
     completeMultiOpMultiServicePages,
     startSchemeJourney,
     defineSchoolUserAndRestrictions,
-    clickContinue,
 } from '../support/steps';
 import { isUuidStringValid } from '../support/helpers';
 
@@ -63,12 +62,11 @@ describe('all user journeys for the create fares data service', () => {
         });
     });
 
-    describe.only('The school flat fare faretype product journey', () => {
-        it.only('completes successfully', () => {
+    describe('The school flat fare faretype product journey', () => {
+        it('completes successfully', () => {
             selectFareType('schoolService');
             defineSchoolUserAndRestrictions();
             selectScoolFareType('flatFare');
-            clickContinue();
             completeFlatFarePages('School Flat Fare Test Product');
             completeSalesPages();
             isUuidStringValid();
