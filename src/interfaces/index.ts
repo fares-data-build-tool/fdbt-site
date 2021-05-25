@@ -21,14 +21,35 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
+export enum ExpiryUnit {
+    HOUR = 'hours',
+    DAY = 'days',
+    WEEK = 'weeks',
+    MONTH = 'months',
+    YEAR = 'years',
+    NO_EXPIRY = 'no expiry',
+}
+
 export interface CookiePolicy {
     essential: boolean;
     usage: boolean;
 }
 
+interface CarnetDetails {
+    quantity: string;
+    expiryTime: string;
+    expiryUnit: ExpiryUnit;
+}
+
 export interface ProductInfo {
     productName: string;
     productPrice: string;
+    carnetDetails?: CarnetDetails;
+}
+
+export interface PointToPointProductInfo {
+    productName: string;
+    carnetDetails: CarnetDetails;
 }
 
 export interface ProductInfoWithErrors extends ProductInfo {

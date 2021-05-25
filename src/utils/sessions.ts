@@ -5,7 +5,6 @@ import {
     IncomingMessageWithSession,
     ProductInfo,
     ProductData,
-    ProductInfoWithErrors,
     GroupDefinition,
     GroupDefinitionWithErrors,
     TimeRestriction,
@@ -61,6 +60,7 @@ import {
     OperatorAttribute,
     ForgotPasswordAttribute,
     TxcSourceAttribute,
+    PointToPointProductInfo,
 } from '../interfaces';
 
 import {
@@ -123,7 +123,12 @@ interface SessionAttributeTypes {
     [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
     [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: ProductData | WithErrors<ProductData>;
-    [PRODUCT_DETAILS_ATTRIBUTE]: ProductInfo | ProductData | ProductInfoWithErrors;
+    [PRODUCT_DETAILS_ATTRIBUTE]:
+        | ProductInfo
+        | PointToPointProductInfo
+        | ProductData
+        | WithErrors<ProductInfo>
+        | WithErrors<PointToPointProductInfo>;
     [PRICE_ENTRY_ATTRIBUTE]: FaresInformation;
     [SALES_OFFER_PACKAGES_ATTRIBUTE]:
         | SelectSalesOfferPackageWithError

@@ -29,10 +29,10 @@ export const checkProductNameIsValid = (inputtedProductName: string): string => 
     return '';
 };
 
-export const checkPriceIsValid = (inputtedPrice: string): string => {
+export const checkPriceIsValid = (inputtedPrice: string | undefined): string => {
     let productPriceError;
 
-    if (inputtedPrice === '') {
+    if (!inputtedPrice) {
         productPriceError = `This field cannot be empty`;
     } else if (Math.sign(Number(inputtedPrice)) === -1) {
         productPriceError = `This must be a positive number`;
