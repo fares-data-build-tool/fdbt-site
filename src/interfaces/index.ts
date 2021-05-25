@@ -431,11 +431,6 @@ export interface CompanionInfo {
     proofDocuments?: string[];
 }
 
-export interface GroupPassengerInfo extends CompanionInfo {
-    ageRange: string;
-    proof: string;
-}
-
 export interface GroupDefinition {
     maxGroupSize: number;
     companions: CompanionInfo[];
