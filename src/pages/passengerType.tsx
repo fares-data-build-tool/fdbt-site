@@ -5,7 +5,7 @@ import FormElementWrapper from '../components/FormElementWrapper';
 import InsetText from '../components/InsetText';
 import RadioConditionalInput from '../components/RadioConditionalInput';
 import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE, PASSENGER_TYPES_WITH_GROUP } from '../constants';
-import { PASSENGER_TYPE_ATTRIBUTE, SAVED_PASSENGER_GROUPS } from '../constants/attributes';
+import { PASSENGER_TYPE_ATTRIBUTE, SAVED_PASSENGER_GROUPS_ATTRIBUTE } from '../constants/attributes';
 import { getPassengerTypesByNocCode } from '../data/auroradb';
 import {
     ErrorInfo,
@@ -29,42 +29,46 @@ interface PassengerTypeProps {
     savedGroups: GroupPassengerType[];
 }
 
-export const getFieldsets = (
-    errors: ErrorInfo[],
-    savedGroups: GroupPassengerType[],
-): RadioConditionalInputFieldset => ({
-    radioError: errors,
-    heading: {
-        id: 'passenger-types-fieldset',
-        content: '',
-        hidden: true,
-    },
-    radios: PASSENGER_TYPES_WITH_GROUP.map(({ passengerTypeValue: value, passengerTypeDisplay: display }) => ({
-        id: `passenger-type-${value}`,
-        key: value,
-        name: 'passengerType',
-        value,
-        dataAriaControls: 'passenger-type-required-conditional',
-        label: display,
-        type: 'radio',
-        inputType: 'dropdown',
-        ...(value !== GROUP_REUSE_PASSENGER_TYPE
-            ? {}
-            : {
-                  inputHint: {
-                      id: 'choose-time-restriction-hint',
-                      content: 'Select a saved group to use',
-                  },
-                  selectIdentifier: 'reuseGroup',
-                  inputErrors: errors,
-                  inputs: savedGroups.map((group, index) => ({
-                      id: `group-passenger-type-${index}`,
-                      name: group.name,
-                      label: group.name,
-                  })),
-              }),
-    })),
-});
+export const getFieldsets = (errors: ErrorInfo[], savedGroups: GroupPassengerType[]): RadioConditionalInputFieldset => {
+    const groups = [...PASSENGER_TYPES_WITH_GROUP];
+    if (!savedGroups.length) {
+        groups.pop();
+    }
+
+    return {
+        radioError: errors,
+        heading: {
+            id: 'passenger-types-fieldset',
+            content: '',
+            hidden: true,
+        },
+        radios: groups.map(({ passengerTypeValue: value, passengerTypeDisplay: display }) => ({
+            id: `passenger-type-${value}`,
+            key: value,
+            name: 'passengerType',
+            value,
+            dataAriaControls: 'passenger-type-required-conditional',
+            label: display,
+            type: 'radio',
+            inputType: 'dropdown',
+            ...(value !== GROUP_REUSE_PASSENGER_TYPE
+                ? {}
+                : {
+                      inputHint: {
+                          id: 'choose-saved-group-hint',
+                          content: 'Select a saved group to use',
+                      },
+                      selectIdentifier: 'reuseGroup',
+                      inputErrors: errors,
+                      inputs: savedGroups.map((group, index) => ({
+                          id: `group-passenger-type-${index}`,
+                          name: group.name,
+                          label: group.name,
+                      })),
+                  }),
+        })),
+    };
+};
 
 const PassengerType = ({ errors = [], csrfToken, savedGroups }: PassengerTypeProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
@@ -106,11 +110,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
 
-    let savedGroups = getSessionAttribute(ctx.req, SAVED_PASSENGER_GROUPS);
+    let savedGroups = getSessionAttribute(ctx.req, SAVED_PASSENGER_GROUPS_ATTRIBUTE);
     if (savedGroups === undefined) {
         const noc = getAndValidateNoc(ctx);
         savedGroups = await getPassengerTypesByNocCode(noc, 'group');
-        updateSessionAttribute(ctx.req, SAVED_PASSENGER_GROUPS, savedGroups);
+        updateSessionAttribute(ctx.req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, savedGroups);
     }
 
     const errors: ErrorInfo[] =

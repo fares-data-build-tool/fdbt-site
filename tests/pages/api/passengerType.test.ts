@@ -2,7 +2,7 @@ import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE } from '../../../src/c
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    SAVED_PASSENGER_GROUPS,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as aurora from '../../../src/data/auroradb';
 import passengerType from '../../../src/pages/api/passengerType';
@@ -91,7 +91,7 @@ describe('passengerType', () => {
             mockWriteHeadFn: writeHeadMock,
             session: {
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
-                [SAVED_PASSENGER_GROUPS]: [
+                [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: [
                     { name: 'Hello Name', companions: [{ passengerType: 'child' }] },
                     { name: 'Hi Name', companions: [{ passengerType: 'adult' }] },
                 ],
@@ -122,14 +122,14 @@ describe('passengerType', () => {
             mockWriteHeadFn: writeHeadMock,
             session: {
                 [PASSENGER_TYPE_ATTRIBUTE]: { passengerType: 'group' },
-                [SAVED_PASSENGER_GROUPS]: [{}],
+                [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: [{}],
             },
         });
 
         await passengerType(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PASSENGER_TYPE_ATTRIBUTE, {
-            errors: [{ errorMessage: 'Please select a group to reuse', id: 'group-reuse' }],
+            errors: [{ errorMessage: 'Select a group to reuse', id: `passenger-type-${GROUP_PASSENGER_TYPE}` }],
         });
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/passengerType',

@@ -5,7 +5,7 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    SAVED_PASSENGER_GROUPS,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as auroradb from '../../../src/data/auroradb';
 import { CompanionInfo, GroupPassengerTypesCollection, GroupTicketAttribute } from '../../../src/interfaces';
@@ -549,7 +549,7 @@ describe('definePassengerType', () => {
         expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
         expect(insertPassengerTypeSpy).toBeCalledWith('TEST', savedGroupInfo, 'A Name', true);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVED_PASSENGER_GROUPS, [
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, [
             { companions: savedGroupInfo, name: 'A Name' },
         ]);
     });

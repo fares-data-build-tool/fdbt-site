@@ -693,7 +693,11 @@ export const getPassengerTypeByNameAndNocCode = async (
     }
 };
 
-type SavedPassengerType = { group: GroupPassengerType[]; single: PassengerType[] };
+interface SavedPassengerType {
+    group: GroupPassengerType[];
+    single: PassengerType[];
+}
+
 export const getPassengerTypesByNocCode = async <T extends keyof SavedPassengerType>(
     nocCode: string,
     type: T,

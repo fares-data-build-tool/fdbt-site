@@ -135,23 +135,6 @@ exports[`pages operator should render correctly 1`] = `
                       "type": "radio",
                       "value": "group",
                     },
-                    Object {
-                      "dataAriaControls": "passenger-type-required-conditional",
-                      "id": "passenger-type-group-reuse",
-                      "inputErrors": Array [],
-                      "inputHint": Object {
-                        "content": "Select a saved group to use",
-                        "id": "choose-time-restriction-hint",
-                      },
-                      "inputType": "dropdown",
-                      "inputs": Array [],
-                      "key": "group-reuse",
-                      "label": "Group - reuse saved group",
-                      "name": "passengerType",
-                      "selectIdentifier": "reuseGroup",
-                      "type": "radio",
-                      "value": "group-reuse",
-                    },
                   ],
                 }
               }

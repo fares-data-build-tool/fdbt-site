@@ -106,7 +106,7 @@ import {
     SAVE_OPERATOR_GROUP_ATTRIBUTE,
     MULTI_OP_TXC_SOURCE_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
-    SAVED_PASSENGER_GROUPS,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../constants/attributes';
 
 import * as attributes from '../constants/attributes';
@@ -161,7 +161,7 @@ interface SessionAttributeTypes {
     [REUSE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [SAVE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
-    [SAVED_PASSENGER_GROUPS]: GroupPassengerType[];
+    [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

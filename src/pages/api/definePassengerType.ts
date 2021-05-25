@@ -8,7 +8,7 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    SAVED_PASSENGER_GROUPS,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getPassengerTypeByNameAndNocCode, insertPassengerType, upsertPassengerType } from '../../data/auroradb';
 import {
@@ -320,9 +320,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                         });
                     } else {
                         await insertPassengerType(noc, companions, trimmedName, true);
-                        const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS) ?? [];
+                        const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE) ?? [];
                         savedGroups.push({ companions, name: trimmedName });
-                        updateSessionAttribute(req, SAVED_PASSENGER_GROUPS, savedGroups);
+                        updateSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, savedGroups);
                     }
                 }
 

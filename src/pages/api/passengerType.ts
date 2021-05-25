@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import {
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
-    SAVED_PASSENGER_GROUPS,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../constants/attributes';
 import { GROUP_PASSENGER_TYPE, GROUP_REUSE_PASSENGER_TYPE, PASSENGER_TYPES_WITH_GROUP } from '../../constants/index';
 import { getPassengerTypeByNameAndNocCode } from '../../data/auroradb';
@@ -19,7 +19,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { passengerType } = req.body;
 
             if (passengerType === GROUP_REUSE_PASSENGER_TYPE) {
-                const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS);
+                const savedGroups = getSessionAttribute(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE);
                 if (!savedGroups) {
                     throw new Error("Didn't have any saved groups but they should have been loaded on render");
                 }
@@ -27,7 +27,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 const { reuseGroup } = req.body;
                 const reusedGroup = savedGroups.find(group => group.name === reuseGroup);
                 if (!reusedGroup || !reuseGroup) {
-                    const errors = [{ errorMessage: 'Please select a group to reuse', id: 'group-reuse' }];
+                    const errors = [
+                        { errorMessage: 'Select a group to reuse', id: `passenger-type-${GROUP_PASSENGER_TYPE}` },
+                    ];
                     updateSessionAttribute(req, PASSENGER_TYPE_ATTRIBUTE, {
                         errors,
                     });
