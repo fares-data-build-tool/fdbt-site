@@ -16,6 +16,7 @@ import {
     ProductInfo,
     ProductInfoWithErrors,
     MultiOperatorInfo,
+    PointToPointProductInfo,
 } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
@@ -39,16 +40,16 @@ interface ProductDetailsProps {
 }
 
 export const isProductInfoWithErrors = (
-    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors,
+    productDetailsAttribute: ProductInfo | ProductData | PointToPointProductInfo | ProductInfoWithErrors,
 ): productDetailsAttribute is ProductInfoWithErrors =>
     (productDetailsAttribute as ProductInfoWithErrors)?.errors !== undefined;
 
 export const isProductInfo = (
-    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors | undefined,
+    productDetailsAttribute: ProductInfo | ProductData | PointToPointProductInfo | ProductInfoWithErrors | undefined,
 ): productDetailsAttribute is ProductInfo => (productDetailsAttribute as ProductInfo)?.productName !== undefined;
 
 export const isProductData = (
-    productDetailsAttribute: ProductInfo | ProductData | ProductInfoWithErrors | undefined,
+    productDetailsAttribute: ProductInfo | ProductData | PointToPointProductInfo | ProductInfoWithErrors | undefined,
 ): productDetailsAttribute is ProductData => (productDetailsAttribute as ProductData).products !== undefined;
 
 const ProductDetails = ({

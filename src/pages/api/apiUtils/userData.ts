@@ -31,6 +31,7 @@ import {
     TicketPeriodWithInput,
     SchemeOperatorGeoZoneTicket,
     SalesOfferPackage,
+    PointToPointProductInfo,
 } from '../../../interfaces/index';
 
 import { ID_TOKEN_COOKIE, MATCHING_DATA_BUCKET_NAME } from '../../../constants/index';
@@ -84,7 +85,7 @@ const isProductDataWithoutErrors = (
 ): periodExpiryAttributeInfo is ProductData => (periodExpiryAttributeInfo as ProductData)?.products !== null;
 
 const isProductData = (
-    productDetailsAttributeInfo: ProductData | ProductInfo,
+    productDetailsAttributeInfo: ProductData | ProductInfo | PointToPointProductInfo,
 ): productDetailsAttributeInfo is ProductData => (productDetailsAttributeInfo as ProductData)?.products !== null;
 
 export const getProductsAndSalesOfferPackages = (
