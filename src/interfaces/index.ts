@@ -431,11 +431,6 @@ export interface CompanionInfo {
     proofDocuments?: string[];
 }
 
-export interface GroupPassengerInfo extends CompanionInfo {
-    ageRange: string;
-    proof: string;
-}
-
 export interface GroupDefinition {
     maxGroupSize: number;
     companions: CompanionInfo[];
@@ -736,10 +731,10 @@ export interface ConfirmationElement {
 export interface FareTypeRadio {
     fareType: string;
     label: string;
+    hint: string;
 }
 export interface FareTypeRadioProps {
-    standardFares: FareTypeRadio[];
-    otherFares: FareTypeRadio[];
+    fares: FareTypeRadio[];
 }
 
 export interface RadioWithoutConditionals extends BaseReactElement {

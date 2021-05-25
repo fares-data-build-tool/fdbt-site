@@ -10,7 +10,6 @@ import {
     completePeriodMultiServicePages,
     completeMultiOpGeoZonePages,
     completeMultiOpMultiServicePages,
-    startSchemeJourney,
     defineSchoolUserAndRestrictions,
 } from '../support/steps';
 import { isUuidStringValid } from '../support/helpers';
@@ -18,7 +17,7 @@ import { isUuidStringValid } from '../support/helpers';
 describe('all user journeys for the create fares data service', () => {
     describe('The single faretype product journey', () => {
         it('completes successfully for csv upload', () => {
-            selectFareType('single');
+            selectFareType('single', false);
             defineUserTypeAndTimeRestrictions();
             completeSinglePages(true);
             completeSalesPages();
@@ -26,7 +25,7 @@ describe('all user journeys for the create fares data service', () => {
         });
 
         it('completes successfully for manual upload', () => {
-            selectFareType('single');
+            selectFareType('single', false);
             defineUserTypeAndTimeRestrictions();
             completeSinglePages(false);
             completeSalesPages();
@@ -36,7 +35,7 @@ describe('all user journeys for the create fares data service', () => {
 
     describe('The return faretype product journey', () => {
         it('completes successfully for csv upload', () => {
-            selectFareType('return');
+            selectFareType('return', false);
             defineUserTypeAndTimeRestrictions();
             completeReturnPages(true);
             completeSalesPages();
@@ -44,7 +43,7 @@ describe('all user journeys for the create fares data service', () => {
         });
 
         it('completes successfully for manual upload', () => {
-            selectFareType('return');
+            selectFareType('return', false);
             defineUserTypeAndTimeRestrictions();
             completeReturnPages(false);
             completeSalesPages();
@@ -54,9 +53,9 @@ describe('all user journeys for the create fares data service', () => {
 
     describe('The flat fare faretype product journey', () => {
         it('completes successfully', () => {
-            selectFareType('flatFare');
+            selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
-            completeFlatFarePages('Flat Fare Test Product');
+            completeFlatFarePages('Flat Fare Test Product', false);
             completeSalesPages();
             isUuidStringValid();
         });
@@ -64,10 +63,10 @@ describe('all user journeys for the create fares data service', () => {
 
     describe('The school flat fare faretype product journey', () => {
         it('completes successfully', () => {
-            selectFareType('schoolService');
+            selectFareType('schoolService', false);
             defineSchoolUserAndRestrictions();
             selectScoolFareType('flatFare');
-            completeFlatFarePages('School Flat Fare Test Product');
+            completeFlatFarePages('School Flat Fare Test Product', false);
             completeSalesPages();
             isUuidStringValid();
         });
@@ -75,7 +74,7 @@ describe('all user journeys for the create fares data service', () => {
 
     describe('the period faretype product journey', () => {
         it('completes successfully for geozone and a single product', () => {
-            selectFareType('period');
+            selectFareType('period', false);
             defineUserTypeAndTimeRestrictions();
             completePeriodGeoZonePages();
             completeSalesPages();
@@ -85,7 +84,7 @@ describe('all user journeys for the create fares data service', () => {
         it('completes successfully for geozone and multiple products', () => {
             const numberOfProducts = 5;
             const multiProductNamePrefix = 'Cypress product ';
-            selectFareType('period');
+            selectFareType('period', false);
             defineUserTypeAndTimeRestrictions();
             completePeriodGeoZonePages(numberOfProducts, multiProductNamePrefix);
             completeSalesPages(numberOfProducts, multiProductNamePrefix);
@@ -93,7 +92,7 @@ describe('all user journeys for the create fares data service', () => {
         });
 
         it('completes successfully for multi-service and a single product', () => {
-            selectFareType('period');
+            selectFareType('period', false);
             defineUserTypeAndTimeRestrictions();
             completePeriodMultiServicePages();
             completeSalesPages();
@@ -103,7 +102,7 @@ describe('all user journeys for the create fares data service', () => {
         it('completes successfully for multi-service and multiple products', () => {
             const numberOfProducts = 3;
             const multiProductNamePrefix = 'Cypress product ';
-            selectFareType('period');
+            selectFareType('period', false);
             defineUserTypeAndTimeRestrictions();
             completePeriodMultiServicePages(numberOfProducts, multiProductNamePrefix);
             completeSalesPages(numberOfProducts, multiProductNamePrefix);
@@ -113,7 +112,7 @@ describe('all user journeys for the create fares data service', () => {
 
     describe('the multi-operator faretype product journey', () => {
         it('completes successfully for geozone and a single product', () => {
-            selectFareType('multiOperator');
+            selectFareType('multiOperator', false);
             defineUserTypeAndTimeRestrictions();
             completeMultiOpGeoZonePages(false);
             completeSalesPages();
@@ -123,7 +122,7 @@ describe('all user journeys for the create fares data service', () => {
         it('completes successfully for geozone and multiple products', () => {
             const numberOfProducts = 5;
             const multiProductNamePrefix = 'Cypress product ';
-            selectFareType('multiOperator');
+            selectFareType('multiOperator', false);
             defineUserTypeAndTimeRestrictions();
             completeMultiOpGeoZonePages(false, numberOfProducts, multiProductNamePrefix);
             completeSalesPages(numberOfProducts, multiProductNamePrefix);
@@ -131,7 +130,7 @@ describe('all user journeys for the create fares data service', () => {
         });
 
         it('completes successfully for multi-service and a single product', () => {
-            selectFareType('multiOperator');
+            selectFareType('multiOperator', false);
             defineUserTypeAndTimeRestrictions();
             completeMultiOpMultiServicePages();
             completeSalesPages();
@@ -141,7 +140,7 @@ describe('all user journeys for the create fares data service', () => {
         it('completes successfully for multi-service and multiple products', () => {
             const numberOfProducts = 3;
             const multiProductNamePrefix = 'Cypress product ';
-            selectFareType('multiOperator');
+            selectFareType('multiOperator', false);
             defineUserTypeAndTimeRestrictions();
             completeMultiOpMultiServicePages(numberOfProducts, multiProductNamePrefix);
             completeSalesPages(numberOfProducts, multiProductNamePrefix);
@@ -151,7 +150,7 @@ describe('all user journeys for the create fares data service', () => {
 
     describe('the scheme journey', () => {
         it('completes successfully for geozone and a single product', () => {
-            startSchemeJourney();
+            selectFareType('period', true);
             defineUserTypeAndTimeRestrictions();
             completeMultiOpGeoZonePages(true);
             completeSalesPages();
@@ -161,10 +160,18 @@ describe('all user journeys for the create fares data service', () => {
         it('completes successfully for geozone and multiple products', () => {
             const numberOfProducts = 5;
             const multiProductNamePrefix = 'Scheme product ';
-            startSchemeJourney();
+            selectFareType('period', true);
             defineUserTypeAndTimeRestrictions();
             completeMultiOpGeoZonePages(true, numberOfProducts, multiProductNamePrefix);
             completeSalesPages(numberOfProducts, multiProductNamePrefix);
+            isUuidStringValid(true);
+        });
+
+        it('completes successfully for flat fare', () => {
+            selectFareType('flatFare', true);
+            defineUserTypeAndTimeRestrictions();
+            completeFlatFarePages('Scheme Flat Fare Test Product', true);
+            completeSalesPages();
             isUuidStringValid(true);
         });
     });
