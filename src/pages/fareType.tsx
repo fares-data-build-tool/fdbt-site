@@ -176,7 +176,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    const displayCarnet = process.env.STAGE !== 'dev';
+    const displayCarnet = process.env.STAGE !== 'prod';
 
     return { props: { operatorName, schemeOp, displayCarnet, errors, csrfToken } };
 };
