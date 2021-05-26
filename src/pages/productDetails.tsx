@@ -78,7 +78,7 @@ const ProductDetails = ({
                             <span className="govuk-hint" id="service-operator-hint">
                                 {operator} - {hintText} - {upperFirst(passengerType)}
                             </span>
-                            <FormGroupWrapper errors={errors} errorId="product-details-name">
+                            <FormGroupWrapper errors={errors} errorIds={['product-details-name']}>
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-name">
                                         Product Name
@@ -103,7 +103,7 @@ const ProductDetails = ({
                                     </FormElementWrapper>
                                 </>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errors={errors} errorId="product-details-price">
+                            <FormGroupWrapper errors={errors} errorIds={['product-details-price']}>
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-price">
                                         Product Price, in pounds

@@ -189,9 +189,10 @@ export const isPointToPointProductInfo = (
         | ProductInfo
         | ProductData
         | WithErrors<ProductInfo>
-        | WithErrors<PointToPointProductInfo>,
+        | WithErrors<PointToPointProductInfo>
+        | undefined,
 ): productDetailsAttribute is PointToPointProductInfo =>
-    (productDetailsAttribute as PointToPointProductInfo).carnetDetails !== undefined;
+    !!productDetailsAttribute && (productDetailsAttribute as PointToPointProductInfo).carnetDetails !== undefined;
 
 export const isWithErrors = <T>(value: T): value is WithErrors<T> =>
     !!value && (value as WithErrors<T>).errors !== undefined && (value as WithErrors<T>).errors.length > 0;

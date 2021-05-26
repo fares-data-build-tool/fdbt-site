@@ -65,4 +65,26 @@ export const checkDurationIsValid = (inputtedDuration: string): string => {
     return '';
 };
 
+export const checkIntegerIsValid = (input: string, inputName: string, min: number, max: number): string => {
+    if (input === '') {
+        return `${inputName} cannot be empty`;
+    }
+
+    const numberInput = Number(input);
+
+    if (Number.isNaN(numberInput)) {
+        return `${inputName} must be a whole, positive number`;
+    }
+
+    if (numberInput < min) {
+        return `${inputName} cannot be less than ${min}`;
+    }
+
+    if (numberInput > max) {
+        return `${inputName} cannot be greater than ${max}`;
+    }
+
+    return '';
+};
+
 export const isValid24hrTimeFormat = (time: string): boolean => RegExp('^([2][0-3]|[0-1][0-9])[0-5][0-9]$').test(time);

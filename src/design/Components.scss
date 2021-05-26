@@ -110,6 +110,10 @@
     border-color: govuk-colour('red');
 }
 
-.duration-selector-units {
+.expiry-selector-units {
     border-left: 0;
+}
+
+.expiry-selector-wrapper {
+    display: flex;
 }

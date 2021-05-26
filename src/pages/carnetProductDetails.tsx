@@ -8,9 +8,9 @@ import {
     FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession, PointToPointProductInfo } from '../interfaces';
-import DurationSelector from '../components/ExpirySelector';
+import ExpirySelector from '../components/ExpirySelector';
 import CsrfForm from '../components/CsrfForm';
-import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
+import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
 import { getSessionAttribute } from '../utils/sessions';
 import { isFareType, isPassengerType, isPointToPointProductInfo, isWithErrors } from '../interfaces/typeGuards';
@@ -19,14 +19,14 @@ import { getCsrfToken } from '../utils';
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details entry page of the Create Fares Data Service';
 
-interface ProductDetailsProps {
+interface CarnetProductDetailsProps {
     product: PointToPointProductInfo | null;
     hintText: string;
     errors: ErrorInfo[];
     csrfToken: string;
 }
 
-const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: ProductDetailsProps): ReactElement => {
+const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: CarnetProductDetailsProps): ReactElement => {
     const { productName } = product || {};
     const { quantity, expiryTime, expiryUnit } = product?.carnetDetails || {};
 
@@ -45,7 +45,7 @@ const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: ProductD
                             <span className="govuk-hint" id="service-operator-hint">
                                 {hintText}
                             </span>
-                            <FormGroupWrapper errors={errors} errorId="product-details-name">
+                            <FormGroupWrapper errors={errors} errorIds={['product-details-name']}>
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-name">
                                         Product Name
@@ -70,7 +70,7 @@ const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: ProductD
                                     </FormElementWrapper>
                                 </>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errors={errors} errorId="product-details-carnet-quantity">
+                            <FormGroupWrapper errors={errors} errorIds={['product-details-carnet-quantity']}>
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-carnet-quantity">
                                         Quantity in bundle
@@ -96,7 +96,13 @@ const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: ProductD
                                     </FormElementWrapper>
                                 </>
                             </FormGroupWrapper>
-                            <FormGroupWrapper errors={errors} errorId="product-details-carnet-expiry">
+                            <FormGroupWrapper
+                                errors={errors}
+                                errorIds={[
+                                    'product-details-carnet-expiry-quantity',
+                                    'product-details-carnet-expiry-unit',
+                                ]}
+                            >
                                 <>
                                     <label className="govuk-label" htmlFor="product-details-carnet-expiry">
                                         Carnet expiry
@@ -105,21 +111,24 @@ const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: ProductD
                                         For example, 2 months
                                     </span>
 
-                                    <FormElementWrapper
+                                    <FormErrorBlock
                                         errors={errors}
-                                        errorId="product-details-carnet-expiry"
-                                        errorClass="govuk-input--error"
-                                    >
-                                        <DurationSelector
-                                            defaultDuration={expiryTime}
-                                            defaultUnit={expiryUnit}
-                                            quantityId="product-details-carnet-expiry-quantity"
-                                            hintId="product-carnet-expiry-hint"
-                                            durationName="carnetExpiryDuration"
-                                            unitName="carnetExpiryUnit"
-                                            unitId="product-details-carnet-expiry-unit"
-                                        />
-                                    </FormElementWrapper>
+                                        errorIds={[
+                                            'product-details-carnet-expiry-quantity',
+                                            'product-details-carnet-expiry-unit',
+                                        ]}
+                                    />
+
+                                    <ExpirySelector
+                                        defaultDuration={expiryTime}
+                                        defaultUnit={expiryUnit}
+                                        quantityName="productDetailsExpiryDurationInput"
+                                        quantityId="product-details-carnet-expiry-quantity"
+                                        hintId="product-carnet-expiry-hint"
+                                        unitName="productDetailsExpiryUnitInput"
+                                        unitId="product-details-carnet-expiry-unit"
+                                        errors={errors}
+                                    />
                                 </>
                             </FormGroupWrapper>
                         </fieldset>
@@ -131,7 +140,7 @@ const CarnetProductDetails = ({ product, hintText, csrfToken, errors }: ProductD
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: ProductDetailsProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CarnetProductDetailsProps } => {
     const csrfToken = getCsrfToken(ctx);
 
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
@@ -140,11 +149,11 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Pr
     const productDetailsAttribute = getSessionAttribute(ctx.req, PRODUCT_DETAILS_ATTRIBUTE);
 
     if (!operatorAttribute?.name || !isFareType(fareTypeAttribute)) {
-        throw new Error('Failed to retrieve the necessary session objects.');
+        throw new Error('Failed to retrieve the necessary session objects');
     }
 
     if (!isPassengerType(passengerTypeAttribute)) {
-        throw new Error('Failed to retrieve passenger type attribute for product details page.');
+        throw new Error('Failed to retrieve passenger type attribute for product details page');
     }
 
     return {
