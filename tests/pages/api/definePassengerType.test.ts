@@ -5,6 +5,7 @@ import {
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as auroradb from '../../../src/data/auroradb';
 import { CompanionInfo, GroupPassengerTypesCollection, GroupTicketAttribute } from '../../../src/interfaces';
@@ -16,14 +17,13 @@ import definePassengerType, {
 import * as sessions from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 
+jest.mock('../../../src/data/auroradb');
+
 describe('definePassengerType', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     afterEach(jest.resetAllMocks);
-
-    beforeEach(() => jest.spyOn(auroradb, 'upsertPassengerType'));
-    beforeEach(() => jest.spyOn(auroradb, 'getPassengerTypeByNameAndNocCode'));
 
     describe('passengerTypeDetailsSchema', () => {
         it.each([
@@ -504,6 +504,9 @@ describe('definePassengerType', () => {
         const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
+        const getPassengerTypeSpy = jest
+            .spyOn(auroradb, 'getPassengerTypeByNameAndNocCode')
+            .mockResolvedValue(undefined);
         const mockPreviousPassengerTypeDetails: CompanionInfo[] = [
             {
                 minNumber: '2',
@@ -523,7 +526,6 @@ describe('definePassengerType', () => {
             maxNumber: '10',
             proof: 'Yes',
             proofDocuments: ['Membership Card'],
-            passengerTypeName: 'A Name',
         };
 
         const savedGroupInfo = [
@@ -532,7 +534,7 @@ describe('definePassengerType', () => {
         ];
 
         const { req, res } = getMockRequestAndResponse({
-            body: mockPassengerTypeDetails,
+            body: { ...mockPassengerTypeDetails, passengerTypeName: 'A Name' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {
@@ -544,8 +546,12 @@ describe('definePassengerType', () => {
         });
         await definePassengerType(req, res);
         expect(upsertPassengerTypeSpy).not.toBeCalled();
+        expect(getPassengerTypeSpy).toBeCalledWith('TEST', 'A Name', true);
         expect(insertPassengerTypeSpy).toBeCalledWith('TEST', savedGroupInfo, 'A Name', true);
         expect(updateSessionAttributeSpy).toBeCalledWith(req, GROUP_PASSENGER_INFO_ATTRIBUTE, savedGroupInfo);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SAVED_PASSENGER_GROUPS_ATTRIBUTE, [
+            { companions: savedGroupInfo, name: 'A Name' },
+        ]);
     });
 
     it('should show an error for groups if a name is provided that already exists', async () => {
@@ -553,7 +559,7 @@ describe('definePassengerType', () => {
         const insertPassengerTypeSpy = jest.spyOn(auroradb, 'insertPassengerType');
         const getPassengerTypeSpy = jest
             .spyOn(auroradb, 'getPassengerTypeByNameAndNocCode')
-            .mockResolvedValueOnce({ passengerType: 'hello' });
+            .mockResolvedValueOnce({ passengerType: 'A Name' });
 
         const groupPassengerTypesAttribute: GroupPassengerTypesCollection = { passengerTypes: ['adult', 'child'] };
         const groupSizeAttribute: GroupTicketAttribute = { maxGroupSize: '20' };
@@ -576,7 +582,6 @@ describe('definePassengerType', () => {
             maxNumber: '10',
             proof: 'Yes',
             proofDocuments: ['Membership Card'],
-            passengerTypeName: 'A Name',
         };
 
         const errorInfo = {
@@ -594,7 +599,7 @@ describe('definePassengerType', () => {
         };
 
         const { req, res } = getMockRequestAndResponse({
-            body: mockPassengerTypeDetails,
+            body: { ...mockPassengerTypeDetails, passengerTypeName: 'A Name' },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
             session: {

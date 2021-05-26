@@ -125,10 +125,6 @@ export interface UserDataUploadsProps {
     csrfToken: string;
 }
 
-export interface GroupDefinitionWithErrors extends GroupDefinition {
-    errors: ErrorInfo[];
-}
-
 export interface NumberOfStagesAttributeWithError {
     errors: ErrorInfo[];
 }
@@ -385,14 +381,6 @@ export interface FlatFareTicket extends BaseTicket {
     termTime: boolean;
 }
 
-export interface BaseGroupTicket {
-    nocCode: string;
-    type: string;
-    groupDefinition: GroupDefinition;
-    email: string;
-    uuid: string;
-}
-
 export interface SchemeOperatorTicket {
     schemeOperatorName: string;
     schemeOperatorRegionCode: string;
@@ -445,7 +433,6 @@ export interface PassengerDetails {
 
 export interface CompanionInfo {
     passengerType: string;
-    passengerTypeName?: string;
     minNumber?: string;
     maxNumber: string;
     ageRangeMin?: string;
@@ -453,13 +440,8 @@ export interface CompanionInfo {
     proofDocuments?: string[];
 }
 
-export interface GroupPassengerInfo extends CompanionInfo {
-    ageRange: string;
-    proof: string;
-}
-
-export interface GroupDefinition {
-    maxGroupSize: number;
+export interface GroupPassengerType {
+    name: string;
     companions: CompanionInfo[];
 }
 

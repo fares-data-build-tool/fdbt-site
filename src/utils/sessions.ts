@@ -5,8 +5,6 @@ import {
     IncomingMessageWithSession,
     ProductInfo,
     ProductData,
-    GroupDefinition,
-    GroupDefinitionWithErrors,
     TimeRestriction,
     CompanionInfo,
     DurationValidInfo,
@@ -61,6 +59,7 @@ import {
     ForgotPasswordAttribute,
     TxcSourceAttribute,
     PointToPointProductInfo,
+    GroupPassengerType,
 } from '../interfaces';
 
 import {
@@ -75,7 +74,6 @@ import {
     PRODUCT_DETAILS_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
     GROUP_PASSENGER_TYPES_ATTRIBUTE,
-    GROUP_DEFINITION_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE,
     INPUT_METHOD_ATTRIBUTE,
@@ -108,6 +106,7 @@ import {
     SAVE_OPERATOR_GROUP_ATTRIBUTE,
     MULTI_OP_TXC_SOURCE_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
+    SAVED_PASSENGER_GROUPS_ATTRIBUTE,
 } from '../constants/attributes';
 
 import * as attributes from '../constants/attributes';
@@ -138,7 +137,6 @@ interface SessionAttributeTypes {
     [GROUP_SIZE_ATTRIBUTE]: GroupTicketAttribute | GroupTicketAttributeWithErrors;
     [GROUP_PASSENGER_TYPES_ATTRIBUTE]: GroupPassengerTypesCollection | GroupPassengerTypesCollectionWithErrors;
     [GROUP_PASSENGER_INFO_ATTRIBUTE]: CompanionInfo[];
-    [GROUP_DEFINITION_ATTRIBUTE]: GroupDefinition | GroupDefinitionWithErrors;
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: string | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
@@ -168,6 +166,7 @@ interface SessionAttributeTypes {
     [REUSE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [SAVE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
+    [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
