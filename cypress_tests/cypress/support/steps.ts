@@ -30,7 +30,7 @@ export const defineUserTypeAndTimeRestrictions = (): void => {
     continueButtonClick();
 };
 
-export const defineSchoolUserAndRestrictions = (): void => {
+export const defineSchoolUserAndTimeRestrictions = (): void => {
     randomlyChooseSchoolAgeLimits();
     randomlyChooseASchoolProof();
     continueButtonClick();
@@ -47,7 +47,7 @@ export const selectFareType = (
     continueButtonClick();
 };
 
-export const selectScoolFareType = (
+export const selectSchoolFareType = (
     fareType: 'single' | 'period' | 'return' | 'flatFare' | 'multiOperator' | 'schoolService',
 ): void => {
     clickElementById(fareTypeToFareTypeIdMapper(fareType));

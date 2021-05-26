@@ -1,6 +1,6 @@
 import {
     selectFareType,
-    selectScoolFareType,
+    selectSchoolFareType,
     defineUserTypeAndTimeRestrictions,
     completeSalesPages,
     completePeriodGeoZonePages,
@@ -10,7 +10,7 @@ import {
     completePeriodMultiServicePages,
     completeMultiOpGeoZonePages,
     completeMultiOpMultiServicePages,
-    defineSchoolUserAndRestrictions,
+    defineSchoolUserAndTimeRestrictions,
 } from '../support/steps';
 import { isUuidStringValid } from '../support/helpers';
 
@@ -64,8 +64,8 @@ describe('all user journeys for the create fares data service', () => {
     describe('The school flat fare faretype product journey', () => {
         it('completes successfully', () => {
             selectFareType('schoolService', false);
-            defineSchoolUserAndRestrictions();
-            selectScoolFareType('flatFare');
+            defineSchoolUserAndTimeRestrictions();
+            selectSchoolFareType('flatFare');
             completeFlatFarePages('School Flat Fare Test Product', false);
             completeSalesPages();
             isUuidStringValid();
