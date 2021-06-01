@@ -30,7 +30,6 @@ const ExpirySelector = ({
                 <input
                     className="govuk-input govuk-input--width-3"
                     name={quantityName}
-                    data-non-numeric
                     type="text"
                     id={quantityId}
                     aria-describedby={hintId || ''}
