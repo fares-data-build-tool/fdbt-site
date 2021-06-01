@@ -7,9 +7,17 @@ interface ProductRowProps {
     numberOfProductsToDisplay: number;
     errors: ErrorInfo[];
     userInput: MultiProduct[];
+    flatFare: boolean;
+    carnet: boolean;
 }
 
-export const renderTable = (index: number, errors: ErrorInfo[], userInput: MultiProduct[] = []): ReactElement => (
+export const renderTable = (
+    index: number,
+    errors: ErrorInfo[],
+    userInput: MultiProduct[] = [],
+    flatFare: boolean,
+    carnet: boolean,
+): ReactElement => (
     <fieldset key={index} className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-visually-hidden">
             {`Enter details for product ${index + 1}`}
@@ -79,130 +87,145 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInput: Multi
                     </>
                 </FormGroupWrapper>
             </div>
-            <div className="govuk-grid-column-one-quarter">
-                <FormGroupWrapper errors={errors} errorIds={[`multiple-product-duration-${index}`]}>
-                    <>
-                        <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
-                            <span className="govuk-visually-hidden">{`Product Duration amount - Product ${index +
-                                1}`}</span>
-                            <span aria-hidden>Duration</span>
-                        </label>
-                        <span className="govuk-hint" id={`product-duration-hint-${index}`}>
-                            Enter a number
-                        </span>
+            {!flatFare ? (
+                <>
+                    <div className="govuk-grid-column-one-quarter">
+                        <FormGroupWrapper errors={errors} errorIds={[`multiple-product-duration-${index}`]}>
+                            <>
+                                <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
+                                    <span className="govuk-visually-hidden">{`Product Duration amount - Product ${index +
+                                        1}`}</span>
+                                    <span aria-hidden>Duration</span>
+                                </label>
+                                <span className="govuk-hint" id={`product-duration-hint-${index}`}>
+                                    Enter a number
+                                </span>
 
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId={`multiple-product-duration-${index}`}
-                            errorClass="govuk-input--error"
-                        >
-                            <input
-                                className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
-                                id={`multiple-product-duration-${index}`}
-                                name={`multipleProductDurationInput${index}`}
-                                type="text"
-                                aria-describedby={`product-duration-hint-${index}`}
-                                maxLength={366}
-                                defaultValue={userInput[index]?.productDuration ?? ''}
-                            />
-                        </FormElementWrapper>
-                    </>
-                </FormGroupWrapper>
-            </div>
-            <div className="govuk-grid-column-one-quarter">
-                <FormGroupWrapper errorIds={[`multiple-product-duration-units-${index}`]} errors={errors}>
-                    <>
-                        <label className="govuk-label" htmlFor={`multiple-product-duration-units-${index}`}>
-                            <span className="govuk-visually-hidden">{`Product Duration units - Product ${index +
-                                1}`}</span>
-                            <span aria-hidden>Duration type</span>
-                        </label>
-                        <span className="govuk-hint" id={`product-duration-units-hint-${index}`}>
-                            For example, days
-                        </span>
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId={`multiple-product-duration-units-${index}`}
-                            errorClass="govuk-select--error"
-                        >
-                            <select
-                                className="govuk-select"
-                                id={`multiple-product-duration-units-${index}`}
-                                name={`multipleProductDurationUnitsInput${index}`}
-                                defaultValue={userInput[index]?.productDurationUnits ?? ''}
-                            >
-                                <option selected value="" disabled>
-                                    Select a duration
-                                </option>
-                                <option value="hour">Hours</option>
-                                <option value="day">Days</option>
-                                <option value="week">Weeks</option>
-                                <option value="month">Months</option>
-                                <option value="year">Years</option>
-                            </select>
-                        </FormElementWrapper>
-                    </>
-                </FormGroupWrapper>
-            </div>
-            <div className="govuk-grid-column-one-quarter">
-                <FormGroupWrapper errors={errors} errorIds={['product-details-carnet-quantity']}>
-                    <>
-                        <label className="govuk-label" htmlFor="product-details-carnet-quantity">
-                            Quantity in bundle
-                        </label>
-                        <span className="govuk-hint" id="product-quantity-hint">
-                            Must be 2 or more
-                        </span>
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`multiple-product-duration-${index}`}
+                                    errorClass="govuk-input--error"
+                                >
+                                    <input
+                                        className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
+                                        id={`multiple-product-duration-${index}`}
+                                        name={`multipleProductDurationInput${index}`}
+                                        type="text"
+                                        aria-describedby={`product-duration-hint-${index}`}
+                                        maxLength={366}
+                                        defaultValue={userInput[index]?.productDuration ?? ''}
+                                    />
+                                </FormElementWrapper>
+                            </>
+                        </FormGroupWrapper>
+                    </div>
+                    <div className="govuk-grid-column-one-quarter">
+                        <FormGroupWrapper errorIds={[`multiple-product-duration-units-${index}`]} errors={errors}>
+                            <>
+                                <label className="govuk-label" htmlFor={`multiple-product-duration-units-${index}`}>
+                                    <span className="govuk-visually-hidden">{`Product Duration units - Product ${index +
+                                        1}`}</span>
+                                    <span aria-hidden>Duration type</span>
+                                </label>
+                                <span className="govuk-hint" id={`product-duration-units-hint-${index}`}>
+                                    For example, days
+                                </span>
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={`multiple-product-duration-units-${index}`}
+                                    errorClass="govuk-select--error"
+                                >
+                                    <select
+                                        className="govuk-select"
+                                        id={`multiple-product-duration-units-${index}`}
+                                        name={`multipleProductDurationUnitsInput${index}`}
+                                        defaultValue={userInput[index]?.productDurationUnits ?? ''}
+                                    >
+                                        <option selected value="" disabled>
+                                            Select a duration
+                                        </option>
+                                        <option value="hour">Hours</option>
+                                        <option value="day">Days</option>
+                                        <option value="week">Weeks</option>
+                                        <option value="month">Months</option>
+                                        <option value="year">Years</option>
+                                    </select>
+                                </FormElementWrapper>
+                            </>
+                        </FormGroupWrapper>
+                    </div>{' '}
+                </>
+            ) : (
+                ''
+            )}
+            {carnet ? (
+                <>
+                    <div className="govuk-grid-column-one-quarter">
+                        <FormGroupWrapper errors={errors} errorIds={['product-details-carnet-quantity']}>
+                            <>
+                                <label className="govuk-label" htmlFor="product-details-carnet-quantity">
+                                    Quantity in bundle
+                                </label>
+                                <span className="govuk-hint" id="product-quantity-hint">
+                                    Must be 2 or more
+                                </span>
 
-                        <FormElementWrapper
-                            errors={errors}
-                            errorId="product-details-carnet-quantity"
-                            errorClass="govuk-input--error"
-                        >
-                            <input
-                                className="govuk-input govuk-input--width-5"
-                                name="productDetailsQuantityInput"
-                                data-non-numeric
-                                type="text"
-                                id="product-details-carnet-quantity"
-                                aria-describedby="product-quantity-hint"
-                                defaultValue=""
-                            />
-                        </FormElementWrapper>
-                    </>
-                </FormGroupWrapper>
-            </div>
-            <div className="govuk-grid-column-one-quarter">
-                <FormGroupWrapper
-                    errors={errors}
-                    errorIds={['product-details-carnet-expiry-quantity', 'product-details-carnet-expiry-unit']}
-                >
-                    <>
-                        <label className="govuk-label" htmlFor="product-details-carnet-expiry">
-                            Carnet expiry
-                        </label>
-                        <span className="govuk-hint" id="product-carnet-expiry-hint">
-                            For example, 2 months
-                        </span>
-
-                        <FormErrorBlock
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId="product-details-carnet-quantity"
+                                    errorClass="govuk-input--error"
+                                >
+                                    <input
+                                        className="govuk-input govuk-input--width-5"
+                                        name="productDetailsQuantityInput"
+                                        data-non-numeric
+                                        type="text"
+                                        id="product-details-carnet-quantity"
+                                        aria-describedby="product-quantity-hint"
+                                        defaultValue=""
+                                    />
+                                </FormElementWrapper>
+                            </>
+                        </FormGroupWrapper>
+                    </div>
+                    <div className="govuk-grid-column-one-quarter">
+                        <FormGroupWrapper
                             errors={errors}
                             errorIds={['product-details-carnet-expiry-quantity', 'product-details-carnet-expiry-unit']}
-                        />
+                        >
+                            <>
+                                <label className="govuk-label" htmlFor="product-details-carnet-expiry">
+                                    Carnet expiry
+                                </label>
+                                <span className="govuk-hint" id="product-carnet-expiry-hint">
+                                    For example, 2 months
+                                </span>
 
-                        <ExpirySelector
-                            defaultDuration=""
-                            defaultUnit={undefined}
-                            quantityName="productDetailsExpiryDurationInput"
-                            quantityId="product-details-carnet-expiry-quantity"
-                            hintId="product-carnet-expiry-hint"
-                            unitName="productDetailsExpiryUnitInput"
-                            unitId="product-details-carnet-expiry-unit"
-                            errors={errors}
-                        />
-                    </>
-                </FormGroupWrapper>
-            </div>
+                                <FormErrorBlock
+                                    errors={errors}
+                                    errorIds={[
+                                        'product-details-carnet-expiry-quantity',
+                                        'product-details-carnet-expiry-unit',
+                                    ]}
+                                />
+
+                                <ExpirySelector
+                                    defaultDuration=""
+                                    defaultUnit={undefined}
+                                    quantityName="productDetailsExpiryDurationInput"
+                                    quantityId="product-details-carnet-expiry-quantity"
+                                    hintId="product-carnet-expiry-hint"
+                                    unitName="productDetailsExpiryUnitInput"
+                                    unitId="product-details-carnet-expiry-unit"
+                                    errors={errors}
+                                />
+                            </>
+                        </FormGroupWrapper>
+                    </div>{' '}
+                </>
+            ) : (
+                ''
+            )}
         </div>
     </fieldset>
 );
@@ -211,16 +234,24 @@ export const renderRows = (
     numberOfRows: number,
     errors: ErrorInfo[],
     userInput: MultiProduct[] = [],
+    flatFare: boolean,
+    carnet: boolean,
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfRows; i += 1) {
-        elements.push(renderTable(i, errors, userInput));
+        elements.push(renderTable(i, errors, userInput, flatFare, carnet));
     }
     return elements;
 };
 
-const ProductRow = ({ numberOfProductsToDisplay, errors, userInput = [] }: ProductRowProps): ReactElement => {
-    return <div>{renderRows(numberOfProductsToDisplay, errors, userInput)}</div>;
+const ProductRow = ({
+    numberOfProductsToDisplay,
+    errors,
+    userInput = [],
+    flatFare,
+    carnet,
+}: ProductRowProps): ReactElement => {
+    return <div>{renderRows(numberOfProductsToDisplay, errors, userInput, flatFare, carnet)}</div>;
 };
 
 export default ProductRow;

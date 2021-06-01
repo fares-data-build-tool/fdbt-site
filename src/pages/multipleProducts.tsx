@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
-import { MULTIPLE_PRODUCT_ATTRIBUTE } from '../constants/attributes';
+import { MULTIPLE_PRODUCT_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, MultiProduct, FareType } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { isWithErrors } from '../interfaces/typeGuards';
@@ -16,9 +16,17 @@ interface MultipleProductProps {
     errors?: ErrorInfo[];
     userInput: MultiProduct[];
     csrfToken: string;
+    flatFare: boolean;
+    carnet: boolean;
 }
 
-const MultipleProducts = ({ errors = [], userInput = [], csrfToken }: MultipleProductProps): ReactElement => {
+const MultipleProducts = ({
+    errors = [],
+    userInput = [],
+    csrfToken,
+    flatFare,
+    carnet,
+}: MultipleProductProps): ReactElement => {
     const [numberOfProducts, setNumberOfProducts] = useState(1);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -34,6 +42,8 @@ const MultipleProducts = ({ errors = [], userInput = [], csrfToken }: MultiplePr
                             numberOfProductsToDisplay={numberOfProducts}
                             errors={errors}
                             userInput={userInput}
+                            flatFare={flatFare}
+                            carnet={carnet}
                         />
                         <div className="flex-container">
                             <button
@@ -73,14 +83,20 @@ const MultipleProducts = ({ errors = [], userInput = [], csrfToken }: MultiplePr
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductProps } => {
     const csrfToken = getCsrfToken(ctx);
-
     const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
+    const carnetFareTypeAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
+    const carnet = carnetFareTypeAttribute === undefined ? false : carnetFareTypeAttribute;
+
+    const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
+    const flatFare = fareType === 'flatFare';
 
     return {
         props: {
             errors: isWithErrors(multiProductAttribute) ? multiProductAttribute.errors : [],
             userInput: multiProductAttribute ? multiProductAttribute.products : [],
             csrfToken,
+            flatFare,
+            carnet,
         },
     };
 };
