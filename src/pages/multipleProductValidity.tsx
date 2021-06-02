@@ -8,13 +8,18 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
 } from '../constants/attributes';
-import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
+import {
+    ErrorInfo,
+    NextPageContextWithSession,
+    MultiProduct,
+    NumberOfProductsAttribute,
+    NumberOfProductsAttributeWithErrors,
+} from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute } from '../utils/sessions';
 import { isPassengerType, isWithErrors } from '../interfaces/typeGuards';
-import { isNumberOfProductsAttribute } from './howManyProducts';
 import { getCsrfToken } from '../utils';
 
 const title = 'Multiple Product Validity - Create Fares Data Service';
@@ -173,6 +178,12 @@ const MultipleProductValidity = ({
         </FullColumnLayout>
     );
 };
+
+const isNumberOfProductsAttribute = (
+    numberOfProductsAttribute: undefined | NumberOfProductsAttribute | NumberOfProductsAttributeWithErrors,
+): numberOfProductsAttribute is NumberOfProductsAttribute =>
+    !!numberOfProductsAttribute &&
+    (numberOfProductsAttribute as NumberOfProductsAttribute).numberOfProductsInput !== undefined;
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: MultipleProductValidityProps } => {
     const csrfToken = getCsrfToken(ctx);

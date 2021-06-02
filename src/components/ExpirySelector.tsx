@@ -1,6 +1,6 @@
 import upperFirst from 'lodash/upperFirst';
 import React, { ReactElement } from 'react';
-import { ErrorInfo, ExpiryUnit } from '../interfaces';
+import { ErrorInfo, ExpiryUnit, CarnetExpiryUnit } from '../interfaces';
 import FormElementWrapper from './FormElementWrapper';
 
 interface DurationSelectorProps {
@@ -11,6 +11,7 @@ interface DurationSelectorProps {
     defaultUnit?: ExpiryUnit;
     unitName: string;
     unitId: string;
+    carnet: boolean;
     errors?: ErrorInfo[];
 }
 
@@ -22,6 +23,7 @@ const ExpirySelector = ({
     defaultUnit,
     unitName,
     unitId,
+    carnet,
     errors,
 }: DurationSelectorProps): ReactElement => (
     <div className="govuk-input__wrapper expiry-selector-wrapper">
@@ -46,8 +48,8 @@ const ExpirySelector = ({
                     <option value="" disabled>
                         Select One
                     </option>
-                    {Object.values(ExpiryUnit).map(unit => (
-                        <option value={unit}>{`${upperFirst(unit)}${unit !== ExpiryUnit.NO_EXPIRY ? 's' : ''}`}</option>
+                    {Object.values(carnet ? CarnetExpiryUnit : ExpiryUnit).map(unit => (
+                        <option value={unit}>{`${upperFirst(unit)}${unit !== 'no expiry' ? 's' : ''}`}</option>
                     ))}
                 </select>
             </FormElementWrapper>

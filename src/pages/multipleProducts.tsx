@@ -36,7 +36,7 @@ const MultipleProducts = ({
                     <h1 className="govuk-heading-l" id="multiple-product-page-heading">
                         Enter your product details
                     </h1>
-                    <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2 - Days</div>
+                    {/* <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2 - Days</div> */}
                     <div className="govuk-grid-row">
                         <ProductRow
                             numberOfProductsToDisplay={numberOfProducts}

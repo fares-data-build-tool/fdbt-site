@@ -23,16 +23,23 @@ export const renderTable = (
             {`Enter details for product ${index + 1}`}
         </legend>
         <div className="flex-container">
-            <div className="govuk-grid-column-one-half">
+            <div className="govuk-grid-column-one-quarter">
                 <FormGroupWrapper errors={errors} errorIds={[`multiple-product-name-${index}`]}>
                     <>
-                        <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
-                            <span className="govuk-visually-hidden">{`Product Name - Product ${index + 1}`}</span>
-                            <span aria-hidden>Product name</span>
-                        </label>
-                        <span className="govuk-hint" id={`product-name-hint-${index}`}>
-                            50 characters maximum
-                        </span>
+                        {index === 0 ? (
+                            <>
+                                <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
+                                    <span className="govuk-visually-hidden">{`Product Name - Product ${index +
+                                        1}`}</span>
+                                    <span aria-hidden>Product name</span>
+                                </label>
+                                <span className="govuk-hint" id={`product-name-hint-${index}`}>
+                                    50 characters max
+                                </span>{' '}
+                            </>
+                        ) : (
+                            ''
+                        )}
 
                         <FormElementWrapper
                             errors={errors}
@@ -55,14 +62,20 @@ export const renderTable = (
             <div className="govuk-grid-column-one-quarter">
                 <FormGroupWrapper errors={errors} errorIds={[`multiple-product-price-${index}`]}>
                     <>
-                        <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
-                            <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${index +
-                                1}`}</span>
-                            <span aria-hidden>Price, in pounds</span>
-                        </label>
-                        <span className="govuk-hint" id={`product-price-hint-${index}`}>
-                            For example, 2.99
-                        </span>
+                        {index === 0 ? (
+                            <>
+                                <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
+                                    <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${index +
+                                        1}`}</span>
+                                    <span aria-hidden>Price, in pounds</span>
+                                </label>
+                                <span className="govuk-hint" id={`product-price-hint-${index}`}>
+                                    For example, 2.99
+                                </span>
+                            </>
+                        ) : (
+                            ''
+                        )}
 
                         <div className="govuk-currency-input">
                             <div className="govuk-currency-input__inner">
@@ -88,73 +101,47 @@ export const renderTable = (
                 </FormGroupWrapper>
             </div>
             {!flatFare ? (
-                <>
-                    <div className="govuk-grid-column-one-quarter">
-                        <FormGroupWrapper errors={errors} errorIds={[`multiple-product-duration-${index}`]}>
-                            <>
-                                <label className="govuk-label" htmlFor={`multiple-product-duration-${index}`}>
-                                    <span className="govuk-visually-hidden">{`Product Duration amount - Product ${index +
-                                        1}`}</span>
-                                    <span aria-hidden>Duration</span>
-                                </label>
-                                <span className="govuk-hint" id={`product-duration-hint-${index}`}>
-                                    Enter a number
-                                </span>
+                <div className="govuk-grid-column-one-quarter">
+                    <FormGroupWrapper
+                        errors={errors}
+                        errorIds={['product-details-period-duration-quantity', 'product-details-period-duration-unit']}
+                    >
+                        <>
+                            {index === 0 ? (
+                                <>
+                                    <label className="govuk-label" htmlFor="product-details-period-duration">
+                                        Period duration
+                                    </label>
+                                    <span className="govuk-hint" id="product-period-duration-hint">
+                                        For example, 3 days
+                                    </span>
+                                </>
+                            ) : (
+                                ''
+                            )}
 
-                                <FormElementWrapper
-                                    errors={errors}
-                                    errorId={`multiple-product-duration-${index}`}
-                                    errorClass="govuk-input--error"
-                                >
-                                    <input
-                                        className="govuk-input govuk-input--width-20 govuk-product-name-input__inner__input"
-                                        id={`multiple-product-duration-${index}`}
-                                        name={`multipleProductDurationInput${index}`}
-                                        type="text"
-                                        aria-describedby={`product-duration-hint-${index}`}
-                                        maxLength={366}
-                                        defaultValue={userInput[index]?.productDuration ?? ''}
-                                    />
-                                </FormElementWrapper>
-                            </>
-                        </FormGroupWrapper>
-                    </div>
-                    <div className="govuk-grid-column-one-quarter">
-                        <FormGroupWrapper errorIds={[`multiple-product-duration-units-${index}`]} errors={errors}>
-                            <>
-                                <label className="govuk-label" htmlFor={`multiple-product-duration-units-${index}`}>
-                                    <span className="govuk-visually-hidden">{`Product Duration units - Product ${index +
-                                        1}`}</span>
-                                    <span aria-hidden>Duration type</span>
-                                </label>
-                                <span className="govuk-hint" id={`product-duration-units-hint-${index}`}>
-                                    For example, days
-                                </span>
-                                <FormElementWrapper
-                                    errors={errors}
-                                    errorId={`multiple-product-duration-units-${index}`}
-                                    errorClass="govuk-select--error"
-                                >
-                                    <select
-                                        className="govuk-select"
-                                        id={`multiple-product-duration-units-${index}`}
-                                        name={`multipleProductDurationUnitsInput${index}`}
-                                        defaultValue={userInput[index]?.productDurationUnits ?? ''}
-                                    >
-                                        <option selected value="" disabled>
-                                            Select a duration
-                                        </option>
-                                        <option value="hour">Hours</option>
-                                        <option value="day">Days</option>
-                                        <option value="week">Weeks</option>
-                                        <option value="month">Months</option>
-                                        <option value="year">Years</option>
-                                    </select>
-                                </FormElementWrapper>
-                            </>
-                        </FormGroupWrapper>
-                    </div>{' '}
-                </>
+                            <FormErrorBlock
+                                errors={errors}
+                                errorIds={[
+                                    'product-details-period-duration-quantity',
+                                    'product-details-period-duration-unit',
+                                ]}
+                            />
+
+                            <ExpirySelector
+                                defaultDuration=""
+                                defaultUnit={undefined}
+                                quantityName={`multipleProductDurationInput${index}`}
+                                quantityId="product-details-period-duration-quantity"
+                                hintId="product-period-duration-hint"
+                                unitName={`multipleProductDurationUnitsInput${index}`}
+                                unitId="product-details-period-duration-unit"
+                                carnet={false}
+                                errors={errors}
+                            />
+                        </>
+                    </FormGroupWrapper>
+                </div>
             ) : (
                 ''
             )}
@@ -163,12 +150,21 @@ export const renderTable = (
                     <div className="govuk-grid-column-one-quarter">
                         <FormGroupWrapper errors={errors} errorIds={['product-details-carnet-quantity']}>
                             <>
-                                <label className="govuk-label" htmlFor="product-details-carnet-quantity">
-                                    Quantity in bundle
-                                </label>
-                                <span className="govuk-hint" id="product-quantity-hint">
-                                    Must be 2 or more
-                                </span>
+                                {index === 0 ? (
+                                    <>
+                                        <label
+                                            className="govuk-label"
+                                            htmlFor={`product-details-carnet-quantity-${index}`}
+                                        >
+                                            <span aria-hidden>Quantity in bundle</span>
+                                        </label>
+                                        <span className="govuk-hint" id="product-quantity-hint">
+                                            Must be 2 or more
+                                        </span>
+                                    </>
+                                ) : (
+                                    ''
+                                )}
 
                                 <FormElementWrapper
                                     errors={errors}
@@ -176,11 +172,11 @@ export const renderTable = (
                                     errorClass="govuk-input--error"
                                 >
                                     <input
-                                        className="govuk-input govuk-input--width-5"
-                                        name="productDetailsQuantityInput"
+                                        className="govuk-input govuk-input--width-10"
+                                        name={`carnetQuantityInput${index}`}
                                         data-non-numeric
                                         type="text"
-                                        id="product-details-carnet-quantity"
+                                        id={`product-details-carnet-quantity-${0}`}
                                         aria-describedby="product-quantity-hint"
                                         defaultValue=""
                                     />
@@ -194,12 +190,18 @@ export const renderTable = (
                             errorIds={['product-details-carnet-expiry-quantity', 'product-details-carnet-expiry-unit']}
                         >
                             <>
-                                <label className="govuk-label" htmlFor="product-details-carnet-expiry">
-                                    Carnet expiry
-                                </label>
-                                <span className="govuk-hint" id="product-carnet-expiry-hint">
-                                    For example, 2 months
-                                </span>
+                                {index === 0 ? (
+                                    <>
+                                        <label className="govuk-label" htmlFor="product-details-carnet-expiry">
+                                            Carnet expiry
+                                        </label>
+                                        <span className="govuk-hint" id="product-carnet-expiry-hint">
+                                            e.g. 2 months
+                                        </span>
+                                    </>
+                                ) : (
+                                    ''
+                                )}
 
                                 <FormErrorBlock
                                     errors={errors}
@@ -212,16 +214,17 @@ export const renderTable = (
                                 <ExpirySelector
                                     defaultDuration=""
                                     defaultUnit={undefined}
-                                    quantityName="productDetailsExpiryDurationInput"
-                                    quantityId="product-details-carnet-expiry-quantity"
+                                    quantityName={`carnetExpiryDurationInput${index}`}
+                                    quantityId={`product-details-carnet-expiry-quantity-${index}`}
                                     hintId="product-carnet-expiry-hint"
-                                    unitName="productDetailsExpiryUnitInput"
-                                    unitId="product-details-carnet-expiry-unit"
+                                    unitName={`carnetExpiryUnitInput${index}`}
+                                    unitId={`product-details-carnet-expiry-unit-${index}`}
+                                    carnet
                                     errors={errors}
                                 />
                             </>
                         </FormGroupWrapper>
-                    </div>{' '}
+                    </div>
                 </>
             ) : (
                 ''

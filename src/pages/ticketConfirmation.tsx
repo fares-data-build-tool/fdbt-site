@@ -18,7 +18,7 @@ import {
     Service,
     ServiceListAttribute,
     TxcSourceAttribute,
-    ExpiryUnit,
+    CarnetExpiryUnit,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -86,8 +86,8 @@ export const getPointToPointProductElements = (ctx: NextPageContextWithSession):
             {
                 name: `${productInfo.productName} - Carnet Expiry`,
                 content:
-                    productInfo.carnetDetails.expiryUnit === ExpiryUnit.NO_EXPIRY
-                        ? '-'
+                    productInfo.carnetDetails.expiryUnit === CarnetExpiryUnit.NO_EXPIRY
+                        ? upperFirst(CarnetExpiryUnit.NO_EXPIRY)
                         : `${productInfo.carnetDetails.expiryTime} ${upperFirst(
                               productInfo.carnetDetails.expiryUnit,
                           )}s`,

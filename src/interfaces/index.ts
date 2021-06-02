@@ -21,13 +21,21 @@ export type DocumentContextWithSession = DocumentContext & {
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 
-export enum ExpiryUnit {
+export enum CarnetExpiryUnit {
     HOUR = 'hour',
     DAY = 'day',
     WEEK = 'week',
     MONTH = 'month',
     YEAR = 'year',
     NO_EXPIRY = 'no expiry',
+}
+
+export enum ExpiryUnit {
+    HOUR = 'hour',
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    YEAR = 'year',
 }
 
 export interface CookiePolicy {
@@ -38,7 +46,7 @@ export interface CookiePolicy {
 interface CarnetDetails {
     quantity: string;
     expiryTime: string;
-    expiryUnit: ExpiryUnit;
+    expiryUnit: CarnetExpiryUnit;
 }
 
 export interface ProductInfo {
@@ -626,6 +634,12 @@ export interface MultiProduct {
     productValidityId: string;
     productEndTime?: string;
     productEndTimeId?: string;
+    productCarnetQuantity?: string;
+    productCarnetQuantityId?: string;
+    productCarnetExpiryDuration?: string;
+    productCarnetExpiryDurationId?: string;
+    productCarnetExpiryUnits?: string;
+    productCarnetExpiryUnitsId?: string;
 }
 
 export interface MultiProductWithErrors extends MultiProduct {
@@ -633,6 +647,9 @@ export interface MultiProductWithErrors extends MultiProduct {
     productPriceError?: string;
     productDurationError?: string;
     productDurationUnitsError?: string;
+    productCarnetQuantityError?: string;
+    productCarnetExpiryDurationError?: string;
+    productCarnetExpiryUnitsError?: string;
 }
 
 export interface PassengerType {

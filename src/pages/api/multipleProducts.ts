@@ -4,6 +4,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     PRODUCT_DETAILS_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { redirectToError, redirectTo } from './apiUtils';
 
@@ -12,6 +13,7 @@ import {
     checkProductNameIsValid,
     checkPriceIsValid,
     checkDurationIsValid,
+    checkIntegerIsValid,
 } from './apiUtils/validator';
 import {
     ErrorInfo,
@@ -62,7 +64,10 @@ export const containsErrors = (products: MultiProductWithErrors[]): boolean => {
             product.productNameError ||
             product.productPriceError ||
             product.productDurationError ||
-            product.productDurationUnitsError,
+            product.productDurationUnitsError ||
+            product.productCarnetQuantityError ||
+            product.productCarnetExpiryDurationError ||
+            product.productCarnetExpiryUnitsError,
     );
 };
 
@@ -146,22 +151,60 @@ export const checkProductNamesAreValid = (products: MultiProduct[]): MultiProduc
     return productsWithErrors;
 };
 
+export const checkCarnetQuantitiesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
+    const productsWithErrors: MultiProduct[] = products.map(product => {
+        const { productCarnetQuantity } = product;
+        const trimmedQuantity = removeExcessWhiteSpace(productCarnetQuantity);
+        const quantityError = checkIntegerIsValid(trimmedQuantity, 'Quantity in bundle', 3, 999);
+
+        if (quantityError) {
+            return {
+                ...product,
+                quantityError,
+            };
+        }
+
+        return product;
+    });
+
+    return productsWithErrors;
+};
+
+export const checkAllValidation = (products: MultiProduct[], isCarnet: boolean): MultiProductWithErrors[] => {
+    const nameValidationResult = checkProductNamesAreValid(products);
+    const priceValidationResult = checkProductPricesAreValid(nameValidationResult);
+    const productDurationResult = checkProductDurationsAreValid(priceValidationResult);
+    let fullNonCarnetValidationResult = checkProductDurationTypesAreValid(productDurationResult);
+    if (isCarnet) {
+        fullNonCarnetValidationResult = checkCarnetQuantitiesAreValid(fullNonCarnetValidationResult);
+    }
+    return fullNonCarnetValidationResult;
+};
+
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const numberOfProducts = Number(
             (getSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE) as NumberOfProductsAttribute).numberOfProductsInput,
         );
+        const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
+        const isCarnet: boolean = carnetAttribute !== undefined && !!carnetAttribute;
         const multipleProducts: MultiProduct[] = [];
         for (let i = 0; i < numberOfProducts; i += 1) {
             const productName = req.body[`multipleProductNameInput${i}`];
             const productPrice = req.body[`multipleProductPriceInput${i}`];
             const productDuration = req.body[`multipleProductDurationInput${i}`];
             const productDurationUnits = req.body[`multipleProductDurationUnitsInput${i}`] || '';
+            const productCarnetQuantity = req.body[`carnetQuantityInput${i}`];
+            const productCarnetExpiryDuration = req.body[`carnetExpiryDurationInput${i}`];
+            const productCarnetExpiryUnits = req.body[`carnetExpiryUnitInput${i}`] || '';
             const productNameId = `multiple-product-name-${i}`;
             const productPriceId = `multiple-product-price-${i}`;
             const productDurationId = `multiple-product-duration-${i}`;
             const productDurationUnitsId = `multiple-product-duration-units-${i}`;
-            const product: MultiProduct = {
+            const productCarnetQuantityId = `product-details-carnet-quantity-${i}`;
+            const productCarnetExpiryDurationId = `product-details-carnet-expiry-quantity-${i}`;
+            const productCarnetExpiryUnitsId = `product-details-carnet-expiry-unit-${i}`;
+            let product: MultiProduct = {
                 productName,
                 productNameId,
                 productPrice,
@@ -173,13 +216,22 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 productValidity: '',
                 productValidityId: '',
             };
+
+            if (isCarnet) {
+                product = {
+                    ...product,
+                    productCarnetQuantity,
+                    productCarnetExpiryDuration,
+                    productCarnetExpiryUnits,
+                    productCarnetQuantityId,
+                    productCarnetExpiryDurationId,
+                    productCarnetExpiryUnitsId,
+                };
+            }
             multipleProducts.push(product);
         }
 
-        const nameValidationResult = checkProductNamesAreValid(multipleProducts);
-        const priceValidationResult = checkProductPricesAreValid(nameValidationResult);
-        const productDurationResult = checkProductDurationsAreValid(priceValidationResult);
-        const fullValidationResult = checkProductDurationTypesAreValid(productDurationResult);
+        const fullValidationResult = checkAllValidation(multipleProducts, isCarnet);
 
         if (containsErrors(fullValidationResult)) {
             const errors: ErrorInfo[] = getErrorsForSession(fullValidationResult);
