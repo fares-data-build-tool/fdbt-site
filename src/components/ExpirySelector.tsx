@@ -8,11 +8,12 @@ interface DurationSelectorProps {
     quantityId: string;
     hintId?: string;
     quantityName: string;
-    defaultUnit?: ExpiryUnit;
+    defaultUnit?: ExpiryUnit | CarnetExpiryUnit;
     unitName: string;
     unitId: string;
-    carnet: boolean;
+    carnet?: boolean;
     errors?: ErrorInfo[];
+    hideFormGroupError?: boolean;
 }
 
 const ExpirySelector = ({
@@ -23,12 +24,19 @@ const ExpirySelector = ({
     defaultUnit,
     unitName,
     unitId,
-    carnet,
+    carnet = false,
     errors,
+    hideFormGroupError = false,
 }: DurationSelectorProps): ReactElement => (
     <div className="govuk-input__wrapper expiry-selector-wrapper">
         <>
-            <FormElementWrapper errors={errors || []} errorId={quantityId} errorClass="govuk-input--error" hideText>
+            <FormElementWrapper
+                errors={errors || []}
+                errorId={quantityId}
+                errorClass="govuk-input--error"
+                hideText
+                addFormGroupError={!hideFormGroupError}
+            >
                 <input
                     className="govuk-input govuk-input--width-3"
                     name={quantityName}

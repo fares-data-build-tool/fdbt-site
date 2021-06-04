@@ -1,11 +1,16 @@
 import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
-import { MULTIPLE_PRODUCT_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
+import {
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    NUMBER_OF_PRODUCTS_ATTRIBUTE,
+} from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
-import { ErrorInfo, NextPageContextWithSession, MultiProduct, FareType } from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
-import { isWithErrors } from '../interfaces/typeGuards';
+import { isWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
 
@@ -18,6 +23,7 @@ interface MultipleProductProps {
     csrfToken: string;
     flatFare: boolean;
     carnet: boolean;
+    numberOfProductsToRender: number;
 }
 
 const MultipleProducts = ({
@@ -26,8 +32,10 @@ const MultipleProducts = ({
     csrfToken,
     flatFare,
     carnet,
+    numberOfProductsToRender,
 }: MultipleProductProps): ReactElement => {
-    const [numberOfProducts, setNumberOfProducts] = useState(1);
+    const [numberOfProducts, setNumberOfProducts] = useState(numberOfProductsToRender);
+    const displayButton = (carnet || !flatFare) && typeof window !== 'undefined';
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/multipleProducts" method="post" csrfToken={csrfToken}>
@@ -36,7 +44,6 @@ const MultipleProducts = ({
                     <h1 className="govuk-heading-l" id="multiple-product-page-heading">
                         Enter your product details
                     </h1>
-                    {/* <div className="govuk-inset-text">For example, Super Saver ticket - 4.95 - 2 - Days</div> */}
                     <div className="govuk-grid-row">
                         <ProductRow
                             numberOfProductsToDisplay={numberOfProducts}
@@ -45,28 +52,36 @@ const MultipleProducts = ({
                             flatFare={flatFare}
                             carnet={carnet}
                         />
-                        <div className="flex-container">
-                            <button
-                                id="add-another-button"
-                                type="button"
-                                className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
-                                onClick={(): void => setNumberOfProducts(numberOfProducts + 1)}
-                            >
-                                Add another product
-                            </button>
+                        {displayButton ? (
+                            <div className="flex-container">
+                                {numberOfProducts < 10 ? (
+                                    <button
+                                        id="add-another-button"
+                                        type="button"
+                                        className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
+                                        onClick={(): void => setNumberOfProducts(numberOfProducts + 1)}
+                                    >
+                                        Add another product
+                                    </button>
+                                ) : (
+                                    ''
+                                )}
 
-                            {numberOfProducts > 1 ? (
-                                <button
-                                    type="button"
-                                    className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
-                                    onClick={(): void => setNumberOfProducts(numberOfProducts - 1)}
-                                >
-                                    Remove last product
-                                </button>
-                            ) : (
-                                ''
-                            )}
-                        </div>
+                                {numberOfProducts > 1 ? (
+                                    <button
+                                        type="button"
+                                        className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
+                                        onClick={(): void => setNumberOfProducts(numberOfProducts - 1)}
+                                    >
+                                        Remove last product
+                                    </button>
+                                ) : (
+                                    ''
+                                )}
+                            </div>
+                        ) : (
+                            ''
+                        )}
 
                         <input
                             type="submit"
@@ -87,8 +102,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const carnetFareTypeAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
     const carnet = carnetFareTypeAttribute === undefined ? false : carnetFareTypeAttribute;
 
-    const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
+    const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    if (!fareTypeAttribute || isFareTypeAttributeWithErrors(fareTypeAttribute)) {
+        throw new Error('Faretype attribute not found, could not ascertain fareType.');
+    }
+
+    const { fareType } = fareTypeAttribute;
     const flatFare = fareType === 'flatFare';
+    const numberOfProductsToRender = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) || 1;
 
     return {
         props: {
@@ -97,6 +118,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             csrfToken,
             flatFare,
             carnet,
+            numberOfProductsToRender,
         },
     };
 };

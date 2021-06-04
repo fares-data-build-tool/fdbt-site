@@ -163,7 +163,7 @@ export interface GroupTicketAttributeWithErrors extends GroupTicketAttribute {
 }
 
 export interface NumberOfProductsAttribute {
-    numberOfProductsInput: string;
+    numberOfProducts: number;
 }
 
 export interface NumberOfProductsAttributeWithErrors {
@@ -366,6 +366,7 @@ export interface Product {
     productValidity?: string;
     productDurationUnits?: string;
     productEndTime?: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
@@ -545,6 +546,7 @@ export interface ProductWithSalesOfferPackages extends BaseProduct {
 export interface FlatFareProductDetails extends BaseProduct {
     productName: string;
     productPrice: string;
+    carnetDetails?: CarnetDetails;
 }
 
 export interface ProductData {
@@ -626,19 +628,19 @@ export interface MultiProduct {
     productNameId: string;
     productPrice: string;
     productPriceId: string;
-    productDuration: string;
-    productDurationId: string;
-    productDurationUnits: string;
-    productDurationUnitsId: string;
-    productValidity: string;
-    productValidityId: string;
+    productDuration?: string;
+    productDurationId?: string;
+    productDurationUnits?: ExpiryUnit;
+    productDurationUnitsId?: string;
+    productValidity?: string;
+    productValidityId?: string;
     productEndTime?: string;
     productEndTimeId?: string;
     productCarnetQuantity?: string;
     productCarnetQuantityId?: string;
     productCarnetExpiryDuration?: string;
     productCarnetExpiryDurationId?: string;
-    productCarnetExpiryUnits?: string;
+    productCarnetExpiryUnits?: CarnetExpiryUnit;
     productCarnetExpiryUnitsId?: string;
 }
 

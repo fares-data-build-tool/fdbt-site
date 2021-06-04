@@ -99,7 +99,7 @@ describe('serviceList', () => {
         });
     });
 
-    it('redirects to /productDetails if input is valid and the user is entering details for a flat fare ticket', () => {
+    it('redirects to /multipleProducts if input is valid and the user is entering details for a flat fare ticket', () => {
         const serviceInfo = {
             '64': 'Leeds-Bradford#12/02/12',
             '45': 'gggggg#02/03/91',
@@ -120,7 +120,7 @@ describe('serviceList', () => {
         serviceList(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/productDetails',
+            Location: '/multipleProducts',
         });
     });
 });
